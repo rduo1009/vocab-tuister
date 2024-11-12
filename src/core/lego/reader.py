@@ -203,77 +203,75 @@ def read_vocab_file(file_path: Path) -> VocabList:
     --------
     >>> read_vocab_file(Path("path_to_file.txt"))  # doctest: +SKIP
     """
-    vocab: list[accido.endings._Word] = []
-    file: TextIOWrapper
-
     with file_path.open("r") as file:
-        line: str
-        current: _PartOfSpeech | Literal[""] = ""
-
-        for line in (
-            raw_line.strip()  # remove whitespace
-            for raw_line in file.read().split("\n")  # for line in file
-            if raw_line.strip()  # but skip if the line is blank
-        ):
-            match line[0]:
-                case "#":
-                    continue
-
-                case "@":
-                    match line[1:].strip():
-                        case (
-                            "Verb"
-                            | "Adjective"
-                            | "Noun"
-                            | "Regular"
-                            | "Pronoun"
-                        ):
-                            assert _is_typeofspeech(line[1:].strip())
-                            current = cast(_PartOfSpeech, line[1:].strip())
-
-                        case (
-                            "Verbs"
-                            | "Adjectives"
-                            | "Nouns"
-                            | "Regulars"
-                            | "Pronouns"
-                        ):
-                            assert _is_typeofspeech(line[1:-1].strip())
-                            current = cast(_PartOfSpeech, line[1:-1].strip())
-
-                        case _:
-                            raise InvalidVocabFileFormatError(
-                                "Invalid part of speech: "
-                                f"'{line[1:].strip()}'",
-                            )
-
-                case _:
-                    parts: list[str] = line.strip().split(":")
-                    if len(parts) != 2:
-                        raise InvalidVocabFileFormatError(
-                            f"Invalid line format: '{line}'",
-                        )
-
-                    meaning: Meaning = _generate_meaning(
-                        parts[0].strip(),
-                    )
-                    latin_parts: list[str] = [
-                        raw_part.strip() for raw_part in parts[1].split(",")
-                    ]
-
-                    if not current:
-                        raise InvalidVocabFileFormatError(
-                            "Part of speech was not given",
-                        )
-
-                    vocab.append(
-                        _parse_line(current, latin_parts, meaning, line),
-                    )
-
-    return VocabList(vocab)
+        return VocabList(_read_vocab_file_internal(file))
 
     # HACK: workaround for pydoclint
     raise FileNotFoundError  # pragma: no cover # sourcery skip: remove-unreachable-code
+    raise InvalidVocabFileFormatError  # pragma: no cover # sourcery skip: remove-unreachable-code
+
+
+def _read_vocab_file_internal(
+    file: TextIOWrapper,
+) -> list[accido.endings._Word]:
+    vocab: list[accido.endings._Word] = []
+    line: str
+    current: _PartOfSpeech | Literal[""] = ""
+
+    for line in (
+        raw_line.strip()  # remove whitespace
+        for raw_line in file.read().split("\n")  # for line in file
+        if raw_line.strip()  # but skip if the line is blank
+    ):
+        match line[0]:
+            case "#":
+                continue
+
+            case "@":
+                match line[1:].strip():
+                    case "Verb" | "Adjective" | "Noun" | "Regular" | "Pronoun":
+                        assert _is_typeofspeech(line[1:].strip())
+                        current = cast(_PartOfSpeech, line[1:].strip())
+
+                    case (
+                        "Verbs"
+                        | "Adjectives"
+                        | "Nouns"
+                        | "Regulars"
+                        | "Pronouns"
+                    ):
+                        assert _is_typeofspeech(line[1:-1].strip())
+                        current = cast(_PartOfSpeech, line[1:-1].strip())
+
+                    case _:
+                        raise InvalidVocabFileFormatError(
+                            f"Invalid part of speech: '{line[1:].strip()}'",
+                        )
+
+            case _:
+                parts: list[str] = line.strip().split(":")
+                if len(parts) != 2:
+                    raise InvalidVocabFileFormatError(
+                        f"Invalid line format: '{line}'",
+                    )
+
+                meaning: Meaning = _generate_meaning(
+                    parts[0].strip(),
+                )
+                latin_parts: list[str] = [
+                    raw_part.strip() for raw_part in parts[1].split(",")
+                ]
+
+                if not current:
+                    raise InvalidVocabFileFormatError(
+                        "Part of speech was not given",
+                    )
+
+                vocab.append(
+                    _parse_line(current, latin_parts, meaning, line),
+                )
+
+    return vocab
 
 
 def _parse_line(
