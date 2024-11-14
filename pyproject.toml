@@ -19,7 +19,6 @@ lemminflect = "0.2.3"
 inflect = "7.4.0"
 lz4 = "4.3.3"
 flask = "3.0.3"
-platformdirs = "4.3.6"
 
 [tool.poetry.group.dev.dependencies]
 icecream = "2.1.3"

@@ -6,7 +6,6 @@ import json
 from io import StringIO
 
 from flask import Flask, Response, request
-from platformdirs import PlatformDirs
 from werkzeug.exceptions import BadRequest
 
 from .._vendor.typeddict_validator import (
@@ -24,7 +23,6 @@ from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
 from .json_encode import QuestionClassEncoder
 
-PLATFORM_DIRS = PlatformDirs("vocab-tuister", "rduo1009")
 app = Flask(__name__)
 vocab_list: VocabList
 
