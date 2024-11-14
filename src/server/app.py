@@ -6,6 +6,7 @@ import json
 from io import StringIO
 
 from flask import Flask, Response, request
+from waitress import serve
 from werkzeug.exceptions import BadRequest
 
 from .._vendor.typeddict_validator import (
@@ -86,9 +87,13 @@ def create_session():
                 vocab_list, question_amount, settings
             )
         ),
-        mimetype="text/event-stream",
+        mimetype="text/json",
     )
 
 
-def main():
-    app.run(host="127.0.0.1", port=5500)
+def main_dev(port, *, debug=False):
+    app.run(host="127.0.0.1", port=port, debug=debug)
+
+
+def main(port):
+    serve(app, host="127.0.0.1", port=port)
