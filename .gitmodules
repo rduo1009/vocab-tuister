@@ -1,3 +1,6 @@
 [submodule "src/_vendor/aenum"]
 	path = src/_vendor/aenum
 	url = https://github.com/rduo1009/aenum.git
+[submodule "src/_vendor/typeddict_validator"]
+	path = src/_vendor/typeddict_validator
+	url = https://github.com/rduo1009/typeddict-validator

@@ -1,9 +1,9 @@
 """A wrapper for the Python packages used by vocab-tester."""
 
-from . import core
+from . import core, server, server_cli
 
 __version__ = "0.5.0-dev"
 __author__ = "rduo1009"
 __copyright__ = "2024, rduo1009"
 __license__ = "MIT"
-__all__ = ["core"]
+__all__ = ["core", "server", "server_cli"]
