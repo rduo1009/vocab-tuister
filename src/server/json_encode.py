@@ -101,7 +101,6 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
         # this actually throws error
         return cast(dict[str, Any], super().default(obj))
 
-    default.__doc__ = JSONEncoder.default.__doc__
-
 
 QuestionClassEncoder.__doc__ = JSONEncoder.__doc__
+QuestionClassEncoder.default.__doc__ = JSONEncoder.default.__doc__
