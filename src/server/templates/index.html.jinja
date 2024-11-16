@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <!-- HACK: Just in case list changes !-->
+    <meta http-equiv="refresh" content="60" />
+    <link
+      href="{{ url_for('static', filename='bootstrap-purified.min.css') }}", rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='style.css') }}"
+      rel="stylesheet"
+    />
+    <title>Vocab-tuister server info</title>
+  </head>
+
+  <body>
+    <h1 class="m-4">Server info</h1>
+    <h2 class="m-2">Vocab List</h2>
+    {% if vocab_list is none %}
+      <div class="m-4 alert alert-warning" role="alert">
+        No vocab list found!
+      </div>
+    {% else %}
+      <ul>
+        {% for vocab in vocab_list %}
+          <li>{{ vocab }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div id="vocab-list-raw">{{ vocab_list_raw }}</div>
+  </body>
+</html>

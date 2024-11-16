@@ -7,14 +7,13 @@ from typing import Annotated
 from cyclopts import App, Parameter
 from cyclopts.types import UInt16
 
-from src import __version__  # for some reason this is needed
+from src import __version__
 
 from .server.app import main as server_main
 from .server.app import main_dev as server_main_dev
 
 cli = App(
-    version=__version__,
-    version_flags=["--version", "-v"],
+    version=__version__,  # for some reason this is needed
     default_parameter=Parameter(negative=()),
 )
 

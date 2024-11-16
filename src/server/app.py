@@ -5,7 +5,7 @@
 import json
 from io import StringIO
 
-from flask import Flask, Response, request
+from flask import Flask, Response, render_template, request
 from waitress import serve
 from werkzeug.exceptions import BadRequest
 
@@ -25,7 +25,7 @@ from ..core.rogo.type_aliases import Settings
 from .json_encode import QuestionClassEncoder
 
 app = Flask(__name__)
-vocab_list: VocabList
+vocab_list: "VocabList | None" = None
 
 
 @app.errorhandler(BadRequest)
@@ -34,8 +34,14 @@ def handle_bad_request(e):
 
 
 @app.route("/")
-def root():
-    return "Hello World!"
+def info():
+    return render_template(
+        "index.html.jinja",
+        vocab_list=(str(vocab) for vocab in vocab_list.vocab)
+        if vocab_list
+        else None,
+        vocab_list_raw=str(vocab_list),
+    )
 
 
 @app.route("/send-vocab", methods=["POST"])
