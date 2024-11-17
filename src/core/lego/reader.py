@@ -19,7 +19,6 @@ from ..accido.type_aliases import is_termination
 from .exceptions import (
     InvalidVocabDumpError,
     InvalidVocabFileFormatError,
-    InvalidVocabListError,
 )
 from .misc import KEY, VocabList
 
@@ -155,9 +154,6 @@ def read_vocab_dump(filename: Path) -> VocabList:
 
     raise InvalidVocabDumpError("Vocab dump is not valid.")
 
-    # HACK: workaround for pydoclint
-    raise FileNotFoundError  # pragma: no cover # sourcery skip: remove-unreachable-code
-
 
 def _generate_meaning(meaning: str) -> Meaning:
     if "/" in meaning:
@@ -211,11 +207,6 @@ def read_vocab_file(file_path: Path) -> VocabList:
     """
     with file_path.open("r") as file:
         return VocabList(_read_vocab_file_internal(file))
-
-    # HACK: workaround for pydoclint
-    raise FileNotFoundError  # pragma: no cover # sourcery skip: remove-unreachable-code
-    raise InvalidVocabFileFormatError  # pragma: no cover # sourcery skip: remove-unreachable-code
-    raise InvalidVocabListError  # pragma: no cover # sourcery skip: remove-unreachable-code
 
 
 def _read_vocab_file_internal(
