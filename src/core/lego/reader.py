@@ -16,7 +16,11 @@ import src as src
 from .. import accido
 from ..accido.misc import Gender
 from ..accido.type_aliases import is_termination
-from .exceptions import InvalidVocabDumpError, InvalidVocabFileFormatError
+from .exceptions import (
+    InvalidVocabDumpError,
+    InvalidVocabFileFormatError,
+    InvalidVocabListError,
+)
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
@@ -198,6 +202,8 @@ def read_vocab_file(file_path: Path) -> VocabList:
         is incorrect.
     FileNotFoundError
         If the file does not exist.
+    InvalidVocabListError
+        If the vocab list created from the file is invalid.
 
     Examples
     --------
@@ -209,6 +215,7 @@ def read_vocab_file(file_path: Path) -> VocabList:
     # HACK: workaround for pydoclint
     raise FileNotFoundError  # pragma: no cover # sourcery skip: remove-unreachable-code
     raise InvalidVocabFileFormatError  # pragma: no cover # sourcery skip: remove-unreachable-code
+    raise InvalidVocabListError  # pragma: no cover # sourcery skip: remove-unreachable-code
 
 
 def _read_vocab_file_internal(
