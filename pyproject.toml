@@ -20,7 +20,7 @@ inflect = "7.4.0"
 lz4 = "4.3.3"
 flask = "3.1.0"
 waitress = "3.0.2"
-cyclopts = "3.0.0"
+cyclopts = "3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 icecream = "2.1.3"
