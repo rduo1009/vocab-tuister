@@ -1,8 +1,11 @@
 """The Flask API that sends questions to the client."""
 
-# ruff: noqa: D103
+# ruff: noqa: D103, TRY400
+
+from __future__ import annotations
 
 import json
+import logging
 from io import StringIO
 
 from flask import Flask, Response, render_template, request
@@ -24,12 +27,16 @@ from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
 from .json_encode import QuestionClassEncoder
 
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
-vocab_list: "VocabList | None" = None
+vocab_list: VocabList | None = None
 
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
+    logger.error(repr(e))
+
     return f"Bad request: {e}", 400
 
 

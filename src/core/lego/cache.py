@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import logging
 import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -11,7 +13,8 @@ from .saver import save_vocab_dump
 
 if TYPE_CHECKING:
     from .misc import VocabList
-import hashlib
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _sha256sum(filename: Path) -> str:
@@ -93,7 +96,11 @@ def cache_vocab_file(
     cache_path: Path = Path(cache_folder / cache_file_name)
 
     if cache_path.exists():
+        logger.info("Cache found for hash %s.", cache_file_name)
+
         return (read_vocab_dump(cache_path), True)
+
+    logger.info("No cache found for hash %s.", cache_file_name)
 
     vocab_list: VocabList = read_vocab_file(
         vocab_file_path

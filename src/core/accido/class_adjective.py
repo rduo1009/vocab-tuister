@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
@@ -22,6 +23,8 @@ if TYPE_CHECKING:
         Meaning,
         Termination,
     )
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -107,6 +110,14 @@ class Adjective(_Word):
             adjective, while "3" represents a third declension adjective.
         meaning : Meaning
         """
+        logger.debug(
+            "Adjective(%s, %s, %s, %s)",
+            ", ".join(principal_parts),
+            termination,
+            declension,
+            meaning,
+        )
+
         super().__init__()
 
         self._principal_parts: tuple[str, ...] = principal_parts
@@ -842,6 +853,16 @@ class Adjective(_Word):
 
         Note that the arguments of get are keyword-only.
         """
+        logger.debug(
+            "%s.get(%s, %s, %s, %s, adverb=%s)",
+            self._first,
+            degree,
+            gender,
+            case,
+            number,
+            adverb,
+        )
+
         short_degree: str
 
         if adverb:

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Literal, overload
 
 from ..accido.misc import ComponentsSubtype, ComponentsType
@@ -23,6 +24,8 @@ from .verb_inflection import find_main_verb_inflection, find_verb_inflections
 
 if TYPE_CHECKING:
     from .. import accido
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 # fmt: off
@@ -56,6 +59,8 @@ def find_inflection(
     set[str] | str
         The main inflection of the word or the inflections of the word.
     """
+    logger.debug("find_inflection(%s, %s, main=%s)", word, components, main)
+
     match components.type:
         case ComponentsType.ADJECTIVE:
             if components.subtype == ComponentsSubtype.ADVERB:

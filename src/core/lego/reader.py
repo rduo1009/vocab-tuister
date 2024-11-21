@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import logging
 import warnings
 from re import match
 from typing import TYPE_CHECKING, Literal, cast
@@ -27,6 +28,8 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from ..accido.type_aliases import Meaning
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
@@ -126,11 +129,15 @@ def read_vocab_dump(filename: Path) -> VocabList:
     >>> read_vocab_dump(Path("path_to_file.pickle"))  # doctest: +SKIP
     """
     if filename.suffix == ".lz4":
+        logger.info("File %s is being decompressed and read.", filename)
+
         with lz4.frame.open(filename, "rb") as file:
             content: bytes = file.read()
             pickled_data: bytes = content[:-64]
             signature: str = content[-64:].decode()
     else:
+        logger.info("File %s being read.", filename)
+
         with open(filename, "rb") as file:
             content = file.read()
             pickled_data = content[:-64]
@@ -221,6 +228,8 @@ def _read_vocab_file_internal(
         for raw_line in file.read().split("\n")  # for line in file
         if raw_line.strip()  # but skip if the line is blank
     ):
+        logger.debug("Reading line '%s'", line)
+
         match line[0]:
             case "#":
                 continue

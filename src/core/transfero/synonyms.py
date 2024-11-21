@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 import warnings
 from pathlib import Path
 
 from nltk import download
 from nltk.corpus import wordnet
 from nltk.data import find, path
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 _project_root: Path = Path(__file__).parent.parent.parent.parent
 _nltk_data_path: Path = _project_root / "nltk_data"
@@ -40,6 +43,8 @@ def find_synonyms(word: str) -> set[str]:
     set[str]
         The synonyms of the word.
     """
+    logger.debug("find_synonyms(%s)", word)
+
     synonyms: set[str] = set()
 
     for synset in wordnet.synsets(word):
@@ -48,5 +53,7 @@ def find_synonyms(word: str) -> set[str]:
             for lemma in synset.lemmas()
             if lemma.name() != word and "_" not in lemma.name()
         )
+
+    logger.debug("Synonyms: %s", synonyms)
 
     return synonyms

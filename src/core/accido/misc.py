@@ -23,6 +23,10 @@ class _EndingComponentEnum(Enum):
     regular: str
     shorthand: str
 
+    # HACK: Makes formatting log messages easier.
+    def __str__(self) -> str:
+        return self.regular
+
 
 class Number(
     _EndingComponentEnum, settings=MultiValue, init="regular shorthand"

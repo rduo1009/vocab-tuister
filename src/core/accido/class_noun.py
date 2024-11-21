@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, overload
 
@@ -12,6 +13,8 @@ from .misc import Case, ComponentsSubtype, EndingComponents, Gender, Number
 
 if TYPE_CHECKING:
     from .type_aliases import Ending, Endings, Meaning, NounDeclension
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -96,6 +99,14 @@ class Noun(_Word):
         InvalidInputError
             If the input is not valid (invalid gender value or genitive).
         """
+        logger.debug(
+            "Noun(%s, %s, %s, %s)",
+            nominative,
+            genitive,
+            gender,
+            meaning,
+        )
+
         super().__init__()
 
         if gender:
@@ -182,7 +193,7 @@ class Noun(_Word):
                     "Nablsg": f"{self._stem}a",  # puella
                     "Nnompl": f"{self._stem}ae",  # puellae
                     "Nvocpl": f"{self._stem}ae",  # puellae
-                    "Naccpl": f"{self._stem}as",  # puellas
+                    "Naccpl": f"{self._stem}as",  # puellas\
                     "Ngenpl": f"{self._stem}arum",  # puellarum
                     "Ndatpl": f"{self._stem}is",  # puellis
                     "Nablpl": f"{self._stem}is",  # puellis
@@ -307,6 +318,13 @@ class Noun(_Word):
 
         Note that all arguments of get are keyword-only.
         """
+        logger.debug(
+            "%s.get(%s, %s)",
+            self._first,
+            case,
+            number,
+        )
+
         short_case: str = case.shorthand
         short_number: str = number.shorthand
 

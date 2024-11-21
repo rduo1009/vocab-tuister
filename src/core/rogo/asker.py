@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import random
 from copy import deepcopy
 from typing import TYPE_CHECKING, overload
@@ -29,6 +30,8 @@ if TYPE_CHECKING:
     from ..accido.type_aliases import Ending, Endings, Meaning
     from .question_classes import Question
     from .type_aliases import Settings, Vocab
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _pick_ending(
@@ -80,6 +83,12 @@ def ask_question_without_sr(
             continue
 
         question_type: QuestionClasses = set_choice(filtered_questions)
+
+        logger.info(
+            "Creating new question of type %s with word '%s'.",
+            question_type.value,
+            chosen_word,
+        )
 
         # TODO: if ever using mypyc, make a new variable for every type
         # for now, any type to allow variable to be reused

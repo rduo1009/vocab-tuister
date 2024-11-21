@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
 
@@ -12,6 +13,8 @@ from .misc import Case, EndingComponents, Gender, Number
 
 if TYPE_CHECKING:
     from .type_aliases import Ending, Meaning
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -59,7 +62,10 @@ class Pronoun(_Word):
         the pronoun endings are manually written out in the edge_cases
         module.
         """
+        logger.debug("Pronoun(%s, %s)", pronoun, meaning)
+
         super().__init__()
+
         try:
             self.endings = PRONOUNS[pronoun]
         except KeyError as e:
@@ -113,6 +119,7 @@ class Pronoun(_Word):
 
         Note that the arguments of get are keyword-only.
         """
+        logger.debug("%s.get(%s, %s, %s)", self._first, gender, case, number)
         short_gender: str = gender.shorthand
         short_case: str = case.shorthand
         short_number: str = number.shorthand

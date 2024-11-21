@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, overload
 
@@ -22,6 +23,8 @@ from .type_aliases import is_person
 
 if TYPE_CHECKING:
     from .type_aliases import Conjugation, Ending, Endings, Meaning, Person
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -97,7 +100,17 @@ class Verb(_Word):
         InvalidInputError
             If the input is invalid (incorrect perfect or infinitive).
         """
+        logger.debug(
+            "RegularWord(%s, %s, %s, %s, %s)",
+            present,
+            infinitive,
+            perfect,
+            ppp,
+            meaning,
+        )
+
         super().__init__()
+
         self.present: str = present
         self.infinitive: str = infinitive
         self.perfect: str = perfect
@@ -539,6 +552,17 @@ class Verb(_Word):
 
         Infinitives.
         """
+        logger.debug(
+            "RegularWord(%s, %s, %s, %s, %s, %s, %s)",
+            mood,
+            tense,
+            voice,
+            participle_gender,
+            participle_case,
+            number,
+            person,
+        )
+
         if mood == Mood.PARTICIPLE:
             assert number is not None
             assert participle_gender is not None

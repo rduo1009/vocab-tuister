@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
 
@@ -10,6 +11,8 @@ from .misc import EndingComponents
 
 if TYPE_CHECKING:
     from .type_aliases import Meaning
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -40,6 +43,10 @@ class RegularWord(_Word):
         word : str
         meaning : Meaning
         """
+        logger.debug("RegularWord(%s, %s)", word, meaning)
+
+        super().__init__()
+
         self.word: str = word
         self._first: str = self.word
         self.meaning: Meaning = meaning
@@ -59,6 +66,8 @@ class RegularWord(_Word):
         >>> foo.get()
         'sed'
         """
+        logger.debug("%s.get()", self._first)
+
         return self.word
 
     @staticmethod

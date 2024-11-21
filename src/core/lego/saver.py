@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import logging
 import warnings
 from typing import TYPE_CHECKING
 
@@ -17,6 +18,8 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from .misc import VocabList
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def save_vocab_dump(
@@ -84,6 +87,8 @@ def save_vocab_dump(
             )
             file_path = file_path.with_suffix(f"{file_path.suffix}.lz4")
 
+        logger.info("Saving vocab list with compression to %s.", file_path)
+
         with lz4.frame.open(file_path, "wb") as file:
             file.write(pickled_data)
             file.write(signature.encode())
@@ -96,6 +101,8 @@ def save_vocab_dump(
             category=MisleadingFilenameWarning,
             stacklevel=2,
         )
+
+    logger.info("Saving vocab list to %s.", file_path)
 
     with open(file_path, "wb") as file:
         file.write(pickled_data)
