@@ -87,7 +87,7 @@ class Pronoun(_Word):
         self.neutnom: str = self.endings["Pnnomsg"]
 
     def get(
-        self, *, gender: Gender, case: Case, number: Number
+        self, *, case: Case, number: Number, gender: Gender
     ) -> Ending | None:
         """Return the ending of the pronoun.
 
@@ -95,12 +95,12 @@ class Pronoun(_Word):
 
         Parameters
         ----------
-        gender : Gender
-            The gender of the pronoun.
         case : Case
             The case of the pronoun.
         number : Number
             The number of the pronoun.
+        gender : Gender
+            The gender of the pronoun.
 
         Returns
         -------
@@ -111,9 +111,9 @@ class Pronoun(_Word):
         --------
         >>> foo = Pronoun("hic", meaning="this")
         >>> foo.get(
-        ...     gender=Gender.MASCULINE,
         ...     case=Case.NOMINATIVE,
         ...     number=Number.SINGULAR,
+        ...     gender=Gender.MASCULINE,
         ... )
         'hic'
 
