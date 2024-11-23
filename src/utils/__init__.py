@@ -1,6 +1,7 @@
 """General functions used by vocab-tester and its tests."""
 
 from . import logger
+from .compact import compact as compact
 from .compare import compare
 from .duplicates import contains_duplicates, remove_duplicates
 from .set_functions import set_choice, set_choice_pop
