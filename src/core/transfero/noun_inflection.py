@@ -34,7 +34,7 @@ if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
         typechecked = _typechecked
 
     # Monkeypatch typeguard, as not supported with pyinstaller
-    sys.modules["typeguard"] = cast(ModuleType, _TypeguardModule())
+    sys.modules["typeguard"] = cast(ModuleType, _TypeguardModule)
 
 
 from inflect import engine
