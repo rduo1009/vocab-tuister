@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import sys
 from types import ModuleType
 from typing import TYPE_CHECKING, Any, cast
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
 
     from .. import accido
 
+logger: logging.Logger = logging.getLogger(__name__)
 
 # Frozen with PyInstaller
 if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
@@ -77,6 +79,8 @@ def find_noun_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
+    logger.debug("find_noun_inflections(%s, %s)", noun, components)
+
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -119,6 +123,8 @@ def find_main_noun_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
+    logger.debug("find_main_noun_inflections(%s, %s)", noun, components)
+
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
