@@ -3,9 +3,9 @@ build-backend = "poetry_dynamic_versioning.backend"
 requires = [ "poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
 
 [tool.poetry]
-name = "vocab-tester"
-version = "0.0.0"                                                       # placeholder
-description = "An application that tests Latin vocabulary and grammar."
+name = "vocab-tuister"
+version = "0.0.0"                                                                        # placeholder
+description = "An application that tests Latin vocabulary and grammar. (TUI experiment)"
 authors = [ "rduo1009 <robertduong09alt@gmail.com>" ]
 readme = "README.md"
 packages = [ { include = "src" } ]
