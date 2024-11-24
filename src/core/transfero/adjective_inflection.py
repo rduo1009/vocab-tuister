@@ -13,6 +13,8 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 if TYPE_CHECKING:
     from .. import accido
 
+lemminflect.getLemma("happy", "ADJ")
+
 
 def find_adjective_inflections(
     adjective: str,

@@ -15,9 +15,9 @@ from typing import Final
 
 from .exceptions import InvalidWordError
 
-with open(
-    Path(__file__).parent.absolute() / "adj_to_adv.json", encoding="utf-8"
-) as file:
+_data_file_path: Path = Path(__file__).parent / "adj_to_adv.json"
+
+with open(_data_file_path, encoding="utf-8") as file:
     ADJECTIVE_TO_ADVERB: Final[dict[str, str]] = json.load(file)
 
 

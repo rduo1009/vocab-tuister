@@ -23,6 +23,7 @@ waitress = "3.0.2"
 cyclopts = "3.0.1"
 ansicolors = "1.1.8"
 dunamai = "1.23.0"
+pyinstaller = "6.11.1"
 
 [tool.poetry.group.dev.dependencies]
 icecream = "2.1.3"

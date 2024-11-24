@@ -2,16 +2,42 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import sys
+from types import ModuleType
+from typing import TYPE_CHECKING, Any, cast
 
 import lemminflect
-from inflect import engine
 
 from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from .. import accido
+
+
+# Frozen with PyInstaller
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+    import sys
+
+    def _typechecked(
+        target: Callable[..., Any] | None = None,
+        *args: Any,  # noqa: ARG001
+        **kwargs: Any,  # noqa: ARG001
+    ) -> Callable[..., Any]:
+        if target is None:
+            return lambda target: target
+        return target
+
+    class _TypeguardModule:
+        typechecked = _typechecked
+
+    # Monkeypatch typeguard, as not supported with pyinstaller
+    sys.modules["typeguard"] = cast(ModuleType, _TypeguardModule())
+
+
+from inflect import engine
 
 # Distinguish from the lemminflect module
 pluralinflect = engine()  # sourcery skip: avoid-global-variables

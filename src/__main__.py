@@ -13,14 +13,13 @@ from cyclopts import App, Parameter
 from cyclopts.types import UInt16
 
 from src import __version__
+from src.server.app import main as server_main
+from src.server.app import main_dev as server_main_dev
 from src.utils.logger import (
     CustomHandler,
     custom_formatwarning,
     log_uncaught_exceptions,
 )
-
-from .server.app import main as server_main
-from .server.app import main_dev as server_main_dev
 
 # Initialise logger
 logger = logging.getLogger()
