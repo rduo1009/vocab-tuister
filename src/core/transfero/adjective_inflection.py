@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -13,8 +12,6 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
     from .. import accido
-
-logger: logging.Logger = logging.getLogger(__name__)
 
 
 def find_adjective_inflections(
@@ -42,8 +39,6 @@ def find_adjective_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_adjective_inflections(%s, %s)", adjective, components)
-
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
     if components.subtype is not None:
@@ -89,10 +84,6 @@ def find_main_adjective_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug(
-        "find_main_adjective_inflections(%s, %s)", adjective, components
-    )
-
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
     if components.subtype is not None:
