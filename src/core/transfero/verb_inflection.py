@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -13,6 +14,8 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 if TYPE_CHECKING:
     from .. import accido
     from ..accido.type_aliases import Person
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _verify_verb_inflections(components: accido.misc.EndingComponents) -> None:
@@ -65,6 +68,8 @@ def find_verb_inflections(
     InvalidWordError
         If the word is not a valid English verb.
     """
+    logger.debug("find_verb_inflections(%s, %s)", verb, components)
+
     _verify_verb_inflections(components)
 
     if components.mood == Mood.PARTICIPLE:
@@ -122,6 +127,8 @@ def find_main_verb_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
+    logger.debug("find_main_verb_inflections(%s, %s)", verb, components)
+
     _verify_verb_inflections(components)
 
     if components.mood == Mood.PARTICIPLE:

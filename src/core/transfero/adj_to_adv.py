@@ -10,14 +10,17 @@ years now.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Final
 
 from .exceptions import InvalidWordError
 
-with open(
-    Path(__file__).parent.absolute() / "adj_to_adv.json", encoding="utf-8"
-) as file:
+logger: logging.Logger = logging.getLogger(__name__)
+
+_data_file_path: Path = Path(__file__).parent / "adj_to_adv.json"
+
+with open(_data_file_path, encoding="utf-8") as file:
     ADJECTIVE_TO_ADVERB: Final[dict[str, str]] = json.load(file)
 
 
@@ -47,6 +50,8 @@ def adj_to_adv(adjective: str) -> str:
     >>> adj_to_adv("sad")
     'sadly'
     """
+    logger.debug("adj_to_adv(%s)", adjective)
+
     if adjective in ADJECTIVE_TO_ADVERB:
         return ADJECTIVE_TO_ADVERB[adjective]
 

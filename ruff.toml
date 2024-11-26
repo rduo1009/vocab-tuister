@@ -1,10 +1,12 @@
 line-length = 79
 unsafe-fixes = true
 exclude = ["src/_vendor/**"]
+include = ["*.spec"]
 
 [lint]
 preview = true
 select = ["ALL"]
+exclude = ["*.spec"]
 ignore = [
     "UP009",
     "S101",

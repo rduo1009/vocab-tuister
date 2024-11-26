@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Final
 
 from ..accido.misc import Case, ComponentsType, Number
@@ -9,6 +10,8 @@ from .exceptions import InvalidComponentsError
 
 if TYPE_CHECKING:
     from .. import accido
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 def find_pronoun_inflections(
@@ -39,6 +42,8 @@ def find_pronoun_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
+    logger.debug("find_pronoun_inflections(%s, %s)", pronoun, components)
+
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -73,6 +78,8 @@ def find_main_pronoun_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
+    logger.debug("find_main_pronoun_inflections(%s, %s)", pronoun, components)
+
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 

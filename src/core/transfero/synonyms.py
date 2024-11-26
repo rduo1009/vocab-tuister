@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import logging
+import sys
 import warnings
 from pathlib import Path
+from typing import cast
 
 from nltk import download
 from nltk.corpus import wordnet
@@ -13,7 +15,32 @@ from nltk.data import find, path
 logger: logging.Logger = logging.getLogger(__name__)
 
 _project_root: Path = Path(__file__).parent.parent.parent.parent
-_nltk_data_path: Path = _project_root / "nltk_data"
+_nltk_data_path: Path
+
+# Frozen with PyInstaller
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+    import pkgutil
+
+    _nltk_data_path = (
+        _project_root / "src" / "core" / "transfero" / "nltk_data"
+    )
+
+    # Read nltk corpora from package data
+    data: bytes = cast(
+        bytes,
+        pkgutil.get_data(
+            "src.core.transfero", "nltk_data/corpora/wordnet.zip"
+        ),
+    )
+    assert data is not None
+
+    # Write nltk corpora in provided temporary directory
+    Path(_nltk_data_path / "corpora" / "wordnet.zip").write_bytes(data)
+
+# Regular usage
+else:
+    _nltk_data_path = _project_root / "nltk_data"
+
 _nltk_data_path.mkdir(parents=True, exist_ok=True)
 path.append(str(_nltk_data_path))
 
