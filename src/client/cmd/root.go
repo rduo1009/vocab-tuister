@@ -15,8 +15,8 @@ var rootCmd = &cobra.Command{
 	Version: version,
 	Use:     "vocab-tuister",
 	Short:   "Latin vocabulary and grammar testing.",
-	Long: `Vocab-tester is a tool for improving your Latin vocabulary and endings.
-The project homepage is at https://github.com/rduo1009/vocab-tuister`,
+	Long: `Vocab-tuister is a tool for improving your Latin vocabulary and endings.
+The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			if err := cmd.Help(); err != nil {
