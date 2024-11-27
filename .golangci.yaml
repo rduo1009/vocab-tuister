@@ -1,0 +1,38 @@
+run:
+  timeout: 5m
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - dogsled
+    - dupl
+    - errcheck
+    - errname
+    - gci
+    - goconst
+    - gocritic
+    - godot
+    - godox
+    - gofumpt
+    - goimports
+    - goprintffuncname
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - noctx
+    - nolintlint
+    - rowserrcheck
+    - staticcheck
+    - stylecheck
+    - revive
+    - tagalign
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+    - wastedassign
+    - nilerr

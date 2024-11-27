@@ -27,6 +27,7 @@
         "**/.mypy_cache": true,
         "**/.pytest_cache": true,
         "**/.python-version": true,
+        "**/.go-version": true,
         "**/.ruff_cache": true,
         "**/.tox": true,
         "**/.venv": true,
