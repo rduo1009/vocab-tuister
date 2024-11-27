@@ -7,7 +7,7 @@ from enum import StrEnum, auto
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Final, overload
 
-from ..._vendor.aenum import MultiValue
+from aenum import MultiValue
 
 if TYPE_CHECKING:
     # HACK: To avoid mypy errors.
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from .type_aliases import Person
 
 else:
-    from ..._vendor.aenum import Enum
+    from aenum import Enum
 
 
 class _EndingComponentEnum(Enum):
