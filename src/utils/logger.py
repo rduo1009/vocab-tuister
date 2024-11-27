@@ -110,9 +110,7 @@ class CustomLogFormatter(logging.Formatter):
         str
             The formatted log message.
         """
-        time_str: str = datetime.datetime.now(tz=datetime.UTC).strftime(
-            "%Y/%m/%d %H:%M:%S"
-        )
+        time_str: str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # noqa: DTZ005
         colour: _AnsiColour = self.level_colours.get(
             record.levelno, LOGGER_PALETTE["info_colour"]
         )
