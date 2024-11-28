@@ -5,11 +5,15 @@ import (
 	"os"
 
 	"github.com/elewis787/boa"
-	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/spf13/cobra"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
-var version string = internal.Version
+var (
+	version string = internal.Version
+	Log     string
+)
 
 var rootCmd = &cobra.Command{
 	Version: version,
@@ -20,9 +24,9 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			if err := cmd.Help(); err != nil {
-				fmt.Fprintln(os.Stderr, err)
+				fmt.Println(err)
+				os.Exit(1)
 			}
-			os.Exit(0)
 		}
 	},
 }
@@ -32,7 +36,7 @@ func Execute() {
 	rootCmd.SetHelpFunc(boa.HelpFunc)
 
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }

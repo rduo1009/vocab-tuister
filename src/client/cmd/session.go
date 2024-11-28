@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/spf13/cobra"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
 var sessionCmd = &cobra.Command{
@@ -13,7 +14,7 @@ var sessionCmd = &cobra.Command{
 	Short:   "Starts a testing session.",
 	Long: `Starts a testing session.
 This is based on the vocab list and the session config file provided.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, args []string) { //nolint:revive
 		fmt.Printf("Session started.")
 	},
 }

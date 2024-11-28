@@ -1,5 +1,14 @@
 run:
   timeout: 5m
+linters-settings:
+  gofumpt:
+    extra-rules: true
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/rduo1009/vocab-tuister)
+    custom-order: true
 
 linters:
   disable-all: true
