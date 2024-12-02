@@ -238,7 +238,7 @@ def _read_vocab_file_internal(
                 match line[1:].strip():
                     case "Verb" | "Adjective" | "Noun" | "Regular" | "Pronoun":
                         assert _is_typeofspeech(line[1:].strip())
-                        current = cast(_PartOfSpeech, line[1:].strip())
+                        current = cast("_PartOfSpeech", line[1:].strip())
 
                     case (
                         "Verbs"
@@ -248,7 +248,7 @@ def _read_vocab_file_internal(
                         | "Pronouns"
                     ):
                         assert _is_typeofspeech(line[1:-1].strip())
-                        current = cast(_PartOfSpeech, line[1:-1].strip())
+                        current = cast("_PartOfSpeech", line[1:-1].strip())
 
                     case _:
                         raise InvalidVocabFileFormatError(
