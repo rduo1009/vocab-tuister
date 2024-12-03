@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/charmbracelet/bubbles/v2/key"
 	tea "github.com/charmbracelet/bubbletea/v2"
 )
 
@@ -38,16 +39,20 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "esc":
+		switch {
+		case key.Matches(msg, m.keys.HideCursor):
 			if m.textarea.Focused() {
 				m.textarea.Blur()
 			}
-		case "ctrl+c":
+
+		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
 
-		case "ctrl+s":
+		case key.Matches(msg, m.keys.Save):
 			return m, saveList(m.filePath, m.textarea.Value())
+
+		case key.Matches(msg, m.keys.Help):
+			m.help.ShowAll = !m.help.ShowAll
 
 		default:
 			if !m.textarea.Focused() {
@@ -59,6 +64,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
+		m.help.Width = m.width
 
 	case errMsg:
 		m.err = msg.err

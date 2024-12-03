@@ -9,14 +9,18 @@ import (
 func (m model) View() string {
 	// Fill screen
 	m.textarea.SetWidth(m.width)
-	m.textarea.SetHeight(m.height - 6)
+	if m.help.ShowAll {
+		m.textarea.SetHeight(m.height - 6)
+	} else {
+		m.textarea.SetHeight(m.height - 3)
+	}
 
 	// Components
 	title := internal.TitleStyle.Render("Vocab List Creator")
 	textArea := "\n" + m.textarea.View()
-	keyControlInfo := internal.KeyControlsStyle.Render("\nctrl+c to quit • ctrl+s to save\n\n")
+	helpInfo := m.help.View(m.keys)
 
 	// Combine
-	text := lipgloss.JoinVertical(lipgloss.Left, title, textArea, keyControlInfo)
+	text := lipgloss.JoinVertical(lipgloss.Left, title, textArea, helpInfo)
 	return text
 }

@@ -1,9 +1,14 @@
 package listtui
 
-import "github.com/charmbracelet/bubbles/v2/textarea"
+import (
+	"github.com/charmbracelet/bubbles/v2/help"
+	"github.com/charmbracelet/bubbles/v2/textarea"
+)
 
 type model struct {
 	textarea textarea.Model
+	keys     KeyMap
+	help     help.Model
 	filePath string
 	width    int
 	height   int
@@ -16,6 +21,8 @@ func InitialModel(filePath string) model { //nolint:revive
 	ti.Focus()
 
 	return model{
+		keys:     DefaultKeyMap,
+		help:     help.New(),
 		textarea: ti,
 		filePath: filePath,
 	}
