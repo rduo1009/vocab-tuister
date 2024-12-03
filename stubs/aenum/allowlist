@@ -24,6 +24,11 @@ aenum.Flag.__xor__
 aenum.IntFlag
 aenum.IntFlag.__new__
 aenum.LowerStrEnum.__new__
+aenum.NamedTuple.__aliases__
+aenum.NamedTuple.__new__
+aenum.NamedTuple.__replace__
+aenum.NamedTuple._fields
+aenum.NamedTuple._make
 aenum.ReprEnum
 aenum.ReprEnum.__new__
 aenum.STRICT
