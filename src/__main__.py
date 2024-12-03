@@ -1,6 +1,6 @@
 """The CLI that runs the server."""
 
-# ruff: noqa: TCH002
+# ruff: noqa: TC002
 
 from __future__ import annotations
 

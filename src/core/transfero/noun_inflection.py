@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import sys
-from types import ModuleType
 from typing import TYPE_CHECKING, Any, cast
 
 import lemminflect
@@ -14,6 +13,7 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from types import ModuleType
 
     from .. import accido
 
@@ -36,7 +36,7 @@ if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
         typechecked = _typechecked
 
     # Monkeypatch typeguard, as not supported with pyinstaller
-    sys.modules["typeguard"] = cast(ModuleType, _TypeguardModule)
+    sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
 
 
 from inflect import engine

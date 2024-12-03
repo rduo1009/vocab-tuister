@@ -27,7 +27,7 @@ if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
 
     # Read nltk corpora from package data
     data: bytes = cast(
-        bytes,
+        "bytes",
         pkgutil.get_data(
             "src.core.transfero", "nltk_data/corpora/wordnet.zip"
         ),
