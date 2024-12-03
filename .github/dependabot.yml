@@ -1,7 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: "pip" 
-    directory: "/" 
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "🚧 build(deps):"
+
+  - package-ecosystem: "gomod"
+    directory: "/"
     schedule:
       interval: "daily"
     commit-message:
