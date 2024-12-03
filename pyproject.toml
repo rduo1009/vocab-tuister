@@ -49,7 +49,7 @@ pydoclint = "0.5.9"
 [tool.poetry.group.types.dependencies]
 types-regex = "2024.11.6.20241108"
 types-waitress = "3.0.1.20241117"
-optype = "0.7.1"
+optype = "0.7.3"
 
 [tool.poetry-dynamic-versioning]
 enable = true
