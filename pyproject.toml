@@ -52,4 +52,4 @@ types-waitress = "3.0.1.20241117"
 optype = "0.7.3"
 
 [tool.poetry-dynamic-versioning]
-enable = false
+enable = true
