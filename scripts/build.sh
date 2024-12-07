@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 if [[ $debug == "True" ]]; then
     echo "====== DEBUG MODE ======"
@@ -23,7 +23,7 @@ else
 fi
 
 echo "Do you want to reinstall all deps? (Y/n)"
-read -q response
+read -r response
 echo
 if [[ -z "$response" || "$response" == "y" || "$response" == "Y" ]]; then
     poetry install --sync
