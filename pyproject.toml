@@ -18,7 +18,7 @@ nltk = "3.9.1"
 lemminflect = "0.2.3"
 inflect = "7.4.0"
 aenum = "3.1.15"
-lz4 = "4.3.3"
+lz4 = "^4.3.3"
 flask = "3.1.0"
 waitress = "3.0.2"
 cyclopts = "3.1.2"
@@ -52,4 +52,4 @@ types-waitress = "3.0.1.20241117"
 optype = "0.7.3"
 
 [tool.poetry-dynamic-versioning]
-enable = true
+enable = false
