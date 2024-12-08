@@ -28,6 +28,11 @@ jobs:
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
+      - name: Setup project
+        run: |
+          python3.13 -m venv .venv
+          source .venv/bin/activate
+
       - name: Build project
         run: poe build
 
