@@ -1,5 +1,5 @@
 name: build-python
-on: workflow_dispatch
+on: push
 
 jobs:
   build-linux-x86_64:
