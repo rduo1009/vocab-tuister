@@ -5,6 +5,10 @@ jobs:
   build-linux-x86_64:
     name: Build for Linux on x86_64
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python:
+          - 3.13.0
 
     steps:
       - uses: actions/checkout@v4.2.2
@@ -12,8 +16,15 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
+      - name: Install python
+        uses: gabrielfalcao/pyenv-action@main
+        with:
+          default: "${{ matrix.python }}"
+          command: pip install -U pip # upgrade pip after installing python
+
       - name: Install deps
         run: |
+          python3.13 -m pip install pipx
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
