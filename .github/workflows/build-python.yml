@@ -17,8 +17,6 @@ jobs:
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
-      - run: cd vocab-tuister
-
       - name: Build project
         run: poe build
 
