@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import platform
 import sys
 
 import lemminflect
@@ -32,8 +33,12 @@ if sys.platform == "darwin":
             )
 
 
-name = f"vocab-tuister-server-{sys.platform}"
-
+if sys.platform == "darwin":
+    name = f"vocab-tuister-server-darwin-{target_arch}"
+elif sys.platform == "linux":
+    name = f"vocab-tuister-server-linux-{platform.machine()}"
+else:
+    raise ValueError(f"Unsupported platform {sys.platform}")
 
 data_files = [
     ("nltk_data", "src/core/transfero/nltk_data"),
