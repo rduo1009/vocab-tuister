@@ -16,6 +16,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 fi
 
 # Build
+dunamai from any > __version__.txt
 if [[ $debug == "True" ]]; then
     pyinstaller vocab-tuister-server.spec --clean -- --debug
 else

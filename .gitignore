@@ -18,3 +18,4 @@ cosmic-ray.sqlite
 setup.py
 build/
 reports/
+__version__.txt

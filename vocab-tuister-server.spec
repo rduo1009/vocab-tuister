@@ -17,20 +17,35 @@ if sys.platform == "darwin":
 
     # fmt: off
     replaced_stdlib_extensions = ["_asyncio", "_bisect", "_blake2", "_bz2", "_codecs_cn", "_codecs_hk", "_codecs_iso2022", "_codecs_jp", "_codecs_kr", "_codecs_tw", "_contextvars", "_csv", "_ctypes", "_ctypes_test", "_curses", "_curses_panel", "_datetime", "_dbm", "_decimal", "_elementtree", "_hashlib", "_heapq", "_interpchannels", "_interpqueues", "_interpreters", "_json", "_lsprof", "_lzma", "_md5", "_multibytecodec", "_multiprocessing", "_opcode", "_pickle", "_posixshmem", "_posixsubprocess", "_queue", "_random", "_scproxy", "_sha1", "_sha2", "_sha3", "_socket", "_sqlite3", "_ssl", "_statistics", "_struct", "_testbuffer", "_testcapi", "_testclinic", "_testclinic_limited", "_testexternalinspection", "_testimportmultiple", "_testinternalcapi", "_testlimitedcapi", "_testmultiphase", "_testsinglephase", "_uuid", "_xxtestfuzz", "_zoneinfo", "array", "binascii", "cmath", "fcntl", "grp", "math", "mmap", "pyexpat", "readline", "resource", "select", "syslog", "termios", "unicodedata", "xxlimited", "xxlimited_35", "xxsubtype", "zlib"]
+    replaced_dylibs = ["libpython3.13", "libintl.8", "liblzma.5", "libmpdec.4", "libcrypto.3", "libb2.1", "libssl.3", "libncursesw.6", "libreadline.8", "liblz4.1"]
     # fmt: on
 
-    def replace_extension(dep_list):
-        def _replace_extension(location, file_path):
+    def replace_binaries(dep_list):
+        def _replace_binary(location, file_path):
             for i, (name, path, binary_type) in enumerate(dep_list):
                 if name == location:
                     dep_list[i] = (name, file_path, binary_type)
                     break
 
+        def _add_binary(location, file_path):
+            dep_list.append((location, file_path, "BINARY"))
+
         for extension in replaced_stdlib_extensions:
-            _replace_extension(
+            _replace_binary(
                 f"lib-dynload/{extension}.cpython-313-darwin.so",
                 f"src/_build/macos/stdlib/{extension}.cpython-313-darwin.so",
             )
+
+        for dylib in replaced_dylibs:
+            _replace_binary(
+                f"{dylib}.dylib",
+                f"src/_build/macos/dylib/{dylib}.dylib",
+            )
+
+        _add_binary(
+            "libsqlite3.0.dylib",
+            f"src/_build/macos/dylib/libsqlite3.0.dylib",
+        )
 
 
 if sys.platform == "darwin":
@@ -45,6 +60,7 @@ data_files = [
     ("src/core/transfero/adj_to_adv.json", "src/core/transfero"),
     ("src/server/templates", "src/server/templates"),
     ("src/server/static", "src/server/static"),
+    ("__version__.txt", "."),
 ]
 
 lemminflect_dir = os.path.dirname(lemminflect.__file__)
@@ -68,9 +84,11 @@ a = Analysis(
 pyz = PYZ(a.pure)
 
 if sys.platform == "darwin":
-    replace_extension(a.binaries)
-    replace_extension(pyz.dependencies)
+    replace_binaries(a.binaries)
+    replace_binaries(pyz.dependencies)
 
+for binary in a.binaries:
+    print(binary)
 
 if not options.debug:
     exe = EXE(
