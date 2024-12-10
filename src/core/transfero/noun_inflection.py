@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-import sys
+import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
 import lemminflect
@@ -20,8 +20,7 @@ if TYPE_CHECKING:
 logger: logging.Logger = logging.getLogger(__name__)
 
 # Frozen with PyInstaller
-if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-    import sys
+if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
 
     def _typechecked(
         target: Callable[..., Any] | None = None,
@@ -36,7 +35,7 @@ if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
         typechecked = _typechecked
 
     # Monkeypatch typeguard, as not supported with pyinstaller
-    sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
+    _sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
 
 
 from inflect import engine

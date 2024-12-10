@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-import sys
+import sys as _sys
 import warnings
 from pathlib import Path
 from typing import cast
@@ -18,7 +18,7 @@ _project_root: Path = Path(__file__).parent.parent.parent.parent
 _nltk_data_path: Path
 
 # Frozen with PyInstaller
-if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
     import pkgutil
 
     _nltk_data_path = (
