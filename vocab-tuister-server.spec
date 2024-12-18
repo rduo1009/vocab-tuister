@@ -16,7 +16,7 @@ if sys.platform == "darwin":
     target_arch = "universal2"
 
     # fmt: off
-    replaced_stdlib_extensions = ["_asyncio", "_bisect", "_blake2", "_bz2", "_codecs_cn", "_codecs_hk", "_codecs_iso2022", "_codecs_jp", "_codecs_kr", "_codecs_tw", "_contextvars", "_csv", "_ctypes", "_ctypes_test", "_curses", "_curses_panel", "_datetime", "_dbm", "_decimal", "_elementtree", "_hashlib", "_heapq", "_interpchannels", "_interpqueues", "_interpreters", "_json", "_lsprof", "_lzma", "_md5", "_multibytecodec", "_multiprocessing", "_opcode", "_pickle", "_posixshmem", "_posixsubprocess", "_queue", "_random", "_scproxy", "_sha1", "_sha2", "_sha3", "_socket", "_sqlite3", "_ssl", "_statistics", "_struct", "_testbuffer", "_testcapi", "_testclinic", "_testclinic_limited", "_testexternalinspection", "_testimportmultiple", "_testinternalcapi", "_testlimitedcapi", "_testmultiphase", "_testsinglephase", "_uuid", "_xxtestfuzz", "_zoneinfo", "array", "binascii", "cmath", "fcntl", "grp", "math", "mmap", "pyexpat", "readline", "resource", "select", "syslog", "termios", "unicodedata", "xxlimited", "xxlimited_35", "xxsubtype", "zlib"]
+    replaced_stdlib_extensions = ["_asyncio", "_bisect", "_blake2", "_bz2", "_codecs_cn", "_codecs_hk", "_codecs_iso2022", "_codecs_jp", "_codecs_kr", "_codecs_tw", "_contextvars", "_csv", "_ctypes", "_curses", "_datetime", "_dbm", "_decimal", "_elementtree", "_hashlib", "_heapq", "_json", "_lzma", "_md5", "_multibytecodec", "_multiprocessing", "_opcode", "_pickle", "_posixshmem", "_posixsubprocess", "_queue", "_random", "_scproxy", "_sha1", "_sha2", "_sha3", "_socket", "_sqlite3", "_ssl", "_statistics", "_struct", "_uuid", "array", "binascii", "fcntl", "grp", "math", "mmap", "pyexpat", "readline", "resource", "select", "syslog", "termios", "unicodedata", "zlib"]
     replaced_dylibs = ["libpython3.13", "libintl.8", "liblzma.5", "libmpdec.4", "libcrypto.3", "libb2.1", "libssl.3", "libncursesw.6", "libreadline.8", "liblz4.1"]
     # fmt: on
 
@@ -25,7 +25,10 @@ if sys.platform == "darwin":
             for i, (name, path, binary_type) in enumerate(dep_list):
                 if name == location:
                     dep_list[i] = (name, file_path, binary_type)
+                    # print("used:", location)
                     break
+            # else:
+            #     print("not used:", location)
 
         def _add_binary(location, file_path):
             dep_list.append((location, file_path, "BINARY"))
