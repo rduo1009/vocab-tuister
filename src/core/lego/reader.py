@@ -24,8 +24,8 @@ from .exceptions import (
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
-    from io import TextIOWrapper
     from pathlib import Path
+    from typing import TextIO
 
     from ..accido.type_aliases import Meaning
 
@@ -217,7 +217,7 @@ def read_vocab_file(file_path: Path) -> VocabList:
 
 
 def _read_vocab_file_internal(
-    file: TextIOWrapper,
+    file: TextIO,
 ) -> list[accido.endings._Word]:
     vocab: list[accido.endings._Word] = []
     line: str
