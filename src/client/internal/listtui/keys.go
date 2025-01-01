@@ -23,11 +23,11 @@ var DefaultKeyMap = KeyMap{
 		key.WithHelp("↓", "move down"),
 	),
 	Left: key.NewBinding(
-		key.WithKeys("left", "h"),
+		key.WithKeys("left"),
 		key.WithHelp("←", "move left"),
 	),
 	Right: key.NewBinding(
-		key.WithKeys("right", "l"),
+		key.WithKeys("right"),
 		key.WithHelp("→", "move right"),
 	),
 	HideCursor: key.NewBinding(
