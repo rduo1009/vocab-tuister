@@ -42,8 +42,11 @@ require (
 	golang.org/x/text v0.19.0 // indirect
 )
 
+// TODO: Remove these later!
 replace github.com/rduo1009/vocab-tuister/src/client/cmd => ./src/client/cmd
 
 replace github.com/rduo1009/vocab-tuister/src/client/internal => ./src/client/internal
 
 replace github.com/rduo1009/vocab-tuister/src/client/internal/listtui => ./src/client/internal/listuti
+
+replace github.com/rduo1009/vocab-tuister/src/client/internal/configtui => ./src/client/internal/configtui
