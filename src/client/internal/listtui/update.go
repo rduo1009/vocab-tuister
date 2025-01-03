@@ -20,16 +20,11 @@ func saveList(filePath, list string) tea.Cmd {
 			return errMsg{err}
 		}
 
-		file, err := os.Create(absPath)
-		if err != nil {
+		if err = os.WriteFile(absPath, []byte(list), 0o644); err != nil {
 			return errMsg{err}
 		}
 
-		if _, err = file.WriteString(list); err != nil {
-			return errMsg{err}
-		}
-
-		return saveMsg(filePath)
+		return saveMsg(absPath)
 	}
 }
 
@@ -76,5 +71,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	m.textarea, cmd = m.textarea.Update(msg)
 	cmds = append(cmds, cmd)
+
 	return m, tea.Batch(cmds...)
 }

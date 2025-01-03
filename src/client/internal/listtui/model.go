@@ -7,8 +7,8 @@ import (
 
 type model struct {
 	textarea textarea.Model
-	keys     KeyMap
 	help     help.Model
+	keys     KeyMap
 	filePath string
 	width    int
 	height   int
@@ -21,9 +21,10 @@ func InitialModel(filePath string) model { //nolint:revive
 	ti.Focus()
 
 	return model{
-		keys:     DefaultKeyMap,
-		help:     help.New(),
 		textarea: ti,
+		help:     help.New(),
+		keys:     DefaultKeyMap,
 		filePath: filePath,
+		err:      nil,
 	}
 }
