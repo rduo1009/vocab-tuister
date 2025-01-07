@@ -117,8 +117,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 	}
 
-	m.textinput, cmd = m.textinput.Update(msg)
-	cmds = append(cmds, cmd)
+	if m.mcOptionsNumberPage {
+		m.textinput, cmd = m.textinput.Update(msg)
+		cmds = append(cmds, cmd)
+	}
 
 	return m, tea.Batch(cmds...)
 }
