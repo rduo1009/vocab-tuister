@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Protocol
 
-from .. import accido
+from ..accido.misc import EndingComponents
 
 
 class QuestionClasses(Enum):
@@ -128,7 +128,7 @@ class ParseWordCompToLatQuestion(_MultiAnswerQuestion[str]):
     ----------
     prompt : str
         The prompt for the question (the dictionary entry).
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The grammatical components of the word.
     main_answer : str
         The best answer to the question.
@@ -137,13 +137,11 @@ class ParseWordCompToLatQuestion(_MultiAnswerQuestion[str]):
     """  # noqa: D205
 
     prompt: str
-    components: accido.misc.EndingComponents
+    components: EndingComponents
 
 
 @dataclass
-class ParseWordLatToCompQuestion(
-    _MultiAnswerQuestion[accido.misc.EndingComponents]
-):
+class ParseWordLatToCompQuestion(_MultiAnswerQuestion[EndingComponents]):
     """A question that asks for the grammatical components of a Latin
     word, given the word.
 
@@ -157,9 +155,9 @@ class ParseWordLatToCompQuestion(
         The prompt for the question.
     dictionary_entry : str
         The dictionary entry for the word.
-    main_answer : accido.misc.EndingComponents
+    main_answer : EndingComponents
         The best answer to the question.
-    answers : set[accido.misc.EndingComponents]
+    answers : set[EndingComponents]
         The possible answers to the question.
     """  # noqa: D205
 

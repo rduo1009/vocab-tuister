@@ -5,6 +5,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 )
 
+// FIXME: fix!!!
 func (m model) Init() (tea.Model, tea.Cmd) {
 	return m, textarea.Blink
 }

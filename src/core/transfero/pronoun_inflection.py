@@ -8,12 +8,12 @@ from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.misc import EndingComponents
 
 
 def find_pronoun_inflections(
     pronoun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English pronouns using the case and number.
 
@@ -23,7 +23,7 @@ def find_pronoun_inflections(
     ----------
     pronoun : str
         The pronoun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -47,7 +47,7 @@ def find_pronoun_inflections(
 
 def find_main_pronoun_inflection(
     pronoun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> str:
     """Find the main inflection of an English pronoun.
 
@@ -57,7 +57,7 @@ def find_main_pronoun_inflection(
     ----------
     pronoun : str
         The pronoun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns

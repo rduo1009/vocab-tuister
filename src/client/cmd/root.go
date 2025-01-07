@@ -10,13 +10,8 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
-var (
-	version string = internal.Version
-	Log     string
-)
-
 var rootCmd = &cobra.Command{
-	Version: version,
+	Version: internal.Version,
 	Use:     "vocab-tuister",
 	Short:   "Latin vocabulary and grammar testing.",
 	Long: `Vocab-tuister is a tool for improving your Latin vocabulary and endings.

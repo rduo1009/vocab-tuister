@@ -11,7 +11,7 @@ from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.misc import EndingComponents
 
 # Distinguish from the lemminflect module
 pluralinflect = engine()  # sourcery skip: avoid-global-variables
@@ -24,7 +24,7 @@ def _get_possessive(noun: str) -> str:
 
 def find_noun_inflections(
     noun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English nouns using the case and number.
 
@@ -36,7 +36,7 @@ def find_noun_inflections(
     ----------
     noun : str
         The noun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -70,7 +70,7 @@ def find_noun_inflections(
 
 def find_main_noun_inflection(
     noun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> str:
     """Find the main inflection of an English noun.
 
@@ -78,7 +78,7 @@ def find_main_noun_inflection(
     ----------
     noun : str
         The noun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns

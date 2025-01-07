@@ -71,9 +71,25 @@ class RegularWord(_Word):
         return self.word
 
     @staticmethod
-    def _create_components(
+    def create_components(
         key: str,  # noqa: ARG004
     ) -> EndingComponents:
+        """Generate an EndingComponents object based on endings keys.
+
+        In the case of a regular word, the returned EndingComponents object
+        will be empty.
+        Note that this function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The EndingComponents object created.
+        """
         return EndingComponents(string="")
 
     def __repr__(self) -> str:

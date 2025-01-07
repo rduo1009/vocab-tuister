@@ -37,6 +37,7 @@ ignore = [
     "TD002",
     "TD003",
     "FIX002",
+    "TD001",
 ]
 extend-select = ["W505"]
 

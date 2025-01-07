@@ -6,10 +6,11 @@ import re
 from copy import deepcopy
 from typing import TYPE_CHECKING, Final
 
-from .. import accido
+from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
 
 if TYPE_CHECKING:
+    from ..accido.endings import _Word
     from ..accido.type_aliases import (
         AdjectiveDeclension,
         Conjugation,
@@ -160,24 +161,24 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     to_exclude: list[type] = []
 
     if settings["exclude-nouns"]:
-        to_exclude.append(accido.endings.Noun)
+        to_exclude.append(Noun)
     if settings["exclude-verbs"]:
-        to_exclude.append(accido.endings.Verb)
+        to_exclude.append(Verb)
     if settings["exclude-adjectives"]:
-        to_exclude.append(accido.endings.Adjective)
+        to_exclude.append(Adjective)
     if settings["exclude-pronouns"]:
-        to_exclude.append(accido.endings.Pronoun)
+        to_exclude.append(Pronoun)
     if settings["exclude-regulars"]:
-        to_exclude.append(accido.endings.RegularWord)
+        to_exclude.append(RegularWord)
 
     if to_exclude:
         vocab = _filter_classes(vocab, tuple(to_exclude))
 
-    item: accido.endings._Word
+    item: _Word
 
     # Iterate over copy of list to avoid errors
     for item in deepcopy(vocab):
-        if type(item) is accido.endings.Verb:
+        if type(item) is Verb:
             current_conjugation: Conjugation = item.conjugation
             conjugation_excluded: bool = (
                 (
@@ -208,7 +209,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
             if conjugation_excluded:
                 vocab.remove(item)
 
-        elif type(item) is accido.endings.Noun:
+        elif type(item) is Noun:
             current_declension: NounDeclension = item.declension
             declension_excluded: bool = (
                 (
@@ -239,7 +240,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
             if declension_excluded:
                 vocab.remove(item)
 
-        elif type(item) is accido.endings.Adjective:
+        elif type(item) is Adjective:
             current_adj_declension: AdjectiveDeclension = item.declension
             if (
                 settings["exclude-adjective-212-declension"]

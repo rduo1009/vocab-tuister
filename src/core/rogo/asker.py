@@ -8,8 +8,16 @@ from copy import deepcopy
 from typing import TYPE_CHECKING, overload
 
 from ...utils import set_choice
-from .. import accido, transfero
-from ..accido.misc import Case, Gender, Mood, Number
+from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from ..accido.misc import (
+    Case,
+    Gender,
+    Mood,
+    MultipleEndings,
+    MultipleMeanings,
+    Number,
+)
+from ..transfero.words import find_inflection
 from .exceptions import InvalidSettingsError
 from .question_classes import (
     MultipleChoiceEngToLatQuestion,
@@ -26,8 +34,12 @@ from .rules import filter_endings, filter_questions, filter_words
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from .. import lego
+    from ..accido.endings import _Word
+    from ..accido.misc import (
+        EndingComponents,
+    )
     from ..accido.type_aliases import Ending, Endings, Meaning
+    from ..lego.misc import VocabList
     from .question_classes import Question
     from .type_aliases import Settings, Vocab
 
@@ -41,13 +53,13 @@ def _pick_ending(
 
 
 def ask_question_without_sr(
-    vocab_list: lego.misc.VocabList, amount: int, settings: Settings
+    vocab_list: VocabList, amount: int, settings: Settings
 ) -> Iterable[Question]:
     """Ask a question about Latin vocabulary.
 
     Parameters
     ----------
-    vocab_list : lego.misc.VocabList
+    vocab_list : VocabList
         The vocabulary list to use.
     amount : int
         The number of questions to ask.
@@ -75,7 +87,7 @@ def ask_question_without_sr(
         raise InvalidSettingsError("No question type has been enabled.")
 
     for _ in range(amount):
-        chosen_word: accido.endings._Word = random.choice(vocab)
+        chosen_word: _Word = random.choice(vocab)
         filtered_endings: Endings = filter_endings(
             chosen_word.endings, settings
         )
@@ -144,7 +156,7 @@ def ask_question_without_sr(
 
 
 def _pick_ending_from_multipleendings(ending: Ending) -> str:
-    if type(ending) is accido.misc.MultipleEndings:
+    if type(ending) is MultipleEndings:
         return random.choice(ending.get_all())
 
     assert type(ending) is str
@@ -152,7 +164,7 @@ def _pick_ending_from_multipleendings(ending: Ending) -> str:
 
 
 def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
-    chosen_word: accido.endings._Word, filtered_endings: Endings
+    chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInEngToLatQuestion | None:
     ending_components_key: str
     chosen_ending: Ending
@@ -160,31 +172,30 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
 
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
-    # HACK: Uses a private method but there's no alternative
-    ending_components: accido.misc.EndingComponents = (
-        chosen_word._create_components(ending_components_key)  # noqa: SLF001
+    ending_components: EndingComponents = chosen_word.create_components(
+        ending_components_key
     )
 
     verb_subjunctive: bool = (  # not supported with this question
-        type(chosen_word) is accido.endings.Verb
+        type(chosen_word) is Verb
         and ending_components.mood == Mood.SUBJUNCTIVE
     )
 
     noun_accusative_vocative: bool = (  # considered same as nominative
-        type(chosen_word) is accido.endings.Noun
+        type(chosen_word) is Noun
         and ending_components.case in {Case.ACCUSATIVE, Case.VOCATIVE}
     )
 
     adjective_flag: bool = hasattr(ending_components, "case")
     adjective_nominative: bool = (  # adjectives are all same
-        type(chosen_word) is accido.endings.Adjective
+        type(chosen_word) is Adjective
         and adjective_flag
         and ending_components.case != Case.NOMINATIVE
         and ending_components.number != Number.SINGULAR
     )
 
     participle_nominative: bool = (
-        type(chosen_word) is accido.endings.Verb
+        type(chosen_word) is Verb
         and ending_components.subtype == "participle"
         and ending_components.case != Case.NOMINATIVE
         and ending_components.number != Number.SINGULAR
@@ -192,15 +203,14 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
     )
 
     verb_second_plural: bool = (  # plural 2nd person is same as singular
-        type(chosen_word) is accido.endings.Verb
+        type(chosen_word) is Verb
         and ending_components.subtype not in {"infinitive", "participle"}
         and ending_components.number == Number.PLURAL
         and ending_components.person == 2
     )
 
-    pronoun_flag: bool = type(chosen_word) is accido.endings.Pronoun or (
-        type(chosen_word) is accido.endings.Noun
-        and ending_components.subtype == "pronoun"
+    pronoun_flag: bool = type(chosen_word) is Pronoun or (
+        type(chosen_word) is Noun and ending_components.subtype == "pronoun"
     )
     pronoun_not_masculine: bool = (
         pronoun_flag and ending_components.gender != Gender.MASCULINE
@@ -220,15 +230,12 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
     # just the meaning if it is a string
     raw_meaning: str = str(chosen_word.meaning)
     inflected_meaning: str = set_choice(
-        transfero.words.find_inflection(
-            raw_meaning, components=ending_components
-        )
+        find_inflection(raw_meaning, components=ending_components)
     )
 
     answers: set[str] = {chosen_ending}
     if (  # nominative, accusative and vocative considered same
-        type(chosen_word) is accido.endings.Noun
-        and ending_components.case == Case.NOMINATIVE
+        type(chosen_word) is Noun and ending_components.case == Case.NOMINATIVE
     ):
         answers = {chosen_ending}
         endings_to_add: tuple[Ending | None, ...] = (
@@ -242,10 +249,10 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
         for ending in endings_to_add:
             if type(ending) is str:
                 answers.add(ending)
-            elif type(ending) is accido.misc.MultipleEndings:
+            elif type(ending) is MultipleEndings:
                 answers.update(ending.get_all())
 
-    elif type(chosen_word) is accido.endings.Adjective and adjective_flag:
+    elif type(chosen_word) is Adjective and adjective_flag:
         answers = {
             item
             for key, value in chosen_word.endings.items()
@@ -254,7 +261,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             # HACK: A little weird but it works (avoids unpacking)
             for item in (
                 value.get_all()
-                if isinstance(value, accido.misc.MultipleEndings)
+                if isinstance(value, MultipleEndings)
                 else [value]
             )
         }
@@ -270,8 +277,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             )
 
     elif (
-        type(chosen_word) is accido.endings.Verb
-        and ending_components.subtype == "participle"
+        type(chosen_word) is Verb and ending_components.subtype == "participle"
     ):
         answers = {
             item
@@ -279,7 +285,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             if key[7:10] == Mood.PARTICIPLE.shorthand
             for item in (
                 value.get_all()
-                if isinstance(value, accido.misc.MultipleEndings)
+                if isinstance(value, MultipleEndings)
                 else [value]
             )
         }
@@ -297,7 +303,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             )
 
     elif (
-        type(chosen_word) is accido.endings.Verb
+        type(chosen_word) is Verb
         and ending_components.subtype not in {"infinitive", "participle"}
         and ending_components.person == 2
     ):
@@ -310,7 +316,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             person=2,
         ):
             temp_second_person_plural: tuple[str, ...]
-            if type(second_person_plural) is accido.misc.MultipleEndings:
+            if type(second_person_plural) is MultipleEndings:
                 temp_second_person_plural = tuple(
                     second_person_plural.get_all()
                 )
@@ -338,7 +344,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             if ending is None:
                 return ()
 
-            if type(ending) is accido.misc.MultipleEndings:
+            if type(ending) is MultipleEndings:
                 return tuple(ending.get_all())
 
             assert type(ending) is str
@@ -374,7 +380,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
 
 
 def _generate_typein_lattoeng(
-    chosen_word: accido.endings._Word, filtered_endings: Endings
+    chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInLatToEngQuestion | None:
     chosen_ending: Ending
     _, chosen_ending = _pick_ending(filtered_endings)
@@ -385,18 +391,18 @@ def _generate_typein_lattoeng(
 
     # to allow for multiple endingcomponents for one ending
     # e.g. 'puellae' could be nominative plural or genitive singular
-    all_ending_components: list[accido.misc.EndingComponents] = (
-        chosen_word.find(chosen_ending)
+    all_ending_components: list[EndingComponents] = chosen_word.find(
+        chosen_ending
     )
     # TODO: create function get_main_inflection for each word type
     # then use it here
     possible_main_answers: set[str] = set()
 
     def _generate_inflections(
-        ending_components: accido.misc.EndingComponents,
+        ending_components: EndingComponents,
     ) -> None:
         verb_subjunctive: bool = (  # not supported with this question
-            type(chosen_word) is accido.endings.Verb
+            type(chosen_word) is Verb
             and ending_components.mood == Mood.SUBJUNCTIVE
         )
         # if the mood was subjunctive, nothing happens
@@ -406,7 +412,7 @@ def _generate_typein_lattoeng(
         raw_meanings: Meaning = chosen_word.meaning
         main_meaning: str
         meanings: set[str]
-        if type(raw_meanings) is accido.misc.MultipleMeanings:
+        if type(raw_meanings) is MultipleMeanings:
             # using the fact that __str__ returns the main meaning
             main_meaning = str(raw_meanings)
             meanings = set(raw_meanings.meanings)
@@ -418,16 +424,12 @@ def _generate_typein_lattoeng(
         meaning: str
         for meaning in meanings:
             inflected_meanings.update(
-                transfero.words.find_inflection(
-                    meaning, components=ending_components
-                )
+                find_inflection(meaning, components=ending_components)
             )
 
         possible_main_answers.add(
             set_choice(
-                transfero.words.find_inflection(
-                    main_meaning, components=ending_components
-                )
+                find_inflection(main_meaning, components=ending_components)
             )
         )
 
@@ -446,22 +448,22 @@ def _generate_typein_lattoeng(
 
 
 def _generate_parse(
-    chosen_word: accido.endings._Word, filtered_endings: Endings
+    chosen_word: _Word, filtered_endings: Endings
 ) -> ParseWordLatToCompQuestion | None:
-    if type(chosen_word) is accido.endings.RegularWord:
+    if type(chosen_word) is RegularWord:
         return None
 
     ending_components_key: str
     chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
-    main_ending_components: accido.misc.EndingComponents = (
-        chosen_word._create_components(ending_components_key)  # noqa: SLF001
+    main_ending_components: EndingComponents = chosen_word.create_components(
+        ending_components_key
     )
 
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
-    all_ending_components: set[accido.misc.EndingComponents] = set(
+    all_ending_components: set[EndingComponents] = set(
         chosen_word.find(chosen_ending)
     )
     assert main_ending_components in all_ending_components
@@ -475,22 +477,22 @@ def _generate_parse(
 
 
 def _generate_inflect(
-    chosen_word: accido.endings._Word, filtered_endings: Endings
+    chosen_word: _Word, filtered_endings: Endings
 ) -> ParseWordCompToLatQuestion | None:
-    if type(chosen_word) is accido.endings.RegularWord:
+    if type(chosen_word) is RegularWord:
         return None
 
     ending_components_key: str
     chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
-    ending_components: accido.misc.EndingComponents = (
-        chosen_word._create_components(ending_components_key)  # noqa: SLF001
+    ending_components: EndingComponents = chosen_word.create_components(
+        ending_components_key
     )
 
     main_answer: str
     answers: set[str]
-    if type(chosen_ending) is accido.misc.MultipleEndings:
+    if type(chosen_ending) is MultipleEndings:
         if hasattr(chosen_ending, "regular"):
             main_answer = chosen_ending.regular
         else:
@@ -510,13 +512,13 @@ def _generate_inflect(
 
 
 def _generate_principal_parts_question(
-    chosen_word: accido.endings._Word,
+    chosen_word: _Word,
 ) -> PrincipalPartsQuestion | None:
-    if type(chosen_word) is accido.endings.RegularWord:
+    if type(chosen_word) is RegularWord:
         return None
 
     principal_parts: tuple[str, ...]
-    if type(chosen_word) is accido.endings.Verb:
+    if type(chosen_word) is Verb:
         if chosen_word.ppp:
             principal_parts = (
                 chosen_word.present,
@@ -531,13 +533,13 @@ def _generate_principal_parts_question(
                 chosen_word.perfect,
             )
 
-    elif type(chosen_word) is accido.endings.Noun:
+    elif type(chosen_word) is Noun:
         if chosen_word.genitive:
             principal_parts = (chosen_word.nominative, chosen_word.genitive)
         else:  # irregular noun
             return None
 
-    elif type(chosen_word) is accido.endings.Adjective:
+    elif type(chosen_word) is Adjective:
         match chosen_word.declension:
             case "212":
                 principal_parts = (
@@ -564,7 +566,7 @@ def _generate_principal_parts_question(
                             chosen_word.neutnom,
                         )
 
-    elif type(chosen_word) is accido.endings.Pronoun:
+    elif type(chosen_word) is Pronoun:
         principal_parts = (
             chosen_word.mascnom,
             chosen_word.femnom,
@@ -578,14 +580,14 @@ def _generate_principal_parts_question(
 
 def _generate_multiplechoice_engtolat(
     vocab_list: Vocab,
-    chosen_word: accido.endings._Word,
+    chosen_word: _Word,
     number_multiplechoice_options: int,
 ) -> MultipleChoiceEngToLatQuestion:
     vocab_list = deepcopy(vocab_list)  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
 
     meaning: Meaning = chosen_word.meaning
-    if type(meaning) is accido.misc.MultipleMeanings:
+    if type(meaning) is MultipleMeanings:
         meaning = random.choice(meaning.meanings)
     assert type(meaning) is str
 
@@ -610,13 +612,13 @@ def _generate_multiplechoice_engtolat(
 
 def _generate_multiplechoice_lattoeng(
     vocab_list: Vocab,
-    chosen_word: accido.endings._Word,
+    chosen_word: _Word,
     number_multiplechoice_options: int,
 ) -> MultipleChoiceLatToEngQuestion:
     prompt: str = chosen_word._first  # noqa: SLF001
 
     chosen_word_meanings: tuple[str, ...]
-    if type(chosen_word.meaning) is accido.misc.MultipleMeanings:
+    if type(chosen_word.meaning) is MultipleMeanings:
         chosen_word_meanings = tuple(chosen_word.meaning.meanings)
     else:
         assert type(chosen_word.meaning) is str
@@ -632,7 +634,7 @@ def _generate_multiplechoice_lattoeng(
                 continue
             possible_choices.append(current_meaning)
         else:
-            assert type(current_meaning) is accido.misc.MultipleMeanings
+            assert type(current_meaning) is MultipleMeanings
 
             possible_choices.extend(
                 meaning

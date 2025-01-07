@@ -34,20 +34,6 @@ type model struct {
 	err                 error
 }
 
-// Doesn't look like I need this, but keeping just in case
-// func (m *model) ToggleSettingByText(pageTitle, internalName string) {
-// 	for pageIndex, page := range m.wizard.Pages {
-// 		if page.Title == pageTitle {
-// 			for settingIndex, setting := range page.Settings {
-// 				if setting.InternalName == internalName {
-// 					m.wizard.Pages[pageIndex].Settings[settingIndex].Checked = !setting.Checked
-// 					return
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
 func (m *model) ToggleSetting(pageIndex, optionIndex int) {
 	m.wizard.Pages[pageIndex].Settings[optionIndex].Checked = !m.wizard.Pages[pageIndex].Settings[optionIndex].Checked
 }

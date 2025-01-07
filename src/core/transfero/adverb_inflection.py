@@ -10,12 +10,12 @@ from ..accido.misc import ComponentsSubtype, ComponentsType, Degree
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.misc import EndingComponents
 
 
 def find_adverb_inflections(
     adverb: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English adverbs using the degree.
 
@@ -23,7 +23,7 @@ def find_adverb_inflections(
     ----------
     adverb : str
         The adverb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -59,7 +59,7 @@ def find_adverb_inflections(
 
 
 def find_main_adverb_inflection(
-    adverb: str, components: accido.misc.EndingComponents
+    adverb: str, components: EndingComponents
 ) -> str:
     """Find the main inflection of an English adverb.
 
@@ -67,7 +67,7 @@ def find_main_adverb_inflection(
     ----------
     adverb : str
         The adverb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns

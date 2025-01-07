@@ -23,22 +23,22 @@ from .pronoun_inflection import (
 from .verb_inflection import find_main_verb_inflection, find_verb_inflections
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.misc import EndingComponents
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
 # fmt: off
 @overload
-def find_inflection(word: str, components: accido.misc.EndingComponents) -> set[str]: ...
+def find_inflection(word: str, components: EndingComponents) -> set[str]: ...
 @overload
-def find_inflection(word: str, components: accido.misc.EndingComponents, *, main: Literal[True]) -> str: ...
+def find_inflection(word: str, components: EndingComponents, *, main: Literal[True]) -> str: ...
 # fmt: on
 
 
 def find_inflection(
     word: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
     *,
     main: bool = False,
 ) -> set[str] | str:
@@ -48,7 +48,7 @@ def find_inflection(
     ----------
     word : str
         The word to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the word.
     main : bool
         Whether to return the main inflection or all of the inflections.
