@@ -1,8 +1,6 @@
 name: check
 on:
   push:
-  schedule:
-    - cron: "0 8 * * *"
 
 concurrency:
   group: check-${{ github.ref }}
