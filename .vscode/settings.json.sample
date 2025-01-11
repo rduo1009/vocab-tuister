@@ -54,14 +54,18 @@
     ],
     "files.associations": {
         "settings.json.sample": "jsonc",
-        ".coveragerc": "ini"
+        ".coveragerc": "ini",
+        "*.spec": "python"
     },
     "catppuccin-icons.associations.folders": { // or whatever icon extension you use
-        "stubs": "folder_types"
+        "stubs": "folder_types",
+        "internal": "folder_core",
+        "static": "folder_styles"
     },
     "catppuccin-icons.associations.files": { // or whatever icon extension you use
         "requirements-dev.txt": "python-config",
         "settings.json.sample": "json",
-        ".coveragerc": "ini"
+        ".coveragerc": "ini",
+        "vocab-tuister-server.spec": "python-config"
     }
 }
