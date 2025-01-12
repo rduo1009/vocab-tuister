@@ -37,11 +37,11 @@ def test_encode_parseword_lattocomp():
     components = EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)
     assert (
         json.dumps(
-            ParseWordLatToCompQuestion(prompt="capivit", dictionary_entry="take: capio, capire, capivi", main_answer=components, answers={components}),
+            ParseWordLatToCompQuestion(prompt="capivit", dictionary_entry="take: capio, capere, cepi", main_answer=components, answers={components}),
             cls=QuestionClassEncoder,
             sort_keys=True,
         )
-        == '{"answers": [{"mood": "indicative", "number": "singular", "person": 3, "tense": "perfect", "voice": "active"}], "dictionary_entry": "take: capio, capire, capivi", "main_answer": {"mood": "indicative", "number": "singular", "person": 3, "tense": "perfect", "voice": "active"}, "prompt": "capivit", "question_type": "ParseWordLatToCompQuestion"}'
+        == '{"answers": [{"mood": "indicative", "number": "singular", "person": 3, "tense": "perfect", "voice": "active"}], "dictionary_entry": "take: capio, capere, cepi", "main_answer": {"mood": "indicative", "number": "singular", "person": 3, "tense": "perfect", "voice": "active"}, "prompt": "capivit", "question_type": "ParseWordLatToCompQuestion"}'
     )
 
 

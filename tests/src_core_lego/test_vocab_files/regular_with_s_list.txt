@@ -1,6 +1,6 @@
 @Verbs
 hear: audio, audire, audivi, auditus
-take: capio, capire, capivi
+take: capio, capere, cepi
 
 @Nouns
 girl: puella, puellae, (f)
