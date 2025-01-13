@@ -6,5 +6,5 @@ import (
 )
 
 func (m model) Init() (tea.Model, tea.Cmd) {
-	return m, textinput.Blink
+	return m, tea.Batch(textinput.Blink, tea.SetWindowTitle("Create Session Config"))
 }

@@ -6,5 +6,5 @@ import (
 )
 
 func (m model) Init() (tea.Model, tea.Cmd) {
-	return m, textarea.Blink
+	return m, tea.Batch(textarea.Blink, tea.SetWindowTitle("Create Vocab List"))
 }
