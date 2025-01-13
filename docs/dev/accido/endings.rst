@@ -345,7 +345,7 @@ Third declension -io verbs
 
    >>> from src.core.accido.endings import Verb
    >>> from src.core.accido.misc import Mood, Number, Tense, Voice
-   >>> verb = Verb("capio", "capere", "capivi", "captus", meaning="take")
+   >>> verb = Verb("capio", "capere", "cepi", "captus", meaning="take")
    >>> verb.get(
    ...     tense=Tense.PRESENT,
    ...     voice=Voice.ACTIVE,
