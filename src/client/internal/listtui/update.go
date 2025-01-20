@@ -40,14 +40,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.textarea.Blur()
 			}
 
-		case key.Matches(msg, m.keys.Quit):
-			return m, tea.Quit
-
 		case key.Matches(msg, m.keys.Save):
 			return m, saveList(m.filePath, m.textarea.Value())
 
 		case key.Matches(msg, m.keys.Help):
 			m.help.ShowAll = !m.help.ShowAll
+
+		case key.Matches(msg, m.keys.Quit):
+			return m, tea.Quit
 
 		default:
 			if !m.textarea.Focused() {
@@ -61,11 +61,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.height = msg.Height
 		m.help.Width = m.width
 
+	case saveMsg:
+		return m, tea.Quit
+
 	case errMsg:
 		m.err = msg.err
-		return m, nil
-
-	case saveMsg:
 		return m, tea.Quit
 	}
 

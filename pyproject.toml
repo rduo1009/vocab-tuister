@@ -9,6 +9,7 @@ description = "An application that tests Latin vocabulary and grammar."
 authors = [ "rduo1009 <robertduong09alt@gmail.com>" ]
 readme = "README.md"
 packages = [ { include = "src" } ]
+exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
 
 [tool.poetry.dependencies]

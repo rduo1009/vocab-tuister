@@ -1,3 +1,5 @@
+exclude: "src/_vendor/.*"
+
 ci:
   skip: [poetry-lock, poetry-export]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"

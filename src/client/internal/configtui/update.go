@@ -109,11 +109,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width = msg.Width
 		m.height = msg.Height
 
+	case saveMsg:
+		return m, tea.Quit
+
 	case errMsg:
 		m.err = msg.err
-		return m, nil
-
-	case saveMsg:
 		return m, tea.Quit
 	}
 

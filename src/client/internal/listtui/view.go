@@ -1,13 +1,19 @@
 package listtui
 
 import (
-	"github.com/charmbracelet/lipgloss/v2"
+	"fmt"
+	"strings"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
 func (m model) View() string {
-	// Fill screen
+	if m.err != nil {
+		return fmt.Sprint(m.err) + "\n"
+	}
+
+	var b strings.Builder
+
 	m.textarea.SetWidth(m.width)
 	if m.help.ShowAll {
 		m.textarea.SetHeight(m.height - 6)
@@ -15,12 +21,9 @@ func (m model) View() string {
 		m.textarea.SetHeight(m.height - 3)
 	}
 
-	// Components
-	title := internal.TitleStyle.Render("Vocab List Creator")
-	textArea := "\n" + m.textarea.View()
-	helpInfo := m.help.View(m.keys)
+	b.WriteString(internal.TitleStyle.Render("Vocab List Creator\n"))
+	b.WriteString("\n" + m.textarea.View() + "\n")
+	b.WriteString(m.help.View(m.keys))
 
-	// Combine
-	text := lipgloss.JoinVertical(lipgloss.Left, title, textArea, helpInfo)
-	return text
+	return b.String()
 }

@@ -5,7 +5,6 @@ from __future__ import annotations
 from json import JSONEncoder
 from typing import Any, Final, cast
 
-from ..core.accido.misc import EndingComponents, _EndingComponentEnum
 from ..core.rogo.question_classes import (
     MultipleChoiceEngToLatQuestion,
     MultipleChoiceLatToEngQuestion,
@@ -30,16 +29,18 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 
 class QuestionClassEncoder(JSONEncoder):  # noqa: D101
     def default(self, obj: object) -> dict[str, Any]:  # noqa: D102
-        if isinstance(obj, EndingComponents):
-            ending_components_json = {}
-            for key, value in obj.__dict__.items():
-                if key in ENDING_COMPONENTS_ATTRS:
-                    ending_components_json[key] = (
-                        value.regular
-                        if isinstance(value, _EndingComponentEnum)
-                        else value
-                    )
-            return ending_components_json
+        # NOTE: The tester tui currently uses the component string representation
+        # if isinstance(obj, EndingComponents):
+        #     ending_components_json = {}
+        #     for key, value in obj.__dict__.items():
+        #         if key in ENDING_COMPONENTS_ATTRS:
+        #             if isinstance(value, _EndingComponentEnum):
+        #                 ending_components_json[key] = value.regular
+        #             elif isinstance(value, int):
+        #                 ending_components_json[key] = PERSON_SHORTHAND[value]
+        #             else:
+        #                 ending_components_json[key] = value
+        #     return ending_components_json
 
         if isinstance(obj, MultipleChoiceEngToLatQuestion):
             return {
@@ -71,8 +72,10 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                 "question_type": "ParseWordLatToCompQuestion",
                 "prompt": obj.prompt,
                 "dictionary_entry": obj.dictionary_entry,
-                "main_answer": self.default(obj.main_answer),
-                "answers": [self.default(answer) for answer in obj.answers],
+                "main_answer": obj.main_answer.string,
+                "answers": [obj.main_answer.string for answer in obj.answers],
+                # "main_answer": self.default(obj.main_answer),
+                # "answers": [self.default(answer) for answer in obj.answers],
             }
 
         if isinstance(obj, PrincipalPartsQuestion):

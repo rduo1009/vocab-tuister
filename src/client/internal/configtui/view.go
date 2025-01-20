@@ -2,35 +2,40 @@ package configtui
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
 func (m model) View() string {
-	text := ""
+	if m.err != nil {
+		return fmt.Sprint(m.err) + "\n"
+	}
+
+	var b strings.Builder
 
 	if m.mcOptionsNumberPage {
 		m.textinput.SetWidth(m.width)
 
-		text += "Input the number of options wanted for multiple-choice questions.\n"
-		text += m.textinput.View() + "\n"
-		text += internal.FaintStyle.Render("(press right to save and quit)")
-		return text
+		b.WriteString("Input the number of options wanted for multiple-choice questions.\n")
+		b.WriteString(m.textinput.View() + "\n")
+		b.WriteString(internal.FaintStyle.Render("(press right to save and quit)"))
+		return b.String()
 	}
 
 	currentPage := m.wizard.Pages[m.currentPage]
 
-	text += internal.LesserTitleStyle.Render(currentPage.Title) + "\n"
+	b.WriteString(internal.LesserTitleStyle.Render(currentPage.Title) + "\n")
 	for i, setting := range currentPage.Settings {
 		settingSelected := i == m.selectedOption
-		text += checkbox(setting.DisplayName, setting.Checked, settingSelected) + "\n"
+		b.WriteString(checkboxString(setting.DisplayName, setting.Checked, settingSelected) + "\n")
 	}
 
-	text += m.help.View(m.keys)
-	return text
+	b.WriteString(m.help.View(m.keys))
+	return b.String()
 }
 
-func checkbox(setting string, checked, selected bool) string {
+func checkboxString(setting string, checked, selected bool) string {
 	if selected && checked {
 		return internal.SelectedCheckedStyle.Render("[x] " + setting)
 	}

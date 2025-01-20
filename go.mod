@@ -1,6 +1,6 @@
 module github.com/rduo1009/vocab-tuister
 
-go 1.23.3
+go 1.23.4
 
 require (
 	github.com/charmbracelet/bubbles/v2 v2.0.0-alpha.2
@@ -8,6 +8,7 @@ require (
 	github.com/charmbracelet/lipgloss/v2 v2.0.0-alpha.2
 	github.com/elewis787/boa v0.1.2
 	github.com/spf13/cobra v1.8.1
+	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
 	golang.org/x/term v0.28.0
 )
 
@@ -24,6 +25,7 @@ require (
 	github.com/charmbracelet/x/wcwidth v0.0.0-20241011142426-46044092ad91 // indirect
 	github.com/charmbracelet/x/windows v0.2.0 // indirect
 	github.com/containerd/console v1.0.4-0.20230313162750-1ae8d489ac81 // indirect
+	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -35,18 +37,14 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sahilm/fuzzy v0.1.1 // indirect
+	github.com/sashabaranov/go-openai v1.26.3 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
+	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 )
 
-// TODO: Remove these later!
-replace github.com/rduo1009/vocab-tuister/src/client/cmd => ./src/client/cmd
-
-replace github.com/rduo1009/vocab-tuister/src/client/internal => ./src/client/internal
-
-replace github.com/rduo1009/vocab-tuister/src/client/internal/listtui => ./src/client/internal/listuti
-
-replace github.com/rduo1009/vocab-tuister/src/client/internal/configtui => ./src/client/internal/configtui
+replace github.com/widmogrod/mkunion => ./src/_vendor/mkunion
