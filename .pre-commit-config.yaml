@@ -77,3 +77,4 @@ repos:
     rev: "0.7.21"
     hooks:
       - id: mdformat
+        types: [markdown]
