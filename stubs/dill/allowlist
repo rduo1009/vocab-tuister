@@ -1,9 +1,14 @@
 dill._dill.CONTENTS_FMODE
+dill._dill.DEFAULT_PROTOCOL
 dill._dill.FILE_FMODE
 dill._dill.HANDLE_FMODE
+dill._dill.HIGHEST_PROTOCOL
+dill._dill.PickleError
 dill._dill.PickleWarning
 dill._dill.Pickler
+dill._dill.PicklingError
 dill._dill.PicklingWarning
+dill._dill.UnpicklingError
 dill._dill.UnpicklingWarning
 dill._dill.__all__
 dill._dill.check
