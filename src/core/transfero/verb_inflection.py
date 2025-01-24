@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -12,13 +11,11 @@ from .edge_cases import STATIVE_VERBS
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.misc import EndingComponents
     from ..accido.type_aliases import Person
 
-logger: logging.Logger = logging.getLogger(__name__)
 
-
-def _verify_verb_inflections(components: accido.misc.EndingComponents) -> None:
+def _verify_verb_inflections(components: EndingComponents) -> None:
     if components.type is not ComponentsType.VERB:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -41,7 +38,7 @@ def _verify_verb_inflections(components: accido.misc.EndingComponents) -> None:
 
 def find_verb_inflections(
     verb: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English verbs using the ending components.
 
@@ -55,7 +52,7 @@ def find_verb_inflections(
     ----------
     verb : str
         The verb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -68,8 +65,6 @@ def find_verb_inflections(
     InvalidWordError
         If the word is not a valid English verb.
     """
-    logger.debug("find_verb_inflections(%s, %s)", verb, components)
-
     _verify_verb_inflections(components)
 
     if components.mood == Mood.PARTICIPLE:
@@ -103,16 +98,14 @@ def find_verb_inflections(
     return inflections
 
 
-def find_main_verb_inflection(
-    verb: str, components: accido.misc.EndingComponents
-) -> str:
+def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
     """Find the main inflection of an English verb.
 
     Parameters
     ----------
     verb : str
         The verb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -127,8 +120,6 @@ def find_main_verb_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_main_verb_inflections(%s, %s)", verb, components)
-
     _verify_verb_inflections(components)
 
     if components.mood == Mood.PARTICIPLE:
@@ -465,7 +456,7 @@ def _find_plpactind_inflections(  # mypy cannot manage tuple match
 
 def _find_participle_inflections(
     verb: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> tuple[str, set[str]]:
     lemma: str = lemminflect.getLemma(verb, "NOUN")[0]
 

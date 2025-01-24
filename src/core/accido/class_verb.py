@@ -594,15 +594,38 @@ class Verb(_Word):
         )
 
     @staticmethod
-    def _create_components(key: str) -> EndingComponents:
+    def create_components(key: str) -> EndingComponents:
+        """Generate an EndingComponents object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The EndingComponents object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If the key given is not a valid key for the word.
+        """
         output: EndingComponents
 
         if len(key) == 13 and key[7:10] == "inf":
-            output = EndingComponents(
-                tense=Tense(key[1:4]),
-                voice=Voice(key[4:7]),
-                mood=Mood(key[7:10]),
-            )
+            try:
+                output = EndingComponents(
+                    tense=Tense(key[1:4]),
+                    voice=Voice(key[4:7]),
+                    mood=Mood(key[7:10]),
+                )
+            except ValueError as e:
+                raise InvalidInputError(f"Key '{key}' is invalid") from e
+
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} "
                 f"{output.mood.regular}"
@@ -613,13 +636,17 @@ class Verb(_Word):
             person_value = int(key[12])
             assert is_person(person_value)
 
-            output = EndingComponents(
-                tense=Tense(key[1:4]),
-                voice=Voice(key[4:7]),
-                mood=Mood(key[7:10]),
-                number=Number(key[10:12]),
-                person=person_value,
-            )
+            try:
+                output = EndingComponents(
+                    tense=Tense(key[1:4]),
+                    voice=Voice(key[4:7]),
+                    mood=Mood(key[7:10]),
+                    number=Number(key[10:12]),
+                    person=person_value,
+                )
+            except ValueError as e:
+                raise InvalidInputError(f"Key '{key}' is invalid") from e
+
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} "
                 f"{output.mood.regular} {output.number.regular} "
@@ -628,14 +655,18 @@ class Verb(_Word):
             return output
 
         if len(key) == 16 and key[7:10] == "ptc":
-            output = EndingComponents(
-                tense=Tense(key[1:4]),
-                voice=Voice(key[4:7]),
-                mood=Mood.PARTICIPLE,
-                gender=Gender(key[10]),
-                case=Case(key[11:14]),
-                number=Number(key[14:16]),
-            )
+            try:
+                output = EndingComponents(
+                    tense=Tense(key[1:4]),
+                    voice=Voice(key[4:7]),
+                    mood=Mood.PARTICIPLE,
+                    gender=Gender(key[10]),
+                    case=Case(key[11:14]),
+                    number=Number(key[14:16]),
+                )
+            except ValueError as e:
+                raise InvalidInputError(f"Key '{key}' is invalid") from e
+
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} participle "
                 f"{output.gender.regular} {output.case.regular} "

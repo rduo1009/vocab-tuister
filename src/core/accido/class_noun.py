@@ -337,11 +337,34 @@ class Noun(_Word):
 
         return self.endings.get(f"N{short_case}{short_number}")
 
-    def _create_components(self, key: str) -> EndingComponents:  # type: ignore[override]
-        output: EndingComponents = EndingComponents(
-            case=Case(key[1:4]),
-            number=Number(key[4:6]),
-        )
+    def create_components(self, key: str) -> EndingComponents:  # type: ignore[override]
+        """Generate an EndingComponents object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The EndingComponents object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If the key given is not a valid key for the word.
+        """
+        try:
+            output: EndingComponents = EndingComponents(
+                case=Case(key[1:4]),
+                number=Number(key[4:6]),
+            )
+        except (ValueError, IndexError) as e:
+            raise InvalidInputError(f"Key '{key}' is invalid") from e
+
         output.string = f"{output.case.regular} {output.number.regular}"
         if self.declension == 0:
             output.subtype = ComponentsSubtype.PRONOUN

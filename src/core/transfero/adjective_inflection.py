@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -12,14 +11,12 @@ from .edge_cases import NOT_COMPARABLE_ADJECTIVES
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
-    from .. import accido
-
-logger: logging.Logger = logging.getLogger(__name__)
+    from ..accido.misc import EndingComponents
 
 
 def find_adjective_inflections(
     adjective: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English adjectives using the degree.
 
@@ -27,7 +24,7 @@ def find_adjective_inflections(
     ----------
     adjective : str
         The adjective to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -42,8 +39,6 @@ def find_adjective_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_adjective_inflections(%s, %s)", adjective, components)
-
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
     if components.subtype is not None:
@@ -66,7 +61,7 @@ def find_adjective_inflections(
 
 
 def find_main_adjective_inflection(
-    adjective: str, components: accido.misc.EndingComponents
+    adjective: str, components: EndingComponents
 ) -> str:
     """Find the main inflection of an English adjective.
 
@@ -74,7 +69,7 @@ def find_main_adjective_inflection(
     ----------
     adjective : str
         The adjective to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -89,10 +84,6 @@ def find_main_adjective_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug(
-        "find_main_adjective_inflections(%s, %s)", adjective, components
-    )
-
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
     if components.subtype is not None:

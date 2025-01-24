@@ -1,31 +1,9 @@
 import types
-import zipfile
 from abc import ABCMeta, abstractmethod
-from gzip import GzipFile
 
 from _typeshed import Incomplete
 
-__all__ = [
-    "path",
-    "PathPointer",
-    "FileSystemPathPointer",
-    "BufferedGzipFile",
-    "GzipFileSystemPathPointer",
-    "GzipFileSystemPathPointer",
-    "find",
-    "retrieve",
-    "FORMATS",
-    "AUTO_FORMATS",
-    "load",
-    "show_cfg",
-    "clear_cache",
-    "LazyLoader",
-    "OpenOnDemandZipFile",
-    "GzipFileSystemPathPointer",
-    "SeekableUnicodeStreamReader",
-]
-
-path: Incomplete
+path: list[str]
 
 class PathPointer(metaclass=ABCMeta):
     @abstractmethod
@@ -34,28 +12,6 @@ class PathPointer(metaclass=ABCMeta):
     def file_size(self) -> Incomplete: ...
     @abstractmethod
     def join(self, fileid: Incomplete) -> Incomplete: ...
-
-class FileSystemPathPointer(PathPointer, str):
-    def __init__(self, _path: Incomplete) -> None: ...
-    @property
-    def path(self) -> Incomplete: ...
-    def open(self, encoding: Incomplete | None = None) -> Incomplete: ...
-    def file_size(self) -> Incomplete: ...
-    def join(self, fileid: Incomplete) -> Incomplete: ...
-
-class BufferedGzipFile(GzipFile):
-    def __init__(
-        self,
-        filename: Incomplete | None = None,
-        mode: Incomplete | None = None,
-        compresslevel: int = 9,
-        fileobj: Incomplete | None = None,
-        **kwargs: Incomplete,
-    ) -> None: ...
-    def write(self, data: Incomplete) -> None: ...
-
-class GzipFileSystemPathPointer(FileSystemPathPointer):
-    def open(self, encoding: Incomplete | None = None) -> Incomplete: ...
 
 class ZipFilePathPointer(PathPointer):
     def __init__(self, zipfile: Incomplete, entry: str = "") -> None: ...
@@ -70,37 +26,6 @@ class ZipFilePathPointer(PathPointer):
 def find(
     resource_name: Incomplete, paths: Incomplete | None = None
 ) -> Incomplete: ...
-def retrieve(
-    resource_url: Incomplete,
-    filename: Incomplete | None = None,
-    verbose: bool = True,
-) -> None: ...
-
-FORMATS: Incomplete
-AUTO_FORMATS: Incomplete
-
-def load(
-    resource_url: Incomplete,
-    format: str = "auto",
-    cache: bool = True,
-    verbose: bool = False,
-    logic_parser: Incomplete | None = None,
-    fstruct_reader: Incomplete | None = None,
-    encoding: Incomplete | None = None,
-) -> Incomplete: ...
-def show_cfg(resource_url: Incomplete, escape: str = "##") -> None: ...
-def clear_cache() -> None: ...
-
-class LazyLoader:
-    def __init__(self, _path: Incomplete) -> None: ...
-    def __getattr__(self, attr: Incomplete) -> Incomplete: ...
-
-class OpenOnDemandZipFile(zipfile.ZipFile):
-    def __init__(self, filename: Incomplete) -> None: ...
-    fp: Incomplete
-    def read(self, name: Incomplete) -> Incomplete: ...
-    def write(self, *args: Incomplete, **kwargs: Incomplete) -> None: ...
-    def writestr(self, *args: Incomplete, **kwargs: Incomplete) -> None: ...
 
 class SeekableUnicodeStreamReader:
     DEBUG: bool

@@ -127,12 +127,35 @@ class Pronoun(_Word):
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
     @staticmethod
-    def _create_components(key: str) -> EndingComponents:
-        output: EndingComponents = EndingComponents(
-            gender=Gender(key[1]),
-            case=Case(key[2:5]),
-            number=Number(key[5:7]),
-        )
+    def create_components(key: str) -> EndingComponents:
+        """Generate an EndingComponents object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The EndingComponents object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If the key given is not a valid key for the word.
+        """
+        try:
+            output: EndingComponents = EndingComponents(
+                gender=Gender(key[1]),
+                case=Case(key[2:5]),
+                number=Number(key[5:7]),
+            )
+        except (ValueError, IndexError) as e:
+            raise InvalidInputError(f"Key '{key}' is invalid") from e
+
         output.string = (
             f"{output.case.regular} {output.number.regular} "
             f"{output.gender.regular}"

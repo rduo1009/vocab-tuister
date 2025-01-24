@@ -1,12 +1,10 @@
 line-length = 79
 unsafe-fixes = true
 exclude = ["src/_vendor/**"]
-include = ["*.spec"]
 
 [lint]
 preview = true
 select = ["ALL"]
-exclude = ["*.spec"]
 ignore = [
     "UP009",
     "S101",
@@ -39,6 +37,7 @@ ignore = [
     "TD002",
     "TD003",
     "FIX002",
+    "TD001",
     "PLW1514",
 ]
 extend-select = ["W505"]

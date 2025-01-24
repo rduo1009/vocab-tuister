@@ -1,5 +1,7 @@
+exclude: "src/_vendor/.*"
+
 ci:
-  skip: [poetry-lock, poetry-export]
+  skip: [poetry-lock, poetry-export, golangci-lint]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
@@ -29,7 +31,7 @@ repos:
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.9.2
     hooks:
       - id: ruff
         args: [--fix]
@@ -37,18 +39,19 @@ repos:
         args: [--select, I, --fix]
       - id: ruff-format
 
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.63.4
     hooks:
-      - id: pyupgrade
+      - id: golangci-lint
+        args: [--fix]
 
+  # Format and check other files
   - repo: https://github.com/dzhu/rstfmt
     rev: v0.0.14
     hooks:
       - id: rstfmt
         args: [-w, "79"]
 
-  # Format and check other files
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: "v2.5.0"
     hooks:
@@ -70,22 +73,8 @@ repos:
       - id: check-vcs-permalinks
       - id: detect-private-key
 
-  - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.10.0
-    hooks:
-      - id: python-check-blanket-noqa
-      - id: python-check-blanket-type-ignore
-      - id: python-check-mock-methods
-      - id: python-no-eval
-      - id: python-no-log-warn
-      - id: python-use-type-annotations
-      - id: rst-backticks
-      - id: rst-directive-colons
-      - id: rst-inline-touching-normal
-      - id: text-unicode-replacement-char
-
   - repo: https://github.com/executablebooks/mdformat
-    rev: "0.7.19"
+    rev: "0.7.21"
     hooks:
       - id: mdformat
         types: [markdown]

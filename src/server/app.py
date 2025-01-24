@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import logging
 from io import StringIO
+from typing import TYPE_CHECKING, cast
 
 from flask import Flask, Response, render_template, request
 from waitress import serve
@@ -27,6 +28,9 @@ from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
 from .json_encode import QuestionClassEncoder
 
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
@@ -35,7 +39,7 @@ vocab_list: VocabList | None = None
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
-    logger.error(repr(e))
+    logger.error(e.description)
 
     return f"Bad request: {e}", 400
 
@@ -56,6 +60,7 @@ def send_vocab():
     global vocab_list  # noqa: PLW0603
 
     try:
+        logger.info("Reading vocab list.")
         vocab_list = VocabList(
             _read_vocab_file_internal(
                 StringIO(request.get_data().decode("utf-8"))
@@ -71,11 +76,49 @@ def send_vocab():
     return "Vocab list received."
 
 
+def generate_questions_sample_json(
+    vocab_list: VocabList, question_amount: int, settings: Settings
+) -> Generator[str, None, None]:
+    return (
+        json.dumps(
+            question,
+            cls=QuestionClassEncoder,
+        )
+        for question in ask_question_without_sr(
+            vocab_list, question_amount, settings
+        )
+    )
+
+
+def _generate_questions_json(
+    vocab_list: VocabList, question_amount: int, settings: Settings
+) -> str:
+    def _rearrange[T](d: dict[str, T]) -> dict[str, str | dict[str, T]]:
+        question_type = cast("str", d.pop("question_type"))
+        return {"question_type": question_type, question_type: d}
+
+    json_list = [
+        _rearrange(
+            json.loads(
+                json.dumps(
+                    question,
+                    cls=QuestionClassEncoder,
+                )
+            )
+        )
+        for question in ask_question_without_sr(
+            vocab_list, question_amount, settings
+        )
+    ]
+    return json.dumps(json_list)
+
+
 @app.route("/session", methods=["POST"])
 def create_session():
     if not vocab_list:
         raise BadRequest("Vocab list has not been provided.")
 
+    logger.info("Validating settings.")
     settings = request.get_json()
     try:
         question_amount = settings["number-of-questions"]
@@ -87,20 +130,13 @@ def create_session():
         KeyError,
     ) as e:
         raise BadRequest(
-            "The settings provided are not valid. (InvalidSettingsError)"
+            f"The settings provided are not valid: {e} (InvalidSettingsError)"
         ) from e
 
+    logger.info("Returning %d questions.", question_amount)
     return Response(
-        (
-            json.dumps(
-                question,
-                cls=QuestionClassEncoder,
-            )
-            for question in ask_question_without_sr(
-                vocab_list, question_amount, settings
-            )
-        ),
-        mimetype="text/json",
+        _generate_questions_json(vocab_list, question_amount, settings),
+        mimetype="application/json",
     )
 
 

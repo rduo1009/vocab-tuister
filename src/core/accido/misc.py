@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Final, overload
 from aenum import MultiValue
 
 if TYPE_CHECKING:
-    # HACK: To avoid mypy errors.
+    # To avoid mypy errors.
     from enum import Enum
 
     from .type_aliases import Person

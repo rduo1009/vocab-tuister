@@ -10,7 +10,7 @@ import src
 from ...utils import compact
 
 if TYPE_CHECKING:
-    from .. import accido
+    from ..accido.endings import _Word
 
 
 @dataclass
@@ -22,7 +22,7 @@ class VocabList:
 
     Attributes
     ----------
-    vocab : list[accido.endings._Word]
+    vocab : list[_Word]
         The vocabulary in the list.
     version : str
         The version of the package. Used to regenerate the endings if the
@@ -41,7 +41,7 @@ class VocabList:
     This will create a VocabList with a single Noun object in it.
     """
 
-    vocab: list[accido.endings._Word]
+    vocab: list[_Word]
 
     def __post_init__(self) -> None:
         self.vocab = compact(self.vocab)

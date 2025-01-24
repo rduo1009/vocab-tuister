@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -11,14 +10,12 @@ from ..accido.misc import ComponentsSubtype, ComponentsType, Degree
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
-    from .. import accido
-
-logger: logging.Logger = logging.getLogger(__name__)
+    from ..accido.misc import EndingComponents
 
 
 def find_adverb_inflections(
     adverb: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English adverbs using the degree.
 
@@ -26,7 +23,7 @@ def find_adverb_inflections(
     ----------
     adverb : str
         The adverb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -41,8 +38,6 @@ def find_adverb_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_adverb_inflections(%s, %s)", adverb, components)
-
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -64,7 +59,7 @@ def find_adverb_inflections(
 
 
 def find_main_adverb_inflection(
-    adverb: str, components: accido.misc.EndingComponents
+    adverb: str, components: EndingComponents
 ) -> str:
     """Find the main inflection of an English adverb.
 
@@ -72,7 +67,7 @@ def find_main_adverb_inflection(
     ----------
     adverb : str
         The adverb to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -87,8 +82,6 @@ def find_main_adverb_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_main_adverb_inflections(%s, %s)", adverb, components)
-
     if components.type is not ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
     if components.subtype != "adverb":

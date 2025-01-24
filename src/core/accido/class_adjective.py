@@ -890,16 +890,39 @@ class Adjective(_Word):
         )
 
     @staticmethod
-    def _create_components(key: str) -> EndingComponents:
+    def create_components(key: str) -> EndingComponents:
+        """Generate an EndingComponents object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The EndingComponents object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If the key given is not a valid key for the word.
+        """
         output: EndingComponents
 
         if key[0] == "A":
-            output = EndingComponents(
-                degree=Degree(key[1:4]),
-                gender=Gender(key[4]),
-                case=Case(key[5:8]),
-                number=Number(key[8:10]),
-            )
+            try:
+                output = EndingComponents(
+                    degree=Degree(key[1:4]),
+                    gender=Gender(key[4]),
+                    case=Case(key[5:8]),
+                    number=Number(key[8:10]),
+                )
+            except (ValueError, IndexError) as e:
+                raise InvalidInputError(f"Key '{key}' is invalid") from e
+
             output.string = (
                 f"{output.degree.regular} {output.case.regular} "
                 f"{output.number.regular} {output.gender.regular}"

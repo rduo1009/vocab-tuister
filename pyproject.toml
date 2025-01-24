@@ -3,53 +3,53 @@ build-backend = "poetry_dynamic_versioning.backend"
 requires = [ "poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
 
 [tool.poetry]
-name = "vocab-tuister"
-version = "0.0.0"                                                                        # placeholder
-description = "An application that tests Latin vocabulary and grammar. (TUI experiment)"
+name = "vocab-tester"
+version = "0.0.0"                                                       # placeholder
+description = "An application that tests Latin vocabulary and grammar."
 authors = [ "rduo1009 <robertduong09alt@gmail.com>" ]
 readme = "README.md"
 packages = [ { include = "src" } ]
+exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.14"
+python = ">=3.13,<3.14"
 dill = "0.3.9"
 nltk = "3.9.1"
 lemminflect = "0.2.3"
-inflect = "7.4.0"
+inflect = "7.5.0"
 aenum = "3.1.15"
-lz4 = "^4.3.3"
+lz4 = "4.3.3"
 flask = "3.1.0"
 waitress = "3.0.2"
-cyclopts = "3.1.2"
+cyclopts = "3.1.4"
 ansicolors = "1.1.8"
 dunamai = "1.23.0"
-pyinstaller = "6.11.1"
 
 [tool.poetry.group.dev.dependencies]
-icecream = "2.1.3"
-mypy = { version = "1.13.0", extras = [ "faster-cache" ] }
-ruff = "0.8.1"
+icecream = "2.1.4"
+mypy = { version = "1.14.1", extras = [ "faster-cache" ] }
+ruff = "0.9.3"
 pytest = "8.3.4"
 monkeytype = "23.3.0"
-coverage = "7.6.8"
+coverage = "7.6.10"
 pytest-cov = "6.0.0"
 pytest-sugar = "1.0.0"
 codetiming = "1.4.0"
 pytest-xdist = "3.6.1"
-pytest-testmon = "2.1.1"
+pytest-testmon = "2.1.3"
 pytest-watch = "4.2.0"
-deptry = "0.21.1"
+deptry = "0.22.0"
 cosmic-ray = "8.4.1"
 doc8 = "1.1.2"
 rstfmt = "0.0.14"
 interrogate = "1.7.0"
-pydoclint = "0.5.9"
+pydoclint = "0.6.0"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2024.11.6.20241108"
+types-regex = "2024.11.6.20241221"
 types-waitress = "3.0.1.20241117"
-optype = "0.7.3"
+optype = "0.8.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true

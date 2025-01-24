@@ -19,3 +19,4 @@ setup.py
 build/
 reports/
 __version__.txt
+src/scripts/json_output/

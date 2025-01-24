@@ -17,7 +17,7 @@ def test_reader():
     l = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
     assert l == VocabList([
         Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-        Verb("capio", "capire", "capivi", meaning="take"),
+        Verb("capio", "capere", "cepi", meaning="take"),
         Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
         Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
         Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
@@ -44,7 +44,7 @@ def test_reader_with_s():
     l = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_with_s_list.txt"))
     assert l == VocabList([
         Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-        Verb("capio", "capire", "capivi", meaning="take"),
+        Verb("capio", "capere", "cepi", meaning="take"),
         Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
         Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
         Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),

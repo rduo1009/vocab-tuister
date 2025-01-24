@@ -9,7 +9,7 @@ All of these functions have the following methods:
 
 -  ``get()`` - returns the ending of a word given the components of the ending.
 -  ``find()`` - returns the possible ending components given the ending.
--  ``_create_components()`` - return the components from the dict key
+-  ``create_components()`` - return the components from the dict key
 
 They also have the following attributes:
 
@@ -345,7 +345,7 @@ Third declension -io verbs
 
    >>> from src.core.accido.endings import Verb
    >>> from src.core.accido.misc import Mood, Number, Tense, Voice
-   >>> verb = Verb("capio", "capere", "capivi", "captus", meaning="take")
+   >>> verb = Verb("capio", "capere", "cepi", "captus", meaning="take")
    >>> verb.get(
    ...     tense=Tense.PRESENT,
    ...     voice=Voice.ACTIVE,

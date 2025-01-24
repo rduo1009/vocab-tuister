@@ -7,6 +7,7 @@ import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
 import lemminflect
+from inflect import engine
 
 from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError, InvalidWordError
@@ -15,7 +16,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from types import ModuleType
 
-    from .. import accido
+    from ..accido.misc import EndingComponents
+
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -38,8 +40,6 @@ if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
     _sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
 
 
-from inflect import engine
-
 # Distinguish from the lemminflect module
 pluralinflect = engine()  # sourcery skip: avoid-global-variables
 del engine
@@ -51,7 +51,7 @@ def _get_possessive(noun: str) -> str:
 
 def find_noun_inflections(
     noun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English nouns using the case and number.
 
@@ -63,7 +63,7 @@ def find_noun_inflections(
     ----------
     noun : str
         The noun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -78,8 +78,6 @@ def find_noun_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_noun_inflections(%s, %s)", noun, components)
-
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -99,7 +97,7 @@ def find_noun_inflections(
 
 def find_main_noun_inflection(
     noun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> str:
     """Find the main inflection of an English noun.
 
@@ -107,7 +105,7 @@ def find_main_noun_inflection(
     ----------
     noun : str
         The noun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -122,8 +120,6 @@ def find_main_noun_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_main_noun_inflections(%s, %s)", noun, components)
-
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 

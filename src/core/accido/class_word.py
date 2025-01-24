@@ -64,7 +64,7 @@ class _Word(ABC):  # noqa: PLW1641
             components that match the given form.
         """
         return [
-            self._create_components(key)
+            self.create_components(key)
             for key, value in self.endings.items()
             if (isinstance(value, MultipleEndings) and form in value.get_all())
             or (not isinstance(value, MultipleEndings) and value == form)
@@ -81,4 +81,4 @@ class _Word(ABC):  # noqa: PLW1641
 
     @staticmethod
     @abstractmethod
-    def _create_components(key: str) -> EndingComponents: ...
+    def create_components(key: str) -> EndingComponents: ...

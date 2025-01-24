@@ -2,21 +2,18 @@
 
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING, Final
 
 from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError
 
 if TYPE_CHECKING:
-    from .. import accido
-
-logger: logging.Logger = logging.getLogger(__name__)
+    from ..accido.misc import EndingComponents
 
 
 def find_pronoun_inflections(
     pronoun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> set[str]:
     """Inflect English pronouns using the case and number.
 
@@ -26,7 +23,7 @@ def find_pronoun_inflections(
     ----------
     pronoun : str
         The pronoun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -42,8 +39,6 @@ def find_pronoun_inflections(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_pronoun_inflections(%s, %s)", pronoun, components)
-
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
@@ -52,7 +47,7 @@ def find_pronoun_inflections(
 
 def find_main_pronoun_inflection(
     pronoun: str,
-    components: accido.misc.EndingComponents,
+    components: EndingComponents,
 ) -> str:
     """Find the main inflection of an English pronoun.
 
@@ -62,7 +57,7 @@ def find_main_pronoun_inflection(
     ----------
     pronoun : str
         The pronoun to inflect.
-    components : accido.misc.EndingComponents
+    components : EndingComponents
         The components of the ending.
 
     Returns
@@ -78,8 +73,6 @@ def find_main_pronoun_inflection(
     InvalidComponentsError
         If the ending components are invalid.
     """
-    logger.debug("find_main_pronoun_inflections(%s, %s)", pronoun, components)
-
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 

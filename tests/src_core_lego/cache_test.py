@@ -10,7 +10,7 @@ from src.core.lego.reader import read_vocab_dump
 
 
 def test_cache():
-    hash_string = "66c21bdeb3dcfc4673e51ad4a2513e75ed1cea2e18047847e0f1a1f6f71070d7"
+    hash_string = "a58242a6a237cc769ee385de7d89e921f8ca6a8fb51e0c3dc67392731086ab3f"
     x, _ = cache_vocab_file(Path("tests/src_core_lego/test_vocab_files/testdump/cache"), Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
     y = read_vocab_dump(Path(f"tests/src_core_lego/test_vocab_files/testdump/cache/{hash_string}"))
     assert x == y

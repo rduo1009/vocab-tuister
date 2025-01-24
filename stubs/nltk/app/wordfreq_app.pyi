@@ -1,3 +1,0 @@
-__all__ = ["app"]
-
-def app() -> None: ...

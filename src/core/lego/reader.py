@@ -14,8 +14,8 @@ import lz4.frame  # type: ignore[import-untyped]
 
 import src
 
-from .. import accido
-from ..accido.misc import Gender
+from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from ..accido.misc import Gender, MultipleMeanings
 from ..accido.type_aliases import is_termination
 from .exceptions import (
     InvalidVocabDumpError,
@@ -24,30 +24,31 @@ from .exceptions import (
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
-    from io import TextIOWrapper
     from pathlib import Path
+    from typing import TextIO
 
+    from ..accido.endings import _Word
     from ..accido.type_aliases import Meaning
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
-    word: accido.endings._Word
-    new_vocab: list[accido.endings._Word] = []
+    word: _Word
+    new_vocab: list[_Word] = []
 
     for word in vocab_list.vocab:
-        if isinstance(word, accido.endings.RegularWord):
+        if isinstance(word, RegularWord):
             new_vocab.append(
-                accido.endings.RegularWord(
+                RegularWord(
                     word.word,
                     meaning=word.meaning,
                 ),
             )
 
-        elif isinstance(word, accido.endings.Verb):
+        elif isinstance(word, Verb):
             new_vocab.append(
-                accido.endings.Verb(
+                Verb(
                     word.present,
                     word.infinitive,
                     word.perfect,
@@ -56,9 +57,9 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                 ),
             )
 
-        elif isinstance(word, accido.endings.Noun):
+        elif isinstance(word, Noun):
             new_vocab.append(
-                accido.endings.Noun(
+                Noun(
                     word.nominative,
                     word.genitive,
                     meaning=word.meaning,
@@ -66,10 +67,10 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                 ),
             )
 
-        elif isinstance(word, accido.endings.Adjective):
+        elif isinstance(word, Adjective):
             if word.declension == "212":
                 new_vocab.append(
-                    accido.endings.Adjective(
+                    Adjective(
                         *word._principal_parts,  # noqa: SLF001
                         declension="212",
                         meaning=word.meaning,
@@ -79,7 +80,7 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                 assert word.termination is not None
 
                 new_vocab.append(
-                    accido.endings.Adjective(
+                    Adjective(
                         *word._principal_parts,  # noqa: SLF001
                         termination=word.termination,
                         declension="3",
@@ -87,9 +88,9 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                     ),
                 )
 
-        elif isinstance(word, accido.endings.Pronoun):
+        elif isinstance(word, Pronoun):
             new_vocab.append(
-                accido.endings.Pronoun(
+                Pronoun(
                     word.pronoun,
                     meaning=word.meaning,
                 ),
@@ -164,9 +165,7 @@ def read_vocab_dump(filename: Path) -> VocabList:
 
 def _generate_meaning(meaning: str) -> Meaning:
     if "/" in meaning:
-        return accido.misc.MultipleMeanings(
-            tuple(x.strip() for x in meaning.split("/"))
-        )
+        return MultipleMeanings(tuple(x.strip() for x in meaning.split("/")))
     return meaning
 
 
@@ -217,9 +216,9 @@ def read_vocab_file(file_path: Path) -> VocabList:
 
 
 def _read_vocab_file_internal(
-    file: TextIOWrapper,
-) -> list[accido.endings._Word]:
-    vocab: list[accido.endings._Word] = []
+    file: TextIO,
+) -> list[_Word]:
+    vocab: list[_Word] = []
     line: str
     current: _PartOfSpeech | Literal[""] = ""
 
@@ -286,7 +285,7 @@ def _parse_line(
     latin_parts: list[str],
     meaning: Meaning,
     line: str,
-) -> accido.endings._Word:
+) -> _Word:
     match current:
         case "Verb":
             if len(latin_parts) not in {3, 4}:
@@ -296,7 +295,7 @@ def _parse_line(
 
             # Verb with ppp
             if len(latin_parts) > 3:
-                return accido.endings.Verb(
+                return Verb(
                     latin_parts[0],
                     latin_parts[1],
                     latin_parts[2],
@@ -305,7 +304,7 @@ def _parse_line(
                 )
 
             # Verb without ppp
-            return accido.endings.Verb(
+            return Verb(
                 latin_parts[0],
                 latin_parts[1],
                 latin_parts[2],
@@ -319,7 +318,7 @@ def _parse_line(
                 )
 
             try:
-                return accido.endings.Noun(
+                return Noun(
                     latin_parts[0],
                     latin_parts[1].split()[0],
                     gender=Gender(latin_parts[2].split()[-1].strip("()")),
@@ -352,7 +351,7 @@ def _parse_line(
                 termination = int(declension[2])
                 assert is_termination(termination)
 
-                return accido.endings.Adjective(
+                return Adjective(
                     *latin_parts[:-1],
                     termination=termination,
                     declension="3",
@@ -360,19 +359,19 @@ def _parse_line(
                 )
 
             # Second declension adjective
-            return accido.endings.Adjective(
+            return Adjective(
                 *latin_parts[:-1],
                 meaning=meaning,
                 declension="212",
             )
 
         case "Regular":
-            return accido.endings.RegularWord(
+            return RegularWord(
                 latin_parts[0],
                 meaning=meaning,
             )
 
-    return accido.endings.Pronoun(
+    return Pronoun(
         latin_parts[0],
         meaning=meaning,
     )

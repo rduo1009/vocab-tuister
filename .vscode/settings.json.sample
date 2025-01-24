@@ -27,6 +27,7 @@
         "**/.mypy_cache": true,
         "**/.pytest_cache": true,
         "**/.python-version": true,
+        "**/.go-version": true,
         "**/.ruff_cache": true,
         "**/.tox": true,
         "**/.venv": true,
@@ -35,7 +36,11 @@
         "**/poetry.lock": true,
         ".dmypy.json": true,
         ".testmondata": true,
-        "cosmic-ray.sqlite": true
+        "go.sum": true,
+        "go.work.sum": true,
+        ".git_archival.json": true,
+        "build": true,
+        "dist": true
     },
     "autoDocstring.docstringFormat": "numpy",
     "ruff.nativeServer": true,
@@ -57,7 +62,9 @@
         "*.spec": "python"
     },
     "catppuccin-icons.associations.folders": { // or whatever icon extension you use
-        "stubs": "folder_types"
+        "stubs": "folder_types",
+        "internal": "folder_core",
+        "static": "folder_styles"
     },
     "catppuccin-icons.associations.files": { // or whatever icon extension you use
         "requirements-dev.txt": "python-config",

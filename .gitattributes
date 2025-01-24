@@ -1,1 +1,3 @@
 .git_archival.json  export-subst
+
+src/_vendor/** linguist-vendored
