@@ -22,7 +22,7 @@ aenum = "3.1.15"
 lz4 = "4.3.3"
 flask = "3.1.0"
 waitress = "3.0.2"
-cyclopts = "3.1.4"
+cyclopts = "3.4.0"
 ansicolors = "1.1.8"
 dunamai = "1.23.0"
 
