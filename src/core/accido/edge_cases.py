@@ -542,18 +542,14 @@ def find_irregular_endings(present: str) -> Endings | None:
     """
 
     def _prefix(
-        pre: str,
-        endings: Endings,
+        pre: str, endings: Endings
     ) -> dict[str, str | MultipleEndings]:
         return {key: pre + value for key, value in endings.items()}
 
     if present in IRREGULAR_VERBS:
         return IRREGULAR_VERBS[present]
 
-    for (
-        irregular_suffix,
-        suffix_list,
-    ) in DERIVED_IRREGULAR_VERBS.items():
+    for irregular_suffix, suffix_list in DERIVED_IRREGULAR_VERBS.items():
         if present in suffix_list:
             return _prefix(
                 present.rstrip(irregular_suffix),
@@ -639,9 +635,7 @@ IRREGULAR_ADJECTIVES: Final[
 }
 
 # TODO: Add to this
-NO_ADVERB_ADJECTIVES = {
-    "ingens",
-}
+NO_ADVERB_ADJECTIVES = {"ingens"}
 
 PRONOUNS: Final[dict[str, Endings]] = {
     "hic": {

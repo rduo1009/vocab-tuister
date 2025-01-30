@@ -31,12 +31,7 @@ class VocabList:
     Examples
     --------
     >>> foo = VocabList([
-    ...     Noun(
-    ...         "ancilla",
-    ...         "ancillae",
-    ...         gender="feminine",
-    ...         meaning="slavegirl",
-    ...     )
+    ...     Noun("ancilla", "ancillae", gender="feminine", meaning="slavegirl")
     ... ])  # doctest: +SKIP
     This will create a ``VocabList`` with a single ``Noun`` object in it.
     """

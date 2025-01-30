@@ -22,10 +22,7 @@ def _get_possessive(noun: str) -> str:
     return f"{noun}'" if noun.endswith("s") else f"{noun}'s"
 
 
-def find_noun_inflections(
-    noun: str,
-    components: EndingComponents,
-) -> set[str]:
+def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
     """Inflect English nouns using the case and number.
 
     This function can also be used to inflect pronouns that are treated
@@ -68,10 +65,7 @@ def find_noun_inflections(
     return inflections
 
 
-def find_main_noun_inflection(
-    noun: str,
-    components: EndingComponents,
-) -> str:
+def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
     """Find the main inflection of an English noun.
 
     Parameters

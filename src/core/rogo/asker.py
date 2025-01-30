@@ -35,9 +35,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from ..accido.endings import _Word
-    from ..accido.misc import (
-        EndingComponents,
-    )
+    from ..accido.misc import EndingComponents
     from ..accido.type_aliases import Ending, Endings, Meaning
     from ..lego.misc import VocabList
     from .question_classes import Question
@@ -46,9 +44,7 @@ if TYPE_CHECKING:
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def _pick_ending(
-    endings: Endings,
-) -> tuple[str, Ending]:
+def _pick_ending(endings: Endings) -> tuple[str, Ending]:
     return random.choice(list(endings.items()))
 
 
@@ -398,9 +394,7 @@ def _generate_typein_lattoeng(
     # then use it here
     possible_main_answers: set[str] = set()
 
-    def _generate_inflections(
-        ending_components: EndingComponents,
-    ) -> None:
+    def _generate_inflections(ending_components: EndingComponents) -> None:
         verb_subjunctive: bool = (  # not supported with this question
             type(chosen_word) is Verb
             and ending_components.mood == Mood.SUBJUNCTIVE
@@ -579,9 +573,7 @@ def _generate_principal_parts_question(
 
 
 def _generate_multiplechoice_engtolat(
-    vocab_list: Vocab,
-    chosen_word: _Word,
-    number_multiplechoice_options: int,
+    vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
     vocab_list = deepcopy(vocab_list)  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
@@ -611,9 +603,7 @@ def _generate_multiplechoice_engtolat(
 
 
 def _generate_multiplechoice_lattoeng(
-    vocab_list: Vocab,
-    chosen_word: _Word,
-    number_multiplechoice_options: int,
+    vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceLatToEngQuestion:
     prompt: str = chosen_word._first  # noqa: SLF001
 
@@ -648,7 +638,5 @@ def _generate_multiplechoice_lattoeng(
     random.shuffle(choices)
 
     return MultipleChoiceLatToEngQuestion(
-        prompt=prompt,
-        answer=answer,
-        choices=tuple(choices),
+        prompt=prompt, answer=answer, choices=tuple(choices)
     )

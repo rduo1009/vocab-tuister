@@ -6,15 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 import json
 
 from src.core.accido.misc import Case, EndingComponents, Mood, Number, Tense, Voice
-from src.core.rogo.question_classes import (
-    MultipleChoiceEngToLatQuestion,
-    MultipleChoiceLatToEngQuestion,
-    ParseWordCompToLatQuestion,
-    ParseWordLatToCompQuestion,
-    PrincipalPartsQuestion,
-    TypeInEngToLatQuestion,
-    TypeInLatToEngQuestion,
-)
+from src.core.rogo.question_classes import MultipleChoiceEngToLatQuestion, MultipleChoiceLatToEngQuestion, ParseWordCompToLatQuestion, ParseWordLatToCompQuestion, PrincipalPartsQuestion, TypeInEngToLatQuestion, TypeInLatToEngQuestion
 from src.server.json_encode import QuestionClassEncoder
 
 
@@ -36,11 +28,7 @@ def test_encode_parseword_compttolat():
 def test_encode_parseword_lattocomp():
     components = EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3, string="perfect active indicative singular 3rd person")
     assert (
-        json.dumps(
-            ParseWordLatToCompQuestion(prompt="cepit", dictionary_entry="take: capio, capere, cepi", main_answer=components, answers={components}),
-            cls=QuestionClassEncoder,
-            sort_keys=True,
-        )
+        json.dumps(ParseWordLatToCompQuestion(prompt="cepit", dictionary_entry="take: capio, capere, cepi", main_answer=components, answers={components}), cls=QuestionClassEncoder, sort_keys=True)
         == '{"answers": ["perfect active indicative singular 3rd person"], "dictionary_entry": "take: capio, capere, cepi", "main_answer": "perfect active indicative singular 3rd person", "prompt": "cepit", "question_type": "ParseWordLatToCompQuestion"}'
     )
 

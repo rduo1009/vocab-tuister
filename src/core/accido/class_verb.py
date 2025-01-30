@@ -131,17 +131,17 @@ class Verb(_Word):
             self.conjugation = 2 if self.present.endswith("eo") else 3
         else:
             raise InvalidInputError(
-                f"Invalid infinitive form: '{self.infinitive}'",
+                f"Invalid infinitive form: '{self.infinitive}'"
             )
 
         if not self.present.endswith("o"):
             raise InvalidInputError(
-                f"Invalid present form: '{self.present}' (must end in '-o')",
+                f"Invalid present form: '{self.present}' (must end in '-o')"
             )
 
         if not self.perfect.endswith("i"):
             raise InvalidInputError(
-                f"Invalid perfect form: '{self.perfect}' (must end in '-i')",
+                f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
         self._pre_stem: str = self.present[:-1]
@@ -571,7 +571,7 @@ class Verb(_Word):
 
         short_mood: str = mood.shorthand
         return self.endings.get(
-            f"V{short_tense}{short_voice}{short_mood}{short_number}{person}",
+            f"V{short_tense}{short_voice}{short_mood}{short_number}{person}"
         )
 
     def _get_participle(
@@ -590,7 +590,7 @@ class Verb(_Word):
         short_case: str = participle_case.shorthand
 
         return self.endings.get(
-            f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}",
+            f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
         )
 
     @staticmethod

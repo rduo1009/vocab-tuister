@@ -64,7 +64,7 @@ def save_vocab_dump(
     """
     if not file_path.parent.exists():
         raise FileNotFoundError(
-            f"The directory '{file_path.parent}' does not exist",
+            f"The directory '{file_path.parent}' does not exist"
         )
 
     if file_path.exists():

@@ -46,10 +46,7 @@ class Noun(_Word):
     Examples
     --------
     >>> foo = Noun(
-    ...     "ancilla",
-    ...     "ancillae",
-    ...     gender=Gender.FEMININE,
-    ...     meaning="slavegirl",
+    ...     "ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl"
     ... )
     >>> foo["Nnomsg"]
     'ancilla'
@@ -107,11 +104,7 @@ class Noun(_Word):
             If the input is not valid (invalid value for `gender` or `genitive`).
         """
         logger.debug(
-            "Noun(%s, %s, %s, %s)",
-            nominative,
-            genitive,
-            gender,
-            meaning,
+            "Noun(%s, %s, %s, %s)", nominative, genitive, gender, meaning
         )
 
         super().__init__()
@@ -185,7 +178,7 @@ class Noun(_Word):
 
         else:
             raise InvalidInputError(
-                f"Invalid genitive form: '{self.genitive}'",
+                f"Invalid genitive form: '{self.genitive}'"
             )
 
     def _determine_endings(self) -> Endings:
@@ -280,7 +273,7 @@ class Noun(_Word):
         if self.declension == 5:
             raise InvalidInputError(
                 "Fifth declension nouns cannot be neuter "
-                f"(noun '{self.nominative}' given)",
+                f"(noun '{self.nominative}' given)"
             )
 
         if self.declension == 4:
@@ -315,22 +308,14 @@ class Noun(_Word):
         Examples
         --------
         >>> foo = Noun(
-        ...     "ancilla",
-        ...     "ancillae",
-        ...     gender=Gender.FEMININE,
-        ...     meaning="slavegirl",
+        ...     "ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl"
         ... )
         >>> foo.get(case=Case.NOMINATIVE, number=Number.SINGULAR)
         'ancilla'
 
         Note that all arguments of ``get()`` are keyword-only.
         """
-        logger.debug(
-            "%s.get(%s, %s)",
-            self._first,
-            case,
-            number,
-        )
+        logger.debug("%s.get(%s, %s)", self._first, case, number)
 
         short_case: str = case.shorthand
         short_number: str = number.shorthand
@@ -359,8 +344,7 @@ class Noun(_Word):
         """
         try:
             output: EndingComponents = EndingComponents(
-                case=Case(key[1:4]),
-                number=Number(key[4:6]),
+                case=Case(key[1:4]), number=Number(key[4:6])
             )
         except (ValueError, IndexError) as e:
             raise InvalidInputError(f"Key '{key}' is invalid") from e

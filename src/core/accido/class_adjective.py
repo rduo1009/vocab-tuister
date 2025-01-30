@@ -183,7 +183,7 @@ class Adjective(_Word):
         if len(self._principal_parts) != 3:
             raise InvalidInputError(
                 "2-1-2 adjectives must have 3 principal parts "
-                f"(adjective '{self._first}' given)",
+                f"(adjective '{self._first}' given)"
             )
 
         self.femnom = self._principal_parts[1]
@@ -193,9 +193,7 @@ class Adjective(_Word):
 
         if self.mascnom not in IRREGULAR_ADJECTIVES:
             self._cmp_stem = f"{self._pos_stem}ior"  # car- -> carior-
-            if self.mascnom.endswith(
-                "er",
-            ):
+            if self.mascnom.endswith("er"):
                 self._spr_stem = f"{self.mascnom}rim"  # miser- -> miserrim-
             elif self.mascnom in LIS_ADJECTIVES:
                 self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
@@ -205,9 +203,7 @@ class Adjective(_Word):
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # carus
             "Aposmvocsg": self.mascnom
-            if self.mascnom.endswith(
-                "er",
-            )
+            if self.mascnom.endswith("er")
             else f"{self._pos_stem}e",  # miser
             "Aposmaccsg": f"{self._pos_stem}um",  # carum
             "Aposmgensg": f"{self._pos_stem}i",  # cari
@@ -342,14 +338,14 @@ class Adjective(_Word):
         if len(self._principal_parts) != 2:
             raise InvalidInputError(
                 "First-termination adjectives must have 2 principal parts "
-                f"(adjective '{self._first}' given)",
+                f"(adjective '{self._first}' given)"
             )
 
         self.mascgen = self._principal_parts[1]
 
         if not self.mascgen.endswith("is"):
             raise InvalidInputError(
-                f"Invalid genitive form: '{self.mascgen}' (must end in '-is')",
+                f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
             )
 
         self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
@@ -501,7 +497,7 @@ class Adjective(_Word):
         if len(self._principal_parts) != 2:
             raise InvalidInputError(
                 "Second-termination adjectives must have 2 principal parts "
-                f"(adjective '{self._first}' given)",
+                f"(adjective '{self._first}' given)"
             )
 
         self.neutnom = self._principal_parts[1]
@@ -654,7 +650,7 @@ class Adjective(_Word):
         if len(self._principal_parts) != 3:
             raise InvalidInputError(
                 "Third-termination adjectives must have 3 principal parts "
-                f"(adjective '{self._first}' given)",
+                f"(adjective '{self._first}' given)"
             )
 
         self.mascnom = self._principal_parts[0]
@@ -886,7 +882,7 @@ class Adjective(_Word):
         short_number: str = number.shorthand
 
         return self.endings.get(
-            f"A{short_degree}{short_gender}{short_case}{short_number}",
+            f"A{short_degree}{short_gender}{short_case}{short_number}"
         )
 
     @staticmethod
@@ -929,9 +925,7 @@ class Adjective(_Word):
             )
 
         else:
-            output = EndingComponents(
-                degree=Degree(key[1:4]),
-            )
+            output = EndingComponents(degree=Degree(key[1:4]))
             output.string = output.degree.regular
 
         return output
@@ -960,9 +954,7 @@ class Adjective(_Word):
         ) -> Adjective:
             if declension == "212":
                 return Adjective(
-                    *principal_parts,
-                    declension="212",
-                    meaning=meaning,
+                    *principal_parts, declension="212", meaning=meaning
                 )
 
             assert termination is not None

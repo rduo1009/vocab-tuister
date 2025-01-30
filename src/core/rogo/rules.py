@@ -151,10 +151,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
         The filtered vocabulary list.
     """
 
-    def _filter_classes(
-        vocab_list: Vocab,
-        classes: tuple[type, ...],
-    ) -> Vocab:
+    def _filter_classes(vocab_list: Vocab, classes: tuple[type, ...]) -> Vocab:
         return [item for item in vocab_list if not isinstance(item, classes)]
 
     vocab: Vocab = vocab_list.vocab.copy()

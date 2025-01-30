@@ -15,8 +15,7 @@ if TYPE_CHECKING:
 
 
 def find_adjective_inflections(
-    adjective: str,
-    components: EndingComponents,
+    adjective: str, components: EndingComponents
 ) -> set[str]:
     """Inflect English adjectives using the degree.
 

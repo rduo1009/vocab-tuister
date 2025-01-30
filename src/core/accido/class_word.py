@@ -73,9 +73,7 @@ class _Word(ABC):  # noqa: PLW1641
     # Force implementation of these methods
     @abstractmethod
     def get(
-        self,
-        *args: Any,
-        **kwargs: Any,
+        self, *args: Any, **kwargs: Any
     ) -> Ending | None:  # sourcery skip: docstrings-for-functions
         ...
 

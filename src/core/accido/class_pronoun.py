@@ -36,12 +36,7 @@ class Pronoun(_Word):
     Note that the arguments of ``Pronoun`` are keyword-only.
     """
 
-    __slots__ = (
-        "femnom",
-        "mascnom",
-        "neutnom",
-        "pronoun",
-    )
+    __slots__ = ("femnom", "mascnom", "neutnom", "pronoun")
 
     def __init__(self, pronoun: str, *, meaning: Meaning) -> None:
         """Initialise ``Pronoun`` and determine the endings.
@@ -70,7 +65,7 @@ class Pronoun(_Word):
             self.endings = PRONOUNS[pronoun]
         except KeyError as e:
             raise InvalidInputError(
-                f"Pronoun '{pronoun}' not recognised",
+                f"Pronoun '{pronoun}' not recognised"
             ) from e
 
         self.pronoun: str = pronoun

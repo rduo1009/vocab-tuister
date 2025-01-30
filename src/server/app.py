@@ -80,10 +80,7 @@ def generate_questions_sample_json(
     vocab_list: VocabList, question_amount: int, settings: Settings
 ) -> Generator[str, None, None]:
     return (
-        json.dumps(
-            question,
-            cls=QuestionClassEncoder,
-        )
+        json.dumps(question, cls=QuestionClassEncoder)
         for question in ask_question_without_sr(
             vocab_list, question_amount, settings
         )
@@ -98,14 +95,7 @@ def _generate_questions_json(
         return {"question_type": question_type, question_type: d}
 
     json_list = [
-        _rearrange(
-            json.loads(
-                json.dumps(
-                    question,
-                    cls=QuestionClassEncoder,
-                )
-            )
-        )
+        _rearrange(json.loads(json.dumps(question, cls=QuestionClassEncoder)))
         for question in ask_question_without_sr(
             vocab_list, question_amount, settings
         )

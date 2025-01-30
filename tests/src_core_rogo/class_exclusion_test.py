@@ -105,13 +105,7 @@ default_settings: Settings = {
     "number-multiplechoice-options": 3,
 }
 
-exclude_classes = {
-    "exclude-adjectives": Adjective,
-    "exclude-nouns": Noun,
-    "exclude-pronouns": Pronoun,
-    "exclude-verbs": Verb,
-    "exclude-regulars": RegularWord,
-}
+exclude_classes = {"exclude-adjectives": Adjective, "exclude-nouns": Noun, "exclude-pronouns": Pronoun, "exclude-verbs": Verb, "exclude-regulars": RegularWord}
 
 
 def test_class_exclusion():

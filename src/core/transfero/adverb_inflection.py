@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 
 
 def find_adverb_inflections(
-    adverb: str,
-    components: EndingComponents,
+    adverb: str, components: EndingComponents
 ) -> set[str]:
     """Inflect English adverbs using the degree.
 

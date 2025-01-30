@@ -12,8 +12,7 @@ if TYPE_CHECKING:
 
 
 def find_pronoun_inflections(
-    pronoun: str,
-    components: EndingComponents,
+    pronoun: str, components: EndingComponents
 ) -> set[str]:
     """Inflect English pronouns using the case and number.
 
@@ -46,8 +45,7 @@ def find_pronoun_inflections(
 
 
 def find_main_pronoun_inflection(
-    pronoun: str,
-    components: EndingComponents,
+    pronoun: str, components: EndingComponents
 ) -> str:
     """Find the main inflection of an English pronoun.
 
@@ -101,14 +99,8 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ACCUSATIVE, Number.PLURAL): ("these",),
         (Case.GENITIVE, Number.SINGULAR): ("of this",),
         (Case.GENITIVE, Number.PLURAL): ("of these",),
-        (Case.DATIVE, Number.SINGULAR): (
-            "for this",
-            "to this",
-        ),
-        (Case.DATIVE, Number.PLURAL): (
-            "for these",
-            "to these",
-        ),
+        (Case.DATIVE, Number.SINGULAR): ("for this", "to this"),
+        (Case.DATIVE, Number.PLURAL): ("for these", "to these"),
         (Case.ABLATIVE, Number.SINGULAR): (
             "by this",
             "by means of this",
@@ -131,14 +123,8 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ACCUSATIVE, Number.PLURAL): ("those",),
         (Case.GENITIVE, Number.SINGULAR): ("of that",),
         (Case.GENITIVE, Number.PLURAL): ("of those",),
-        (Case.DATIVE, Number.SINGULAR): (
-            "for that",
-            "to that",
-        ),
-        (Case.DATIVE, Number.PLURAL): (
-            "for those",
-            "to those",
-        ),
+        (Case.DATIVE, Number.SINGULAR): ("for that", "to that"),
+        (Case.DATIVE, Number.PLURAL): ("for those", "to those"),
         (Case.ABLATIVE, Number.SINGULAR): (
             "by that",
             "by means of that",
@@ -161,14 +147,8 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ACCUSATIVE, Number.PLURAL): ("us",),
         (Case.GENITIVE, Number.SINGULAR): ("of me", "my"),
         (Case.GENITIVE, Number.PLURAL): ("of us", "our"),
-        (Case.DATIVE, Number.SINGULAR): (
-            "for me",
-            "to me",
-        ),
-        (Case.DATIVE, Number.PLURAL): (
-            "for us",
-            "to us",
-        ),
+        (Case.DATIVE, Number.SINGULAR): ("for me", "to me"),
+        (Case.DATIVE, Number.PLURAL): ("for us", "to us"),
         (Case.ABLATIVE, Number.SINGULAR): (
             "by me",
             "by means of me",
@@ -191,14 +171,8 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ACCUSATIVE, Number.PLURAL): ("you",),
         (Case.GENITIVE, Number.SINGULAR): ("of you", "your"),
         (Case.GENITIVE, Number.PLURAL): ("of you", "your"),
-        (Case.DATIVE, Number.SINGULAR): (
-            "for you",
-            "to you",
-        ),
-        (Case.DATIVE, Number.PLURAL): (
-            "for you",
-            "to you",
-        ),
+        (Case.DATIVE, Number.SINGULAR): ("for you", "to you"),
+        (Case.DATIVE, Number.PLURAL): ("for you", "to you"),
         (Case.ABLATIVE, Number.SINGULAR): (
             "by you",
             "by means of you",
@@ -246,10 +220,7 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
             "to itself",
             "to themself",
         ),
-        (Case.DATIVE, Number.PLURAL): (
-            "for themselves",
-            "to themselves",
-        ),
+        (Case.DATIVE, Number.PLURAL): ("for themselves", "to themselves"),
         (Case.ABLATIVE, Number.SINGULAR): (
             "by oneself",
             "by himself",
