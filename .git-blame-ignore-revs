@@ -1,0 +1,4 @@
+# git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# ruff format
+861d9271ccd4284e17d6d3e70caa0eacf2c3276a
