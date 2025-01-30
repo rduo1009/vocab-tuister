@@ -14,11 +14,11 @@ import (
 func questionStringRegular(q questions.Question) string {
 	switch q := q.(type) {
 	case *questions.TypeInEngtoLatQuestion:
-		return fmt.Sprintf("Translate to Latin: %s", internal.ItalicStyle.Render(q.Prompt))
+		return fmt.Sprintf("%s to Latin: %s", internal.BoldStyle.Render("Translate"), internal.ItalicStyle.Render(q.Prompt))
 	case *questions.TypeInLattoEngQuestion:
-		return fmt.Sprintf("Translate to English: %s", internal.ItalicStyle.Render(q.Prompt))
+		return fmt.Sprintf("%s to English: %s", internal.BoldStyle.Render("Translate"), internal.ItalicStyle.Render(q.Prompt))
 	case *questions.ParseWordLattoCompQuestion:
-		return fmt.Sprintf("Parse this Latin word: %s", internal.ItalicStyle.Render(q.Prompt))
+		return fmt.Sprintf("%s this Latin word: %s", internal.BoldStyle.Render("Parse"), internal.ItalicStyle.Render(q.Prompt))
 	case *questions.ParseWordComptoLatQuestion:
 		return fmt.Sprintf("What is %s in the %s?", internal.ItalicStyle.Render(q.Prompt), q.Components)
 	}
@@ -32,9 +32,9 @@ func questionStringPrincipalParts(q questions.Question) string {
 func questionStringMultipleChoice(q questions.Question) string {
 	switch q := q.(type) {
 	case *questions.MultipleChoiceEngtoLatQuestion:
-		return fmt.Sprintf("Translate to Latin: %s", internal.ItalicStyle.Render(q.Prompt))
+		return fmt.Sprintf("%s to Latin: %s", internal.BoldStyle.Render("Translate"), internal.ItalicStyle.Render(q.Prompt))
 	case *questions.MultipleChoiceLatToEngQuestion:
-		return fmt.Sprintf("Translate to English: %s", internal.ItalicStyle.Render(q.Prompt))
+		return fmt.Sprintf("%s to English: %s", internal.BoldStyle.Render("Translate"), internal.ItalicStyle.Render(q.Prompt))
 	}
 	panic(fmt.Sprintf("Question type could not be recognised. (got %T)", q))
 }
