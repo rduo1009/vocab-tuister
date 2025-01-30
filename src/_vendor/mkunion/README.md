@@ -5,7 +5,7 @@
 
 > [!NOTE]
 > This is a vendored copy of mkunion from https://github.com/widmogrod/mkunion.
-> Dev files, documentation and testing files have been removed.
+> Dev files, documentation, testing files and unused code have been removed.
 > Some changes have been made to fit its usage in vocab-tuister.
 
 ## About
