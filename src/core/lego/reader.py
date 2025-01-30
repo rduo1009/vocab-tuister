@@ -286,90 +286,88 @@ def _parse_line(
     meaning: Meaning,
     line: str,
 ) -> _Word:
-    match current:
-        case "Verb":
-            if len(latin_parts) not in {3, 4}:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid verb format: '{line}'",
-                )
+    if current == "Verb":
+        if len(latin_parts) not in {3, 4}:
+            raise InvalidVocabFileFormatError(
+                f"Invalid verb format: '{line}'",
+            )
 
-            # Verb with ppp
-            if len(latin_parts) > 3:
-                return Verb(
-                    latin_parts[0],
-                    latin_parts[1],
-                    latin_parts[2],
-                    latin_parts[3],
-                    meaning=meaning,
-                )
-
-            # Verb without ppp
+        # Verb with ppp
+        if len(latin_parts) > 3:
             return Verb(
                 latin_parts[0],
                 latin_parts[1],
                 latin_parts[2],
+                latin_parts[3],
                 meaning=meaning,
             )
 
-        case "Noun":
-            if len(latin_parts) != 3:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid noun format: '{line}'",
-                )
+        # Verb without ppp
+        return Verb(
+            latin_parts[0],
+            latin_parts[1],
+            latin_parts[2],
+            meaning=meaning,
+        )
 
-            try:
-                return Noun(
-                    latin_parts[0],
-                    latin_parts[1].split()[0],
-                    gender=Gender(latin_parts[2].split()[-1].strip("()")),
-                    meaning=meaning,
-                )
-            except ValueError as e:
-                raise InvalidVocabFileFormatError(
-                    "Invalid gender: "
-                    f"'{latin_parts[2].split()[-1].strip('()')}'",
-                ) from e
+    if current == "Noun":
+        if len(latin_parts) != 3:
+            raise InvalidVocabFileFormatError(
+                f"Invalid noun format: '{line}'",
+            )
 
-        case "Adjective":
-            if len(latin_parts) not in {3, 4}:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid adjective format: '{line}'",
-                )
+        try:
+            return Noun(
+                latin_parts[0],
+                latin_parts[1].split()[0],
+                gender=Gender(latin_parts[2].split()[-1].strip("()")),
+                meaning=meaning,
+            )
+        except ValueError as e:
+            raise InvalidVocabFileFormatError(
+                f"Invalid gender: '{latin_parts[2].split()[-1].strip('()')}'",
+            ) from e
 
-            declension: str = latin_parts[-1].strip("()")
+    if current == "Adjective":
+        if len(latin_parts) not in {3, 4}:
+            raise InvalidVocabFileFormatError(
+                f"Invalid adjective format: '{line}'",
+            )
 
-            if declension not in {"212", "2-1-2"} and not match(
-                r"^3-.$",
-                declension,
-            ):
-                raise InvalidVocabFileFormatError(
-                    f"Invalid adjective declension: '{declension}'",
-                )
+        declension: str = latin_parts[-1].strip("()")
 
-            # Third declension adjective
-            if declension.startswith("3"):
-                termination = int(declension[2])
-                assert is_termination(termination)
+        if declension not in {"212", "2-1-2"} and not match(
+            r"^3-.$",
+            declension,
+        ):
+            raise InvalidVocabFileFormatError(
+                f"Invalid adjective declension: '{declension}'",
+            )
 
-                return Adjective(
-                    *latin_parts[:-1],
-                    termination=termination,
-                    declension="3",
-                    meaning=meaning,
-                )
+        # Third declension adjective
+        if declension.startswith("3"):
+            termination = int(declension[2])
+            assert is_termination(termination)
 
-            # Second declension adjective
             return Adjective(
                 *latin_parts[:-1],
+                termination=termination,
+                declension="3",
                 meaning=meaning,
-                declension="212",
             )
 
-        case "Regular":
-            return RegularWord(
-                latin_parts[0],
-                meaning=meaning,
-            )
+        # Second declension adjective
+        return Adjective(
+            *latin_parts[:-1],
+            meaning=meaning,
+            declension="212",
+        )
+
+    if current == "Regular":
+        return RegularWord(
+            latin_parts[0],
+            meaning=meaning,
+        )
 
     return Pronoun(
         latin_parts[0],
