@@ -1,4 +1,4 @@
-"""Contains miscellaneous constants and classes used by lego."""
+"""Contains miscellaneous constants and classes used by ``lego``."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ class VocabList:
     ...         meaning="slavegirl",
     ...     )
     ... ])  # doctest: +SKIP
-    This will create a VocabList with a single Noun object in it.
+    This will create a ``VocabList`` with a single ``Noun`` object in it.
     """
 
     vocab: list[_Word]

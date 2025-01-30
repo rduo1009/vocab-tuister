@@ -100,12 +100,12 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
 
 
 def read_vocab_dump(filename: Path) -> VocabList:
-    """Read a vocabulary dump file and returns a VocabList object.
+    """Read a vocabulary dump file and return a ``VocabList`` object.
 
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
     raised.
-    If the file ends in .lz4, the file is decompressed using lz4.
+    If the file ends in `.lz4`, the file is decompressed using lz4.
 
     Parameters
     ----------
@@ -185,7 +185,7 @@ def _is_typeofspeech(x: str) -> bool:
 
 
 def read_vocab_file(file_path: Path) -> VocabList:
-    """Read a vocabulary file and returns a VocabList object.
+    """Read a vocabulary file and return a ``VocabList`` object.
 
     Parameters
     ----------
@@ -286,6 +286,29 @@ def _parse_line(
     meaning: Meaning,
     line: str,
 ) -> _Word:
+    """Create a word object from a line of a vocab list and the pos.
+
+    Parameters
+    ----------
+    current : _PartOfSpeech
+        The part of speech of the word object.
+    latin_parts : list[str]
+        The split parts of the word definition in the vocab list.
+    meaning : Meaning
+        The meaning of the word.
+    line : str
+        The actual line.
+
+    Returns
+    -------
+    _Word
+        The word object created.
+
+    Raises
+    ------
+    InvalidVocabFileFormatError
+        If the vocab list is formatted incorrectly.
+    """
     if current == "Verb":
         if len(latin_parts) not in {3, 4}:
             raise InvalidVocabFileFormatError(

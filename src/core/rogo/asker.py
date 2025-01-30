@@ -74,7 +74,7 @@ def ask_question_without_sr(
     Raises
     ------
     InvalidSettingsError
-        If the settings are invalid.
+        If the settings in `settings` are invalid.
     """
     vocab: Vocab = filter_words(vocab_list, settings)
     filtered_questions: set[QuestionClasses] = filter_questions(settings)

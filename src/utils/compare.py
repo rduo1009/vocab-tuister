@@ -21,7 +21,7 @@ def compare[T](first: Sequence[T], second: Sequence[T]) -> bool:
     Returns
     -------
     bool
-        True if the sequences are equal, False otherwise.
+        ``True`` if the sequences are equal, ``False`` otherwise.
 
     Notes
     -----

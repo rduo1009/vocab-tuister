@@ -34,10 +34,10 @@ def find_pronoun_inflections(
     Raises
     ------
     NotImplementedError
-        If the word is not a pronoun supported by transfero (or not a
-        pronoun at all).
+        If `pronoun` is not a pronoun supported by ``transfero`` (or not
+        a pronoun at all).
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
@@ -68,10 +68,10 @@ def find_main_pronoun_inflection(
     Raises
     ------
     NotImplementedError
-        If the word is not a pronoun supported by transfero (or not a
-        pronoun at all).
+        If `pronoun` is not a pronoun supported by ``transfero`` (or not
+        a pronoun at all).
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")

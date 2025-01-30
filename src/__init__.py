@@ -1,4 +1,4 @@
-"""A wrapper for the Python packages used by vocab-tester."""
+"""A wrapper for the Python packages used by ``vocab-tester``."""
 
 import dunamai as _dunamai
 

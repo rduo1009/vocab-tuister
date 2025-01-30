@@ -54,7 +54,7 @@ class Noun(_Word):
     >>> foo["Nnomsg"]
     'ancilla'
 
-    Note that all arguments of Noun are keyword-only.
+    Note that all arguments of ``Noun`` are keyword-only.
 
     >>> foo = Noun("ego", meaning="I")
     >>> foo["Nnomsg"]
@@ -62,7 +62,7 @@ class Noun(_Word):
 
     Notes
     -----
-    Accido relies on the assumption that there are no neuter or plurale
+    ``accido`` relies on the assumption that there are no neuter or plurale
     tantum fifth declension nouns (there doesn't seem to be any).
     """
 
@@ -90,7 +90,7 @@ class Noun(_Word):
         gender: Gender | None = None,
         meaning: Meaning,
     ) -> None:
-        """Initialise Noun and determines the declension and endings.
+        """Initialise ``Noun`` and determine the declension and endings.
 
         Parameters
         ----------
@@ -104,7 +104,7 @@ class Noun(_Word):
         Raises
         ------
         InvalidInputError
-            If the input is not valid (invalid gender value or genitive).
+            If the input is not valid (invalid value for `gender` or `genitive`).
         """
         logger.debug(
             "Noun(%s, %s, %s, %s)",
@@ -298,7 +298,7 @@ class Noun(_Word):
     def get(self, *, case: Case, number: Number) -> Ending | None:
         """Return the ending of the noun.
 
-        The function returns None if no ending is found.
+        The function returns ``None`` if no ending is found.
 
         Parameters
         ----------
@@ -310,7 +310,7 @@ class Noun(_Word):
         Returns
         -------
         Ending | None
-            The ending found, or None if no ending is found.
+            The ending found, or ``None`` if no ending is found.
 
         Examples
         --------
@@ -323,7 +323,7 @@ class Noun(_Word):
         >>> foo.get(case=Case.NOMINATIVE, number=Number.SINGULAR)
         'ancilla'
 
-        Note that all arguments of get are keyword-only.
+        Note that all arguments of ``get()`` are keyword-only.
         """
         logger.debug(
             "%s.get(%s, %s)",
@@ -338,7 +338,7 @@ class Noun(_Word):
         return self.endings.get(f"N{short_case}{short_number}")
 
     def create_components(self, key: str) -> EndingComponents:  # type: ignore[override]
-        """Generate an EndingComponents object based on endings keys.
+        """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
 
@@ -350,12 +350,12 @@ class Noun(_Word):
         Returns
         -------
         EndingComponents
-            The EndingComponents object created.
+            The ``EndingComponents`` object created.
 
         Raises
         ------
         InvalidInputError
-            If the key given is not a valid key for the word.
+            If `key` is not a valid key for the word.
         """
         try:
             output: EndingComponents = EndingComponents(

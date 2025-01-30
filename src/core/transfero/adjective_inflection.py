@@ -35,9 +35,9 @@ def find_adjective_inflections(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English adjective.
+        If `adjective` is not a valid English adjective.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
@@ -80,9 +80,9 @@ def find_main_adjective_inflection(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English adjective.
+        If `adjective` is not a valid English adjective.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")

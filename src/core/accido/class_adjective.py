@@ -43,8 +43,8 @@ class Adjective(_Word):
     meaning : Meaning
     endings : Endings
     declension : AdjectiveDeclension
-        The declension of the adjective. "212" represents a 2-1-2
-        adjective, while "3" represents a third declension adjective.
+        The declension of the adjective. 212 represents a 2-1-2
+        adjective, while 3 represents a third declension adjective.
     termination : Termination | None
         The termination of the adjective if applicable (only third
         declension adjectives).
@@ -58,7 +58,7 @@ class Adjective(_Word):
     >>> foo["Aposmnomsg"]
     'laetus'
 
-    Note that the declension and meaning arguments of Adjectives are
+    Note that the declension and meaning arguments of ``Adjective``s are
     keyword-only.
 
     >>> bar = Adjective(
@@ -103,7 +103,7 @@ class Adjective(_Word):
         declension: AdjectiveDeclension,
         meaning: Meaning,
     ) -> None:
-        """Initialise Adjective and determines the endings.
+        """Initialise ``Adjective`` and determine the endings.
 
         Parameters
         ----------
@@ -113,8 +113,8 @@ class Adjective(_Word):
             The termination of the adjective if applicable (only third
             declension adjectives).
         declension : AdjectiveDeclension
-            The declension of the adjective. "212" represents a 2-1-2
-            adjective, while "3" represents a third declension adjective.
+            The declension of the adjective. 212 represents a 2-1-2
+            adjective, while 3 represents a third declension adjective.
         meaning : Meaning
         """
         logger.debug(
@@ -819,9 +819,9 @@ class Adjective(_Word):
         gender: Gender | None = None,
         adverb: bool = False,
     ) -> Ending | None:
-        """Return the ending of the adjective.
+        """Return the ending of the adjective from the grammatical components.
 
-        The function returns None if no ending is found.
+        The function returns ``None`` if no ending is found.
 
         Parameters
         ----------
@@ -843,7 +843,7 @@ class Adjective(_Word):
         Returns
         -------
         Ending | None
-            The ending found, or None if no ending is found.
+            The ending found, or ``None`` if no ending is found.
 
         Examples
         --------
@@ -858,7 +858,7 @@ class Adjective(_Word):
         ... )
         'egens'
 
-        Note that the arguments of get are keyword-only.
+        Note that the arguments of ``get()`` are keyword-only.
         """
         logger.debug(
             "%s.get(%s, %s, %s, %s, adverb=%s)",
@@ -891,7 +891,7 @@ class Adjective(_Word):
 
     @staticmethod
     def create_components(key: str) -> EndingComponents:
-        """Generate an EndingComponents object based on endings keys.
+        """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
 
@@ -903,12 +903,12 @@ class Adjective(_Word):
         Returns
         -------
         EndingComponents
-            The EndingComponents object created.
+            The ``EndingComponents`` object created.
 
         Raises
         ------
         InvalidInputError
-            If the key given is not a valid key for the word.
+            If `key` is not a valid key for the word.
         """
         output: EndingComponents
 

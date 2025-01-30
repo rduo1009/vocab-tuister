@@ -30,7 +30,7 @@ class RegularWord(_Word):
     >>> foo.endings
     {'': 'sed'}
 
-    Note that the arguments of RegularWord are keyword-only.
+    Note that the arguments of ``RegularWord`` are keyword-only.
     """
 
     __slots__ = ("word",)
@@ -74,9 +74,9 @@ class RegularWord(_Word):
     def create_components(
         key: str,  # noqa: ARG004
     ) -> EndingComponents:
-        """Generate an EndingComponents object based on endings keys.
+        """Generate an ``EndingComponents`` object based on endings keys.
 
-        In the case of a regular word, the returned EndingComponents object
+        In the case of a regular word, the returned ``EndingComponents`` object
         will be empty.
         Note that this function should not usually be used by the user.
 
@@ -88,7 +88,7 @@ class RegularWord(_Word):
         Returns
         -------
         EndingComponents
-            The EndingComponents object created.
+            The ``EndingComponents`` object created.
         """
         return EndingComponents(string="")
 

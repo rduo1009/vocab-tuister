@@ -42,7 +42,7 @@ def find_verb_inflections(
 ) -> set[str]:
     """Inflect English verbs using the ending components.
 
-    If a participle is queried, find_participle_inflections is ran
+    If a participle is queried, ``find_participle_inflections`` is ran
     instead.
 
     Note that subjunctives are not supported as they do not have an exact
@@ -63,7 +63,9 @@ def find_verb_inflections(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English verb.
+        If `verb` is not a valid English verb.
+    InvalidComponentsError
+        If `components` is invalid.
     """
     _verify_verb_inflections(components)
 
@@ -116,9 +118,9 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English verb.
+        If `verb` is not a valid English verb.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     _verify_verb_inflections(components)
 

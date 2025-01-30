@@ -48,7 +48,7 @@ class _MultiAnswerQuestion[T]:
         Returns
         -------
         bool
-            True if the response is correct, False otherwise.
+            ``True`` if the response is correct, ``False`` otherwise.
         """
         return response in self.answers
 
@@ -72,7 +72,7 @@ class _MultipleChoiceQuestion:
         Returns
         -------
         bool
-            True if the given answer is correct, False otherwise.
+            ``True`` if the given answer is correct, ``False`` otherwise.
         """
         return response == self.answer
 
@@ -191,7 +191,8 @@ class PrincipalPartsQuestion:
         Returns
         -------
         bool
-            True if the given principal parts are correct, False otherwise.
+            ``True`` if the given principal parts are correct,
+            ``False`` otherwise.
         """
         return response == self.principal_parts
 

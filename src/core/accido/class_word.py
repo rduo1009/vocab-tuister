@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 @total_ordering
 class _Word(ABC):  # noqa: PLW1641
-    """Representation of an word.
+    """Representation of an Latin word.
 
     This class is not intended to be used by the user. Rather, all of the
     other classes inherit from this class.
@@ -50,7 +50,7 @@ class _Word(ABC):  # noqa: PLW1641
         return self.endings[key]
 
     def find(self, form: str) -> list[EndingComponents]:
-        """Find the ending components that match the given form.
+        """Find the ``EndingComponents`` objects that match the given form.
 
         Parameters
         ----------
@@ -60,8 +60,8 @@ class _Word(ABC):  # noqa: PLW1641
         Returns
         -------
         list[EndingComponents]
-            The list of EndingComponents objects that represent the endings
-            components that match the given form.
+            The list of ``EndingComponents`` objects that represent the endings
+            components that match `form`.
         """
         return [
             self.create_components(key)

@@ -41,7 +41,7 @@ def _sha256sum(filename: Path) -> str:
 def cache_vocab_file(
     cache_folder: Path, vocab_file_path: Path
 ) -> tuple[VocabList, bool]:
-    """Read a vocab file, and saves the vocab dump inside a cache folder.
+    """Read a vocab file and save the vocab dump inside a cache folder.
 
     The name of the vocabulary dump file is decided by hashing the
     vocab file given. Note that if the cache folder does not exist,
@@ -67,9 +67,9 @@ def cache_vocab_file(
         If the cache folder did not exist and had to be created, or if the
         vocab dump file already exists and has been overwritten.
     MisleadingFilenameWarning
-        If the file path does not end in .lz4 and the file is being
-        compressed, or if the file path ends in .lz4 and the file is not
-        being compressed.
+        If the file path does not end in `.lz4` and the file is being
+        compressed, or if the file path ends in `.lz4` and the file is
+        not being compressed.
 
     Raises
     ------
@@ -77,8 +77,8 @@ def cache_vocab_file(
         If the file provided is not a valid vocabulary file, or if the
         formatting is incorrect.
     InvalidVocabDumpError
-        If the file in the cache is not a valid vocabulary dump, or if the data
-        has been tampered with.
+        If the file in the cache is not a valid vocabulary dump, or if
+        the data has been tampered with.
     FileNotFoundError
         If the vocab file or dump does not exist.
     """

@@ -52,7 +52,7 @@ def find_inflection(
         The components of the word.
     main : bool
         Whether to return the main inflection or all of the inflections.
-        Default is False.
+        Default is ``False``.
 
     Returns
     -------

@@ -29,9 +29,9 @@ def save_vocab_dump(
 
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with.
-    The files can also be compressed using LZ4 compression. If this is the
-    case, the files will be saved with the .lz4 extension, unless the user
-    has put the .lz4 extension in the file path already.
+    The files can also be compressed using LZ4 compression. If this is
+    the case, the files will be saved with the `.lz4` extension, unless
+    the user has put the `.lz4` extension in the file path already.
 
     Parameters
     ----------
@@ -52,9 +52,9 @@ def save_vocab_dump(
     UserWarning
         If the file already exists and has been overwritten.
     MisleadingFilenameWarning
-        If the file path does not end in .lz4 and the file is being
-        compressed, or if the file path ends in .lz4 and the file is not
-        being compressed.
+        If the file path does not end in `.lz4` and the file is being
+        compressed, or if the file path ends in `.lz4` and the file is
+        not being compressed.
 
     Examples
     --------

@@ -1,7 +1,4 @@
-"""Representations of Latin words with their endings calculated.
-
-A wrapper for the classes.
-"""
+"""Representations of Latin words with their endings calculated."""
 
 from .class_adjective import Adjective as Adjective
 from .class_noun import Noun as Noun

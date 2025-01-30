@@ -1,4 +1,4 @@
-"""Contains miscellaneous functions, classes and constants used by accido."""
+"""Contains miscellaneous functions, classes and constants used by ``accido``."""
 
 from __future__ import annotations
 
@@ -18,14 +18,28 @@ if TYPE_CHECKING:
 else:
     from aenum import Enum
 
+if TYPE_CHECKING:
 
-class _EndingComponentEnum(Enum):
-    regular: str
-    shorthand: str
+    class _EndingComponentEnum(Enum):
+        """Represents an enum used in an ``EndingComponents`` object."""
 
-    # HACK: Makes formatting log messages easier.
-    def __str__(self) -> str:
-        return self.regular
+        # This is not actually the structure of the enum, but it helps with type
+        # hinting. Each enum value has a regular value and a shorthand value.
+        regular: str
+        shorthand: str
+
+        def __str__(self) -> str:
+            # HACK: Makes formatting log messages easier.
+            return self.regular
+
+else:
+
+    class _EndingComponentEnum(Enum):
+        """Represents an enum used in an ``EndingComponents`` object."""
+
+        def __str__(self) -> str:
+            # HACK: Makes formatting log messages easier.
+            return self.regular
 
 
 class Number(
@@ -114,7 +128,7 @@ PERSON_SHORTHAND: Final[tuple[str, str, str, str]] = (
 
 
 class ComponentsType(StrEnum):
-    """Represents the type of an EndingComponents object."""
+    """Represents the type of an ``EndingComponents`` object."""
 
     ADJECTIVE = auto()
     NOUN = auto()
@@ -124,7 +138,7 @@ class ComponentsType(StrEnum):
 
 
 class ComponentsSubtype(StrEnum):
-    """Represents the subtype of an EndingComponents object."""
+    """Represents the subtype of an ``EndingComponents`` object."""
 
     INFINITIVE = auto()
     PARTICIPLE = auto()
@@ -253,7 +267,7 @@ class EndingComponents:
         degree: Degree | None = None,
         string: str = "",
     ) -> None:
-        """Initialise EndingComponents.
+        """Initialise ``EndingComponents``.
 
         Determines the type and subtype of the ending.
 
@@ -380,8 +394,8 @@ class MultipleMeanings:
     Notes
     -----
     This class allows for there to be several English definitions of one
-    Latin word. This means for translating-to-English questions, synonyms
-    can be accepted, but not vice versa.
+    Latin word. This means for Latin-to-English questions, synonyms can
+    be accepted, but not vice versa.
 
     Examples
     --------
@@ -418,9 +432,9 @@ class MultipleEndings(SimpleNamespace):
 
     The fact that the attribute names can be customised means that this
     class can be used for many use cases.
-    e.g. MultipleEndings(regular="nostri", partitive="nostrum")
-    would allow for nostrum being the partitive genitive, while nostri
-    for the rest of the genitive uses.
+    e.g. `MultipleEndings(regular="nostri", partitive="nostrum")`
+    would allow for "nostrum" being the partitive genitive, while
+    "nostri" being for the rest of the genitive uses.
 
     Attributes
     ----------

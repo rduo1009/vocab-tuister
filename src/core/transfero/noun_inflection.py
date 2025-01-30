@@ -47,9 +47,9 @@ def find_noun_inflections(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English noun.
+        If `noun` is not a valid English noun.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
@@ -89,9 +89,9 @@ def find_main_noun_inflection(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English noun.
+        If `noun` is not a valid English noun.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")

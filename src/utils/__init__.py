@@ -1,4 +1,4 @@
-"""General functions used by vocab-tester and its tests."""
+"""General functions used by ``vocab-tester`` and its tests."""
 
 from . import logger
 from .compact import compact as compact
