@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 
 
 def find_adverb_inflections(
-    adverb: str,
-    components: EndingComponents,
+    adverb: str, components: EndingComponents
 ) -> set[str]:
     """Inflect English adverbs using the degree.
 
@@ -34,9 +33,9 @@ def find_adverb_inflections(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English adverb.
+        If `adverb` is not a valid English adverb.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
@@ -78,9 +77,9 @@ def find_main_adverb_inflection(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English adverb.
+        If `adverb` is not a valid English adverb.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type is not ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")

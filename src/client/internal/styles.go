@@ -27,10 +27,11 @@ const (
 
 var (
 	NoStyle          = lipgloss.NewStyle()
-	TitleStyle       = lipgloss.NewStyle().Width(physicalWidth).Align(lipgloss.Center).Bold(true)
+	TitleStyle       = lipgloss.NewStyle().Width(physicalWidth).Align(lipgloss.Center).Bold(true).Underline(true)
 	LesserTitleStyle = lipgloss.NewStyle().Bold(true).Underline(true)
 	FaintStyle       = lipgloss.NewStyle().Faint(true)
 	ItalicStyle      = lipgloss.NewStyle().Italic(true)
+	BoldStyle        = lipgloss.NewStyle().Bold(true)
 
 	SelectedStyle        = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: darkOrange, Dark: lightOrange})
 	CheckedStyle         = lipgloss.NewStyle().Bold(true)

@@ -37,10 +37,7 @@ def find_inflection(word: str, components: EndingComponents, *, main: Literal[Tr
 
 
 def find_inflection(
-    word: str,
-    components: EndingComponents,
-    *,
-    main: bool = False,
+    word: str, components: EndingComponents, *, main: bool = False
 ) -> set[str] | str:
     """Find the inflections of an English word.
 
@@ -52,7 +49,7 @@ def find_inflection(
         The components of the word.
     main : bool
         Whether to return the main inflection or all of the inflections.
-        Default is False.
+        Default is ``False``.
 
     Returns
     -------

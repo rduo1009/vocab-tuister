@@ -1,4 +1,4 @@
-"""Contains miscellaneous constants and classes used by lego."""
+"""Contains miscellaneous constants and classes used by ``lego``."""
 
 from __future__ import annotations
 
@@ -31,20 +31,15 @@ class VocabList:
     Examples
     --------
     >>> foo = VocabList([
-    ...     Noun(
-    ...         "ancilla",
-    ...         "ancillae",
-    ...         gender="feminine",
-    ...         meaning="slavegirl",
-    ...     )
+    ...     Noun("ancilla", "ancillae", gender="feminine", meaning="slavegirl")
     ... ])  # doctest: +SKIP
-    This will create a VocabList with a single Noun object in it.
+    This will create a ``VocabList`` with a single ``Noun`` object in it.
     """
 
     vocab: list[_Word]
 
     def __post_init__(self) -> None:
-        self.vocab = compact(self.vocab)
+        self.vocab = sorted(compact(self.vocab))
 
         # Set the version using the package version.
         self.version: str = src.__version__

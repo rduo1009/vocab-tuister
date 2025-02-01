@@ -39,7 +39,7 @@ class Verb(_Word):
     perfect : str
     ppp : str
         The present perfect participle form of the verb. If the verb does
-        not have participle endings, ppp is an empty string.
+        not have participle endings, `ppp` is an empty string.
     meaning : Meaning
     conjugation : Conjugation
         The conjugation of the verb. The value 5 represents the third
@@ -53,7 +53,7 @@ class Verb(_Word):
     >>> foo["Vpreactindsg1"]
     'celo'
 
-    Note that all arguments of Verb are keyword-only.
+    Note that all arguments of ``Verb`` are keyword-only.
     """
 
     __slots__ = (
@@ -78,7 +78,7 @@ class Verb(_Word):
         *,
         meaning: Meaning,
     ) -> None:
-        """Initialise Verb and determines the conjugation and endings.
+        """Initialise ``Verb`` and determines the conjugation and endings.
 
         Parameters
         ----------
@@ -86,14 +86,14 @@ class Verb(_Word):
         infinitive : str
         perfect : str
         ppp : str
-            The ppp ending of the verb. If the verb does not have
-            participle endings, ppp defaults to an empty string.
+            The present perfect participle form of the verb. If the verb does
+            not have participle endings, `ppp` defaults to an empty string.
         meaning : Meaning
 
         Raises
         ------
         InvalidInputError
-            If the input is invalid (incorrect perfect or infinitive).
+            If the input is invalid (incorrect `perfect` or `infinitive` values).
         """
         logger.debug(
             "RegularWord(%s, %s, %s, %s, %s)",
@@ -131,17 +131,17 @@ class Verb(_Word):
             self.conjugation = 2 if self.present.endswith("eo") else 3
         else:
             raise InvalidInputError(
-                f"Invalid infinitive form: '{self.infinitive}'",
+                f"Invalid infinitive form: '{self.infinitive}'"
             )
 
         if not self.present.endswith("o"):
             raise InvalidInputError(
-                f"Invalid present form: '{self.present}' (must end in '-o')",
+                f"Invalid present form: '{self.present}' (must end in '-o')"
             )
 
         if not self.perfect.endswith("i"):
             raise InvalidInputError(
-                f"Invalid perfect form: '{self.perfect}' (must end in '-i')",
+                f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
         self._pre_stem: str = self.present[:-1]
@@ -482,7 +482,7 @@ class Verb(_Word):
     ) -> Ending | None:
         """Return the ending of the verb.
 
-        The function returns None if no ending is found.
+        The function returns ``None`` if no ending is found.
 
         Parameters
         ----------
@@ -504,7 +504,7 @@ class Verb(_Word):
         Returns
         -------
         Ending | None
-            The ending found, or None if no ending is found
+            The ending found, or ``None`` if no ending is found
 
         Examples
         --------
@@ -518,7 +518,7 @@ class Verb(_Word):
         ... )
         'celo'
 
-        Note that all arguments of get are keyword-only.
+        Note that all arguments of ``get()`` are keyword-only.
 
         >>> foo.get(
         ...     tense=Tense.PERFECT,
@@ -571,7 +571,7 @@ class Verb(_Word):
 
         short_mood: str = mood.shorthand
         return self.endings.get(
-            f"V{short_tense}{short_voice}{short_mood}{short_number}{person}",
+            f"V{short_tense}{short_voice}{short_mood}{short_number}{person}"
         )
 
     def _get_participle(
@@ -590,12 +590,12 @@ class Verb(_Word):
         short_case: str = participle_case.shorthand
 
         return self.endings.get(
-            f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}",
+            f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
         )
 
     @staticmethod
     def create_components(key: str) -> EndingComponents:
-        """Generate an EndingComponents object based on endings keys.
+        """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
 
@@ -607,12 +607,12 @@ class Verb(_Word):
         Returns
         -------
         EndingComponents
-            The EndingComponents object created.
+            The ``EndingComponents`` object created.
 
         Raises
         ------
         InvalidInputError
-            If the key given is not a valid key for the word.
+            If `key` is not a valid key for the word.
         """
         output: EndingComponents
 

@@ -1,4 +1,4 @@
-"""Contains custom exceptions used by lego."""
+"""Contains custom exceptions used by ``lego``."""
 
 
 class InvalidVocabFileFormatError(Exception):
@@ -18,5 +18,5 @@ class MisleadingFilenameWarning(
 ):  # sourcery skip: errors-named-error
     """A warning that is raised when a filename is misleading.
 
-    For example, if a file ends in .lz4 but it is not a compressed file.
+    For example, if a file ends in `.lz4` but it is not a compressed file.
     """

@@ -49,10 +49,7 @@ def _get_possessive(noun: str) -> str:
     return f"{noun}'" if noun.endswith("s") else f"{noun}'s"
 
 
-def find_noun_inflections(
-    noun: str,
-    components: EndingComponents,
-) -> set[str]:
+def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
     """Inflect English nouns using the case and number.
 
     This function can also be used to inflect pronouns that are treated
@@ -74,9 +71,9 @@ def find_noun_inflections(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English noun.
+        If `noun` is not a valid English noun.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
@@ -95,10 +92,7 @@ def find_noun_inflections(
     return inflections
 
 
-def find_main_noun_inflection(
-    noun: str,
-    components: EndingComponents,
-) -> str:
+def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
     """Find the main inflection of an English noun.
 
     Parameters
@@ -116,9 +110,9 @@ def find_main_noun_inflection(
     Raises
     ------
     InvalidWordError
-        If the word is not a valid English noun.
+        If `noun` is not a valid English noun.
     InvalidComponentsError
-        If the ending components are invalid.
+        If `components` is invalid.
     """
     if components.type != ComponentsType.NOUN:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")

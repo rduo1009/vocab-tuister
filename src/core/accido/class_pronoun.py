@@ -33,18 +33,13 @@ class Pronoun(_Word):
     >>> foo["Pmnomsg"]
     'hic'
 
-    Note that the arguments of Pronoun are keyword-only.
+    Note that the arguments of ``Pronoun`` are keyword-only.
     """
 
-    __slots__ = (
-        "femnom",
-        "mascnom",
-        "neutnom",
-        "pronoun",
-    )
+    __slots__ = ("femnom", "mascnom", "neutnom", "pronoun")
 
     def __init__(self, pronoun: str, *, meaning: Meaning) -> None:
-        """Initialise Pronoun and determines the endings.
+        """Initialise ``Pronoun`` and determine the endings.
 
         Parameters
         ----------
@@ -54,12 +49,12 @@ class Pronoun(_Word):
         Raises
         ------
         InvalidInputError
-            If the pronoun entered is not in the pronoun table.
+            If `pronoun` is not in the pronoun table.
 
         Notes
         -----
         As pronouns in Latin have irregular endings with little pattern,
-        the pronoun endings are manually written out in the edge_cases
+        the pronoun endings are manually written out in the ``edge_cases``
         module.
         """
         logger.debug("Pronoun(%s, %s)", pronoun, meaning)
@@ -70,7 +65,7 @@ class Pronoun(_Word):
             self.endings = PRONOUNS[pronoun]
         except KeyError as e:
             raise InvalidInputError(
-                f"Pronoun '{pronoun}' not recognised",
+                f"Pronoun '{pronoun}' not recognised"
             ) from e
 
         self.pronoun: str = pronoun
@@ -91,7 +86,7 @@ class Pronoun(_Word):
     ) -> Ending | None:
         """Return the ending of the pronoun.
 
-        The function returns None if no ending is found.
+        The function returns ``None`` if no ending is found.
 
         Parameters
         ----------
@@ -105,7 +100,7 @@ class Pronoun(_Word):
         Returns
         -------
         Ending | None
-            The ending found, or None if no ending is found
+            The ending found, or ``None`` if no ending is found
 
         Examples
         --------
@@ -117,7 +112,7 @@ class Pronoun(_Word):
         ... )
         'hic'
 
-        Note that the arguments of get are keyword-only.
+        Note that the arguments of ``get()`` are keyword-only.
         """
         logger.debug("%s.get(%s, %s, %s)", self._first, gender, case, number)
         short_gender: str = gender.shorthand
@@ -128,7 +123,7 @@ class Pronoun(_Word):
 
     @staticmethod
     def create_components(key: str) -> EndingComponents:
-        """Generate an EndingComponents object based on endings keys.
+        """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
 
@@ -140,12 +135,12 @@ class Pronoun(_Word):
         Returns
         -------
         EndingComponents
-            The EndingComponents object created.
+            The ``EndingComponents`` object created.
 
         Raises
         ------
         InvalidInputError
-            If the key given is not a valid key for the word.
+            If `key` is not a valid key for the word.
         """
         try:
             output: EndingComponents = EndingComponents(

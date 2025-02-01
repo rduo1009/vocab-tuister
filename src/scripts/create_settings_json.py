@@ -9,9 +9,7 @@ from typing import Any, get_type_hints
 from src.core.rogo.type_aliases import Settings
 
 
-def _create_default_typed_dict(
-    typed_dict_class: type[Settings],
-) -> Settings:
+def _create_default_typed_dict(typed_dict_class: type[Settings]) -> Settings:
     defaults: dict[str, Any] = {}
     type_hints = get_type_hints(typed_dict_class)
 

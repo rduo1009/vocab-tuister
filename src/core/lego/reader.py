@@ -17,10 +17,7 @@ import src
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from ..accido.misc import Gender, MultipleMeanings
 from ..accido.type_aliases import is_termination
-from .exceptions import (
-    InvalidVocabDumpError,
-    InvalidVocabFileFormatError,
-)
+from .exceptions import InvalidVocabDumpError, InvalidVocabFileFormatError
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
@@ -39,12 +36,7 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
 
     for word in vocab_list.vocab:
         if isinstance(word, RegularWord):
-            new_vocab.append(
-                RegularWord(
-                    word.word,
-                    meaning=word.meaning,
-                ),
-            )
+            new_vocab.append(RegularWord(word.word, meaning=word.meaning))
 
         elif isinstance(word, Verb):
             new_vocab.append(
@@ -54,7 +46,7 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                     word.perfect,
                     word.ppp,
                     meaning=word.meaning,
-                ),
+                )
             )
 
         elif isinstance(word, Noun):
@@ -64,7 +56,7 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                     word.genitive,
                     meaning=word.meaning,
                     gender=word.gender,
-                ),
+                )
             )
 
         elif isinstance(word, Adjective):
@@ -74,7 +66,7 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                         *word._principal_parts,  # noqa: SLF001
                         declension="212",
                         meaning=word.meaning,
-                    ),
+                    )
                 )
             else:
                 assert word.termination is not None
@@ -85,27 +77,22 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                         termination=word.termination,
                         declension="3",
                         meaning=word.meaning,
-                    ),
+                    )
                 )
 
         elif isinstance(word, Pronoun):
-            new_vocab.append(
-                Pronoun(
-                    word.pronoun,
-                    meaning=word.meaning,
-                ),
-            )
+            new_vocab.append(Pronoun(word.pronoun, meaning=word.meaning))
 
     return VocabList(new_vocab)
 
 
 def read_vocab_dump(filename: Path) -> VocabList:
-    """Read a vocabulary dump file and returns a VocabList object.
+    """Read a vocabulary dump file and return a ``VocabList`` object.
 
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
     raised.
-    If the file ends in .lz4, the file is decompressed using lz4.
+    If the file ends in `.lz4`, the file is decompressed using lz4.
 
     Parameters
     ----------
@@ -175,17 +162,11 @@ type _PartOfSpeech = Literal[  # pragma: no mutate
 
 
 def _is_typeofspeech(x: str) -> bool:
-    return x in {
-        "Verb",
-        "Adjective",
-        "Noun",
-        "Regular",
-        "Pronoun",
-    }
+    return x in {"Verb", "Adjective", "Noun", "Regular", "Pronoun"}
 
 
 def read_vocab_file(file_path: Path) -> VocabList:
-    """Read a vocabulary file and returns a VocabList object.
+    """Read a vocabulary file and return a ``VocabList`` object.
 
     Parameters
     ----------
@@ -215,9 +196,7 @@ def read_vocab_file(file_path: Path) -> VocabList:
         return VocabList(_read_vocab_file_internal(file))
 
 
-def _read_vocab_file_internal(
-    file: TextIO,
-) -> list[_Word]:
+def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
     vocab: list[_Word] = []
     line: str
     current: _PartOfSpeech | Literal[""] = ""
@@ -251,127 +230,123 @@ def _read_vocab_file_internal(
 
                     case _:
                         raise InvalidVocabFileFormatError(
-                            f"Invalid part of speech: '{line[1:].strip()}'",
+                            f"Invalid part of speech: '{line[1:].strip()}'"
                         )
 
             case _:
                 parts: list[str] = line.strip().split(":")
                 if len(parts) != 2:
                     raise InvalidVocabFileFormatError(
-                        f"Invalid line format: '{line}'",
+                        f"Invalid line format: '{line}'"
                     )
 
-                meaning: Meaning = _generate_meaning(
-                    parts[0].strip(),
-                )
+                meaning: Meaning = _generate_meaning(parts[0].strip())
                 latin_parts: list[str] = [
                     raw_part.strip() for raw_part in parts[1].split(",")
                 ]
 
                 if not current:
                     raise InvalidVocabFileFormatError(
-                        "Part of speech was not given",
+                        "Part of speech was not given"
                     )
 
-                vocab.append(
-                    _parse_line(current, latin_parts, meaning, line),
-                )
+                vocab.append(_parse_line(current, latin_parts, meaning, line))
 
     return vocab
 
 
 def _parse_line(
-    current: _PartOfSpeech,
-    latin_parts: list[str],
-    meaning: Meaning,
-    line: str,
+    current: _PartOfSpeech, latin_parts: list[str], meaning: Meaning, line: str
 ) -> _Word:
-    match current:
-        case "Verb":
-            if len(latin_parts) not in {3, 4}:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid verb format: '{line}'",
-                )
+    """Create a word object from a line of a vocab list and the pos.
 
-            # Verb with ppp
-            if len(latin_parts) > 3:
-                return Verb(
-                    latin_parts[0],
-                    latin_parts[1],
-                    latin_parts[2],
-                    latin_parts[3],
-                    meaning=meaning,
-                )
+    Parameters
+    ----------
+    current : _PartOfSpeech
+        The part of speech of the word object.
+    latin_parts : list[str]
+        The split parts of the word definition in the vocab list.
+    meaning : Meaning
+        The meaning of the word.
+    line : str
+        The actual line.
 
-            # Verb without ppp
+    Returns
+    -------
+    _Word
+        The word object created.
+
+    Raises
+    ------
+    InvalidVocabFileFormatError
+        If the vocab list is formatted incorrectly.
+    """
+    if current == "Verb":
+        if len(latin_parts) not in {3, 4}:
+            raise InvalidVocabFileFormatError(f"Invalid verb format: '{line}'")
+
+        # Verb with ppp
+        if len(latin_parts) > 3:
             return Verb(
                 latin_parts[0],
                 latin_parts[1],
                 latin_parts[2],
+                latin_parts[3],
                 meaning=meaning,
             )
 
-        case "Noun":
-            if len(latin_parts) != 3:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid noun format: '{line}'",
-                )
+        # Verb without ppp
+        return Verb(
+            latin_parts[0], latin_parts[1], latin_parts[2], meaning=meaning
+        )
 
-            try:
-                return Noun(
-                    latin_parts[0],
-                    latin_parts[1].split()[0],
-                    gender=Gender(latin_parts[2].split()[-1].strip("()")),
-                    meaning=meaning,
-                )
-            except ValueError as e:
-                raise InvalidVocabFileFormatError(
-                    "Invalid gender: "
-                    f"'{latin_parts[2].split()[-1].strip('()')}'",
-                ) from e
+    if current == "Noun":
+        if len(latin_parts) != 3:
+            raise InvalidVocabFileFormatError(f"Invalid noun format: '{line}'")
 
-        case "Adjective":
-            if len(latin_parts) not in {3, 4}:
-                raise InvalidVocabFileFormatError(
-                    f"Invalid adjective format: '{line}'",
-                )
+        try:
+            return Noun(
+                latin_parts[0],
+                latin_parts[1].split()[0],
+                gender=Gender(latin_parts[2].split()[-1].strip("()")),
+                meaning=meaning,
+            )
+        except ValueError as e:
+            raise InvalidVocabFileFormatError(
+                f"Invalid gender: '{latin_parts[2].split()[-1].strip('()')}'"
+            ) from e
 
-            declension: str = latin_parts[-1].strip("()")
+    if current == "Adjective":
+        if len(latin_parts) not in {3, 4}:
+            raise InvalidVocabFileFormatError(
+                f"Invalid adjective format: '{line}'"
+            )
 
-            if declension not in {"212", "2-1-2"} and not match(
-                r"^3-.$",
-                declension,
-            ):
-                raise InvalidVocabFileFormatError(
-                    f"Invalid adjective declension: '{declension}'",
-                )
+        declension: str = latin_parts[-1].strip("()")
 
-            # Third declension adjective
-            if declension.startswith("3"):
-                termination = int(declension[2])
-                assert is_termination(termination)
+        if declension not in {"212", "2-1-2"} and not match(
+            r"^3-.$", declension
+        ):
+            raise InvalidVocabFileFormatError(
+                f"Invalid adjective declension: '{declension}'"
+            )
 
-                return Adjective(
-                    *latin_parts[:-1],
-                    termination=termination,
-                    declension="3",
-                    meaning=meaning,
-                )
+        # Third declension adjective
+        if declension.startswith("3"):
+            termination = int(declension[2])
+            assert is_termination(termination)
 
-            # Second declension adjective
             return Adjective(
                 *latin_parts[:-1],
-                meaning=meaning,
-                declension="212",
-            )
-
-        case "Regular":
-            return RegularWord(
-                latin_parts[0],
+                termination=termination,
+                declension="3",
                 meaning=meaning,
             )
 
-    return Pronoun(
-        latin_parts[0],
-        meaning=meaning,
-    )
+        # Second declension adjective
+        return Adjective(*latin_parts[:-1], meaning=meaning, declension="212")
+
+    if current == "Regular":
+        return RegularWord(latin_parts[0], meaning=meaning)
+
+    return Pronoun(latin_parts[0], meaning=meaning)

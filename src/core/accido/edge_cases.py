@@ -56,12 +56,12 @@ def check_io_verb(present: str) -> bool:
     Parameters
     ----------
     present : str
-        The present form verb to check
+        The present form verb to check.
 
     Returns
     -------
     bool
-        If the prefix matches a third conjugation -io verb
+        If the prefix matches a third conjugation -io verb.
     """
     return any(present.endswith(io_verb) for io_verb in THIRD_IO_VERBS)
 
@@ -528,7 +528,7 @@ DERIVED_IRREGULAR_ENDINGS: Final[dict[str, Endings]] = {
 
 
 def find_irregular_endings(present: str) -> Endings | None:
-    """Detect if a verb is irregular and returns its endings.
+    """Detect if a verb is irregular and return its endings.
 
     Parameters
     ----------
@@ -538,22 +538,18 @@ def find_irregular_endings(present: str) -> Endings | None:
     Returns
     -------
     Endings | None
-        The endings. None if the verb is not irregular.
+        The endings. ``None`` if the verb is not irregular.
     """
 
     def _prefix(
-        pre: str,
-        endings: Endings,
+        pre: str, endings: Endings
     ) -> dict[str, str | MultipleEndings]:
         return {key: pre + value for key, value in endings.items()}
 
     if present in IRREGULAR_VERBS:
         return IRREGULAR_VERBS[present]
 
-    for (
-        irregular_suffix,
-        suffix_list,
-    ) in DERIVED_IRREGULAR_VERBS.items():
+    for irregular_suffix, suffix_list in DERIVED_IRREGULAR_VERBS.items():
         if present in suffix_list:
             return _prefix(
                 present.rstrip(irregular_suffix),
@@ -639,9 +635,7 @@ IRREGULAR_ADJECTIVES: Final[
 }
 
 # TODO: Add to this
-NO_ADVERB_ADJECTIVES = {
-    "ingens",
-}
+NO_ADVERB_ADJECTIVES = {"ingens"}
 
 PRONOUNS: Final[dict[str, Endings]] = {
     "hic": {

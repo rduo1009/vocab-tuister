@@ -58,6 +58,4 @@ STATIVE_VERBS: Final[set[str]] = {
 }
 
 # TODO: Add to this
-NOT_COMPARABLE_ADJECTIVES: Final[set[str]] = {
-    "interesting",
-}
+NOT_COMPARABLE_ADJECTIVES: Final[set[str]] = {"interesting"}

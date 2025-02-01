@@ -27,7 +27,7 @@ def contains_duplicates[T](sequence: Sequence[T]) -> bool:
     Returns
     -------
     bool
-        True if there are duplicate items, False otherwise.
+        ``True`` if there are duplicate items, ``False`` otherwise.
 
     Notes
     -----

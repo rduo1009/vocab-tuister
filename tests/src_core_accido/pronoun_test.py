@@ -14,9 +14,7 @@ from src.core.accido.misc import Case, EndingComponents, Gender, MultipleMeaning
 class TestPronounDunder:
     def test_find(self):
         word = Pronoun("ille", meaning="that")
-        assert word.find("ille") == [
-            EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, string="nominative singular masculine"),
-        ]
+        assert word.find("ille") == [EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, string="nominative singular masculine")]
 
     def test_repr(self):
         word = Pronoun("ille", meaning="that")

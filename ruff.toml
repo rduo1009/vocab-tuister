@@ -53,5 +53,6 @@ strict = true
 preview = true
 quote-style = "double"
 indent-style = "space"
+skip-magic-trailing-comma = true
 docstring-code-format = true
 docstring-code-line-length = 72

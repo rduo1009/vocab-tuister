@@ -1,4 +1,4 @@
-"""Contains custom exceptions used by rogo."""
+"""Contains custom exceptions used by ``rogo``."""
 
 
 class InvalidSettingsError(Exception):
