@@ -113,73 +113,28 @@ func (m model) Init() (tea.Model, tea.Cmd) {
 			return errMsg{err}
 		}
 
-		// NOTE: May not be the best solution but seems to work
-		questionsCh := make(chan questions.Questions, 1)
-		errorCh := make(chan error, 1)
+		objects, err := extractJSONObjects(body)
+		if err != nil {
+			return errMsg{err}
+		}
 
-		go func() {
-			ticker := time.NewTicker(5 * time.Millisecond) // Poll every 500ms
-			defer ticker.Stop()
-
-			for {
-				select {
-				case <-ctx.Done():
-					errorCh <- ctx.Err()
-					return
-				case <-ticker.C:
-					objects, err := extractJSONObjects(body)
-					if err != nil {
-						errorCh <- err
-						return
-					}
-
-					var response questions.Questions
-					for _, object := range objects {
-						part, err := unionjson.JSONUnmarshal[questions.Question](object)
-						if err != nil {
-							errorCh <- err
-							return
-						}
-						response = append(response, part)
-					}
-
-					if len(response) == m.numberOfQuestions {
-						questionsCh <- response
-						return
-					}
-
-					req3, err := http.NewRequestWithContext(ctx, http.MethodPost, sessionConfigURL, bytes.NewBuffer(sessionConfigData))
-					if err != nil {
-						errorCh <- err
-						return
-					}
-					req3.Header.Set("Content-Type", "application/json")
-
-					resp3, err := client.Do(req3)
-					if err != nil {
-						errorCh <- err
-						return
-					}
-					defer resp3.Body.Close()
-
-					body, err = io.ReadAll(resp3.Body)
-					if err != nil {
-						errorCh <- err
-						return
-					}
-				}
+		var response questions.Questions
+		for _, object := range objects {
+			part, err := unionjson.JSONUnmarshal[questions.Question](object)
+			if err != nil {
+				return errMsg{err}
 			}
-		}()
+			response = append(response, part)
+		}
 
-		select {
-		case questions := <-questionsCh:
-			return initOkMsg{
-				vocabList:     vocabList,
-				sessionConfig: sessionConfig,
-				questions:     questions,
-			}
-		case err := <-errorCh:
-			return errMsg{fmt.Errorf("failed to get all questions: %w", err)}
+		if len(response) != m.numberOfQuestions {
+			return errMsg{fmt.Errorf("expected %d questions, got %d", m.numberOfQuestions, len(response))}
+		}
+
+		return initOkMsg{
+			vocabList:     vocabList,
+			sessionConfig: sessionConfig,
+			questions:     response,
 		}
 	})
 }

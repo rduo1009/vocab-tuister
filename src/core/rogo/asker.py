@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import random
 from copy import deepcopy
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Final, overload
 
 from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
@@ -43,6 +43,8 @@ if TYPE_CHECKING:
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+MAX_RETRIES: Final[int] = 1000
+
 
 def _pick_ending(endings: Endings) -> tuple[str, Ending]:
     return random.choice(list(endings.items()))
@@ -69,6 +71,9 @@ def ask_question_without_sr(
 
     Raises
     ------
+    RuntimeError
+        If a question cannot be created with the current vocab list and
+        settings.
     InvalidSettingsError
         If the settings in `settings` are invalid.
     """
@@ -83,72 +88,79 @@ def ask_question_without_sr(
         raise InvalidSettingsError("No question type has been enabled.")
 
     for _ in range(amount):
-        chosen_word: _Word = random.choice(vocab)
-        filtered_endings: Endings = filter_endings(
-            chosen_word.endings, settings
-        )
-        if not filtered_endings:
-            continue
+        retries = 0
+        while retries < MAX_RETRIES:
+            chosen_word: _Word = random.choice(vocab)
+            filtered_endings: Endings = filter_endings(
+                chosen_word.endings, settings
+            )
+            if not filtered_endings:
+                retries += 1
+                continue
 
-        question_type: QuestionClasses = set_choice(filtered_questions)
+            question_type: QuestionClasses = set_choice(filtered_questions)
 
-        logger.info(
-            "Creating new question of type %s with word '%s'.",
-            question_type.value,
-            chosen_word,
-        )
+            logger.debug(
+                "Creating new question of type %s with word '%s'.",
+                question_type.value,
+                chosen_word,
+            )
 
-        # TODO: if ever using mypyc, make a new variable for every type
-        # for now, any type to allow variable to be reused
-        output: Question | None
-        match question_type:
-            case QuestionClasses.TYPEIN_ENGTOLAT:
-                if output := _generate_typein_engtolat(
-                    chosen_word, filtered_endings
-                ):
-                    yield output
-                else:
-                    continue
+            output: Question | None
+            match question_type:
+                case QuestionClasses.TYPEIN_ENGTOLAT:
+                    output = _generate_typein_engtolat(
+                        chosen_word, filtered_endings
+                    )
 
-            case QuestionClasses.TYPEIN_LATTOENG:
-                if output := _generate_typein_lattoeng(
-                    chosen_word, filtered_endings
-                ):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.TYPEIN_LATTOENG:
+                    output = _generate_typein_lattoeng(
+                        chosen_word, filtered_endings
+                    )
 
-            case QuestionClasses.PARSEWORD_LATTOCOMP:
-                if output := _generate_parse(chosen_word, filtered_endings):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PARSEWORD_LATTOCOMP:
+                    output = _generate_parse(chosen_word, filtered_endings)
 
-            case QuestionClasses.PARSEWORD_COMPTOLAT:
-                if output := _generate_inflect(chosen_word, filtered_endings):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PARSEWORD_COMPTOLAT:
+                    output = _generate_inflect(chosen_word, filtered_endings)
 
-            case QuestionClasses.PRINCIPAL_PARTS:
-                if output := _generate_principal_parts_question(chosen_word):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PRINCIPAL_PARTS:
+                    output = _generate_principal_parts_question(chosen_word)
 
-            case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
-                yield _generate_multiplechoice_engtolat(
-                    vocab,
+                case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
+                    output = _generate_multiplechoice_engtolat(
+                        vocab,
+                        chosen_word,
+                        settings["number-multiplechoice-options"],
+                    )
+
+                case QuestionClasses.MULTIPLECHOICE_LATTOENG:
+                    output = _generate_multiplechoice_lattoeng(
+                        vocab,
+                        chosen_word,
+                        settings["number-multiplechoice-options"],
+                    )
+
+            if output is not None:
+                logger.info(
+                    "Creating question of type %s with word '%s' succeeded.",
+                    question_type.value,
                     chosen_word,
-                    settings["number-multiplechoice-options"],
                 )
 
-            case QuestionClasses.MULTIPLECHOICE_LATTOENG:
-                yield _generate_multiplechoice_lattoeng(
-                    vocab,
-                    chosen_word,
-                    settings["number-multiplechoice-options"],
-                )
+                yield output
+                break
+
+            retries += 1
+            logger.debug(
+                "Creating question of type %s with word '%s' failed.",
+                question_type.value,
+                chosen_word,
+            )
+        else:
+            raise RuntimeError(
+                f"Failed to generate a valid question after {MAX_RETRIES} retries"
+            )
 
 
 def _pick_ending_from_multipleendings(ending: Ending) -> str:
