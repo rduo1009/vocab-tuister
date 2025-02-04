@@ -7,7 +7,6 @@ import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
 import lemminflect
-from inflect import engine
 
 from ..accido.misc import Case, ComponentsType, Number
 from .exceptions import InvalidComponentsError, InvalidWordError
@@ -39,6 +38,7 @@ if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
     # Monkeypatch typeguard, as not supported with pyinstaller
     _sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
 
+from inflect import engine
 
 # Distinguish from the lemminflect module
 pluralinflect = engine()  # sourcery skip: avoid-global-variables
