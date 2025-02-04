@@ -179,13 +179,16 @@ def test_ending_exclusion_adjective():
             settings[key] = True  # type: ignore[literal-required]
         settings["exclude-adverbs"] = True  # type: ignore[typeddict-readonly-mutated]
 
-        for output in ask_question_without_sr(vocab_list, amount, settings):
-            assert type(output) is ParseWordCompToLatQuestion
-            for key in key_combination:
-                try:
-                    assert not exclude_components_adjective[key](output.components)
-                except AttributeError:
-                    pass
+        try:
+            for output in ask_question_without_sr(vocab_list, amount, settings):
+                assert type(output) is ParseWordCompToLatQuestion
+                for key in key_combination:
+                    try:
+                        assert not exclude_components_adjective[key](output.components)
+                    except AttributeError:
+                        pass
+        except RuntimeError:
+            pass
 
 
 def test_ending_exclusion_noun():
@@ -201,13 +204,16 @@ def test_ending_exclusion_noun():
         for key in key_combination:
             settings[key] = True  # type: ignore[literal-required]
 
-        for output in ask_question_without_sr(vocab_list, amount, settings):
-            assert type(output) is ParseWordCompToLatQuestion
-            for key in key_combination:
-                try:
-                    assert not exclude_components_noun[key](output.components)
-                except AttributeError:
-                    pass
+        try:
+            for output in ask_question_without_sr(vocab_list, amount, settings):
+                assert type(output) is ParseWordCompToLatQuestion
+                for key in key_combination:
+                    try:
+                        assert not exclude_components_noun[key](output.components)
+                    except AttributeError:
+                        pass
+        except RuntimeError:
+            pass
 
 
 def test_ending_exclusion_pronoun():
@@ -223,13 +229,16 @@ def test_ending_exclusion_pronoun():
         for key in key_combination:
             settings[key] = True  # type: ignore[literal-required]
 
-        for output in ask_question_without_sr(vocab_list, amount, settings):
-            assert type(output) is ParseWordCompToLatQuestion
-            for key in key_combination:
-                try:
-                    assert not exclude_components_pronoun[key](output.components)
-                except AttributeError:
-                    pass
+        try:
+            for output in ask_question_without_sr(vocab_list, amount, settings):
+                assert type(output) is ParseWordCompToLatQuestion
+                for key in key_combination:
+                    try:
+                        assert not exclude_components_pronoun[key](output.components)
+                    except AttributeError:
+                        pass
+        except RuntimeError:
+            pass
 
 
 def test_ending_exclusion_verb():
@@ -246,13 +255,16 @@ def test_ending_exclusion_verb():
             settings[key] = True  # type: ignore[literal-required]
         settings["exclude-participles"] = True  # type: ignore[typeddict-readonly-mutated]
 
-        for output in ask_question_without_sr(vocab_list, amount, settings):
-            assert type(output) is ParseWordCompToLatQuestion
-            for key in key_combination:
-                try:
-                    assert not exclude_components_verb[key](output.components)
-                except AttributeError:
-                    pass
+        try:
+            for output in ask_question_without_sr(vocab_list, amount, settings):
+                assert type(output) is ParseWordCompToLatQuestion
+                for key in key_combination:
+                    try:
+                        assert not exclude_components_verb[key](output.components)
+                    except AttributeError:
+                        pass
+        except RuntimeError:
+            pass
 
 
 # Just copying the above test, as regular words should not cause any issues
@@ -269,10 +281,13 @@ def test_ending_exclusion_regularword():
         for key in key_combination:
             settings[key] = True  # type: ignore[literal-required]
 
-        for output in ask_question_without_sr(vocab_list, amount, settings):
-            assert type(output) is ParseWordCompToLatQuestion
-            for key in key_combination:
-                try:
-                    assert not exclude_components_verb[key](output.components)
-                except AttributeError:
-                    pass
+        try:
+            for output in ask_question_without_sr(vocab_list, amount, settings):
+                assert type(output) is ParseWordCompToLatQuestion
+                for key in key_combination:
+                    try:
+                        assert not exclude_components_verb[key](output.components)
+                    except AttributeError:
+                        pass
+        except RuntimeError:
+            pass

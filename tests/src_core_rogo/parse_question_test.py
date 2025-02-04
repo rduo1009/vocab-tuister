@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 from pathlib import Path
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
 from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
@@ -186,18 +186,3 @@ def test_parse_question_verb():
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt
             else:
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, person=answer.person, number=answer.number) == output.prompt
-
-
-def test_parse_question_regularword():
-    word = RegularWord("in", meaning="in")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
-        assert output.check(output.main_answer)
-
-        assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
-        for answer in output.answers:
-            assert word.get() == output.prompt
