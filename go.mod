@@ -9,7 +9,7 @@ require (
 	github.com/elewis787/boa v0.1.2
 	github.com/spf13/cobra v1.8.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
-	golang.org/x/term v0.28.0
+	golang.org/x/term v0.29.0
 )
 
 require (
@@ -43,7 +43,7 @@ require (
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 )
 
