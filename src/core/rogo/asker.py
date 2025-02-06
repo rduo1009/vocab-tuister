@@ -244,6 +244,7 @@ def _generate_typein_engtolat(
             if isinstance(ending, str):
                 answers.add(ending)
             else:
+                assert isinstance(ending, MultipleEndings)
                 answers.update(ending.get_all())
 
     # Adjectives all translate the same if they have the same degree
