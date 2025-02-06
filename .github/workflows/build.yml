@@ -3,7 +3,7 @@ on: workflow_dispatch
 
 jobs:
   build:
-    name: Build for Linux on x86_64
+    name: Build project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
