@@ -34,11 +34,48 @@ else
     fi
 fi
 
-echo -n "Do you want to reinstall all deps? (Y/n) "
-read -r response
-echo
-if [[ -z "$response" || "$response" == "y" || "$response" == "Y" ]]; then
-    poetry install --sync
+if [[ -n "$target_arch" ]]; then
+    clientbin_name="darwin-$target_arch"
 else
-    poetry install --only main --sync
+    case "$(uname -s)" in
+        Darwin)
+            arch=$(uname -m)
+            if [[ "$arch" == "arm64" ]]; then
+                clientbin_name="darwin-arm64"
+            else
+                clientbin_name="darwin-x86_64"
+            fi
+            ;;
+        Linux)
+            arch=$(uname -m)
+            if [[ "$arch" == "aarch64" ]]; then
+                clientbin_name="linux-aarch64"
+            else
+                clientbin_name="linux-x86_64"
+            fi
+            ;;
+        MINGW*|CYGWIN*|MSYS*)
+            clientbin_name="windows"
+            ;;
+        *)
+            echo "Unknown OS"
+            exit 1
+            ;;
+    esac
 fi
+
+go mod tidy
+go generate -x src/generate.go
+go build \
+    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
+    -o "./dist/vocab-tuister-$clientbin_name" \
+    ./src/main.go
+
+# echo -n "Do you want to reinstall all deps? (Y/n) "
+# read -r response
+# echo
+# if [[ -z "$response" || "$response" == "y" || "$response" == "Y" ]]; then
+#     poetry install --sync
+# else
+#     poetry install --only main --sync
+# fi

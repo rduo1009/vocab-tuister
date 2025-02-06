@@ -2,11 +2,18 @@ name: build-python
 on: workflow_dispatch
 
 jobs:
-  build-linux-x86_64:
+  build:
     name: Build for Linux on x86_64
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [
+            ubuntu-20.04,
+            ubuntu-22.04-arm, # ubuntu-20.04-arm not supported?
+            windows-2019,
+            macos-13-large,
+            macos-13-xlarge,
+          ]
         python:
           - 3.13.1
 
@@ -30,15 +37,23 @@ jobs:
 
       - name: Setup project
         run: |
-          pwd
           python3.13 -m venv .venv
           source .venv/bin/activate
 
       - name: Build project
+        if: ${{ (! matrix.os == 'macos-13-xlarge') || (! matrix.os == 'macos-13-large') }}
         run: poe build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4.4.3
+      - name: Build project
+        if: ${{ matrix.os == 'macos-13-xlarge' }}
+        run: poe build --target-arch arm64
+
+      - name: Build project
+        if: ${{ matrix.os == 'macos-13-large' }}
+        run: poe build --target-arch x86_64
+
+      - name: Release
+        uses: softprops/action-gh-release@v2.2.1
         with:
-          name: linux-x86_64-artifact
-          path: dist/
+          files: |
+            dist/*
