@@ -960,7 +960,7 @@ class Adjective(_Word):
             assert termination is not None
 
             return Adjective(
-                *self._principal_parts,
+                *principal_parts,
                 termination=termination,
                 declension="3",
                 meaning=meaning,

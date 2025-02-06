@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 from pathlib import Path
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
 from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
@@ -179,25 +179,6 @@ def test_inflect_question_pronoun():
 
 def test_inflect_question_verb():
     word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
-        assert output.check(output.main_answer)
-
-        assert output.main_answer in word.endings.values()
-        assert output.main_answer in output.answers
-
-        for answer in output.answers:
-            assert answer in word.endings.values()
-            assert output.components in word.find(answer)
-
-        assert output.prompt == str(word)
-
-
-def test_inflect_question_regularword():
-    word = RegularWord("in", meaning="in")
     vocab_list = VocabList([word])
     amount = 500
 

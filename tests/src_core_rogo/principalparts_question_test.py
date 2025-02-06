@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 from pathlib import Path
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
 from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
@@ -192,11 +192,3 @@ def test_principalparts_verb():
 
         assert output.prompt == "traho"
         assert output.principal_parts == ("traho", "trahere", "traxi")
-
-
-def test_principalparts_regularword():
-    word = RegularWord("in", meaning="in")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    assert not tuple(ask_question_without_sr(vocab_list, amount, settings))

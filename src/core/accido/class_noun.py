@@ -127,6 +127,15 @@ class Noun(_Word):
             self.declension = 0
             return
 
+        if not gender:
+            raise InvalidInputError(
+                f"Noun '{nominative}' is not irregular but gender not provided"
+            )
+        if not genitive:
+            raise InvalidInputError(
+                f"Noun '{nominative}' is not irregular but genitive not provided"
+            )
+
         self._find_declension()
 
         self.endings = self._determine_endings()
@@ -363,7 +372,7 @@ class Noun(_Word):
     def __str__(self) -> str:
         return (
             f"{self.meaning}: {self.nominative}, "
-            f"{self.genitive}, ({Gender(self.gender).shorthand})"
+            f"{self.genitive}, ({self.gender.shorthand})"
         )
 
     def __add__(self, other: object) -> Noun:

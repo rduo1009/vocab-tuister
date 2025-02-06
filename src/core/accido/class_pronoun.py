@@ -73,9 +73,9 @@ class Pronoun(_Word):
         self.meaning: Meaning = meaning
 
         # HACK: hopefully this is the case!
-        assert type(self.endings["Pmnomsg"]) is str
-        assert type(self.endings["Pfnomsg"]) is str
-        assert type(self.endings["Pnnomsg"]) is str
+        assert isinstance(self.endings["Pmnomsg"], str)
+        assert isinstance(self.endings["Pfnomsg"], str)
+        assert isinstance(self.endings["Pnnomsg"], str)
 
         self.mascnom: str = self.endings["Pmnomsg"]
         self.femnom: str = self.endings["Pfnomsg"]

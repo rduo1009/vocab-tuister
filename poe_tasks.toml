@@ -3,8 +3,12 @@ shell = "./scripts/coverage.sh"
 help = "Run coverage on the project."
 
 [tool.poe.tasks.build]
-cmd = "poetry build"
+cmd = "./scripts/build.sh"
 help = "Build the project."
+args = [
+    { name = "debug", default = false, type = "boolean", help = "Build the project into a folder instead of a single file." },
+    { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
+]
 
 [tool.poe.tasks.test]
 cmd = "tox --parallel"

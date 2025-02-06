@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import random
 from copy import deepcopy
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Final, overload
 
 from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
@@ -32,7 +32,7 @@ from .question_classes import (
 from .rules import filter_endings, filter_questions, filter_words
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Generator, Iterable
 
     from ..accido.endings import _Word
     from ..accido.misc import EndingComponents
@@ -43,9 +43,7 @@ if TYPE_CHECKING:
 
 logger: logging.Logger = logging.getLogger(__name__)
 
-
-def _pick_ending(endings: Endings) -> tuple[str, Ending]:
-    return random.choice(list(endings.items()))
+MAX_RETRIES: Final[int] = 1000
 
 
 def ask_question_without_sr(
@@ -69,6 +67,9 @@ def ask_question_without_sr(
 
     Raises
     ------
+    RuntimeError
+        If a question cannot be created with the current vocab list and
+        settings.
     InvalidSettingsError
         If the settings in `settings` are invalid.
     """
@@ -83,158 +84,155 @@ def ask_question_without_sr(
         raise InvalidSettingsError("No question type has been enabled.")
 
     for _ in range(amount):
-        chosen_word: _Word = random.choice(vocab)
-        filtered_endings: Endings = filter_endings(
-            chosen_word.endings, settings
-        )
-        if not filtered_endings:
-            continue
+        retries = 0
+        while retries < MAX_RETRIES:
+            chosen_word: _Word = random.choice(vocab)
+            filtered_endings: Endings = filter_endings(
+                chosen_word.endings, settings
+            )
+            if not filtered_endings:
+                retries += 1
+                continue
 
-        question_type: QuestionClasses = set_choice(filtered_questions)
+            question_type: QuestionClasses = set_choice(filtered_questions)
 
-        logger.info(
-            "Creating new question of type %s with word '%s'.",
-            question_type.value,
-            chosen_word,
-        )
+            logger.debug(
+                "Creating new question of type %s with word '%s'.",
+                question_type.value,
+                chosen_word,
+            )
 
-        # TODO: if ever using mypyc, make a new variable for every type
-        # for now, any type to allow variable to be reused
-        output: Question | None
-        match question_type:
-            case QuestionClasses.TYPEIN_ENGTOLAT:
-                if output := _generate_typein_engtolat(
-                    chosen_word, filtered_endings
-                ):
-                    yield output
-                else:
-                    continue
+            output: Question | None
+            match question_type:
+                case QuestionClasses.TYPEIN_ENGTOLAT:
+                    output = _generate_typein_engtolat(
+                        chosen_word, filtered_endings
+                    )
 
-            case QuestionClasses.TYPEIN_LATTOENG:
-                if output := _generate_typein_lattoeng(
-                    chosen_word, filtered_endings
-                ):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.TYPEIN_LATTOENG:
+                    output = _generate_typein_lattoeng(
+                        chosen_word, filtered_endings
+                    )
 
-            case QuestionClasses.PARSEWORD_LATTOCOMP:
-                if output := _generate_parse(chosen_word, filtered_endings):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PARSEWORD_LATTOCOMP:
+                    output = _generate_parse(chosen_word, filtered_endings)
 
-            case QuestionClasses.PARSEWORD_COMPTOLAT:
-                if output := _generate_inflect(chosen_word, filtered_endings):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PARSEWORD_COMPTOLAT:
+                    output = _generate_inflect(chosen_word, filtered_endings)
 
-            case QuestionClasses.PRINCIPAL_PARTS:
-                if output := _generate_principal_parts_question(chosen_word):
-                    yield output
-                else:
-                    continue
+                case QuestionClasses.PRINCIPAL_PARTS:
+                    output = _generate_principal_parts_question(chosen_word)
 
-            case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
-                yield _generate_multiplechoice_engtolat(
-                    vocab,
+                case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
+                    output = _generate_multiplechoice_engtolat(
+                        vocab,
+                        chosen_word,
+                        settings["number-multiplechoice-options"],
+                    )
+
+                case QuestionClasses.MULTIPLECHOICE_LATTOENG:
+                    output = _generate_multiplechoice_lattoeng(
+                        vocab,
+                        chosen_word,
+                        settings["number-multiplechoice-options"],
+                    )
+
+            if output is not None:
+                logger.info(
+                    "Creating question of type %s with word '%s' succeeded.",
+                    question_type.value,
                     chosen_word,
-                    settings["number-multiplechoice-options"],
                 )
 
-            case QuestionClasses.MULTIPLECHOICE_LATTOENG:
-                yield _generate_multiplechoice_lattoeng(
-                    vocab,
-                    chosen_word,
-                    settings["number-multiplechoice-options"],
-                )
+                yield output
+                break
+
+            retries += 1
+            logger.debug(
+                "Creating question of type %s with word '%s' failed.",
+                question_type.value,
+                chosen_word,
+            )
+        else:
+            raise RuntimeError(
+                f"Failed to generate a valid question after {MAX_RETRIES} retries"
+            )
+
+
+def _pick_ending(endings: Endings) -> tuple[str, Ending]:
+    return random.choice(list(endings.items()))
 
 
 def _pick_ending_from_multipleendings(ending: Ending) -> str:
-    if type(ending) is MultipleEndings:
+    if isinstance(ending, MultipleEndings):
         return random.choice(ending.get_all())
 
-    assert type(ending) is str
     return ending
 
 
-def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
+def _generate_typein_engtolat(
     chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInEngToLatQuestion | None:
+    # Pick ending, getting the ending dict key to the ending as well
     ending_components_key: str
     chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
-
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
+    # Using the dict key, create an `EndingComponents`
     ending_components: EndingComponents = chosen_word.create_components(
         ending_components_key
     )
 
-    verb_subjunctive: bool = (  # not supported with this question
-        type(chosen_word) is Verb
+    # Unsupported endings
+    # Subjunctives cannot be translated to English on their own
+    verb_subjunctive: bool = (
+        isinstance(chosen_word, Verb)
         and ending_components.mood == Mood.SUBJUNCTIVE
     )
 
-    noun_accusative_vocative: bool = (  # considered same as nominative
-        type(chosen_word) is Noun
-        and ending_components.case in {Case.ACCUSATIVE, Case.VOCATIVE}
+    if verb_subjunctive:
+        return None
+
+    # Double-up endings
+    noun_nom_acc_voc: bool = isinstance(
+        chosen_word, Noun
+    ) and ending_components.case in {
+        Case.NOMINATIVE,
+        Case.ACCUSATIVE,
+        Case.VOCATIVE,
+    }
+
+    adjective_not_adverb_flag: bool = (
+        isinstance(chosen_word, Adjective)
+        and ending_components.subtype != "adverb"
     )
 
-    adjective_flag: bool = hasattr(ending_components, "case")
-    adjective_nominative: bool = (  # adjectives are all same
-        type(chosen_word) is Adjective
-        and adjective_flag
-        and ending_components.case != Case.NOMINATIVE
-        and ending_components.number != Number.SINGULAR
-    )
-
-    participle_nominative: bool = (
-        type(chosen_word) is Verb
+    participle_flag: bool = (
+        isinstance(chosen_word, Verb)
         and ending_components.subtype == "participle"
-        and ending_components.case != Case.NOMINATIVE
-        and ending_components.number != Number.SINGULAR
-        and ending_components.gender == Gender.MASCULINE
     )
 
-    verb_second_plural: bool = (  # plural 2nd person is same as singular
-        type(chosen_word) is Verb
+    verb_second_person_flag: bool = (
+        isinstance(chosen_word, Verb)
         and ending_components.subtype not in {"infinitive", "participle"}
-        and ending_components.number == Number.PLURAL
         and ending_components.person == 2
     )
 
-    pronoun_flag: bool = type(chosen_word) is Pronoun or (
-        type(chosen_word) is Noun and ending_components.subtype == "pronoun"
-    )
-    pronoun_not_masculine: bool = (
-        pronoun_flag and ending_components.gender != Gender.MASCULINE
-    )
-
-    if (
-        verb_subjunctive  # noqa: PLR0916
-        or noun_accusative_vocative
-        or adjective_nominative
-        or participle_nominative
-        or verb_second_plural
-        or pronoun_not_masculine
-    ):
-        return None
-
-    # Get the best meaning if it is a MultipleMeanings, or
-    # just the meaning if it is a string
-    raw_meaning: str = str(chosen_word.meaning)
-    inflected_meaning: str = set_choice(
-        find_inflection(raw_meaning, components=ending_components)
+    pronoun_flag: bool = isinstance(chosen_word, Pronoun) or (
+        isinstance(chosen_word, Noun)
+        and ending_components.subtype == "pronoun"
     )
 
     answers: set[str] = {chosen_ending}
-    if (  # nominative, accusative and vocative considered same
-        type(chosen_word) is Noun and ending_components.case == Case.NOMINATIVE
-    ):
-        answers = {chosen_ending}
+
+    # Nominative, vocative, accusative nouns translate the same way
+    # NOTE: Might change later? Give accusative nouns a separate meaning
+    if noun_nom_acc_voc:
         endings_to_add: tuple[Ending | None, ...] = (
+            chosen_word.get(
+                case=Case.NOMINATIVE, number=ending_components.number
+            ),
             chosen_word.get(
                 case=Case.ACCUSATIVE, number=ending_components.number
             ),
@@ -242,68 +240,62 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
                 case=Case.VOCATIVE, number=ending_components.number
             ),
         )
-        for ending in endings_to_add:
-            if type(ending) is str:
+        for ending in filter(None, endings_to_add):
+            if isinstance(ending, str):
                 answers.add(ending)
-            elif type(ending) is MultipleEndings:
+            else:
+                assert isinstance(ending, MultipleEndings)
                 answers.update(ending.get_all())
 
-    elif type(chosen_word) is Adjective and adjective_flag:
+    # Adjectives all translate the same if they have the same degree
+    elif adjective_not_adverb_flag:
         answers = {
             item
             for key, value in chosen_word.endings.items()
             if key.startswith("A")
-            and key[1:4] == ending_components.degree.shorthand
-            # HACK: A little weird but it works (avoids unpacking)
-            for item in (
+            and key[1:4] == ending_components.degree.shorthand  # same degree
+            for item in (  # unpack `MultipleEndings`
                 value.get_all()
                 if isinstance(value, MultipleEndings)
                 else [value]
             )
         }
 
-        if ending_components.number == Number.PLURAL:
-            chosen_ending = str(  # str to get the main ending
-                chosen_word.get(
-                    case=Case.NOMINATIVE,
-                    number=Number.SINGULAR,
-                    gender=Gender.MASCULINE,
-                    degree=ending_components.degree,
-                )
+        chosen_ending = str(  # __str__ returns main ending
+            chosen_word.get(
+                case=Case.NOMINATIVE,
+                number=Number.SINGULAR,
+                gender=Gender.MASCULINE,
+                degree=ending_components.degree,
             )
+        )
 
-    elif (
-        type(chosen_word) is Verb and ending_components.subtype == "participle"
-    ):
+    # All participles translate the same way
+    elif participle_flag:
         answers = {
             item
             for key, value in chosen_word.endings.items()
             if key[7:10] == Mood.PARTICIPLE.shorthand
-            for item in (
+            for item in (  # unpack `MultipleEndings`
                 value.get_all()
                 if isinstance(value, MultipleEndings)
                 else [value]
             )
         }
 
-        if ending_components.number == Number.PLURAL:
-            chosen_ending = str(  # str to get the main ending
-                chosen_word.get(
-                    tense=ending_components.tense,
-                    voice=ending_components.voice,
-                    mood=Mood.PARTICIPLE,
-                    number=Number.SINGULAR,
-                    participle_case=Case.NOMINATIVE,
-                    participle_gender=Gender.MASCULINE,
-                )
+        chosen_ending = str(  # __str__ returns main ending
+            chosen_word.get(
+                tense=ending_components.tense,
+                voice=ending_components.voice,
+                mood=Mood.PARTICIPLE,
+                number=Number.SINGULAR,
+                participle_case=Case.NOMINATIVE,
+                participle_gender=Gender.MASCULINE,
             )
+        )
 
-    elif (
-        type(chosen_word) is Verb
-        and ending_components.subtype not in {"infinitive", "participle"}
-        and ending_components.person == 2
-    ):
-        # HACK: messy but works
+    # English doesn't have 2nd person plural, so it's the same as singular
+    elif verb_second_person_flag:
         if second_person_plural := chosen_word.get(
             tense=ending_components.tense,
             voice=ending_components.voice,
@@ -312,12 +304,11 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             person=2,
         ):
             temp_second_person_plural: tuple[str, ...]
-            if type(second_person_plural) is MultipleEndings:
+            if isinstance(second_person_plural, MultipleEndings):
                 temp_second_person_plural = tuple(
                     second_person_plural.get_all()
                 )
             else:
-                assert type(second_person_plural) is str
                 temp_second_person_plural = (second_person_plural,)
 
             answers = {
@@ -327,6 +318,7 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
         else:
             answers = {chosen_ending}
 
+    # All pronouns translate the same way if same case and number
     elif pronoun_flag:
 
         @overload
@@ -340,10 +332,9 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             if ending is None:
                 return ()
 
-            if type(ending) is MultipleEndings:
+            if isinstance(ending, MultipleEndings):
                 return tuple(ending.get_all())
 
-            assert type(ending) is str
             return (ending,)
 
         answers = {
@@ -370,6 +361,20 @@ def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             ),
         }
 
+        chosen_ending = str(
+            chosen_word.get(
+                case=ending_components.case,
+                number=ending_components.number,
+                gender=Gender.MASCULINE,
+            )
+        )
+
+    # Determine meaning
+    raw_meaning: str = str(chosen_word.meaning)  # __str__ returns main ending
+    inflected_meaning: str = set_choice(
+        find_inflection(raw_meaning, components=ending_components)
+    )
+
     return TypeInEngToLatQuestion(
         prompt=inflected_meaning, main_answer=chosen_ending, answers=answers
     )
@@ -379,42 +384,40 @@ def _generate_typein_lattoeng(
     chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInLatToEngQuestion | None:
     chosen_ending: Ending
+    # Pick ending
     _, chosen_ending = _pick_ending(filtered_endings)
-
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
-    inflected_meanings: set[str] = set()
-
-    # to allow for multiple endingcomponents for one ending
-    # e.g. 'puellae' could be nominative plural or genitive singular
+    # Find all possible `EndingComponents` for the ending
+    # e.g. 'puellae' could be 'girls' or 'of the girl'
     all_ending_components: list[EndingComponents] = chosen_word.find(
         chosen_ending
     )
-    # TODO: create function get_main_inflection for each word type
-    # then use it here
     possible_main_answers: set[str] = set()
+    inflected_meanings: set[str] = set()
 
-    def _generate_inflections(ending_components: EndingComponents) -> None:
-        verb_subjunctive: bool = (  # not supported with this question
-            type(chosen_word) is Verb
+    for ending_components in all_ending_components:
+        verb_subjunctive: bool = (
+            isinstance(chosen_word, Verb)
             and ending_components.mood == Mood.SUBJUNCTIVE
         )
-        # if the mood was subjunctive, nothing happens
-        if verb_subjunctive:
-            return
 
-        raw_meanings: Meaning = chosen_word.meaning
+        # Subjunctives cannot be translated to English on their own
+        if verb_subjunctive:
+            continue
+
+        # Find uninflected meanings
+        raw_meaning: Meaning = chosen_word.meaning
         main_meaning: str
         meanings: set[str]
-        if type(raw_meanings) is MultipleMeanings:
-            # using the fact that __str__ returns the main meaning
-            main_meaning = str(raw_meanings)
-            meanings = set(raw_meanings.meanings)
+        if isinstance(raw_meaning, MultipleMeanings):
+            main_meaning = str(raw_meaning)  # __str__ returns the main meaning
+            meanings = set(raw_meaning.meanings)
         else:
-            assert type(raw_meanings) is str
-            meanings = {raw_meanings}
-            main_meaning = raw_meanings
+            main_meaning = raw_meaning
+            meanings = {raw_meaning}
 
+        # Inflect meanings
         meaning: str
         for meaning in meanings:
             inflected_meanings.update(
@@ -422,17 +425,17 @@ def _generate_typein_lattoeng(
             )
 
         possible_main_answers.add(
-            set_choice(
-                find_inflection(main_meaning, components=ending_components)
+            find_inflection(
+                main_meaning, components=ending_components, main=True
             )
         )
 
-    for ending_components in all_ending_components:
-        _generate_inflections(ending_components=ending_components)
-
+    # If the loop went to `continue` every time (i.e. the ending was subjunctive)
     if not possible_main_answers:
         return None
-    main_answer: str = random.choice(tuple(possible_main_answers))
+
+    # Pick a main answer
+    main_answer: str = set_choice(possible_main_answers)
 
     return TypeInLatToEngQuestion(
         prompt=chosen_ending,
@@ -444,23 +447,24 @@ def _generate_typein_lattoeng(
 def _generate_parse(
     chosen_word: _Word, filtered_endings: Endings
 ) -> ParseWordLatToCompQuestion | None:
-    if type(chosen_word) is RegularWord:
+    # `RegularWord` is not supported (cannot be declined)
+    if isinstance(chosen_word, RegularWord):
         return None
 
-    ending_components_key: str
+    # Pick ending
     chosen_ending: Ending
-    ending_components_key, chosen_ending = _pick_ending(filtered_endings)
-
-    main_ending_components: EndingComponents = chosen_word.create_components(
-        ending_components_key
-    )
-
+    _, chosen_ending = _pick_ending(filtered_endings)
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
+    # Find possible `EndingComponents`
     all_ending_components: set[EndingComponents] = set(
         chosen_word.find(chosen_ending)
     )
-    assert main_ending_components in all_ending_components
+
+    # Pick main ending components
+    main_ending_components: EndingComponents = set_choice(
+        all_ending_components
+    )
 
     return ParseWordLatToCompQuestion(
         prompt=chosen_ending,
@@ -473,27 +477,31 @@ def _generate_parse(
 def _generate_inflect(
     chosen_word: _Word, filtered_endings: Endings
 ) -> ParseWordCompToLatQuestion | None:
-    if type(chosen_word) is RegularWord:
+    # `RegularWord` is not supported (cannot be declined)
+    if isinstance(chosen_word, RegularWord):
         return None
 
+    # Pick ending, getting the ending dict key to the ending as well
     ending_components_key: str
     chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
+    # Find `EndingComponents` from dict key
     ending_components: EndingComponents = chosen_word.create_components(
         ending_components_key
     )
 
+    # Convert `chosen_ending` to string if necessary
     main_answer: str
     answers: set[str]
-    if type(chosen_ending) is MultipleEndings:
+    if isinstance(chosen_ending, MultipleEndings):
+        # If the `MutipleEndings` has a `regular` attribute then use that
         if hasattr(chosen_ending, "regular"):
             main_answer = chosen_ending.regular
         else:
             main_answer = random.choice(chosen_ending.get_all())
         answers = set(chosen_ending.get_all())
     else:
-        assert type(chosen_ending) is str
         main_answer = chosen_ending
         answers = {chosen_ending}
 
@@ -508,64 +516,73 @@ def _generate_inflect(
 def _generate_principal_parts_question(
     chosen_word: _Word,
 ) -> PrincipalPartsQuestion | None:
-    if type(chosen_word) is RegularWord:
+    # `RegularWord` is not supported (not principal parts)
+    if isinstance(chosen_word, RegularWord):
         return None
 
+    # Get principal parts
     principal_parts: tuple[str, ...]
-    if type(chosen_word) is Verb:
-        if chosen_word.ppp:
-            principal_parts = (
-                chosen_word.present,
-                chosen_word.infinitive,
-                chosen_word.perfect,
-                chosen_word.ppp,
-            )
-        else:
-            principal_parts = (
-                chosen_word.present,
-                chosen_word.infinitive,
-                chosen_word.perfect,
-            )
-
-    elif type(chosen_word) is Noun:
-        if chosen_word.genitive:
-            principal_parts = (chosen_word.nominative, chosen_word.genitive)
-        else:  # irregular noun
-            return None
-
-    elif type(chosen_word) is Adjective:
-        match chosen_word.declension:
-            case "212":
+    match chosen_word:
+        case Verb():
+            if chosen_word.ppp:
                 principal_parts = (
-                    chosen_word.mascnom,
-                    chosen_word.femnom,
-                    chosen_word.neutnom,
+                    chosen_word.present,
+                    chosen_word.infinitive,
+                    chosen_word.perfect,
+                    chosen_word.ppp,
                 )
-            case "3":
-                match chosen_word.termination:
-                    case 1:
-                        principal_parts = (
-                            chosen_word.mascnom,
-                            chosen_word.mascgen,
-                        )
-                    case 2:
-                        principal_parts = (
-                            chosen_word.mascnom,
-                            chosen_word.neutnom,
-                        )
-                    case 3:
-                        principal_parts = (
-                            chosen_word.mascnom,
-                            chosen_word.femnom,
-                            chosen_word.neutnom,
-                        )
+            else:
+                principal_parts = (
+                    chosen_word.present,
+                    chosen_word.infinitive,
+                    chosen_word.perfect,
+                )
 
-    elif type(chosen_word) is Pronoun:
-        principal_parts = (
-            chosen_word.mascnom,
-            chosen_word.femnom,
-            chosen_word.neutnom,
-        )
+        case Noun():
+            if chosen_word.genitive:
+                principal_parts = (
+                    chosen_word.nominative,
+                    chosen_word.genitive,
+                )
+            else:  # irregular noun
+                return None
+
+        case Adjective():
+            match chosen_word.declension:
+                case "212":
+                    principal_parts = (
+                        chosen_word.mascnom,
+                        chosen_word.femnom,
+                        chosen_word.neutnom,
+                    )
+                case "3":
+                    match chosen_word.termination:
+                        case 1:
+                            principal_parts = (
+                                chosen_word.mascnom,
+                                chosen_word.mascgen,
+                            )
+                        case 2:
+                            principal_parts = (
+                                chosen_word.mascnom,
+                                chosen_word.neutnom,
+                            )
+                        case 3:
+                            principal_parts = (
+                                chosen_word.mascnom,
+                                chosen_word.femnom,
+                                chosen_word.neutnom,
+                            )
+
+        case Pronoun():
+            principal_parts = (
+                chosen_word.mascnom,
+                chosen_word.femnom,
+                chosen_word.neutnom,
+            )
+
+        case _:
+            raise TypeError(f"Invalid type: {type(chosen_word)}")
 
     return PrincipalPartsQuestion(
         prompt=principal_parts[0], principal_parts=principal_parts
@@ -575,17 +592,18 @@ def _generate_principal_parts_question(
 def _generate_multiplechoice_engtolat(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
+    # Remove `chosen_word` from copy of `vocab_list`
     vocab_list = deepcopy(vocab_list)  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
 
+    # Get a single meaning if it is `MultipleMeanings`
     meaning: Meaning = chosen_word.meaning
-    if type(meaning) is MultipleMeanings:
+    if isinstance(meaning, MultipleMeanings):
         meaning = random.choice(meaning.meanings)
-    assert type(meaning) is str
 
+    # Find answer and other choices
     answer: str = chosen_word._first  # noqa: SLF001
-
-    other_choices = tuple(
+    other_choices: Generator[str, None, None] = (
         vocab._first  # noqa: SLF001
         for vocab in random.sample(
             vocab_list,
@@ -594,6 +612,7 @@ def _generate_multiplechoice_engtolat(
         )
     )
 
+    # Put together choices
     choices: list[str] = [answer, *other_choices]
     random.shuffle(choices)
 
@@ -607,25 +626,24 @@ def _generate_multiplechoice_lattoeng(
 ) -> MultipleChoiceLatToEngQuestion:
     prompt: str = chosen_word._first  # noqa: SLF001
 
+    # Pick correct choice
     chosen_word_meanings: tuple[str, ...]
-    if type(chosen_word.meaning) is MultipleMeanings:
+    if isinstance(chosen_word.meaning, MultipleMeanings):
         chosen_word_meanings = tuple(chosen_word.meaning.meanings)
     else:
-        assert type(chosen_word.meaning) is str
         chosen_word_meanings = (chosen_word.meaning,)
 
     answer: str = random.choice(chosen_word_meanings)
 
+    # Pick other possible choices
     possible_choices: list[str] = []
     for vocab in vocab_list:
         current_meaning: Meaning = vocab.meaning
-        if type(current_meaning) is str:
+        if isinstance(current_meaning, str):
             if current_meaning in chosen_word_meanings:
                 continue
             possible_choices.append(current_meaning)
         else:
-            assert type(current_meaning) is MultipleMeanings
-
             possible_choices.extend(
                 meaning
                 for meaning in current_meaning.meanings

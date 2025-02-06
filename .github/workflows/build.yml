@@ -1,0 +1,59 @@
+name: build-python
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: Build for Linux on x86_64
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [
+            ubuntu-20.04,
+            ubuntu-22.04-arm, # ubuntu-20.04-arm not supported?
+            windows-2019,
+            macos-13-large,
+            macos-13-xlarge,
+          ]
+        python:
+          - 3.13.1
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          submodules: "recursive"
+
+      - name: Install python
+        uses: gabrielfalcao/pyenv-action@main
+        with:
+          default: "${{ matrix.python }}"
+          command: pip install -U pip # upgrade pip after installing python
+
+      - name: Install deps
+        run: |
+          python3.13 -m pip install pipx
+          pipx install poetry poethepoet
+          pipx inject poetry "poetry-dynamic-versioning[plugin]"
+
+      - name: Setup project
+        run: |
+          python3.13 -m venv .venv
+          source .venv/bin/activate
+
+      - name: Build project
+        if: ${{ (! matrix.os == 'macos-13-xlarge') || (! matrix.os == 'macos-13-large') }}
+        run: poe build
+
+      - name: Build project
+        if: ${{ matrix.os == 'macos-13-xlarge' }}
+        run: poe build --target-arch arm64
+
+      - name: Build project
+        if: ${{ matrix.os == 'macos-13-large' }}
+        run: poe build --target-arch x86_64
+
+      - name: Release
+        uses: softprops/action-gh-release@v2.2.1
+        with:
+          files: |
+            dist/*
