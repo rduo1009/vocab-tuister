@@ -175,78 +175,79 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
 
     # Iterate over copy of list to avoid errors
     for item in deepcopy(vocab):
-        if type(item) is Verb:
-            current_conjugation: Conjugation = item.conjugation
-            conjugation_excluded: bool = (
-                (
-                    settings["exclude-verb-first-conjugation"]
-                    and current_conjugation == 1
+        match item:
+            case Verb():
+                current_conjugation: Conjugation = item.conjugation
+                conjugation_excluded: bool = (
+                    (
+                        settings["exclude-verb-first-conjugation"]
+                        and current_conjugation == 1
+                    )
+                    or (
+                        settings["exclude-verb-second-conjugation"]
+                        and current_conjugation == 2
+                    )
+                    or (
+                        settings["exclude-verb-third-conjugation"]
+                        and current_conjugation == 3
+                    )
+                    or (
+                        settings["exclude-verb-fourth-conjugation"]
+                        and current_conjugation == 4
+                    )
+                    or (
+                        settings["exclude-verb-thirdio-conjugation"]
+                        and current_conjugation == 5
+                    )
+                    or (
+                        settings["exclude-verb-irregular-conjugation"]
+                        and current_conjugation == 0
+                    )
                 )
-                or (
-                    settings["exclude-verb-second-conjugation"]
-                    and current_conjugation == 2
-                )
-                or (
-                    settings["exclude-verb-third-conjugation"]
-                    and current_conjugation == 3
-                )
-                or (
-                    settings["exclude-verb-fourth-conjugation"]
-                    and current_conjugation == 4
-                )
-                or (
-                    settings["exclude-verb-thirdio-conjugation"]
-                    and current_conjugation == 5
-                )
-                or (
-                    settings["exclude-verb-irregular-conjugation"]
-                    and current_conjugation == 0
-                )
-            )
-            if conjugation_excluded:
-                vocab.remove(item)
+                if conjugation_excluded:
+                    vocab.remove(item)
 
-        elif type(item) is Noun:
-            current_declension: NounDeclension = item.declension
-            declension_excluded: bool = (
-                (
-                    settings["exclude-noun-first-declension"]
-                    and current_declension == 1
+            case Noun():
+                current_declension: NounDeclension = item.declension
+                declension_excluded: bool = (
+                    (
+                        settings["exclude-noun-first-declension"]
+                        and current_declension == 1
+                    )
+                    or (
+                        settings["exclude-noun-second-declension"]
+                        and current_declension == 2
+                    )
+                    or (
+                        settings["exclude-noun-third-declension"]
+                        and current_declension == 3
+                    )
+                    or (
+                        settings["exclude-noun-fourth-declension"]
+                        and current_declension == 4
+                    )
+                    or (
+                        settings["exclude-noun-fifth-declension"]
+                        and current_declension == 5
+                    )
+                    or (
+                        settings["exclude-noun-irregular-declension"]
+                        and current_declension == 0
+                    )
                 )
-                or (
-                    settings["exclude-noun-second-declension"]
-                    and current_declension == 2
-                )
-                or (
-                    settings["exclude-noun-third-declension"]
-                    and current_declension == 3
-                )
-                or (
-                    settings["exclude-noun-fourth-declension"]
-                    and current_declension == 4
-                )
-                or (
-                    settings["exclude-noun-fifth-declension"]
-                    and current_declension == 5
-                )
-                or (
-                    settings["exclude-noun-irregular-declension"]
-                    and current_declension == 0
-                )
-            )
-            if declension_excluded:
-                vocab.remove(item)
+                if declension_excluded:
+                    vocab.remove(item)
 
-        elif type(item) is Adjective:
-            current_adj_declension: AdjectiveDeclension = item.declension
-            if (
-                settings["exclude-adjective-212-declension"]
-                and current_adj_declension == "212"
-            ) or (
-                settings["exclude-adjective-third-declension"]
-                and current_adj_declension == "3"
-            ):
-                vocab.remove(item)
+            case Adjective():
+                current_adj_declension: AdjectiveDeclension = item.declension
+                if (
+                    settings["exclude-adjective-212-declension"]
+                    and current_adj_declension == "212"
+                ) or (
+                    settings["exclude-adjective-third-declension"]
+                    and current_adj_declension == "3"
+                ):
+                    vocab.remove(item)
     return vocab
 
 

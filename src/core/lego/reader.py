@@ -35,53 +35,57 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
     new_vocab: list[_Word] = []
 
     for word in vocab_list.vocab:
-        if isinstance(word, RegularWord):
-            new_vocab.append(RegularWord(word.word, meaning=word.meaning))
+        match word:
+            case RegularWord():
+                new_vocab.append(RegularWord(word.word, meaning=word.meaning))
 
-        elif isinstance(word, Verb):
-            new_vocab.append(
-                Verb(
-                    word.present,
-                    word.infinitive,
-                    word.perfect,
-                    word.ppp,
-                    meaning=word.meaning,
-                )
-            )
-
-        elif isinstance(word, Noun):
-            new_vocab.append(
-                Noun(
-                    word.nominative,
-                    word.genitive,
-                    meaning=word.meaning,
-                    gender=word.gender,
-                )
-            )
-
-        elif isinstance(word, Adjective):
-            if word.declension == "212":
+            case Verb():
                 new_vocab.append(
-                    Adjective(
-                        *word._principal_parts,  # noqa: SLF001
-                        declension="212",
-                        meaning=word.meaning,
-                    )
-                )
-            else:
-                assert word.termination is not None
-
-                new_vocab.append(
-                    Adjective(
-                        *word._principal_parts,  # noqa: SLF001
-                        termination=word.termination,
-                        declension="3",
+                    Verb(
+                        word.present,
+                        word.infinitive,
+                        word.perfect,
+                        word.ppp,
                         meaning=word.meaning,
                     )
                 )
 
-        elif isinstance(word, Pronoun):
-            new_vocab.append(Pronoun(word.pronoun, meaning=word.meaning))
+            case Noun():
+                new_vocab.append(
+                    Noun(
+                        word.nominative,
+                        word.genitive,
+                        meaning=word.meaning,
+                        gender=word.gender,
+                    )
+                )
+
+            case Adjective():
+                if word.declension == "212":
+                    new_vocab.append(
+                        Adjective(
+                            *word._principal_parts,  # noqa: SLF001
+                            declension="212",
+                            meaning=word.meaning,
+                        )
+                    )
+                else:
+                    assert word.termination is not None
+
+                    new_vocab.append(
+                        Adjective(
+                            *word._principal_parts,  # noqa: SLF001
+                            termination=word.termination,
+                            declension="3",
+                            meaning=word.meaning,
+                        )
+                    )
+
+            case Pronoun():
+                new_vocab.append(Pronoun(word.pronoun, meaning=word.meaning))
+
+            case _:
+                raise TypeError(f"Invalid type: {type(word)}")
 
     return VocabList(new_vocab)
 
