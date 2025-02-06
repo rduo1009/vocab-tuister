@@ -23,11 +23,9 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Install python
-        uses: gabrielfalcao/pyenv-action@main
+      - uses: actions/setup-python@v5.4.0
         with:
-          default: "${{ matrix.python }}"
-          command: pip install -U pip # upgrade pip after installing python
+          python-version: "3.13.1"
 
       - name: Install deps
         run: |
