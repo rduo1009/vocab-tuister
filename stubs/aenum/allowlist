@@ -124,6 +124,10 @@ aenum._enum.remove_stdlib_integration
 aenum._enum.show_flag_values
 aenum._enum.unique
 aenum._reduce_ex_by_name
+aenum._tuple.NamedTupleMeta.__aliases__
+aenum._tuple.NamedTupleMeta.__fields__
+aenum._tuple.TupleSize
+aenum._tuple.undefined
 aenum.add_stdlib_integration
 aenum.bin
 aenum.enum_property
