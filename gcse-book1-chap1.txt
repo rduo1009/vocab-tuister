@@ -1,0 +1,47 @@
+@ Verbs
+walk: ambulo, ambulare, ambulavi, ambulatus
+love: amo, amare, amavi, amatus
+shout: clamo, clamare, clamavi, clamatus
+work/toil: laboro, laborare, laboravi, laboratus
+sail: navigo, navigare, navigavi, navigatus
+kill: neco, necare, necavi, necatus
+prepare: paro, parare, paravi, paratus
+carry: porto, portare, portavi, portatus
+fight: pugno, pugnare, pugnavi, pugnatus
+greet: saluto, salutare, salutavi, salutatum
+be: sum, esse, fui
+call: voco, vocare, vocavi, vocatus
+
+@ Nouns
+friend: amicus, amici, (m)
+slave-girl: ancilla, ancillae, (f)
+food: cibus, cibi, (m)
+goddess: dea, deae, (f)
+god: deus, dei, (m)
+master: dominus, domini, (m)
+letter: epistula, epistulae, (f)
+horse: equus, equi, (m)
+woman: femina, feminae, (f)
+sword: gladius, gladii, (m)
+garden: hortus, horti, (m)
+# NOTE: change to 'apartment block' later and remove 'insula'
+island/insula/block: insula, insulae, (f)
+messenger: nuntius, nuntii, (m)
+money: pecunia, pecuniae, (f)
+girl: puella, puellae, (f)
+slave: servus, servi, (m)
+house/villa: villa, villae, (f)
+
+@ Regulars
+to/towards: ad
+around: circum
+against: contra
+and: et
+in/into/on/onto: in
+not: non
+now: nunc
+through/along: per
+# NOTE: Workaround for location names
+Rome: Roma
+but: sed
+always: semper

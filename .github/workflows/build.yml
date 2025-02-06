@@ -11,8 +11,8 @@ jobs:
             ubuntu-20.04,
             ubuntu-22.04-arm, # ubuntu-20.04-arm not supported?
             windows-2019,
-            macos-13-large,
-            macos-13-xlarge,
+            macos-13,
+            # macos-13-xlarge,
           ]
         python:
           - 3.13.1
