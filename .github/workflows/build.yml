@@ -36,19 +36,24 @@ jobs:
       - name: Setup project
         run: |
           python3 -m venv .venv
-          source .venv/bin/activate
 
       - name: Build project
         if: ${{ matrix.os != 'macos-13' }}
-        run: poe build
+        run: |
+          source .venv/bin/activate
+          poe build
 
       # - name: Build project
       #   if: ${{ matrix.os == 'macos-13-xlarge' }}
-      #   run: poe build --target-arch arm64
+      #   run: |
+      #     source .venv/bin/activate
+      #     poe build --target-arch arm64
 
       - name: Build project
         if: ${{ matrix.os == 'macos-13' }}
-        run: poe build --target-arch x86_64
+        run: |
+          source .venv/bin/activate
+          poe build --target-arch x86_64
 
       - name: Release
         uses: softprops/action-gh-release@v2.2.1
