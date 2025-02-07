@@ -36,11 +36,12 @@ jobs:
       - name: Setup project
         run: |
           python3 -m venv .venv
+          source .venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Build project
         if: ${{ matrix.os != 'macos-13' }}
         run: |
-          source .venv/bin/activate
           poe build
 
       # - name: Build project
@@ -52,7 +53,6 @@ jobs:
       - name: Build project
         if: ${{ matrix.os == 'macos-13' }}
         run: |
-          source .venv/bin/activate
           poe build --target-arch x86_64
 
       - name: Release
