@@ -1,6 +1,13 @@
 name: build-python
 on: workflow_dispatch
 
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build project
@@ -34,6 +41,14 @@ jobs:
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
       - name: Setup project
+        if: ${{ matrix.os == 'windows-2019' }}
+        run: |
+          python3 -m venv .venv
+          source .venv/Scripts/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+
+      - name: Setup project
+        if: ${{ matrix.os != 'windows-2019' }}
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
