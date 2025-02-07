@@ -39,15 +39,15 @@ jobs:
           source .venv/bin/activate
 
       - name: Build project
-        if: ${{ (! matrix.os == 'macos-13-xlarge') || (! matrix.os == 'macos-13-large') }}
+        if: ${{ matrix.os != 'macos-13' }}
         run: poe build
 
-      - name: Build project
-        if: ${{ matrix.os == 'macos-13-xlarge' }}
-        run: poe build --target-arch arm64
+      # - name: Build project
+      #   if: ${{ matrix.os == 'macos-13-xlarge' }}
+      #   run: poe build --target-arch arm64
 
       - name: Build project
-        if: ${{ matrix.os == 'macos-13-large' }}
+        if: ${{ matrix.os == 'macos-13' }}
         run: poe build --target-arch x86_64
 
       - name: Release
