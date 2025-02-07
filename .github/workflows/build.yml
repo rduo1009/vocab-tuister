@@ -36,7 +36,8 @@ jobs:
 
       - name: Install deps
         run: |
-          python3 -m pip install pipx
+          python3 -m pip install --user pipx
+          pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
