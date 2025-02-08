@@ -1,6 +1,6 @@
 module github.com/rduo1009/vocab-tuister
 
-go 1.23.4
+go 1.23
 
 require (
 	github.com/charmbracelet/bubbles/v2 v2.0.0-alpha.2
