@@ -1,5 +1,8 @@
-name: build-python
-on: workflow_dispatch
+name: build
+on:
+  push:
+    tags:
+      - "v*.*.*-*"
 
 defaults:
   run:
