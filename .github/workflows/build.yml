@@ -53,6 +53,8 @@ jobs:
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
+          go install ./src/_vendor/mkunion/cmd/mkunion
+          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Build project
