@@ -1,16 +1,23 @@
 name: build-python
 on: workflow_dispatch
 
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+
 jobs:
   build:
-    name: Build for Linux on x86_64
+    name: Build project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [
             ubuntu-20.04,
             ubuntu-22.04-arm, # ubuntu-20.04-arm not supported?
-            windows-2019,
+            # windows-2019,
             macos-13,
             # macos-13-xlarge,
           ]
@@ -23,34 +30,55 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Install python
-        uses: gabrielfalcao/pyenv-action@main
+      - uses: actions/setup-python@v5.4.0
         with:
-          default: "${{ matrix.python }}"
-          command: pip install -U pip # upgrade pip after installing python
+          python-version: "3.13.1"
+
+      - uses: actions/setup-go@v5.3.0
+        with:
+          go-version: "1.23.4"
 
       - name: Install deps
         run: |
-          python3.13 -m pip install pipx
+          python3 -m pip install --user pipx
+          pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
       - name: Setup project
+        if: ${{ matrix.os == 'windows-2019' }}
         run: |
-          python3.13 -m venv .venv
+          python3 -m venv .venv
+          source .venv/Scripts/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+
+      - name: Setup project
+        if: ${{ matrix.os != 'windows-2019' }}
+        run: |
+          python3 -m venv .venv
           source .venv/bin/activate
+          go install ./src/_vendor/mkunion/cmd/mkunion
+          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
+          go install github.com/dmarkham/enumer@latest
+          echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Build project
-        if: ${{ (! matrix.os == 'macos-13-xlarge') || (! matrix.os == 'macos-13-large') }}
-        run: poe build
+        if: ${{ matrix.os != 'macos-13' }}
+        run: |
+          poetry config virtualenvs.in-project true
+          poe build
+
+      # - name: Build project
+      #   if: ${{ matrix.os == 'macos-13-xlarge' }}
+      #   run: |
+      #     source .venv/bin/activate
+      #     poe build --target-arch arm64
 
       - name: Build project
-        if: ${{ matrix.os == 'macos-13-xlarge' }}
-        run: poe build --target-arch arm64
-
-      - name: Build project
-        if: ${{ matrix.os == 'macos-13-large' }}
-        run: poe build --target-arch x86_64
+        if: ${{ matrix.os == 'macos-13' }}
+        run: |
+          poetry config virtualenvs.in-project true
+          poe build --target-arch x86_64
 
       - name: Release
         uses: softprops/action-gh-release@v2.2.1

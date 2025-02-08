@@ -15,6 +15,8 @@ options = parser.parse_args()
 if options.target_arch and sys.platform != "darwin":
     raise ValueError("--target-arch is not supported on non-macOS platforms.")
 
+target_arch = None
+
 if sys.platform == "darwin":
     target_arch = options.target_arch
     if target_arch not in {"x86_64", "arm64", "universal2"}:
