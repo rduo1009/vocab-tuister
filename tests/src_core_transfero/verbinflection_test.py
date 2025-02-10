@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -12,19 +12,19 @@ from src.core.transfero.verb_inflection import find_main_verb_inflection, find_v
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
         find_verb_inflections("teach", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert "Invalid type: 'pronoun'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
 
 def test_invalid_type_participle():
     with pytest.raises(InvalidComponentsError) as error:
         find_verb_inflections("teach", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE))
-    assert "Invalid subtype: 'infinitive'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'infinitive'"
 
 
 def test_invalid_type_infinitive():
     with pytest.raises(InvalidComponentsError) as error:
         find_verb_inflections("teach", EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE))
-    assert "Invalid subtype: 'participle'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'participle'"
 
 
 def test_verb_error_not_implemented():

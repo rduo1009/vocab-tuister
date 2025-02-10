@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
@@ -12,7 +15,9 @@ from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
-from src.core.rogo.type_aliases import Settings
+
+if TYPE_CHECKING:
+    from src.core.rogo.type_aliases import Settings
 
 settings: Settings = {
     "exclude-verb-present-active-indicative": False,

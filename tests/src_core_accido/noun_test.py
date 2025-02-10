@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -16,18 +16,18 @@ class TestNounErrors:
     def test_errors_invalid_genitive(self):
         with pytest.raises(InvalidInputError) as error:
             Noun("puer", "error", gender=Gender.MASCULINE, meaning="boy")
-        assert "Invalid genitive form: 'error'" == str(error.value)
+        assert str(error.value) == "Invalid genitive form: 'error'"
 
     def test_errors_fifth_declension_neuter(self):
         with pytest.raises(InvalidInputError) as error:
             Noun("puer", "puerei", gender=Gender.NEUTER, meaning="boy")
-        assert "Fifth declension nouns cannot be neuter (noun 'puer' given)" == str(error.value)
+        assert str(error.value) == "Fifth declension nouns cannot be neuter (noun 'puer' given)"
 
 
 class TestNounDunder:
     def test_repr(self):
         word = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
-        assert word.__repr__() == "Noun(puer, pueri, masculine, boy)"
+        assert repr(word) == "Noun(puer, pueri, masculine, boy)"
 
     def test_eq(self):
         word1 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
@@ -49,15 +49,15 @@ class TestNounDunder:
 
     def test_str_masculine(self):
         word = Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
-        assert word.__str__() == "slave: servus, servi, (m)"
+        assert str(word) == "slave: servus, servi, (m)"
 
     def test_str_feminine(self):
         word = Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl")
-        assert word.__str__() == "slavegirl: ancilla, ancillae, (f)"
+        assert str(word) == "slavegirl: ancilla, ancillae, (f)"
 
     def test_str_neuter(self):
         word = Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple")
-        assert word.__str__() == "temple: templum, templi, (n)"
+        assert str(word) == "temple: templum, templi, (n)"
 
     def test_add_different_word(self):
         word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")

@@ -603,7 +603,7 @@ def _generate_multiplechoice_engtolat(
 
     # Find answer and other choices
     answer: str = chosen_word._first  # noqa: SLF001
-    other_choices: Generator[str, None, None] = (
+    other_choices: Generator[str] = (
         vocab._first  # noqa: SLF001
         for vocab in random.sample(
             vocab_list,

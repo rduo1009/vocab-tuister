@@ -1,16 +1,22 @@
+from __future__ import annotations
+
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
+import contextlib
 from itertools import combinations
+from typing import TYPE_CHECKING
 
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Case, Degree, Gender, Mood, Number, Tense, Voice
 from src.core.lego.misc import VocabList
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
-from src.core.rogo.type_aliases import Settings
+
+if TYPE_CHECKING:
+    from src.core.rogo.type_aliases import Settings
 
 default_settings: Settings = {
     "exclude-verb-present-active-indicative": False,
@@ -183,10 +189,8 @@ def test_ending_exclusion_adjective():
             for output in ask_question_without_sr(vocab_list, amount, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
-                    try:
+                    with contextlib.suppress(AttributeError):
                         assert not exclude_components_adjective[key](output.components)
-                    except AttributeError:
-                        pass
         except RuntimeError:
             pass
 
@@ -208,10 +212,8 @@ def test_ending_exclusion_noun():
             for output in ask_question_without_sr(vocab_list, amount, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
-                    try:
+                    with contextlib.suppress(AttributeError):
                         assert not exclude_components_noun[key](output.components)
-                    except AttributeError:
-                        pass
         except RuntimeError:
             pass
 
@@ -233,10 +235,8 @@ def test_ending_exclusion_pronoun():
             for output in ask_question_without_sr(vocab_list, amount, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
-                    try:
+                    with contextlib.suppress(AttributeError):
                         assert not exclude_components_pronoun[key](output.components)
-                    except AttributeError:
-                        pass
         except RuntimeError:
             pass
 
@@ -259,10 +259,8 @@ def test_ending_exclusion_verb():
             for output in ask_question_without_sr(vocab_list, amount, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
-                    try:
+                    with contextlib.suppress(AttributeError):
                         assert not exclude_components_verb[key](output.components)
-                    except AttributeError:
-                        pass
         except RuntimeError:
             pass
 
@@ -285,9 +283,7 @@ def test_ending_exclusion_regularword():
             for output in ask_question_without_sr(vocab_list, amount, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
-                    try:
+                    with contextlib.suppress(AttributeError):
                         assert not exclude_components_verb[key](output.components)
-                    except AttributeError:
-                        pass
         except RuntimeError:
             pass

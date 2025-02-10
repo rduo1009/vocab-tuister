@@ -1,13 +1,22 @@
+from __future__ import annotations
+
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from pathlib import Path
+from typing import TYPE_CHECKING
+
 import src
 from codetiming import Timer
-from src.core.lego.misc import VocabList
+from src.core.lego.reader import read_vocab_file
+from src.core.lego.saver import save_vocab_dump
 
-l: VocabList
+if TYPE_CHECKING:
+    from src.core.lego.misc import VocabList
+
+l: VocabList | None = None
 
 package_version = src.__version__
 
@@ -25,24 +34,14 @@ def log_timing_data(text):
 def time_reader(run_times):
     global l
 
-    from pathlib import Path
-
-    from src.core.lego.reader import read_vocab_file
-
     for _ in range(run_times):
         l = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
 
 
 @Timer(name="saver", text="{name}: {seconds:.3f} s", logger=log_timing_data)
 def time_saver(run_times):
-    global l
-
-    from pathlib import Path
-
-    from src.core.lego.saver import save_vocab_dump
-
     for _ in range(run_times):
-        save_vocab_dump(Path("tests/src_core_lego/test_vocab_files/testdump/regular_list.testdump"), l)
+        save_vocab_dump(Path("tests/src_core_lego/test_vocab_files/testdump/regular_list.testdump"), l)  # type: ignore[arg-type]
 
 
 if __name__ == "__main__":

@@ -2,9 +2,15 @@
 
 from . import logger
 from .compact import compact as compact
-from .compare import compare
-from .duplicates import contains_duplicates, remove_duplicates
-from .set_functions import set_choice, set_choice_pop
+from .compare import compare as compare
+from .duplicates import (
+    contains_duplicates as contains_duplicates,
+    remove_duplicates as remove_duplicates,
+)
+from .set_functions import (
+    set_choice as set_choice,
+    set_choice_pop as set_choice_pop,
+)
 
 __all__ = [
     "compare",

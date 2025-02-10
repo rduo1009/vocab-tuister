@@ -4,5 +4,14 @@ extend = "../ruff.toml"
 line-length = 320
 
 [lint]
-select = ["E4", "E7", "E9", "F"]
-ignore = ["E741"]
+ignore = [
+    "E741",
+    "D",
+    "PTH",
+    "PLR6301",
+    "PLR0915",
+    "PLC2701",
+    "PLW0603",
+    "ANN",
+    "PLR2004",
+]

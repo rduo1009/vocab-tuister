@@ -78,7 +78,7 @@ def send_vocab():
 
 def generate_questions_sample_json(
     vocab_list: VocabList, question_amount: int, settings: Settings
-) -> Generator[str, None, None]:
+) -> Generator[str]:
     return (
         json.dumps(question, cls=QuestionClassEncoder)
         for question in ask_question_without_sr(

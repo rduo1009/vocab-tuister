@@ -17,8 +17,7 @@ except RuntimeError:
 
         version_path = Path(__file__).parent.parent / "__version__.txt"
 
-        with open(version_path) as file:
-            __version__ = file.read().strip()
+        __version__ = version_path.read_text().strip()
     else:
         raise
 

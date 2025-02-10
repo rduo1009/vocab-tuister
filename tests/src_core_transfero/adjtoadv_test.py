@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -17,4 +17,4 @@ def test_adjtoadv():
 def test_adjtoadv_error():
     with pytest.raises(InvalidWordError) as error:
         adj_to_adv("house")
-    assert "Word 'house' is not an adjective" == str(error.value)
+    assert str(error.value) == "Word 'house' is not an adjective"

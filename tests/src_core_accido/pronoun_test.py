@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -53,5 +53,5 @@ def test_get():
 
 def test_errors_cannot_recognise():
     with pytest.raises(InvalidInputError) as error:
-        Pronoun("error", meaning="this").endings
-    assert "Pronoun 'error' not recognised" == str(error.value)
+        _ = Pronoun("error", meaning="this").endings
+    assert str(error.value) == "Pronoun 'error' not recognised"

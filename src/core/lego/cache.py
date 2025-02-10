@@ -34,7 +34,7 @@ def _sha256sum(filename: Path) -> str:
     -----
     Code taken from https://stackoverflow.com/a/44873382
     """
-    with open(filename, "rb", buffering=0) as file:
+    with filename.open("rb", buffering=0) as file:
         return hashlib.file_digest(file, "sha256").hexdigest()
 
 
