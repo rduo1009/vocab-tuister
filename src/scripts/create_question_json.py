@@ -141,7 +141,7 @@ QUESTION_AMOUNT: Final[int] = 2000  # seems reasonable
 
 def _generate_questions_wrap(
     vocab_list: VocabList, question_amount: int, settings: Settings
-) -> Generator[str, None, None]:
+) -> Generator[str]:
     for question in generate_questions_sample_json(
         vocab_list=vocab_list,
         question_amount=question_amount,
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     for setting in QUESTION_TYPE_SETTINGS:
         DEFAULT_SETTINGS[setting] = True  # type: ignore[literal-required]
 
-        data_generator: Generator[str, None, None] = _generate_questions_wrap(
+        data_generator: Generator[str] = _generate_questions_wrap(
             vocab_list=vocab,
             question_amount=QUESTION_AMOUNT,
             settings=DEFAULT_SETTINGS,

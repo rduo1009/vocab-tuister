@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -12,11 +12,11 @@ from src.core.transfero.noun_inflection import find_main_noun_inflection, find_n
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
         find_noun_inflections("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert "Invalid type: 'adjective'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'adjective'"
 
     with pytest.raises(InvalidComponentsError) as error:
         find_main_noun_inflection("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert "Invalid type: 'adjective'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'adjective'"
 
 
 class TestNounInflection:

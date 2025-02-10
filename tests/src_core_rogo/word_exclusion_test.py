@@ -1,15 +1,21 @@
+from __future__ import annotations
+
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from typing import Sequence
+from typing import TYPE_CHECKING
 
 from src.core.accido.endings import Adjective, Noun, Verb
 from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.rogo.rules import filter_words
-from src.core.rogo.type_aliases import Settings
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from src.core.rogo.type_aliases import Settings
 
 default_settings: Settings = {
     "exclude-verb-present-active-indicative": False,

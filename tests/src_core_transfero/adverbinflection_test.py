@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -12,21 +12,21 @@ from src.core.transfero.exceptions import InvalidComponentsError
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
         find_adverb_inflections("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert "Invalid type: 'pronoun'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
     with pytest.raises(InvalidComponentsError) as error:
         find_main_adverb_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert "Invalid type: 'pronoun'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
 
 def test_invalid_subtype():
     with pytest.raises(InvalidComponentsError) as error:
         find_adverb_inflections("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert "Invalid subtype: 'None'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'None'"
 
     with pytest.raises(InvalidComponentsError) as error:
         find_main_adverb_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert "Invalid subtype: 'None'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'None'"
 
 
 def test_adverb_inflection():

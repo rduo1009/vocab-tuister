@@ -1,15 +1,20 @@
+from __future__ import annotations
+
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.exceptions import InvalidSettingsError
-from src.core.rogo.type_aliases import Settings
+
+if TYPE_CHECKING:
+    from src.core.rogo.type_aliases import Settings
 
 settings: Settings = {
     "exclude-verb-present-active-indicative": False,
@@ -110,7 +115,7 @@ def test_no_question_type():
     vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
 
     with pytest.raises(InvalidSettingsError) as error:
-        for output in ask_question_without_sr(vocab_list, 1, settings):
-            ic(output)  # type: ignore[name-defined] # noqa: F821
+        for _ in ask_question_without_sr(vocab_list, 1, settings):
+            ...
 
     assert str(error.value) == "No question type has been enabled."

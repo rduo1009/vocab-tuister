@@ -1,10 +1,11 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import src
 from codetiming import Timer
+from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
+from src.core.accido.misc import Gender
 
 package_version = src.__version__
 
@@ -20,35 +21,26 @@ def log_timing_data(text):
 
 @Timer(name="adjective", text="{name}: {seconds:.3f} s", logger=log_timing_data)
 def time_adjective(run_times):
-    from src.core.accido import endings
-
     for _ in range(run_times):
-        endings.Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
+        Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
 
 
 @Timer(name="noun", text="{name}: {seconds:.3f} s", logger=log_timing_data)
 def time_noun(run_times):
-    from src.core.accido import endings
-    from src.core.accido.misc import Gender
-
     for _ in range(run_times):
-        endings.Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl")
+        Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl")
 
 
 @Timer(name="verb", text="{name}: {seconds:.3f} s", logger=log_timing_data)
 def time_verb(run_times):
-    from src.core.accido import endings
-
     for _ in range(run_times):
-        endings.Verb("celo", "celare", "celavi", "celatus", meaning="hide")
+        Verb("celo", "celare", "celavi", "celatus", meaning="hide")
 
 
 @Timer(name="pronoun", text="{name}: {seconds:.3f} s", logger=log_timing_data)
 def time_pronoun(run_times):
-    from src.core.accido import endings
-
     for _ in range(run_times):
-        endings.Pronoun("hic", meaning="this")
+        Pronoun("hic", meaning="this")
 
 
 if __name__ == "__main__":

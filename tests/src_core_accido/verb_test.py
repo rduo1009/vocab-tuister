@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -15,17 +15,17 @@ class TestVerbErrors:
     def test_errors_invalid_infinitive(self):
         with pytest.raises(InvalidInputError) as error:
             Verb("celo", "error", "celavi", "celatus", meaning="hide")
-        assert "Invalid infinitive form: 'error'" == str(error.value)
+        assert str(error.value) == "Invalid infinitive form: 'error'"
 
     def test_errors_invalid_present(self):
         with pytest.raises(InvalidInputError) as error:
             Verb("error", "celare", "celavi", "celatus", meaning="hide")
-        assert "Invalid present form: 'error' (must end in '-o')" == str(error.value)
+        assert str(error.value) == "Invalid present form: 'error' (must end in '-o')"
 
     def test_errors_invalid_perfect(self):
         with pytest.raises(InvalidInputError) as error:
             Verb("celo", "celare", "error", "celatus", meaning="hide")
-        assert "Invalid perfect form: 'error' (must end in '-i')" == str(error.value)
+        assert str(error.value) == "Invalid perfect form: 'error' (must end in '-i')"
 
 
 class TestVerbDunder:
@@ -35,7 +35,7 @@ class TestVerbDunder:
 
     def test_repr(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
-        assert word.__repr__() == "Verb(celo, celare, celavi, celatus, hide)"
+        assert repr(word) == "Verb(celo, celare, celavi, celatus, hide)"
 
     def test_verb_str(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")

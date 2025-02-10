@@ -11,8 +11,8 @@ warnings.filterwarnings("ignore")
 
 def install():
     builtins = __import__("builtins")
-    ic = lambda *a: None if not a else (a[0] if len(a) == 1 else a)  # noqa: E731
-    setattr(builtins, "ic", ic)
+    ic = lambda *a: None if not a else (a[0] if len(a) == 1 else a)
+    builtins.ic = ic
 
 
 install()

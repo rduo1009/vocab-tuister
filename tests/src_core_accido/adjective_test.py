@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -16,33 +16,33 @@ class TestAdjectiveErrors:
     def test_errors_wrong_number_principal_parts_212(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="212", meaning="happy")
-        assert "2-1-2 adjectives must have 3 principal parts (adjective 'laetus' given)" == str(error.value)
+        assert str(error.value) == "2-1-2 adjectives must have 3 principal parts (adjective 'laetus' given)"
 
     def test_errors_wrong_number_principal_parts_31(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", "laetum", declension="3", meaning="happy", termination=1)
-        assert "First-termination adjectives must have 2 principal parts (adjective 'laetus' given)" == str(error.value)
+        assert str(error.value) == "First-termination adjectives must have 2 principal parts (adjective 'laetus' given)"
 
     def test_errors_invalid_genitive(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="3", meaning="happy", termination=1)
-        assert "Invalid genitive form: 'laeta' (must end in '-is')" == str(error.value)
+        assert str(error.value) == "Invalid genitive form: 'laeta' (must end in '-is')"
 
     def test_errors_wrong_number_principal_parts_32(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", "laetum", declension="3", meaning="happy", termination=2)
-        assert "Second-termination adjectives must have 2 principal parts (adjective 'laetus' given)" == str(error.value)
+        assert str(error.value) == "Second-termination adjectives must have 2 principal parts (adjective 'laetus' given)"
 
     def test_errors_wrong_number_principal_parts_33(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="3", meaning="happy", termination=3)
-        assert "Third-termination adjectives must have 3 principal parts (adjective 'laetus' given)" == str(error.value)
+        assert str(error.value) == "Third-termination adjectives must have 3 principal parts (adjective 'laetus' given)"
 
 
 class TestAdjectiveDunder:
     def test_repr(self):
         word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-        assert word.__repr__() == "Adjective(laetus, laeta, laetum, None, 212, happy)"
+        assert repr(word) == "Adjective(laetus, laeta, laetum, None, 212, happy)"
 
     def test_eq(self):
         word1 = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
@@ -73,19 +73,19 @@ class TestAdjectiveDunder:
 
     def test_str_212(self):
         word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-        assert word.__str__() == "happy: laetus, laeta, laetum, (2-1-2)"
+        assert str(word) == "happy: laetus, laeta, laetum, (2-1-2)"
 
     def test_str_31(self):
         word = Adjective("egens", "egentis", termination=1, declension="3", meaning="poor")
-        assert word.__str__() == "poor: egens, egentis, (3-1)"
+        assert str(word) == "poor: egens, egentis, (3-1)"
 
     def test_str_32(self):
         word = Adjective("facilis", "facile", termination=2, declension="3", meaning="easy")
-        assert word.__str__() == "easy: facilis, facile, (3-2)"
+        assert str(word) == "easy: facilis, facile, (3-2)"
 
     def test_str_33(self):
         word = Adjective("celer", "celeris", "celere", termination=3, declension="3", meaning="quick")
-        assert word.__str__() == "quick: celer, celeris, celere, (3-3)"
+        assert str(word) == "quick: celer, celeris, celere, (3-3)"
 
     def test_add_different_word(self):
         word1 = Adjective("celer", "celeris", "celere", termination=3, declension="3", meaning="quick")

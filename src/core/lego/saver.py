@@ -104,6 +104,6 @@ def save_vocab_dump(
 
     logger.info("Saving vocab list to %s.", file_path)
 
-    with open(file_path, "wb") as file:
+    with file_path.open("wb") as file:
         file.write(pickled_data)
         file.write(signature.encode())

@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -11,11 +11,11 @@ from src.core.accido.misc import Gender, MultipleMeanings
 class TestRegular:
     def test_one_meaning(self):
         word = RegularWord("test1", meaning="test2")
-        assert word.meaning.__str__() == "test2"
+        assert str(word.meaning) == "test2"
 
     def test_multiple_meanings(self):
         word = RegularWord("test1", meaning=MultipleMeanings(("test2", "test3", "test4")))
-        assert word.meaning.__str__() == "test2"
+        assert str(word.meaning) == "test2"
 
 
 class TestRegularDunder:
@@ -29,7 +29,7 @@ class TestRegularDunder:
 
     def test_repr(self):
         word = RegularWord("test1", meaning="test2")
-        assert word.__repr__() == "RegularWord(test1, test2)"
+        assert repr(word) == "RegularWord(test1, test2)"
 
     def test_add_different_word(self):
         word1 = RegularWord("test1", meaning="test2")

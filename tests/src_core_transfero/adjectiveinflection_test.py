@@ -1,5 +1,5 @@
 import os
-import sys  # noqa: E401
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -12,21 +12,21 @@ from src.core.transfero.exceptions import InvalidComponentsError
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
         find_adjective_inflections("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert "Invalid type: 'pronoun'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
     with pytest.raises(InvalidComponentsError) as error:
         find_main_adjective_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert "Invalid type: 'pronoun'" == str(error.value)
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
 
 def test_invalid_subtype():
     with pytest.raises(InvalidComponentsError) as error:
         find_adjective_inflections("happy", EndingComponents(degree=Degree.POSITIVE))
-    assert "Invalid subtype: 'adverb'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'adverb'"
 
     with pytest.raises(InvalidComponentsError) as error:
         find_main_adjective_inflection("happy", EndingComponents(degree=Degree.POSITIVE))
-    assert "Invalid subtype: 'adverb'" == str(error.value)
+    assert str(error.value) == "Invalid subtype: 'adverb'"
 
 
 def test_adjective_inflection():

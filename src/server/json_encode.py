@@ -29,77 +29,80 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 
 class QuestionClassEncoder(JSONEncoder):  # noqa: D101
     def default(self, obj: object) -> dict[str, Any]:  # noqa: D102
-        # NOTE: The tester tui currently uses the component string representation
-        # if isinstance(obj, EndingComponents):
-        #     ending_components_json = {}
-        #     for key, value in obj.__dict__.items():
-        #         if key in ENDING_COMPONENTS_ATTRS:
-        #             if isinstance(value, _EndingComponentEnum):
-        #                 ending_components_json[key] = value.regular
-        #             elif isinstance(value, int):
-        #                 ending_components_json[key] = PERSON_SHORTHAND[value]
-        #             else:
-        #                 ending_components_json[key] = value
-        #     return ending_components_json
+        match obj:
+            # NOTE: The tester tui currently uses the component string representation
+            # case EndingComponents():
+            #     ending_components_json = {}
+            #     for key, value in obj.__dict__.items():
+            #         if key in ENDING_COMPONENTS_ATTRS:
+            #             if isinstance(value, _EndingComponentEnum):
+            #                 ending_components_json[key] = value.regular
+            #             elif isinstance(value, int):
+            #                 ending_components_json[key] = PERSON_SHORTHAND[value]
+            #             else:
+            #                 ending_components_json[key] = value
+            #     return ending_components_json
 
-        if isinstance(obj, MultipleChoiceEngToLatQuestion):
-            return {
-                "question_type": "MultipleChoiceEngToLatQuestion",
-                "prompt": obj.prompt,
-                "answer": obj.answer,
-                "choices": list(obj.choices),
-            }
+            case MultipleChoiceEngToLatQuestion():
+                return {
+                    "question_type": "MultipleChoiceEngToLatQuestion",
+                    "prompt": obj.prompt,
+                    "answer": obj.answer,
+                    "choices": list(obj.choices),
+                }
 
-        if isinstance(obj, MultipleChoiceLatToEngQuestion):
-            return {
-                "question_type": "MultipleChoiceLatToEngQuestion",
-                "prompt": obj.prompt,
-                "answer": obj.answer,
-                "choices": list(obj.choices),
-            }
+            case MultipleChoiceLatToEngQuestion():
+                return {
+                    "question_type": "MultipleChoiceLatToEngQuestion",
+                    "prompt": obj.prompt,
+                    "answer": obj.answer,
+                    "choices": list(obj.choices),
+                }
 
-        if isinstance(obj, ParseWordCompToLatQuestion):
-            return {
-                "question_type": "ParseWordCompToLatQuestion",
-                "prompt": obj.prompt,
-                "components": obj.components.string,
-                "main_answer": obj.main_answer,
-                "answers": list(obj.answers),
-            }
+            case ParseWordCompToLatQuestion():
+                return {
+                    "question_type": "ParseWordCompToLatQuestion",
+                    "prompt": obj.prompt,
+                    "components": obj.components.string,
+                    "main_answer": obj.main_answer,
+                    "answers": list(obj.answers),
+                }
 
-        if isinstance(obj, ParseWordLatToCompQuestion):
-            return {
-                "question_type": "ParseWordLatToCompQuestion",
-                "prompt": obj.prompt,
-                "dictionary_entry": obj.dictionary_entry,
-                "main_answer": obj.main_answer.string,
-                "answers": [obj.main_answer.string for answer in obj.answers],
-                # "main_answer": self.default(obj.main_answer),
-                # "answers": [self.default(answer) for answer in obj.answers],
-            }
+            case ParseWordLatToCompQuestion():
+                return {
+                    "question_type": "ParseWordLatToCompQuestion",
+                    "prompt": obj.prompt,
+                    "dictionary_entry": obj.dictionary_entry,
+                    "main_answer": obj.main_answer.string,
+                    "answers": [
+                        obj.main_answer.string for answer in obj.answers
+                    ],
+                    # "main_answer": self.default(obj.main_answer),
+                    # "answers": [self.default(answer) for answer in obj.answers],
+                }
 
-        if isinstance(obj, PrincipalPartsQuestion):
-            return {
-                "question_type": "PrincipalPartsQuestion",
-                "prompt": obj.prompt,
-                "principal_parts": list(obj.principal_parts),
-            }
+            case PrincipalPartsQuestion():
+                return {
+                    "question_type": "PrincipalPartsQuestion",
+                    "prompt": obj.prompt,
+                    "principal_parts": list(obj.principal_parts),
+                }
 
-        if isinstance(obj, TypeInEngToLatQuestion):
-            return {
-                "question_type": "TypeInEngToLatQuestion",
-                "prompt": obj.prompt,
-                "main_answer": obj.main_answer,
-                "answers": list(obj.answers),
-            }
+            case TypeInEngToLatQuestion():
+                return {
+                    "question_type": "TypeInEngToLatQuestion",
+                    "prompt": obj.prompt,
+                    "main_answer": obj.main_answer,
+                    "answers": list(obj.answers),
+                }
 
-        if isinstance(obj, TypeInLatToEngQuestion):
-            return {
-                "question_type": "TypeInLatToEngQuestion",
-                "prompt": obj.prompt,
-                "main_answer": obj.main_answer,
-                "answers": list(obj.answers),
-            }
+            case TypeInLatToEngQuestion():
+                return {
+                    "question_type": "TypeInLatToEngQuestion",
+                    "prompt": obj.prompt,
+                    "main_answer": obj.main_answer,
+                    "answers": list(obj.answers),
+                }
 
         # this actually throws error
         return cast("dict[str, Any]", super().default(obj))

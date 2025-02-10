@@ -130,10 +130,9 @@ def read_vocab_dump(filename: Path) -> VocabList:
     else:
         logger.info("File %s being read.", filename)
 
-        with open(filename, "rb") as file:
-            content = file.read()
-            pickled_data = content[:-64]
-            signature = content[-64:].decode()
+        content = filename.read_bytes()
+        pickled_data = content[:-64]
+        signature = content[-64:].decode()
 
     if hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest() != signature:
         raise InvalidVocabDumpError(
