@@ -13,8 +13,7 @@ from cyclopts import App, Parameter
 from cyclopts.types import UInt16
 
 from src import __version__
-from src.server.app import main as server_main
-from src.server.app import main_dev as server_main_dev
+from src.server.app import main as server_main, main_dev as server_main_dev
 from src.utils.logger import (
     CustomHandler,
     custom_formatwarning,

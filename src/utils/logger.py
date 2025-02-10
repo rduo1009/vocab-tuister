@@ -48,10 +48,7 @@ def log_uncaught_exceptions(
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
     else:
         logging.critical(  # noqa: LOG015
-            "%s: %s",
-            exc_type.__name__,
-            exc_value,
-            exc_info=(exc_type, exc_value, exc_traceback),
+            "%s: %s", exc_type.__name__, exc_value
         )
 
     sys.exit(1)
