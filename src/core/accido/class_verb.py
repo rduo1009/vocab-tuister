@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from functools import total_ordering
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Literal, overload
 
 from .class_word import _Word
 from .edge_cases import check_io_verb, find_irregular_endings
@@ -464,9 +464,9 @@ class Verb(_Word):
     @overload
     def get(self, *, tense: Tense, voice: Voice, mood: Mood, person: Person, number: Number) -> Ending | None: ...
     @overload
-    def get(self, *, tense: Tense, voice: Voice, mood: Mood, number: Number, participle_gender: Gender, participle_case: Case) -> Ending | None: ...
+    def get(self, *, tense: Tense, voice: Voice, mood: Literal[Mood.PARTICIPLE], number: Number, participle_gender: Gender, participle_case: Case) -> Ending | None: ...
     @overload
-    def get(self, *, tense: Tense, voice: Voice, mood: Mood) -> Ending | None: ...
+    def get(self, *, tense: Tense, voice: Voice, mood: Literal[Mood.INFINITIVE]) -> Ending | None: ...
     # fmt: on
 
     def get(

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import ComponentsSubtype, Gender
+from src.core.accido.misc import ComponentsSubtype, Gender, Mood
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
@@ -186,8 +186,10 @@ def test_parse_question_verb():
         assert output.prompt in word.endings.values()
         for answer in output.answers:
             if answer.subtype == ComponentsSubtype.PARTICIPLE:
+                assert answer.mood == Mood.PARTICIPLE
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number) == output.prompt
             elif answer.subtype == ComponentsSubtype.INFINITIVE:
+                assert answer.mood == Mood.INFINITIVE
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt
             else:
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, person=answer.person, number=answer.number) == output.prompt
