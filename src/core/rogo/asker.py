@@ -11,6 +11,7 @@ from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from ..accido.misc import (
     Case,
+    ComponentsSubtype,
     Gender,
     Mood,
     MultipleEndings,
@@ -205,23 +206,24 @@ def _generate_typein_engtolat(
 
     adjective_not_adverb_flag: bool = (
         isinstance(chosen_word, Adjective)
-        and ending_components.subtype != "adverb"
+        and ending_components.subtype != ComponentsSubtype.ADVERB
     )
 
     participle_flag: bool = (
         isinstance(chosen_word, Verb)
-        and ending_components.subtype == "participle"
+        and ending_components.subtype == ComponentsSubtype.PARTICIPLE
     )
 
     verb_second_person_flag: bool = (
         isinstance(chosen_word, Verb)
-        and ending_components.subtype not in {"infinitive", "participle"}
+        and ending_components.subtype
+        not in {ComponentsSubtype.INFINITIVE, ComponentsSubtype.PARTICIPLE}
         and ending_components.person == 2
     )
 
     pronoun_flag: bool = isinstance(chosen_word, Pronoun) or (
         isinstance(chosen_word, Noun)
-        and ending_components.subtype == "pronoun"
+        and ending_components.subtype == ComponentsSubtype.PRONOUN
     )
 
     answers: set[str] = {chosen_ending}

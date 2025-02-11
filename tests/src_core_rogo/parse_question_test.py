@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import Gender
+from src.core.accido.misc import ComponentsSubtype, Gender
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
@@ -137,7 +137,7 @@ def test_parse_question_adjective():
         assert output.main_answer in output.answers
         assert output.prompt in word.endings.values()
         for answer in output.answers:
-            if answer.subtype == "adverb":
+            if answer.subtype == ComponentsSubtype.ADVERB:
                 assert word.get(degree=answer.degree, adverb=True) == output.prompt
             else:
                 assert word.get(degree=answer.degree, gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
@@ -185,9 +185,9 @@ def test_parse_question_verb():
         assert output.main_answer in output.answers
         assert output.prompt in word.endings.values()
         for answer in output.answers:
-            if answer.subtype == "participle":
+            if answer.subtype == ComponentsSubtype.PARTICIPLE:
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number) == output.prompt
-            elif answer.subtype == "infinitive":
+            elif answer.subtype == ComponentsSubtype.INFINITIVE:
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt
             else:
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, person=answer.person, number=answer.number) == output.prompt

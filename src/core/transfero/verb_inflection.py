@@ -6,7 +6,14 @@ from typing import TYPE_CHECKING
 
 import lemminflect
 
-from ..accido.misc import ComponentsType, Mood, Number, Tense, Voice
+from ..accido.misc import (
+    ComponentsSubtype,
+    ComponentsType,
+    Mood,
+    Number,
+    Tense,
+    Voice,
+)
 from .edge_cases import STATIVE_VERBS
 from .exceptions import InvalidComponentsError, InvalidWordError
 
@@ -21,7 +28,7 @@ def _verify_verb_inflections(components: EndingComponents) -> None:
 
     if (
         components.mood == Mood.PARTICIPLE
-        and components.subtype != "participle"
+        and components.subtype != ComponentsSubtype.PARTICIPLE
     ):
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"
@@ -29,7 +36,7 @@ def _verify_verb_inflections(components: EndingComponents) -> None:
 
     if (
         components.mood == Mood.INFINITIVE
-        and components.subtype != "infinitive"
+        and components.subtype != ComponentsSubtype.INFINITIVE
     ):
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"

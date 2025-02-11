@@ -83,7 +83,7 @@ def find_main_adverb_inflection(
     """
     if components.type is not ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
-    if components.subtype != "adverb":
+    if components.subtype != ComponentsSubtype.ADVERB:
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"
         )
