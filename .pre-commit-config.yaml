@@ -26,7 +26,7 @@ repos:
             "--output=requirements-dev.txt",
             "--without-hashes",
             "--without-urls",
-            "--with=dev",
+            "--with=dev,types",
           ]
 
   # Format and check code
