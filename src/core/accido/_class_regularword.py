@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
 
-from .class_word import _Word
+from ._class_word import _Word
 from .misc import EndingComponents, MultipleMeanings
 
 if TYPE_CHECKING:

@@ -1,8 +1,8 @@
 """Representations of Latin words with their endings calculated."""
 
-from .class_adjective import Adjective as Adjective
-from .class_noun import Noun as Noun
-from .class_pronoun import Pronoun as Pronoun
-from .class_regularword import RegularWord as RegularWord
-from .class_verb import Verb as Verb
-from .class_word import _Word as _Word
+from ._class_adjective import Adjective as Adjective
+from ._class_noun import Noun as Noun
+from ._class_pronoun import Pronoun as Pronoun
+from ._class_regularword import RegularWord as RegularWord
+from ._class_verb import Verb as Verb
+from ._class_word import _Word as _Word

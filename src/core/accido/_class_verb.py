@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
-from .class_word import _Word
+from ._class_word import _Word
 from .edge_cases import check_io_verb, find_irregular_endings
 from .exceptions import InvalidInputError
 from .misc import (

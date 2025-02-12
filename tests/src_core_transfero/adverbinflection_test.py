@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
-from src.core.transfero.adverb_inflection import find_adverb_inflections, find_main_adverb_inflection
+from src.core.transfero._adverb_inflection import find_adverb_inflections, find_main_adverb_inflection
 from src.core.transfero.exceptions import InvalidComponentsError
 
 

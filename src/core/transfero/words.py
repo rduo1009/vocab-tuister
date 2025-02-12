@@ -6,21 +6,21 @@ import logging
 from typing import TYPE_CHECKING, Literal, overload
 
 from ..accido.misc import ComponentsSubtype, ComponentsType
-from .adj_to_adv import adj_to_adv
-from .adjective_inflection import (
+from ._adjective_inflection import (
     find_adjective_inflections,
     find_main_adjective_inflection,
 )
-from .adverb_inflection import (
+from ._adverb_inflection import (
     find_adverb_inflections,
     find_main_adverb_inflection,
 )
-from .noun_inflection import find_main_noun_inflection, find_noun_inflections
-from .pronoun_inflection import (
+from ._noun_inflection import find_main_noun_inflection, find_noun_inflections
+from ._pronoun_inflection import (
     find_main_pronoun_inflection,
     find_pronoun_inflections,
 )
-from .verb_inflection import find_main_verb_inflection, find_verb_inflections
+from ._verb_inflection import find_main_verb_inflection, find_verb_inflections
+from .adj_to_adv import adj_to_adv
 
 if TYPE_CHECKING:
     from ..accido.misc import EndingComponents

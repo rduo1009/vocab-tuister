@@ -55,7 +55,7 @@ extend-select = ["W505"] # doc line too long
 "src/server/app.py" = ["ANN"]
 
 # Magic value comparisons
-"src/core/accido/class_*.py" = ["PLR2004"]
+"src/core/accido/_class_*.py" = ["PLR2004"]
 "src/core/lego/reader.py" = ["PLR2004"]
 "src/core/rogo/rules.py" = ["PLR2004"]
 "src/core/rogo/asker.py" = ["PLR2004"]

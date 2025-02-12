@@ -5,8 +5,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
+from src.core.transfero._noun_inflection import find_main_noun_inflection, find_noun_inflections
 from src.core.transfero.exceptions import InvalidComponentsError
-from src.core.transfero.noun_inflection import find_main_noun_inflection, find_noun_inflections
 
 
 def test_invalid_type():
