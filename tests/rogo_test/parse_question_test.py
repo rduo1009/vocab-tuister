@@ -9,9 +9,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
+from src.core.accido.misc import ComponentsSubtype, Gender, Mood
+from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.exceptions import InvalidSettingsError
+from src.core.rogo.question_classes import ParseWordLatToCompQuestion
 
 if TYPE_CHECKING:
     from src.core.rogo.type_aliases import Settings
@@ -102,7 +105,7 @@ settings: Settings = {
     "exclude-adjective-third-declension": False,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
-    "include-parse": False,
+    "include-parse": True,
     "include-inflect": False,
     "include-principal-parts": False,
     "include-multiplechoice-engtolat": False,
@@ -111,11 +114,82 @@ settings: Settings = {
 }
 
 
-def test_no_question_type():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
+@pytest.mark.manual
+def test_parse_question():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
+    amount = 50
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is ParseWordLatToCompQuestion
 
-    with pytest.raises(InvalidSettingsError) as error:
-        for _ in ask_question_without_sr(vocab_list, 1, settings):
-            ...
+        assert output.check(output.main_answer)
+        ic(output)  # type: ignore[name-defined] # noqa: F821
 
-    assert str(error.value) == "No question type has been enabled."
+
+def test_parse_question_adjective():
+    word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
+    vocab_list = VocabList([word])
+    amount = 500
+
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is ParseWordLatToCompQuestion
+        assert output.check(output.main_answer)
+
+        assert output.main_answer in output.answers
+        assert output.prompt in word.endings.values()
+        for answer in output.answers:
+            if answer.subtype == ComponentsSubtype.ADVERB:
+                assert word.get(degree=answer.degree, adverb=True) == output.prompt
+            else:
+                assert word.get(degree=answer.degree, gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
+
+
+def test_parse_question_noun():
+    word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
+    vocab_list = VocabList([word])
+    amount = 500
+
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is ParseWordLatToCompQuestion
+        assert output.check(output.main_answer)
+
+        assert output.main_answer in output.answers
+        assert output.prompt in word.endings.values()
+        for answer in output.answers:
+            assert word.get(case=answer.case, number=answer.number) == output.prompt
+
+
+def test_parse_question_pronoun():
+    word = Pronoun("hic", meaning="this")
+    vocab_list = VocabList([word])
+    amount = 500
+
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is ParseWordLatToCompQuestion
+        assert output.check(output.main_answer)
+
+        assert output.main_answer in output.answers
+        assert output.prompt in word.endings.values()
+        for answer in output.answers:
+            assert word.get(gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
+
+
+def test_parse_question_verb():
+    word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
+    vocab_list = VocabList([word])
+    amount = 500
+
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is ParseWordLatToCompQuestion
+        assert output.check(output.main_answer)
+
+        assert output.main_answer in output.answers
+        assert output.prompt in word.endings.values()
+        for answer in output.answers:
+            if answer.subtype == ComponentsSubtype.PARTICIPLE:
+                assert answer.mood == Mood.PARTICIPLE
+                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number) == output.prompt
+            elif answer.subtype == ComponentsSubtype.INFINITIVE:
+                assert answer.mood == Mood.INFINITIVE
+                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt
+            else:
+                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, person=answer.person, number=answer.number) == output.prompt

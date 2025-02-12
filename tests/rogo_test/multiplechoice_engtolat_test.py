@@ -9,12 +9,13 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import ComponentsSubtype, Gender, Mood
+from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.question_classes import ParseWordLatToCompQuestion
+from src.core.rogo.question_classes import MultipleChoiceEngToLatQuestion
+from src.utils import contains_duplicates
 
 if TYPE_CHECKING:
     from src.core.rogo.type_aliases import Settings
@@ -105,91 +106,116 @@ settings: Settings = {
     "exclude-adjective-third-declension": False,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
-    "include-parse": True,
+    "include-parse": False,
     "include-inflect": False,
     "include-principal-parts": False,
-    "include-multiplechoice-engtolat": False,
+    "include-multiplechoice-engtolat": True,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
 }
 
 
 @pytest.mark.manual
-def test_parse_question():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
+def test_multiplechoice_engtolat():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
     amount = 50
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
 
-        assert output.check(output.main_answer)
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
+
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+
         ic(output)  # type: ignore[name-defined] # noqa: F821
 
 
-def test_parse_question_adjective():
-    word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
+def test_multiplechoice_engtolat_adjective():
+    word1 = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
+    word2 = Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")
+    word3 = Adjective("fortis", "forte", declension="3", termination=2, meaning="strong")
+    vocab_list = VocabList([word1, word2, word3])
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
-        assert output.check(output.main_answer)
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
 
-        assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
-        for answer in output.answers:
-            if answer.subtype == ComponentsSubtype.ADVERB:
-                assert word.get(degree=answer.degree, adverb=True) == output.prompt
-            else:
-                assert word.get(degree=answer.degree, gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+        assert set(output.choices) == {"laetus", "ingens", "fortis"}
+        assert (output.prompt, output.answer) in {("happy", "laetus"), ("large", "ingens"), ("strong", "fortis")}
 
 
-def test_parse_question_noun():
-    word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
+def test_multiplechoice_engtolat_noun():
+    word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
+    word2 = Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
+    word3 = Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog")
+    vocab_list = VocabList([word1, word2, word3])
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
-        assert output.check(output.main_answer)
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
 
-        assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
-        for answer in output.answers:
-            assert word.get(case=answer.case, number=answer.number) == output.prompt
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+        assert set(output.choices) == {"puella", "servus", "canis"}
+        assert (output.prompt, output.answer) in {("girl", "puella"), ("slave", "servus"), ("dog", "canis")}
 
 
-def test_parse_question_pronoun():
-    word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
+def test_multiplechoice_engtolat_pronoun():
+    word1 = Pronoun("hic", meaning="this")
+    word2 = Pronoun("ille", meaning="that")
+    word3 = Pronoun("qui", meaning="who")
+    vocab_list = VocabList([word1, word2, word3])
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
-        assert output.check(output.main_answer)
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
 
-        assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
-        for answer in output.answers:
-            assert word.get(gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+        assert set(output.choices) == {"hic", "ille", "qui"}
+        assert (output.prompt, output.answer) in {("this", "hic"), ("that", "ille"), ("who", "qui")}
 
 
-def test_parse_question_verb():
-    word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
+def test_multiplechoice_engtolat_verb():
+    word1 = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
+    word2 = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
+    word3 = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
+    vocab_list = VocabList([word1, word2, word3])
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordLatToCompQuestion
-        assert output.check(output.main_answer)
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
 
-        assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
-        for answer in output.answers:
-            if answer.subtype == ComponentsSubtype.PARTICIPLE:
-                assert answer.mood == Mood.PARTICIPLE
-                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number) == output.prompt
-            elif answer.subtype == ComponentsSubtype.INFINITIVE:
-                assert answer.mood == Mood.INFINITIVE
-                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt
-            else:
-                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, person=answer.person, number=answer.number) == output.prompt
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+        assert set(output.choices) == {"doceo", "traho", "audio"}
+        assert (output.prompt, output.answer) in {("teach", "doceo"), ("drag", "traho"), ("hear", "audio")}
+
+
+def test_multiplechoice_engtolat_regularword():
+    word1 = RegularWord("in", meaning="in")
+    word2 = RegularWord("e", meaning="out of")
+    word3 = RegularWord("post", meaning="after")
+    vocab_list = VocabList([word1, word2, word3])
+    amount = 500
+
+    for output in ask_question_without_sr(vocab_list, amount, settings):
+        assert type(output) is MultipleChoiceEngToLatQuestion
+        assert output.check(output.answer)
+
+        assert not contains_duplicates(output.choices)
+        assert output.answer in output.choices
+        assert len(output.choices) == 3
+        assert set(output.choices) == {"in", "e", "post"}
+        assert (output.prompt, output.answer) in {("in", "in"), ("out of", "e"), ("after", "post")}

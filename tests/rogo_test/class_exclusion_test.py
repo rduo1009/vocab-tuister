@@ -5,18 +5,18 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
+from itertools import combinations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import pytest
+from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.lego.reader import read_vocab_file
-from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.question_classes import TypeInLatToEngQuestion
+from src.core.rogo.rules import filter_words
 
 if TYPE_CHECKING:
     from src.core.rogo.type_aliases import Settings
 
-settings: Settings = {
+default_settings: Settings = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-perfect-active-indicative": False,
@@ -101,7 +101,7 @@ settings: Settings = {
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
     "include-typein-engtolat": False,
-    "include-typein-lattoeng": True,
+    "include-typein-lattoeng": False,
     "include-parse": False,
     "include-inflect": False,
     "include-principal-parts": False,
@@ -110,21 +110,20 @@ settings: Settings = {
     "number-multiplechoice-options": 3,
 }
 
-
-@pytest.mark.manual
-def test_typein_lattoeng():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
-    amount = 50
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is TypeInLatToEngQuestion
-
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+exclude_classes = {"exclude-adjectives": Adjective, "exclude-nouns": Noun, "exclude-pronouns": Pronoun, "exclude-verbs": Verb, "exclude-regulars": RegularWord}
 
 
-def test_typein_lattoeng_check():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
-    amount = 500
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is TypeInLatToEngQuestion
+def test_class_exclusion():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
+    keys = tuple(exclude_classes.keys())
+    all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
 
-        assert output.check(output.main_answer)
+    for key_combination in all_key_combinations:
+        settings = default_settings.copy()
+
+        for key in key_combination:
+            settings[key] = True  # type: ignore[literal-required]
+
+        vocab = filter_words(vocab_list, settings)
+        for word in vocab:
+            assert not any(isinstance(word, exclude_classes[key]) for key in key_combination)

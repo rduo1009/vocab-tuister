@@ -9,12 +9,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import Gender
-from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.question_classes import ParseWordCompToLatQuestion
+from src.core.rogo.question_classes import TypeInLatToEngQuestion
 
 if TYPE_CHECKING:
     from src.core.rogo.type_aliases import Settings
@@ -104,9 +101,9 @@ settings: Settings = {
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
     "include-typein-engtolat": False,
-    "include-typein-lattoeng": False,
+    "include-typein-lattoeng": True,
     "include-parse": False,
-    "include-inflect": True,
+    "include-inflect": False,
     "include-principal-parts": False,
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
@@ -115,87 +112,19 @@ settings: Settings = {
 
 
 @pytest.mark.manual
-def test_inflect_question():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
+def test_typein_lattoeng():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
     amount = 50
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
+        assert type(output) is TypeInLatToEngQuestion
 
-        assert output.check(output.main_answer)
         ic(output)  # type: ignore[name-defined] # noqa: F821
 
 
-def test_inflect_question_adjective():
-    word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
+def test_typein_lattoeng_check():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
     amount = 500
-
     for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
+        assert type(output) is TypeInLatToEngQuestion
+
         assert output.check(output.main_answer)
-
-        assert output.main_answer in word.endings.values()
-        assert output.main_answer in output.answers
-
-        for answer in output.answers:
-            assert answer in word.endings.values()
-            assert output.components in word.find(answer)
-
-        assert output.prompt == str(word)
-
-
-def test_inflect_question_noun():
-    word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
-        assert output.check(output.main_answer)
-
-        assert output.main_answer in word.endings.values()
-        assert output.main_answer in output.answers
-
-        for answer in output.answers:
-            assert answer in word.endings.values()
-            assert output.components in word.find(answer)
-
-        assert output.prompt == str(word)
-
-
-def test_inflect_question_pronoun():
-    word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
-        assert output.check(output.main_answer)
-
-        assert output.main_answer in word.endings.values()
-        assert output.main_answer in output.answers
-
-        for answer in output.answers:
-            assert answer in word.endings.values()
-            assert output.components in word.find(answer)
-
-        assert output.prompt == str(word)
-
-
-def test_inflect_question_verb():
-    word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is ParseWordCompToLatQuestion
-        assert output.check(output.main_answer)
-
-        assert output.main_answer in word.endings.values()
-        assert output.main_answer in output.answers
-
-        for answer in output.answers:
-            assert answer in word.endings.values()
-            assert output.components in word.find(answer)
-
-        assert output.prompt == str(word)

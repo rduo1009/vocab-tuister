@@ -9,12 +9,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import Gender
-from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.question_classes import PrincipalPartsQuestion
+from src.core.rogo.exceptions import InvalidSettingsError
 
 if TYPE_CHECKING:
     from src.core.rogo.type_aliases import Settings
@@ -107,93 +104,18 @@ settings: Settings = {
     "include-typein-lattoeng": False,
     "include-parse": False,
     "include-inflect": False,
-    "include-principal-parts": True,
+    "include-principal-parts": False,
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
 }
 
 
-@pytest.mark.manual
-def test_principalparts_question():
-    vocab_list = read_vocab_file(Path("tests/src_core_lego/test_vocab_files/regular_list.txt"))
-    amount = 50
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
+def test_no_question_type():
+    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
 
-        assert output.check(output.principal_parts)
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+    with pytest.raises(InvalidSettingsError) as error:
+        for _ in ask_question_without_sr(vocab_list, 1, settings):
+            ...
 
-
-def test_principalparts_adjective():
-    word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "laetus"
-        assert output.principal_parts == ("laetus", "laeta", "laetum")
-
-    word = Adjective("ingens", "ingentis", declension="3", termination=2, meaning="large")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "ingens"
-        assert output.principal_parts == ("ingens", "ingentis")
-
-
-def test_principalparts_noun():
-    word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "puella"
-        assert output.principal_parts == ("puella", "puellae")
-
-
-def test_principalparts_pronoun():
-    word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "hic"
-        assert output.principal_parts == ("hic", "haec", "hoc")
-
-
-def test_principalparts_verb():
-    word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "doceo"
-        assert output.principal_parts == ("doceo", "docere", "docui", "doctus")
-
-    word = Verb("traho", "trahere", "traxi", meaning="drag")
-    vocab_list = VocabList([word])
-    amount = 500
-
-    for output in ask_question_without_sr(vocab_list, amount, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
-
-        assert output.prompt == "traho"
-        assert output.principal_parts == ("traho", "trahere", "traxi")
+    assert str(error.value) == "No question type has been enabled."

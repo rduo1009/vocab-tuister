@@ -9,7 +9,7 @@ from src.core.accido.misc import Gender
 
 package_version = src.__version__
 
-timing_file = "tests/src_core_accido/accido_timing_data.txt"
+timing_file = "tests/accido_test/accido_timing_data.txt"
 
 
 def log_timing_data(text):

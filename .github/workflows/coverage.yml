@@ -25,7 +25,7 @@ jobs:
           python-version: ${{ matrix.py }}
 
       - name: Create testdump directory
-        run: mkdir tests/src_core_lego/test_vocab_files/testdump
+        run: mkdir tests/lego_test/test_vocab_files/testdump
 
       - name: Install project deps
         run: python3 -m pip install -r requirements-dev.txt
