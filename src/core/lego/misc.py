@@ -39,7 +39,7 @@ class VocabList:
     vocab: list[_Word]
 
     def __post_init__(self) -> None:
-        self.vocab = sorted(compact(self.vocab))
+        self.vocab = compact(self.vocab)
 
         # Set the version using the package version.
         self.version: str = src.__version__
