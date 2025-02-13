@@ -12,7 +12,7 @@ from typing import Annotated
 from cyclopts import App, Parameter
 from cyclopts.types import UInt16
 
-from src import __version__
+from src import __version__, _seed
 from src.server.app import main as server_main, main_dev as server_main_dev
 from src.utils.logger import (
     CustomHandler,
@@ -32,9 +32,8 @@ sys.excepthook = log_uncaught_exceptions  # type: ignore[assignment]
 for handler in logger.handlers.copy():
     logger.removeHandler(handler)
 handler = CustomHandler()
-
-
 logger.addHandler(handler)
+
 cli = App(
     version=__version__,  # for some reason this is needed
     default_parameter=Parameter(negative=()),
@@ -86,6 +85,10 @@ def vocab_tuister_server(
         Should not be used usually.
     """
     _set_verbosity(-1 if quiet else sum(verbose))
+
+    # Seed has been set
+    if _seed is not None:
+        logger.info("Using random seed '%s'.", _seed)
 
     if dev or debug:
         server_main_dev(port, debug=debug)
