@@ -1,6 +1,5 @@
 name: check
-on:
-  push:
+on: push
 
 concurrency:
   group: check-${{ github.ref }}
@@ -8,15 +7,14 @@ concurrency:
 
 jobs:
   test:
-    name: test with ${{ matrix.py }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: test with ${{ matrix.py }} on ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         py:
           - "3.13.1"
-        os:
-          - ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4.2.2
         with:
@@ -47,3 +45,30 @@ jobs:
 
       - name: Run test suite
         run: tox --skip-pkg-install
+
+  test-integration:
+    name: integration test with ${{ matrix.py }} on ubuntu-latest
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        py:
+          - "3.13.1"
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          submodules: "recursive"
+
+      - name: Setup python for test ${{ matrix.py }}
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: ${{ matrix.py }}
+
+      - name: Install deps
+        run: |
+          python3 -m pip install -r requirements-dev.txt
+
+      - name: Run integration tests
+        run: |
+          pytest -m 'integration'

@@ -54,6 +54,7 @@ def _remove_first_n_chars(text: str, n: int) -> str:
     return "\n".join(line[n:] for line in text.splitlines())
 
 
+@pytest.mark.integration
 def test_cli_normal(server_process, snapshot):
     vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=VOCAB_LIST, timeout=5)
     assert vocab_response.status_code == 200
