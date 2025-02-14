@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import random
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import optype as op
+if TYPE_CHECKING:
+    import optype as op
 
 
 def set_choice[T](s: set[T]) -> T:
