@@ -114,7 +114,7 @@ exclude_classes = {"exclude-adjectives": Adjective, "exclude-nouns": Noun, "excl
 
 
 def test_class_exclusion():
-    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
+    vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     keys = tuple(exclude_classes.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
 

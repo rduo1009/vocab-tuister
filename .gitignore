@@ -1,22 +1,31 @@
+# Usual ignores
 .DS_Store
 /.venv
 /.mypy_cache
 __pycache__/
 *.pyc
-TODO.txt
-/.vscode/settings.json
-/.vscode/tests.code-snippets
-testdump/
-*.so
-monkeytype.sqlite3
+
+# Dev files
 .coverage
 .tox
-/dist
 .dmypy.json
 .testmondata
 cosmic-ray.sqlite
+monkeytype.sqlite3
+
+# Test generated files
+/tests/lego_test/testdata/test_output/
+/src/scripts/json_output/
+
+# Build files
 setup.py
 build/
+/dist
 reports/
 __version__.txt
-src/scripts/json_output/
+
+
+# Local project files
+TODO.txt
+/.vscode/settings.json
+/.vscode/tests.code-snippets

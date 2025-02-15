@@ -24,17 +24,16 @@ jobs:
         with:
           python-version: ${{ matrix.py }}
 
-      - name: Create testdump directory
-        run: mkdir tests/lego_test/test_vocab_files/testdump
+      - name: Create test_output directory
+        run: mkdir tests/lego_test/testdata/test_output
 
       - name: Install project deps
         run: python3 -m pip install -r requirements-dev.txt
 
       - name: Run coverage for python
         run: |
-          coverage run tests/run_all_tests.py 
-          mkdir -p reports/coverage 
-          coverage xml -o reports/coverage/coverage.xml
+          chmod +x ./scripts/coverage.sh
+          ./scripts/coverage.sh
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.3.1
