@@ -48,7 +48,9 @@ except RuntimeError:
     import sys as _sys
 
     # Frozen with PyInstaller
-    if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
+    if getattr(_sys, "frozen", False) and hasattr(
+        _sys, "_MEIPASS"
+    ):  # pragma: no cover
         from pathlib import Path
 
         version_path = Path(__file__).parent.parent / "__version__.txt"

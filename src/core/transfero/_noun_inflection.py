@@ -21,7 +21,9 @@ if TYPE_CHECKING:
 logger: logging.Logger = logging.getLogger(__name__)
 
 # Frozen with PyInstaller
-if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
+if getattr(_sys, "frozen", False) and hasattr(
+    _sys, "_MEIPASS"
+):  # pragma: no cover
 
     def _typechecked(
         target: Callable[..., Any] | None = None,
