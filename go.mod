@@ -7,7 +7,7 @@ require (
 	github.com/charmbracelet/bubbletea/v2 v2.0.0-alpha.2
 	github.com/charmbracelet/lipgloss/v2 v2.0.0-alpha.2
 	github.com/elewis787/boa v0.1.2
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
 	golang.org/x/term v0.29.0
 )
@@ -39,7 +39,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.1 // indirect
 	github.com/sashabaranov/go-openai v1.26.3 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
