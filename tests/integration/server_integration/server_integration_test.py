@@ -3,6 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
+import contextlib
 import json
 import os
 import threading
@@ -15,42 +16,87 @@ from src.__main__ import cli
 
 SERVER_URL = "http://127.0.0.1:5500"
 
-VOCAB_FILE = Path(__file__).parent / "testdata" / "test-list.txt"
-VOCAB_LIST = VOCAB_FILE.read_text(encoding="utf-8")
-
-SESSION_CONFIG_FILE = Path(__file__).parent / "testdata" / "test-config.json"
-SESSION_CONFIG = json.loads(SESSION_CONFIG_FILE.read_text(encoding="utf-8"))
-
 
 def _remove_first_n_chars(text: str, n: int) -> str:
     return "\n".join(line[n:] for line in text.splitlines())
 
 
-def _run_cli():
-    cli(["-v", "-v", "-v", "-p", "5500"])
+def _run_cli(port):
+    with contextlib.suppress(KeyboardInterrupt):
+        cli(["-v", "-v", "-v", "-p", str(port)])
 
 
 @pytest.mark.integration
-def test_cli_normal(caplog, snapshot):
-    cli_process = threading.Thread(target=_run_cli, daemon=True)
+def test_cli_normal(caplog, snapshot, monkeypatch):
+    monkeypatch.setattr("src.server.app.vocab_list", None)
+
+    vocab_file = Path(__file__).parent / "testdata" / "test-regular-list.txt"
+    vocab_list = vocab_file.read_text(encoding="utf-8")
+
+    session_config_file = Path(__file__).parent / "testdata" / "test-config.json"
+    session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
+
+    cli_process = threading.Thread(target=_run_cli, args=(5500,), daemon=True)
     cli_process.start()
 
     try:
         sleep(5)
 
-        vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=VOCAB_LIST, timeout=5)
+        vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=vocab_list, timeout=5)
         assert vocab_response.status_code == 200
         assert vocab_response.text == snapshot
 
-        session_response = requests.post(f"{SERVER_URL}/session", json=SESSION_CONFIG, timeout=5)
+        session_response = requests.post(f"{SERVER_URL}/session", json=session_config, timeout=5)
         assert session_response.status_code == 200
         assert session_response.json() == snapshot
 
     finally:
         sleep(5)
 
-        shutdown_response = requests.get(f"{SERVER_URL}/shutdown", timeout=5)
-        assert shutdown_response.status_code == 200
-        assert shutdown_response.text == snapshot
+        cli_process.join(timeout=10)
+
+    assert caplog.text == snapshot
+
+
+@pytest.mark.integration
+def test_cli_list_badpos(caplog, snapshot, monkeypatch):
+    monkeypatch.setattr("src.server.app.vocab_list", None)
+
+    vocab_file = Path(__file__).parent / "testdata" / "test-badpos-list.txt"
+    vocab_list = vocab_file.read_text(encoding="utf-8")
+
+    session_config_file = Path(__file__).parent / "testdata" / "test-config.json"
+    session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
+
+    cli_process = threading.Thread(target=_run_cli, args=(5501,), daemon=True)
+    cli_process.start()
+
+    try:
+        sleep(5)
+
+        vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=vocab_list, timeout=5)
+        assert vocab_response.status_code == 400
+        assert vocab_response.text == snapshot
+
+        try:
+            session_response = requests.post(f"{SERVER_URL}/session", json=session_config, timeout=5)
+            session_response.raise_for_status()
+
+            pytest.fail("Expected an error but request succeeded.")
+
+        except requests.exceptions.HTTPError:
+            if session_response.status_code == 400:
+                assert session_response.status_code == 400
+                assert session_response.text == snapshot
+            else:
+                raise
+
+        except requests.exceptions.RequestException:
+            raise
+
+    finally:
+        sleep(5)
+
+        cli_process.join(timeout=10)
 
     assert caplog.text == snapshot

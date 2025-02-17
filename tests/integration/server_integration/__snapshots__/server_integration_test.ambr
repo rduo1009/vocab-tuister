@@ -1,4 +1,25 @@
 # serializer version: 1
+# name: test_cli_list_badpos
+  "Bad request: 400 Bad Request: Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)"
+# ---
+# name: test_cli_list_badpos.1
+  'Bad request: 400 Bad Request: Vocab list has not been provided.'
+# ---
+# name: test_cli_list_badpos.2
+  '''
+  INFO     root:__main__.py:91 Using random seed '10'.
+  INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
+  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
+  INFO     src.server.app:app.py:84 Reading vocab list.
+  DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Cause an error'
+  ERROR    src.server.app:app.py:46 Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /send-vocab HTTP/1.1" 400 100
+  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
+  ERROR    src.server.app:app.py:46 Vocab list has not been provided.
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 400 63
+  
+  '''
+# ---
 # name: test_cli_normal
   'Vocab list received.'
 # ---
@@ -1189,9 +1210,6 @@
   ])
 # ---
 # name: test_cli_normal.2
-  'OK'
-# ---
-# name: test_cli_normal.3
   '''
   INFO     root:__main__.py:91 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5500
@@ -1542,9 +1560,6 @@
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'girl: puella, puellae, (f)'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'girl: puella, puellae, (f)' succeeded.
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 19273
-  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
-  INFO     src.server.app:app.py:64 Shutting down.
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "GET /shutdown HTTP/1.1" 200 2
   
   '''
 # ---
