@@ -7,7 +7,7 @@
 # ---
 # name: test_cli_error_config.2
   '''
-  INFO     root:__main__.py:91 Using random seed '10'.
+  INFO     root:__main__.py:100 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5502
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
   INFO     src.server.app:app.py:63 Reading vocab list.
@@ -64,7 +64,7 @@
 # ---
 # name: test_cli_error_list.2
   '''
-  INFO     root:__main__.py:91 Using random seed '10'.
+  INFO     root:__main__.py:100 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
   INFO     src.server.app:app.py:63 Reading vocab list.
@@ -354,11 +354,371 @@
       }),
       'question_type': 'ParseWordCompToLatQuestion',
     }),
+    dict({
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'keen',
+        'choices': list([
+          'keen',
+          'girl',
+          'from',
+        ]),
+        'prompt': 'acer',
+      }),
+      'question_type': 'MultipleChoiceLatToEngQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'positive ablative singular masculine',
+          'positive ablative singular masculine',
+          'positive ablative singular masculine',
+          'positive ablative singular masculine',
+        ]),
+        'dictionary_entry': 'good: bonus, bona, bonum, (2-1-2)',
+        'main_answer': 'positive ablative singular masculine',
+        'prompt': 'bono',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'ParseWordCompToLatQuestion': dict({
+        'answers': list([
+          'ceperat',
+        ]),
+        'components': 'pluperfect active indicative singular 3rd person',
+        'main_answer': 'ceperat',
+        'prompt': 'take: capio, capere, cepi',
+      }),
+      'question_type': 'ParseWordCompToLatQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'ingens',
+        'choices': list([
+          'levis',
+          'ingens',
+          'puer',
+        ]),
+        'prompt': 'large',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'into',
+        ]),
+        'main_answer': 'into',
+        'prompt': 'in',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'levis',
+          'leve',
+        ]),
+        'prompt': 'levis',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'ille',
+          'illa',
+          'illud',
+        ]),
+        'prompt': 'ille',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'ille',
+        'choices': list([
+          'ille',
+          'puella',
+          'ingens',
+        ]),
+        'prompt': 'that',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'into',
+        'choices': list([
+          'into',
+          'keen',
+          'light',
+        ]),
+        'prompt': 'in',
+      }),
+      'question_type': 'MultipleChoiceLatToEngQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'illa',
+          'illae',
+          'illi',
+        ]),
+        'main_answer': 'illi',
+        'prompt': 'those',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'ablative singular',
+          'ablative singular',
+          'ablative singular',
+        ]),
+        'dictionary_entry': 'farmer: agricola, agricolae, (m)',
+        'main_answer': 'ablative singular',
+        'prompt': 'agricola',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'hic',
+          'haec',
+          'hoc',
+        ]),
+        'prompt': 'hic',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'puella',
+        'choices': list([
+          'nomen',
+          'capio',
+          'puella',
+        ]),
+        'prompt': 'girl',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'these',
+          'this',
+        ]),
+        'main_answer': 'this',
+        'prompt': 'haec',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'vocative plural',
+          'vocative plural',
+          'vocative plural',
+        ]),
+        'dictionary_entry': 'boy: puer, pueri, (m)',
+        'main_answer': 'vocative plural',
+        'prompt': 'pueri',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'ParseWordCompToLatQuestion': dict({
+        'answers': list([
+          'huic',
+        ]),
+        'components': 'dative singular neuter',
+        'main_answer': 'huic',
+        'prompt': 'this: hic, haec, hoc',
+      }),
+      'question_type': 'ParseWordCompToLatQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'extremely light',
+          'lightest',
+          'most light',
+          'quite light',
+          'rather light',
+          'too light',
+          'very light',
+        ]),
+        'main_answer': 'lightest',
+        'prompt': 'levissima',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'pueri',
+        ]),
+        'main_answer': 'pueri',
+        'prompt': 'of a boy',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'cepi',
+        ]),
+        'main_answer': 'cepi',
+        'prompt': 'I took',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'ille',
+        'choices': list([
+          'ille',
+          'capio',
+          'in',
+        ]),
+        'prompt': 'that',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'ingentior',
+          'ingentiora',
+          'ingentiore',
+          'ingentiorem',
+          'ingentiores',
+          'ingentiori',
+          'ingentioribus',
+          'ingentioris',
+          'ingentiorum',
+          'ingentius',
+        ]),
+        'main_answer': 'ingentior',
+        'prompt': 'larger',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'capio',
+          'capere',
+          'cepi',
+        ]),
+        'prompt': 'capio',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          "farmer's",
+          'farmers',
+          'for a farmer',
+          'for the farmer',
+          'of a farmer',
+          'of the farmer',
+          'to a farmer',
+          'to the farmer',
+        ]),
+        'main_answer': 'farmers',
+        'prompt': 'agricolae',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'that',
+        'choices': list([
+          'name',
+          'keen',
+          'that',
+        ]),
+        'prompt': 'ille',
+      }),
+      'question_type': 'MultipleChoiceLatToEngQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'canis',
+        'choices': list([
+          'agricola',
+          'canis',
+          'bonus',
+        ]),
+        'prompt': 'dog',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'agricolae',
+        ]),
+        'main_answer': 'agricolae',
+        'prompt': 'to the farmer',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'ParseWordCompToLatQuestion': dict({
+        'answers': list([
+          'nominum',
+        ]),
+        'components': 'genitive plural',
+        'main_answer': 'nominum',
+        'prompt': 'name: nomen, nominis, (n)',
+      }),
+      'question_type': 'ParseWordCompToLatQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'laetus',
+        'choices': list([
+          'bonus',
+          'laetus',
+          'e',
+        ]),
+        'prompt': 'happy',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'genitive plural',
+        ]),
+        'dictionary_entry': 'name: nomen, nominis, (n)',
+        'main_answer': 'genitive plural',
+        'prompt': 'nominum',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'into',
+        ]),
+        'main_answer': 'into',
+        'prompt': 'in',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
   ])
 # ---
 # name: test_cli_normal.2
   '''
-  INFO     root:__main__.py:91 Using random seed '10'.
+  INFO     root:__main__.py:100 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5500
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
   INFO     src.server.app:app.py:63 Reading vocab list.
@@ -402,7 +762,7 @@
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /send-vocab HTTP/1.1" 200 20
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
   INFO     src.server.app:app.py:111 Validating settings.
-  INFO     src.server.app:app.py:126 Returning 20 questions.
+  INFO     src.server.app:app.py:126 Returning 50 questions.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)'.
@@ -471,7 +831,111 @@
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'this: hic, haec, hoc' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'farmer: agricola, agricolae, (m)'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 4422
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'into: in'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=True)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'into: in' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'light: levis, leve, (3-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'light: levis, leve, (3-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'into: in'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'into: in' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'that: ille, illa, illud'.
+  DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(masculine, nominative, plural)
+  DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(feminine, nominative, plural)
+  DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(neuter, nominative, plural)
+  DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(masculine, nominative, plural)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(that, nominative plural masculine, main=False)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'farmer: agricola, agricolae, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'this: hic, haec, hoc'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'girl: puella, puellae, (f)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'girl: puella, puellae, (f)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'this: hic, haec, hoc'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative singular feminine, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative singular feminine, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative plural neuter, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative plural neuter, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, accusative plural neuter, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, accusative plural neuter, main=True)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'boy: puer, pueri, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'boy: puer, pueri, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'this: hic, haec, hoc'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'light: levis, leve, (3-2)'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative singular feminine, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative singular feminine, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative singular feminine, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative singular feminine, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative ablative singular feminine, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative ablative singular feminine, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative plural neuter, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative plural neuter, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative plural neuter, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative plural neuter, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative accusative plural neuter, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative accusative plural neuter, main=True)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'light: levis, leve, (3-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'from: e'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordComptoLatQuestion with word 'from: e' failed.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'boy: puer, pueri, (m)'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(boy, genitive singular, main=False)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'boy: puer, pueri, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'take: capio, capere, cepi'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(take, perfect active indicative singular 1st person, main=False)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  DEBUG    src.core.accido._class_adjective:_class_adjective.py:859 ingens.get(comparative, masculine, nominative, singular, adverb=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(large, comparative vocative singular masculine, main=False)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, genitive singular, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, genitive singular, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, dative singular, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, dative singular, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, nominative plural, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, nominative plural, main=True)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative plural, main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative plural, main=True)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'farmer: agricola, agricolae, (m)'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, dative singular, main=False)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'from: e'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLattoCompQuestion with word 'from: e' failed.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'name: nomen, nominis, (n)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'name: nomen, nominis, (n)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'into: in'.
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=False)
+  DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=True)
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'into: in' succeeded.
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 9971
   
   '''
 # ---
