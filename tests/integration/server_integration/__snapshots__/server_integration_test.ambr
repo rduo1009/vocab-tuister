@@ -7,7 +7,7 @@
 # ---
 # name: test_cli_error_config.2
   '''
-  INFO     root:__main__.py:100 Using random seed '10'.
+  INFO     root:__main__.py:103 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5502
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
   INFO     src.server.app:app.py:63 Reading vocab list.
@@ -64,7 +64,7 @@
 # ---
 # name: test_cli_error_list.2
   '''
-  INFO     root:__main__.py:100 Using random seed '10'.
+  INFO     root:__main__.py:103 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
   INFO     src.server.app:app.py:63 Reading vocab list.
@@ -718,7 +718,7 @@
 # ---
 # name: test_cli_normal.2
   '''
-  INFO     root:__main__.py:100 Using random seed '10'.
+  INFO     root:__main__.py:103 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5500
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
   INFO     src.server.app:app.py:63 Reading vocab list.
