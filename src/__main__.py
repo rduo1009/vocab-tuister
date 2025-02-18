@@ -11,6 +11,7 @@ from typing import Annotated
 
 from cyclopts import App, Parameter, Token
 from cyclopts.types import UInt16
+from rich.console import Console
 
 from src import __version__, _seed
 from src.server.app import main as server_main, main_dev as server_main_dev
@@ -34,9 +35,11 @@ for handler in logger.handlers.copy():
 handler = CustomHandler()
 logger.addHandler(handler)
 
+console = Console()
 cli = App(
-    version=__version__,  # for some reason this is needed
+    version=__version__,  # this is needed due to dynamic versioning
     default_parameter=Parameter(negative=()),
+    console=console,
 )
 
 
@@ -106,4 +109,7 @@ def vocab_tuister_server(
 
 
 if __name__ == "__main__":
-    cli()
+    try:
+        cli()
+    except Exception:  # noqa: BLE001
+        console.print_exception()
