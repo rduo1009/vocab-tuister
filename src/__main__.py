@@ -7,9 +7,9 @@ from __future__ import annotations
 import logging
 import sys
 import warnings
-from typing import Annotated
+from typing import Annotated, Literal
 
-from cyclopts import App, Parameter
+from cyclopts import App, Parameter, Token
 from cyclopts.types import UInt16
 
 from src import __version__, _seed
@@ -53,13 +53,22 @@ def _set_verbosity(verbosity: int) -> None:
     handler.setLevel(verbosity_map.get(verbosity, logging.DEBUG))
 
 
+def _verbosity_converter(
+    type_: Literal[tuple[bool, ...]], tokens: list[Token]
+) -> tuple[bool, ...]:
+    assert type_ == tuple[bool, ...]
+
+    return ((token.keyword == "-v") for token in tokens)
+
+
 @cli.default
 def vocab_tuister_server(
     *,
     port: Annotated[UInt16, Parameter(name=["--port", "-p"])] = 5000,
     verbose: Annotated[
-        tuple[bool, ...], Parameter(name=["--verbose", "-v"])
-    ] = (False,),
+        tuple[bool, ...],
+        Parameter(name=["--verbose", "-v"], converter=_verbosity_converter),
+    ] = (),
     quiet: bool = False,
     dev: bool = False,
     debug: bool = False,
