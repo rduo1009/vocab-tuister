@@ -14,8 +14,6 @@ import pytest
 import requests
 from src.__main__ import cli
 
-SERVER_URL = "http://127.0.0.1:5500"
-
 
 def _remove_first_n_chars(text: str, n: int) -> str:
     return "\n".join(line[n:] for line in text.splitlines())
@@ -30,6 +28,8 @@ def _run_cli(port):
 def test_cli_normal(caplog, snapshot, monkeypatch):
     monkeypatch.setattr("src.server.app.vocab_list", None)
 
+    server_url = "http://127.0.0.1:5500"
+
     vocab_file = Path(__file__).parent / "testdata" / "test-regular-list.txt"
     vocab_list = vocab_file.read_text(encoding="utf-8")
 
@@ -42,11 +42,11 @@ def test_cli_normal(caplog, snapshot, monkeypatch):
     try:
         sleep(5)
 
-        vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=vocab_list, timeout=5)
+        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
         assert vocab_response.status_code == 200
         assert vocab_response.text == snapshot
 
-        session_response = requests.post(f"{SERVER_URL}/session", json=session_config, timeout=5)
+        session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
         assert session_response.status_code == 200
         assert session_response.json() == snapshot
 
@@ -62,6 +62,8 @@ def test_cli_normal(caplog, snapshot, monkeypatch):
 def test_cli_list_badpos(caplog, snapshot, monkeypatch):
     monkeypatch.setattr("src.server.app.vocab_list", None)
 
+    server_url = "http://127.0.0.1:5501"
+
     vocab_file = Path(__file__).parent / "testdata" / "test-badpos-list.txt"
     vocab_list = vocab_file.read_text(encoding="utf-8")
 
@@ -74,12 +76,12 @@ def test_cli_list_badpos(caplog, snapshot, monkeypatch):
     try:
         sleep(5)
 
-        vocab_response = requests.post(f"{SERVER_URL}/send-vocab", data=vocab_list, timeout=5)
+        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
         assert vocab_response.status_code == 400
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{SERVER_URL}/session", json=session_config, timeout=5)
+            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
             session_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")

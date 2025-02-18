@@ -9,14 +9,14 @@
   '''
   INFO     root:__main__.py:91 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
-  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
+  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
   INFO     src.server.app:app.py:84 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Cause an error'
   ERROR    src.server.app:app.py:46 Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /send-vocab HTTP/1.1" 400 100
-  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /send-vocab HTTP/1.1" 400 100
+  DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
   ERROR    src.server.app:app.py:46 Vocab list has not been provided.
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 400 63
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /session HTTP/1.1" 400 63
   
   '''
 # ---

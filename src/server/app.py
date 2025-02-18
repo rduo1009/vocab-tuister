@@ -6,11 +6,7 @@ from __future__ import annotations
 
 import json
 import logging
-import os
-import signal
-import threading
 from io import StringIO
-from time import sleep
 from typing import TYPE_CHECKING, cast
 
 from flask import Flask, Response, render_template, request
@@ -57,23 +53,6 @@ def info():
         else None,
         vocab_list_raw=str(vocab_list),
     )
-
-
-@app.route("/shutdown")
-def shutdown():
-    logger.info("Shutting down.")
-
-    def stop_server():
-        sleep(3)
-
-        pid = os.getpid()
-        os.kill(pid, signal.SIGINT)
-
-    threading.Thread(
-        target=stop_server
-    ).start()  # Run shutdown in a separate thread
-
-    return "OK", 200
 
 
 @app.route("/send-vocab", methods=["POST"])
