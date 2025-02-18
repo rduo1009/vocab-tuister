@@ -22,7 +22,7 @@ aenum = "3.1.15"
 lz4 = "4.4.3"
 flask = "3.1.0"
 waitress = "3.0.2"
-cyclopts = "3.7.0"
+cyclopts = "3.9.0"
 ansicolors = "1.1.8"
 dunamai = "1.23.0"
 pyinstaller = "6.12.0"
@@ -41,7 +41,7 @@ rstfmt = "0.0.14"
 mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
 monkeytype = "23.3.0"
 interrogate = "1.7.0"
-pydoclint = "0.6.0"
+pydoclint = "0.6.2"
 
 [tool.poetry.group.types.dependencies]
 types-regex = "2024.11.6.20241221"
