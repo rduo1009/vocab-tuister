@@ -89,6 +89,5 @@
     "include-principal-parts": true,
     "include-typein-engtolat": true,
     "include-typein-lattoeng": true,
-    "number-multiplechoice-options": 3,
-    "number-of-questions": 100
+    "number-multiplechoice-options": 3
 }
