@@ -7,7 +7,7 @@ from __future__ import annotations
 import logging
 import sys
 import warnings
-from typing import Annotated, Literal
+from typing import Annotated
 
 from cyclopts import App, Parameter, Token
 from cyclopts.types import UInt16
@@ -54,11 +54,11 @@ def _set_verbosity(verbosity: int) -> None:
 
 
 def _verbosity_converter(
-    type_: Literal[tuple[bool, ...]], tokens: list[Token]
+    type_: type[tuple[bool, ...]], tokens: list[Token]
 ) -> tuple[bool, ...]:
     assert type_ == tuple[bool, ...]
 
-    return ((token.keyword == "-v") for token in tokens)
+    return tuple((token.keyword == "-v") for token in tokens)
 
 
 @cli.default
