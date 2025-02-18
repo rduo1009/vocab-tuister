@@ -94,6 +94,7 @@ def vocab_tuister_server(
         Should not be used usually.
     debug : bool
         Run in debug mode. Implies ``--dev``.
+        Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
     _set_verbosity(-1 if quiet else sum(verbose))
@@ -101,6 +102,9 @@ def vocab_tuister_server(
     # Seed has been set
     if _seed is not None:
         logger.info("Using random seed '%s'.", _seed)
+
+    if debug:
+        sys.excepthook = sys.__excepthook__
 
     if dev or debug:
         server_main_dev(port, debug=debug)
