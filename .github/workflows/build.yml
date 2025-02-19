@@ -50,7 +50,6 @@ jobs:
           source .venv/Scripts/activate
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          go install github.com/dmarkham/enumer@latest
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Setup project
@@ -60,7 +59,6 @@ jobs:
           source .venv/bin/activate
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          go install github.com/dmarkham/enumer@latest
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Build project
