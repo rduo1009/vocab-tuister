@@ -20,20 +20,26 @@ def run_cli(port):
         cli(["-v", "-v", "-v", "-p", str(port)])
 
 
-@pytest.mark.integration
-def test_cli_normal(caplog, snapshot, monkeypatch):
+def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
     monkeypatch.setattr("src.server.app.vocab_list", None)
 
-    server_url = "http://127.0.0.1:5500"
+    server_url = f"http://127.0.0.1:{port}"
 
-    vocab_file = Path(__file__).parent / "testdata" / "test-regular-list.txt"
+    vocab_file = Path(__file__).parent / "testdata" / f"test-{vocab_file_info}-list.txt"
     vocab_list = vocab_file.read_text(encoding="utf-8")
 
-    session_config_file = Path(__file__).parent / "testdata" / "test-regular-config.json"
+    session_config_file = Path(__file__).parent / "testdata" / f"test-{session_config_info}-config.json"
     session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
 
-    cli_process = threading.Thread(target=run_cli, args=(5500,), daemon=True)
+    cli_process = threading.Thread(target=run_cli, args=(port,), daemon=True)
     cli_process.start()
+
+    return server_url, vocab_list, session_config, cli_process
+
+
+@pytest.mark.integration
+def test_cli_normal(caplog, snapshot, monkeypatch):
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5500, "regular", "regular")
 
     try:
         sleep(5)
@@ -56,18 +62,7 @@ def test_cli_normal(caplog, snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_list(caplog, snapshot, monkeypatch):
-    monkeypatch.setattr("src.server.app.vocab_list", None)
-
-    server_url = "http://127.0.0.1:5501"
-
-    vocab_file = Path(__file__).parent / "testdata" / "test-error-list.txt"
-    vocab_list = vocab_file.read_text(encoding="utf-8")
-
-    session_config_file = Path(__file__).parent / "testdata" / "test-regular-config.json"
-    session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
-
-    cli_process = threading.Thread(target=run_cli, args=(5501,), daemon=True)
-    cli_process.start()
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5501, "error", "regular")
 
     try:
         sleep(5)
@@ -102,19 +97,7 @@ def test_cli_error_list(caplog, snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_config(caplog, snapshot, monkeypatch):
-    monkeypatch.setattr("src.server.app.vocab_list", None)
-
-    server_url = "http://127.0.0.1:5502"
-
-    vocab_file = Path(__file__).parent / "testdata" / "test-regular-list.txt"
-    vocab_list = vocab_file.read_text(encoding="utf-8")
-
-    session_config_file = Path(__file__).parent / "testdata" / "test-error-config.json"
-    session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
-
-    cli_process = threading.Thread(target=run_cli, args=(5502,), daemon=True)
-    cli_process.start()
-
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5502, "regular", "error")
     try:
         sleep(5)
 
