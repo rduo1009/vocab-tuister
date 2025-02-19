@@ -380,7 +380,7 @@ class EndingComponents:
         self_attrs = self._get_non_null_attributes()
         other_attrs = other._get_non_null_attributes()
 
-        if self_attrs != other_attrs:
+        if set(self_attrs) != set(other_attrs):
             return False
 
         return all(
