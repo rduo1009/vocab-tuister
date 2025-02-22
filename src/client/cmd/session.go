@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/spf13/cobra"
@@ -24,32 +23,34 @@ var sessionCmd = &cobra.Command{
 	Short:   "Starts a testing session.",
 	Long: `Starts a testing session.
 This is based on the vocab list and the session config file provided.`,
-	Run: func(cmd *cobra.Command, args []string) { //nolint:revive
+
+	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		if sessionConfigPath == "" {
-			fmt.Println("Error: --session-config is required.")
-			os.Exit(1)
+			return fmt.Errorf("--session-config is required")
 		}
 
 		if vocabListPath == "" {
-			fmt.Println("Error: --vocab-list is required.")
-			os.Exit(1)
+			return fmt.Errorf("--vocab-list is required")
 		}
 
 		if numberOfQuestions <= 0 {
-			fmt.Println("Error: --number must be a positive integer.")
-			os.Exit(1)
+			return fmt.Errorf("--number must be a positive integer")
 		}
 
 		if serverPort < 1 || serverPort > 65535 {
-			fmt.Println("Error: --server-port must be a valid port number between 1 and 65535.")
-			os.Exit(1)
+			return fmt.Errorf("--server-port must be a valid port number between 1 and 65535")
 		}
 
+		return nil
+	},
+
+	RunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		p := tea.NewProgram(sessiontui.InitialModel(sessionConfigPath, vocabListPath, numberOfQuestions, serverPort))
 		if _, err := p.Run(); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			return err
 		}
+
+		return nil
 	},
 }
 

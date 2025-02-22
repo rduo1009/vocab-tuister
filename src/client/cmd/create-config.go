@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/spf13/cobra"
@@ -17,19 +16,24 @@ var createConfigCmd = &cobra.Command{
 	Short:   "Create a session config for the vocab tester.",
 	Long: `Create a session config for the vocab tester.
 Starts a wizard that receives input from the user on each setting and generates a config file.`,
-	Run: func(cmd *cobra.Command, args []string) { //nolint:revive
+
+	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		if len(args) != 1 {
-			fmt.Println("Invalid number of arguments given. (expected 1)")
-			os.Exit(1)
+			return fmt.Errorf("invalid number of arguments given (expected 1)")
 		}
 
+		return nil
+	},
+
+	RunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		listPath := args[0]
 
 		p := tea.NewProgram(configtui.InitialModel(listPath))
 		if _, err := p.Run(); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			return err
 		}
+
+		return nil
 	},
 }
 

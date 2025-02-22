@@ -1,22 +1,19 @@
 [run]
 branch = True
+parallel = True
 omit = 
     tests/*
-    */_vendor/*
-    */utils/*
+    src/_vendor/*
+    src/utils/*
+    src/scripts/*
 
 [report]
 exclude_also = 
-    if self\\.debug
-
     raise AssertionError
     raise NotImplementedError
     return NotImplemented
-
-    if 0:
     if __name__ == .__main__.:
-
     @(abc\\.)?abstractmethod
     @overload
-
     if TYPE_CHECKING:
+    if _seed is not None

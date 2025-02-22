@@ -72,8 +72,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				value := m.textinput.Value()
 				mcOptionsNumber, err := strconv.Atoi(value)
 				if err != nil {
-					fmt.Printf("Input %s is not a number.", value)
-					os.Exit(1)
+					m.err = fmt.Errorf("input %s is not a number", value)
+					return m, tea.Quit
 				}
 
 				return m, saveConfig(m.filePath, squashSettings(m.wizard, mcOptionsNumber))
@@ -82,9 +82,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.currentPage != len(m.wizard.Pages)-1 {
 				m.currentPage++
 				m.selectedOption = 0
-			} else {
-				m.mcOptionsNumberPage = true
+				break
 			}
+
+			m.mcOptionsNumberPage = true
 
 		case key.Matches(msg, m.keys.Up):
 			if !m.mcOptionsNumberPage && m.selectedOption != 0 {

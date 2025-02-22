@@ -8,8 +8,9 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
+    from typing import Any
 
-    from optype import CanLt
+    import optype as op
 
 
 def _is_hashable[T](sequence: Sequence[T]) -> bool:
@@ -44,7 +45,7 @@ def contains_duplicates[T](sequence: Sequence[T]) -> bool:
     return False
 
 
-def remove_duplicates[C: CanLt](sequence: Sequence[C]) -> Sequence[C]:
+def remove_duplicates[C: op.CanLt[Any]](sequence: Sequence[C]) -> Sequence[C]:
     """Remove duplicates from a list or tuple.
 
     Note that this does not keep order.
