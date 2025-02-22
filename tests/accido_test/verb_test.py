@@ -86,497 +86,272 @@ class TestVerbDunder:
         assert word1 + word2 == Verb("celo", "celare", "celavi", "celatus", meaning=MultipleMeanings(("hide", "conceal")))
 
 
+VERB_COMBINATIONS = (
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+)
+
+
 class TestVerbConjugation:
-    def test_firstconjugation(self):
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "celo", "celas", "celat", "celamus", "celatis", "celant",
+        "celabam", "celabas", "celabat", "celabamus", "celabatis", "celabant",
+        "celavi", "celavisti", "celavit", "celavimus", "celavistis", "celaverunt",
+        "celaveram", "celaveras", "celaverat", "celaveramus", "celaveratis", "celaverant",
+
+        "celare",
+        "cela", "celate",
+
+        "celarem", "celares", "celaret", "celaremus", "celaretis", "celarent",
+        "celavissem", "celavisses", "celavisset", "celavissemus", "celavissetis", "celavissent",
+    ])])  # fmt: skip
+    def test_firstconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celo"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celant"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "pareo", "pares", "paret", "paremus", "paretis", "parent",
+        "parebam", "parebas", "parebat", "parebamus", "parebatis", "parebant",
+        "parui", "paruisti", "paruit", "paruimus", "paruistis", "paruerunt",
+        "parueram", "parueras", "paruerat", "parueramus", "parueratis", "paruerant",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celabant"
+        "parere",
+        "pare", "parete",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celavi"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celavisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celavit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celavimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celavistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaverunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaveram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaveras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaverat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaveramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaveratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "celaverant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "celare"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "cela"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "celate"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celarem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celares"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celaret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celaremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celaretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celarent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "celavissent"
-
-    def test_secondconjugation(self):
+        "parerem", "pareres", "pareret", "pareremus", "pareretis", "parerent",
+        "paruissem", "paruisses", "paruisset", "paruissemus", "paruissetis", "paruissent",
+    ])])  # fmt: skip
+    def test_secondconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("pareo", "parere", "parui", meaning="hide")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "pareo"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "pares"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parent"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "desero", "deseris", "deserit", "deserimus", "deseritis", "deserunt",
+        "deserebam", "deserebas", "deserebat", "deserebamus", "deserebatis", "deserebant",
+        "deserui", "deseruisti", "deseruit", "deseruimus", "deseruistis", "deseruerunt",
+        "deserueram", "deserueras", "deseruerat", "deserueramus", "deserueratis", "deseruerant",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parebant"
+        "deserere",
+        "desere", "deserite",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parui"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruerunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parueram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parueras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruerat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parueramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "parueratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "paruerant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "parere"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "pare"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "parete"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "parerem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "pareres"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "pareret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "pareremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "pareretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "parerent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "paruissent"
-
-    def test_thirdconjugation(self):
+        "desererem", "desereres", "desereret", "desereremus", "desereretis", "desererent",
+        "deseruissem", "deseruisses", "deseruisset", "deseruissemus", "deseruissetis", "deseruissent",
+    ])])  # fmt: skip
+    def test_thirdconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("desero", "deserere", "deserui", "desertus", meaning="desert")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "desero"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseris"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseritis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserunt"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "facio", "facis", "facit", "facimus", "facitis", "faciunt",
+        "faciebam", "faciebas", "faciebat", "faciebamus", "faciebatis", "faciebant",
+        "feci", "fecisti", "fecit", "fecimus", "fecistis", "fecerunt",
+        "feceram", "feceras", "fecerat", "feceramus", "feceratis", "fecerant",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserebant"
+        "facere",
+        "face", "facite",
+            
+        "facerem", "faceres", "faceret", "faceremus", "faceretis", "facerent",
+        "fecissem", "fecisses", "fecisset", "fecissemus", "fecissetis", "fecissent",
+    ])])  # fmt: skip
+    def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("facio", "facere", "feci", "factus", meaning="make")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserui"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruerunt"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "aperio", "aperis", "aperit", "aperimus", "aperitis", "aperiunt",
+        "aperiebam", "aperiebas", "aperiebat", "aperiebamus", "aperiebatis", "aperiebant",
+        "aperui", "aperuisti", "aperuit", "aperuimus", "aperuistis", "aperuerunt",
+        "aperueram", "aperueras", "aperuerat", "aperueramus", "aperueratis", "aperuerant",
+            
+        "aperire",
+        "aperi", "aperite",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserueram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserueras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruerat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserueramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deserueratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "deseruerant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "deserere"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "desere"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "deserite"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desererem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desereres"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desereret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desereremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desereretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "desererent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "deseruissent"
-
-    def test_thirdioconjugation(self):
-        word = Verb("patefacio", "patefacere", "patefeci", "patefactus", meaning="reveal")
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefacio"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefacis"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefacit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefacimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefacitis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefaciebant"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefeci"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecerunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefeceram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefeceras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecerat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefeceramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefeceratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "patefecerant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "patefacere"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "pateface"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "patefacite"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefacerem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefaceres"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefaceret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefaceremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefaceretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefacerent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "patefecissent"
-
-    def test_fourthconjugation(self):
+        "aperirem", "aperires", "aperiret", "aperiremus", "aperiretis", "aperirent",
+        "aperuissem", "aperuisses", "aperuisset", "aperuissemus", "aperuissetis", "aperuissent",
+    ])])  # fmt: skip
+    def test_fourthconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("aperio", "aperire", "aperui", "apertus", meaning="open")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperio"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperis"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperitis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiunt"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "abeo", "abis", "abit", "abimus", "abitis", "abeunt",
+        "abibam", "abibas", "abibat", "abibamus", "abibatis", "abibant",
+        "abii", "abisti", "abiit", "abiimus", "abistis", "abierunt",
+        "abieram", "abieras", "abierat", "abieramus", "abieratis", "abierant",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperiebant"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperui"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuerunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperueram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperueras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuerat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperueramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperueratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aperuerant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "aperire"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "aperi"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "aperite"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperirem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperires"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperiret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperiremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperiretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperirent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "aperuissent"
-
-    def test_irregularverb_eo(self):
+        "abire",
+        "abi", "abite",
+            
+        "abirem", "abires", "abiret", "abiremus", "abiretis", "abirent",
+        "abissem", "abisses", "abisset", "abissemus", "abissetis", "abissent",
+    ])])  # fmt: skip
+    def test_irregularverb_eo(self, tense, voice, mood, person, number, expected):
         word = Verb("abeo", "abire", "abii", "abitum", meaning="depart")
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abeo"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abis"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abitis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abeunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abibant"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abii"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abiit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abiimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abierunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abieram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abieras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abierat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abieramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abieratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "abierant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "abire"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "abi"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "abite"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abirem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abires"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abiret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abiremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abiretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abirent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "abissent"
-
-
-class TestParticipleConjugation:
-    def test_present_participle(self):
-        word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.NOMINATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.VOCATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ACCUSATIVE) == "portantem"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.GENITIVE) == "portantis"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.DATIVE) == "portanti"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ABLATIVE) == "portante"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.NOMINATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.VOCATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ACCUSATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.GENITIVE) == "portantium"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.DATIVE) == "portantibus"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ABLATIVE) == "portantibus"
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.NOMINATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.VOCATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ACCUSATIVE) == "portantem"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.GENITIVE) == "portantis"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.DATIVE) == "portanti"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ABLATIVE) == "portante"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.NOMINATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.VOCATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ACCUSATIVE) == "portantes"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.GENITIVE) == "portantium"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.DATIVE) == "portantibus"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ABLATIVE) == "portantibus"
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.NOMINATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.VOCATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ACCUSATIVE) == "portans"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.GENITIVE) == "portantis"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.DATIVE) == "portanti"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ABLATIVE) == "portante"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.NOMINATIVE) == "portantia"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.VOCATIVE) == "portantia"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ACCUSATIVE) == "portantia"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.GENITIVE) == "portantium"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.DATIVE) == "portantibus"
-        assert word.get(number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ABLATIVE) == "portantibus"
-
-    def test_ppp(self):
-        word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.NOMINATIVE) == "portatus"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.VOCATIVE) == "portate"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ACCUSATIVE) == "portatum"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.GENITIVE) == "portati"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.DATIVE) == "portato"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ABLATIVE) == "portato"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.NOMINATIVE) == "portati"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.VOCATIVE) == "portati"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ACCUSATIVE) == "portatos"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.GENITIVE) == "portatorum"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.DATIVE) == "portatis"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.MASCULINE, participle_case=Case.ABLATIVE) == "portatis"
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.NOMINATIVE) == "portata"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.VOCATIVE) == "portata"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ACCUSATIVE) == "portatam"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.GENITIVE) == "portatae"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.DATIVE) == "portatae"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ABLATIVE) == "portata"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.NOMINATIVE) == "portatae"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.VOCATIVE) == "portatae"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ACCUSATIVE) == "portatas"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.GENITIVE) == "portatarum"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.DATIVE) == "portatis"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.FEMININE, participle_case=Case.ABLATIVE) == "portatis"
-
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.NOMINATIVE) == "portatum"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.VOCATIVE) == "portatum"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ACCUSATIVE) == "portatum"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.GENITIVE) == "portati"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.DATIVE) == "portato"
-        assert word.get(number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ABLATIVE) == "portato"
-
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.NOMINATIVE) == "portata"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.VOCATIVE) == "portata"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ACCUSATIVE) == "portata"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.GENITIVE) == "portatorum"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.DATIVE) == "portatis"
-        assert word.get(number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, participle_gender=Gender.NEUTER, participle_case=Case.ABLATIVE) == "portatis"
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
 
 class TestIrregularVerbInflection:
-    def test_irregular_verb_normal(self):
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "sum", "es", "est", "sumus", "estis", "sunt",
+        "eram", "eras", "erat", "eramus", "eratis", "erant",
+        "fui", "fuisti", "fuit", "fuimus", "fuistis", "fuerunt",
+        "fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant",
+
+        "esse",
+        "es", "este",
+
+        "essem", "esses", "esset", "essemus", "essetis", "essent",
+        "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
+    ])])  # fmt: skip
+    def test_irregular_verb_normal(self, tense, voice, mood, person, number, expected):
         word = Verb("sum", "esse", "fui", meaning="be")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "sum"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "es"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "est"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "sumus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "estis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "sunt"
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "adeo", "adis", "adit", "adimus", "aditis", "adeunt",
+        "adibam", "adibas", "adibat", "adibamus", "adibatis", "adibant",
+        "adii", "adisti", "adiit", "adiimus", "adistis", "adierunt",
+        "adieram", "adieras", "adierat", "adieramus", "adieratis", "adierant",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "eram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "eras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "erat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "eramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "eratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "erant"
+        "adire",
+        "adi", "adite",
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fui"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuerunt"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fueram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fueras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuerat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fueramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fueratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "fuerant"
-
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "esse"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "es"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "este"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "essem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "esses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "esset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "essemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "essetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "essent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "fuissent"
-
-    def test_irregular_verb_derived(self):
+        "adirem", "adires", "adiret", "adiremus", "adiretis", "adirent",
+        "adissem", "adisses", "adisset", "adissemus", "adissetis", "adissent",
+    ])])  # fmt: skip
+    def test_irregular_verb_derived(self, tense, voice, mood, person, number, expected):
         word = Verb("adeo", "adire", "adii", "aditus", meaning="go to")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adeo"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adis"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "aditis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adeunt"
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibam"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibas"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibamus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibatis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adibant"
+PARTICIPLE_COMBINATIONS = (
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+)
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adii"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adisti"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adiit"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adiimus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adistis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adierunt"
 
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adieram"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adieras"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adierat"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adieramus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adieratis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE) == "adierant"
+@pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+    "portans", "portans", "portantem", "portantis", "portanti", "portante",
+    "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
+    "portans", "portans", "portantem", "portantis", "portanti", "portante",
+    "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
+    "portans", "portans", "portans", "portantis", "portanti", "portante",
+    "portantia", "portantia", "portantia", "portantium", "portantibus", "portantibus",
 
-        assert word.get(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE) == "adire"
-
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "adi"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE) == "adite"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adirem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adires"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adiret"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adiremus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adiretis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adirent"
-
-        assert word.get(person=1, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adissem"
-        assert word.get(person=2, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adisses"
-        assert word.get(person=3, number=Number.SINGULAR, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adisset"
-        assert word.get(person=1, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adissemus"
-        assert word.get(person=2, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adissetis"
-        assert word.get(person=3, number=Number.PLURAL, tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE) == "adissent"
+    "portatus", "portate", "portatum", "portati", "portato", "portato",
+    "portati", "portati", "portatos", "portatorum", "portatis", "portatis",
+    "portata", "portata", "portatam", "portatae", "portatae", "portata",
+    "portatae", "portatae", "portatas", "portatarum", "portatis", "portatis",
+    "portatum", "portatum", "portatum", "portati", "portato", "portato",
+    "portata", "portata", "portata", "portatorum", "portatis", "portatis",
+])])  # fmt: skip
+def test_participle_conjugation(tense, voice, mood, participle_gender, participle_case, number, expected):
+    word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
+    assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected

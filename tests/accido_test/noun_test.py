@@ -77,182 +77,175 @@ class TestNounDunder:
         assert word1 + word2 == Noun("puella", "puellae", gender=Gender.FEMININE, meaning=MultipleMeanings(("girl", "maiden")))
 
 
+@pytest.fixture
+def noun_firstdeclension():
+    return Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl")
+
+
+@pytest.fixture
+def noun_firstdeclension_plonly():
+    return Noun("divitae", "divitiarum", gender=Gender.FEMININE, meaning="riches")
+
+
+@pytest.fixture
+def noun_seconddeclension():
+    return Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
+
+
+@pytest.fixture
+def noun_seconddeclension_neuter():
+    return Noun("templum", "templi", gender=Gender.NEUTER, meaning="templ")
+
+
+@pytest.fixture
+def noun_seconddeclension_irregular():
+    return Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
+
+
+@pytest.fixture
+def noun_seconddeclension_plonly():
+    return Noun("castra", "castrorum", gender=Gender.NEUTER, meaning="camp")
+
+
+@pytest.fixture
+def noun_thirddeclension():
+    return Noun("carcer", "carceris", gender=Gender.MASCULINE, meaning="prison")
+
+
+@pytest.fixture
+def noun_thirddeclension_neuter():
+    return Noun("litus", "litoris", gender=Gender.NEUTER, meaning="beach")
+
+
+@pytest.fixture
+def noun_thirddeclension_plonly():
+    return Noun("opes", "opum", gender=Gender.FEMININE, meaning="wealth")
+
+
+@pytest.fixture
+def noun_fourthdeclension():
+    return Noun("manus", "manus", gender=Gender.FEMININE, meaning="hand")
+
+
+@pytest.fixture
+def noun_fourthdeclension_neuter():
+    return Noun("cornu", "cornus", gender=Gender.NEUTER, meaning="horn")
+
+
+@pytest.fixture
+def noun_fourthdeclension_plonly():
+    return Noun("Quinquatrus", "Quinquatruum", gender=Gender.FEMININE, meaning="Minerva festival")
+
+
+@pytest.fixture
+def noun_fifthdeclension():
+    return Noun("res", "rei", gender=Gender.FEMININE, meaning="thing")
+
+
+NOUN_COMBINATIONS = (
+    (Case.NOMINATIVE, Number.SINGULAR),
+    (Case.VOCATIVE, Number.SINGULAR),
+    (Case.ACCUSATIVE, Number.SINGULAR),
+    (Case.GENITIVE, Number.SINGULAR),
+    (Case.DATIVE, Number.SINGULAR),
+    (Case.ABLATIVE, Number.SINGULAR),
+    (Case.NOMINATIVE, Number.PLURAL),
+    (Case.VOCATIVE, Number.PLURAL),
+    (Case.ACCUSATIVE, Number.PLURAL),
+    (Case.GENITIVE, Number.PLURAL),
+    (Case.DATIVE, Number.PLURAL),
+    (Case.ABLATIVE, Number.PLURAL),
+)
+
+
 class TestNounDeclension:
-    def test_firstdeclension(self):
-        word = Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "ancilla"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "ancilla"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "ancillam"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "ancillae"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "ancillae"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "ancilla"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "ancillae"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "ancillae"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "ancillas"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "ancillarum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "ancillis"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "ancillis"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "ancilla", "ancilla", "ancillam", "ancillae", "ancillae", "ancilla",
+        "ancillae", "ancillae", "ancillas", "ancillarum", "ancillis", "ancillis",
+    ])])  # fmt: skip
+    def test_firstdeclension(self, noun_firstdeclension, case, number, expected):
+        assert noun_firstdeclension.get(case=case, number=number) == expected
 
-    def test_seconddeclension_regular(self):
-        word = Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "servus"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "serve"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "servum"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "servi"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "servo"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "servo"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "servi"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "servi"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "servos"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "servorum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "servis"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "servis"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "servus", "serve", "servum", "servi", "servo", "servo",
+        "servi", "servi", "servos", "servorum", "servis", "servis",
+    ])])  # fmt: skip
+    def test_seconddeclension_regular(self, noun_seconddeclension, case, number, expected):
+        assert noun_seconddeclension.get(case=case, number=number) == expected
 
-    def test_seconddeclension_endinginr(self):
-        word = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "puer"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "puer"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "puerum"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "pueri"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "puero"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "puero"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "pueri"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "pueri"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "pueros"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "puerorum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "pueris"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "pueris"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "puer", "puer", "puerum", "pueri", "puero", "puero",
+        "pueri", "pueri", "pueros", "puerorum", "pueris", "pueris",
+    ])])  # fmt: skip
+    def test_seconddeclension_endinginr(self, noun_seconddeclension_irregular, case, number, expected):
+        assert noun_seconddeclension_irregular.get(case=case, number=number) == expected
 
-    def test_thirddeclension(self):
-        word = Noun("carcer", "carceris", gender=Gender.MASCULINE, meaning="prison")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "carcer"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "carcer"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "carcerem"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "carceris"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "carceri"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "carcere"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "carcerum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "carceribus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "carceribus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "carcer", "carcer", "carcerem", "carceris", "carceri", "carcere",
+        "carceres", "carceres", "carceres", "carcerum", "carceribus", "carceribus",
+    ])])  # fmt: skip
+    def test_thirddeclension(self, noun_thirddeclension, case, number, expected):
+        assert noun_thirddeclension.get(case=case, number=number) == expected
 
-    def test_fourthdeclension(self):
-        word = Noun("manus", "manus", gender=Gender.FEMININE, meaning="hand")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "manus"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "manus"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "manum"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "manus"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "manui"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "manu"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "manuum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "manibus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "manibus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "manus", "manus", "manum", "manus", "manui", "manu", "manus",
+        "manus", "manus", "manuum", "manibus", "manibus",
+    ])])  # fmt: skip
+    def test_fourthdeclension(self, noun_fourthdeclension, case, number, expected):
+        assert noun_fourthdeclension.get(case=case, number=number) == expected
 
-    def test_fifthdeclension(self):
-        word = Noun("res", "rei", gender=Gender.FEMININE, meaning="thing")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "res"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "res"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "rem"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "rei"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "rei"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "re"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "res"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "res"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "res"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "rerum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "rebus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "rebus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "res", "res", "rem", "rei", "rei", "re",
+        "res", "res", "res", "rerum", "rebus", "rebus",
+    ])])  # fmt: skip
+    def test_fifthdeclension(self, noun_fifthdeclension, case, number, expected):
+        assert noun_fifthdeclension.get(case=case, number=number) == expected
 
 
 class TestNounNeuter:
-    def test_seconddeclension(self):
-        word = Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "templum"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "templum"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "templum"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "templi"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "templo"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "templo"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "templa"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "templa"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "templa"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "templorum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "templis"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "templis"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "templum", "templum", "templum", "templi", "templo", "templo",
+        "templa", "templa", "templa", "templorum", "templis", "templis",
+    ])])  # fmt: skip
+    def test_seconddeclension(self, noun_seconddeclension_neuter, case, number, expected):
+        assert noun_seconddeclension_neuter.get(case=case, number=number) == expected
 
-    def test_thirddeclension(self):
-        word = Noun("litus", "litoris", gender=Gender.NEUTER, meaning="beach")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "litus"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "litus"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "litus"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "litoris"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "litori"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "litore"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "litora"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "litora"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "litora"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "litorum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "litoribus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "litoribus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "litus", "litus", "litus", "litoris", "litori", "litore",
+        "litora", "litora", "litora", "litorum", "litoribus", "litoribus",
+    ])])  # fmt: skip
+    def test_thirddeclension(self, noun_thirddeclension_neuter, case, number, expected):
+        assert noun_thirddeclension_neuter.get(case=case, number=number) == expected
 
-    def test_fourthdeclension(self):
-        word = Noun("cornu", "cornus", gender=Gender.NEUTER, meaning="horn")
-        assert word.get(case=Case.NOMINATIVE, number=Number.SINGULAR) == "cornu"
-        assert word.get(case=Case.VOCATIVE, number=Number.SINGULAR) == "cornu"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.SINGULAR) == "cornu"
-        assert word.get(case=Case.GENITIVE, number=Number.SINGULAR) == "cornus"
-        assert word.get(case=Case.DATIVE, number=Number.SINGULAR) == "cornu"
-        assert word.get(case=Case.ABLATIVE, number=Number.SINGULAR) == "cornu"
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "cornua"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "cornua"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "cornua"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "cornuum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "cornibus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "cornibus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "cornu", "cornu", "cornu", "cornus", "cornu", "cornu",
+        "cornua", "cornua", "cornua", "cornuum", "cornibus", "cornibus",
+    ])])  # fmt: skip
+    def test_fourthdeclension(self, noun_fourthdeclension_neuter, case, number, expected):
+        assert noun_fourthdeclension_neuter.get(case=case, number=number) == expected
 
 
 class TestNounPluraleTantum:
-    def test_firstdeclension(self):
-        word = Noun("ancillae", "ancillarum", gender=Gender.FEMININE, meaning="slavegirls")
-        assert word.declension == 1
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "ancillae"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "ancillae"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "ancillas"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "ancillarum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "ancillis"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "ancillis"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+        "divitiae", "divitiae", "divitias", "divitiarum", "divitiis", "divitiis",
+    ])])  # fmt: skip
+    def test_firstdeclension(self, noun_firstdeclension_plonly, case, number, expected):
+        assert noun_firstdeclension_plonly.get(case=case, number=number) == expected
 
-    def test_seconddeclension(self):
-        word = Noun("servi", "servorum", gender=Gender.MASCULINE, meaning="slaves")
-        assert word.declension == 2
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "servi"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "servi"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "servos"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "servorum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "servis"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "servis"
+    @pytest.mark.parametrize(("case", "number", "expected"),  [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+        "castra", "castra", "castra", "castrorum", "castris", "castris",
+    ])])  # fmt: skip
+    def test_seconddeclension(self, noun_seconddeclension_plonly, case, number, expected):
+        assert noun_seconddeclension_plonly.get(case=case, number=number) == expected
 
-    def test_thirddeclension(self):
-        word = Noun("carceres", "carcerum", gender=Gender.MASCULINE, meaning="prisons")
-        assert word.declension == 3
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "carceres"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "carcerum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "carceribus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "carceribus"
+    @pytest.mark.parametrize(("case", "number", "expected"),  [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+        "opes", "opes", "opes", "opum", "opibus", "opibus",
+    ])])  # fmt: skip
+    def test_thirddeclension(self, noun_thirddeclension_plonly, case, number, expected):
+        assert noun_thirddeclension_plonly.get(case=case, number=number) == expected
 
-    def test_fourthdeclension(self):
-        word = Noun("manus", "manuum", gender=Gender.FEMININE, meaning="hands")
-        assert word.declension == 4
-        assert word.get(case=Case.NOMINATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.VOCATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.ACCUSATIVE, number=Number.PLURAL) == "manus"
-        assert word.get(case=Case.GENITIVE, number=Number.PLURAL) == "manuum"
-        assert word.get(case=Case.DATIVE, number=Number.PLURAL) == "manibus"
-        assert word.get(case=Case.ABLATIVE, number=Number.PLURAL) == "manibus"
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+        "Quinquatrus", "Quinquatrus", "Quinquatrus", "Quinquatruum", "Quinquatribus", "Quinquatribus",
+    ])])  # fmt: skip
+    def test_fourthdeclension(self, noun_fourthdeclension_plonly, case, number, expected):
+        assert noun_fourthdeclension_plonly.get(case=case, number=number) == expected
