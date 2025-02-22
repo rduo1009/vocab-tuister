@@ -7,7 +7,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 )
 
-func (m model) View() string {
+func (m Model) View() string {
 	if m.err != nil {
 		return fmt.Sprint(m.err) + "\n"
 	}
