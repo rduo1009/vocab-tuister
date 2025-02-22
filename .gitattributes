@@ -1,3 +1,4 @@
 .git_archival.json  export-subst
+*.golden -text
 
 src/_vendor/** linguist-vendored
