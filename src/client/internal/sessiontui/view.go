@@ -39,7 +39,7 @@ func questionStringMultipleChoice(q questions.Question) string {
 	panic(fmt.Sprintf("Question type could not be recognised. (got %T)", q))
 }
 
-func (m model) View() string {
+func (m Model) View() string {
 	if m.err != nil {
 		return fmt.Sprint(m.err) + "\n"
 	}

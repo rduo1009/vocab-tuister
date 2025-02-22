@@ -5,6 +5,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea/v2"
 )
 
-func (m model) Init() (tea.Model, tea.Cmd) {
+func (m Model) Init() (tea.Model, tea.Cmd) {
 	return m, tea.Batch(textarea.Blink, tea.SetWindowTitle("Create Vocab List"))
 }

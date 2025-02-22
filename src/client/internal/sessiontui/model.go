@@ -10,7 +10,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/pkg/questions"
 )
 
-type model struct {
+type Model struct {
 	textinput                textinput.Model
 	principalPartsTextinputs []textinput.Model
 	help                     help.Model
@@ -35,7 +35,7 @@ type model struct {
 
 const maximumPrincipalParts = 4
 
-func InitialModel(sessionConfigPath, vocabListPath string, numberOfQuestions, serverPort int) model { //nolint:revive
+func InitialModel(sessionConfigPath, vocabListPath string, numberOfQuestions, serverPort int) Model {
 	ti := textinput.New()
 	ti.Placeholder = "Write answer here..."
 	ti.Focus()
@@ -60,7 +60,7 @@ func InitialModel(sessionConfigPath, vocabListPath string, numberOfQuestions, se
 		principalPartsTextinputs[i] = ppti
 	}
 
-	m := model{
+	m := Model{
 		textinput:                ti,
 		principalPartsTextinputs: principalPartsTextinputs,
 		help:                     help.New(),

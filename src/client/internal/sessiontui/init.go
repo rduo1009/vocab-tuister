@@ -42,7 +42,7 @@ func extractJSONObjects(jsonList []byte) ([][]byte, error) {
 	return result, nil
 }
 
-func (m model) Init() (tea.Model, tea.Cmd) {
+func (m Model) Init() (tea.Model, tea.Cmd) {
 	return m, tea.Batch(textinput.Blink, tea.SetWindowTitle("Vocab Tester Session"), func() tea.Msg {
 		vocabListData, err := os.ReadFile(m.vocabListPath)
 		if err != nil {
