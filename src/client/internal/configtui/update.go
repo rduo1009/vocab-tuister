@@ -49,7 +49,7 @@ func saveConfig(filePath string, config configMap) tea.Cmd {
 	}
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	var cmd tea.Cmd
 
@@ -99,7 +99,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case key.Matches(msg, m.keys.Check):
 			if !m.mcOptionsNumberPage {
-				m.ToggleSetting(m.currentPage, m.selectedOption)
+				m.toggleSetting(m.currentPage, m.selectedOption)
 			}
 
 		case key.Matches(msg, m.keys.Quit):

@@ -5,7 +5,7 @@ import (
 	"github.com/charmbracelet/bubbles/v2/textarea"
 )
 
-type model struct {
+type Model struct {
 	textarea textarea.Model
 	help     help.Model
 	keys     KeyMap
@@ -15,12 +15,12 @@ type model struct {
 	err      error
 }
 
-func InitialModel(filePath string) model { //nolint:revive
+func InitialModel(filePath string) Model {
 	ti := textarea.New()
 	ti.Placeholder = "Write vocab list here..."
 	ti.Focus()
 
-	return model{
+	return Model{
 		textarea: ti,
 		help:     help.New(),
 		keys:     DefaultKeyMap,

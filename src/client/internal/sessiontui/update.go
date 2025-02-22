@@ -19,7 +19,7 @@ type (
 	}
 )
 
-func (m *model) changeSelectionPrincipalPartsTextnputs(requiredPPTextinputs int) []tea.Cmd {
+func (m *Model) changeSelectionPrincipalPartsTextnputs(requiredPPTextinputs int) []tea.Cmd {
 	ppcmds := make([]tea.Cmd, requiredPPTextinputs)
 	for i := range requiredPPTextinputs {
 		if i == m.selectedOption-1 {
@@ -36,7 +36,7 @@ func (m *model) changeSelectionPrincipalPartsTextnputs(requiredPPTextinputs int)
 	return ppcmds
 }
 
-func (m *model) updatePrincipalPartsTextnputs(msg tea.Msg) tea.Cmd {
+func (m *Model) updatePrincipalPartsTextnputs(msg tea.Msg) tea.Cmd {
 	cmds := make([]tea.Cmd, len(m.principalPartsTextinputs))
 
 	for i := range m.principalPartsTextinputs {
@@ -46,7 +46,7 @@ func (m *model) updatePrincipalPartsTextnputs(msg tea.Msg) tea.Cmd {
 	return tea.Batch(cmds...)
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	var cmd tea.Cmd
 
