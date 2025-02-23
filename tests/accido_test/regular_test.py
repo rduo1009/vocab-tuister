@@ -19,10 +19,6 @@ class TestRegular:
 
 
 class TestRegularDunder:
-    # def test_pick(self):
-    #     word = RegularWord("test1", "test2")
-    #     word.pick()
-
     def test_get(self):
         word = RegularWord("test1", meaning="test2")
         assert word.get() == "test1"

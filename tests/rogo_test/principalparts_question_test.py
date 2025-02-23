@@ -116,7 +116,7 @@ settings: Settings = {
 
 @pytest.mark.manual
 def test_principalparts_question():
-    vocab_list = read_vocab_file(Path("tests/lego_test/test_vocab_files/regular_list.txt"))
+    vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     amount = 50
     for output in ask_question_without_sr(vocab_list, amount, settings):
         assert type(output) is PrincipalPartsQuestion

@@ -29,33 +29,38 @@ def test_invalid_subtype():
     assert str(error.value) == "Invalid subtype: 'adverb'"
 
 
-def test_adjective_inflection():
-    word = "happy"
-
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.POSITIVE)) == {"happy"}
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.COMPARATIVE)) == {"happier", "more happy"}
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.SUPERLATIVE)) == {"happiest", "most happy", "very happy", "extremely happy", "rather happy", "too happy", "quite happy"}
+ADJECTIVE_COMBINATIONS = (Degree.POSITIVE, Degree.COMPARATIVE, Degree.SUPERLATIVE)
 
 
-def test_adjective_inflection_multiple_superlatives():
-    word = "far"
-
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.POSITIVE)) == {"far"}
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.COMPARATIVE)) == {"farther", "further", "more far"}
-    assert find_adjective_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.SUPERLATIVE)) == {"farthest", "furthest", "most far", "very far", "extremely far", "rather far", "too far", "quite far"}
-
-
-def test_adjective_main_inflection():
-    word = "happy"
-
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.POSITIVE)) == "happy"
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.COMPARATIVE)) == "happier"
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.SUPERLATIVE)) == "happiest"
+@pytest.mark.parametrize(("degree", "expected"), [(ADJECTIVE_COMBINATIONS[i], form) for i, form in enumerate([
+    {"happy"},
+    {"happier", "more happy"},
+    {"happiest", "most happy", "very happy", "extremely happy", "rather happy", "too happy", "quite happy"},
+])])  # fmt: skip
+def test_adjective_inflection(degree, expected):
+    assert find_adjective_inflections("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=degree)) == expected
 
 
-def test_adjective_main_inflection_irregular():
-    word = "interesting"
+@pytest.mark.parametrize(("degree", "expected"), [(ADJECTIVE_COMBINATIONS[i], form) for i, form in enumerate([
+    "happy", "happier", "happiest",
+])])  # fmt: skip
+def test_adjective_main_inflection(degree, expected):
+    assert find_main_adjective_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=degree)) == expected
 
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.POSITIVE)) == "interesting"
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.COMPARATIVE)) == "more interesting"
-    assert find_main_adjective_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=Degree.SUPERLATIVE)) == "most interesting"
+
+@pytest.mark.parametrize(("degree", "expected"), [(ADJECTIVE_COMBINATIONS[i], form) for i, form in enumerate([
+    {"far"},
+    {"farther", "further", "more far"},
+    {"farthest", "furthest", "most far", "very far", "extremely far", "rather far", "too far", "quite far"},
+])])  # fmt: skip
+def test_adjective_inflection_multiple_superlatives(degree, expected):
+    assert find_adjective_inflections("far", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=degree)) == expected
+
+
+@pytest.mark.parametrize(("degree", "expected"), [(ADJECTIVE_COMBINATIONS[i], form) for i, form in enumerate([
+    "interesting",
+    "more interesting",
+    "most interesting",
+])])  # fmt: skip
+def test_adjective_main_inflection_irregular(degree, expected):
+    assert find_main_adjective_inflection("interesting", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE, degree=degree)) == expected
