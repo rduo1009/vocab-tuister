@@ -1,9 +1,11 @@
 [run]
 branch = True
+parallel = True
 omit = 
     tests/*
-    */_vendor/*
-    */utils/*
+    src/_vendor/*
+    src/utils/*
+    src/scripts/*
 
 [report]
 exclude_also = 
