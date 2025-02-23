@@ -39,6 +39,7 @@ def test_participle_error_not_implemented():
     assert str(error.value) == "The present passive participle has not been implemented"
 
 
+# TODO: Parametrize this?
 class TestVerbInflection:
     def test_verb_present(self):
         word = "attack"
