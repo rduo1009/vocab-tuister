@@ -19,153 +19,122 @@ def test_invalid_type():
     assert str(error.value) == "Invalid type: 'adjective'"
 
 
+PRONOUN_COMBINATIONS = (
+    (Case.NOMINATIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.VOCATIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.ACCUSATIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.GENITIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.DATIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.ABLATIVE, Number.SINGULAR, Gender.MASCULINE),
+    (Case.NOMINATIVE, Number.PLURAL, Gender.MASCULINE),
+    (Case.VOCATIVE, Number.PLURAL, Gender.MASCULINE),
+    (Case.ACCUSATIVE, Number.PLURAL, Gender.MASCULINE),
+    (Case.GENITIVE, Number.PLURAL, Gender.MASCULINE),
+    (Case.DATIVE, Number.PLURAL, Gender.MASCULINE),
+    (Case.ABLATIVE, Number.PLURAL, Gender.MASCULINE),
+)
+
+
 class TestPronounInflection:
-    def test_pronoun_inflections_1(self):
-        word = "this"
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"this"},
+        {"this"},
+        {"this"},
+        {"of this"},
+        {"for this", "to this"},
+        {"by this", "by means of this", "with this", "this"},
+        {"these"},
+        {"these"},
+        {"these"},
+        {"of these"},
+        {"for these", "to these"},
+        {"by these", "by means of these", "with these", "these"},
+    ])])  # fmt: skip
+    def test_pronoun_inflections_1(self, case, number, gender, expected):
+        assert find_pronoun_inflections("this", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"this"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"this"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"this"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"by this", "by means of this", "with this", "this"}
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "this", "this", "this", "of this", "for this", "by this",
+        "these", "these", "these", "of these", "for these", "by these",
+    ])])  # fmt: skip
+    def test_main_pronoun_inflections_1(self, case, number, gender, expected):
+        assert find_main_pronoun_inflection("this", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"of this"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"for this", "to this"}
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"that"},
+        {"that"},
+        {"that"},
+        {"of that"}, 
+        {"for that", "to that"}, 
+        {"by that", "by means of that", "with that", "that"},
+        {"those"},
+        {"those"},
+        {"those"},
+        {"of those"},
+        {"for those", "to those"},
+        {"by those", "by means of those", "with those", "those"},
+    ])])  # fmt: skip
+    def test_pronoun_inflections_2(self, case, number, gender, expected):
+        assert find_pronoun_inflections("that", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"these"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"these"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"these"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"by these", "by means of these", "with these", "these"}
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"of these"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"for these", "to these"}
-
-    def test_pronoun_inflections_2(self):
-        word = "that"
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"that"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"that"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"that"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"by that", "by means of that", "with that", "that"}
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"of that"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"for that", "to that"}
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"those"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"those"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"those"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"by those", "by means of those", "with those", "those"}
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"of those"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"for those", "to those"}
-
-    def test_main_pronoun_inflections_1(self):
-        word = "this"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "this"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "this"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "this"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "by this"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "of this"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "for this"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "these"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "these"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "these"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "by these"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "of these"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "for these"
-
-    def test_main_pronoun_inflections_2(self):
-        word = "that"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "that"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "that"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "that"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "by that"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "of that"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == "for that"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "those"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "those"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "those"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "by those"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "of those"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == "for those"
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "that", "that", "that", "of that", "for that", "by that",
+        "those", "those", "those", "of those", "for those", "by those",
+    ])])  # fmt: skip
+    def test_main_pronoun_inflections_2(self, case, number, gender, expected):
+        assert find_main_pronoun_inflection("that", EndingComponents(case=case, number=number, gender=gender)) == expected
 
 
 class TestNounlikePronounInflection:
-    def test_pronoun_inflections_1(self):
-        word = "I"
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"I"},
+        {"I"},
+        {"me"},
+        {"of me", "my"},
+        {"for me", "to me"},
+        {"me", "with me", "by me", "by means of me"},
+        {"we"},
+        {"we"},
+        {"us"},
+        {"of us", "our"},
+        {"for us", "to us"},
+        {"us", "with us", "by us", "by means of us"},
+    ])])  # fmt: skip
+    def test_pronoun_inflections_1(self, case, number, gender, expected):
+        assert find_pronoun_inflections("I", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == {"I"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == {"I"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"me"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of me", "my"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"for me", "to me"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"me", "with me", "by me", "by means of me"}
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "I", "I", "me", "of me", "for me", "by me",
+        "we", "we", "us", "of us", "for us", "by us",
+    ])])  # fmt: skip
+    def test_main_pronoun_inflections_1(self, case, number, gender, expected):
+        assert find_main_pronoun_inflection("I", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == {"we"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == {"we"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"us"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of us", "our"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for us", "to us"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"us", "with us", "by us", "by means of us"}
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"you"},
+        {"you"},
+        {"you"},
+        {"of you", "your"},
+        {"for you", "to you"},
+        {"you", "with you", "by you", "by means of you"},
+        {"you"},
+        {"you"},
+        {"you"},
+        {"of you", "your"},
+        {"for you", "to you"},
+        {"you", "with you", "by you", "by means of you"},
+    ])])  # fmt: skip
+    def test_pronoun_inflections_2(self, case, number, gender, expected):
+        assert find_pronoun_inflections("you", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-    def test_main_pronoun_inflections_1(self):
-        word = "I"
+    @pytest.mark.parametrize(("case", "number", "gender", "expected"), [PRONOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "you", "you", "you", "of you", "for you", "by you",
+        "you", "you", "you", "of you", "for you", "by you",
+    ])])  # fmt: skip
+    def test_main_pronoun_inflections_2(self, case, number, gender, expected):
+        assert find_main_pronoun_inflection("you", EndingComponents(case=case, number=number, gender=gender)) == expected
 
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == "I"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == "I"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == "me"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of me"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for me"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by me"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == "we"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == "we"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "us"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of us"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for us"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == "by us"
-
-    def test_pronoun_inflections_2(self):
-        word = "you"
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of you", "your"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"for you", "to you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"you", "with you", "by you", "by means of you"}
-
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of you", "your"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for you", "to you"}
-        assert find_pronoun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"you", "with you", "by you", "by means of you"}
-
-    def test_main_pronoun_inflections_2(self):
-        word = "you"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by you"
-
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for you"
-        assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == "by you"
-
+    # NOTE: No nominative, so cannot parametrize probably
     def test_pronoun_inflections_3(self):
         word = "oneself"
 
@@ -178,7 +147,6 @@ class TestNounlikePronounInflection:
             "by oneself", "by himself", "by herself", "by itself", "by themself",
             "by means of oneself", "by means of himself", "by means of herself", "by means of itself", "by means of themself",
         }  # fmt: skip
-
         assert find_pronoun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"themselves"}
         assert find_pronoun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of themselves", "their"}
         assert find_pronoun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for themselves", "to themselves"}
@@ -191,7 +159,6 @@ class TestNounlikePronounInflection:
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of oneself"
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for oneself"
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by oneself"
-
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "themselves"
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of themselves"
         assert find_main_pronoun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for themselves"

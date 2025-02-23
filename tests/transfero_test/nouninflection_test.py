@@ -19,104 +19,97 @@ def test_invalid_type():
     assert str(error.value) == "Invalid type: 'adjective'"
 
 
+NOUN_COMBINATIONS = (
+    (Case.NOMINATIVE, Number.SINGULAR),
+    (Case.VOCATIVE, Number.SINGULAR),
+    (Case.ACCUSATIVE, Number.SINGULAR),
+    (Case.GENITIVE, Number.SINGULAR),
+    (Case.DATIVE, Number.SINGULAR),
+    (Case.ABLATIVE, Number.SINGULAR),
+    (Case.NOMINATIVE, Number.PLURAL),
+    (Case.VOCATIVE, Number.PLURAL),
+    (Case.ACCUSATIVE, Number.PLURAL),
+    (Case.GENITIVE, Number.PLURAL),
+    (Case.DATIVE, Number.PLURAL),
+    (Case.ABLATIVE, Number.PLURAL),
+)
+
+
 class TestNounInflection:
-    def test_noun_inflections_1(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"house"},
+        {"house"},
+        {"house"},
+        {"of the house", "house's", "of a house"},
+        {"for the house", "to the house", "for a house", "to a house"},
+        {"house", "with the house", "with a house", "by the house", "by a house", "by means of the house", "by means of a house"},
+        {"houses"},
+        {"houses"},
+        {"houses"},
+        {"of the houses", "houses'"},
+        {"for the houses", "for houses", "to the houses", "to houses"},
+        {"houses", "with the houses", "by the houses", "by means of the houses"},
+    ])])  # fmt: skip
+    def test_noun_inflections_1(self, case, number, expected):
         word = "house"
+        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
 
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == {"house"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == {"house"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"house"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of the house", "house's", "of a house"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"for the house", "to the house", "for a house", "to a house"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"house", "with the house", "with a house", "by the house", "by a house", "by means of the house", "by means of a house"}
-
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == {"houses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == {"houses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"houses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of the houses", "houses'"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for the houses", "for houses", "to the houses", "to houses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"houses", "with the houses", "by the houses", "by means of the houses"}
-
-    def test_noun_inflections_2(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"cactus"},
+        {"cactus"},
+        {"cactus"},
+        {"of the cactus", "cactus'", "of a cactus"},
+        {"for the cactus", "to the cactus", "for a cactus", "to a cactus"},
+        {"cactus", "with the cactus", "with a cactus", "by the cactus", "by a cactus", "by means of the cactus", "by means of a cactus"},
+        {"cacti", "cactuses"},
+        {"cacti", "cactuses"},
+        {"cacti", "cactuses"},
+        {"of the cacti", "cacti's", "of the cactuses", "cactuses'"},
+        {"for the cacti", "for cacti", "to the cacti", "to cacti", "for the cactuses", "for cactuses", "to the cactuses", "to cactuses"},
+        {"cacti", "with the cacti", "by the cacti", "by means of the cacti", "cactuses", "with the cactuses", "by the cactuses", "by means of the cactuses"},
+    ])])  # fmt: skip
+    def test_noun_inflections_2(self, case, number, expected):
         word = "cactus"
+        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
 
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == {"cactus"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"cactus"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == {"cactus"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of the cactus", "cactus'", "of a cactus"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"for the cactus", "to the cactus", "for a cactus", "to a cactus"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"cactus", "with the cactus", "with a cactus", "by the cactus", "by a cactus", "by means of the cactus", "by means of a cactus"}
-
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == {"cacti", "cactuses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == {"cacti", "cactuses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"cacti", "cactuses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of the cacti", "cacti's", "of the cactuses", "cactuses'"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for the cacti", "for cacti", "to the cacti", "to cacti", "for the cactuses", "for cactuses", "to the cactuses", "to cactuses"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"cacti", "with the cacti", "by the cacti", "by means of the cacti", "cactuses", "with the cactuses", "by the cactuses", "by means of the cactuses"}
-
-    def test_noun_inflections_3(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        {"apple"},
+        {"apple"},
+        {"apple"},
+        {"of the apple", "apple's", "of an apple"},
+        {"for the apple", "to the apple", "for an apple", "to an apple"},
+        {"apple", "with the apple", "with an apple", "by the apple", "by an apple", "by means of the apple", "by means of an apple"},
+        {"apples"},
+        {"apples"},
+        {"apples"},        
+        {"of the apples", "apples'"},
+        {"for the apples", "for apples", "to the apples", "to apples"},
+        {"apples", "with the apples", "by the apples", "by means of the apples"},
+    ])])  # fmt: skip
+    def test_noun_inflections_3(self, case, number, expected):
         word = "apple"
+        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
 
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == {"apple"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == {"apple"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"apple"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of the apple", "apple's", "of an apple"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"for the apple", "to the apple", "for an apple", "to an apple"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"apple", "with the apple", "with an apple", "by the apple", "by an apple", "by means of the apple", "by means of an apple"}
-
-        assert find_noun_inflections(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == {"apples"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == {"apples"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"apples"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of the apples", "apples'"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"for the apples", "for apples", "to the apples", "to apples"}
-        assert find_noun_inflections(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"apples", "with the apples", "by the apples", "by means of the apples"}
-
-    def test_main_noun_inflections_1(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "house", "house", "house", "of the house", "for the house", "by the house",
+        "houses", "houses", "houses", "of the houses", "for the houses", "by the houses",
+    ])])  # fmt: skip
+    def test_main_noun_inflections_1(self, case, number, expected):
         word = "house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == "house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == "house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == "house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of the house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for the house"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by the house"
+        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected
 
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == "houses"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == "houses"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "houses"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of the houses"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for the houses"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == "by the houses"
-
-    def test_main_noun_inflections_2(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "cactus", "cactus", "cactus", "of the cactus", "for the cactus", "by the cactus",
+        "cacti", "cacti", "cacti", "of the cacti", "for the cacti", "by the cacti",
+    ])])  # fmt: skip
+    def test_main_noun_inflections_2(self, case, number, expected):
         word = "cactus"
+        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected
 
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == "cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == "cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == "cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of the cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for the cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by the cactus"
-
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == "cacti"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == "cacti"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "cacti"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of the cacti"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for the cacti"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == "by the cacti"
-
-    def test_main_noun_inflections_3(self):
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "apple", "apple", "apple", "of the apple", "for the apple", "by the apple",
+        "apples", "apples", "apples", "of the apples", "for the apples", "by the apples",
+    ])])  # fmt: skip
+    def test_main_noun_inflections_3(self, case, number, expected):
         word = "apple"
-
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR)) == "apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.SINGULAR)) == "apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == "apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == "of the apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == "for the apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == "by the apple"
-
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.NOMINATIVE, number=Number.PLURAL)) == "apples"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.VOCATIVE, number=Number.PLURAL)) == "apples"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == "apples"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == "of the apples"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == "for the apples"
-        assert find_main_noun_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == "by the apples"
+        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected

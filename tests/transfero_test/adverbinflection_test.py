@@ -29,15 +29,22 @@ def test_invalid_subtype():
     assert str(error.value) == "Invalid subtype: 'None'"
 
 
-def test_adverb_inflection():
-    word = "happily"
-    assert find_adverb_inflections(word, EndingComponents(degree=Degree.POSITIVE)) == {"happily"}
-    assert find_adverb_inflections(word, EndingComponents(degree=Degree.COMPARATIVE)) == {"more happily"}
-    assert find_adverb_inflections(word, EndingComponents(degree=Degree.SUPERLATIVE)) == {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily"}
+ADVERB_COMBINATIONS = (Degree.POSITIVE, Degree.COMPARATIVE, Degree.SUPERLATIVE)
 
 
-def test_adverb_main_inflection():
-    word = "happily"
-    assert find_main_adverb_inflection(word, EndingComponents(degree=Degree.POSITIVE)) == "happily"
-    assert find_main_adverb_inflection(word, EndingComponents(degree=Degree.COMPARATIVE)) == "more happily"
-    assert find_main_adverb_inflection(word, EndingComponents(degree=Degree.SUPERLATIVE)) == "most happily"
+class TestAdverbInflection:
+    @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
+        {"happily"},
+        {"more happily"},
+        {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily"},
+    ])])  # fmt: skip
+    def test_adverb_inflection(self, degree, expected):
+        word = "happily"
+        assert find_adverb_inflections(word, EndingComponents(degree=degree)) == expected
+
+    @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
+        "happily", "more happily", "most happily",
+    ])])  # fmt: skip
+    def test_adverb_main_inflection(self, degree, expected):
+        word = "happily"
+        assert find_main_adverb_inflection(word, EndingComponents(degree=degree)) == expected
