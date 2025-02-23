@@ -20,7 +20,7 @@ type SettingsWizard struct {
 	Pages []SettingsPage
 }
 
-type model struct {
+type Model struct {
 	wizard              SettingsWizard
 	textinput           textinput.Model
 	help                help.Model
@@ -34,7 +34,7 @@ type model struct {
 	err                 error
 }
 
-func (m *model) ToggleSetting(pageIndex, optionIndex int) {
+func (m *Model) toggleSetting(pageIndex, optionIndex int) {
 	m.wizard.Pages[pageIndex].Settings[optionIndex].Checked = !m.wizard.Pages[pageIndex].Settings[optionIndex].Checked
 }
 
@@ -165,14 +165,14 @@ var wizard = SettingsWizard{
 	},
 }
 
-func InitialModel(filePath string) model { //nolint:revive
+func InitialModel(filePath string) Model {
 	ti := textinput.New()
 	ti.SetWidth(20)
 	ti.Placeholder = "Must be a positive integer"
 	ti.CharLimit = 3
 	ti.Focus()
 
-	return model{
+	return Model{
 		wizard:              wizard,
 		textinput:           ti,
 		help:                help.New(),
