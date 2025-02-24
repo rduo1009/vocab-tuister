@@ -21,7 +21,7 @@ const (
 	firstPageColumns = 20
 	numberOfPages    = 9
 
-	millisecondDelay = 30
+	millisecondDelay = 50
 )
 
 func readBts(tb testing.TB, r io.Reader) []byte {
