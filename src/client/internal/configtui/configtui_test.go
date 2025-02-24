@@ -90,7 +90,7 @@ func TestMain(m *testing.M) {
 func TestFirstScreen(t *testing.T) {
 	tm, _ := setUpTUI(t)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -102,7 +102,7 @@ func TestAllScreens(t *testing.T) {
 		sendKeyWithDelay(tm, tea.KeyRight)
 	}
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -112,7 +112,7 @@ func TestNoMoveLeft(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeyLeft)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -122,7 +122,7 @@ func TestNoMoveUp(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeyUp)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -134,7 +134,7 @@ func TestNoMoveDown(t *testing.T) {
 		sendKeyWithDelay(tm, tea.KeyDown)
 	}
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -144,7 +144,7 @@ func TestMoveRight(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeyRight)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -156,7 +156,7 @@ func TestMoveLeft(t *testing.T) {
 	sendKeyWithDelay(tm, tea.KeyRight)
 	sendKeyWithDelay(tm, tea.KeyLeft)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -173,7 +173,7 @@ func TestSelect(t *testing.T) {
 	sendKeyWithDelay(tm, tea.KeySpace)
 	sendKeyWithDelay(tm, tea.KeyLeft)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
@@ -194,7 +194,7 @@ func TestDeselect(t *testing.T) {
 	sendKeyWithDelay(tm, tea.KeyReturn)
 	sendKeyWithDelay(tm, tea.KeyDown)
 
-	tm.Send(tea.Quit())
+	tm.Quit()
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
