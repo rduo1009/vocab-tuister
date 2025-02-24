@@ -73,6 +73,14 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestFirstScreen(t *testing.T) {
+	tm, _ := setUpTUI(t)
+
+	tm.Quit()
+	out := readBts(t, tm.FinalOutput(t))
+	teatest.RequireEqualOutput(t, out)
+}
+
 func TestComplete(t *testing.T) {
 	tm, filePath := setUpTUI(t)
 
