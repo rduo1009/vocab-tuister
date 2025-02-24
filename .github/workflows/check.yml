@@ -6,8 +6,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: test with ${{ matrix.py }} on ubuntu-latest
+  test-python:
+    name: test with python ${{ matrix.py }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -28,8 +28,7 @@ jobs:
       #     path: ".tox"
       #     key: ${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml','tox.ini','poetry.lock') }}
 
-      - name: Setup python for test ${{ matrix.py }}
-        uses: actions/setup-python@v5.4.0
+      - uses: actions/setup-python@v5.4.0
         with:
           python-version: ${{ matrix.py }}
 
@@ -46,8 +45,8 @@ jobs:
       - name: Run test suite
         run: tox --skip-pkg-install
 
-  test-integration:
-    name: integration test with ${{ matrix.py }} on ubuntu-latest
+  test-integration-python:
+    name: integration test with python ${{ matrix.py }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,8 +59,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Setup python for test ${{ matrix.py }}
-        uses: actions/setup-python@v5.4.0
+      - uses: actions/setup-python@v5.4.0
         with:
           python-version: ${{ matrix.py }}
 
@@ -72,3 +70,28 @@ jobs:
       - name: Run integration tests
         run: |
           pytest -m 'integration' -n0
+
+  test-golang:
+    name: test with golang ${{ matrix.go }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.24.0"
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          submodules: "recursive"
+
+      - uses: actions/setup-go@v5.3.0
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Setup test suite
+        run: go mod download
+
+      - name: Run test suite
+        run: go test -race ./src/...
