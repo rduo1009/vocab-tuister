@@ -76,7 +76,9 @@ func TestMain(m *testing.M) {
 func TestFirstScreen(t *testing.T) {
 	tm, _ := setUpTUI(t)
 
-	tm.Quit()
+	if err := tm.Quit(); err != nil {
+		t.Fatal(err)
+	}
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 }
