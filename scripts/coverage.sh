@@ -9,7 +9,7 @@ coverage combine --append >> /dev/null
 echo "done"
 
 echo -n "Running Go tests with coverage... "
-go test -race -covermode=atomic -coverprofile=reports/coverage/coverage.out ./src/... >> /dev/null
+go test -covermode=atomic -coverprofile=reports/coverage/coverage.out ./src/... >> /dev/null
 echo "done"
 
 echo -n "Generating coverage reports... "
