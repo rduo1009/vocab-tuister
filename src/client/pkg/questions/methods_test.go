@@ -6,6 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/rduo1009/vocab-tuister/src/client/pkg/enums"
 	"github.com/rduo1009/vocab-tuister/src/client/pkg/questions"
 )
 
@@ -91,8 +92,160 @@ func TestCheck(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result := questions.Check(tt.question, tt.input)
-			assert.Equal(t, tt.want, result, fmt.Sprintf("expected %t, got %t (test %s)", tt.want, result, name))
+			got := questions.Check(tt.question, tt.input)
+			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %t, got %t (test %s)", tt.want, got, name))
+		})
+	}
+}
+
+func TestGetChoices(t *testing.T) {
+	tests := map[string]struct {
+		question questions.Question
+		want     []string
+		wantErr  error
+	}{
+		"MultipleChoiceEngtoLatQuestion": {
+			question: &questions.MultipleChoiceEngtoLatQuestion{Prompt: "that", Choices: []string{"audio", "ille", "nomen"}, Answer: "ille"},
+			want:     []string{"audio", "ille", "nomen"},
+			wantErr:  nil,
+		},
+		"MultipleChoiceLattoEngQuestion": {
+			question: &questions.MultipleChoiceLatToEngQuestion{Prompt: "puer", Choices: []string{"name", "boy", "hear"}, Answer: "boy"},
+			want:     []string{"name", "boy", "hear"},
+			wantErr:  nil,
+		},
+		"ParseWordComptoLatQuestion": {
+			question: &questions.ParseWordComptoLatQuestion{Prompt: "that: ille, illa, illud", Components: "dative singular neuter", MainAnswer: "illi", Answers: []string{"illi"}},
+			want:     []string(nil),
+			wantErr:  fmt.Errorf("type *questions.ParseWordComptoLatQuestion not supported by GetChoices"),
+		},
+		"ParseWordLattoCompQuestion": {
+			question: &questions.ParseWordLattoCompQuestion{Prompt: "captae", DictionaryEntry: "take: capio, capere, cepi, captus", MainAnswer: "perfect passive participle feminine dative singular", Answers: []string{"perfect passive participle feminine dative singular"}},
+			want:     []string(nil),
+			wantErr:  fmt.Errorf("type *questions.ParseWordLattoCompQuestion not supported by GetChoices"),
+		},
+		"PrincipalPartsQuestion": {
+			question: &questions.PrincipalPartsQuestion{Prompt: "ingens", PrincipalParts: []string{"ingens", "ingentis"}},
+			want:     []string(nil),
+			wantErr:  fmt.Errorf("type *questions.PrincipalPartsQuestion not supported by GetChoices"),
+		},
+		"TypeInEngtoLatQuestion": {
+			question: &questions.TypeInEngtoLatQuestion{Prompt: "into", MainAnswer: "in", Answers: []string{"in"}},
+			want:     []string(nil),
+			wantErr:  fmt.Errorf("type *questions.TypeInEngtoLatQuestion not supported by GetChoices"),
+		},
+		"TypeInLattoEngQuestion": {
+			question: &questions.TypeInLattoEngQuestion{Prompt: "ingenti", MainAnswer: "large", Answers: []string{"large"}},
+			want:     []string(nil),
+			wantErr:  fmt.Errorf("type *questions.TypeInLattoEngQuestion not supported by GetChoices"),
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			var gotErr error
+			var got []string
+
+			defer func() {
+				if r := recover(); r != nil {
+					if err, ok := r.(error); ok {
+						gotErr = err
+					} else {
+						gotErr = fmt.Errorf("%v", r)
+					}
+				}
+
+				assert.Equal(t, tt.wantErr, gotErr, fmt.Sprintf("expected %t, got %t (test %s)", tt.wantErr, gotErr, name))
+				assert.Equal(t, tt.want, got, fmt.Sprintf("expected %v, got %v (test %s)", tt.want, got, name))
+			}()
+
+			got = questions.GetChoices(tt.question)
+		})
+	}
+}
+
+func TestMainAnswer(t *testing.T) {
+	tests := map[string]struct {
+		question questions.Question
+		want     any
+	}{
+		"MultipleChoiceEngtoLatQuestion": {
+			question: &questions.MultipleChoiceEngtoLatQuestion{Prompt: "that", Choices: []string{"audio", "ille", "nomen"}, Answer: "ille"},
+			want:     "ille",
+		},
+		"MultipleChoiceLattoEngQuestion": {
+			question: &questions.MultipleChoiceLatToEngQuestion{Prompt: "puer", Choices: []string{"name", "boy", "hear"}, Answer: "boy"},
+			want:     "boy",
+		},
+		"ParseWordComptoLatQuestion": {
+			question: &questions.ParseWordComptoLatQuestion{Prompt: "that: ille, illa, illud", Components: "dative singular neuter", MainAnswer: "illi", Answers: []string{"illi"}},
+			want:     "illi",
+		},
+		"ParseWordLattoCompQuestion": {
+			question: &questions.ParseWordLattoCompQuestion{Prompt: "captae", DictionaryEntry: "take: capio, capere, cepi, captus", MainAnswer: "perfect passive participle feminine dative singular", Answers: []string{"perfect passive participle feminine dative singular"}},
+			want:     "perfect passive participle feminine dative singular",
+		},
+		"PrincipalPartsQuestion": {
+			question: &questions.PrincipalPartsQuestion{Prompt: "ingens", PrincipalParts: []string{"ingens", "ingentis"}},
+			want:     []string{"ingens", "ingentis"},
+		},
+		"TypeInEngtoLatQuestion": {
+			question: &questions.TypeInEngtoLatQuestion{Prompt: "into", MainAnswer: "in", Answers: []string{"in"}},
+			want:     "in",
+		},
+		"TypeInLattoEngQuestion": {
+			question: &questions.TypeInLattoEngQuestion{Prompt: "ingenti", MainAnswer: "large", Answers: []string{"large"}},
+			want:     "large",
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := questions.GetMainAnswer(tt.question)
+			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %t, got %t (test %s)", tt.want, got, name))
+		})
+	}
+}
+
+func TestQuestionMode(t *testing.T) {
+	tests := map[string]struct {
+		question questions.Question
+		want     enums.QuestionMode
+	}{
+		"MultipleChoiceEngtoLatQuestion": {
+			question: &questions.MultipleChoiceEngtoLatQuestion{Prompt: "that", Choices: []string{"audio", "ille", "nomen"}, Answer: "ille"},
+			want:     enums.MultipleChoice,
+		},
+		"MultipleChoiceLattoEngQuestion": {
+			question: &questions.MultipleChoiceLatToEngQuestion{Prompt: "puer", Choices: []string{"name", "boy", "hear"}, Answer: "boy"},
+			want:     enums.MultipleChoice,
+		},
+		"ParseWordComptoLatQuestion": {
+			question: &questions.ParseWordComptoLatQuestion{Prompt: "that: ille, illa, illud", Components: "dative singular neuter", MainAnswer: "illi", Answers: []string{"illi"}},
+			want:     enums.Regular,
+		},
+		"ParseWordLattoCompQuestion": {
+			question: &questions.ParseWordLattoCompQuestion{Prompt: "captae", DictionaryEntry: "take: capio, capere, cepi, captus", MainAnswer: "perfect passive participle feminine dative singular", Answers: []string{"perfect passive participle feminine dative singular"}},
+			want:     enums.Regular,
+		},
+		"PrincipalPartsQuestion": {
+			question: &questions.PrincipalPartsQuestion{Prompt: "ingens", PrincipalParts: []string{"ingens", "ingentis"}},
+			want:     enums.PrincipalParts,
+		},
+		"TypeInEngtoLatQuestion": {
+			question: &questions.TypeInEngtoLatQuestion{Prompt: "into", MainAnswer: "in", Answers: []string{"in"}},
+			want:     enums.Regular,
+		},
+		"TypeInLattoEngQuestion": {
+			question: &questions.TypeInLattoEngQuestion{Prompt: "ingenti", MainAnswer: "large", Answers: []string{"large"}},
+			want:     enums.Regular,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := questions.QuestionMode(tt.question)
+			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %v, got %v (test %s)", tt.want, got, name))
 		})
 	}
 }
