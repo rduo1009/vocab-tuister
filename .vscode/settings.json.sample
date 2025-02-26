@@ -60,7 +60,8 @@
     "files.associations": {
         "settings.json.sample": "jsonc",
         ".coveragerc": "ini",
-        "*.spec": "python"
+        "*.spec": "python",
+        "go.work.sum": "go.sum"
     },
     "catppuccin-icons.associations.folders": { // or whatever icon extension you use
         "stubs": "folder_types",
