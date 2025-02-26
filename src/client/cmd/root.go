@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/elewis787/boa"
 	"github.com/spf13/cobra"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
@@ -28,9 +27,6 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 }
 
 func Execute() {
-	rootCmd.SetUsageFunc(boa.UsageFunc)
-	rootCmd.SetHelpFunc(boa.HelpFunc)
-
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

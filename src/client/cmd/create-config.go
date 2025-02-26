@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/spf13/cobra"
 
@@ -12,16 +10,15 @@ import (
 
 var createConfigCmd = &cobra.Command{
 	Version: internal.Version,
-	Use:     "create-config",
+	Use:     "create-config [file to write to]",
 	Short:   "Create a session config for the vocab tester.",
 	Long: `Create a session config for the vocab tester.
 Starts a wizard that receives input from the user on each setting and generates a config file.`,
 
-	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
-		if len(args) != 1 {
-			return fmt.Errorf("invalid number of arguments given (expected 1)")
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
+			return err
 		}
-
 		return nil
 	},
 

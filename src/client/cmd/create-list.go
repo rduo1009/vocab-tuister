@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/spf13/cobra"
 
@@ -14,14 +12,14 @@ var ListPath string
 
 var createListCmd = &cobra.Command{
 	Version: internal.Version,
-	Use:     "create-list",
+	Use:     "create-list [file to write to]",
 	Short:   "Write a list for the vocab tester.",
 	Long: `Write a list for the vocab tester.
 The user will have to write the list out manually.`,
 
-	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
-		if len(args) != 1 {
-			return fmt.Errorf("invalid number of arguments given (expected 1)")
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
+			return err
 		}
 		return nil
 	},
