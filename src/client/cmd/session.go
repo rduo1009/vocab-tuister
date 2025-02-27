@@ -26,11 +26,11 @@ This is based on the vocab list and the session config file provided.`,
 
 	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		if numberOfQuestions <= 0 {
-			return fmt.Errorf("--number must be a positive integer")
+			return fmt.Errorf("number must be a positive integer")
 		}
 
 		if serverPort < 1 || serverPort > 65535 {
-			return fmt.Errorf("--server-port must be a valid port number between 1 and 65535")
+			return fmt.Errorf("server-port must be a valid port number between 1 and 65535")
 		}
 
 		return nil
