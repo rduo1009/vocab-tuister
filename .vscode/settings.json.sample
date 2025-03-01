@@ -41,6 +41,8 @@
         ".git_archival.json": true,
         "build": true,
         "dist": true,
+        "gocov": true,
+        "reports": true,
         "__version__.txt": true
     },
     "autoDocstring.docstringFormat": "numpy",

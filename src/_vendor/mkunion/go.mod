@@ -16,6 +16,8 @@ require (
 )
 
 require (
+	github.com/alecthomas/assert/v2 v2.7.0 // indirect
+	github.com/alecthomas/repr v0.4.0 // indirect
 	github.com/aws/smithy-go v1.20.3 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
