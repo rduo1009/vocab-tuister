@@ -36,7 +36,7 @@ jobs:
           ./scripts/coverage.sh
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5.3.1
+        uses: codecov/codecov-action@v5.4.0
         with:
           files: ./reports/coverage/coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
