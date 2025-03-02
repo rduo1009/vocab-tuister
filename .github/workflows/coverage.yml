@@ -29,9 +29,7 @@ jobs:
           go mod download
 
       - name: Run tests with coverage
-        run: |
-          chmod +x ./scripts/coverage.sh
-          ./scripts/coverage.sh
+        run: ./scripts/coverage.sh
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.3.1
