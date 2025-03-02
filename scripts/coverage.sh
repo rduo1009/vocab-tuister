@@ -10,6 +10,7 @@ echo "done"
 
 echo -n "Running Go tests with coverage... "
 go test -covermode=atomic -coverprofile=reports/coverage/coverage.out ./src/... >> /dev/null
+./tests/integration/client_integration/client-integration-tests.sh
 echo "done"
 
 echo -n "Generating coverage reports... "

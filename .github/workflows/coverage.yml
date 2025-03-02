@@ -25,6 +25,8 @@ jobs:
 
       - name: Install project deps
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install ffmpeg ttyd
           python3 -m pip install -r requirements-dev.txt
           go mod download
 
@@ -34,5 +36,5 @@ jobs:
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.4.0
         with:
-          files: ./reports/coverage/coverage.xml,./reports/coverage/coverage.out
+          files: ./reports/coverage/coverage.xml,./reports/coverage/coverage.out,./gocov/*
           token: ${{ secrets.CODECOV_TOKEN }}
