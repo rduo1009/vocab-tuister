@@ -116,7 +116,10 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: Install deps
-        run: go mod download
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install ffmpeg ttyd
+          go mod download
 
       - name: Run integration tests
         run: ./tests/integration/client_integration/client-integration-tests.sh
