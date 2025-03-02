@@ -65,11 +65,14 @@ jobs:
 
       - name: Install deps
         run: |
-          python3 -m pip install -r requirements-dev.txt
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install pipx
+          pipx install poetry==1.8.5
+          poetry install
 
       - name: Run integration tests
         run: |
-          pytest -m 'integration' -n0
+          poetry run pytest -m 'integration' -n0
 
   test-golang:
     name: test with golang ${{ matrix.go }}
