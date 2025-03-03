@@ -25,8 +25,8 @@ jobs:
 
       - name: Install project deps
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install ffmpeg ttyd pipx
+          sudo apt install ffmpeg pipx
+          sudo snap install ttyd --classic
           pipx install poetry==1.8.5
           poetry install
           go mod download
@@ -37,5 +37,5 @@ jobs:
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.4.0
         with:
-          files: ./reports/coverage/pycoverage.xml,./reports/coverage/gocoverage.out,./reports/coverage/gocoverage-integration.out
+          files: ./reports/coverage/pycoverage.xml,./reports/coverage/reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}

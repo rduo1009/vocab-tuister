@@ -7,7 +7,6 @@ __pycache__/
 
 # Dev files
 .coverage
-/gocov
 .tox
 .dmypy.json
 .testmondata

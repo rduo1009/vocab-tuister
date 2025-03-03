@@ -4,7 +4,7 @@ Set Height 1200
 
 Require vocab-tuister
 
-Type "GOCOVERDIR=gocov vocab-tuister --help"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister --help"
 Enter
 Wait
 Sleep 1
@@ -17,7 +17,7 @@ Enter
 Wait
 Sleep 1
 
-Type "GOCOVERDIR=gocov vocab-tuister create-list --help"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister create-list --help"
 Enter
 Wait
 Sleep 1
@@ -30,7 +30,7 @@ Enter
 Wait
 Sleep 1
 
-Type "GOCOVERDIR=gocov vocab-tuister create-config --help"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister create-config --help"
 Enter
 Wait
 Sleep 1
@@ -43,7 +43,7 @@ Enter
 Wait
 Sleep 1
 
-Type "GOCOVERDIR=gocov vocab-tuister session --help"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --help"
 Enter
 Wait
 Sleep 1

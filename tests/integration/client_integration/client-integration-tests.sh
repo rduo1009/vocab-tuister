@@ -5,12 +5,12 @@ export PATH="$(pwd):$PATH"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 go build \
-    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
+    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
     -cover \
     -o ./vocab-tuister \
     ./src
 
-mkdir -p gocov
+mkdir -p reports/coverage/go-integration
 
 for tape in "$SCRIPT_DIR/"*.tape; do
     go tool vhs "$tape"

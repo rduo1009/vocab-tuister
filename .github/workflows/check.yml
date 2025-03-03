@@ -65,8 +65,7 @@ jobs:
 
       - name: Install deps
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install pipx
+          sudo apt install pipx
           pipx install poetry==1.8.5
           poetry install
 
@@ -120,8 +119,8 @@ jobs:
 
       - name: Install deps
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install ffmpeg ttyd
+          sudo apt install ffmpeg
+          sudo snap install ttyd --classic
           go mod download
 
       - name: Run integration tests

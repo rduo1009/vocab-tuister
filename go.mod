@@ -82,6 +82,7 @@ require (
 	github.com/segmentio/golines v0.12.2 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/wadey/gocovmerge v0.0.0-20160331181800-b5bfa59ec0ad // indirect
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/ysmood/fetchup v0.2.3 // indirect
@@ -118,6 +119,7 @@ replace github.com/widmogrod/mkunion => ./src/_vendor/mkunion
 tool (
 	github.com/charmbracelet/vhs
 	github.com/segmentio/golines
+	github.com/wadey/gocovmerge
 	gotest.tools/gotestsum
 	mvdan.cc/gofumpt
 )

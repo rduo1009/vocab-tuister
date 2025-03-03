@@ -5,7 +5,7 @@ Set Height 1200
 Require vocab-tuister 
 
 # No arguments given error
-Type "GOCOVERDIR=gocov vocab-tuister create-list"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister create-list"
 Enter
 Wait
 Sleep 1
@@ -19,7 +19,7 @@ Wait
 Sleep 1
 
 # No arguments given error
-Type "GOCOVERDIR=gocov vocab-tuister create-config"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister create-config"
 Enter
 Wait
 Sleep 1
@@ -33,7 +33,7 @@ Wait
 Sleep 1
 
 # Invalid number of questions
-Type "GOCOVERDIR=gocov vocab-tuister session --number -1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number -1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt"
 Enter
 Wait
 Sleep 1
@@ -47,7 +47,7 @@ Wait
 Sleep 1
 
 # Invalid port
-Type "GOCOVERDIR=gocov vocab-tuister session --number 1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt --server-port -1"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number 1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt --server-port -1"
 Enter
 Wait
 Sleep 1

@@ -9,12 +9,13 @@ poetry run coverage combine --append
 echo "done"
 
 echo -n "Running Go tests with coverage... "
-go test -covermode=atomic -coverprofile=reports/coverage/gocoverage.out ./src/...
+go test -coverprofile=reports/coverage/go-unit.out ./src/...
 ./tests/integration/client_integration/client-integration-tests.sh
 echo "done"
 
 echo -n "Generating coverage reports... "
 poetry run coverage html
 poetry run coverage xml -o reports/coverage/pycoverage.xml
-go tool covdata textfmt -i=gocov -o=reports/coverage/gocoverage-integration.out
+go tool covdata textfmt -i=reports/coverage/go-integration -o=reports/coverage/go-integration.out
+go tool gocovmerge reports/coverage/go-integration.out reports/coverage/go-unit.out > reports/coverage/go-combined.out
 echo "done"
