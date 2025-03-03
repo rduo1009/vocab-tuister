@@ -119,8 +119,9 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt install ffmpeg
+          sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
+          pipx install dunamai
           go mod download
 
       - name: Run integration tests

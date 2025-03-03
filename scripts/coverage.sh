@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 mkdir -p reports/coverage
 
 echo -n "Running Python tests with coverage... "
