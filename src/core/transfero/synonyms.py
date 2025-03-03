@@ -18,7 +18,9 @@ _project_root: Path = Path(__file__).parent.parent.parent.parent
 _nltk_data_path: Path
 
 # Frozen with PyInstaller
-if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
+if getattr(_sys, "frozen", False) and hasattr(
+    _sys, "_MEIPASS"
+):  # pragma: no cover
     import pkgutil
 
     _nltk_data_path = (

@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from functools import total_ordering
 from typing import Any, Protocol
 
 from ..accido.misc import EndingComponents
 
 
+@total_ordering
 class QuestionClasses(Enum):
     """The classes of questions that can be asked."""
 
@@ -19,6 +21,11 @@ class QuestionClasses(Enum):
     PRINCIPAL_PARTS = "PrincipalPartsQuestion"
     MULTIPLECHOICE_ENGTOLAT = "MultipleChoiceEngtoLatQuestion"
     MULTIPLECHOICE_LATTOENG = "MultipleChoiceLatToEngQuestion"
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, QuestionClasses):
+            return NotImplemented
+        return self.value < other.value
 
 
 class Question(Protocol):
