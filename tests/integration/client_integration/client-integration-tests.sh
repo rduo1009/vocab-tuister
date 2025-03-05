@@ -14,7 +14,7 @@ go build \
 mkdir -p reports/coverage/go-integration
 
 for tape in "$SCRIPT_DIR/"*.tape; do
-    go tool vhs "$tape"
+    bash --login -c "go tool vhs '$tape'"
 done
 
 rm ./vocab-tuister
