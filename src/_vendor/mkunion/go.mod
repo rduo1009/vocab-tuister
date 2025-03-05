@@ -1,6 +1,6 @@
 module github.com/widmogrod/mkunion
 
-go 1.22
+go 1.22.0
 
 toolchain go1.24.0
 
@@ -12,10 +12,12 @@ require (
 	github.com/sashabaranov/go-openai v1.26.3
 	github.com/sirupsen/logrus v1.9.3
 	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/mod v0.17.0
+	golang.org/x/mod v0.23.0
 )
 
 require (
+	github.com/alecthomas/assert/v2 v2.7.0 // indirect
+	github.com/alecthomas/repr v0.4.0 // indirect
 	github.com/aws/smithy-go v1.20.3 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

@@ -63,19 +63,19 @@ func GetChoices(q Question) []string {
 			return x.Choices
 		},
 		func(x *ParseWordComptoLatQuestion) []string {
-			panic(fmt.Sprintf("Type %T not supported by GetChoices.", x))
+			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 		func(x *ParseWordLattoCompQuestion) []string {
-			panic(fmt.Sprintf("Type %T not supported by GetChoices.", x))
+			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 		func(x *PrincipalPartsQuestion) []string {
-			panic(fmt.Sprintf("Type %T not supported by GetChoices.", x))
+			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 		func(x *TypeInEngtoLatQuestion) []string {
-			panic(fmt.Sprintf("Type %T not supported by GetChoices.", x))
+			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 		func(x *TypeInLattoEngQuestion) []string {
-			panic(fmt.Sprintf("Type %T not supported by GetChoices.", x))
+			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 	)
 }
