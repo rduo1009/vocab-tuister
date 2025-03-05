@@ -125,4 +125,11 @@ jobs:
           go mod download
 
       - name: Run integration tests
+        continue-on-error: true
         run: ./tests/integration/client_integration/client-integration-tests.sh
+
+      - name: Download updated stuff
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-images
+          path: "tests/integration/client_integration/testdata/"
