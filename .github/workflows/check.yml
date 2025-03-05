@@ -126,3 +126,10 @@ jobs:
 
       - name: Run integration tests
         run: ./tests/integration/client_integration/client-integration-tests.sh
+
+      - name: Upload changed files
+        if: failure()
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: changed-files
+          path: tests/integration/client_integration/testdata/
