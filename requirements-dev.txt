@@ -59,7 +59,7 @@ pyinstaller-hooks-contrib==2025.1 ; python_version >= "3.13" and python_version 
 pyinstaller==6.12.0 ; python_version >= "3.13" and python_version < "3.14"
 pytest-sugar==1.0.0 ; python_version >= "3.13" and python_version < "3.14"
 pytest-xdist==3.6.1 ; python_version >= "3.13" and python_version < "3.14"
-pytest==8.3.4 ; python_version >= "3.13" and python_version < "3.14"
+pytest==8.3.5 ; python_version >= "3.13" and python_version < "3.14"
 pywin32-ctypes==0.2.3 ; python_version >= "3.13" and python_version < "3.14" and sys_platform == "win32"
 pyyaml==6.0.2 ; python_version >= "3.13" and python_version < "3.14"
 regex==2024.11.6 ; python_version >= "3.13" and python_version < "3.14"
