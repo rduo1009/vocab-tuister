@@ -1,31 +1,44 @@
 [build-system]
 build-backend = "poetry_dynamic_versioning.backend"
-requires = [ "poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
+requires = [ "poetry-core>=2.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
+
+[project]
+name = "vocab-tester"
+description = "An application that tests Latin vocabulary and grammar."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [ { name = "rduo1009", email = "robertduong09alt@gmail.com" } ]
+requires-python = ">=3.13,<3.14"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = [ "version" ]
+
+dependencies = [
+  "aenum==3.1.15",
+  "ansicolors==1.1.8",
+  "cyclopts==3.9.0",
+  "dill==0.3.9",
+  "dunamai==1.23.0",
+  "flask==3.1.0",
+  "inflect==7.5.0",
+  "lemminflect==0.2.3",
+  "lz4==4.4.3",
+  "nltk==3.9.1",
+  "pyinstaller==6.12.0",
+  "waitress==3.0.2",
+]
 
 [tool.poetry]
-name = "vocab-tester"
-version = "0.0.0"                                                       # placeholder
-description = "An application that tests Latin vocabulary and grammar."
-authors = [ "rduo1009 <robertduong09alt@gmail.com>" ]
-readme = "README.md"
+version = "0.0.0"                         # placeholder
+requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
 exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
 
-[tool.poetry.dependencies]
-python = ">=3.13,<3.14"
-dill = "0.3.9"
-nltk = "3.9.1"
-lemminflect = "0.2.3"
-inflect = "7.5.0"
-aenum = "3.1.15"
-lz4 = "4.4.3"
-flask = "3.1.0"
-waitress = "3.0.2"
-cyclopts = "3.9.0"
-ansicolors = "1.1.8"
-dunamai = "1.23.0"
-pyinstaller = "6.12.0"
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "8.3.5"

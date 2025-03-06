@@ -34,6 +34,7 @@
         "**/htmlcov": true,
         "**/monkeytype.sqlite3": true,
         "**/poetry.lock": true,
+        ".poetry": true,
         ".dmypy.json": true,
         ".testmondata": true,
         "go.sum": true,

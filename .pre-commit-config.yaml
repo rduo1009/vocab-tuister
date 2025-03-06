@@ -8,9 +8,13 @@ ci:
 repos:
   # Check project deps
   - repo: https://github.com/python-poetry/poetry
-    rev: "1.8.0"
+    rev: 2.1.1
     hooks:
       - id: poetry-lock
+
+  - repo: https://github.com/python-poetry/poetry-plugin-export
+    rev: 1.9.0
+    hooks:
       - id: poetry-export
         args:
           [
