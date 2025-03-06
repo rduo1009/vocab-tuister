@@ -8,13 +8,13 @@ import (
 )
 
 type QuestionVisitor interface {
-	VisitMultipleChoiceEngtoLatQuestion(v *MultipleChoiceEngtoLatQuestion) any
+	VisitMultipleChoiceEngToLatQuestion(v *MultipleChoiceEngToLatQuestion) any
 	VisitMultipleChoiceLatToEngQuestion(v *MultipleChoiceLatToEngQuestion) any
-	VisitParseWordComptoLatQuestion(v *ParseWordComptoLatQuestion) any
-	VisitParseWordLattoCompQuestion(v *ParseWordLattoCompQuestion) any
+	VisitParseWordCompToLatQuestion(v *ParseWordCompToLatQuestion) any
+	VisitParseWordLatToCompQuestion(v *ParseWordLatToCompQuestion) any
 	VisitPrincipalPartsQuestion(v *PrincipalPartsQuestion) any
-	VisitTypeInEngtoLatQuestion(v *TypeInEngtoLatQuestion) any
-	VisitTypeInLattoEngQuestion(v *TypeInLattoEngQuestion) any
+	VisitTypeInEngToLatQuestion(v *TypeInEngToLatQuestion) any
+	VisitTypeInLatToEngQuestion(v *TypeInLatToEngQuestion) any
 }
 
 type Question interface {
@@ -22,47 +22,47 @@ type Question interface {
 }
 
 var (
-	_ Question = (*MultipleChoiceEngtoLatQuestion)(nil)
+	_ Question = (*MultipleChoiceEngToLatQuestion)(nil)
 	_ Question = (*MultipleChoiceLatToEngQuestion)(nil)
-	_ Question = (*ParseWordComptoLatQuestion)(nil)
-	_ Question = (*ParseWordLattoCompQuestion)(nil)
+	_ Question = (*ParseWordCompToLatQuestion)(nil)
+	_ Question = (*ParseWordLatToCompQuestion)(nil)
 	_ Question = (*PrincipalPartsQuestion)(nil)
-	_ Question = (*TypeInEngtoLatQuestion)(nil)
-	_ Question = (*TypeInLattoEngQuestion)(nil)
+	_ Question = (*TypeInEngToLatQuestion)(nil)
+	_ Question = (*TypeInLatToEngQuestion)(nil)
 )
 
-func (r *MultipleChoiceEngtoLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitMultipleChoiceEngtoLatQuestion(r) }
+func (r *MultipleChoiceEngToLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitMultipleChoiceEngToLatQuestion(r) }
 func (r *MultipleChoiceLatToEngQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitMultipleChoiceLatToEngQuestion(r) }
-func (r *ParseWordComptoLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitParseWordComptoLatQuestion(r) }
-func (r *ParseWordLattoCompQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitParseWordLattoCompQuestion(r) }
+func (r *ParseWordCompToLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitParseWordCompToLatQuestion(r) }
+func (r *ParseWordLatToCompQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitParseWordLatToCompQuestion(r) }
 func (r *PrincipalPartsQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitPrincipalPartsQuestion(r) }
-func (r *TypeInEngtoLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitTypeInEngtoLatQuestion(r) }
-func (r *TypeInLattoEngQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitTypeInLattoEngQuestion(r) }
+func (r *TypeInEngToLatQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitTypeInEngToLatQuestion(r) }
+func (r *TypeInLatToEngQuestion) AcceptQuestion(v QuestionVisitor) any { return v.VisitTypeInLatToEngQuestion(r) }
 
 func MatchQuestionR3[T0, T1, T2 any](
 	x Question,
-	f1 func(x *MultipleChoiceEngtoLatQuestion) (T0, T1, T2),
+	f1 func(x *MultipleChoiceEngToLatQuestion) (T0, T1, T2),
 	f2 func(x *MultipleChoiceLatToEngQuestion) (T0, T1, T2),
-	f3 func(x *ParseWordComptoLatQuestion) (T0, T1, T2),
-	f4 func(x *ParseWordLattoCompQuestion) (T0, T1, T2),
+	f3 func(x *ParseWordCompToLatQuestion) (T0, T1, T2),
+	f4 func(x *ParseWordLatToCompQuestion) (T0, T1, T2),
 	f5 func(x *PrincipalPartsQuestion) (T0, T1, T2),
-	f6 func(x *TypeInEngtoLatQuestion) (T0, T1, T2),
-	f7 func(x *TypeInLattoEngQuestion) (T0, T1, T2),
+	f6 func(x *TypeInEngToLatQuestion) (T0, T1, T2),
+	f7 func(x *TypeInLatToEngQuestion) (T0, T1, T2),
 ) (T0, T1, T2) {
 	switch v := x.(type) {
-	case *MultipleChoiceEngtoLatQuestion:
+	case *MultipleChoiceEngToLatQuestion:
 		return f1(v)
 	case *MultipleChoiceLatToEngQuestion:
 		return f2(v)
-	case *ParseWordComptoLatQuestion:
+	case *ParseWordCompToLatQuestion:
 		return f3(v)
-	case *ParseWordLattoCompQuestion:
+	case *ParseWordLatToCompQuestion:
 		return f4(v)
 	case *PrincipalPartsQuestion:
 		return f5(v)
-	case *TypeInEngtoLatQuestion:
+	case *TypeInEngToLatQuestion:
 		return f6(v)
-	case *TypeInLattoEngQuestion:
+	case *TypeInLatToEngQuestion:
 		return f7(v)
 	}
 	var result1 T0
@@ -73,28 +73,28 @@ func MatchQuestionR3[T0, T1, T2 any](
 
 func MatchQuestionR2[T0, T1 any](
 	x Question,
-	f1 func(x *MultipleChoiceEngtoLatQuestion) (T0, T1),
+	f1 func(x *MultipleChoiceEngToLatQuestion) (T0, T1),
 	f2 func(x *MultipleChoiceLatToEngQuestion) (T0, T1),
-	f3 func(x *ParseWordComptoLatQuestion) (T0, T1),
-	f4 func(x *ParseWordLattoCompQuestion) (T0, T1),
+	f3 func(x *ParseWordCompToLatQuestion) (T0, T1),
+	f4 func(x *ParseWordLatToCompQuestion) (T0, T1),
 	f5 func(x *PrincipalPartsQuestion) (T0, T1),
-	f6 func(x *TypeInEngtoLatQuestion) (T0, T1),
-	f7 func(x *TypeInLattoEngQuestion) (T0, T1),
+	f6 func(x *TypeInEngToLatQuestion) (T0, T1),
+	f7 func(x *TypeInLatToEngQuestion) (T0, T1),
 ) (T0, T1) {
 	switch v := x.(type) {
-	case *MultipleChoiceEngtoLatQuestion:
+	case *MultipleChoiceEngToLatQuestion:
 		return f1(v)
 	case *MultipleChoiceLatToEngQuestion:
 		return f2(v)
-	case *ParseWordComptoLatQuestion:
+	case *ParseWordCompToLatQuestion:
 		return f3(v)
-	case *ParseWordLattoCompQuestion:
+	case *ParseWordLatToCompQuestion:
 		return f4(v)
 	case *PrincipalPartsQuestion:
 		return f5(v)
-	case *TypeInEngtoLatQuestion:
+	case *TypeInEngToLatQuestion:
 		return f6(v)
-	case *TypeInLattoEngQuestion:
+	case *TypeInLatToEngQuestion:
 		return f7(v)
 	}
 	var result1 T0
@@ -104,28 +104,28 @@ func MatchQuestionR2[T0, T1 any](
 
 func MatchQuestionR1[T0 any](
 	x Question,
-	f1 func(x *MultipleChoiceEngtoLatQuestion) T0,
+	f1 func(x *MultipleChoiceEngToLatQuestion) T0,
 	f2 func(x *MultipleChoiceLatToEngQuestion) T0,
-	f3 func(x *ParseWordComptoLatQuestion) T0,
-	f4 func(x *ParseWordLattoCompQuestion) T0,
+	f3 func(x *ParseWordCompToLatQuestion) T0,
+	f4 func(x *ParseWordLatToCompQuestion) T0,
 	f5 func(x *PrincipalPartsQuestion) T0,
-	f6 func(x *TypeInEngtoLatQuestion) T0,
-	f7 func(x *TypeInLattoEngQuestion) T0,
+	f6 func(x *TypeInEngToLatQuestion) T0,
+	f7 func(x *TypeInLatToEngQuestion) T0,
 ) T0 {
 	switch v := x.(type) {
-	case *MultipleChoiceEngtoLatQuestion:
+	case *MultipleChoiceEngToLatQuestion:
 		return f1(v)
 	case *MultipleChoiceLatToEngQuestion:
 		return f2(v)
-	case *ParseWordComptoLatQuestion:
+	case *ParseWordCompToLatQuestion:
 		return f3(v)
-	case *ParseWordLattoCompQuestion:
+	case *ParseWordLatToCompQuestion:
 		return f4(v)
 	case *PrincipalPartsQuestion:
 		return f5(v)
-	case *TypeInEngtoLatQuestion:
+	case *TypeInEngToLatQuestion:
 		return f6(v)
-	case *TypeInLattoEngQuestion:
+	case *TypeInLatToEngQuestion:
 		return f7(v)
 	}
 	var result1 T0
@@ -134,51 +134,51 @@ func MatchQuestionR1[T0 any](
 
 func MatchQuestionR0(
 	x Question,
-	f1 func(x *MultipleChoiceEngtoLatQuestion),
+	f1 func(x *MultipleChoiceEngToLatQuestion),
 	f2 func(x *MultipleChoiceLatToEngQuestion),
-	f3 func(x *ParseWordComptoLatQuestion),
-	f4 func(x *ParseWordLattoCompQuestion),
+	f3 func(x *ParseWordCompToLatQuestion),
+	f4 func(x *ParseWordLatToCompQuestion),
 	f5 func(x *PrincipalPartsQuestion),
-	f6 func(x *TypeInEngtoLatQuestion),
-	f7 func(x *TypeInLattoEngQuestion),
+	f6 func(x *TypeInEngToLatQuestion),
+	f7 func(x *TypeInLatToEngQuestion),
 ) {
 	switch v := x.(type) {
-	case *MultipleChoiceEngtoLatQuestion:
+	case *MultipleChoiceEngToLatQuestion:
 		f1(v)
 	case *MultipleChoiceLatToEngQuestion:
 		f2(v)
-	case *ParseWordComptoLatQuestion:
+	case *ParseWordCompToLatQuestion:
 		f3(v)
-	case *ParseWordLattoCompQuestion:
+	case *ParseWordLatToCompQuestion:
 		f4(v)
 	case *PrincipalPartsQuestion:
 		f5(v)
-	case *TypeInEngtoLatQuestion:
+	case *TypeInEngToLatQuestion:
 		f6(v)
-	case *TypeInLattoEngQuestion:
+	case *TypeInLatToEngQuestion:
 		f7(v)
 	}
 }
 func init() {
-	shared.JSONMarshallerRegister("MultipleChoiceEngtoLatQuestion", MultipleChoiceEngtoLatQuestionFromJSON, MultipleChoiceEngtoLatQuestionToJSON)
+	shared.JSONMarshallerRegister("MultipleChoiceEngToLatQuestion", MultipleChoiceEngToLatQuestionFromJSON, MultipleChoiceEngToLatQuestionToJSON)
 	shared.JSONMarshallerRegister("MultipleChoiceLatToEngQuestion", MultipleChoiceLatToEngQuestionFromJSON, MultipleChoiceLatToEngQuestionToJSON)
-	shared.JSONMarshallerRegister("ParseWordComptoLatQuestion", ParseWordComptoLatQuestionFromJSON, ParseWordComptoLatQuestionToJSON)
-	shared.JSONMarshallerRegister("ParseWordLattoCompQuestion", ParseWordLattoCompQuestionFromJSON, ParseWordLattoCompQuestionToJSON)
+	shared.JSONMarshallerRegister("ParseWordCompToLatQuestion", ParseWordCompToLatQuestionFromJSON, ParseWordCompToLatQuestionToJSON)
+	shared.JSONMarshallerRegister("ParseWordLatToCompQuestion", ParseWordLatToCompQuestionFromJSON, ParseWordLatToCompQuestionToJSON)
 	shared.JSONMarshallerRegister("PrincipalPartsQuestion", PrincipalPartsQuestionFromJSON, PrincipalPartsQuestionToJSON)
 	shared.JSONMarshallerRegister("Question", QuestionFromJSON, QuestionToJSON)
-	shared.JSONMarshallerRegister("TypeInEngtoLatQuestion", TypeInEngtoLatQuestionFromJSON, TypeInEngtoLatQuestionToJSON)
-	shared.JSONMarshallerRegister("TypeInLattoEngQuestion", TypeInLattoEngQuestionFromJSON, TypeInLattoEngQuestionToJSON)
+	shared.JSONMarshallerRegister("TypeInEngToLatQuestion", TypeInEngToLatQuestionFromJSON, TypeInEngToLatQuestionToJSON)
+	shared.JSONMarshallerRegister("TypeInLatToEngQuestion", TypeInLatToEngQuestionFromJSON, TypeInLatToEngQuestionToJSON)
 }
 
 type QuestionUnionJSON struct {
 	Type string `json:"question_type,omitempty"`
-	MultipleChoiceEngtoLatQuestion json.RawMessage `json:"MultipleChoiceEngtoLatQuestion,omitempty"`
+	MultipleChoiceEngToLatQuestion json.RawMessage `json:"MultipleChoiceEngToLatQuestion,omitempty"`
 	MultipleChoiceLatToEngQuestion json.RawMessage `json:"MultipleChoiceLatToEngQuestion,omitempty"`
-	ParseWordComptoLatQuestion json.RawMessage `json:"ParseWordComptoLatQuestion,omitempty"`
-	ParseWordLattoCompQuestion json.RawMessage `json:"ParseWordLattoCompQuestion,omitempty"`
+	ParseWordCompToLatQuestion json.RawMessage `json:"ParseWordCompToLatQuestion,omitempty"`
+	ParseWordLatToCompQuestion json.RawMessage `json:"ParseWordLatToCompQuestion,omitempty"`
 	PrincipalPartsQuestion json.RawMessage `json:"PrincipalPartsQuestion,omitempty"`
-	TypeInEngtoLatQuestion json.RawMessage `json:"TypeInEngtoLatQuestion,omitempty"`
-	TypeInLattoEngQuestion json.RawMessage `json:"TypeInLattoEngQuestion,omitempty"`
+	TypeInEngToLatQuestion json.RawMessage `json:"TypeInEngToLatQuestion,omitempty"`
+	TypeInLatToEngQuestion json.RawMessage `json:"TypeInLatToEngQuestion,omitempty"`
 }
 
 func QuestionFromJSON(x []byte) (Question, error) {
@@ -195,36 +195,36 @@ func QuestionFromJSON(x []byte) (Question, error) {
 	}
 
 	switch data.Type {
-	case "MultipleChoiceEngtoLatQuestion":
-		return MultipleChoiceEngtoLatQuestionFromJSON(data.MultipleChoiceEngtoLatQuestion)
+	case "MultipleChoiceEngToLatQuestion":
+		return MultipleChoiceEngToLatQuestionFromJSON(data.MultipleChoiceEngToLatQuestion)
 	case "MultipleChoiceLatToEngQuestion":
 		return MultipleChoiceLatToEngQuestionFromJSON(data.MultipleChoiceLatToEngQuestion)
-	case "ParseWordComptoLatQuestion":
-		return ParseWordComptoLatQuestionFromJSON(data.ParseWordComptoLatQuestion)
-	case "ParseWordLattoCompQuestion":
-		return ParseWordLattoCompQuestionFromJSON(data.ParseWordLattoCompQuestion)
+	case "ParseWordCompToLatQuestion":
+		return ParseWordCompToLatQuestionFromJSON(data.ParseWordCompToLatQuestion)
+	case "ParseWordLatToCompQuestion":
+		return ParseWordLatToCompQuestionFromJSON(data.ParseWordLatToCompQuestion)
 	case "PrincipalPartsQuestion":
 		return PrincipalPartsQuestionFromJSON(data.PrincipalPartsQuestion)
-	case "TypeInEngtoLatQuestion":
-		return TypeInEngtoLatQuestionFromJSON(data.TypeInEngtoLatQuestion)
-	case "TypeInLattoEngQuestion":
-		return TypeInLattoEngQuestionFromJSON(data.TypeInLattoEngQuestion)
+	case "TypeInEngToLatQuestion":
+		return TypeInEngToLatQuestionFromJSON(data.TypeInEngToLatQuestion)
+	case "TypeInLatToEngQuestion":
+		return TypeInLatToEngQuestionFromJSON(data.TypeInLatToEngQuestion)
 	}
 
-	if data.MultipleChoiceEngtoLatQuestion != nil {
-		return MultipleChoiceEngtoLatQuestionFromJSON(data.MultipleChoiceEngtoLatQuestion)
+	if data.MultipleChoiceEngToLatQuestion != nil {
+		return MultipleChoiceEngToLatQuestionFromJSON(data.MultipleChoiceEngToLatQuestion)
 	} else if data.MultipleChoiceLatToEngQuestion != nil {
 		return MultipleChoiceLatToEngQuestionFromJSON(data.MultipleChoiceLatToEngQuestion)
-	} else if data.ParseWordComptoLatQuestion != nil {
-		return ParseWordComptoLatQuestionFromJSON(data.ParseWordComptoLatQuestion)
-	} else if data.ParseWordLattoCompQuestion != nil {
-		return ParseWordLattoCompQuestionFromJSON(data.ParseWordLattoCompQuestion)
+	} else if data.ParseWordCompToLatQuestion != nil {
+		return ParseWordCompToLatQuestionFromJSON(data.ParseWordCompToLatQuestion)
+	} else if data.ParseWordLatToCompQuestion != nil {
+		return ParseWordLatToCompQuestionFromJSON(data.ParseWordLatToCompQuestion)
 	} else if data.PrincipalPartsQuestion != nil {
 		return PrincipalPartsQuestionFromJSON(data.PrincipalPartsQuestion)
-	} else if data.TypeInEngtoLatQuestion != nil {
-		return TypeInEngtoLatQuestionFromJSON(data.TypeInEngtoLatQuestion)
-	} else if data.TypeInLattoEngQuestion != nil {
-		return TypeInLattoEngQuestionFromJSON(data.TypeInLattoEngQuestion)
+	} else if data.TypeInEngToLatQuestion != nil {
+		return TypeInEngToLatQuestionFromJSON(data.TypeInEngToLatQuestion)
+	} else if data.TypeInLatToEngQuestion != nil {
+		return TypeInLatToEngQuestionFromJSON(data.TypeInLatToEngQuestion)
 	}
 	return nil, fmt.Errorf("questions.QuestionFromJSON: unknown type: %s", data.Type)
 }
@@ -235,14 +235,14 @@ func QuestionToJSON(x Question) ([]byte, error) {
 	}
 	return MatchQuestionR2(
 		x,
-		func (y *MultipleChoiceEngtoLatQuestion) ([]byte, error) {
-			body, err := MultipleChoiceEngtoLatQuestionToJSON(y)
+		func (y *MultipleChoiceEngToLatQuestion) ([]byte, error) {
+			body, err := MultipleChoiceEngToLatQuestionToJSON(y)
 			if err != nil {
 				return nil, fmt.Errorf("questions.QuestionToJSON: %w", err)
 			}
 			return json.Marshal(QuestionUnionJSON{
-				Type: "MultipleChoiceEngtoLatQuestion",
-				MultipleChoiceEngtoLatQuestion: body,
+				Type: "MultipleChoiceEngToLatQuestion",
+				MultipleChoiceEngToLatQuestion: body,
 			})
 		},
 		func (y *MultipleChoiceLatToEngQuestion) ([]byte, error) {
@@ -255,24 +255,24 @@ func QuestionToJSON(x Question) ([]byte, error) {
 				MultipleChoiceLatToEngQuestion: body,
 			})
 		},
-		func (y *ParseWordComptoLatQuestion) ([]byte, error) {
-			body, err := ParseWordComptoLatQuestionToJSON(y)
+		func (y *ParseWordCompToLatQuestion) ([]byte, error) {
+			body, err := ParseWordCompToLatQuestionToJSON(y)
 			if err != nil {
 				return nil, fmt.Errorf("questions.QuestionToJSON: %w", err)
 			}
 			return json.Marshal(QuestionUnionJSON{
-				Type: "ParseWordComptoLatQuestion",
-				ParseWordComptoLatQuestion: body,
+				Type: "ParseWordCompToLatQuestion",
+				ParseWordCompToLatQuestion: body,
 			})
 		},
-		func (y *ParseWordLattoCompQuestion) ([]byte, error) {
-			body, err := ParseWordLattoCompQuestionToJSON(y)
+		func (y *ParseWordLatToCompQuestion) ([]byte, error) {
+			body, err := ParseWordLatToCompQuestionToJSON(y)
 			if err != nil {
 				return nil, fmt.Errorf("questions.QuestionToJSON: %w", err)
 			}
 			return json.Marshal(QuestionUnionJSON{
-				Type: "ParseWordLattoCompQuestion",
-				ParseWordLattoCompQuestion: body,
+				Type: "ParseWordLatToCompQuestion",
+				ParseWordLatToCompQuestion: body,
 			})
 		},
 		func (y *PrincipalPartsQuestion) ([]byte, error) {
@@ -285,156 +285,156 @@ func QuestionToJSON(x Question) ([]byte, error) {
 				PrincipalPartsQuestion: body,
 			})
 		},
-		func (y *TypeInEngtoLatQuestion) ([]byte, error) {
-			body, err := TypeInEngtoLatQuestionToJSON(y)
+		func (y *TypeInEngToLatQuestion) ([]byte, error) {
+			body, err := TypeInEngToLatQuestionToJSON(y)
 			if err != nil {
 				return nil, fmt.Errorf("questions.QuestionToJSON: %w", err)
 			}
 			return json.Marshal(QuestionUnionJSON{
-				Type: "TypeInEngtoLatQuestion",
-				TypeInEngtoLatQuestion: body,
+				Type: "TypeInEngToLatQuestion",
+				TypeInEngToLatQuestion: body,
 			})
 		},
-		func (y *TypeInLattoEngQuestion) ([]byte, error) {
-			body, err := TypeInLattoEngQuestionToJSON(y)
+		func (y *TypeInLatToEngQuestion) ([]byte, error) {
+			body, err := TypeInLatToEngQuestionToJSON(y)
 			if err != nil {
 				return nil, fmt.Errorf("questions.QuestionToJSON: %w", err)
 			}
 			return json.Marshal(QuestionUnionJSON{
-				Type: "TypeInLattoEngQuestion",
-				TypeInLattoEngQuestion: body,
+				Type: "TypeInLatToEngQuestion",
+				TypeInLatToEngQuestion: body,
 			})
 		},
 	)
 }
 
-func MultipleChoiceEngtoLatQuestionFromJSON(x []byte) (*MultipleChoiceEngtoLatQuestion, error) {
-	result := new(MultipleChoiceEngtoLatQuestion)
+func MultipleChoiceEngToLatQuestionFromJSON(x []byte) (*MultipleChoiceEngToLatQuestion, error) {
+	result := new(MultipleChoiceEngToLatQuestion)
 	err := result.UnmarshalJSON(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions.MultipleChoiceEngtoLatQuestionFromJSON: %w", err)
+		return nil, fmt.Errorf("questions.MultipleChoiceEngToLatQuestionFromJSON: %w", err)
 	}
 	return result, nil
 }
 
-func MultipleChoiceEngtoLatQuestionToJSON(x *MultipleChoiceEngtoLatQuestion) ([]byte, error) {
+func MultipleChoiceEngToLatQuestionToJSON(x *MultipleChoiceEngToLatQuestion) ([]byte, error) {
 	return x.MarshalJSON()
 }
 
 var (
-	_ json.Unmarshaler = (*MultipleChoiceEngtoLatQuestion)(nil)
-	_ json.Marshaler   = (*MultipleChoiceEngtoLatQuestion)(nil)
+	_ json.Unmarshaler = (*MultipleChoiceEngToLatQuestion)(nil)
+	_ json.Marshaler   = (*MultipleChoiceEngToLatQuestion)(nil)
 )
 
-func (r *MultipleChoiceEngtoLatQuestion) MarshalJSON() ([]byte, error) {
+func (r *MultipleChoiceEngToLatQuestion) MarshalJSON() ([]byte, error) {
 	if r == nil {
 		return nil, nil
 	}
-	return r._marshalJSONMultipleChoiceEngtoLatQuestion(*r)
+	return r._marshalJSONMultipleChoiceEngToLatQuestion(*r)
 }
-func (r *MultipleChoiceEngtoLatQuestion) _marshalJSONMultipleChoiceEngtoLatQuestion(x MultipleChoiceEngtoLatQuestion) ([]byte, error) {
+func (r *MultipleChoiceEngToLatQuestion) _marshalJSONMultipleChoiceEngToLatQuestion(x MultipleChoiceEngToLatQuestion) ([]byte, error) {
 	partial := make(map[string]json.RawMessage)
 	var err error
 	var fieldAnswer []byte
 	fieldAnswer, err = r._marshalJSONstring(x.Answer)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONMultipleChoiceEngtoLatQuestion: field name Answer; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONMultipleChoiceEngToLatQuestion: field name Answer; %w", err)
 	}
 	partial["answer"] = fieldAnswer
 	var fieldChoices []byte
 	fieldChoices, err = r._marshalJSONSlicestring(x.Choices)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONMultipleChoiceEngtoLatQuestion: field name Choices; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONMultipleChoiceEngToLatQuestion: field name Choices; %w", err)
 	}
 	partial["choices"] = fieldChoices
 	var fieldPrompt []byte
 	fieldPrompt, err = r._marshalJSONstring(x.Prompt)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONMultipleChoiceEngtoLatQuestion: field name Prompt; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONMultipleChoiceEngToLatQuestion: field name Prompt; %w", err)
 	}
 	partial["prompt"] = fieldPrompt
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONMultipleChoiceEngtoLatQuestion: struct; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONMultipleChoiceEngToLatQuestion: struct; %w", err)
 	}
 	return result, nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
+func (r *MultipleChoiceEngToLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONstring:; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONstring:; %w", err)
 	}
 	return result, nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
+func (r *MultipleChoiceEngToLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
 	partial := make([]json.RawMessage, len(x))
 	for i, v := range x {
 		item, err := r._marshalJSONstring(v)
 		if err != nil {
-			return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
+			return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		partial[i] = item
 	}
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._marshalJSONSlicestring:; %w", err)
+		return nil, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._marshalJSONSlicestring:; %w", err)
 	}
 	return result, nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) UnmarshalJSON(data []byte) error {
-	result, err := r._unmarshalJSONMultipleChoiceEngtoLatQuestion(data)
+func (r *MultipleChoiceEngToLatQuestion) UnmarshalJSON(data []byte) error {
+	result, err := r._unmarshalJSONMultipleChoiceEngToLatQuestion(data)
 	if err != nil {
-		return fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion.UnmarshalJSON: %w", err)
+		return fmt.Errorf("questions: MultipleChoiceEngToLatQuestion.UnmarshalJSON: %w", err)
 	}
 	*r = result
 	return nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) _unmarshalJSONMultipleChoiceEngtoLatQuestion(data []byte) (MultipleChoiceEngtoLatQuestion, error) {
-	result := MultipleChoiceEngtoLatQuestion{}
+func (r *MultipleChoiceEngToLatQuestion) _unmarshalJSONMultipleChoiceEngToLatQuestion(data []byte) (MultipleChoiceEngToLatQuestion, error) {
+	result := MultipleChoiceEngToLatQuestion{}
 	var partial map[string]json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONMultipleChoiceEngtoLatQuestion: native struct unwrap; %w", err)
+		return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONMultipleChoiceEngToLatQuestion: native struct unwrap; %w", err)
 	}
 	if fieldAnswer, ok := partial["answer"]; ok {
 		result.Answer, err = r._unmarshalJSONstring(fieldAnswer)
 		if err != nil {
-			return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONMultipleChoiceEngtoLatQuestion: field Answer; %w", err)
+			return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONMultipleChoiceEngToLatQuestion: field Answer; %w", err)
 		}
 	}
 	if fieldChoices, ok := partial["choices"]; ok {
 		result.Choices, err = r._unmarshalJSONSlicestring(fieldChoices)
 		if err != nil {
-			return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONMultipleChoiceEngtoLatQuestion: field Choices; %w", err)
+			return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONMultipleChoiceEngToLatQuestion: field Choices; %w", err)
 		}
 	}
 	if fieldPrompt, ok := partial["prompt"]; ok {
 		result.Prompt, err = r._unmarshalJSONstring(fieldPrompt)
 		if err != nil {
-			return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONMultipleChoiceEngtoLatQuestion: field Prompt; %w", err)
+			return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONMultipleChoiceEngToLatQuestion: field Prompt; %w", err)
 		}
 	}
 	return result, nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
+func (r *MultipleChoiceEngToLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
 	var result string
 	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
+		return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
 	}
 	return result, nil
 }
-func (r *MultipleChoiceEngtoLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
+func (r *MultipleChoiceEngToLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
 	result := make([]string, 0)
 	var partial []json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
+		return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
 	}
 	for i, v := range partial {
 		item, err := r._unmarshalJSONstring(v)
 		if err != nil {
-			return result, fmt.Errorf("questions: MultipleChoiceEngtoLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
+			return result, fmt.Errorf("questions: MultipleChoiceEngToLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		result = append(result, item)
 	}
@@ -574,292 +574,292 @@ func (r *MultipleChoiceLatToEngQuestion) _unmarshalJSONSlicestring(data []byte) 
 	return result, nil
 }
 
-func ParseWordComptoLatQuestionFromJSON(x []byte) (*ParseWordComptoLatQuestion, error) {
-	result := new(ParseWordComptoLatQuestion)
+func ParseWordCompToLatQuestionFromJSON(x []byte) (*ParseWordCompToLatQuestion, error) {
+	result := new(ParseWordCompToLatQuestion)
 	err := result.UnmarshalJSON(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions.ParseWordComptoLatQuestionFromJSON: %w", err)
+		return nil, fmt.Errorf("questions.ParseWordCompToLatQuestionFromJSON: %w", err)
 	}
 	return result, nil
 }
 
-func ParseWordComptoLatQuestionToJSON(x *ParseWordComptoLatQuestion) ([]byte, error) {
+func ParseWordCompToLatQuestionToJSON(x *ParseWordCompToLatQuestion) ([]byte, error) {
 	return x.MarshalJSON()
 }
 
 var (
-	_ json.Unmarshaler = (*ParseWordComptoLatQuestion)(nil)
-	_ json.Marshaler   = (*ParseWordComptoLatQuestion)(nil)
+	_ json.Unmarshaler = (*ParseWordCompToLatQuestion)(nil)
+	_ json.Marshaler   = (*ParseWordCompToLatQuestion)(nil)
 )
 
-func (r *ParseWordComptoLatQuestion) MarshalJSON() ([]byte, error) {
+func (r *ParseWordCompToLatQuestion) MarshalJSON() ([]byte, error) {
 	if r == nil {
 		return nil, nil
 	}
-	return r._marshalJSONParseWordComptoLatQuestion(*r)
+	return r._marshalJSONParseWordCompToLatQuestion(*r)
 }
-func (r *ParseWordComptoLatQuestion) _marshalJSONParseWordComptoLatQuestion(x ParseWordComptoLatQuestion) ([]byte, error) {
+func (r *ParseWordCompToLatQuestion) _marshalJSONParseWordCompToLatQuestion(x ParseWordCompToLatQuestion) ([]byte, error) {
 	partial := make(map[string]json.RawMessage)
 	var err error
 	var fieldAnswers []byte
 	fieldAnswers, err = r._marshalJSONSlicestring(x.Answers)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONParseWordComptoLatQuestion: field name Answers; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONParseWordCompToLatQuestion: field name Answers; %w", err)
 	}
 	partial["answers"] = fieldAnswers
 	var fieldComponents []byte
 	fieldComponents, err = r._marshalJSONstring(x.Components)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONParseWordComptoLatQuestion: field name Components; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONParseWordCompToLatQuestion: field name Components; %w", err)
 	}
 	partial["components"] = fieldComponents
 	var fieldMainAnswer []byte
 	fieldMainAnswer, err = r._marshalJSONstring(x.MainAnswer)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONParseWordComptoLatQuestion: field name MainAnswer; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONParseWordCompToLatQuestion: field name MainAnswer; %w", err)
 	}
 	partial["main_answer"] = fieldMainAnswer
 	var fieldPrompt []byte
 	fieldPrompt, err = r._marshalJSONstring(x.Prompt)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONParseWordComptoLatQuestion: field name Prompt; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONParseWordCompToLatQuestion: field name Prompt; %w", err)
 	}
 	partial["prompt"] = fieldPrompt
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONParseWordComptoLatQuestion: struct; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONParseWordCompToLatQuestion: struct; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordComptoLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
+func (r *ParseWordCompToLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
 	partial := make([]json.RawMessage, len(x))
 	for i, v := range x {
 		item, err := r._marshalJSONstring(v)
 		if err != nil {
-			return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
+			return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		partial[i] = item
 	}
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONSlicestring:; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONSlicestring:; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordComptoLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
+func (r *ParseWordCompToLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordComptoLatQuestion._marshalJSONstring:; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordCompToLatQuestion._marshalJSONstring:; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordComptoLatQuestion) UnmarshalJSON(data []byte) error {
-	result, err := r._unmarshalJSONParseWordComptoLatQuestion(data)
+func (r *ParseWordCompToLatQuestion) UnmarshalJSON(data []byte) error {
+	result, err := r._unmarshalJSONParseWordCompToLatQuestion(data)
 	if err != nil {
-		return fmt.Errorf("questions: ParseWordComptoLatQuestion.UnmarshalJSON: %w", err)
+		return fmt.Errorf("questions: ParseWordCompToLatQuestion.UnmarshalJSON: %w", err)
 	}
 	*r = result
 	return nil
 }
-func (r *ParseWordComptoLatQuestion) _unmarshalJSONParseWordComptoLatQuestion(data []byte) (ParseWordComptoLatQuestion, error) {
-	result := ParseWordComptoLatQuestion{}
+func (r *ParseWordCompToLatQuestion) _unmarshalJSONParseWordCompToLatQuestion(data []byte) (ParseWordCompToLatQuestion, error) {
+	result := ParseWordCompToLatQuestion{}
 	var partial map[string]json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONParseWordComptoLatQuestion: native struct unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONParseWordCompToLatQuestion: native struct unwrap; %w", err)
 	}
 	if fieldAnswers, ok := partial["answers"]; ok {
 		result.Answers, err = r._unmarshalJSONSlicestring(fieldAnswers)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONParseWordComptoLatQuestion: field Answers; %w", err)
+			return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONParseWordCompToLatQuestion: field Answers; %w", err)
 		}
 	}
 	if fieldComponents, ok := partial["components"]; ok {
 		result.Components, err = r._unmarshalJSONstring(fieldComponents)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONParseWordComptoLatQuestion: field Components; %w", err)
+			return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONParseWordCompToLatQuestion: field Components; %w", err)
 		}
 	}
 	if fieldMainAnswer, ok := partial["main_answer"]; ok {
 		result.MainAnswer, err = r._unmarshalJSONstring(fieldMainAnswer)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONParseWordComptoLatQuestion: field MainAnswer; %w", err)
+			return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONParseWordCompToLatQuestion: field MainAnswer; %w", err)
 		}
 	}
 	if fieldPrompt, ok := partial["prompt"]; ok {
 		result.Prompt, err = r._unmarshalJSONstring(fieldPrompt)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONParseWordComptoLatQuestion: field Prompt; %w", err)
+			return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONParseWordCompToLatQuestion: field Prompt; %w", err)
 		}
 	}
 	return result, nil
 }
-func (r *ParseWordComptoLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
+func (r *ParseWordCompToLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
 	result := make([]string, 0)
 	var partial []json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
 	}
 	for i, v := range partial {
 		item, err := r._unmarshalJSONstring(v)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
+			return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		result = append(result, item)
 	}
 	return result, nil
 }
-func (r *ParseWordComptoLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
+func (r *ParseWordCompToLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
 	var result string
 	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordComptoLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordCompToLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
 	}
 	return result, nil
 }
 
-func ParseWordLattoCompQuestionFromJSON(x []byte) (*ParseWordLattoCompQuestion, error) {
-	result := new(ParseWordLattoCompQuestion)
+func ParseWordLatToCompQuestionFromJSON(x []byte) (*ParseWordLatToCompQuestion, error) {
+	result := new(ParseWordLatToCompQuestion)
 	err := result.UnmarshalJSON(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions.ParseWordLattoCompQuestionFromJSON: %w", err)
+		return nil, fmt.Errorf("questions.ParseWordLatToCompQuestionFromJSON: %w", err)
 	}
 	return result, nil
 }
 
-func ParseWordLattoCompQuestionToJSON(x *ParseWordLattoCompQuestion) ([]byte, error) {
+func ParseWordLatToCompQuestionToJSON(x *ParseWordLatToCompQuestion) ([]byte, error) {
 	return x.MarshalJSON()
 }
 
 var (
-	_ json.Unmarshaler = (*ParseWordLattoCompQuestion)(nil)
-	_ json.Marshaler   = (*ParseWordLattoCompQuestion)(nil)
+	_ json.Unmarshaler = (*ParseWordLatToCompQuestion)(nil)
+	_ json.Marshaler   = (*ParseWordLatToCompQuestion)(nil)
 )
 
-func (r *ParseWordLattoCompQuestion) MarshalJSON() ([]byte, error) {
+func (r *ParseWordLatToCompQuestion) MarshalJSON() ([]byte, error) {
 	if r == nil {
 		return nil, nil
 	}
-	return r._marshalJSONParseWordLattoCompQuestion(*r)
+	return r._marshalJSONParseWordLatToCompQuestion(*r)
 }
-func (r *ParseWordLattoCompQuestion) _marshalJSONParseWordLattoCompQuestion(x ParseWordLattoCompQuestion) ([]byte, error) {
+func (r *ParseWordLatToCompQuestion) _marshalJSONParseWordLatToCompQuestion(x ParseWordLatToCompQuestion) ([]byte, error) {
 	partial := make(map[string]json.RawMessage)
 	var err error
 	var fieldAnswers []byte
 	fieldAnswers, err = r._marshalJSONSlicestring(x.Answers)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONParseWordLattoCompQuestion: field name Answers; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONParseWordLatToCompQuestion: field name Answers; %w", err)
 	}
 	partial["answers"] = fieldAnswers
 	var fieldDictionaryEntry []byte
 	fieldDictionaryEntry, err = r._marshalJSONstring(x.DictionaryEntry)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONParseWordLattoCompQuestion: field name DictionaryEntry; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONParseWordLatToCompQuestion: field name DictionaryEntry; %w", err)
 	}
 	partial["dictionary_entry"] = fieldDictionaryEntry
 	var fieldMainAnswer []byte
 	fieldMainAnswer, err = r._marshalJSONstring(x.MainAnswer)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONParseWordLattoCompQuestion: field name MainAnswer; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONParseWordLatToCompQuestion: field name MainAnswer; %w", err)
 	}
 	partial["main_answer"] = fieldMainAnswer
 	var fieldPrompt []byte
 	fieldPrompt, err = r._marshalJSONstring(x.Prompt)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONParseWordLattoCompQuestion: field name Prompt; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONParseWordLatToCompQuestion: field name Prompt; %w", err)
 	}
 	partial["prompt"] = fieldPrompt
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONParseWordLattoCompQuestion: struct; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONParseWordLatToCompQuestion: struct; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordLattoCompQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
+func (r *ParseWordLatToCompQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
 	partial := make([]json.RawMessage, len(x))
 	for i, v := range x {
 		item, err := r._marshalJSONstring(v)
 		if err != nil {
-			return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
+			return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		partial[i] = item
 	}
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONSlicestring:; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONSlicestring:; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordLattoCompQuestion) _marshalJSONstring(x string) ([]byte, error) {
+func (r *ParseWordLatToCompQuestion) _marshalJSONstring(x string) ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions: ParseWordLattoCompQuestion._marshalJSONstring:; %w", err)
+		return nil, fmt.Errorf("questions: ParseWordLatToCompQuestion._marshalJSONstring:; %w", err)
 	}
 	return result, nil
 }
-func (r *ParseWordLattoCompQuestion) UnmarshalJSON(data []byte) error {
-	result, err := r._unmarshalJSONParseWordLattoCompQuestion(data)
+func (r *ParseWordLatToCompQuestion) UnmarshalJSON(data []byte) error {
+	result, err := r._unmarshalJSONParseWordLatToCompQuestion(data)
 	if err != nil {
-		return fmt.Errorf("questions: ParseWordLattoCompQuestion.UnmarshalJSON: %w", err)
+		return fmt.Errorf("questions: ParseWordLatToCompQuestion.UnmarshalJSON: %w", err)
 	}
 	*r = result
 	return nil
 }
-func (r *ParseWordLattoCompQuestion) _unmarshalJSONParseWordLattoCompQuestion(data []byte) (ParseWordLattoCompQuestion, error) {
-	result := ParseWordLattoCompQuestion{}
+func (r *ParseWordLatToCompQuestion) _unmarshalJSONParseWordLatToCompQuestion(data []byte) (ParseWordLatToCompQuestion, error) {
+	result := ParseWordLatToCompQuestion{}
 	var partial map[string]json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONParseWordLattoCompQuestion: native struct unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONParseWordLatToCompQuestion: native struct unwrap; %w", err)
 	}
 	if fieldAnswers, ok := partial["answers"]; ok {
 		result.Answers, err = r._unmarshalJSONSlicestring(fieldAnswers)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONParseWordLattoCompQuestion: field Answers; %w", err)
+			return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONParseWordLatToCompQuestion: field Answers; %w", err)
 		}
 	}
 	if fieldDictionaryEntry, ok := partial["dictionary_entry"]; ok {
 		result.DictionaryEntry, err = r._unmarshalJSONstring(fieldDictionaryEntry)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONParseWordLattoCompQuestion: field DictionaryEntry; %w", err)
+			return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONParseWordLatToCompQuestion: field DictionaryEntry; %w", err)
 		}
 	}
 	if fieldMainAnswer, ok := partial["main_answer"]; ok {
 		result.MainAnswer, err = r._unmarshalJSONstring(fieldMainAnswer)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONParseWordLattoCompQuestion: field MainAnswer; %w", err)
+			return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONParseWordLatToCompQuestion: field MainAnswer; %w", err)
 		}
 	}
 	if fieldPrompt, ok := partial["prompt"]; ok {
 		result.Prompt, err = r._unmarshalJSONstring(fieldPrompt)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONParseWordLattoCompQuestion: field Prompt; %w", err)
+			return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONParseWordLatToCompQuestion: field Prompt; %w", err)
 		}
 	}
 	return result, nil
 }
-func (r *ParseWordLattoCompQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
+func (r *ParseWordLatToCompQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
 	result := make([]string, 0)
 	var partial []json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
 	}
 	for i, v := range partial {
 		item, err := r._unmarshalJSONstring(v)
 		if err != nil {
-			return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
+			return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		result = append(result, item)
 	}
 	return result, nil
 }
-func (r *ParseWordLattoCompQuestion) _unmarshalJSONstring(data []byte) (string, error) {
+func (r *ParseWordLatToCompQuestion) _unmarshalJSONstring(data []byte) (string, error) {
 	var result string
 	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return result, fmt.Errorf("questions: ParseWordLattoCompQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
+		return result, fmt.Errorf("questions: ParseWordLatToCompQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
 	}
 	return result, nil
 }
@@ -985,268 +985,268 @@ func (r *PrincipalPartsQuestion) _unmarshalJSONstring(data []byte) (string, erro
 	return result, nil
 }
 
-func TypeInEngtoLatQuestionFromJSON(x []byte) (*TypeInEngtoLatQuestion, error) {
-	result := new(TypeInEngtoLatQuestion)
+func TypeInEngToLatQuestionFromJSON(x []byte) (*TypeInEngToLatQuestion, error) {
+	result := new(TypeInEngToLatQuestion)
 	err := result.UnmarshalJSON(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions.TypeInEngtoLatQuestionFromJSON: %w", err)
+		return nil, fmt.Errorf("questions.TypeInEngToLatQuestionFromJSON: %w", err)
 	}
 	return result, nil
 }
 
-func TypeInEngtoLatQuestionToJSON(x *TypeInEngtoLatQuestion) ([]byte, error) {
+func TypeInEngToLatQuestionToJSON(x *TypeInEngToLatQuestion) ([]byte, error) {
 	return x.MarshalJSON()
 }
 
 var (
-	_ json.Unmarshaler = (*TypeInEngtoLatQuestion)(nil)
-	_ json.Marshaler   = (*TypeInEngtoLatQuestion)(nil)
+	_ json.Unmarshaler = (*TypeInEngToLatQuestion)(nil)
+	_ json.Marshaler   = (*TypeInEngToLatQuestion)(nil)
 )
 
-func (r *TypeInEngtoLatQuestion) MarshalJSON() ([]byte, error) {
+func (r *TypeInEngToLatQuestion) MarshalJSON() ([]byte, error) {
 	if r == nil {
 		return nil, nil
 	}
-	return r._marshalJSONTypeInEngtoLatQuestion(*r)
+	return r._marshalJSONTypeInEngToLatQuestion(*r)
 }
-func (r *TypeInEngtoLatQuestion) _marshalJSONTypeInEngtoLatQuestion(x TypeInEngtoLatQuestion) ([]byte, error) {
+func (r *TypeInEngToLatQuestion) _marshalJSONTypeInEngToLatQuestion(x TypeInEngToLatQuestion) ([]byte, error) {
 	partial := make(map[string]json.RawMessage)
 	var err error
 	var fieldAnswers []byte
 	fieldAnswers, err = r._marshalJSONSlicestring(x.Answers)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONTypeInEngtoLatQuestion: field name Answers; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONTypeInEngToLatQuestion: field name Answers; %w", err)
 	}
 	partial["answers"] = fieldAnswers
 	var fieldMainAnswer []byte
 	fieldMainAnswer, err = r._marshalJSONstring(x.MainAnswer)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONTypeInEngtoLatQuestion: field name MainAnswer; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONTypeInEngToLatQuestion: field name MainAnswer; %w", err)
 	}
 	partial["main_answer"] = fieldMainAnswer
 	var fieldPrompt []byte
 	fieldPrompt, err = r._marshalJSONstring(x.Prompt)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONTypeInEngtoLatQuestion: field name Prompt; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONTypeInEngToLatQuestion: field name Prompt; %w", err)
 	}
 	partial["prompt"] = fieldPrompt
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONTypeInEngtoLatQuestion: struct; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONTypeInEngToLatQuestion: struct; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInEngtoLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
+func (r *TypeInEngToLatQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
 	partial := make([]json.RawMessage, len(x))
 	for i, v := range x {
 		item, err := r._marshalJSONstring(v)
 		if err != nil {
-			return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
+			return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		partial[i] = item
 	}
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONSlicestring:; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONSlicestring:; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInEngtoLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
+func (r *TypeInEngToLatQuestion) _marshalJSONstring(x string) ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInEngtoLatQuestion._marshalJSONstring:; %w", err)
+		return nil, fmt.Errorf("questions: TypeInEngToLatQuestion._marshalJSONstring:; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInEngtoLatQuestion) UnmarshalJSON(data []byte) error {
-	result, err := r._unmarshalJSONTypeInEngtoLatQuestion(data)
+func (r *TypeInEngToLatQuestion) UnmarshalJSON(data []byte) error {
+	result, err := r._unmarshalJSONTypeInEngToLatQuestion(data)
 	if err != nil {
-		return fmt.Errorf("questions: TypeInEngtoLatQuestion.UnmarshalJSON: %w", err)
+		return fmt.Errorf("questions: TypeInEngToLatQuestion.UnmarshalJSON: %w", err)
 	}
 	*r = result
 	return nil
 }
-func (r *TypeInEngtoLatQuestion) _unmarshalJSONTypeInEngtoLatQuestion(data []byte) (TypeInEngtoLatQuestion, error) {
-	result := TypeInEngtoLatQuestion{}
+func (r *TypeInEngToLatQuestion) _unmarshalJSONTypeInEngToLatQuestion(data []byte) (TypeInEngToLatQuestion, error) {
+	result := TypeInEngToLatQuestion{}
 	var partial map[string]json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONTypeInEngtoLatQuestion: native struct unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONTypeInEngToLatQuestion: native struct unwrap; %w", err)
 	}
 	if fieldAnswers, ok := partial["answers"]; ok {
 		result.Answers, err = r._unmarshalJSONSlicestring(fieldAnswers)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONTypeInEngtoLatQuestion: field Answers; %w", err)
+			return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONTypeInEngToLatQuestion: field Answers; %w", err)
 		}
 	}
 	if fieldMainAnswer, ok := partial["main_answer"]; ok {
 		result.MainAnswer, err = r._unmarshalJSONstring(fieldMainAnswer)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONTypeInEngtoLatQuestion: field MainAnswer; %w", err)
+			return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONTypeInEngToLatQuestion: field MainAnswer; %w", err)
 		}
 	}
 	if fieldPrompt, ok := partial["prompt"]; ok {
 		result.Prompt, err = r._unmarshalJSONstring(fieldPrompt)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONTypeInEngtoLatQuestion: field Prompt; %w", err)
+			return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONTypeInEngToLatQuestion: field Prompt; %w", err)
 		}
 	}
 	return result, nil
 }
-func (r *TypeInEngtoLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
+func (r *TypeInEngToLatQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
 	result := make([]string, 0)
 	var partial []json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
 	}
 	for i, v := range partial {
 		item, err := r._unmarshalJSONstring(v)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
+			return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		result = append(result, item)
 	}
 	return result, nil
 }
-func (r *TypeInEngtoLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
+func (r *TypeInEngToLatQuestion) _unmarshalJSONstring(data []byte) (string, error) {
 	var result string
 	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInEngtoLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInEngToLatQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
 	}
 	return result, nil
 }
 
-func TypeInLattoEngQuestionFromJSON(x []byte) (*TypeInLattoEngQuestion, error) {
-	result := new(TypeInLattoEngQuestion)
+func TypeInLatToEngQuestionFromJSON(x []byte) (*TypeInLatToEngQuestion, error) {
+	result := new(TypeInLatToEngQuestion)
 	err := result.UnmarshalJSON(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions.TypeInLattoEngQuestionFromJSON: %w", err)
+		return nil, fmt.Errorf("questions.TypeInLatToEngQuestionFromJSON: %w", err)
 	}
 	return result, nil
 }
 
-func TypeInLattoEngQuestionToJSON(x *TypeInLattoEngQuestion) ([]byte, error) {
+func TypeInLatToEngQuestionToJSON(x *TypeInLatToEngQuestion) ([]byte, error) {
 	return x.MarshalJSON()
 }
 
 var (
-	_ json.Unmarshaler = (*TypeInLattoEngQuestion)(nil)
-	_ json.Marshaler   = (*TypeInLattoEngQuestion)(nil)
+	_ json.Unmarshaler = (*TypeInLatToEngQuestion)(nil)
+	_ json.Marshaler   = (*TypeInLatToEngQuestion)(nil)
 )
 
-func (r *TypeInLattoEngQuestion) MarshalJSON() ([]byte, error) {
+func (r *TypeInLatToEngQuestion) MarshalJSON() ([]byte, error) {
 	if r == nil {
 		return nil, nil
 	}
-	return r._marshalJSONTypeInLattoEngQuestion(*r)
+	return r._marshalJSONTypeInLatToEngQuestion(*r)
 }
-func (r *TypeInLattoEngQuestion) _marshalJSONTypeInLattoEngQuestion(x TypeInLattoEngQuestion) ([]byte, error) {
+func (r *TypeInLatToEngQuestion) _marshalJSONTypeInLatToEngQuestion(x TypeInLatToEngQuestion) ([]byte, error) {
 	partial := make(map[string]json.RawMessage)
 	var err error
 	var fieldAnswers []byte
 	fieldAnswers, err = r._marshalJSONSlicestring(x.Answers)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONTypeInLattoEngQuestion: field name Answers; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONTypeInLatToEngQuestion: field name Answers; %w", err)
 	}
 	partial["answers"] = fieldAnswers
 	var fieldMainAnswer []byte
 	fieldMainAnswer, err = r._marshalJSONstring(x.MainAnswer)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONTypeInLattoEngQuestion: field name MainAnswer; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONTypeInLatToEngQuestion: field name MainAnswer; %w", err)
 	}
 	partial["main_answer"] = fieldMainAnswer
 	var fieldPrompt []byte
 	fieldPrompt, err = r._marshalJSONstring(x.Prompt)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONTypeInLattoEngQuestion: field name Prompt; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONTypeInLatToEngQuestion: field name Prompt; %w", err)
 	}
 	partial["prompt"] = fieldPrompt
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONTypeInLattoEngQuestion: struct; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONTypeInLatToEngQuestion: struct; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInLattoEngQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
+func (r *TypeInLatToEngQuestion) _marshalJSONSlicestring(x []string) ([]byte, error) {
 	partial := make([]json.RawMessage, len(x))
 	for i, v := range x {
 		item, err := r._marshalJSONstring(v)
 		if err != nil {
-			return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
+			return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		partial[i] = item
 	}
 	result, err := json.Marshal(partial)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONSlicestring:; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONSlicestring:; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInLattoEngQuestion) _marshalJSONstring(x string) ([]byte, error) {
+func (r *TypeInLatToEngQuestion) _marshalJSONstring(x string) ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
-		return nil, fmt.Errorf("questions: TypeInLattoEngQuestion._marshalJSONstring:; %w", err)
+		return nil, fmt.Errorf("questions: TypeInLatToEngQuestion._marshalJSONstring:; %w", err)
 	}
 	return result, nil
 }
-func (r *TypeInLattoEngQuestion) UnmarshalJSON(data []byte) error {
-	result, err := r._unmarshalJSONTypeInLattoEngQuestion(data)
+func (r *TypeInLatToEngQuestion) UnmarshalJSON(data []byte) error {
+	result, err := r._unmarshalJSONTypeInLatToEngQuestion(data)
 	if err != nil {
-		return fmt.Errorf("questions: TypeInLattoEngQuestion.UnmarshalJSON: %w", err)
+		return fmt.Errorf("questions: TypeInLatToEngQuestion.UnmarshalJSON: %w", err)
 	}
 	*r = result
 	return nil
 }
-func (r *TypeInLattoEngQuestion) _unmarshalJSONTypeInLattoEngQuestion(data []byte) (TypeInLattoEngQuestion, error) {
-	result := TypeInLattoEngQuestion{}
+func (r *TypeInLatToEngQuestion) _unmarshalJSONTypeInLatToEngQuestion(data []byte) (TypeInLatToEngQuestion, error) {
+	result := TypeInLatToEngQuestion{}
 	var partial map[string]json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONTypeInLattoEngQuestion: native struct unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONTypeInLatToEngQuestion: native struct unwrap; %w", err)
 	}
 	if fieldAnswers, ok := partial["answers"]; ok {
 		result.Answers, err = r._unmarshalJSONSlicestring(fieldAnswers)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONTypeInLattoEngQuestion: field Answers; %w", err)
+			return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONTypeInLatToEngQuestion: field Answers; %w", err)
 		}
 	}
 	if fieldMainAnswer, ok := partial["main_answer"]; ok {
 		result.MainAnswer, err = r._unmarshalJSONstring(fieldMainAnswer)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONTypeInLattoEngQuestion: field MainAnswer; %w", err)
+			return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONTypeInLatToEngQuestion: field MainAnswer; %w", err)
 		}
 	}
 	if fieldPrompt, ok := partial["prompt"]; ok {
 		result.Prompt, err = r._unmarshalJSONstring(fieldPrompt)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONTypeInLattoEngQuestion: field Prompt; %w", err)
+			return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONTypeInLatToEngQuestion: field Prompt; %w", err)
 		}
 	}
 	return result, nil
 }
-func (r *TypeInLattoEngQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
+func (r *TypeInLatToEngQuestion) _unmarshalJSONSlicestring(data []byte) ([]string, error) {
 	result := make([]string, 0)
 	var partial []json.RawMessage
 	err := json.Unmarshal(data, &partial)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONSlicestring: native list unwrap; %w", err)
 	}
 	for i, v := range partial {
 		item, err := r._unmarshalJSONstring(v)
 		if err != nil {
-			return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
+			return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONSlicestring: at index %d; %w", i, err)
 		}
 		result = append(result, item)
 	}
 	return result, nil
 }
-func (r *TypeInLattoEngQuestion) _unmarshalJSONstring(data []byte) (string, error) {
+func (r *TypeInLatToEngQuestion) _unmarshalJSONstring(data []byte) (string, error) {
 	var result string
 	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return result, fmt.Errorf("questions: TypeInLattoEngQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
+		return result, fmt.Errorf("questions: TypeInLatToEngQuestion._unmarshalJSONstring: native primitive unwrap; %w", err)
 	}
 	return result, nil
 }

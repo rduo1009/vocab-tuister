@@ -763,120 +763,120 @@
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
   INFO     src.server.app:app.py:111 Validating settings.
   INFO     src.server.app:app.py:126 Returning 50 questions.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'name: nomen, nominis, (n)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'name: nomen, nominis, (n)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'dog: canis, canis, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'dog: canis, canis, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'large: ingens, ingentis, (3-1)'.
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:859 ingens.get(comparative, masculine, nominative, singular, adverb=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(large, comparative dative plural masculine, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'from: e'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'from: e'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(from, , main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(from, , main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'from: e' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'into: in'.
-  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLattoCompQuestion with word 'into: in' failed.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'keen: acer, acris, acre, (3-3)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'from: e' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'into: in'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLatToCompQuestion with word 'into: in' failed.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(keen, superlative accusative singular feminine, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(keen, superlative accusative singular feminine, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'keen: acer, acris, acre, (3-3)' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'this: hic, haec, hoc'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'large: ingens, ingentis, (3-1)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'hear: audio, audire, audivi, auditus'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'hear: audio, audire, audivi, auditus' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'this: hic, haec, hoc'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'good: bonus, bona, bonum, (2-1-2)'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordCompToLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'this: hic, haec, hoc'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'good: bonus, bona, bonum, (2-1-2)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular masculine, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular masculine, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular feminine, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular feminine, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular neuter, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(good, comparative dative singular neuter, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'good: bonus, bona, bonum, (2-1-2)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'large: ingens, ingentis, (3-1)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'take: capio, capere, cepi' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'good: bonus, bona, bonum, (2-1-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'girl: puella, puellae, (f)'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'girl: puella, puellae, (f)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'farmer: agricola, agricolae, (m)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, nominative singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, nominative singular, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative singular, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, ablative singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, ablative singular, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'dog: canis, canis, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'dog: canis, canis, (m)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, nominative singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, nominative singular, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, vocative singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, vocative singular, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, genitive singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(dog, genitive singular, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'dog: canis, canis, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'from: e'.
-  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLattoCompQuestion with word 'from: e' failed.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'dog: canis, canis, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'from: e'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLatToCompQuestion with word 'from: e' failed.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'this: hic, haec, hoc'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'farmer: agricola, agricolae, (m)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'farmer: agricola, agricolae, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordCompToLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'keen: acer, acris, acre, (3-3)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'take: capio, capere, cepi'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'take: capio, capere, cepi' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'into: in'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'good: bonus, bona, bonum, (2-1-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordCompToLatQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'into: in'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'into: in' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'into: in' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'light: levis, leve, (3-2)'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'light: levis, leve, (3-2)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'that: ille, illa, illud'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'that: ille, illa, illud' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'that: ille, illa, illud' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'into: in'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'into: in' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'that: ille, illa, illud'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'that: ille, illa, illud'.
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(masculine, nominative, plural)
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(feminine, nominative, plural)
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(neuter, nominative, plural)
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:117 ille.get(masculine, nominative, plural)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(that, nominative plural masculine, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'farmer: agricola, agricolae, (m)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'farmer: agricola, agricolae, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'this: hic, haec, hoc'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'girl: puella, puellae, (f)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'girl: puella, puellae, (f)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'this: hic, haec, hoc'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'girl: puella, puellae, (f)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'girl: puella, puellae, (f)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'this: hic, haec, hoc'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative singular feminine, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative singular feminine, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative plural neuter, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, nominative plural neuter, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, accusative plural neuter, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(this, accusative plural neuter, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'boy: puer, pueri, (m)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'boy: puer, pueri, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'this: hic, haec, hoc'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'this: hic, haec, hoc' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'light: levis, leve, (3-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'this: hic, haec, hoc'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordCompToLatQuestion with word 'this: hic, haec, hoc' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'light: levis, leve, (3-2)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative singular feminine, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative nominative singular feminine, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative singular feminine, main=False)
@@ -889,24 +889,24 @@
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative vocative plural neuter, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative accusative plural neuter, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(light, superlative accusative plural neuter, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'light: levis, leve, (3-2)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'from: e'.
-  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordComptoLatQuestion with word 'from: e' failed.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'boy: puer, pueri, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'light: levis, leve, (3-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'from: e'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordCompToLatQuestion with word 'from: e' failed.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'boy: puer, pueri, (m)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(boy, genitive singular, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'boy: puer, pueri, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'take: capio, capere, cepi'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'boy: puer, pueri, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'take: capio, capere, cepi'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(take, perfect active indicative singular 1st person, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'take: capio, capere, cepi' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'that: ille, illa, illud' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'take: capio, capere, cepi' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'that: ille, illa, illud'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'that: ille, illa, illud' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'large: ingens, ingentis, (3-1)'.
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:859 ingens.get(comparative, masculine, nominative, singular, adverb=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(large, comparative vocative singular masculine, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'large: ingens, ingentis, (3-1)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type PrincipalPartsQuestion with word 'take: capio, capere, cepi' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'farmer: agricola, agricolae, (m)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, genitive singular, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, genitive singular, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, dative singular, main=False)
@@ -915,26 +915,26 @@
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, nominative plural, main=True)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative plural, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, vocative plural, main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceLatToEngQuestion with word 'that: ille, illa, illud'.
   INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceLatToEngQuestion with word 'that: ille, illa, illud' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'dog: canis, canis, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngtoLatQuestion with word 'farmer: agricola, agricolae, (m)'.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'dog: canis, canis, (m)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'dog: canis, canis, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInEngToLatQuestion with word 'farmer: agricola, agricolae, (m)'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(farmer, dative singular, main=False)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngtoLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'from: e'.
-  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLattoCompQuestion with word 'from: e' failed.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordComptoLatQuestion with word 'name: nomen, nominis, (n)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordComptoLatQuestion with word 'name: nomen, nominis, (n)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngtoLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngtoLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)'.
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLattoCompQuestion with word 'name: nomen, nominis, (n)' succeeded.
-  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLattoEngQuestion with word 'into: in'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInEngToLatQuestion with word 'farmer: agricola, agricolae, (m)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'from: e'.
+  DEBUG    src.core.rogo.asker:asker.py:152 Creating question of type ParseWordLatToCompQuestion with word 'from: e' failed.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordCompToLatQuestion with word 'name: nomen, nominis, (n)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordCompToLatQuestion with word 'name: nomen, nominis, (n)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type MultipleChoiceEngToLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type MultipleChoiceEngToLatQuestion with word 'happy: laetus, laeta, laetum, (2-1-2)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type ParseWordLatToCompQuestion with word 'name: nomen, nominis, (n)'.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type ParseWordLatToCompQuestion with word 'name: nomen, nominis, (n)' succeeded.
+  DEBUG    src.core.rogo.asker:asker.py:100 Creating new question of type TypeInLatToEngQuestion with word 'into: in'.
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(into, , main=True)
-  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLattoEngQuestion with word 'into: in' succeeded.
+  INFO     src.core.rogo.asker:asker.py:142 Creating question of type TypeInLatToEngQuestion with word 'into: in' succeeded.
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 9971
   
   '''

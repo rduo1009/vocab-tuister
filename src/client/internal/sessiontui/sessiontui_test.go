@@ -166,12 +166,12 @@ func TestMultipleChoiceEngtoLat(t *testing.T) {
 
 func TestMultipleChoiceLattoEng(t *testing.T) {
 	server, port := setUpMockServer(t, `[
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "bar", "answer": "foo", "choices": ["foo", "bar", "baz"]}},
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "bar", "answer": "foo", "choices": ["foo", "bar", "baz"]}},
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "foo", "answer": "bar", "choices": ["baz", "bar", "qux"]}},
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "foo", "answer": "bar", "choices": ["baz", "bar", "qux"]}},
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "baz", "answer": "qux", "choices": ["bar", "foo", "qux"]}},
-{"question_type": "MultipleChoiceLattoEngQuestion", "MultipleChoiceLattoEngQuestion": {"prompt": "baz", "answer": "qux", "choices": ["bar", "foo", "qux"]}}
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "bar", "answer": "foo", "choices": ["foo", "bar", "baz"]}},
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "bar", "answer": "foo", "choices": ["foo", "bar", "baz"]}},
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "foo", "answer": "bar", "choices": ["baz", "bar", "qux"]}},
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "foo", "answer": "bar", "choices": ["baz", "bar", "qux"]}},
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "baz", "answer": "qux", "choices": ["bar", "foo", "qux"]}},
+{"question_type": "MultipleChoiceLatToEngQuestion", "MultipleChoiceLatToEngQuestion": {"prompt": "baz", "answer": "qux", "choices": ["bar", "foo", "qux"]}}
 	]`)
 	defer server.Close()
 
@@ -195,12 +195,12 @@ func TestMultipleChoiceLattoEng(t *testing.T) {
 
 func TestParseWordComptoLat(t *testing.T) {
 	server, port := setUpMockServer(t, `[
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
-{"question_type": "ParseWordComptoLatQuestion", "ParseWordComptoLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}}
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "bar", "components": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
+{"question_type": "ParseWordCompToLatQuestion", "ParseWordCompToLatQuestion": {"prompt": "foo", "components": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}}
 	]`)
 	defer server.Close()
 
@@ -223,12 +223,12 @@ func TestParseWordComptoLat(t *testing.T) {
 
 func TestParseWordLattoComp(t *testing.T) {
 	server, port := setUpMockServer(t, `[
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
-{"question_type": "ParseWordLattoCompQuestion", "ParseWordLattoCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}}
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "bar", "dictionary_entry": "quz", "main_answer": "foo", "answers": ["foo", "foofoo"]}},
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}},
+{"question_type": "ParseWordLatToCompQuestion", "ParseWordLatToCompQuestion": {"prompt": "foo", "dictionary_entry": "quux", "main_answer": "bar", "answers": ["bar", "barbar"]}}
 	]`)
 	defer server.Close()
 
@@ -279,12 +279,12 @@ func TestPrincipalParts(t *testing.T) {
 
 func TestTypeInEngtoLat(t *testing.T) {
 	server, port := setUpMockServer(t, `[
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
-{"question_type": "TypeInEngtoLatQuestion", "TypeInEngtoLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}}
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
+{"question_type": "TypeInEngToLatQuestion", "TypeInEngToLatQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}}
 	]`)
 	defer server.Close()
 
@@ -307,12 +307,12 @@ func TestTypeInEngtoLat(t *testing.T) {
 
 func TestTypeInLattoEng(t *testing.T) {
 	server, port := setUpMockServer(t, `[
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
-{"question_type": "TypeInLattoEngQuestion", "TypeInLattoEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}}
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "foo", "answers": ["baz", "bazbaz"], "main_answer": "baz"}},
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}},
+{"question_type": "TypeInLatToEngQuestion", "TypeInLatToEngQuestion": {"prompt": "bar", "answers": ["qux", "quxqux"], "main_answer": "qux"}}
 	]`)
 	defer server.Close()
 
