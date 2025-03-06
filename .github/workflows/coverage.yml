@@ -27,7 +27,7 @@ jobs:
         run: |
           sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
-          pipx install poetry==1.8.5
+          pipx install poetry==1.8.5 dunamai
           poetry install
           go mod download
 
