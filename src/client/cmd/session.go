@@ -30,14 +30,23 @@ This is based on the vocab list and the session config file provided.`,
 		}
 
 		if serverPort < 1 || serverPort > 65535 {
-			return fmt.Errorf("server-port must be a valid port number between 1 and 65535")
+			return fmt.Errorf(
+				"server-port must be a valid port number between 1 and 65535",
+			)
 		}
 
 		return nil
 	},
 
 	RunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
-		p := tea.NewProgram(sessiontui.InitialModel(sessionConfigPath, vocabListPath, numberOfQuestions, serverPort))
+		p := tea.NewProgram(
+			sessiontui.InitialModel(
+				sessionConfigPath,
+				vocabListPath,
+				numberOfQuestions,
+				serverPort,
+			),
+		)
 		if _, err := p.Run(); err != nil {
 			return err
 		}
@@ -49,10 +58,14 @@ This is based on the vocab list and the session config file provided.`,
 func init() {
 	rootCmd.AddCommand(sessionCmd)
 
-	sessionCmd.Flags().StringVarP(&sessionConfigPath, "session-config", "c", "", "Path to the session config .json file")
-	sessionCmd.Flags().StringVarP(&vocabListPath, "vocab-list", "l", "", "Path to the vocab list .txt file")
-	sessionCmd.Flags().IntVarP(&numberOfQuestions, "number", "n", 0, "Number of questions for the session")
-	sessionCmd.Flags().IntVarP(&serverPort, "server-port", "p", 5000, "Localhost port for the server (default is 5000)")
+	sessionCmd.Flags().
+		StringVarP(&sessionConfigPath, "session-config", "c", "", "Path to the session config .json file")
+	sessionCmd.Flags().
+		StringVarP(&vocabListPath, "vocab-list", "l", "", "Path to the vocab list .txt file")
+	sessionCmd.Flags().
+		IntVarP(&numberOfQuestions, "number", "n", 0, "Number of questions for the session")
+	sessionCmd.Flags().
+		IntVarP(&serverPort, "server-port", "p", 5000, "Localhost port for the server (default is 5000)")
 
 	sessionCmd.MarkFlagRequired("session-config") //nolint:errcheck
 	sessionCmd.MarkFlagRequired("vocab-list")     //nolint:errcheck

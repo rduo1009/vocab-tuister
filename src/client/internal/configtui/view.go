@@ -28,7 +28,13 @@ func (m Model) View() string {
 	b.WriteString(internal.LesserTitleStyle.Render(currentPage.Title) + "\n")
 	for i, setting := range currentPage.Settings {
 		settingSelected := i == m.selectedOption
-		b.WriteString(checkboxString(setting.DisplayName, setting.Checked, settingSelected) + "\n")
+		b.WriteString(
+			checkboxString(
+				setting.DisplayName,
+				setting.Checked,
+				settingSelected,
+			) + "\n",
+		)
 	}
 
 	b.WriteString(m.help.View(m.keys))

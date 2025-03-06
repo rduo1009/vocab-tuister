@@ -27,7 +27,10 @@ func questionStringRegular(q questions.Question) string {
 }
 
 func questionStringPrincipalParts(q questions.Question) string {
-	return fmt.Sprintf("Principal parts of %s", internal.ItalicStyle.Render(q.(*questions.PrincipalPartsQuestion).Prompt))
+	return fmt.Sprintf(
+		"Principal parts of %s",
+		internal.ItalicStyle.Render(q.(*questions.PrincipalPartsQuestion).Prompt),
+	)
 }
 
 func questionStringMultipleChoice(q questions.Question) string {
@@ -80,12 +83,19 @@ func (m Model) View() string {
 			b.WriteString(lipgloss.JoinHorizontal(
 				lipgloss.Top,
 				m.textinput.View(),
-				internal.IncorrectStyle.Render(fmt.Sprintf(" ✕ %s", questions.GetMainAnswer(currentQuestionStruct).(string))),
+				internal.IncorrectStyle.Render(
+					fmt.Sprintf(
+						" ✕ %s",
+						questions.GetMainAnswer(currentQuestionStruct).(string),
+					),
+				),
 			))
 		}
 
 	case enums.PrincipalParts:
-		requiredPPTextinputs := len(currentQuestionStruct.(*questions.PrincipalPartsQuestion).PrincipalParts)
+		requiredPPTextinputs := len(
+			currentQuestionStruct.(*questions.PrincipalPartsQuestion).PrincipalParts,
+		)
 
 		m.textinput.SetWidth(m.width)
 
@@ -120,7 +130,9 @@ func (m Model) View() string {
 					b.WriteString(lipgloss.JoinHorizontal(
 						lipgloss.Top,
 						m.principalPartsTextinputs[i].View(),
-						internal.IncorrectStyle.Render(fmt.Sprintf(" ✕ %s", x)),
+						internal.IncorrectStyle.Render(
+							fmt.Sprintf(" ✕ %s", x),
+						),
 					))
 				} else {
 					b.WriteString(m.principalPartsTextinputs[i].View())
@@ -164,10 +176,24 @@ func (m Model) View() string {
 		}
 	case enums.Correct:
 		b.WriteString("Answer is correct!\n\n")
-		b.WriteString(fmt.Sprintf("Score: %d/%d (%.0f%%)\n", m.score, m.currentQuestion, 100*float64(m.score)/float64(m.currentQuestion)))
+		b.WriteString(
+			fmt.Sprintf(
+				"Score: %d/%d (%.0f%%)\n",
+				m.score,
+				m.currentQuestion,
+				100*float64(m.score)/float64(m.currentQuestion),
+			),
+		)
 	case enums.Incorrect:
 		b.WriteString("Answer is incorrect!\n\n")
-		b.WriteString(fmt.Sprintf("Score: %d/%d (%.0f%%)\n", m.score, m.currentQuestion, 100*float64(m.score)/float64(m.currentQuestion)))
+		b.WriteString(
+			fmt.Sprintf(
+				"Score: %d/%d (%.0f%%)\n",
+				m.score,
+				m.currentQuestion,
+				100*float64(m.score)/float64(m.currentQuestion),
+			),
+		)
 	}
 
 	b.WriteString(m.help.View(m.keys))

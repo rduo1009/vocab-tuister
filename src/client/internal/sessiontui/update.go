@@ -75,7 +75,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	var requiredPPTextinputs int
 	if m.questionMode == enums.PrincipalParts {
-		requiredPPTextinputs = len(currentQuestionStruct.(*questions.PrincipalPartsQuestion).PrincipalParts)
+		requiredPPTextinputs = len(
+			currentQuestionStruct.(*questions.PrincipalPartsQuestion).PrincipalParts,
+		)
 	}
 
 	switch msg := msg.(type) {
