@@ -14,12 +14,12 @@ from ..accido.misc import EndingComponents
 class QuestionClasses(Enum):
     """The classes of questions that can be asked."""
 
-    TYPEIN_ENGTOLAT = "TypeInEngtoLatQuestion"
-    TYPEIN_LATTOENG = "TypeInLattoEngQuestion"
-    PARSEWORD_LATTOCOMP = "ParseWordLattoCompQuestion"
-    PARSEWORD_COMPTOLAT = "ParseWordComptoLatQuestion"
+    TYPEIN_ENGTOLAT = "TypeInEngToLatQuestion"
+    TYPEIN_LATTOENG = "TypeInLatToEngQuestion"
+    PARSEWORD_LATTOCOMP = "ParseWordLatToCompQuestion"
+    PARSEWORD_COMPTOLAT = "ParseWordCompToLatQuestion"
     PRINCIPAL_PARTS = "PrincipalPartsQuestion"
-    MULTIPLECHOICE_ENGTOLAT = "MultipleChoiceEngtoLatQuestion"
+    MULTIPLECHOICE_ENGTOLAT = "MultipleChoiceEngToLatQuestion"
     MULTIPLECHOICE_LATTOENG = "MultipleChoiceLatToEngQuestion"
 
     def __lt__(self, other: object) -> bool:

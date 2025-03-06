@@ -6,7 +6,7 @@ type Questions []Question
 
 //go:tag mkunion:"Question"
 type (
-	MultipleChoiceEngtoLatQuestion struct {
+	MultipleChoiceEngToLatQuestion struct {
 		Answer  string   `json:"answer"`
 		Choices []string `json:"choices"`
 		Prompt  string   `json:"prompt"`
@@ -16,13 +16,13 @@ type (
 		Choices []string `json:"choices"`
 		Prompt  string   `json:"prompt"`
 	}
-	ParseWordComptoLatQuestion struct {
+	ParseWordCompToLatQuestion struct {
 		Answers    []string `json:"answers"`
 		Components string   `json:"components"`
 		MainAnswer string   `json:"main_answer"`
 		Prompt     string   `json:"prompt"`
 	}
-	ParseWordLattoCompQuestion struct {
+	ParseWordLatToCompQuestion struct {
 		Answers         []string `json:"answers"`
 		DictionaryEntry string   `json:"dictionary_entry"`
 		MainAnswer      string   `json:"main_answer"`
@@ -32,12 +32,12 @@ type (
 		PrincipalParts []string `json:"principal_parts"`
 		Prompt         string   `json:"prompt"`
 	}
-	TypeInEngtoLatQuestion struct {
+	TypeInEngToLatQuestion struct {
 		Answers    []string `json:"answers"`
 		MainAnswer string   `json:"main_answer"`
 		Prompt     string   `json:"prompt"`
 	}
-	TypeInLattoEngQuestion struct {
+	TypeInLatToEngQuestion struct {
 		Answers    []string `json:"answers"`
 		MainAnswer string   `json:"main_answer"`
 		Prompt     string   `json:"prompt"`

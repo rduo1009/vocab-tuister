@@ -6,15 +6,15 @@ import (
 )
 
 func init() {
-	shape.Register(MultipleChoiceEngtoLatQuestionShape())
+	shape.Register(MultipleChoiceEngToLatQuestionShape())
 	shape.Register(MultipleChoiceLatToEngQuestionShape())
-	shape.Register(ParseWordComptoLatQuestionShape())
-	shape.Register(ParseWordLattoCompQuestionShape())
+	shape.Register(ParseWordCompToLatQuestionShape())
+	shape.Register(ParseWordLatToCompQuestionShape())
 	shape.Register(PrincipalPartsQuestionShape())
 	shape.Register(QuestionShape())
 	shape.Register(QuestionsShape())
-	shape.Register(TypeInEngtoLatQuestionShape())
-	shape.Register(TypeInLattoEngQuestionShape())
+	shape.Register(TypeInEngToLatQuestionShape())
+	shape.Register(TypeInLatToEngQuestionShape())
 }
 
 //shape:shape
@@ -25,20 +25,20 @@ func QuestionShape() shape.Shape {
 		PkgName: "questions",
 		PkgImportName: "",
 		Variant: []shape.Shape{
-			MultipleChoiceEngtoLatQuestionShape(),
+			MultipleChoiceEngToLatQuestionShape(),
 			MultipleChoiceLatToEngQuestionShape(),
-			ParseWordComptoLatQuestionShape(),
-			ParseWordLattoCompQuestionShape(),
+			ParseWordCompToLatQuestionShape(),
+			ParseWordLatToCompQuestionShape(),
 			PrincipalPartsQuestionShape(),
-			TypeInEngtoLatQuestionShape(),
-			TypeInLattoEngQuestionShape(),
+			TypeInEngToLatQuestionShape(),
+			TypeInLatToEngQuestionShape(),
 		},
 	}
 }
 
-func MultipleChoiceEngtoLatQuestionShape() shape.Shape {
+func MultipleChoiceEngToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
-		Name: "MultipleChoiceEngtoLatQuestion",
+		Name: "MultipleChoiceEngToLatQuestion",
 		PkgName: "questions",
 		PkgImportName: "",
 		Fields: []*shape.FieldLike{
@@ -124,9 +124,9 @@ func MultipleChoiceLatToEngQuestionShape() shape.Shape {
 	}
 }
 
-func ParseWordComptoLatQuestionShape() shape.Shape {
+func ParseWordCompToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
-		Name: "ParseWordComptoLatQuestion",
+		Name: "ParseWordCompToLatQuestion",
 		PkgName: "questions",
 		PkgImportName: "",
 		Fields: []*shape.FieldLike{
@@ -177,9 +177,9 @@ func ParseWordComptoLatQuestionShape() shape.Shape {
 	}
 }
 
-func ParseWordLattoCompQuestionShape() shape.Shape {
+func ParseWordLatToCompQuestionShape() shape.Shape {
 	return &shape.StructLike{
-		Name: "ParseWordLattoCompQuestion",
+		Name: "ParseWordLatToCompQuestion",
 		PkgName: "questions",
 		PkgImportName: "",
 		Fields: []*shape.FieldLike{
@@ -265,9 +265,9 @@ func PrincipalPartsQuestionShape() shape.Shape {
 	}
 }
 
-func TypeInEngtoLatQuestionShape() shape.Shape {
+func TypeInEngToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
-		Name: "TypeInEngtoLatQuestion",
+		Name: "TypeInEngToLatQuestion",
 		PkgName: "questions",
 		PkgImportName: "",
 		Fields: []*shape.FieldLike{
@@ -309,9 +309,9 @@ func TypeInEngtoLatQuestionShape() shape.Shape {
 	}
 }
 
-func TypeInLattoEngQuestionShape() shape.Shape {
+func TypeInLatToEngQuestionShape() shape.Shape {
 	return &shape.StructLike{
-		Name: "TypeInLattoEngQuestion",
+		Name: "TypeInLatToEngQuestion",
 		PkgName: "questions",
 		PkgImportName: "",
 		Fields: []*shape.FieldLike{

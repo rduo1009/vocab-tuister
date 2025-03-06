@@ -6,11 +6,11 @@ import (
 )
 
 func init() {
-	shared.TypeRegistryStore[MultipleChoiceEngtoLatQuestion]("MultipleChoiceEngtoLatQuestion")
+	shared.TypeRegistryStore[MultipleChoiceEngToLatQuestion]("MultipleChoiceEngToLatQuestion")
 	shared.TypeRegistryStore[MultipleChoiceLatToEngQuestion]("MultipleChoiceLatToEngQuestion")
-	shared.TypeRegistryStore[ParseWordComptoLatQuestion]("ParseWordComptoLatQuestion")
-	shared.TypeRegistryStore[ParseWordLattoCompQuestion]("ParseWordLattoCompQuestion")
+	shared.TypeRegistryStore[ParseWordCompToLatQuestion]("ParseWordCompToLatQuestion")
+	shared.TypeRegistryStore[ParseWordLatToCompQuestion]("ParseWordLatToCompQuestion")
 	shared.TypeRegistryStore[PrincipalPartsQuestion]("PrincipalPartsQuestion")
-	shared.TypeRegistryStore[TypeInEngtoLatQuestion]("TypeInEngtoLatQuestion")
-	shared.TypeRegistryStore[TypeInLattoEngQuestion]("TypeInLattoEngQuestion")
+	shared.TypeRegistryStore[TypeInEngToLatQuestion]("TypeInEngToLatQuestion")
+	shared.TypeRegistryStore[TypeInLatToEngQuestion]("TypeInLatToEngQuestion")
 }

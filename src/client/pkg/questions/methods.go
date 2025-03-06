@@ -22,17 +22,17 @@ var containsStr = slices.Contains[[]string, string]
 func Check(q Question, response any) bool {
 	return MatchQuestionR1(
 		q,
-		func(x *MultipleChoiceEngtoLatQuestion) bool {
+		func(x *MultipleChoiceEngToLatQuestion) bool {
 			return x.Answer == response
 		},
 		func(x *MultipleChoiceLatToEngQuestion) bool {
 			return x.Answer == response
 		},
-		func(x *ParseWordComptoLatQuestion) bool {
+		func(x *ParseWordCompToLatQuestion) bool {
 			responseStr := response.(string)
 			return containsStr(x.Answers, responseStr)
 		},
-		func(x *ParseWordLattoCompQuestion) bool {
+		func(x *ParseWordLatToCompQuestion) bool {
 			// responseMap := response.(map[string]string)
 			// return mapInSlice(x.Answers, responseMap)
 			responseStr := response.(string)
@@ -42,11 +42,11 @@ func Check(q Question, response any) bool {
 			responseSlice := response.([]string)
 			return slices.Equal(x.PrincipalParts, responseSlice)
 		},
-		func(x *TypeInEngtoLatQuestion) bool {
+		func(x *TypeInEngToLatQuestion) bool {
 			responseStr := response.(string)
 			return containsStr(x.Answers, responseStr)
 		},
-		func(x *TypeInLattoEngQuestion) bool {
+		func(x *TypeInLatToEngQuestion) bool {
 			responseStr := response.(string)
 			return containsStr(x.Answers, responseStr)
 		},
@@ -56,25 +56,25 @@ func Check(q Question, response any) bool {
 func GetChoices(q Question) []string {
 	return MatchQuestionR1(
 		q,
-		func(x *MultipleChoiceEngtoLatQuestion) []string {
+		func(x *MultipleChoiceEngToLatQuestion) []string {
 			return x.Choices
 		},
 		func(x *MultipleChoiceLatToEngQuestion) []string {
 			return x.Choices
 		},
-		func(x *ParseWordComptoLatQuestion) []string {
+		func(x *ParseWordCompToLatQuestion) []string {
 			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
-		func(x *ParseWordLattoCompQuestion) []string {
+		func(x *ParseWordLatToCompQuestion) []string {
 			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 		func(x *PrincipalPartsQuestion) []string {
 			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
-		func(x *TypeInEngtoLatQuestion) []string {
+		func(x *TypeInEngToLatQuestion) []string {
 			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
-		func(x *TypeInLattoEngQuestion) []string {
+		func(x *TypeInLatToEngQuestion) []string {
 			panic(fmt.Sprintf("type %T not supported by GetChoices", x))
 		},
 	)
@@ -83,25 +83,25 @@ func GetChoices(q Question) []string {
 func GetMainAnswer(q Question) any {
 	return MatchQuestionR1(
 		q,
-		func(x *MultipleChoiceEngtoLatQuestion) any {
+		func(x *MultipleChoiceEngToLatQuestion) any {
 			return x.Answer
 		},
 		func(x *MultipleChoiceLatToEngQuestion) any {
 			return x.Answer
 		},
-		func(x *ParseWordComptoLatQuestion) any {
+		func(x *ParseWordCompToLatQuestion) any {
 			return x.MainAnswer
 		},
-		func(x *ParseWordLattoCompQuestion) any {
+		func(x *ParseWordLatToCompQuestion) any {
 			return x.MainAnswer
 		},
 		func(x *PrincipalPartsQuestion) any {
 			return x.PrincipalParts
 		},
-		func(x *TypeInEngtoLatQuestion) any {
+		func(x *TypeInEngToLatQuestion) any {
 			return x.MainAnswer
 		},
-		func(x *TypeInLattoEngQuestion) any {
+		func(x *TypeInLatToEngQuestion) any {
 			return x.MainAnswer
 		},
 	)
@@ -110,25 +110,25 @@ func GetMainAnswer(q Question) any {
 func QuestionMode(q Question) enums.QuestionMode {
 	return MatchQuestionR1(
 		q,
-		func(_ *MultipleChoiceEngtoLatQuestion) enums.QuestionMode {
+		func(_ *MultipleChoiceEngToLatQuestion) enums.QuestionMode {
 			return enums.MultipleChoice
 		},
 		func(_ *MultipleChoiceLatToEngQuestion) enums.QuestionMode {
 			return enums.MultipleChoice
 		},
-		func(_ *ParseWordComptoLatQuestion) enums.QuestionMode {
+		func(_ *ParseWordCompToLatQuestion) enums.QuestionMode {
 			return enums.Regular
 		},
-		func(_ *ParseWordLattoCompQuestion) enums.QuestionMode {
+		func(_ *ParseWordLatToCompQuestion) enums.QuestionMode {
 			return enums.Regular
 		},
 		func(_ *PrincipalPartsQuestion) enums.QuestionMode {
 			return enums.PrincipalParts
 		},
-		func(_ *TypeInEngtoLatQuestion) enums.QuestionMode {
+		func(_ *TypeInEngToLatQuestion) enums.QuestionMode {
 			return enums.Regular
 		},
-		func(_ *TypeInLattoEngQuestion) enums.QuestionMode {
+		func(_ *TypeInLatToEngQuestion) enums.QuestionMode {
 			return enums.Regular
 		},
 	)
