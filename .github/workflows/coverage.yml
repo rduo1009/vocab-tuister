@@ -37,5 +37,5 @@ jobs:
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.4.0
         with:
-          files: ./reports/coverage/pycoverage.xml,./reports/coverage/reports/coverage/go-combined.out
+          files: ./reports/coverage/pycoverage.xml,./reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}
