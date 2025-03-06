@@ -7,7 +7,7 @@ from functools import total_ordering
 from typing import TYPE_CHECKING
 
 from ._class_word import _Word
-from .edge_cases import PRONOUNS
+from ._edge_cases import PRONOUNS
 from .exceptions import InvalidInputError
 from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
 
@@ -54,7 +54,7 @@ class Pronoun(_Word):
         Notes
         -----
         As pronouns in Latin have irregular endings with little pattern,
-        the pronoun endings are manually written out in the ``edge_cases``
+        the pronoun endings are manually written out in the ``_edge_cases``
         module.
         """
         logger.debug("Pronoun(%s, %s)", pronoun, meaning)
