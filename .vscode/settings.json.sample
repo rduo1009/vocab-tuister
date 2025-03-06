@@ -41,6 +41,8 @@
         ".git_archival.json": true,
         "build": true,
         "dist": true,
+        "gocov": true,
+        "reports": true,
         "__version__.txt": true
     },
     "autoDocstring.docstringFormat": "numpy",
@@ -60,7 +62,8 @@
     "files.associations": {
         "settings.json.sample": "jsonc",
         ".coveragerc": "ini",
-        "*.spec": "python"
+        "*.spec": "python",
+        "go.work.sum": "go.sum"
     },
     "catppuccin-icons.associations.folders": { // or whatever icon extension you use
         "stubs": "folder_types",

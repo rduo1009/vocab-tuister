@@ -28,16 +28,18 @@ dunamai = "1.23.0"
 pyinstaller = "6.12.0"
 
 [tool.poetry.group.dev.dependencies]
-icecream = "2.1.4"
-mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
-ruff = "0.9.9"
 pytest = "8.3.5"
-monkeytype = "23.3.0"
-coverage = "7.6.12"
+syrupy = "4.8.1"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.6.1"
+coverage = "7.6.12"
+pytest-env = "1.1.5"
+icecream = "2.1.4"
+ruff = "0.9.9"
 doc8 = "1.1.2"
 rstfmt = "0.0.14"
+mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
+monkeytype = "23.3.0"
 interrogate = "1.7.0"
 pydoclint = "0.6.2"
 

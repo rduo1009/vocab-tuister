@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum, auto
+from functools import total_ordering
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Final, overload
 
@@ -20,6 +21,7 @@ else:
 
 if TYPE_CHECKING:
 
+    @total_ordering
     class _EndingComponentEnum(Enum):
         """Represents an enum used in an ``EndingComponents`` object."""
 
@@ -32,14 +34,28 @@ if TYPE_CHECKING:
             # HACK: Makes formatting log messages easier.
             return self.regular
 
+        def __lt__(self, other: object) -> bool:
+            if not isinstance(other, _EndingComponentEnum):
+                return NotImplemented
+
+            return str(self) < str(other)
+
+
 else:
 
+    @total_ordering
     class _EndingComponentEnum(Enum):
         """Represents an enum used in an ``EndingComponents`` object."""
 
         def __str__(self) -> str:
             # HACK: Makes formatting log messages easier.
             return self.regular
+
+        def __lt__(self, other: object) -> bool:
+            if not isinstance(other, _EndingComponentEnum):
+                return NotImplemented
+
+            return str(self) < str(other)
 
 
 class Number(
@@ -369,6 +385,20 @@ class EndingComponents:
 
         return all(
             getattr(self, attr) == getattr(other, attr) for attr in self_attrs
+        )
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, EndingComponents):
+            return NotImplemented
+
+        self_attrs = sorted(self._get_non_null_attributes())
+        other_attrs = sorted(other._get_non_null_attributes())
+
+        if self_attrs != other_attrs:
+            return self_attrs < other_attrs  # Compare attribute names first
+
+        return tuple(getattr(self, attr) for attr in self_attrs) < tuple(
+            getattr(other, attr) for attr in other_attrs
         )
 
     def __repr__(self) -> str:

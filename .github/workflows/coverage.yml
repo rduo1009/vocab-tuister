@@ -5,13 +5,6 @@ jobs:
   coverage:
     name: Collect and upload coverage
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        py:
-          - "3.13.1"
-        os:
-          - ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4.2.2
@@ -19,24 +12,30 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Setup python for test ${{ matrix.py }}
-        uses: actions/setup-python@v5.4.0
+      - uses: actions/setup-python@v5.4.0
         with:
-          python-version: ${{ matrix.py }}
+          python-version: "3.13.2"
+
+      - uses: actions/setup-go@v5.3.0
+        with:
+          go-version: "1.24.0"
 
       - name: Create test_output directory
         run: mkdir tests/lego_test/testdata/test_output
 
       - name: Install project deps
-        run: python3 -m pip install -r requirements-dev.txt
-
-      - name: Run coverage for python
         run: |
-          chmod +x ./scripts/coverage.sh
-          ./scripts/coverage.sh
+          sudo apt install ffmpeg pipx
+          sudo snap install ttyd --classic
+          pipx install poetry==1.8.5 dunamai
+          poetry install
+          go mod download
+
+      - name: Run tests with coverage
+        run: ./scripts/coverage.sh
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5.4.0
         with:
-          files: ./reports/coverage/coverage.xml
+          files: ./reports/coverage/pycoverage.xml,./reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}

@@ -65,7 +65,7 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                     "prompt": obj.prompt,
                     "components": obj.components.string,
                     "main_answer": obj.main_answer,
-                    "answers": list(obj.answers),
+                    "answers": sorted(obj.answers),
                 }
 
             case ParseWordLatToCompQuestion():
@@ -93,7 +93,7 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                     "question_type": "TypeInEngToLatQuestion",
                     "prompt": obj.prompt,
                     "main_answer": obj.main_answer,
-                    "answers": list(obj.answers),
+                    "answers": sorted(obj.answers),
                 }
 
             case TypeInLatToEngQuestion():
@@ -101,7 +101,7 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                     "question_type": "TypeInLatToEngQuestion",
                     "prompt": obj.prompt,
                     "main_answer": obj.main_answer,
-                    "answers": list(obj.answers),
+                    "answers": sorted(obj.answers),
                 }
 
         # this actually throws error

@@ -9,10 +9,11 @@ import sys
 import warnings
 from typing import Annotated
 
-from cyclopts import App, Parameter
+from cyclopts import App, Parameter, Token
 from cyclopts.types import UInt16
+from rich.console import Console
 
-from src import __version__
+from src import __version__, _seed
 from src.server.app import main as server_main, main_dev as server_main_dev
 from src.utils.logger import (
     CustomHandler,
@@ -32,12 +33,13 @@ sys.excepthook = log_uncaught_exceptions  # type: ignore[assignment]
 for handler in logger.handlers.copy():
     logger.removeHandler(handler)
 handler = CustomHandler()
-
-
 logger.addHandler(handler)
+
+console = Console()
 cli = App(
-    version=__version__,  # for some reason this is needed
+    version=__version__,  # this is needed due to dynamic versioning
     default_parameter=Parameter(negative=()),
+    console=console,
 )
 
 
@@ -54,13 +56,22 @@ def _set_verbosity(verbosity: int) -> None:
     handler.setLevel(verbosity_map.get(verbosity, logging.DEBUG))
 
 
+def _verbosity_converter(
+    type_: type[tuple[bool, ...]], tokens: list[Token]
+) -> tuple[bool, ...]:
+    assert type_ == tuple[bool, ...]
+
+    return tuple((token.keyword == "-v") for token in tokens)
+
+
 @cli.default
 def vocab_tuister_server(
     *,
     port: Annotated[UInt16, Parameter(name=["--port", "-p"])] = 5000,
     verbose: Annotated[
-        tuple[bool, ...], Parameter(name=["--verbose", "-v"])
-    ] = (False,),
+        tuple[bool, ...],
+        Parameter(name=["--verbose", "-v"], converter=_verbosity_converter),
+    ] = (),
     quiet: bool = False,
     dev: bool = False,
     debug: bool = False,
@@ -83,9 +94,17 @@ def vocab_tuister_server(
         Should not be used usually.
     debug : bool
         Run in debug mode. Implies ``--dev``.
+        Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
     _set_verbosity(-1 if quiet else sum(verbose))
+
+    # Seed has been set
+    if _seed is not None:
+        logger.info("Using random seed '%s'.", _seed)
+
+    if debug:
+        sys.excepthook = sys.__excepthook__
 
     if dev or debug:
         server_main_dev(port, debug=debug)
@@ -94,4 +113,7 @@ def vocab_tuister_server(
 
 
 if __name__ == "__main__":
-    cli()
+    try:
+        cli()
+    except Exception:  # noqa: BLE001
+        console.print_exception()

@@ -7,5 +7,3 @@ package main
 //go:generate mkunion watch -g client/pkg/questions/questions.go
 //go:generate mkunion
 //go:generate patch client/pkg/questions/types_reg_gen.go client/pkg/questions/types_reg_gen_fix.diff
-
-//go:generate enumer -type=Number,Tense,Voice,Mood,Case,Gender,Degree -transform=snake -output client/pkg/enums/ending_components_enumer_gen.go client/pkg/enums/ending_components.go

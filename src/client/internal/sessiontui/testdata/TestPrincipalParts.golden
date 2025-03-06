@@ -1,0 +1,138 @@
+[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
+Question 1/6
+
+Principal parts of foo
+> First principal part
+> Second principal part
+
+
+Score: 0/0 (0%)
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit> f 
+> fo 
+> foo 
+> foo1 
+> foo1 
+> Second principal part
+> f 
+> fo 
+> foo 
+> foo2 
+> foo1 
+> foo2 
+Answer is correct!
+Score: 1/1 (100%)
+Question 2/6
+> First principal part
+> Second principal part
+
+> f 
+> fo 
+> foo 
+> foo1 
+> foo1 
+> Second principal part
+> f 
+> fo 
+> foo 
+> foo3 
+> foo3  ✕ foo2
+Answer is incorrect!
+Score: 1/2 (50%)
+Question 3/6
+> First principal part
+> Second principal part
+
+> f 
+> fo 
+> foo 
+> foo3 
+> foo3 
+> Second principal part
+> f 
+> fo 
+> foo 
+> foo4 
+> foo3  ✕ foo1
+> foo4  ✕ foo2
+Answer is incorrect!
+Score: 1/3 (33%)
+Question 4/6
+Principal parts of bar
+> First principal part
+> Second principal part
+> Third principal part
+
+Score: 1/3 (33%)
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit> b 
+> ba 
+> bar 
+> bar1 
+> bar1 
+> Second principal part
+> b 
+> ba 
+> bar 
+> bar2 
+> bar2 
+> Third principal part
+> b 
+> ba 
+> bar 
+> bar3 
+> bar1 
+> bar2 
+> bar3 
+Answer is correct!
+Score: 2/4 (50%)
+Question 5/6
+> First principal part
+> Second principal part
+> Third principal part
+
+> b 
+> ba 
+> ba 
+> bar 
+> bar0 
+> bar0 
+> Second principal part
+> b 
+> ba 
+> bar 
+> bar2 
+> bar2 
+> Third principal part
+> b 
+> ba 
+> bar 
+> bar3 
+> bar0  ✕ bar1
+Answer is incorrect!
+Score: 2/5 (40%)
+Question 6/6
+> First principal part
+> Second principal part
+> Third principal part
+
+> b 
+> ba 
+> bar 
+> bar4 
+> bar4 
+> Second principal part
+> b 
+> ba 
+> bar 
+> bar5 
+> bar5 
+> Third principal part
+> b 
+> ba 
+> bar 
+> bar6 
+> bar4  ✕ bar1
+> bar5  ✕ bar2
+> bar6  ✕ bar3
+Answer is incorrect!
+Score: 2/6 (33%)
+[?2004l[?25h

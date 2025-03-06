@@ -1353,6 +1353,23 @@ pluggy = ">=1.5,<2"
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-env"
+version = "1.1.5"
+description = "pytest plugin that allows you to add environment variables."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest_env-1.1.5-py3-none-any.whl", hash = "sha256:ce90cf8772878515c24b31cd97c7fa1f4481cd68d588419fd45f10ecaee6bc30"},
+    {file = "pytest_env-1.1.5.tar.gz", hash = "sha256:91209840aa0e43385073ac464a554ad2947cc2fd663a9debf88d03b01e0cc1cf"},
+]
+
+[package.dependencies]
+pytest = ">=8.3.3"
+
+[package.extras]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.6.1)", "pytest-mock (>=3.14)"]
+
+[[package]]
 name = "pytest-sugar"
 version = "1.0.0"
 description = "pytest-sugar is a plugin for pytest that changes the default look and feel of pytest (e.g. progressbar, show tests that fail instantly)."
@@ -1870,6 +1887,20 @@ files = [
 pbr = ">=2.0.0"
 
 [[package]]
+name = "syrupy"
+version = "4.8.1"
+description = "Pytest Snapshot Test Utility"
+optional = false
+python-versions = ">=3.8.1"
+files = [
+    {file = "syrupy-4.8.1-py3-none-any.whl", hash = "sha256:274f97cbaf44175f5e478a2f3a53559d31f41c66c6bf28131695f94ac893ea00"},
+    {file = "syrupy-4.8.1.tar.gz", hash = "sha256:8da8c0311e6d92de0b15767768c6ab98982b7b4a4c67083c08fbac3fbad4d44c"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0,<9.0.0"
+
+[[package]]
 name = "tabulate"
 version = "0.9.0"
 description = "Pretty-print tabular data"
@@ -2021,4 +2052,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.13,<3.14"
-content-hash = "85f381862b678f2aa3940492e841cd34299c4756d9476b418463ee6b25381930"
+content-hash = "e526f28eb1e4efdbfe372c7c1cd2dc4f1559cfd1f371e5c287f2309d017ced03"

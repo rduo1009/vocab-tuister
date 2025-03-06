@@ -25,20 +25,12 @@ var sessionCmd = &cobra.Command{
 This is based on the vocab list and the session config file provided.`,
 
 	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
-		if sessionConfigPath == "" {
-			return fmt.Errorf("--session-config is required")
-		}
-
-		if vocabListPath == "" {
-			return fmt.Errorf("--vocab-list is required")
-		}
-
 		if numberOfQuestions <= 0 {
-			return fmt.Errorf("--number must be a positive integer")
+			return fmt.Errorf("number must be a positive integer")
 		}
 
 		if serverPort < 1 || serverPort > 65535 {
-			return fmt.Errorf("--server-port must be a valid port number between 1 and 65535")
+			return fmt.Errorf("server-port must be a valid port number between 1 and 65535")
 		}
 
 		return nil

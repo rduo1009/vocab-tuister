@@ -1,6 +1,8 @@
 module github.com/twpayne/go-jsonstruct/v3
 
-go 1.22
+go 1.22.0
+
+toolchain go1.24.0
 
 require (
 	github.com/fatih/camelcase v1.0.0

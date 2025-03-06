@@ -1,0 +1,65 @@
+[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
+Question 1/6
+
+Translate to Latin: bar
+[ ] foo
+[ ] bar
+[ ] baz
+
+
+
+Score: 0/0 (0%)
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit[x] foo
+Answer is correct!
+Score: 1/1 (100%)
+Question 2/6
+[ ] foo
+
+[ ] foo
+[ ] bar
+[x] bar
+Answer is incorrect!
+Score: 1/2 (50%)
+Question 3/6
+Translate to Latin: foo
+[ ] baz
+[ ] bar
+[ ] qux
+
+[ ] baz
+[ ] bar
+[x] bar
+Answer is correct!
+Score: 2/3 (67%)
+Question 4/6
+[ ] baz
+[ ] bar
+
+[ ] baz
+[ ] bar
+[ ] bar
+[ ] qux
+[x] qux
+Answer is incorrect!
+Score: 2/4 (50%)
+Question 5/6
+Translate to Latin: baz
+[ ] bar
+[ ] foo
+[ ] qux
+
+[ ] bar
+[ ] foo
+[ ] foo
+[ ] qux
+[x] qux
+Answer is correct!
+Score: 3/5 (60%)
+Question 6/6
+[ ] bar
+[ ] qux
+
+[x] bar
+Answer is incorrect!
+Score: 3/6 (50%)
+[?2004l[?25h

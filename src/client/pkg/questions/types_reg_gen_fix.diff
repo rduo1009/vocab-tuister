@@ -1,10 +1,11 @@
---- src/client/pkg/questions/types_reg_gen.go	2025-01-14 22:09:20
-+++ src/client/pkg/questions/types_reg_gen_copy.go	2025-01-14 22:10:58
-@@ -3,11 +3,9 @@
+--- src/client/pkg/questions/types_reg_gen.go.orig	2025-02-19 16:40:07
++++ src/client/pkg/questions/types_reg_gen.go	2025-02-19 16:40:23
+@@ -3,18 +3,14 @@
  
  import (
  	"github.com/widmogrod/mkunion/x/shared"
 -	"slices"
+-	"testing"
  )
  
  func init() {
@@ -12,3 +13,9 @@
  	shared.TypeRegistryStore[MultipleChoiceEngtoLatQuestion]("MultipleChoiceEngtoLatQuestion")
  	shared.TypeRegistryStore[MultipleChoiceLatToEngQuestion]("MultipleChoiceLatToEngQuestion")
  	shared.TypeRegistryStore[ParseWordComptoLatQuestion]("ParseWordComptoLatQuestion")
+ 	shared.TypeRegistryStore[ParseWordLattoCompQuestion]("ParseWordLattoCompQuestion")
+ 	shared.TypeRegistryStore[PrincipalPartsQuestion]("PrincipalPartsQuestion")
+-	shared.TypeRegistryStore[T]("T")
+ 	shared.TypeRegistryStore[TypeInEngtoLatQuestion]("TypeInEngtoLatQuestion")
+ 	shared.TypeRegistryStore[TypeInLattoEngQuestion]("TypeInLattoEngQuestion")
+ }

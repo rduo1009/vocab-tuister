@@ -1,0 +1,67 @@
+[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
+Question 1/6
+
+Parse this Latin word: bar
+> Write answer here...
+
+
+Score: 0/0 (0%)
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit> f 
+> fo 
+> foo 
+> foo 
+Answer is correct!
+Score: 1/1 (100%)
+Question 2/6
+> Write answer here...
+
+> f 
+> fo 
+> foo 
+> foof 
+> foofo 
+> foofoo 
+> foofoo 
+Answer is correct!
+Score: 2/2 (100%)
+Question 3/6
+> Write answer here...
+
+> b 
+> ba 
+> bar 
+> bar  ✕ foo
+Answer is incorrect!
+Score: 2/3 (67%)
+Question 4/6
+Parse this Latin word: foo
+> Write answer here...
+
+> b 
+> ba 
+> bar 
+> bar 
+Answer is correct!
+Score: 3/4 (75%)
+Question 5/6
+> Write answer here...
+
+> b 
+> ba 
+> bar 
+> barb 
+> barba 
+> barbar 
+> barbar 
+Answer is correct!
+Score: 4/5 (80%)
+Question 6/6
+> Write answer here...
+
+> b 
+> ba 
+> baz 
+> baz  ✕ bar
+Answer is incorrect!
+Score: 4/6 (67%)
+[?2004l[?25h

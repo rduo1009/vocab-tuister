@@ -22,7 +22,8 @@ func questionStringRegular(q questions.Question) string {
 	case *questions.ParseWordComptoLatQuestion:
 		return fmt.Sprintf("What is %s in the %s?", internal.ItalicStyle.Render(q.Prompt), q.Components)
 	}
-	panic(fmt.Sprintf("Question type could not be recognised. (got %T)", q))
+
+	panic("unreachable")
 }
 
 func questionStringPrincipalParts(q questions.Question) string {
@@ -36,7 +37,8 @@ func questionStringMultipleChoice(q questions.Question) string {
 	case *questions.MultipleChoiceLatToEngQuestion:
 		return fmt.Sprintf("%s to English: %s", internal.BoldStyle.Render("Translate"), internal.ItalicStyle.Render(q.Prompt))
 	}
-	panic(fmt.Sprintf("Question type could not be recognised. (got %T)", q))
+
+	panic("unreachable")
 }
 
 func (m Model) View() string {
