@@ -31,7 +31,7 @@ repos:
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.7
+    rev: v0.9.9
     hooks:
       - id: ruff
         args: [--fix]
@@ -40,7 +40,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.64.5
+    rev: v1.64.6
     hooks:
       - id: golangci-lint
         args: [--fix]
@@ -53,7 +53,7 @@ repos:
         args: [-w, "79"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.5.0"
+    rev: "v2.5.1"
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]

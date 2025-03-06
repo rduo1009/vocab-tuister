@@ -26,6 +26,6 @@ __version__.txt
 
 
 # Local project files
-TODO.txt
+TODO.md
 /.vscode/settings.json
 /.vscode/tests.code-snippets
