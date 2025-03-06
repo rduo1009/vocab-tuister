@@ -111,7 +111,7 @@ require (
 
 require (
 	github.com/charmbracelet/x/exp/teatest/v2 v2.0.0-20250219214358-0881292cec0a // test
-	github.com/stretchr/testify v1.9.0 // test
+	github.com/stretchr/testify v1.10.0 // test
 )
 
 replace github.com/widmogrod/mkunion => ./src/_vendor/mkunion
