@@ -116,7 +116,7 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-verb-second-conjugation": False,
     "exclude-verb-third-conjugation": False,
     "exclude-verb-fourth-conjugation": False,
-    "exclude-verb-thirdio-conjugation": False,
+    "exclude-verb-mixed-conjugation": False,
     "exclude-verb-irregular-conjugation": False,
     "exclude-noun-first-declension": False,
     "exclude-noun-second-declension": False,

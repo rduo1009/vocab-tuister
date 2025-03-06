@@ -80,7 +80,7 @@
     "exclude-verb-second-conjugation": false,
     "exclude-verb-singular": false,
     "exclude-verb-third-conjugation": false,
-    "exclude-verb-thirdio-conjugation": false,
+    "exclude-verb-mixed-conjugation": false,
     "exclude-verbs": false,
     "include-inflect": true,
     "include-multiplechoice-engtolat": true,
