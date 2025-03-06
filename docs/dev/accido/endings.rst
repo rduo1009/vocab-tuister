@@ -151,7 +151,7 @@ Irregular adjectives
 ====================
 
    Note: the irregular adjectives are hard-coded in an non-exhaustive list. Any
-   contributions to this (in ``edge_cases.py``) are welcome.
+   contributions to this (in ``_edge_cases.py``) are welcome.
 
 Some irregular adjectives are also supported. ``accido`` supports irregular
 comparative, superlative and adverb forms, and adjective that do not have an
@@ -245,7 +245,7 @@ Irregular nouns
 ===============
 
    Note: the irregular nouns are hard-coded in an non-exhaustive list. Any
-   contributions to this (in ``edge_cases.py``) are welcome.
+   contributions to this (in ``_edge_cases.py``) are welcome.
 
 ``accido`` groups pronouns into two groups: pronouns that have a gender (e.g.
 qui), and pronouns that do not (e.g. ego). The latter group are internally
@@ -268,7 +268,7 @@ considered to be different.
 **********
 
    Note: The pronouns are hard-coded in an non-exhaustive list. Any
-   contributions to this (in ``edge_cases.py``) are welcome.
+   contributions to this (in ``_edge_cases.py``) are welcome.
 
 The other group of pronouns (pronouns that have a gender) can be represented
 using a ``Pronoun`` class.
@@ -336,7 +336,7 @@ Mixed conjugation verbs
 -----------------------
 
    Note: the verbs that fall in this category are hard-coded in an
-   non-exhaustive list. Any contributions to this (in ``edge_cases.py``) are
+   non-exhaustive list. Any contributions to this (in ``_edge_cases.py``) are
    welcome.
 
 ``accido`` supports some mixed conjugation verbs. For example:
@@ -403,7 +403,7 @@ Irregular verbs
 ===============
 
    Note: the irregular verbs are hard-coded in an non-exhaustive list. Any
-   contributions to this (in ``edge_cases.py``) are welcome.
+   contributions to this (in ``_edge_cases.py``) are welcome.
 
 Some irregular verbs are also supported by ``accido``.
 

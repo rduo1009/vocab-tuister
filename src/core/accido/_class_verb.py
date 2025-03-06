@@ -7,7 +7,7 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
 from ._class_word import _Word
-from .edge_cases import check_mixed_conjugation_verb, find_irregular_endings
+from ._edge_cases import check_mixed_conjugation_verb, find_irregular_endings
 from .exceptions import InvalidInputError
 from .misc import (
     PERSON_SHORTHAND,
