@@ -91,7 +91,7 @@ default_settings: Settings = {
     "exclude-verb-second-conjugation": False,
     "exclude-verb-third-conjugation": False,
     "exclude-verb-fourth-conjugation": False,
-    "exclude-verb-thirdio-conjugation": False,
+    "exclude-verb-mixed-conjugation": False,
     "exclude-verb-irregular-conjugation": False,
     "exclude-noun-first-declension": False,
     "exclude-noun-second-declension": False,
@@ -194,9 +194,9 @@ def test_word_exclusion_verb():
     assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
     settings["exclude-verb-fourth-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
 
-    settings["exclude-verb-thirdio-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-mixed-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
     assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-thirdio-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-mixed-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
 
     settings["exclude-verb-irregular-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
     assert any(word.conjugation != 0 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]

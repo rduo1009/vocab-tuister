@@ -74,6 +74,7 @@ type SessionConfig struct {
 	ExcludeVerbImperfectActiveIndicative   bool `json:"exclude-verb-imperfect-active-indicative"`
 	ExcludeVerbImperfectActiveSubjunctive  bool `json:"exclude-verb-imperfect-active-subjunctive"`
 	ExcludeVerbIrregularConjugation        bool `json:"exclude-verb-irregular-conjugation"`
+	ExcludeVerbMixedConjugation            bool `json:"exclude-verb-mixed-conjugation"`
 	ExcludeVerbPerfectActiveIndicative     bool `json:"exclude-verb-perfect-active-indicative"`
 	ExcludeVerbPluperfectActiveIndicative  bool `json:"exclude-verb-pluperfect-active-indicative"`
 	ExcludeVerbPluperfectActiveSubjunctive bool `json:"exclude-verb-pluperfect-active-subjunctive"`
@@ -84,7 +85,6 @@ type SessionConfig struct {
 	ExcludeVerbSecondConjugation           bool `json:"exclude-verb-second-conjugation"`
 	ExcludeVerbSingular                    bool `json:"exclude-verb-singular"`
 	ExcludeVerbThirdConjugation            bool `json:"exclude-verb-third-conjugation"`
-	ExcludeVerbThirdioConjugation          bool `json:"exclude-verb-thirdio-conjugation"`
 	ExcludeVerbs                           bool `json:"exclude-verbs"`
 	IncludeInflect                         bool `json:"include-inflect"`
 	IncludeMultiplechoiceEngtolat          bool `json:"include-multiplechoice-engtolat"`

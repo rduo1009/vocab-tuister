@@ -332,14 +332,14 @@ For example:
    ... )
    'amabatis'
 
-Third declension -io verbs
---------------------------
+Mixed conjugation verbs
+-----------------------
 
    Note: the verbs that fall in this category are hard-coded in an
    non-exhaustive list. Any contributions to this (in ``edge_cases.py``) are
    welcome.
 
-``accido`` supports some third declension -io verbs. For example:
+``accido`` supports some mixed conjugation verbs. For example:
 
 .. code:: python
 

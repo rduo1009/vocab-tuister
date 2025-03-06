@@ -7,7 +7,7 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
 from ._class_word import _Word
-from .edge_cases import check_io_verb, find_irregular_endings
+from .edge_cases import check_mixed_conjugation_verb, find_irregular_endings
 from .exceptions import InvalidInputError
 from .misc import (
     PERSON_SHORTHAND,
@@ -42,8 +42,8 @@ class Verb(_Word):
         not have participle endings, `ppp` is an empty string.
     meaning : Meaning
     conjugation : Conjugation
-        The conjugation of the verb. The value 5 represents the third
-        declension -io verbs, and the value 0 represents an irregular
+        The conjugation of the verb. The value 5 represents mixed
+        conjugation verbs, and the value 0 represents an irregular
         conjugation.
     endings : Endings
 
@@ -120,7 +120,7 @@ class Verb(_Word):
             self.endings = irregular_endings
             self.conjugation = 0
             return
-        if check_io_verb(self.present):
+        if check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
 
         elif self.infinitive.endswith("are"):
@@ -162,7 +162,7 @@ class Verb(_Word):
                 self.endings = self._fourth_conjugation()
 
             case _:
-                self.endings = self._third_io_conjugation()
+                self.endings = self._mixed_conjugation()
 
         if self.ppp:
             self.endings |= self._participles()
@@ -339,7 +339,7 @@ class Verb(_Word):
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # audivissent
         }
 
-    def _third_io_conjugation(self) -> Endings:
+    def _mixed_conjugation(self) -> Endings:
         return {
             "Vpreactindsg1": self.present,  # capio
             "Vpreactindsg2": f"{self._inf_stem}is",  # capis

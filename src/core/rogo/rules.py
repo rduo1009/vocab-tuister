@@ -196,7 +196,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                         and current_conjugation == 4
                     )
                     or (
-                        settings["exclude-verb-thirdio-conjugation"]
+                        settings["exclude-verb-mixed-conjugation"]
                         and current_conjugation == 5
                     )
                     or (

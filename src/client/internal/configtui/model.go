@@ -47,7 +47,7 @@ var wizard = SettingsWizard{
 				{InternalName: "exclude-verb-second-conjugation", DisplayName: "Second conjugation verbs", Checked: false},
 				{InternalName: "exclude-verb-third-conjugation", DisplayName: "Third conjugation verbs", Checked: false},
 				{InternalName: "exclude-verb-fourth-conjugation", DisplayName: "Fourth conjugation verbs", Checked: false},
-				{InternalName: "exclude-verb-thirdio-conjugation", DisplayName: "Third -io verbs", Checked: false},
+				{InternalName: "exclude-verb-mixed-conjugation", DisplayName: "Mixed conjugation verbs", Checked: false},
 				{InternalName: "exclude-verb-irregular-conjugation", DisplayName: "Irregular verbs", Checked: false},
 				{InternalName: "exclude-verb-present-active-indicative", DisplayName: "Present active indicative", Checked: false},
 				{InternalName: "exclude-verb-imperfect-active-indicative", DisplayName: "Imperfect active indicative", Checked: false},

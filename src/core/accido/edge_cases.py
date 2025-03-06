@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 #  NOTE: There are deponents, but am keeping them for future
 # There also may be missing verbs
-THIRD_IO_VERBS: Final[set[str]] = {
+MIXED_CONJUGATION_VERBS: Final[set[str]] = {
     "abicio",
     "adicio",
     "aggredior",
@@ -50,8 +50,8 @@ THIRD_IO_VERBS: Final[set[str]] = {
 }
 
 
-def check_io_verb(present: str) -> bool:
-    """Check if the given word is a third conjugation -io verb.
+def check_mixed_conjugation_verb(present: str) -> bool:
+    """Check if the given word is a mixed conjugation verb.
 
     Parameters
     ----------
@@ -61,9 +61,11 @@ def check_io_verb(present: str) -> bool:
     Returns
     -------
     bool
-        If the prefix matches a third conjugation -io verb.
+        If the prefix matches a mixed conjugation verb.
     """
-    return any(present.endswith(io_verb) for io_verb in THIRD_IO_VERBS)
+    return any(
+        present.endswith(io_verb) for io_verb in MIXED_CONJUGATION_VERBS
+    )
 
 
 IRREGULAR_VERBS: Final[dict[str, Endings]] = {
