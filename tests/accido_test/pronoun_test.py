@@ -17,7 +17,7 @@ class TestPronounDunder:
 
     def test_repr(self):
         word = Pronoun("ille", meaning="that")
-        assert repr(word) == "Pronoun(ille, that)"
+        assert repr(word) == "Pronoun(ille, meaning=that)"
 
     def test_str(self):
         word = Pronoun("ille", meaning="that")

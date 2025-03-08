@@ -25,7 +25,7 @@ class TestNounErrors:
 class TestNounDunder:
     def test_repr(self):
         word = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
-        assert repr(word) == "Noun(puer, pueri, masculine, boy)"
+        assert repr(word) == "Noun(puer, pueri, gender=masculine, meaning=boy)"
 
     def test_eq(self):
         word1 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")

@@ -34,7 +34,7 @@ class TestVerbDunder:
 
     def test_repr(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
-        assert repr(word) == "Verb(celo, celare, celavi, celatus, hide)"
+        assert repr(word) == "Verb(celo, celare, celavi, celatus, meaning=hide)"
 
     def test_verb_str(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")

@@ -25,7 +25,7 @@ class TestRegularDunder:
 
     def test_repr(self):
         word = RegularWord("test1", meaning="test2")
-        assert repr(word) == "RegularWord(test1, test2)"
+        assert repr(word) == "RegularWord(test1, meaning=test2)"
 
     def test_add_different_word(self):
         word1 = RegularWord("test1", meaning="test2")

@@ -40,7 +40,7 @@ class TestAdjectiveErrors:
 class TestAdjectiveDunder:
     def test_repr(self):
         word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-        assert repr(word) == "Adjective(laetus, laeta, laetum, None, 212, happy)"
+        assert repr(word) == "Adjective(laetus, laeta, laetum, termination=None, declension=212, meaning=happy)"
 
     def test_eq(self):
         word1 = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
