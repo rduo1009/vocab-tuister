@@ -83,3 +83,8 @@ class TestVerbDunder:
         word1 = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         word2 = Verb("celo", "celare", "celavi", "celatus", meaning="conceal")
         assert word1 + word2 == Verb("celo", "celare", "celavi", "celatus", meaning=MultipleMeanings(("hide", "conceal")))
+
+    def test_add_irregular(self):
+        word1 = Verb("inquam", meaning="say")
+        word2 = Verb("inquam", meaning="speak")
+        assert word1 + word2 == Verb("inquam", meaning=MultipleMeanings(("say", "speak")))

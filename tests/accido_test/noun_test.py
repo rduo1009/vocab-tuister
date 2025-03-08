@@ -73,3 +73,8 @@ class TestNounDunder:
         word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
         word2 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="maiden")
         assert word1 + word2 == Noun("puella", "puellae", gender=Gender.FEMININE, meaning=MultipleMeanings(("girl", "maiden")))
+
+    def test_add_irregular(self):
+        word1 = Noun("se", meaning="himself")
+        word2 = Noun("se", meaning="herself")
+        assert word1 + word2 == Noun("se", meaning=MultipleMeanings(("himself", "herself")))
