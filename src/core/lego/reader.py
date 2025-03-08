@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-# FIXME: replace with regenerating with vocablist text
+# TODO: replace with regenerating with vocablist text
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
     word: _Word
     new_vocab: list[_Word] = []
@@ -41,25 +41,36 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                 new_vocab.append(RegularWord(word.word, meaning=word.meaning))
 
             case Verb():
-                new_vocab.append(
-                    Verb(
-                        word.present,
-                        word.infinitive,
-                        word.perfect,
-                        word.ppp,
-                        meaning=word.meaning,
+                if word.infinitive is not None:
+                    assert word.perfect is not None
+                    assert word.ppp is not None
+
+                    new_vocab.append(
+                        Verb(
+                            word.present,
+                            word.infinitive,
+                            word.perfect,
+                            word.ppp,
+                            meaning=word.meaning,
+                        )
                     )
-                )
+
+                new_vocab.append(Verb(word.present, meaning=word.meaning))
 
             case Noun():
-                new_vocab.append(
-                    Noun(
-                        word.nominative,
-                        word.genitive,
-                        gender=word.gender,
-                        meaning=word.meaning,
+                if word.genitive is not None:
+                    assert word.gender is not None
+
+                    new_vocab.append(
+                        Noun(
+                            word.nominative,
+                            word.genitive,
+                            gender=word.gender,
+                            meaning=word.meaning,
+                        )
                     )
-                )
+
+                new_vocab.append(Noun(word.nominative, meaning=word.meaning))
 
             case Adjective():
                 if word.declension == "212":
