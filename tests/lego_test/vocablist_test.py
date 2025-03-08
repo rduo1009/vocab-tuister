@@ -13,7 +13,7 @@ from src.core.lego.misc import VocabList
 def test_vocablist():
     l = VocabList([Verb("audio", "audire", "audivi", "auditus", meaning="hear"), Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"), Adjective("bonus", "bona", "bonum", declension="212", meaning="good"), RegularWord("e", meaning="from"), Pronoun("ille", meaning="that")])
 
-    assert repr(l) == f"VocabList([Verb(audio, audire, audivi, auditus, hear), Noun(nomen, nominis, neuter, name), Adjective(bonus, bona, bonum, None, 212, good), RegularWord(e, from), Pronoun(ille, that)], version={src.__version__})"
+    assert repr(l) == f"VocabList([Verb(audio, audire, audivi, auditus, meaning=hear), Noun(nomen, nominis, gender=neuter, meaning=name), Adjective(bonus, bona, bonum, termination=None, declension=212, meaning=good), RegularWord(e, meaning=from), Pronoun(ille, meaning=that)], version={src.__version__})"
 
 
 def test_vocablist_add():

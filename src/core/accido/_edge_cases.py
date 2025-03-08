@@ -387,6 +387,19 @@ IRREGULAR_VERBS: Final[dict[str, Endings]] = {
         "Vplpactsbjpl2": "adfuissetis",
         "Vplpactsbjpl3": "adfuissent",
     },
+    "inquam": {  # defective conjugation
+        "Vpreactindsg1": "inquam",
+        "Vpreactindsg2": "inquis",
+        "Vpreactindsg3": "inquit",
+        "Vpreactindpl1": "inquimus",
+        "Vpreactindpl2": "inquitis",
+        "Vpreactindpl3": "inquint",
+        "Vimpactindsg3": "inquiebat",
+        "Vperactindsg1": "inquii",
+        "Vperactindsg2": "inquisti",
+        "Vperactindsg3": "inquit",
+        "Vpreactipesg2": "inque",
+    },
 }
 
 

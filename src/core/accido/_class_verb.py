@@ -69,25 +69,36 @@ class Verb(_Word):
         "present",
     )
 
+    # fmt: off
+    @overload
+    def __init__(self, present: str, *, meaning: Meaning) -> None: ...
+    @overload
+    def __init__(self, present: str, infinitive: str, perfect: str, *, meaning: Meaning) -> None: ...
+    @overload
+    def __init__(self, present: str, infinitive: str, perfect: str, ppp: str, *, meaning: Meaning) -> None: ...
+    # fmt: on
+
     def __init__(
         self,
         present: str,
-        infinitive: str,
-        perfect: str,
-        ppp: str = "",
+        infinitive: str | None = None,
+        perfect: str | None = None,
+        ppp: str | None = None,
         *,
         meaning: Meaning,
     ) -> None:
-        """Initialise ``Verb`` and determines the conjugation and endings.
+        """Initialise ``Verb`` and determine the conjugation and endings.
 
         Parameters
         ----------
         present : str
-        infinitive : str
-        perfect : str
-        ppp : str
+        infinitive : str | None
+        perfect : str | None
+            The infinitive and perfect forms, if the verb is not irregular.
+            Defaults to ``None`` if not applicable.
+        ppp : str | None
             The present perfect participle form of the verb. If the verb does
-            not have participle endings, `ppp` defaults to an empty string.
+            not have participle endings, `ppp` defaults to ``None``.
         meaning : Meaning
 
         Raises
@@ -96,7 +107,7 @@ class Verb(_Word):
             If the input is invalid (incorrect `perfect` or `infinitive` values).
         """
         logger.debug(
-            "RegularWord(%s, %s, %s, %s, %s)",
+            "RegularWord(%s, %s, %s, %s, meaning=%s)",
             present,
             infinitive,
             perfect,
@@ -107,19 +118,23 @@ class Verb(_Word):
         super().__init__()
 
         self.present: str = present
-        self.infinitive: str = infinitive
-        self.perfect: str = perfect
-        self.ppp: str = ppp
+        self.infinitive: str | None = infinitive
+        self.perfect: str | None = perfect
+        self.ppp: str | None = ppp
         self.meaning: Meaning = meaning
 
         self._first = self.present
         self.conjugation: Conjugation
 
-        # Conjugation edge cases
+        # Irregular verb
         if irregular_endings := find_irregular_endings(self.present):
             self.endings = irregular_endings
             self.conjugation = 0
             return
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
+        # Mixed conjugation
         if check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
 
@@ -168,6 +183,9 @@ class Verb(_Word):
             self.endings |= self._participles()
 
     def _first_conjugation(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
         return {
             "Vpreactindsg1": self.present,  # porto
             "Vpreactindsg2": f"{self._inf_stem}as",  # portas
@@ -211,6 +229,9 @@ class Verb(_Word):
         }
 
     def _second_conjugation(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
         return {
             "Vpreactindsg1": self.present,  # doceo
             "Vpreactindsg2": f"{self._inf_stem}es",  # doces
@@ -254,6 +275,9 @@ class Verb(_Word):
         }
 
     def _third_conjugation(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
         return {
             "Vpreactindsg1": self.present,  # traho
             "Vpreactindsg2": f"{self._inf_stem}is",  # trahis
@@ -297,6 +321,9 @@ class Verb(_Word):
         }
 
     def _fourth_conjugation(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
         return {
             "Vpreactindsg1": self.present,  # audio
             "Vpreactindsg2": f"{self._inf_stem}is",  # audis
@@ -340,6 +367,9 @@ class Verb(_Word):
         }
 
     def _mixed_conjugation(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+
         return {
             "Vpreactindsg1": self.present,  # capio
             "Vpreactindsg2": f"{self._inf_stem}is",  # capis
@@ -383,8 +413,13 @@ class Verb(_Word):
         }
 
     def _participles(self) -> Endings:
+        assert self.infinitive is not None
+        assert self.perfect is not None
+        assert self.ppp is not None
+
         self._preptc_stem: str = self.infinitive[:-2]
         self._ppp_stem: str = self.ppp[:-2]
+
         return {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
@@ -677,12 +712,24 @@ class Verb(_Word):
         raise InvalidInputError(f"Key '{key}' is invalid")
 
     def __repr__(self) -> str:
+        if self.conjugation == 0:
+            return f"Verb({self.present}, meaning={self.meaning})"
+
+        if self.ppp is None:
+            return (
+                f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
+                f"meaning={self.meaning})"
+            )
+
         return (
             f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
-            f"{self.ppp}, {self.meaning})"
+            f"{self.ppp}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:
+        if self.conjugation == 0:
+            return f"{self.meaning}: {self.present}"
+
         if self.ppp:
             return (
                 f"{self.meaning}: {self.present}, {self.infinitive}, "
@@ -694,6 +741,23 @@ class Verb(_Word):
         )
 
     def __add__(self, other: object) -> Verb:
+        def _create_verb(
+            present: str,
+            infinitive: str | None,
+            perfect: str | None,
+            ppp: str | None,
+            meaning: Meaning,
+        ) -> Verb:
+            if (  # implies the others are not None as well
+                infinitive is not None
+            ):
+                assert perfect is not None
+                assert ppp is not None
+
+                return Verb(present, infinitive, perfect, ppp, meaning=meaning)
+
+            return Verb(present, meaning=meaning)
+
         if not isinstance(other, Verb) or not (
             self.endings == other.endings
             and self.conjugation == other.conjugation
@@ -701,7 +765,7 @@ class Verb(_Word):
             return NotImplemented
 
         if self.meaning == other.meaning:
-            return Verb(
+            _create_verb(
                 self.present,
                 self.infinitive,
                 self.perfect,
@@ -717,7 +781,7 @@ class Verb(_Word):
         else:
             new_meaning = MultipleMeanings((self.meaning, other.meaning))
 
-        return Verb(
+        return _create_verb(
             self.present,
             self.infinitive,
             self.perfect,

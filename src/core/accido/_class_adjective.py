@@ -118,7 +118,7 @@ class Adjective(_Word):
         meaning : Meaning
         """
         logger.debug(
-            "Adjective(%s, %s, %s, %s)",
+            "Adjective(%s, termination=%s, declension=%s, meaning=%s)",
             ", ".join(principal_parts),
             termination,
             declension,
@@ -942,7 +942,8 @@ class Adjective(_Word):
     def __repr__(self) -> str:
         return (
             f"Adjective({', '.join(self._principal_parts)}, "
-            f"{self.termination}, {self.declension}, {self.meaning})"
+            f"termination={self.termination}, "
+            f"declension={self.declension}, meaning={self.meaning})"
         )
 
     def __add__(self, other: object) -> Adjective:

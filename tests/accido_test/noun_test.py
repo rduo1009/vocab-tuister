@@ -25,7 +25,11 @@ class TestNounErrors:
 class TestNounDunder:
     def test_repr(self):
         word = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
-        assert repr(word) == "Noun(puer, pueri, masculine, boy)"
+        assert repr(word) == "Noun(puer, pueri, gender=masculine, meaning=boy)"
+
+    def test_repr_irregular(self):
+        word = Noun("ego", meaning="I")
+        assert repr(word) == "Noun(ego, meaning=I)"
 
     def test_eq(self):
         word1 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
@@ -57,6 +61,10 @@ class TestNounDunder:
         word = Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple")
         assert str(word) == "temple: templum, templi, (n)"
 
+    def test_str_irregular(self):
+        word = Noun("ego", meaning="I")
+        assert str(word) == "I: ego, (irregular)"
+
     def test_add_different_word(self):
         word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
         word2 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
@@ -73,3 +81,8 @@ class TestNounDunder:
         word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
         word2 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="maiden")
         assert word1 + word2 == Noun("puella", "puellae", gender=Gender.FEMININE, meaning=MultipleMeanings(("girl", "maiden")))
+
+    def test_add_irregular(self):
+        word1 = Noun("se", meaning="himself")
+        word2 = Noun("se", meaning="herself")
+        assert word1 + word2 == Noun("se", meaning=MultipleMeanings(("himself", "herself")))

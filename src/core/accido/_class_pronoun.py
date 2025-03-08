@@ -57,7 +57,7 @@ class Pronoun(_Word):
         the pronoun endings are manually written out in the ``_edge_cases``
         module.
         """
-        logger.debug("Pronoun(%s, %s)", pronoun, meaning)
+        logger.debug("Pronoun(%s, meaning=%s)", pronoun, meaning)
 
         super().__init__()
 
@@ -158,7 +158,7 @@ class Pronoun(_Word):
         return output
 
     def __repr__(self) -> str:
-        return f"Pronoun({self.pronoun}, {self.meaning})"
+        return f"Pronoun({self.pronoun}, meaning={self.meaning})"
 
     def __str__(self) -> str:
         return f"{self.meaning}: {self.mascnom}, {self.femnom}, {self.neutnom}"

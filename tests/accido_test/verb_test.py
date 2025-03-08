@@ -34,15 +34,27 @@ class TestVerbDunder:
 
     def test_repr(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
-        assert repr(word) == "Verb(celo, celare, celavi, celatus, hide)"
+        assert repr(word) == "Verb(celo, celare, celavi, celatus, meaning=hide)"
 
-    def test_verb_str(self):
+    def test_repr_noppp(self):
+        word = Verb("celo", "celare", "celavi", meaning="hide")
+        assert repr(word) == "Verb(celo, celare, celavi, meaning=hide)"
+
+    def test_repr_irregular(self):
+        word = Verb("inquam", meaning="say")
+        assert repr(word) == "Verb(inquam, meaning=say)"
+
+    def test_str(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         assert str(word) == "hide: celo, celare, celavi, celatus"
 
-    def test_verb_strnoppp(self):
+    def test_str_noppp(self):
         word = Verb("celo", "celare", "celavi", meaning="hide")
         assert str(word) == "hide: celo, celare, celavi"
+
+    def test_str_irregular(self):
+        word = Verb("inquam", meaning="say")
+        assert str(word) == "say: inquam"
 
     def test_eq(self):
         word1 = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
@@ -83,3 +95,8 @@ class TestVerbDunder:
         word1 = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         word2 = Verb("celo", "celare", "celavi", "celatus", meaning="conceal")
         assert word1 + word2 == Verb("celo", "celare", "celavi", "celatus", meaning=MultipleMeanings(("hide", "conceal")))
+
+    def test_add_irregular(self):
+        word1 = Verb("inquam", meaning="say")
+        word2 = Verb("inquam", meaning="speak")
+        assert word1 + word2 == Verb("inquam", meaning=MultipleMeanings(("say", "speak")))
