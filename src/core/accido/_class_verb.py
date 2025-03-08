@@ -715,6 +715,12 @@ class Verb(_Word):
         if self.conjugation == 0:
             return f"Verb({self.present}, meaning={self.meaning})"
 
+        if self.ppp is None:
+            return (
+                f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
+                f"meaning={self.meaning})"
+            )
+
         return (
             f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
             f"{self.ppp}, meaning={self.meaning})"

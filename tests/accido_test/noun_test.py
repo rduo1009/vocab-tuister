@@ -27,6 +27,10 @@ class TestNounDunder:
         word = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
         assert repr(word) == "Noun(puer, pueri, gender=masculine, meaning=boy)"
 
+    def test_repr_irregular(self):
+        word = Noun("ego", meaning="I")
+        assert repr(word) == "Noun(ego, meaning=I)"
+
     def test_eq(self):
         word1 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
         word2 = Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy")
@@ -56,6 +60,10 @@ class TestNounDunder:
     def test_str_neuter(self):
         word = Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple")
         assert str(word) == "temple: templum, templi, (n)"
+
+    def test_str_irregular(self):
+        word = Noun("ego", meaning="I")
+        assert str(word) == "I: ego, (irregular)"
 
     def test_add_different_word(self):
         word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
