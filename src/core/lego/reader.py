@@ -30,6 +30,7 @@ if TYPE_CHECKING:
 logger: logging.Logger = logging.getLogger(__name__)
 
 
+# FIXME: replace with regenerating with vocablist text
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
     word: _Word
     new_vocab: list[_Word] = []
@@ -55,8 +56,8 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                     Noun(
                         word.nominative,
                         word.genitive,
-                        meaning=word.meaning,
                         gender=word.gender,
+                        meaning=word.meaning,
                     )
                 )
 
@@ -285,27 +286,35 @@ def _parse_line(
         If the vocab list is formatted incorrectly.
     """
     if current == "Verb":
-        if len(latin_parts) not in {3, 4}:
+        if len(latin_parts) not in {1, 3, 4}:
             raise InvalidVocabFileFormatError(f"Invalid verb format: '{line}'")
 
-        # Verb with ppp
-        if len(latin_parts) > 3:
-            return Verb(
-                latin_parts[0],
-                latin_parts[1],
-                latin_parts[2],
-                latin_parts[3],
-                meaning=meaning,
-            )
+        # Irregular verb
+        if len(latin_parts) == 1:
+            return Verb(latin_parts[0], meaning=meaning)
 
         # Verb without ppp
+        if len(latin_parts) == 3:
+            return Verb(
+                latin_parts[0], latin_parts[1], latin_parts[2], meaning=meaning
+            )
+
+        # Verb with ppp
         return Verb(
-            latin_parts[0], latin_parts[1], latin_parts[2], meaning=meaning
+            latin_parts[0],
+            latin_parts[1],
+            latin_parts[2],
+            latin_parts[3],
+            meaning=meaning,
         )
 
     if current == "Noun":
-        if len(latin_parts) != 3:
+        if len(latin_parts) not in {1, 3}:
             raise InvalidVocabFileFormatError(f"Invalid noun format: '{line}'")
+
+        # Irregular noun
+        if len(latin_parts) == 1:
+            return Noun(latin_parts[0], meaning=meaning)
 
         try:
             return Noun(

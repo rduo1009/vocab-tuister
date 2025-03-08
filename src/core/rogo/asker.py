@@ -526,7 +526,15 @@ def _generate_principal_parts_question(
     principal_parts: tuple[str, ...]
     match chosen_word:
         case Verb():
+            if chosen_word.conjugation == 0:  # irregular verb
+                return None
+
+            assert chosen_word.infinitive is not None
+            assert chosen_word.perfect is not None
+
             if chosen_word.ppp:
+                assert chosen_word.ppp is not None
+
                 principal_parts = (
                     chosen_word.present,
                     chosen_word.infinitive,
@@ -541,13 +549,12 @@ def _generate_principal_parts_question(
                 )
 
         case Noun():
-            if chosen_word.genitive:
-                principal_parts = (
-                    chosen_word.nominative,
-                    chosen_word.genitive,
-                )
-            else:  # irregular noun
+            if chosen_word.declension == 0:  # irregular noun
                 return None
+
+            assert chosen_word.genitive is not None
+
+            principal_parts = (chosen_word.nominative, chosen_word.genitive)
 
         case Adjective():
             match chosen_word.declension:
