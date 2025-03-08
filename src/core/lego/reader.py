@@ -43,19 +43,30 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
             case Verb():
                 if word.infinitive is not None:
                     assert word.perfect is not None
-                    assert word.ppp is not None
 
-                    new_vocab.append(
-                        Verb(
-                            word.present,
-                            word.infinitive,
-                            word.perfect,
-                            word.ppp,
-                            meaning=word.meaning,
+                    if not word.ppp:
+                        new_vocab.append(
+                            Verb(
+                                word.present,
+                                word.infinitive,
+                                word.perfect,
+                                meaning=word.meaning,
+                            )
                         )
-                    )
+                    else:
+                        assert word.ppp is not None
 
-                new_vocab.append(Verb(word.present, meaning=word.meaning))
+                        new_vocab.append(
+                            Verb(
+                                word.present,
+                                word.infinitive,
+                                word.perfect,
+                                word.ppp,
+                                meaning=word.meaning,
+                            )
+                        )
+                else:
+                    new_vocab.append(Verb(word.present, meaning=word.meaning))
 
             case Noun():
                 if word.genitive is not None:
@@ -69,8 +80,10 @@ def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
                             meaning=word.meaning,
                         )
                     )
-
-                new_vocab.append(Noun(word.nominative, meaning=word.meaning))
+                else:
+                    new_vocab.append(
+                        Noun(word.nominative, meaning=word.meaning)
+                    )
 
             case Adjective():
                 if word.declension == "212":
