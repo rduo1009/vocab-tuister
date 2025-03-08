@@ -104,7 +104,11 @@ class Noun(_Word):
             If the input is not valid (invalid value for `gender` or `genitive`).
         """
         logger.debug(
-            "Noun(%s, %s, %s, %s)", nominative, genitive, gender, meaning
+            "Noun(%s, %s, gender=%s, meaning=%s)",
+            nominative,
+            genitive,
+            gender,
+            meaning,
         )
 
         super().__init__()
@@ -369,13 +373,13 @@ class Noun(_Word):
 
     def __repr__(self) -> str:
         if self.declension == 0:
-            return f"Noun({self.nominative}, {self.meaning})"
+            return f"Noun({self.nominative}, meaning={self.meaning})"
 
         assert self.gender is not None
 
         return (
             f"Noun({self.nominative}, {self.genitive}, "
-            f"{self.gender.regular}, {self.meaning})"
+            f"gender={self.gender.regular}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:

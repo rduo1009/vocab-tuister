@@ -107,7 +107,7 @@ class Verb(_Word):
             If the input is invalid (incorrect `perfect` or `infinitive` values).
         """
         logger.debug(
-            "RegularWord(%s, %s, %s, %s, %s)",
+            "RegularWord(%s, %s, %s, %s, meaning=%s)",
             present,
             infinitive,
             perfect,
@@ -713,11 +713,11 @@ class Verb(_Word):
 
     def __repr__(self) -> str:
         if self.conjugation == 0:
-            return f"Verb({self.present}, {self.meaning})"
+            return f"Verb({self.present}, meaning={self.meaning})"
 
         return (
             f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
-            f"{self.ppp}, {self.meaning})"
+            f"{self.ppp}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:
