@@ -74,10 +74,10 @@ def ask_question_without_sr(
     InvalidSettingsError
         If the settings in `settings` are invalid.
     """
-    vocab: Vocab = filter_words(vocab_list, settings)
+    filtered_vocab: Vocab = filter_words(vocab_list, settings)
     filtered_questions: set[QuestionClasses] = filter_questions(settings)
 
-    if len(vocab_list.vocab) < settings["number-multiplechoice-options"]:
+    if len(filtered_vocab) < settings["number-multiplechoice-options"]:
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_ENGTOLAT)
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_LATTOENG)
 
@@ -87,7 +87,7 @@ def ask_question_without_sr(
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:
-            chosen_word: _Word = random.choice(vocab)
+            chosen_word: _Word = random.choice(filtered_vocab)
             filtered_endings: Endings = filter_endings(
                 chosen_word.endings, settings
             )
@@ -126,14 +126,14 @@ def ask_question_without_sr(
 
                 case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
                     output = _generate_multiplechoice_engtolat(
-                        vocab,
+                        filtered_vocab,
                         chosen_word,
                         settings["number-multiplechoice-options"],
                     )
 
                 case QuestionClasses.MULTIPLECHOICE_LATTOENG:
                     output = _generate_multiplechoice_lattoeng(
-                        vocab,
+                        filtered_vocab,
                         chosen_word,
                         settings["number-multiplechoice-options"],
                     )
