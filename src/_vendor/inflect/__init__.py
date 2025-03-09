@@ -76,7 +76,6 @@ from typing import (
 )
 
 from more_itertools import windowed_complete
-from typeguard import typechecked
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Iterable, Sequence
@@ -2200,7 +2199,6 @@ class engine:  # noqa: N801
     def _number_args(self, val: Optional[Dict[str, str]]) -> None:
         self.__number_args = val
 
-    @typechecked
     def defnoun(self, singular: Optional[Word], plural: Optional[Word]) -> int:
         """
         Set the noun plural of singular to plural.
@@ -2212,7 +2210,6 @@ class engine:  # noqa: N801
         self.si_sb_user_defined.extend((plural, singular))
         return 1
 
-    @typechecked
     def defverb(
         self,
         s1: Optional[Word],
@@ -2237,7 +2234,6 @@ class engine:  # noqa: N801
         self.pl_v_user_defined.extend((s1, p1, s2, p2, s3, p3))
         return 1
 
-    @typechecked
     def defadj(self, singular: Optional[Word], plural: Optional[Word]) -> int:
         """
         Set the adjective plural of singular to plural.
@@ -2248,7 +2244,6 @@ class engine:  # noqa: N801
         self.pl_adj_user_defined.extend((singular, plural))
         return 1
 
-    @typechecked
     def defa(self, pattern: Optional[Word]) -> int:
         """
         Define the indefinite article as 'a' for words matching pattern.
@@ -2258,7 +2253,6 @@ class engine:  # noqa: N801
         self.A_a_user_defined.extend((pattern, "a"))
         return 1
 
-    @typechecked
     def defan(self, pattern: Optional[Word]) -> int:
         """
         Define the indefinite article as 'an' for words matching pattern.
@@ -2285,7 +2279,6 @@ class engine:  # noqa: N801
         """
         return
 
-    @typechecked
     def ud_match(self, word: Word, wordlist: Sequence[Optional[Word]]) -> Optional[str]:
         for i in range(len(wordlist) - 2, -2, -2):  # backwards through even elements
             mo = re.search(rf"^{wordlist[i]}$", word, re.IGNORECASE)
@@ -2416,7 +2409,6 @@ class engine:  # noqa: N801
 
     # 0. PERFORM GENERAL INFLECTIONS IN A STRING
 
-    @typechecked
     def inflect(self, text: Word) -> str:
         """
         Perform inflections in a string.
@@ -2494,7 +2486,6 @@ class engine:  # noqa: N801
             return mo.group(1), mo.group(2), mo.group(3)
         return "", "", ""
 
-    @typechecked
     def plural(self, text: Word, count: Optional[Union[str, int, Any]] = None) -> str:
         """
         Return the plural of text.
@@ -2518,7 +2509,6 @@ class engine:  # noqa: N801
         )
         return f"{pre}{plural}{post}"
 
-    @typechecked
     def plural_noun(
         self, text: Word, count: Optional[Union[str, int, Any]] = None
     ) -> str:
@@ -2539,7 +2529,6 @@ class engine:  # noqa: N801
         plural = self.postprocess(word, self._plnoun(word, count))
         return f"{pre}{plural}{post}"
 
-    @typechecked
     def plural_verb(
         self, text: Word, count: Optional[Union[str, int, Any]] = None
     ) -> str:
@@ -2563,7 +2552,6 @@ class engine:  # noqa: N801
         )
         return f"{pre}{plural}{post}"
 
-    @typechecked
     def plural_adj(
         self, text: Word, count: Optional[Union[str, int, Any]] = None
     ) -> str:
@@ -2584,7 +2572,6 @@ class engine:  # noqa: N801
         plural = self.postprocess(word, self._pl_special_adjective(word, count) or word)
         return f"{pre}{plural}{post}"
 
-    @typechecked
     def compare(self, word1: Word, word2: Word) -> Union[str, bool]:
         """
         compare word1 and word2 for equality regardless of plurality
@@ -2613,7 +2600,6 @@ class engine:  # noqa: N801
         results = (self._plequal(word1, word2, norm) for norm in norms)
         return next(filter(None, results), False)
 
-    @typechecked
     def compare_nouns(self, word1: Word, word2: Word) -> Union[str, bool]:
         """
         compare word1 and word2 for equality regardless of plurality
@@ -2629,7 +2615,6 @@ class engine:  # noqa: N801
         """
         return self._plequal(word1, word2, self.plural_noun)
 
-    @typechecked
     def compare_verbs(self, word1: Word, word2: Word) -> Union[str, bool]:
         """
         compare word1 and word2 for equality regardless of plurality
@@ -2645,7 +2630,6 @@ class engine:  # noqa: N801
         """
         return self._plequal(word1, word2, self.plural_verb)
 
-    @typechecked
     def compare_adjs(self, word1: Word, word2: Word) -> Union[str, bool]:
         """
         compare word1 and word2 for equality regardless of plurality
@@ -2661,7 +2645,6 @@ class engine:  # noqa: N801
         """
         return self._plequal(word1, word2, self.plural_adj)
 
-    @typechecked
     def singular_noun(
         self,
         text: Word,
@@ -3615,7 +3598,6 @@ class engine:  # noqa: N801
 
     # ADJECTIVES
 
-    @typechecked
     def a(self, text: Word, count: Optional[Union[int, str, Any]] = 1) -> str:
         """
         Return the appropriate indefinite article followed by text.
@@ -3696,7 +3678,6 @@ class engine:  # noqa: N801
 
     # 2. TRANSLATE ZERO-QUANTIFIED $word TO "no plural($word)"
 
-    @typechecked
     def no(self, text: Word, count: Optional[Union[int, str]] = None) -> str:
         """
         If count is 0, no, zero or nil, return 'no' followed by the plural
@@ -3734,7 +3715,6 @@ class engine:  # noqa: N801
 
     # PARTICIPLES
 
-    @typechecked
     def present_participle(self, word: Word) -> str:
         """
         Return the present participle for word.
@@ -3753,7 +3733,6 @@ class engine:  # noqa: N801
 
     # NUMERICAL INFLECTIONS
 
-    @typechecked
     def ordinal(self, num: Union[Number, Word]) -> str:
         """
         Return the ordinal of num.
@@ -3931,7 +3910,6 @@ class engine:  # noqa: N801
     def _get_sign(num: str) -> str:
         return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[0], '')
 
-    @typechecked
     def number_to_words(  # noqa: C901
         self,
         num: Union[Number, Word],
@@ -4058,7 +4036,6 @@ class engine:  # noqa: N801
                 yield comma
             yield f" {nc}"
 
-    @typechecked
     def join(
         self,
         words: Optional[Sequence[Word]],
