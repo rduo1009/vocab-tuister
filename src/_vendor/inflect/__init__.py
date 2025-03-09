@@ -1836,82 +1836,6 @@ def get_si_pron(thecase: str, word: str, gender: str) -> str:
         return sing[gender]
 
 
-# These dictionaries group verbs by first, second and third person
-# conjugations.
-
-plverb_irregular_pres: Final = {
-    "am": "are",
-    "are": "are",
-    "is": "are",
-    "was": "were",
-    "were": "were",
-    "have": "have",
-    "has": "have",
-    "do": "do",
-    "does": "do",
-}
-
-plverb_ambiguous_pres: Final = {
-    "act": "act",
-    "acts": "act",
-    "blame": "blame",
-    "blames": "blame",
-    "can": "can",
-    "must": "must",
-    "fly": "fly",
-    "flies": "fly",
-    "copy": "copy",
-    "copies": "copy",
-    "drink": "drink",
-    "drinks": "drink",
-    "fight": "fight",
-    "fights": "fight",
-    "fire": "fire",
-    "fires": "fire",
-    "like": "like",
-    "likes": "like",
-    "look": "look",
-    "looks": "look",
-    "make": "make",
-    "makes": "make",
-    "reach": "reach",
-    "reaches": "reach",
-    "run": "run",
-    "runs": "run",
-    "sink": "sink",
-    "sinks": "sink",
-    "sleep": "sleep",
-    "sleeps": "sleep",
-    "view": "view",
-    "views": "view",
-}
-
-plverb_ambiguous_pres_keys: Final = re.compile(
-    rf"^({enclose('|'.join(plverb_ambiguous_pres))})((\s.*)?)$", re.IGNORECASE
-)
-
-
-plverb_irregular_non_pres: Final = (
-    "did",
-    "had",
-    "ate",
-    "made",
-    "put",
-    "spent",
-    "fought",
-    "sank",
-    "gave",
-    "sought",
-    "shall",
-    "could",
-    "ought",
-    "should",
-)
-
-plverb_ambiguous_non_pres: Final = re.compile(
-    r"^((?:thought|saw|bent|will|might|cut))((\s.*)?)$", re.IGNORECASE
-)
-
 # "..oes" -> "..oe" (the rest are "..oes" -> "o")
 
 pl_v_oes_oe: Final = ("canoes", "floes", "oboes", "roes", "throes", "woes")
@@ -1974,94 +1898,6 @@ A_explicit_an: Final = re.compile(
 A_ordinal_an: Final = re.compile(r"^([aefhilmnorsx]-?th)", re.IGNORECASE)
 
 A_ordinal_a: Final = re.compile(r"^([bcdgjkpqtuvwyz]-?th)", re.IGNORECASE)
-
-
-# NUMERICAL INFLECTIONS
-
-nth: Final = {
-    0: "th",
-    1: "st",
-    2: "nd",
-    3: "rd",
-    4: "th",
-    5: "th",
-    6: "th",
-    7: "th",
-    8: "th",
-    9: "th",
-    11: "th",
-    12: "th",
-    13: "th",
-}
-nth_suff: Final = set(nth.values())
-
-ordinal: Final = {
-    "ty": "tieth",
-    "one": "first",
-    "two": "second",
-    "three": "third",
-    "five": "fifth",
-    "eight": "eighth",
-    "nine": "ninth",
-    "twelve": "twelfth",
-}
-
-ordinal_suff: Final = re.compile(rf"({'|'.join(ordinal)})\Z")
-
-
-# NUMBERS
-
-unit: Final = [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-]
-teen: Final = [
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
-]
-ten: Final = [
-    "",
-    "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
-]
-mill: Final = [
-    " ",
-    " thousand",
-    " million",
-    " billion",
-    " trillion",
-    " quadrillion",
-    " quintillion",
-    " sextillion",
-    " septillion",
-    " octillion",
-    " nonillion",
-    " decillion",
-]
-
 
 # SUPPORT CLASSICAL PLURALIZATIONS
 
@@ -2325,28 +2161,6 @@ class engine:  # noqa: N801
             else:
                 raise UnknownClassicalModeError
 
-    def num(
-        self, count: Optional[int] = None, show: Optional[int] = None
-    ) -> str:  # (;$count,$show)
-        """
-        Set the number to be used in other method calls.
-
-        Returns count.
-
-        Set show to False to return '' instead.
-
-        """
-        if count is not None:
-            try:
-                self.persistent_count = int(count)
-            except ValueError as err:
-                raise BadNumValueError from err
-            if (show is None) or show:
-                return str(count)
-        else:
-            self.persistent_count = None
-        return ""
-
     def gender(self, gender: str) -> None:
         """
         set the gender for the singular of plural pronouns
@@ -2425,18 +2239,8 @@ class engine:  # noqa: N801
 
         # Dictionary of allowed methods
         methods_dict: Dict[str, Callable[[Any], Any]] = {
-            "plural": self.plural,
-            "plural_adj": self.plural_adj,
-            "plural_noun": self.plural_noun,
-            "plural_verb": self.plural_verb,
-            "singular_noun": self.singular_noun,
             "a": self.a,
             "an": self.a,
-            "no": self.no,
-            "ordinal": self.ordinal,
-            "number_to_words": self.number_to_words,
-            "present_participle": self.present_participle,
-            "num": self.num,
         }
 
         # Regular expression to find Python's function call syntax
@@ -2486,29 +2290,6 @@ class engine:  # noqa: N801
             return mo.group(1), mo.group(2), mo.group(3)
         return "", "", ""
 
-    def plural(self, text: Word, count: Optional[Union[str, int, Any]] = None) -> str:
-        """
-        Return the plural of text.
-
-        If count supplied, then return text if count is one of:
-            1, a, an, one, each, every, this, that
-
-        otherwise return the plural.
-
-        Whitespace at the start and end is preserved.
-
-        """
-        pre, word, post = self.partition_word(text)
-        if not word:
-            return text
-        plural = self.postprocess(
-            word,
-            self._pl_special_adjective(word, count)
-            or self._pl_special_verb(word, count)
-            or self._plnoun(word, count),
-        )
-        return f"{pre}{plural}{post}"
-
     def plural_noun(
         self, text: Word, count: Optional[Union[str, int, Any]] = None
     ) -> str:
@@ -2527,49 +2308,6 @@ class engine:  # noqa: N801
         if not word:
             return text
         plural = self.postprocess(word, self._plnoun(word, count))
-        return f"{pre}{plural}{post}"
-
-    def plural_verb(
-        self, text: Word, count: Optional[Union[str, int, Any]] = None
-    ) -> str:
-        """
-        Return the plural of text, where text is a verb.
-
-        If count supplied, then return text if count is one of:
-            1, a, an, one, each, every, this, that
-
-        otherwise return the plural.
-
-        Whitespace at the start and end is preserved.
-
-        """
-        pre, word, post = self.partition_word(text)
-        if not word:
-            return text
-        plural = self.postprocess(
-            word,
-            self._pl_special_verb(word, count) or self._pl_general_verb(word, count),
-        )
-        return f"{pre}{plural}{post}"
-
-    def plural_adj(
-        self, text: Word, count: Optional[Union[str, int, Any]] = None
-    ) -> str:
-        """
-        Return the plural of text, where text is an adjective.
-
-        If count supplied, then return text if count is one of:
-            1, a, an, one, each, every, this, that
-
-        otherwise return the plural.
-
-        Whitespace at the start and end is preserved.
-
-        """
-        pre, word, post = self.partition_word(text)
-        if not word:
-            return text
-        plural = self.postprocess(word, self._pl_special_adjective(word, count) or word)
         return f"{pre}{plural}{post}"
 
     def compare(self, word1: Word, word2: Word) -> Union[str, bool]:
@@ -2596,7 +2334,7 @@ class engine:  # noqa: N801
         ...
         typeguard.TypeCheckError:...is not an instance of inflect.Word
         """
-        norms = self.plural_noun, self.plural_verb, self.plural_adj
+        norms = (self.plural_noun,)
         results = (self._plequal(word1, word2, norm) for norm in norms)
         return next(filter(None, results), False)
 
@@ -2614,36 +2352,6 @@ class engine:  # noqa: N801
 
         """
         return self._plequal(word1, word2, self.plural_noun)
-
-    def compare_verbs(self, word1: Word, word2: Word) -> Union[str, bool]:
-        """
-        compare word1 and word2 for equality regardless of plurality
-        word1 and word2 are to be treated as verbs
-
-        return values:
-        eq - the strings are equal
-        p:s - word1 is the plural of word2
-        s:p - word2 is the plural of word1
-        p:p - word1 and word2 are two different plural forms of the one word
-        False - otherwise
-
-        """
-        return self._plequal(word1, word2, self.plural_verb)
-
-    def compare_adjs(self, word1: Word, word2: Word) -> Union[str, bool]:
-        """
-        compare word1 and word2 for equality regardless of plurality
-        word1 and word2 are to be treated as adjectives
-
-        return values:
-        eq - the strings are equal
-        p:s - word1 is the plural of word2
-        s:p - word2 is the plural of word1
-        p:p - word1 and word2 are two different plural forms of the one word
-        False - otherwise
-
-        """
-        return self._plequal(word1, word2, self.plural_adj)
 
     def singular_noun(
         self,
@@ -2698,14 +2406,12 @@ class engine:  # noqa: N801
                 return "s:p"
         self.classical_dict = classval.copy()
 
-        if pl == self.plural or pl == self.plural_noun:
+        if pl == self.plural_noun:
             if self._pl_check_plurals_N(word1, word2):
                 return "p:p"
             if self._pl_check_plurals_N(word2, word1):
                 return "p:p"
-        if pl == self.plural or pl == self.plural_adj:
-            if self._pl_check_plurals_adj(word1, word2):
-                return "p:p"
+
         return False
 
     def _pl_reg_plurals(self, pair: str, stems: str, end1: str, end2: str) -> bool:
@@ -2742,19 +2448,6 @@ class engine:  # noqa: N801
             or any(
                 self._pl_reg_plurals(pair, stems, end1, end2)
                 for stems, end1, end2 in stem_endings
-            )
-        )
-
-    def _pl_check_plurals_adj(self, word1: str, word2: str) -> bool:
-        word1a = word1[: word1.rfind("'")] if word1.endswith(("'s", "'")) else ""
-        word2a = word2[: word2.rfind("'")] if word2.endswith(("'s", "'")) else ""
-
-        return (
-            bool(word1a)
-            and bool(word2a)
-            and (
-                self._pl_check_plurals_N(word1a, word2a)
-                or self._pl_check_plurals_N(word2a, word1a)
             )
         )
 
@@ -3109,7 +2802,7 @@ class engine:  # noqa: N801
             " ".join(
                 itertools.chain(
                     leader,
-                    [inflection(cand, count), prep],  # type: ignore[operator]
+                    [inflection(cand, count), prep],
                     trailer,
                 )
             )
@@ -3127,148 +2820,6 @@ class engine:  # noqa: N801
             return next(pivots)
         except StopIteration:
             raise ValueError("No pivot found") from None
-
-    def _pl_special_verb(  # noqa: C901
-        self, word: str, count: Optional[Union[str, int]] = None
-    ) -> Union[str, bool]:
-        if self.classical_dict["zero"] and str(count).lower() in pl_count_zero:
-            return False
-        count = self.get_count(count)
-
-        if count == 1:
-            return word
-
-        # HANDLE USER-DEFINED VERBS
-
-        value = self.ud_match(word, self.pl_v_user_defined)
-        if value is not None:
-            return value
-
-        # HANDLE IRREGULAR PRESENT TENSE (SIMPLE AND COMPOUND)
-
-        try:
-            words = Words(word)
-        except IndexError:
-            return False  # word is ''
-
-        if words.first in plverb_irregular_pres:
-            return f"{plverb_irregular_pres[words.first]}{words[len(words.first) :]}"
-
-        # HANDLE IRREGULAR FUTURE, PRETERITE AND PERFECT TENSES
-
-        if words.first in plverb_irregular_non_pres:
-            return word
-
-        # HANDLE PRESENT NEGATIONS (SIMPLE AND COMPOUND)
-
-        if words.first.endswith("n't") and words.first[:-3] in plverb_irregular_pres:
-            return (
-                f"{plverb_irregular_pres[words.first[:-3]]}n't"
-                f"{words[len(words.first) :]}"
-            )
-
-        if words.first.endswith("n't"):
-            return word
-
-        # HANDLE SPECIAL CASES
-
-        mo = PLVERB_SPECIAL_S_RE.search(word)
-        if mo:
-            return False
-        if WHITESPACE.search(word):
-            return False
-
-        if words.lowered == "quizzes":
-            return "quiz"
-
-        # HANDLE STANDARD 3RD PERSON (CHOP THE ...(e)s OFF SINGLE WORDS)
-
-        if (
-            words.lowered[-4:] in ("ches", "shes", "zzes", "sses")
-            or words.lowered[-3:] == "xes"
-        ):
-            return words[:-2]
-
-        if words.lowered[-3:] == "ies" and len(words) > 3:
-            return words.lowered[:-3] + "y"
-
-        if (
-            words.last.lower() in pl_v_oes_oe
-            or words.lowered[-4:] in pl_v_oes_oe_endings_size4
-            or words.lowered[-5:] in pl_v_oes_oe_endings_size5
-        ):
-            return words[:-1]
-
-        if words.lowered.endswith("oes") and len(words) > 3:
-            return words.lowered[:-2]
-
-        mo = ENDS_WITH_S.search(words)
-        if mo:
-            return mo.group(1)
-
-        # OTHERWISE, A REGULAR VERB (HANDLE ELSEWHERE)
-
-        return False
-
-    def _pl_general_verb(
-        self, word: str, count: Optional[Union[str, int]] = None
-    ) -> str:
-        count = self.get_count(count)
-
-        if count == 1:
-            return word
-
-        # HANDLE AMBIGUOUS PRESENT TENSES  (SIMPLE AND COMPOUND)
-
-        mo = plverb_ambiguous_pres_keys.search(word)
-        if mo:
-            return f"{plverb_ambiguous_pres[mo.group(1).lower()]}{mo.group(2)}"
-
-        # HANDLE AMBIGUOUS PRETERITE AND PERFECT TENSES
-
-        mo = plverb_ambiguous_non_pres.search(word)
-        if mo:
-            return word
-
-        # OTHERWISE, 1st OR 2ND PERSON IS UNINFLECTED
-
-        return word
-
-    def _pl_special_adjective(
-        self, word: str, count: Optional[Union[str, int]] = None
-    ) -> Union[str, bool]:
-        count = self.get_count(count)
-
-        if count == 1:
-            return word
-
-        # HANDLE USER-DEFINED ADJECTIVES
-
-        value = self.ud_match(word, self.pl_adj_user_defined)
-        if value is not None:
-            return value
-
-        # HANDLE KNOWN CASES
-
-        mo = pl_adj_special_keys.search(word)
-        if mo:
-            return pl_adj_special[mo.group(1).lower()]
-
-        # HANDLE POSSESSIVES
-
-        mo = pl_adj_poss_keys.search(word)
-        if mo:
-            return pl_adj_poss[mo.group(1).lower()]
-
-        mo = ENDS_WITH_APOSTROPHE_S.search(word)
-        if mo:
-            pl = self.plural_noun(mo.group(1))
-            trailing_s = "" if pl[-1] == "s" else "s"
-            return f"{pl}'{trailing_s}"
-
-        # OTHERWISE, NO IDEA
-
-        return False
 
     # @profile
     def _sinoun(  # noqa: C901
@@ -3676,216 +3227,6 @@ class engine:  # noqa: N801
         fallback = f'a {word}'
         return next(matches, fallback)
 
-    # 2. TRANSLATE ZERO-QUANTIFIED $word TO "no plural($word)"
-
-    def no(self, text: Word, count: Optional[Union[int, str]] = None) -> str:
-        """
-        If count is 0, no, zero or nil, return 'no' followed by the plural
-        of text.
-
-        If count is one of:
-            1, a, an, one, each, every, this, that
-            return count followed by text.
-
-        Otherwise return count follow by the plural of text.
-
-        In the return value count is always followed by a space.
-
-        Whitespace at the start and end is preserved.
-
-        """
-        if count is None and self.persistent_count is not None:
-            count = self.persistent_count
-
-        if count is None:
-            count = 0
-        mo = PARTITION_WORD.search(text)
-        if mo:
-            pre = mo.group(1)
-            word = mo.group(2)
-            post = mo.group(3)
-        else:
-            pre = ""
-            word = ""
-            post = ""
-
-        if str(count).lower() in pl_count_zero:
-            count = 'no'
-        return f"{pre}{count} {self.plural(word, count)}{post}"
-
-    # PARTICIPLES
-
-    def present_participle(self, word: Word) -> str:
-        """
-        Return the present participle for word.
-
-        word is the 3rd person singular verb.
-
-        """
-        plv = self.plural_verb(word, 2)
-        ans = plv
-
-        for regexen, repl in PRESENT_PARTICIPLE_REPLACEMENTS:
-            ans, num = regexen.subn(repl, plv)
-            if num:
-                return f"{ans}ing"
-        return f"{ans}ing"
-
-    # NUMERICAL INFLECTIONS
-
-    def ordinal(self, num: Union[Number, Word]) -> str:
-        """
-        Return the ordinal of num.
-
-        >>> ordinal = engine().ordinal
-        >>> ordinal(1)
-        '1st'
-        >>> ordinal('one')
-        'first'
-        """
-        if DIGIT.match(str(num)):
-            if isinstance(num, (float, int)) and int(num) == num:
-                n = int(num)
-            else:
-                if "." in str(num):
-                    try:
-                        # numbers after decimal,
-                        # so only need last one for ordinal
-                        n = int(str(num)[-1])
-
-                    except ValueError:
-                        # ends with '.', so need to use whole string
-                        n = int(str(num)[:-1])
-                else:
-                    n = int(num)  # type: ignore[arg-type]
-            try:
-                post = nth[n % 100]
-            except KeyError:
-                post = nth[n % 10]
-            return f"{num}{post}"
-
-        assert isinstance(num, Word)
-        return self._sub_ord(num)
-
-    def millfn(self, ind: int = 0) -> str:
-        if ind > len(mill) - 1:
-            raise NumOutOfRangeError
-        return mill[ind]
-
-    def unitfn(self, units: int, mindex: int = 0) -> str:
-        return f"{unit[units]}{self.millfn(mindex)}"
-
-    def tenfn(self, tens: int, units: int, mindex: int = 0) -> str:
-        if tens != 1:
-            tens_part = ten[tens]
-            hyphen = "-" if tens and units else ""
-            unit_part = unit[units]
-            mill_part = self.millfn(mindex)
-            return f"{tens_part}{hyphen}{unit_part}{mill_part}"
-        return f"{teen[units]}{mill[mindex]}"
-
-    def hundfn(self, hundreds: int, tens: int, units: int, mindex: int) -> str:
-        if hundreds:
-            andword = f" {self._number_args['andword']} " if tens or units else ""
-            # use unit not unitfn as simpler
-            return (
-                f"{unit[hundreds]} hundred{andword}"
-                f"{self.tenfn(tens, units)}{self.millfn(mindex)}, "
-            )
-        if tens or units:
-            return f"{self.tenfn(tens, units)}{self.millfn(mindex)}, "
-        return ""
-
-    def group1sub(self, mo: Match[str]) -> str:
-        units = int(mo.group(1))
-        if units == 1:
-            return f" {self._number_args['one']}, "
-        if units:
-            return f"{unit[units]}, "
-        return f" {self._number_args['zero']}, "
-
-    def group1bsub(self, mo: Match[str]) -> str:
-        units = int(mo.group(1))
-        if units:
-            return f"{unit[units]}, "
-        return f" {self._number_args['zero']}, "
-
-    def group2sub(self, mo: Match[str]) -> str:
-        tens = int(mo.group(1))
-        units = int(mo.group(2))
-        if tens:
-            return f"{self.tenfn(tens, units)}, "
-        if units:
-            return f" {self._number_args['zero']} {unit[units]}, "
-        return f" {self._number_args['zero']} {self._number_args['zero']}, "
-
-    def group3sub(self, mo: Match[str]) -> str:
-        hundreds = int(mo.group(1))
-        tens = int(mo.group(2))
-        units = int(mo.group(3))
-        if hundreds == 1:
-            hunword = f" {self._number_args['one']}"
-        elif hundreds:
-            hunword = str(unit[hundreds])
-        else:
-            hunword = f" {self._number_args['zero']}"
-        if tens:
-            tenword = self.tenfn(tens, units)
-        elif units:
-            tenword = f" {self._number_args['zero']} {unit[units]}"
-        else:
-            tenword = f" {self._number_args['zero']} {self._number_args['zero']}"
-        return f"{hunword} {tenword}, "
-
-    def hundsub(self, mo: Match[str]) -> str:
-        ret = self.hundfn(
-            int(mo.group(1)), int(mo.group(2)), int(mo.group(3)), self.mill_count
-        )
-        self.mill_count += 1
-        return ret
-
-    def tensub(self, mo: Match[str]) -> str:
-        return f"{self.tenfn(int(mo.group(1)), int(mo.group(2)), self.mill_count)}, "
-
-    def unitsub(self, mo: Match[str]) -> str:
-        return f"{self.unitfn(int(mo.group(1)), self.mill_count)}, "
-
-    def enword(self, num: str, group: int) -> str:
-        # import pdb
-        # pdb.set_trace()
-
-        if group == 1:
-            num = DIGIT_GROUP.sub(self.group1sub, num)
-        elif group == 2:
-            num = TWO_DIGITS.sub(self.group2sub, num)
-            num = DIGIT_GROUP.sub(self.group1bsub, num, 1)
-        elif group == 3:
-            num = THREE_DIGITS.sub(self.group3sub, num)
-            num = TWO_DIGITS.sub(self.group2sub, num, 1)
-            num = DIGIT_GROUP.sub(self.group1sub, num, 1)
-        elif int(num) == 0:
-            num = self._number_args["zero"]
-        elif int(num) == 1:
-            num = self._number_args["one"]
-        else:
-            assert isinstance(num, str)
-
-            num = num.lstrip().lstrip("0")
-            self.mill_count = 0
-            # surely there's a better way to do the next bit
-            mo = THREE_DIGITS_WORD.search(num)
-            while mo:
-                num = THREE_DIGITS_WORD.sub(self.hundsub, num, 1)
-                mo = THREE_DIGITS_WORD.search(num)
-            num = TWO_DIGITS_WORD.sub(self.tensub, num, 1)
-            num = ONE_DIGIT_WORD.sub(self.unitsub, num, 1)
-        return num
-
-    @staticmethod
-    def _sub_ord(val: Word) -> str:
-        new = ordinal_suff.sub(lambda match: ordinal[match.group(1)], val)
-        return new + "th" * (new == val)
-
     @classmethod
     def _chunk_num(cls, num: Word, decimal: Union[Falsish, str], group: int) -> Tuple[List[str], bool]:
         if decimal:
@@ -3909,120 +3250,6 @@ class engine:  # noqa: N801
     @staticmethod
     def _get_sign(num: str) -> str:
         return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[0], '')
-
-    def number_to_words(  # noqa: C901
-        self,
-        num: Union[Number, Word],
-        wantlist: bool = False,
-        group: int = 0,
-        comma: Union[Falsish, str] = ",",
-        andword: str = "and",
-        zero: str = "zero",
-        one: str = "one",
-        decimal: Union[Falsish, str] = "point",
-        threshold: Optional[int] = None,
-    ) -> Union[str, List[str]]:
-        """
-        Return a number in words.
-
-        group = 1, 2 or 3 to group numbers before turning into words
-        comma: define comma
-
-        andword:
-            word for 'and'. Can be set to ''.
-            e.g. "one hundred and one" vs "one hundred one"
-
-        zero: word for '0'
-        one: word for '1'
-        decimal: word for decimal point
-        threshold: numbers above threshold not turned into words
-
-        parameters not remembered from last call. Departure from Perl version.
-        """
-        self._number_args = {"andword": andword, "zero": zero, "one": one}
-        num = str(num)
-
-        # Handle "stylistic" conversions (up to a given threshold)...
-        if threshold is not None and float(num) > threshold:
-            spnum = num.split(".", 1)
-            while comma:
-                (spnum[0], n) = FOUR_DIGIT_COMMA.subn(r"\1,\2", spnum[0])
-                if n == 0:
-                    break
-            try:
-                return f"{spnum[0]}.{spnum[1]}"
-            except IndexError:
-                return str(spnum[0])
-
-        if group < 0 or group > 3:
-            raise BadChunkingOptionError
-
-        sign = self._get_sign(num)
-
-        if num in nth_suff:
-            num = zero
-
-        myord = num[-2:] in nth_suff
-        if myord:
-            num = num[:-2]
-
-        chunks, finalpoint = self._chunk_num(num, decimal, group)
-
-        loopstart = chunks[0] == ""
-        first: bool | None = not loopstart
-
-        def _handle_chunk(chunk: str) -> str:
-            nonlocal first
-
-            # remove all non numeric \D
-            chunk = NON_DIGIT.sub("", chunk)
-            if chunk == "":
-                chunk = "0"
-
-            if group == 0 and not first:
-                chunk = self.enword(chunk, 1)
-            else:
-                chunk = self.enword(chunk, group)
-
-            if chunk[-2:] == ", ":
-                chunk = chunk[:-2]
-            chunk = WHITESPACES_COMMA.sub(",", chunk)
-
-            if group == 0 and first:
-                chunk = COMMA_WORD.sub(f" {andword} \\1", chunk)
-            chunk = WHITESPACES.sub(" ", chunk)
-            # chunk = re.sub(r"(\A\s|\s\Z)", self.blankfn, chunk)
-            chunk = chunk.strip()
-            if first:
-                first = None
-            return chunk
-
-        chunks[loopstart:] = map(_handle_chunk, chunks[loopstart:])
-
-        numchunks = []
-        if first != 0:
-            numchunks = chunks[0].split(f"{comma} ")
-
-        if myord and numchunks:
-            numchunks[-1] = self._sub_ord(numchunks[-1])
-
-        for chunk in chunks[1:]:
-            numchunks.append(decimal)
-            numchunks.extend(chunk.split(f"{comma} "))
-
-        if finalpoint:
-            numchunks.append(decimal)
-
-        if wantlist:
-            return [sign] * bool(sign) + numchunks
-
-        signout = f"{sign} " if sign else ""
-        valout = (
-            ', '.join(numchunks)
-            if group
-            else ''.join(self._render(numchunks, decimal, comma))
-        )
-        return signout + valout
 
     @staticmethod
     def _render(chunks: List[str], decimal: Union[Falsish, str], comma: Union[Falsish, str]) -> Generator[str, None, None]:
