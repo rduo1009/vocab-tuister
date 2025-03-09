@@ -2964,6 +2964,7 @@ class engine:  # noqa: N801
         if word.lowered[-3:] in ("cis", "sis", "xis"):
             return f"{word[:-2]}es"
 
+        numend: Optional[int]
         for lastlet, d, numend, post in (
             ("h", pl_sb_U_ch_chs_bysize, None, "s"),
             ("x", pl_sb_U_ex_ices_bysize, -2, "ices"),
