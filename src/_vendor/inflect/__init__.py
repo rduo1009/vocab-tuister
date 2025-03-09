@@ -60,27 +60,28 @@ import contextlib
 import functools
 import itertools
 import re
-from numbers import Number
 from typing import (
     TYPE_CHECKING,
+    Annotated,
     Any,
-    Callable,
     Dict,
-    Iterable,
+    Final,
     List,
     Literal,
-    Match,
+    cast,
+    overload,
     Optional,
-    Sequence,
     Tuple,
     Union,
-    cast,
 )
 
 from more_itertools import windowed_complete
 from typeguard import typechecked
 
-from .compat.py38 import Annotated
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator, Iterable, Sequence
+    from numbers import Number
+    from re import Match
 
 
 class UnknownClassicalModeError(Exception):
@@ -136,7 +137,7 @@ def joinstem(cutpoint: Optional[int] = 0, words: Optional[Iterable[str]] = None)
     return enclose("|".join(w[:cutpoint] for w in words or []))
 
 
-def bysize(words: Iterable[str]) -> Dict[int, set]:
+def bysize(words: Iterable[str]) -> Dict[int, set[str]]:
     """
     From a list of words, return a dict of sets sorted by word length.
 
@@ -147,10 +148,34 @@ def bysize(words: Iterable[str]) -> Dict[int, set]:
     >>> ret[5]
     {'horse'}
     """
-    res: Dict[int, set] = collections.defaultdict(set)
+    res: Dict[int, set[str]] = collections.defaultdict(set)
     for w in words:
         res[len(w)].add(w)
     return res
+
+
+@overload
+def make_pl_si_lists(
+    lst: Iterable[str],
+    plending: str,
+    siendingsize: Optional[int],
+    dojoinstem: Literal[False],
+) -> Tuple[List[str], Dict[int, set[str]], Dict[int, set[str]]]: ...
+
+
+@overload
+def make_pl_si_lists(
+    lst: Iterable[str],
+    plending: str,
+    siendingsize: Optional[int],
+    dojoinstem: Literal[True],
+) -> Tuple[List[str], Dict[int, set[str]], Dict[int, set[str]], str]: ...
+
+
+@overload
+def make_pl_si_lists(
+    lst: Iterable[str], plending: str, siendingsize: Optional[int]
+) -> Tuple[List[str], Dict[int, set[str]], Dict[int, set[str]], str]: ...
 
 
 def make_pl_si_lists(
@@ -158,6 +183,9 @@ def make_pl_si_lists(
     plending: str,
     siendingsize: Optional[int],
     dojoinstem: bool = True,
+) -> (
+    Tuple[List[str], Dict[int, set[str]], Dict[int, set[str]]]
+    | Tuple[List[str], Dict[int, set[str]], Dict[int, set[str]], str]
 ):
     """
     given a list of singular words: lst
@@ -185,8 +213,7 @@ def make_pl_si_lists(
     if dojoinstem:
         stem = joinstem(siendingsize, lst)
         return si_list, si_bysize, pl_bysize, stem
-    else:
-        return si_list, si_bysize, pl_bysize
+    return si_list, si_bysize, pl_bysize
 
 
 # 1. PLURALS
@@ -241,16 +268,16 @@ pl_sb_irregular = {
 pl_sb_irregular.update(pl_sb_irregular_s)
 # pl_sb_irregular_keys = enclose('|'.join(pl_sb_irregular.keys()))
 
-pl_sb_irregular_caps = {
+pl_sb_irregular_caps: Final = {
     "Romany": "Romanies",
     "Jerry": "Jerrys",
     "Mary": "Marys",
     "Rom": "Roma",
 }
 
-pl_sb_irregular_compound = {"prima donna": "prima donnas|prime donne"}
+pl_sb_irregular_compound: Final = {"prima donna": "prima donnas|prime donne"}
 
-si_sb_irregular = {v: k for (k, v) in pl_sb_irregular.items()}
+si_sb_irregular: Final = {v: k for (k, v) in pl_sb_irregular.items()}
 for k in list(si_sb_irregular):
     if "|" in k:
         k1, k2 = k.split("|")
@@ -270,16 +297,16 @@ for k in list(si_sb_irregular_compound):
 
 # Z's that don't double
 
-pl_sb_z_zes_list = ("quartz", "topaz")
-pl_sb_z_zes_bysize = bysize(pl_sb_z_zes_list)
+pl_sb_z_zes_list: Final = ("quartz", "topaz")
+pl_sb_z_zes_bysize: Final = bysize(pl_sb_z_zes_list)
 
-pl_sb_ze_zes_list = ("snooze",)
-pl_sb_ze_zes_bysize = bysize(pl_sb_ze_zes_list)
+pl_sb_ze_zes_list: Final = ("snooze",)
+pl_sb_ze_zes_bysize: Final = bysize(pl_sb_ze_zes_list)
 
 
 # CLASSICAL "..is" -> "..ides"
 
-pl_sb_C_is_ides_complete = [
+pl_sb_C_is_ides_complete: Final = [
     # GENERAL WORDS...
     "ephemeris",
     "iris",
@@ -288,16 +315,16 @@ pl_sb_C_is_ides_complete = [
     "epididymis",
 ]
 
-pl_sb_C_is_ides_endings = [
+pl_sb_C_is_ides_endings: Final = [
     # INFLAMATIONS...
     "itis"
 ]
 
-pl_sb_C_is_ides = joinstem(
+pl_sb_C_is_ides: Final = joinstem(
     -2, pl_sb_C_is_ides_complete + [f".*{w}" for w in pl_sb_C_is_ides_endings]
 )
 
-pl_sb_C_is_ides_list = pl_sb_C_is_ides_complete + pl_sb_C_is_ides_endings
+pl_sb_C_is_ides_list: Final = pl_sb_C_is_ides_complete + pl_sb_C_is_ides_endings
 
 (
     si_sb_C_is_ides_list,
@@ -308,7 +335,7 @@ pl_sb_C_is_ides_list = pl_sb_C_is_ides_complete + pl_sb_C_is_ides_endings
 
 # CLASSICAL "..a" -> "..ata"
 
-pl_sb_C_a_ata_list = (
+pl_sb_C_a_ata_list: Final = (
     "anathema",
     "bema",
     "carcinoma",
@@ -344,7 +371,7 @@ pl_sb_C_a_ata_list = (
 
 # UNCONDITIONAL "..a" -> "..ae"
 
-pl_sb_U_a_ae_list = (
+pl_sb_U_a_ae_list: Final = (
     "alumna",
     "alga",
     "vertebra",
@@ -360,7 +387,7 @@ pl_sb_U_a_ae_list = (
 
 # CLASSICAL "..a" -> "..ae"
 
-pl_sb_C_a_ae_list = (
+pl_sb_C_a_ae_list: Final = (
     "amoeba",
     "antenna",
     "formula",
@@ -387,7 +414,7 @@ pl_sb_C_a_ae_list = (
 
 # CLASSICAL "..en" -> "..ina"
 
-pl_sb_C_en_ina_list = ("stamen", "foramen", "lumen")
+pl_sb_C_en_ina_list: Final = ("stamen", "foramen", "lumen")
 
 (
     si_sb_C_en_ina_list,
@@ -399,7 +426,7 @@ pl_sb_C_en_ina_list = ("stamen", "foramen", "lumen")
 
 # UNCONDITIONAL "..um" -> "..a"
 
-pl_sb_U_um_a_list = (
+pl_sb_U_um_a_list: Final = (
     "bacterium",
     "agendum",
     "desideratum",
@@ -419,7 +446,7 @@ pl_sb_U_um_a_list = (
 
 # CLASSICAL "..um" -> "..a"
 
-pl_sb_C_um_a_list = (
+pl_sb_C_um_a_list: Final = (
     "maximum",
     "minimum",
     "momentum",
@@ -462,7 +489,7 @@ pl_sb_C_um_a_list = (
 
 # UNCONDITIONAL "..us" -> "i"
 
-pl_sb_U_us_i_list = (
+pl_sb_U_us_i_list: Final = (
     "alumnus",
     "alveolus",
     "bacillus",
@@ -482,7 +509,7 @@ pl_sb_U_us_i_list = (
 
 # CLASSICAL "..us" -> "..i"
 
-pl_sb_C_us_i_list = (
+pl_sb_C_us_i_list: Final = (
     "focus",
     "radius",
     "genius",
@@ -509,7 +536,7 @@ pl_sb_C_us_i_list = (
 
 # CLASSICAL "..us" -> "..us"  (ASSIMILATED 4TH DECLENSION LATIN NOUNS)
 
-pl_sb_C_us_us = (
+pl_sb_C_us_us: Final = (
     "status",
     "apparatus",
     "prospectus",
@@ -518,11 +545,11 @@ pl_sb_C_us_us = (
     "impetus",
     "plexus",
 )
-pl_sb_C_us_us_bysize = bysize(pl_sb_C_us_us)
+pl_sb_C_us_us_bysize: Final = bysize(pl_sb_C_us_us)
 
 # UNCONDITIONAL "..on" -> "a"
 
-pl_sb_U_on_a_list = (
+pl_sb_U_on_a_list: Final = (
     "criterion",
     "perihelion",
     "aphelion",
@@ -542,7 +569,7 @@ pl_sb_U_on_a_list = (
 
 # CLASSICAL "..on" -> "..a"
 
-pl_sb_C_on_a_list = ("oxymoron",)
+pl_sb_C_on_a_list: Final = ("oxymoron",)
 
 (
     si_sb_C_on_a_list,
@@ -554,7 +581,7 @@ pl_sb_C_on_a_list = ("oxymoron",)
 
 # CLASSICAL "..o" -> "..i"  (BUT NORMALLY -> "..os")
 
-pl_sb_C_o_i = [
+pl_sb_C_o_i: Final = [
     "solo",
     "soprano",
     "basso",
@@ -565,18 +592,18 @@ pl_sb_C_o_i = [
     "virtuoso",
 ]  # list not tuple so can concat for pl_sb_U_o_os
 
-pl_sb_C_o_i_bysize = bysize(pl_sb_C_o_i)
-si_sb_C_o_i_bysize = bysize([f"{w[:-1]}i" for w in pl_sb_C_o_i])
+pl_sb_C_o_i_bysize: Final = bysize(pl_sb_C_o_i)
+si_sb_C_o_i_bysize: Final = bysize([f"{w[:-1]}i" for w in pl_sb_C_o_i])
 
-pl_sb_C_o_i_stems = joinstem(-1, pl_sb_C_o_i)
+pl_sb_C_o_i_stems: Final = joinstem(-1, pl_sb_C_o_i)
 
 # ALWAYS "..o" -> "..os"
 
-pl_sb_U_o_os_complete = {"ado", "ISO", "NATO", "NCO", "NGO", "oto"}
-si_sb_U_o_os_complete = {f"{w}s" for w in pl_sb_U_o_os_complete}
+pl_sb_U_o_os_complete: Final = {"ado", "ISO", "NATO", "NCO", "NGO", "oto"}
+si_sb_U_o_os_complete: Final = {f"{w}s" for w in pl_sb_U_o_os_complete}
 
 
-pl_sb_U_o_os_endings = [
+pl_sb_U_o_os_endings: Final = [
     "aficionado",
     "aggro",
     "albino",
@@ -772,15 +799,16 @@ pl_sb_U_o_os_endings = [
     "yo-yo",
     "zero",
     "Zibo",
-] + pl_sb_C_o_i
+    *pl_sb_C_o_i,
+]
 
-pl_sb_U_o_os_bysize = bysize(pl_sb_U_o_os_endings)
-si_sb_U_o_os_bysize = bysize([f"{w}s" for w in pl_sb_U_o_os_endings])
+pl_sb_U_o_os_bysize: Final = bysize(pl_sb_U_o_os_endings)
+si_sb_U_o_os_bysize: Final = bysize([f"{w}s" for w in pl_sb_U_o_os_endings])
 
 
 # UNCONDITIONAL "..ch" -> "..chs"
 
-pl_sb_U_ch_chs_list = ("czech", "eunuch", "stomach")
+pl_sb_U_ch_chs_list: Final = ("czech", "eunuch", "stomach")
 
 (
     si_sb_U_ch_chs_list,
@@ -792,7 +820,7 @@ pl_sb_U_ch_chs_list = ("czech", "eunuch", "stomach")
 
 # UNCONDITIONAL "..[ei]x" -> "..ices"
 
-pl_sb_U_ex_ices_list = ("codex", "murex", "silex")
+pl_sb_U_ex_ices_list: Final = ("codex", "murex", "silex")
 (
     si_sb_U_ex_ices_list,
     si_sb_U_ex_ices_bysize,
@@ -800,7 +828,7 @@ pl_sb_U_ex_ices_list = ("codex", "murex", "silex")
     pl_sb_U_ex_ices,
 ) = make_pl_si_lists(pl_sb_U_ex_ices_list, "ices", 2)
 
-pl_sb_U_ix_ices_list = ("radix", "helix")
+pl_sb_U_ix_ices_list: Final = ("radix", "helix")
 (
     si_sb_U_ix_ices_list,
     si_sb_U_ix_ices_bysize,
@@ -810,7 +838,7 @@ pl_sb_U_ix_ices_list = ("radix", "helix")
 
 # CLASSICAL "..[ei]x" -> "..ices"
 
-pl_sb_C_ex_ices_list = (
+pl_sb_C_ex_ices_list: Final = (
     "vortex",
     "vertex",
     "cortex",
@@ -829,7 +857,7 @@ pl_sb_C_ex_ices_list = (
 ) = make_pl_si_lists(pl_sb_C_ex_ices_list, "ices", 2)
 
 
-pl_sb_C_ix_ices_list = ("appendix",)
+pl_sb_C_ix_ices_list: Final = ("appendix",)
 
 (
     si_sb_C_ix_ices_list,
@@ -841,7 +869,7 @@ pl_sb_C_ix_ices_list = ("appendix",)
 
 # ARABIC: ".." -> "..i"
 
-pl_sb_C_i_list = ("afrit", "afreet", "efreet")
+pl_sb_C_i_list: Final = ("afrit", "afreet", "efreet")
 
 (si_sb_C_i_list, si_sb_C_i_bysize, pl_sb_C_i_bysize, pl_sb_C_i) = make_pl_si_lists(
     pl_sb_C_i_list, "i", None
@@ -850,7 +878,7 @@ pl_sb_C_i_list = ("afrit", "afreet", "efreet")
 
 # HEBREW: ".." -> "..im"
 
-pl_sb_C_im_list = ("goy", "seraph", "cherub")
+pl_sb_C_im_list: Final = ("goy", "seraph", "cherub")
 
 (si_sb_C_im_list, si_sb_C_im_bysize, pl_sb_C_im_bysize, pl_sb_C_im) = make_pl_si_lists(
     pl_sb_C_im_list, "im", None
@@ -859,17 +887,41 @@ pl_sb_C_im_list = ("goy", "seraph", "cherub")
 
 # UNCONDITIONAL "..man" -> "..mans"
 
-pl_sb_U_man_mans_list = """
-    ataman caiman cayman ceriman
-    desman dolman farman harman hetman
-    human leman ottoman shaman talisman
-""".split()
-pl_sb_U_man_mans_caps_list = """
-    Alabaman Bahaman Burman German
-    Hiroshiman Liman Nakayaman Norman Oklahoman
-    Panaman Roman Selman Sonaman Tacoman Yakiman
-    Yokohaman Yuman
-""".split()
+pl_sb_U_man_mans_list: Final = [
+    "ataman",
+    "caiman",
+    "cayman",
+    "ceriman",
+    "desman",
+    "dolman",
+    "farman",
+    "harman",
+    "hetman",
+    "human",
+    "leman",
+    "ottoman",
+    "shaman",
+    "talisman",
+]
+pl_sb_U_man_mans_caps_list: Final = [
+    "Alabaman",
+    "Bahaman",
+    "Burman",
+    "German",
+    "Hiroshiman",
+    "Liman",
+    "Nakayaman",
+    "Norman",
+    "Oklahoman",
+    "Panaman",
+    "Roman",
+    "Selman",
+    "Sonaman",
+    "Tacoman",
+    "Yakiman",
+    "Yokohaman",
+    "Yuman",
+]
 
 (
     si_sb_U_man_mans_list,
@@ -883,7 +935,7 @@ pl_sb_U_man_mans_caps_list = """
 ) = make_pl_si_lists(pl_sb_U_man_mans_caps_list, "s", None, dojoinstem=False)
 
 # UNCONDITIONAL "..louse" -> "..lice"
-pl_sb_U_louse_lice_list = ("booklouse", "grapelouse", "louse", "woodlouse")
+pl_sb_U_louse_lice_list: Final = ("booklouse", "grapelouse", "louse", "woodlouse")
 
 (
     si_sb_U_louse_lice_list,
@@ -891,7 +943,7 @@ pl_sb_U_louse_lice_list = ("booklouse", "grapelouse", "louse", "woodlouse")
     pl_sb_U_louse_lice_bysize,
 ) = make_pl_si_lists(pl_sb_U_louse_lice_list, "lice", 5, dojoinstem=False)
 
-pl_sb_uninflected_s_complete = [
+pl_sb_uninflected_s_complete: Final = [
     # PAIRS OR GROUPS SUBSUMED TO A SINGULAR...
     "breeches",
     "britches",
@@ -934,18 +986,18 @@ pl_sb_uninflected_s_complete = [
     "haggis",
 ]
 
-pl_sb_uninflected_s_endings = [
+pl_sb_uninflected_s_endings: Final = [
     # RECENT IMPORTS...
     "ois",
     # DISEASES
     "measles",
 ]
 
-pl_sb_uninflected_s = pl_sb_uninflected_s_complete + [
+pl_sb_uninflected_s: Final = pl_sb_uninflected_s_complete + [
     f".*{w}" for w in pl_sb_uninflected_s_endings
 ]
 
-pl_sb_uninflected_herd = (
+pl_sb_uninflected_herd: Final = (
     # DON'T INFLECT IN CLASSICAL MODE, OTHERWISE NORMAL INFLECTION
     "wildebeest",
     "swine",
@@ -978,7 +1030,7 @@ pl_sb_uninflected_herd = (
     "water-fowl",
 )
 
-pl_sb_uninflected_complete = [
+pl_sb_uninflected_complete: Final = [
     # SOME FISH AND HERD ANIMALS
     "tuna",
     "salmon",
@@ -1000,10 +1052,11 @@ pl_sb_uninflected_complete = [
     "pence",
     "quid",
     "hertz",
-] + pl_sb_uninflected_s_complete
+    *pl_sb_uninflected_s_complete,
+]
 # SOME WORDS ENDING IN ...s (OFTEN PAIRS TAKEN AS A WHOLE)
 
-pl_sb_uninflected_caps = [
+pl_sb_uninflected_caps: Final = [
     # ALL NATIONALS ENDING IN -ese
     "Portuguese",
     "Amoyese",
@@ -1032,7 +1085,7 @@ pl_sb_uninflected_caps = [
 ]
 
 
-pl_sb_uninflected_endings = [
+pl_sb_uninflected_endings: Final = [
     # UNCOUNTABLE NOUNS
     "butter",
     "cash",
@@ -1051,16 +1104,17 @@ pl_sb_uninflected_endings = [
     "pox",
     # OTHER ODDITIES
     "craft",
-] + pl_sb_uninflected_s_endings
+    *pl_sb_uninflected_s_endings,
+]
 # SOME WORDS ENDING IN ...s (OFTEN PAIRS TAKEN AS A WHOLE)
 
 
-pl_sb_uninflected_bysize = bysize(pl_sb_uninflected_endings)
+pl_sb_uninflected_bysize: Final = bysize(pl_sb_uninflected_endings)
 
 
 # SINGULAR WORDS ENDING IN ...s (ALL INFLECT WITH ...es)
 
-pl_sb_singular_s_complete = [
+pl_sb_singular_s_complete: Final = [
     "acropolis",
     "aegis",
     "alias",
@@ -1093,20 +1147,21 @@ pl_sb_singular_s_complete = [
     "rhinoceros",
     "sassafras",
     "trellis",
-] + pl_sb_C_is_ides_complete
+    *pl_sb_C_is_ides_complete,
+]
 
 
-pl_sb_singular_s_endings = ["ss", "us"] + pl_sb_C_is_ides_endings
+pl_sb_singular_s_endings: Final = ["ss", "us", *pl_sb_C_is_ides_endings]
 
-pl_sb_singular_s_bysize = bysize(pl_sb_singular_s_endings)
+pl_sb_singular_s_bysize: Final = bysize(pl_sb_singular_s_endings)
 
-si_sb_singular_s_complete = [f"{w}es" for w in pl_sb_singular_s_complete]
-si_sb_singular_s_endings = [f"{w}es" for w in pl_sb_singular_s_endings]
-si_sb_singular_s_bysize = bysize(si_sb_singular_s_endings)
+si_sb_singular_s_complete: Final = [f"{w}es" for w in pl_sb_singular_s_complete]
+si_sb_singular_s_endings: Final = [f"{w}es" for w in pl_sb_singular_s_endings]
+si_sb_singular_s_bysize: Final = bysize(si_sb_singular_s_endings)
 
-pl_sb_singular_s_es = ["[A-Z].*es"]
+pl_sb_singular_s_es: Final = ["[A-Z].*es"]
 
-pl_sb_singular_s = enclose(
+pl_sb_singular_s: Final = enclose(
     "|".join(
         pl_sb_singular_s_complete
         + [f".*{w}" for w in pl_sb_singular_s_endings]
@@ -1118,11 +1173,11 @@ pl_sb_singular_s = enclose(
 # PLURALS ENDING IN uses -> use
 
 
-si_sb_ois_oi_case = ("Bolshois", "Hanois")
+si_sb_ois_oi_case: Final = ("Bolshois", "Hanois")
 
-si_sb_uses_use_case = ("Betelgeuses", "Duses", "Meuses", "Syracuses", "Toulouses")
+si_sb_uses_use_case: Final = ("Betelgeuses", "Duses", "Meuses", "Syracuses", "Toulouses")
 
-si_sb_uses_use = (
+si_sb_uses_use: Final = (
     "abuses",
     "applauses",
     "blouses",
@@ -1154,7 +1209,7 @@ si_sb_uses_use = (
     "uses",
 )
 
-si_sb_ies_ie_case = (
+si_sb_ies_ie_case: Final = (
     "Addies",
     "Aggies",
     "Allies",
@@ -1313,7 +1368,7 @@ si_sb_ies_ie_case = (
     "Yorkies",
 )
 
-si_sb_ies_ie = (
+si_sb_ies_ie: Final = (
     "aeries",
     "baggies",
     "belies",
@@ -1388,7 +1443,7 @@ si_sb_ies_ie = (
 )
 
 
-si_sb_oes_oe_case = (
+si_sb_oes_oe_case: Final = (
     "Chloes",
     "Crusoes",
     "Defoes",
@@ -1406,7 +1461,7 @@ si_sb_oes_oe_case = (
     "Zoes",
 )
 
-si_sb_oes_oe = (
+si_sb_oes_oe: Final = (
     "aloes",
     "backhoes",
     "canoes",
@@ -1425,11 +1480,11 @@ si_sb_oes_oe = (
     "woes",
 )
 
-si_sb_z_zes = ("quartzes", "topazes")
+si_sb_z_zes: Final = ("quartzes", "topazes")
 
-si_sb_zzes_zz = ("buzzes", "fizzes", "frizzes", "razzes")
+si_sb_zzes_zz: Final = ("buzzes", "fizzes", "frizzes", "razzes")
 
-si_sb_ches_che_case = (
+si_sb_ches_che_case: Final = (
     "Andromaches",
     "Apaches",
     "Blanches",
@@ -1439,7 +1494,7 @@ si_sb_ches_che_case = (
     "Roches",
 )
 
-si_sb_ches_che = (
+si_sb_ches_che: Final = (
     "aches",
     "avalanches",
     "backaches",
@@ -1462,10 +1517,10 @@ si_sb_ches_che = (
     "tranches",
 )
 
-si_sb_xes_xe = ("annexes", "axes", "deluxes", "pickaxes")
+si_sb_xes_xe: Final = ("annexes", "axes", "deluxes", "pickaxes")
 
-si_sb_sses_sse_case = ("Hesses", "Jesses", "Larousses", "Matisses")
-si_sb_sses_sse = (
+si_sb_sses_sse_case: Final = ("Hesses", "Jesses", "Larousses", "Matisses")
+si_sb_sses_sse: Final = (
     "bouillabaisses",
     "crevasses",
     "demitasses",
@@ -1474,12 +1529,12 @@ si_sb_sses_sse = (
     "posses",
 )
 
-si_sb_ves_ve_case = (
+si_sb_ves_ve_case: Final = (
     # *[nwl]ives -> [nwl]live
     "Clives",
     "Palmolives",
 )
-si_sb_ves_ve = (
+si_sb_ves_ve: Final = (
     # *[^d]eaves -> eave
     "interweaves",
     "weaves",
@@ -1495,31 +1550,33 @@ si_sb_ves_ve = (
 )
 
 
-plverb_special_s = enclose(
-    "|".join(
-        [pl_sb_singular_s]
-        + pl_sb_uninflected_s
-        + list(pl_sb_irregular_s)
-        + ["(.*[csx])is", "(.*)ceps", "[A-Z].*s"]
-    )
+plverb_special_s: Final = enclose(
+    "|".join([
+        pl_sb_singular_s,
+        *pl_sb_uninflected_s,
+        *list(pl_sb_irregular_s),
+        "(.*[csx])is",
+        "(.*)ceps",
+        "[A-Z].*s",
+    ])
 )
 
-_pl_sb_postfix_adj_defn = (
+_pl_sb_postfix_adj_defn: Final = (
     ("general", enclose(r"(?!major|lieutenant|brigadier|adjutant|.*star)\S+")),
     ("martial", enclose("court")),
     ("force", enclose("pound")),
 )
 
-pl_sb_postfix_adj: Iterable[str] = (
+pl_sb_postfix_adj: Final[Iterable[str]] = (
     enclose(val + f"(?=(?:-|\\s+){key})") for key, val in _pl_sb_postfix_adj_defn
 )
 
-pl_sb_postfix_adj_stems = f"({'|'.join(pl_sb_postfix_adj)})(.*)"
+pl_sb_postfix_adj_stems: Final = f"({'|'.join(pl_sb_postfix_adj)})(.*)"
 
 
 # PLURAL WORDS ENDING IS es GO TO SINGULAR is
 
-si_sb_es_is = (
+si_sb_es_is: Final = (
     "amanuenses",
     "amniocenteses",
     "analyses",
@@ -1588,22 +1645,59 @@ si_sb_es_is = (
     "urinalyses",
 )
 
-pl_prep_list = """
-    about above across after among around at athwart before behind
-    below beneath beside besides between betwixt beyond but by
-    during except for from in into near of off on onto out over
-    since till to under until unto upon with""".split()
+pl_prep_list: Final = [
+    "about",
+    "above",
+    "across",
+    "after",
+    "among",
+    "around",
+    "at",
+    "athwart",
+    "before",
+    "behind",
+    "below",
+    "beneath",
+    "beside",
+    "besides",
+    "between",
+    "betwixt",
+    "beyond",
+    "but",
+    "by",
+    "during",
+    "except",
+    "for",
+    "from",
+    "in",
+    "into",
+    "near",
+    "of",
+    "off",
+    "on",
+    "onto",
+    "out",
+    "over",
+    "since",
+    "till",
+    "to",
+    "under",
+    "until",
+    "unto",
+    "upon",
+    "with",
+]
 
-pl_prep_list_da = pl_prep_list + ["de", "du", "da"]
+pl_prep_list_da: Final = [*pl_prep_list, "de", "du", "da"]
 
-pl_prep_bysize = bysize(pl_prep_list_da)
+pl_prep_bysize: Final = bysize(pl_prep_list_da)
 
-pl_prep = enclose("|".join(pl_prep_list_da))
+pl_prep: Final = enclose("|".join(pl_prep_list_da))
 
-pl_sb_prep_dual_compound = rf"(.*?)((?:-|\s+)(?:{pl_prep})(?:-|\s+))a(?:-|\s+)(.*)"
+pl_sb_prep_dual_compound: Final = rf"(.*?)((?:-|\s+)(?:{pl_prep})(?:-|\s+))a(?:-|\s+)(.*)"
 
 
-singular_pronoun_genders = {
+singular_pronoun_genders: Final = {
     "neuter",
     "feminine",
     "masculine",
@@ -1612,7 +1706,7 @@ singular_pronoun_genders = {
     "masculine or feminine",
 }
 
-pl_pron_nom = {
+pl_pron_nom: Final = {
     # NOMINATIVE    REFLEXIVE
     "i": "we",
     "myself": "ourselves",
@@ -1641,7 +1735,7 @@ si_pron: Dict[str, Dict[str, Union[str, Dict[str, str]]]] = {
 si_pron["nom"]["we"] = "I"
 
 
-pl_pron_acc = {
+pl_pron_acc: Final = {
     # ACCUSATIVE    REFLEXIVE
     "me": "us",
     "myself": "ourselves",
@@ -1657,8 +1751,8 @@ pl_pron_acc = {
     "themself": "themselves",
 }
 
-pl_pron_acc_keys = enclose("|".join(pl_pron_acc))
-pl_pron_acc_keys_bysize = bysize(pl_pron_acc)
+pl_pron_acc_keys: Final = enclose("|".join(pl_pron_acc))
+pl_pron_acc_keys_bysize: Final = bysize(pl_pron_acc)
 
 si_pron["acc"] = {v: k for (k, v) in pl_pron_acc.items()}
 
@@ -1727,25 +1821,26 @@ for _thecase, _plur, _gend_sing in (
     si_pron[_thecase][_plur] = _gend_sing
 
 
-si_pron_acc_keys = enclose("|".join(si_pron["acc"]))
-si_pron_acc_keys_bysize = bysize(si_pron["acc"])
+si_pron_acc_keys: Final = enclose("|".join(si_pron["acc"]))
+si_pron_acc_keys_bysize: Final = bysize(si_pron["acc"])
 
 
-def get_si_pron(thecase, word, gender) -> str:
+def get_si_pron(thecase: str, word: str, gender: str) -> str:
     try:
         sing = si_pron[thecase][word]
     except KeyError:
         raise  # not a pronoun
-    try:
-        return sing[gender]  # has several types due to gender
-    except TypeError:
-        return cast(str, sing)  # answer independent of gender
+
+    if isinstance(sing, str):
+        return sing
+    else:
+        return sing[gender]
 
 
 # These dictionaries group verbs by first, second and third person
 # conjugations.
 
-plverb_irregular_pres = {
+plverb_irregular_pres: Final = {
     "am": "are",
     "are": "are",
     "is": "are",
@@ -1757,7 +1852,7 @@ plverb_irregular_pres = {
     "does": "do",
 }
 
-plverb_ambiguous_pres = {
+plverb_ambiguous_pres: Final = {
     "act": "act",
     "acts": "act",
     "blame": "blame",
@@ -1792,12 +1887,12 @@ plverb_ambiguous_pres = {
     "views": "view",
 }
 
-plverb_ambiguous_pres_keys = re.compile(
+plverb_ambiguous_pres_keys: Final = re.compile(
     rf"^({enclose('|'.join(plverb_ambiguous_pres))})((\s.*)?)$", re.IGNORECASE
 )
 
 
-plverb_irregular_non_pres = (
+plverb_irregular_non_pres: Final = (
     "did",
     "had",
     "ate",
@@ -1814,29 +1909,29 @@ plverb_irregular_non_pres = (
     "should",
 )
 
-plverb_ambiguous_non_pres = re.compile(
+plverb_ambiguous_non_pres: Final = re.compile(
     r"^((?:thought|saw|bent|will|might|cut))((\s.*)?)$", re.IGNORECASE
 )
 
 # "..oes" -> "..oe" (the rest are "..oes" -> "o")
 
-pl_v_oes_oe = ("canoes", "floes", "oboes", "roes", "throes", "woes")
-pl_v_oes_oe_endings_size4 = ("hoes", "toes")
-pl_v_oes_oe_endings_size5 = ("shoes",)
+pl_v_oes_oe: Final = ("canoes", "floes", "oboes", "roes", "throes", "woes")
+pl_v_oes_oe_endings_size4: Final = ("hoes", "toes")
+pl_v_oes_oe_endings_size5: Final = ("shoes",)
 
 
-pl_count_zero = ("0", "no", "zero", "nil")
+pl_count_zero: Final = ("0", "no", "zero", "nil")
 
 
-pl_count_one = ("1", "a", "an", "one", "each", "every", "this", "that")
+pl_count_one: Final = ("1", "a", "an", "one", "each", "every", "this", "that")
 
-pl_adj_special = {"a": "some", "an": "some", "this": "these", "that": "those"}
+pl_adj_special: Final = {"a": "some", "an": "some", "this": "these", "that": "those"}
 
-pl_adj_special_keys = re.compile(
+pl_adj_special_keys: Final = re.compile(
     rf"^({enclose('|'.join(pl_adj_special))})$", re.IGNORECASE
 )
 
-pl_adj_poss = {
+pl_adj_poss: Final = {
     "my": "our",
     "your": "your",
     "its": "their",
@@ -1845,7 +1940,7 @@ pl_adj_poss = {
     "their": "their",
 }
 
-pl_adj_poss_keys = re.compile(rf"^({enclose('|'.join(pl_adj_poss))})$", re.IGNORECASE)
+pl_adj_poss_keys: Final = re.compile(rf"^({enclose('|'.join(pl_adj_poss))})$", re.IGNORECASE)
 
 
 # 2. INDEFINITE ARTICLES
@@ -1854,7 +1949,7 @@ pl_adj_poss_keys = re.compile(rf"^({enclose('|'.join(pl_adj_poss))})$", re.IGNOR
 # CONSONANT FOLLOWED BY ANOTHER CONSONANT, AND WHICH ARE NOT LIKELY
 # TO BE REAL WORDS (OH, ALL RIGHT THEN, IT'S JUST MAGIC!)
 
-A_abbrev = re.compile(
+A_abbrev: Final = re.compile(
     r"""
 ^(?! FJO | [HLMNS]Y.  | RY[EO] | SQU
   | ( F[LR]? | [HL] | MN? | N | RH? | S[CHKLMNPTVW]? | X(YL)?) [AEIOU])
@@ -1867,24 +1962,24 @@ A_abbrev = re.compile(
 # 'y' FOLLOWED BY A CONSONANT. ANY OTHER Y-CONSONANT PREFIX THEREFORE
 # IMPLIES AN ABBREVIATION.
 
-A_y_cons = re.compile(r"^(y(b[lor]|cl[ea]|fere|gg|p[ios]|rou|tt))", re.IGNORECASE)
+A_y_cons: Final = re.compile(r"^(y(b[lor]|cl[ea]|fere|gg|p[ios]|rou|tt))", re.IGNORECASE)
 
 # EXCEPTIONS TO EXCEPTIONS
 
-A_explicit_a = re.compile(r"^((?:unabomber|unanimous|US))", re.IGNORECASE)
+A_explicit_a: Final = re.compile(r"^((?:unabomber|unanimous|US))", re.IGNORECASE)
 
-A_explicit_an = re.compile(
+A_explicit_an: Final = re.compile(
     r"^((?:euler|hour(?!i)|heir|honest|hono[ur]|mpeg))", re.IGNORECASE
 )
 
-A_ordinal_an = re.compile(r"^([aefhilmnorsx]-?th)", re.IGNORECASE)
+A_ordinal_an: Final = re.compile(r"^([aefhilmnorsx]-?th)", re.IGNORECASE)
 
-A_ordinal_a = re.compile(r"^([bcdgjkpqtuvwyz]-?th)", re.IGNORECASE)
+A_ordinal_a: Final = re.compile(r"^([bcdgjkpqtuvwyz]-?th)", re.IGNORECASE)
 
 
 # NUMERICAL INFLECTIONS
 
-nth = {
+nth: Final = {
     0: "th",
     1: "st",
     2: "nd",
@@ -1899,26 +1994,37 @@ nth = {
     12: "th",
     13: "th",
 }
-nth_suff = set(nth.values())
+nth_suff: Final = set(nth.values())
 
-ordinal = dict(
-    ty="tieth",
-    one="first",
-    two="second",
-    three="third",
-    five="fifth",
-    eight="eighth",
-    nine="ninth",
-    twelve="twelfth",
-)
+ordinal: Final = {
+    "ty": "tieth",
+    "one": "first",
+    "two": "second",
+    "three": "third",
+    "five": "fifth",
+    "eight": "eighth",
+    "nine": "ninth",
+    "twelve": "twelfth",
+}
 
-ordinal_suff = re.compile(rf"({'|'.join(ordinal)})\Z")
+ordinal_suff: Final = re.compile(rf"({'|'.join(ordinal)})\Z")
 
 
 # NUMBERS
 
-unit = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-teen = [
+unit: Final = [
+    "",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+]
+teen: Final = [
     "ten",
     "eleven",
     "twelve",
@@ -1930,7 +2036,7 @@ teen = [
     "eighteen",
     "nineteen",
 ]
-ten = [
+ten: Final = [
     "",
     "",
     "twenty",
@@ -1942,7 +2048,7 @@ ten = [
     "eighty",
     "ninety",
 ]
-mill = [
+mill: Final = [
     " ",
     " thousand",
     " million",
@@ -1960,63 +2066,68 @@ mill = [
 
 # SUPPORT CLASSICAL PLURALIZATIONS
 
-def_classical = dict(
-    all=False, zero=False, herd=False, names=True, persons=False, ancient=False
-)
+def_classical: Final = {
+    "all": False,
+    "zero": False,
+    "herd": False,
+    "names": True,
+    "persons": False,
+    "ancient": False,
+}
 
-all_classical = {k: True for k in def_classical}
-no_classical = {k: False for k in def_classical}
+all_classical: Final = dict.fromkeys(def_classical, True)
+no_classical: Final = dict.fromkeys(def_classical, False)
 
 
 # Maps strings to built-in constant types
-string_to_constant = {"True": True, "False": False, "None": None}
+string_to_constant: Final = {"True": True, "False": False, "None": None}
 
 
 # Pre-compiled regular expression objects
-DOLLAR_DIGITS = re.compile(r"\$(\d+)")
-FUNCTION_CALL = re.compile(r"((\w+)\([^)]*\)*)", re.IGNORECASE)
-PARTITION_WORD = re.compile(r"\A(\s*)(.+?)(\s*)\Z")
-PL_SB_POSTFIX_ADJ_STEMS_RE = re.compile(
+DOLLAR_DIGITS: Final = re.compile(r"\$(\d+)")
+FUNCTION_CALL: Final = re.compile(r"((\w+)\([^)]*\)*)", re.IGNORECASE)
+PARTITION_WORD: Final = re.compile(r"\A(\s*)(.+?)(\s*)\Z")
+PL_SB_POSTFIX_ADJ_STEMS_RE: Final = re.compile(
     rf"^(?:{pl_sb_postfix_adj_stems})$", re.IGNORECASE
 )
-PL_SB_PREP_DUAL_COMPOUND_RE = re.compile(
+PL_SB_PREP_DUAL_COMPOUND_RE: Final = re.compile(
     rf"^(?:{pl_sb_prep_dual_compound})$", re.IGNORECASE
 )
-DENOMINATOR = re.compile(r"(?P<denominator>.+)( (per|a) .+)")
-PLVERB_SPECIAL_S_RE = re.compile(rf"^({plverb_special_s})$")
-WHITESPACE = re.compile(r"\s")
-ENDS_WITH_S = re.compile(r"^(.*[^s])s$", re.IGNORECASE)
-ENDS_WITH_APOSTROPHE_S = re.compile(r"^(.+)'s?$")
-INDEFINITE_ARTICLE_TEST = re.compile(r"\A(\s*)(?:an?\s+)?(.+?)(\s*)\Z", re.IGNORECASE)
-SPECIAL_AN = re.compile(r"^[aefhilmnorsx]$", re.IGNORECASE)
-SPECIAL_A = re.compile(r"^[bcdgjkpqtuvwyz]$", re.IGNORECASE)
-SPECIAL_ABBREV_AN = re.compile(r"^[aefhilmnorsx][.-]", re.IGNORECASE)
-SPECIAL_ABBREV_A = re.compile(r"^[a-z][.-]", re.IGNORECASE)
-CONSONANTS = re.compile(r"^[^aeiouy]", re.IGNORECASE)
-ARTICLE_SPECIAL_EU = re.compile(r"^e[uw]", re.IGNORECASE)
-ARTICLE_SPECIAL_ONCE = re.compile(r"^onc?e\b", re.IGNORECASE)
-ARTICLE_SPECIAL_ONETIME = re.compile(r"^onetime\b", re.IGNORECASE)
-ARTICLE_SPECIAL_UNIT = re.compile(r"^uni([^nmd]|mo)", re.IGNORECASE)
-ARTICLE_SPECIAL_UBA = re.compile(r"^u[bcfghjkqrst][aeiou]", re.IGNORECASE)
-ARTICLE_SPECIAL_UKR = re.compile(r"^ukr", re.IGNORECASE)
-SPECIAL_CAPITALS = re.compile(r"^U[NK][AIEO]?")
-VOWELS = re.compile(r"^[aeiou]", re.IGNORECASE)
+DENOMINATOR: Final = re.compile(r"(?P<denominator>.+)( (per|a) .+)")
+PLVERB_SPECIAL_S_RE: Final = re.compile(rf"^({plverb_special_s})$")
+WHITESPACE: Final = re.compile(r"\s")
+ENDS_WITH_S: Final = re.compile(r"^(.*[^s])s$", re.IGNORECASE)
+ENDS_WITH_APOSTROPHE_S: Final = re.compile(r"^(.+)'s?$")
+INDEFINITE_ARTICLE_TEST: Final = re.compile(r"\A(\s*)(?:an?\s+)?(.+?)(\s*)\Z", re.IGNORECASE)
+SPECIAL_AN: Final = re.compile(r"^[aefhilmnorsx]$", re.IGNORECASE)
+SPECIAL_A: Final = re.compile(r"^[bcdgjkpqtuvwyz]$", re.IGNORECASE)
+SPECIAL_ABBREV_AN: Final = re.compile(r"^[aefhilmnorsx][.-]", re.IGNORECASE)
+SPECIAL_ABBREV_A: Final = re.compile(r"^[a-z][.-]", re.IGNORECASE)
+CONSONANTS: Final = re.compile(r"^[^aeiouy]", re.IGNORECASE)
+ARTICLE_SPECIAL_EU: Final = re.compile(r"^e[uw]", re.IGNORECASE)
+ARTICLE_SPECIAL_ONCE: Final = re.compile(r"^onc?e\b", re.IGNORECASE)
+ARTICLE_SPECIAL_ONETIME: Final = re.compile(r"^onetime\b", re.IGNORECASE)
+ARTICLE_SPECIAL_UNIT: Final = re.compile(r"^uni([^nmd]|mo)", re.IGNORECASE)
+ARTICLE_SPECIAL_UBA: Final = re.compile(r"^u[bcfghjkqrst][aeiou]", re.IGNORECASE)
+ARTICLE_SPECIAL_UKR: Final = re.compile(r"^ukr", re.IGNORECASE)
+SPECIAL_CAPITALS: Final = re.compile(r"^U[NK][AIEO]?")
+VOWELS: Final = re.compile(r"^[aeiou]", re.IGNORECASE)
 
-DIGIT_GROUP = re.compile(r"(\d)")
-TWO_DIGITS = re.compile(r"(\d)(\d)")
-THREE_DIGITS = re.compile(r"(\d)(\d)(\d)")
-THREE_DIGITS_WORD = re.compile(r"(\d)(\d)(\d)(?=\D*\Z)")
-TWO_DIGITS_WORD = re.compile(r"(\d)(\d)(?=\D*\Z)")
-ONE_DIGIT_WORD = re.compile(r"(\d)(?=\D*\Z)")
+DIGIT_GROUP: Final = re.compile(r"(\d)")
+TWO_DIGITS: Final = re.compile(r"(\d)(\d)")
+THREE_DIGITS: Final = re.compile(r"(\d)(\d)(\d)")
+THREE_DIGITS_WORD: Final = re.compile(r"(\d)(\d)(\d)(?=\D*\Z)")
+TWO_DIGITS_WORD: Final = re.compile(r"(\d)(\d)(?=\D*\Z)")
+ONE_DIGIT_WORD: Final = re.compile(r"(\d)(?=\D*\Z)")
 
-FOUR_DIGIT_COMMA = re.compile(r"(\d)(\d{3}(?:,|\Z))")
-NON_DIGIT = re.compile(r"\D")
-WHITESPACES_COMMA = re.compile(r"\s+,")
-COMMA_WORD = re.compile(r", (\S+)\s+\Z")
-WHITESPACES = re.compile(r"\s+")
+FOUR_DIGIT_COMMA: Final = re.compile(r"(\d)(\d{3}(?:,|\Z))")
+NON_DIGIT: Final = re.compile(r"\D")
+WHITESPACES_COMMA: Final = re.compile(r"\s+,")
+COMMA_WORD: Final = re.compile(r", (\S+)\s+\Z")
+WHITESPACES: Final = re.compile(r"\s+")
 
 
-PRESENT_PARTICIPLE_REPLACEMENTS = (
+PRESENT_PARTICIPLE_REPLACEMENTS: Final = (
     (re.compile(r"ie$"), r"y"),
     (
         re.compile(r"ue$"),
@@ -2033,16 +2144,16 @@ PRESENT_PARTICIPLE_REPLACEMENTS = (
     (re.compile(r"([^aeiou][aeiouy]([bdgmnprst]))$"), r"\g<1>\g<2>"),
 )
 
-DIGIT = re.compile(r"\d")
+DIGIT: Final = re.compile(r"\d")
 
 
-class Words(str):
+class Words(str):  # noqa: FURB189, SLOT000
     lowered: str
     split_: List[str]
     first: str
     last: str
 
-    def __init__(self, orig) -> None:
+    def __init__(self, _: str) -> None:
         self.lowered = self.lower()
         self.split_ = self.split()
         self.first = self.split_[0]
@@ -2056,19 +2167,19 @@ _STATIC_TYPE_CHECKING = TYPE_CHECKING
 # ^-- Workaround for typeguard AST manipulation:
 #     https://github.com/agronholm/typeguard/issues/353#issuecomment-1556306554
 
-if _STATIC_TYPE_CHECKING:  # pragma: no cover
+if TYPE_CHECKING:  # pragma: no cover
     Word = Annotated[str, "String with at least 1 character"]
 else:
 
     class _WordMeta(type):  # Too dynamic to be supported by mypy...
-        def __instancecheck__(self, instance: Any) -> bool:
+        def __instancecheck__(cls, instance: Any) -> bool:
             return isinstance(instance, str) and len(instance) >= 1
 
     class Word(metaclass=_WordMeta):  # type: ignore[no-redef]
         """String with at least 1 character"""
 
 
-class engine:
+class engine:  # noqa: N801
     def __init__(self) -> None:
         self.classical_dict = def_classical.copy()
         self.persistent_count: Optional[int] = None
@@ -2082,11 +2193,11 @@ class engine:
         self.__number_args: Optional[Dict[str, str]] = None
 
     @property
-    def _number_args(self):
-        return cast(Dict[str, str], self.__number_args)
+    def _number_args(self) -> Dict[str, str]:
+        return cast("Dict[str, str]", self.__number_args)
 
     @_number_args.setter
-    def _number_args(self, val):
+    def _number_args(self, val: Optional[Dict[str, str]]) -> None:
         self.__number_args = val
 
     @typechecked
@@ -2182,12 +2293,12 @@ class engine:
                 if wordlist[i + 1] is None:
                     return None
                 pl = DOLLAR_DIGITS.sub(
-                    r"\\1", cast(Word, wordlist[i + 1])
+                    r"\\1", cast("Word", wordlist[i + 1])
                 )  # change $n to \n for expand
                 return mo.expand(pl)
         return None
 
-    def classical(self, **kwargs) -> None:
+    def classical(self, **kwargs: bool) -> None:
         """
         turn classical mode on and off for various categories
 
@@ -2260,24 +2371,21 @@ class engine:
         else:
             raise BadGenderError
 
-    def _get_value_from_ast(self, obj):
+    def _get_value_from_ast(self, obj: ast.expr) -> Any:
         """
         Return the value of the ast object.
         """
         if isinstance(obj, ast.Constant):
             return obj.value
-        elif isinstance(obj, ast.List):
+        if isinstance(obj, ast.List):
             return [self._get_value_from_ast(e) for e in obj.elts]
-        elif isinstance(obj, ast.Tuple):
-            return tuple([self._get_value_from_ast(e) for e in obj.elts])
 
-        # Probably passed a variable name.
-        # Or passed a single word without wrapping it in quotes as an argument
-        # ex: p.inflect("I plural(see)") instead of p.inflect("I plural('see')")
-        raise NameError(f"name '{obj.id}' is not defined")
+        # NOTE: Removing raising error to make code simpler and avoid type error
+        assert isinstance(obj, ast.Tuple)
+        return tuple([self._get_value_from_ast(e) for e in obj.elts])
 
     def _string_to_substitute(
-        self, mo: Match, methods_dict: Dict[str, Callable]
+        self, mo: Match[str], methods_dict: Dict[str, Callable[[Any], str]]
     ) -> str:
         """
         Return the string to be substituted for the match.
@@ -2324,7 +2432,7 @@ class engine:
         save_persistent_count = self.persistent_count
 
         # Dictionary of allowed methods
-        methods_dict: Dict[str, Callable] = {
+        methods_dict: Dict[str, Callable[[Any], Any]] = {
             "plural": self.plural,
             "plural_adj": self.plural_adj,
             "plural_noun": self.plural_noun,
@@ -2348,7 +2456,9 @@ class engine:
 
     # ## PLURAL SUBROUTINES
 
-    def postprocess(self, orig: str, inflected) -> str:
+    def postprocess(self, orig: str, inflected: Union[str, bool]) -> str:
+        assert isinstance(inflected, str)
+
         inflected = str(inflected)
         if "|" in inflected:
             word_options = inflected.split("|")
@@ -2382,8 +2492,7 @@ class engine:
         mo = PARTITION_WORD.search(text)
         if mo:
             return mo.group(1), mo.group(2), mo.group(3)
-        else:
-            return "", "", ""
+        return "", "", ""
 
     @typechecked
     def plural(self, text: Word, count: Optional[Union[str, int, Any]] = None) -> str:
@@ -2594,7 +2703,7 @@ class engine:
             return f"{pre}{plural}{post}"
         return False
 
-    def _plequal(self, word1: str, word2: str, pl) -> Union[str, bool]:
+    def _plequal(self, word1: str, word2: str, pl: Callable[[Any], Any]) -> Union[str, bool]:
         classval = self.classical_dict.copy()
         for dictionary in (all_classical, no_classical):
             self.classical_dict = dictionary.copy()
@@ -2815,8 +2924,7 @@ class engine:
         if word.lowered[-6:] == "person":
             if self.classical_dict["persons"]:
                 return f"{word}s"
-            else:
-                return f"{word[:-4]}ople"
+            return f"{word[:-4]}ople"
 
         # HANDLE FAMILIES OF IRREGULAR PLURALS
 
@@ -2831,8 +2939,8 @@ class engine:
         if word.lowered[-5:] == "mouse":
             return f"{word[:-5]}mice"
         if word.lowered[-5:] == "louse":
-            v = pl_sb_U_louse_lice_bysize.get(len(word))
-            if v and word.lowered in v:
+            x = pl_sb_U_louse_lice_bysize.get(len(word))
+            if x and word.lowered in x:
                 return f"{word[:-5]}lice"
             return f"{word}s"
         if word.lowered[-5:] == "goose":
@@ -2977,7 +3085,7 @@ class engine:
         return f"{word}s"
 
     @classmethod
-    def _handle_prepositional_phrase(cls, phrase, transform, sep):
+    def _handle_prepositional_phrase(cls, phrase: str, transform: Callable[[Any], Any], sep: str) -> str:
         """
         Given a word or phrase possibly separated by sep, parse out
         the prepositional phrase and apply the transform to the word
@@ -3002,7 +3110,7 @@ class engine:
             parts[: pivot - 1] + [sep.join([transformed, parts[pivot], ''])]
         ) + " ".join(parts[(pivot + 1) :])
 
-    def _handle_long_compounds(self, word: Words, count: int) -> Union[str, None]:
+    def _handle_long_compounds(self, word: Words, count: int) -> Optional[str]:
         """
         Handles the plural and singular for compound `Words` that
         have three or more words, based on the given count.
@@ -3012,7 +3120,7 @@ class engine:
         >>> engine()._handle_long_compounds(Words("men beyond hills"), 1)
         'man beyond hills'
         """
-        inflection = self._sinoun if count == 1 else self._plnoun
+        inflection = cast("Callable[[Any, Any], str]", self._sinoun if count == 1 else self._plnoun)
         solutions = (
             " ".join(
                 itertools.chain(
@@ -3027,7 +3135,7 @@ class engine:
         return next(solutions, None)
 
     @staticmethod
-    def _find_pivot(words, candidates):
+    def _find_pivot(words: List[str], candidates: List[str]) -> int:
         pivots = (
             index for index in range(1, len(words) - 1) if words[index] in candidates
         )
@@ -3323,8 +3431,8 @@ class engine:
         if words.lowered[-4:] == "mice":
             return word[:-4] + "mouse"
         if words.lowered[-4:] == "lice":
-            v = si_sb_U_louse_lice_bysize.get(len(word))
-            if v and words.lowered in v:
+            x = si_sb_U_louse_lice_bysize.get(len(word))
+            if x and words.lowered in x:
                 return word[:-4] + "louse"
         if words.lowered[-5:] == "geese":
             return word[:-5] + "goose"
@@ -3675,8 +3783,9 @@ class engine:
             except KeyError:
                 post = nth[n % 10]
             return f"{num}{post}"
-        else:
-            return self._sub_ord(num)
+
+        assert isinstance(num, Word)
+        return self._sub_ord(num)
 
     def millfn(self, ind: int = 0) -> str:
         if ind > len(mill) - 1:
@@ -3686,13 +3795,10 @@ class engine:
     def unitfn(self, units: int, mindex: int = 0) -> str:
         return f"{unit[units]}{self.millfn(mindex)}"
 
-    def tenfn(self, tens, units, mindex=0) -> str:
+    def tenfn(self, tens: int, units: int, mindex: int = 0) -> str:
         if tens != 1:
             tens_part = ten[tens]
-            if tens and units:
-                hyphen = "-"
-            else:
-                hyphen = ""
+            hyphen = "-" if tens and units else ""
             unit_part = unit[units]
             mill_part = self.millfn(mindex)
             return f"{tens_part}{hyphen}{unit_part}{mill_part}"
@@ -3710,23 +3816,21 @@ class engine:
             return f"{self.tenfn(tens, units)}{self.millfn(mindex)}, "
         return ""
 
-    def group1sub(self, mo: Match) -> str:
+    def group1sub(self, mo: Match[str]) -> str:
         units = int(mo.group(1))
         if units == 1:
             return f" {self._number_args['one']}, "
-        elif units:
+        if units:
             return f"{unit[units]}, "
-        else:
-            return f" {self._number_args['zero']}, "
+        return f" {self._number_args['zero']}, "
 
-    def group1bsub(self, mo: Match) -> str:
+    def group1bsub(self, mo: Match[str]) -> str:
         units = int(mo.group(1))
         if units:
             return f"{unit[units]}, "
-        else:
-            return f" {self._number_args['zero']}, "
+        return f" {self._number_args['zero']}, "
 
-    def group2sub(self, mo: Match) -> str:
+    def group2sub(self, mo: Match[str]) -> str:
         tens = int(mo.group(1))
         units = int(mo.group(2))
         if tens:
@@ -3735,7 +3839,7 @@ class engine:
             return f" {self._number_args['zero']} {unit[units]}, "
         return f" {self._number_args['zero']} {self._number_args['zero']}, "
 
-    def group3sub(self, mo: Match) -> str:
+    def group3sub(self, mo: Match[str]) -> str:
         hundreds = int(mo.group(1))
         tens = int(mo.group(2))
         units = int(mo.group(3))
@@ -3753,17 +3857,17 @@ class engine:
             tenword = f" {self._number_args['zero']} {self._number_args['zero']}"
         return f"{hunword} {tenword}, "
 
-    def hundsub(self, mo: Match) -> str:
+    def hundsub(self, mo: Match[str]) -> str:
         ret = self.hundfn(
             int(mo.group(1)), int(mo.group(2)), int(mo.group(3)), self.mill_count
         )
         self.mill_count += 1
         return ret
 
-    def tensub(self, mo: Match) -> str:
+    def tensub(self, mo: Match[str]) -> str:
         return f"{self.tenfn(int(mo.group(1)), int(mo.group(2)), self.mill_count)}, "
 
-    def unitsub(self, mo: Match) -> str:
+    def unitsub(self, mo: Match[str]) -> str:
         return f"{self.unitfn(int(mo.group(1)), self.mill_count)}, "
 
     def enword(self, num: str, group: int) -> str:
@@ -3784,6 +3888,8 @@ class engine:
         elif int(num) == 1:
             num = self._number_args["one"]
         else:
+            assert isinstance(num, str)
+
             num = num.lstrip().lstrip("0")
             self.mill_count = 0
             # surely there's a better way to do the next bit
@@ -3796,12 +3902,12 @@ class engine:
         return num
 
     @staticmethod
-    def _sub_ord(val):
+    def _sub_ord(val: Word) -> str:
         new = ordinal_suff.sub(lambda match: ordinal[match.group(1)], val)
         return new + "th" * (new == val)
 
     @classmethod
-    def _chunk_num(cls, num, decimal, group):
+    def _chunk_num(cls, num: Word, decimal: Union[Falsish, str], group: int) -> Tuple[List[str], bool]:
         if decimal:
             max_split = -1 if group != 0 else 1
             chunks = num.split(".", max_split)
@@ -3810,7 +3916,7 @@ class engine:
         return cls._remove_last_blank(chunks)
 
     @staticmethod
-    def _remove_last_blank(chunks):
+    def _remove_last_blank(chunks: List[str]) -> Tuple[List[str], bool]:
         """
         Remove the last item from chunks if it's a blank string.
 
@@ -3821,7 +3927,7 @@ class engine:
         return result, removed
 
     @staticmethod
-    def _get_sign(num):
+    def _get_sign(num: str) -> str:
         return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[0], '')
 
     @typechecked
@@ -3886,7 +3992,7 @@ class engine:
         loopstart = chunks[0] == ""
         first: bool | None = not loopstart
 
-        def _handle_chunk(chunk):
+        def _handle_chunk(chunk: str) -> str:
             nonlocal first
 
             # remove all non numeric \D
@@ -3940,7 +4046,7 @@ class engine:
         return signout + valout
 
     @staticmethod
-    def _render(chunks, decimal, comma):
+    def _render(chunks: List[str], decimal: Union[Falsish, str], comma: Union[Falsish, str]) -> Generator[str, None, None]:
         first_item = chunks.pop(0)
         yield first_item
         first = decimal is None or not first_item.endswith(decimal)
@@ -3979,19 +4085,13 @@ class engine:
             return words[0]
 
         if conj_spaced:
-            if conj == "":
-                conj = " "
-            else:
-                conj = f" {conj} "
+            conj = " " if conj == "" else f" {conj} "
 
         if len(words) == 2:
             return f"{words[0]}{conj}{words[1]}"
 
         if sep is None:
-            if "," in "".join(words):
-                sep = ";"
-            else:
-                sep = ","
+            sep = ";" if "," in "".join(words) else ","
         if final_sep is None:
             final_sep = sep
 
