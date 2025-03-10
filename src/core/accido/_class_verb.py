@@ -385,7 +385,13 @@ class Verb(_Word):
 
     def _participles(self) -> Endings:
         self._preptc_stem: str = self.infinitive[:-2]
+        if self.conjugation == 4:
+            self._preptc_stem += "e"
+        if self.conjugation == 5:
+            self._preptc_stem = self.infinitive[:-3]
+            self._preptc_stem += "ie"
         self._ppp_stem: str = self.ppp[:-2]
+
         return {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
