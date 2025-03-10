@@ -40,7 +40,7 @@ if getattr(_sys, "frozen", False) and hasattr(
     # Monkeypatch typeguard, as not supported with pyinstaller
     _sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
 
-from inflect import engine
+from ..._vendor.inflect import engine
 
 # Distinguish from the lemminflect module
 pluralinflect = engine()  # sourcery skip: avoid-global-variables
