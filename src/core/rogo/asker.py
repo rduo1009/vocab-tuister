@@ -156,7 +156,7 @@ def ask_question_without_sr(
             )
         else:
             raise RuntimeError(
-                f"Failed to generate a valid question after {MAX_RETRIES} retries"
+                f"Failed to generate a valid question after {MAX_RETRIES} retries."
             )
 
 
