@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import random
-from copy import deepcopy
 from typing import TYPE_CHECKING, Final, overload
 
 from ...utils import set_choice
@@ -599,7 +598,7 @@ def _generate_multiplechoice_engtolat(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
     # Remove `chosen_word` from copy of `vocab_list`
-    vocab_list = deepcopy(vocab_list)  # sourcery skip: name-type-suffix
+    vocab_list = vocab_list.copy()  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
 
     # Get a single meaning if it is `MultipleMeanings`

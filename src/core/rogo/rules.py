@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from copy import deepcopy
 from typing import TYPE_CHECKING, Final
 
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
@@ -174,7 +173,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     item: _Word
 
     # Iterate over copy of list to avoid errors
-    for item in deepcopy(vocab):
+    for item in vocab.copy():
         match item:
             case Verb():
                 current_conjugation: Conjugation = item.conjugation
