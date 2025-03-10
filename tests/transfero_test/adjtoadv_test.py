@@ -17,4 +17,4 @@ def test_adjtoadv():
 def test_adjtoadv_error():
     with pytest.raises(InvalidWordError) as error:
         adj_to_adv("house")
-    assert str(error.value) == "Word 'house' is not an adjective"
+    assert str(error.value) == "Word 'house' is not an adjective."

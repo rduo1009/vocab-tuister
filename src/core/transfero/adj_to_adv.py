@@ -50,4 +50,4 @@ def adj_to_adv(adjective: str) -> str:
     if adjective in ADJECTIVE_TO_ADVERB:
         return ADJECTIVE_TO_ADVERB[adjective]
 
-    raise InvalidWordError(f"Word '{adjective}' is not an adjective")
+    raise InvalidWordError(f"Word '{adjective}' is not an adjective.")
