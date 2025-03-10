@@ -18,11 +18,13 @@ def test_reader():
     assert l == VocabList([
         Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
         Verb("capio", "capere", "cepi", meaning="take"),
+        Verb("inquam", meaning="say"),
         Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
         Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
         Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
         Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog"),
         Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"),
+        Noun("ego", meaning="I"),
         Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
         Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
         Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
