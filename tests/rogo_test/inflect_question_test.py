@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import Gender
+from src.core.accido.misc import Gender, MultipleEndings
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
@@ -138,8 +138,7 @@ def test_inflect_question_adjective():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            for value in word.endings.values():
-                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
+            assert any(answer in v.get_all() if isinstance(v, MultipleEndings) else answer == v for v in word.endings.values())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -158,8 +157,7 @@ def test_inflect_question_noun():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            for value in word.endings.values():
-                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
+            assert any(answer in v.get_all() if isinstance(v, MultipleEndings) else answer == v for v in word.endings.values())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -178,8 +176,7 @@ def test_inflect_question_pronoun():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            for value in word.endings.values():
-                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
+            assert any(answer in v.get_all() if isinstance(v, MultipleEndings) else answer == v for v in word.endings.values())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -198,8 +195,7 @@ def test_inflect_question_verb():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            for value in word.endings.values():
-                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
+            assert any(answer in v.get_all() if isinstance(v, MultipleEndings) else answer == v for v in word.endings.values())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)

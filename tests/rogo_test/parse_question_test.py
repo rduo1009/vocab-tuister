@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from src.core.accido.endings import Adjective, Noun, Pronoun, Verb
-from src.core.accido.misc import ComponentsSubtype, Gender, Mood
+from src.core.accido.misc import ComponentsSubtype, Gender, Mood, MultipleEndings
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
@@ -183,10 +183,12 @@ def test_parse_question_verb():
         for answer in output.answers:
             if answer.subtype == ComponentsSubtype.PARTICIPLE:
                 assert answer.mood == Mood.PARTICIPLE
-                if isinstance(true_prompt := word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number), str):
+                if isinstance((true_prompt := word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number)), str):
                     assert true_prompt == output.prompt
-                else:
+                elif isinstance(true_prompt, MultipleEndings):
                     assert output.prompt in true_prompt.get_all()
+                else:
+                    pytest.fail(f"Did not expect true_prompt to be {type(true_prompt)}")
             elif answer.subtype == ComponentsSubtype.INFINITIVE:
                 assert answer.mood == Mood.INFINITIVE
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt

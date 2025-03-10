@@ -13,9 +13,9 @@
   INFO     src.server.app:app.py:63 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'hear: audio, audire, audivi, auditus'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:98 RegularWord(audio, audire, audivi, auditus, hear)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:99 RegularWord(audio, audire, audivi, auditus, hear)
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'take: capio, capere, cepi'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:98 RegularWord(capio, capere, cepi, , take)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:99 RegularWord(capio, capere, cepi, , take)
   DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Noun'
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'girl: puella, puellae, (f)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puella, puellae, feminine, girl)
@@ -724,9 +724,9 @@
   INFO     src.server.app:app.py:63 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'hear: audio, audire, audivi, auditus'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:98 RegularWord(audio, audire, audivi, auditus, hear)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:99 RegularWord(audio, audire, audivi, auditus, hear)
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'take: capio, capere, cepi'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:98 RegularWord(capio, capere, cepi, , take)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:99 RegularWord(capio, capere, cepi, , take)
   DEBUG    src.core.lego.reader:reader.py:212 Reading line '@ Noun'
   DEBUG    src.core.lego.reader:reader.py:212 Reading line 'girl: puella, puellae, (f)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puella, puellae, feminine, girl)
