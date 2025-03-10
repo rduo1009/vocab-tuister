@@ -7,7 +7,7 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
 from ._class_word import _Word
-from ._edge_cases import (
+from .edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
     NO_ADVERB_ADJECTIVES,
