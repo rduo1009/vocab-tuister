@@ -221,10 +221,7 @@ def _generate_typein_engtolat(
         and ending_components.person == 2
     )
 
-    pronoun_flag: bool = isinstance(chosen_word, Pronoun) or (
-        isinstance(chosen_word, Noun)
-        and ending_components.subtype == ComponentsSubtype.PRONOUN
-    )
+    pronoun_flag: bool = isinstance(chosen_word, Pronoun)
 
     answers: set[str] = {chosen_ending}
 
