@@ -138,7 +138,8 @@ def test_inflect_question_adjective():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            assert answer in word.endings.values()
+            for value in word.endings.values():
+                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -157,7 +158,8 @@ def test_inflect_question_noun():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            assert answer in word.endings.values()
+            for value in word.endings.values():
+                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -176,7 +178,8 @@ def test_inflect_question_pronoun():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            assert answer in word.endings.values()
+            for value in word.endings.values():
+                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)
@@ -195,7 +198,8 @@ def test_inflect_question_verb():
         assert output.main_answer in output.answers
 
         for answer in output.answers:
-            assert answer in word.endings.values()
+            for value in word.endings.values():
+                assert (answer == value) if isinstance(value, str) else (answer in value.get_all())
             assert output.components in word.find(answer)
 
         assert output.prompt == str(word)

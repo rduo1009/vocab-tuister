@@ -135,7 +135,6 @@ def test_parse_question_adjective():
         assert output.check(output.main_answer)
 
         assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
         for answer in output.answers:
             if answer.subtype == ComponentsSubtype.ADVERB:
                 assert word.get(degree=answer.degree, adverb=True) == output.prompt
@@ -153,7 +152,6 @@ def test_parse_question_noun():
         assert output.check(output.main_answer)
 
         assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
         for answer in output.answers:
             assert word.get(case=answer.case, number=answer.number) == output.prompt
 
@@ -168,7 +166,6 @@ def test_parse_question_pronoun():
         assert output.check(output.main_answer)
 
         assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
         for answer in output.answers:
             assert word.get(gender=answer.gender, case=answer.case, number=answer.number) == output.prompt
 
@@ -183,11 +180,13 @@ def test_parse_question_verb():
         assert output.check(output.main_answer)
 
         assert output.main_answer in output.answers
-        assert output.prompt in word.endings.values()
         for answer in output.answers:
             if answer.subtype == ComponentsSubtype.PARTICIPLE:
                 assert answer.mood == Mood.PARTICIPLE
-                assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number) == output.prompt
+                if isinstance(true_prompt := word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood, participle_case=answer.case, participle_gender=answer.gender, number=answer.number), str):
+                    assert true_prompt == output.prompt
+                else:
+                    assert output.prompt in true_prompt.get_all()
             elif answer.subtype == ComponentsSubtype.INFINITIVE:
                 assert answer.mood == Mood.INFINITIVE
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt

@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import pytest
 from src.core.accido.endings import Verb
-from src.core.accido.misc import Case, Gender, Mood, Number, Tense, Voice
+from src.core.accido.misc import Case, Gender, Mood, MultipleEndings, Number, Tense, Voice
 
 VERB_COMBINATIONS = (
     (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
@@ -259,11 +259,11 @@ PARTICIPLE_COMBINATIONS = (
 
 
 @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    "portans", "portans", "portantem", "portantis", "portanti", "portante",
+    "portans", "portans", "portantem", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
     "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
-    "portans", "portans", "portantem", "portantis", "portanti", "portante",
+    "portans", "portans", "portantem", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
     "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
-    "portans", "portans", "portans", "portantis", "portanti", "portante",
+    "portans", "portans", "portans", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
     "portantia", "portantia", "portantia", "portantium", "portantibus", "portantibus",
 
     "portatus", "portate", "portatum", "portati", "portato", "portato",
