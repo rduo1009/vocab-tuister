@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .type_aliases import Endings
 
 #  NOTE: There are deponents, but am keeping them for future
-# There also may be missing verbs
+# TODO: Expand these
 MIXED_CONJUGATION_VERBS: Final[set[str]] = {
     "abicio",
     "adicio",
@@ -47,6 +47,7 @@ MIXED_CONJUGATION_VERBS: Final[set[str]] = {
     "sapio",
     "subicio",
     "traicio",
+    "occipio",
 }
 
 
@@ -68,6 +69,7 @@ def check_mixed_conjugation_verb(present: str) -> bool:
     )
 
 
+# TODO: Expand these
 IRREGULAR_VERBS: Final[dict[str, Endings]] = {
     "sum": {
         "Vpreactindsg1": "sum",

@@ -15,6 +15,7 @@ from .misc import (
     EndingComponents,
     Gender,
     Mood,
+    MultipleEndings,
     MultipleMeanings,
     Number,
     Tense,
@@ -418,6 +419,11 @@ class Verb(_Word):
         assert self.ppp is not None
 
         self._preptc_stem: str = self.infinitive[:-2]
+        if self.conjugation == 4:
+            self._preptc_stem += "e"
+        if self.conjugation == 5:
+            self._preptc_stem = self.infinitive[:-3]
+            self._preptc_stem += "ie"
         self._ppp_stem: str = self.ppp[:-2]
 
         return {
@@ -426,7 +432,10 @@ class Verb(_Word):
             "Vpreactptcmaccsg": f"{self._preptc_stem}ntem",  # portantem
             "Vpreactptcmgensg": f"{self._preptc_stem}ntis",  # portantis
             "Vpreactptcmdatsg": f"{self._preptc_stem}nti",  # portanti
-            "Vpreactptcmablsg": f"{self._preptc_stem}nte",  # portante
+            "Vpreactptcmablsg": MultipleEndings(
+                regular=f"{self._preptc_stem}nti",  # portanti
+                absolute=f"{self._preptc_stem}nte",  # portante
+            ),
             "Vpreactptcmnompl": f"{self._preptc_stem}ntes",  # portantes
             "Vpreactptcmvocpl": f"{self._preptc_stem}ntes",  # portantes
             "Vpreactptcmaccpl": f"{self._preptc_stem}ntes",  # portantes
@@ -438,7 +447,10 @@ class Verb(_Word):
             "Vpreactptcfaccsg": f"{self._preptc_stem}ntem",  # portantem
             "Vpreactptcfgensg": f"{self._preptc_stem}ntis",  # portantis
             "Vpreactptcfdatsg": f"{self._preptc_stem}nti",  # portanti
-            "Vpreactptcfablsg": f"{self._preptc_stem}nte",  # portante
+            "Vpreactptcfablsg": MultipleEndings(
+                regular=f"{self._preptc_stem}nti",  # portanti
+                absolute=f"{self._preptc_stem}nte",  # portante
+            ),
             "Vpreactptcfnompl": f"{self._preptc_stem}ntes",  # portantes
             "Vpreactptcfvocpl": f"{self._preptc_stem}ntes",  # portantes
             "Vpreactptcfaccpl": f"{self._preptc_stem}ntes",  # portantes
@@ -450,7 +462,10 @@ class Verb(_Word):
             "Vpreactptcnaccsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcngensg": f"{self._preptc_stem}ntis",  # portantis
             "Vpreactptcndatsg": f"{self._preptc_stem}nti",  # portanti
-            "Vpreactptcnablsg": f"{self._preptc_stem}nte",  # portante
+            "Vpreactptcnablsg": MultipleEndings(
+                regular=f"{self._preptc_stem}nti",  # portanti
+                absolute=f"{self._preptc_stem}nte",  # portante
+            ),
             "Vpreactptcnnompl": f"{self._preptc_stem}ntia",  # portantia
             "Vpreactptcnvocpl": f"{self._preptc_stem}ntia",  # portantia
             "Vpreactptcnaccpl": f"{self._preptc_stem}ntia",  # portantia

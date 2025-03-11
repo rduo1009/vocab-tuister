@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 import pytest
 from src.core.accido.edge_cases import IRREGULAR_VERBS
 from src.core.accido.endings import Verb
-from src.core.accido.misc import Case, Gender, Mood, Number, Tense, Voice
+from src.core.accido.misc import Case, Gender, Mood, MultipleEndings, Number, Tense, Voice
 
 VERB_COMBINATIONS = (
     (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
@@ -263,21 +263,98 @@ PARTICIPLE_COMBINATIONS = (
 )
 
 
-@pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    "portans", "portans", "portantem", "portantis", "portanti", "portante",
-    "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
-    "portans", "portans", "portantem", "portantis", "portanti", "portante",
-    "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
-    "portans", "portans", "portans", "portantis", "portanti", "portante",
-    "portantia", "portantia", "portantia", "portantium", "portantibus", "portantibus",
+class TestParticipleConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "portans", "portans", "portantem", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
+        "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
+        "portans", "portans", "portantem", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
+        "portantes", "portantes", "portantes", "portantium", "portantibus", "portantibus",
+        "portans", "portans", "portans", "portantis", "portanti", MultipleEndings(regular="portanti", absolute="portante"),
+        "portantia", "portantia", "portantia", "portantium", "portantibus", "portantibus",
 
-    "portatus", "portate", "portatum", "portati", "portato", "portato",
-    "portati", "portati", "portatos", "portatorum", "portatis", "portatis",
-    "portata", "portata", "portatam", "portatae", "portatae", "portata",
-    "portatae", "portatae", "portatas", "portatarum", "portatis", "portatis",
-    "portatum", "portatum", "portatum", "portati", "portato", "portato",
-    "portata", "portata", "portata", "portatorum", "portatis", "portatis",
-])])  # fmt: skip
-def test_participle_conjugation(tense, voice, mood, participle_gender, participle_case, number, expected):
-    word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
-    assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+        "portatus", "portate", "portatum", "portati", "portato", "portato",
+        "portati", "portati", "portatos", "portatorum", "portatis", "portatis",
+        "portata", "portata", "portatam", "portatae", "portatae", "portata",
+        "portatae", "portatae", "portatas", "portatarum", "portatis", "portatis",
+        "portatum", "portatum", "portatum", "portati", "portato", "portato",
+        "portata", "portata", "portata", "portatorum", "portatis", "portatis",
+    ])])  # fmt: skip
+    def test_participle_firstconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "docens", "docens", "docentem", "docentis", "docenti", MultipleEndings(regular="docenti", absolute="docente"),
+        "docentes", "docentes", "docentes", "docentium", "docentibus", "docentibus",
+        "docens", "docens", "docentem", "docentis", "docenti", MultipleEndings(regular="docenti", absolute="docente"),
+        "docentes", "docentes", "docentes", "docentium", "docentibus", "docentibus",
+        "docens", "docens", "docens", "docentis", "docenti", MultipleEndings(regular="docenti", absolute="docente"),
+        "docentia", "docentia", "docentia", "docentium", "docentibus", "docentibus",
+
+        "doctus", "docte", "doctum", "docti", "docto", "docto",
+        "docti", "docti", "doctos", "doctorum", "doctis", "doctis",
+        "docta", "docta", "doctam", "doctae", "doctae", "docta",
+        "doctae", "doctae", "doctas", "doctarum", "doctis", "doctis",
+        "doctum", "doctum", "doctum", "docti", "docto", "docto",
+        "docta", "docta", "docta", "doctorum", "doctis", "doctis",
+    ])])  # fmt: skip
+    def test_participle_secondconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "trahens", "trahens", "trahentem", "trahentis", "trahenti", MultipleEndings(regular="trahenti", absolute="trahente"),
+        "trahentes", "trahentes", "trahentes", "trahentium", "trahentibus", "trahentibus",
+        "trahens", "trahens", "trahentem", "trahentis", "trahenti", MultipleEndings(regular="trahenti", absolute="trahente"),
+        "trahentes", "trahentes", "trahentes", "trahentium", "trahentibus", "trahentibus",
+        "trahens", "trahens", "trahens", "trahentis", "trahenti", MultipleEndings(regular="trahenti", absolute="trahente"),
+        "trahentia", "trahentia", "trahentia", "trahentium", "trahentibus", "trahentibus",
+
+        "tractus", "tracte", "tractum", "tracti", "tracto", "tracto",
+        "tracti", "tracti", "tractos", "tractorum", "tractis", "tractis",
+        "tracta", "tracta", "tractam", "tractae", "tractae", "tracta",
+        "tractae", "tractae", "tractas", "tractarum", "tractis", "tractis",
+        "tractum", "tractum", "tractum", "tracti", "tracto", "tracto",
+        "tracta", "tracta", "tracta", "tractorum", "tractis", "tractis",
+    ])])  # fmt: skip
+    def test_participle_thirdconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("traho", "trahere", "traxi", "tractus", meaning="begin")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "occipiens", "occipiens", "occipientem", "occipientis", "occipienti", MultipleEndings(regular="occipienti", absolute="occipiente"),
+        "occipientes", "occipientes", "occipientes", "occipientium", "occipientibus", "occipientibus",
+        "occipiens", "occipiens", "occipientem", "occipientis", "occipienti", MultipleEndings(regular="occipienti", absolute="occipiente"),
+        "occipientes", "occipientes", "occipientes", "occipientium", "occipientibus", "occipientibus",
+        "occipiens", "occipiens", "occipiens", "occipientis", "occipienti", MultipleEndings(regular="occipienti", absolute="occipiente"),
+        "occipientia", "occipientia", "occipientia", "occipientium", "occipientibus", "occipientibus",
+
+        "occeptus", "occepte", "occeptum", "occepti", "occepto", "occepto",
+        "occepti", "occepti", "occeptos", "occeptorum", "occeptis", "occeptis",
+        "occepta", "occepta", "occeptam", "occeptae", "occeptae", "occepta",
+        "occeptae", "occeptae", "occeptas", "occeptarum", "occeptis", "occeptis",
+        "occeptum", "occeptum", "occeptum", "occepti", "occepto", "occepto",
+        "occepta", "occepta", "occepta", "occeptorum", "occeptis", "occeptis",
+    ])])  # fmt: skip
+    def test_participle_mixedconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("occipio", "occipere", "occepi", "occeptus", meaning="begin")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "audiens", "audiens", "audientem", "audientis", "audienti", MultipleEndings(regular="audienti", absolute="audiente"),
+        "audientes", "audientes", "audientes", "audientium", "audientibus", "audientibus",
+        "audiens", "audiens", "audientem", "audientis", "audienti", MultipleEndings(regular="audienti", absolute="audiente"),
+        "audientes", "audientes", "audientes", "audientium", "audientibus", "audientibus",
+        "audiens", "audiens", "audiens", "audientis", "audienti", MultipleEndings(regular="audienti", absolute="audiente"),
+        "audientia", "audientia", "audientia", "audientium", "audientibus", "audientibus",
+
+        "auditus", "audite", "auditum", "auditi", "audito", "audito",
+        "auditi", "auditi", "auditos", "auditorum", "auditis", "auditis",
+        "audita", "audita", "auditam", "auditae", "auditae", "audita",
+        "auditae", "auditae", "auditas", "auditarum", "auditis", "auditis",
+        "auditum", "auditum", "auditum", "auditi", "audito", "audito",
+        "audita", "audita", "audita", "auditorum", "auditis", "auditis",
+    ])])  # fmt: skip
+    def test_participle_fourthconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected

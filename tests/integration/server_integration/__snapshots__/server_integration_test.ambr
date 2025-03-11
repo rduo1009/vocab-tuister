@@ -13,24 +13,24 @@
   INFO     src.server.app:app.py:63 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'hear: audio, audire, audivi, auditus'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(audio, audire, audivi, auditus, meaning=hear)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'take: capio, capere, cepi'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(capio, capere, cepi, None, meaning=take)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(capio, capere, cepi, None, meaning=take)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'say: inquam'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(inquam, None, None, None, meaning=say)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(inquam, None, None, None, meaning=say)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Noun'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'girl: puella, puellae, (f)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puella, puellae, gender=feminine, meaning=girl)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puella, puellae, gender=feminine, meaning=girl)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'farmer: agricola, agricolae, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'boy: puer, pueri, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puer, pueri, gender=masculine, meaning=boy)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puer, pueri, gender=masculine, meaning=boy)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'dog: canis, canis, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(canis, canis, gender=masculine, meaning=dog)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(canis, canis, gender=masculine, meaning=dog)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'name: nomen, nominis, (n)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(nomen, nominis, gender=neuter, meaning=name)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(nomen, nominis, gender=neuter, meaning=name)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'I: ego'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(ego, None, gender=None, meaning=I)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(ego, None, gender=None, meaning=I)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Adjective'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'large: ingens, ingentis, (3-1)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(ingens, ingentis, termination=1, declension=3, meaning=large)
@@ -667,7 +667,7 @@
         ]),
         'dictionary_entry': 'dog: canis, canis, (m)',
         'main_answer': 'genitive plural',
-        'prompt': 'canum',
+        'prompt': 'canium',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
@@ -709,24 +709,24 @@
   INFO     src.server.app:app.py:63 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'hear: audio, audire, audivi, auditus'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(audio, audire, audivi, auditus, meaning=hear)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'take: capio, capere, cepi'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(capio, capere, cepi, None, meaning=take)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(capio, capere, cepi, None, meaning=take)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'say: inquam'
-  DEBUG    src.core.accido._class_verb:_class_verb.py:109 RegularWord(inquam, None, None, None, meaning=say)
+  DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(inquam, None, None, None, meaning=say)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Noun'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'girl: puella, puellae, (f)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puella, puellae, gender=feminine, meaning=girl)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puella, puellae, gender=feminine, meaning=girl)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'farmer: agricola, agricolae, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'boy: puer, pueri, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(puer, pueri, gender=masculine, meaning=boy)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puer, pueri, gender=masculine, meaning=boy)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'dog: canis, canis, (m)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(canis, canis, gender=masculine, meaning=dog)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(canis, canis, gender=masculine, meaning=dog)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'name: nomen, nominis, (n)'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(nomen, nominis, gender=neuter, meaning=name)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(nomen, nominis, gender=neuter, meaning=name)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'I: ego'
-  DEBUG    src.core.accido._class_noun:_class_noun.py:106 Noun(ego, None, gender=None, meaning=I)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(ego, None, gender=None, meaning=I)
   DEBUG    src.core.lego.reader:reader.py:237 Reading line '@ Adjective'
   DEBUG    src.core.lego.reader:reader.py:237 Reading line 'large: ingens, ingentis, (3-1)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(ingens, ingentis, termination=1, declension=3, meaning=large)
@@ -828,9 +828,9 @@
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)'.
   INFO     src.core.rogo.asker:asker.py:141 Creating question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type TypeInEngToLatQuestion with word 'name: nomen, nominis, (n)'.
-  DEBUG    src.core.accido._class_noun:_class_noun.py:335 nomen.get(nominative, plural)
-  DEBUG    src.core.accido._class_noun:_class_noun.py:335 nomen.get(accusative, plural)
-  DEBUG    src.core.accido._class_noun:_class_noun.py:335 nomen.get(vocative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(nominative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(accusative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(vocative, plural)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(name, accusative plural, main=False)
   INFO     src.core.rogo.asker:asker.py:141 Creating question of type TypeInEngToLatQuestion with word 'name: nomen, nominis, (n)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type ParseWordLatToCompQuestion with word 'this: hic, haec, hoc'.
@@ -916,7 +916,7 @@
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(say, imperfect active indicative singular 3rd person, main=False)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(say, imperfect active indicative singular 3rd person, main=True)
   INFO     src.core.rogo.asker:asker.py:141 Creating question of type TypeInLatToEngQuestion with word 'say: inquam' succeeded.
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 9800
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /session HTTP/1.1" 200 9801
   
   '''
 # ---

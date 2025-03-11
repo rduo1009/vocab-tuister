@@ -119,6 +119,27 @@ class TestNounDeclension:
         assert noun_thirddeclension.get(case=case, number=number) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "civis", "civis", "civem", "civis", "civi", "cive",
+        "cives", "cives", "cives", "civium", "civibus", "civibus",
+    ])])  # fmt: skip
+    def test_thirddeclension_parisyllabic_1(self, case, number, expected):
+        assert Noun("civis", "civis", gender=Gender.MASCULINE, meaning="citizen").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "moles", "moles", "molem", "molis", "moli", "mole",
+        "moles", "moles", "moles", "molium", "molibus", "molibus",
+    ])])  # fmt: skip
+    def test_thirddeclension_parisyllabic_2(self, case, number, expected):
+        assert Noun("moles", "molis", gender=Gender.FEMININE, meaning="mass").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "mons", "mons", "montem", "montis", "monti", "monte",
+        "montes", "montes", "montes", "montium", "montibus", "montibus",
+    ])])  # fmt: skip
+    def test_thirddeclension_monosyllabic(self, case, number, expected):
+        assert Noun("mons", "montis", gender=Gender.MASCULINE, meaning="mountain").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "manus", "manus", "manum", "manus", "manui", "manu", "manus",
         "manus", "manus", "manuum", "manibus", "manibus",
     ])])  # fmt: skip
@@ -153,6 +174,27 @@ class TestNounNeuter:
         assert noun_thirddeclension_neuter.get(case=case, number=number) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "mare", "mare", "mare", "maris", "mari", "mari",
+        "maria", "maria", "maria", "marium", "maribus", "maribus",
+    ])])  # fmt: skip
+    def test_thirddeclension_istem_e(self, case, number, expected):
+        assert Noun("mare", "maris", gender=Gender.NEUTER, meaning="sea").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "animal", "animal", "animal", "animalis", "animali", "animali",
+        "animalia", "animalia", "animalia", "animalium", "animalibus", "animalibus",
+    ])])  # fmt: skip
+    def test_thirddeclension_istem_al(self, case, number, expected):
+        assert Noun("animal", "animalis", gender=Gender.NEUTER, meaning="animal").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "exemplar", "exemplar", "exemplar", "exemplaris", "exemplari", "exemplari",
+        "exemplaria", "exemplaria", "exemplaria", "exemplarium", "exemplaribus", "exemplaribus",
+    ])])  # fmt: skip
+    def test_thirddeclension_istem_ar(self, case, number, expected):
+        assert Noun("exemplar", "exemplaris", gender=Gender.NEUTER, meaning="example").get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "cornu", "cornu", "cornu", "cornus", "cornu", "cornu",
         "cornua", "cornua", "cornua", "cornuum", "cornibus", "cornibus",
     ])])  # fmt: skip
@@ -167,17 +209,23 @@ class TestNounPluraleTantum:
     def test_firstdeclension(self, noun_firstdeclension_plonly, case, number, expected):
         assert noun_firstdeclension_plonly.get(case=case, number=number) == expected
 
-    @pytest.mark.parametrize(("case", "number", "expected"),  [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
         "castra", "castra", "castra", "castrorum", "castris", "castris",
     ])])  # fmt: skip
     def test_seconddeclension(self, noun_seconddeclension_plonly, case, number, expected):
         assert noun_seconddeclension_plonly.get(case=case, number=number) == expected
 
-    @pytest.mark.parametrize(("case", "number", "expected"),  [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
         "opes", "opes", "opes", "opum", "opibus", "opibus",
     ])])  # fmt: skip
     def test_thirddeclension(self, noun_thirddeclension_plonly, case, number, expected):
         assert noun_thirddeclension_plonly.get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
+        "moenia", "moenia", "moenia", "moenium", "moenibus", "moenibus",
+    ])])  # fmt: skip
+    def test_thirddeclension_istem(self, case, number, expected):
+        assert Noun("moenia", "moenium", gender=Gender.NEUTER, meaning="walls").get(case=case, number=number) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[len(NOUN_COMBINATIONS) // 2 :][i] + (form,) for i, form in enumerate([
         "Quinquatrus", "Quinquatrus", "Quinquatrus", "Quinquatruum", "Quinquatribus", "Quinquatribus",
