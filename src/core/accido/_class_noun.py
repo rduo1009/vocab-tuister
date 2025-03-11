@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from functools import total_ordering
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Final, overload
 
 from ._class_word import _Word
 from .edge_cases import IRREGULAR_NOUNS
@@ -17,11 +17,14 @@ from .misc import (
     MultipleMeanings,
     Number,
 )
+from .syllables import count_syllables
 
 if TYPE_CHECKING:
     from .type_aliases import Ending, Endings, Meaning, NounDeclension
 
 logger: logging.Logger = logging.getLogger(__name__)
+
+CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
 
 @total_ordering
@@ -68,6 +71,7 @@ class Noun(_Word):
         "declension",
         "gender",
         "genitive",
+        "i_stem",
         "nominative",
         "plurale_tantum",
     )
@@ -138,6 +142,10 @@ class Noun(_Word):
 
         self._find_declension()
 
+        self.i_stem: bool = False
+        if self.declension == 3:
+            self.i_stem = self._determine_if_i_stem()
+
         self.endings = self._determine_endings()
 
         if self.gender == Gender.NEUTER:
@@ -147,6 +155,31 @@ class Noun(_Word):
             self.endings = {
                 k: v for k, v in self.endings.items() if not k.endswith("sg")
             }
+
+    def _determine_if_i_stem(self) -> bool:
+        if not self.plurale_tantum:
+            if self.gender in {Gender.MASCULINE, Gender.FEMININE}:
+                if (  # parisyllabic i-stem
+                    self.nominative.endswith(("is", "es"))
+                    and (
+                        count_syllables(self.nominative)
+                        == count_syllables(self.genitive)
+                    )
+                ) or (  # monosyllabic i-stem
+                    count_syllables(self.nominative) == 1
+                    and self.nominative[-1] in CONSONANTS
+                    and self.nominative[-2] in CONSONANTS
+                ):
+                    return True
+
+            elif self.nominative.endswith(("e", "al", "ar")):  # neuter i-stem
+                return True
+
+        elif self.genitive.endswith("ium"):  # plurale tantum has gen sg
+            self._stem = self.genitive[:-3]  # moenium -> moen-
+            return True
+
+        return False
 
     def _find_declension(self) -> None:
         # The ordering of this is strange because
@@ -239,7 +272,9 @@ class Noun(_Word):
                     "Nnompl": f"{self._stem}es",  # mercatores
                     "Nvocpl": f"{self._stem}es",  # mercatores
                     "Naccpl": f"{self._stem}es",  # mercatores
-                    "Ngenpl": f"{self._stem}um",  # mercatorum
+                    "Ngenpl": f"{self._stem}ium"  # montium
+                    if self.i_stem
+                    else f"{self._stem}um",  # mercatorum
                     "Ndatpl": f"{self._stem}ibus",  # mercatoribus
                     "Nablpl": f"{self._stem}ibus",  # mercatoribus
                 }
@@ -276,8 +311,23 @@ class Noun(_Word):
         }
 
     def _neuter_endings(self) -> None:
-        self.endings["Naccsg"] = self.nominative  # templum
         self.endings["Nvocsg"] = self.nominative  # templum
+        self.endings["Naccsg"] = self.nominative  # templum
+
+        if self.declension == 3 and self.i_stem:
+            self.endings["Nablsg"] = f"{self._stem}i"  # mari
+            self.endings["Nnompl"] = f"{self._stem}ia"  # maria
+            self.endings["Nvocpl"] = f"{self._stem}ia"  # maria
+            self.endings["Naccpl"] = f"{self._stem}ia"  # maria
+            self.endings["Ngenpl"] = f"{self._stem}ium"  # marium
+            return
+
+        if self.declension == 4:
+            self.endings["Nnompl"] = f"{self._stem}ua"  # cornua
+            self.endings["Nvocpl"] = f"{self._stem}ua"  # cornua
+            self.endings["Naccpl"] = f"{self._stem}ua"  # cornua
+            self.endings["Ndatsg"] = f"{self._stem}u"  # cornu
+            return
 
         if self.declension == 5:
             raise InvalidInputError(
@@ -285,17 +335,10 @@ class Noun(_Word):
                 f"(noun '{self.nominative}' given)"
             )
 
-        if self.declension == 4:
-            self.endings["Nnompl"] = f"{self._stem}ua"  # cornua
-            self.endings["Naccpl"] = f"{self._stem}ua"  # cornua
-            self.endings["Nvocpl"] = f"{self._stem}ua"  # cornua
-            self.endings["Ndatsg"] = f"{self._stem}u"  # cornu
-            return
-
         # For the other declensions
         self.endings["Nnompl"] = f"{self._stem}a"  # templa
-        self.endings["Naccpl"] = f"{self._stem}a"  # templa
         self.endings["Nvocpl"] = f"{self._stem}a"  # templa
+        self.endings["Naccpl"] = f"{self._stem}a"  # templa
 
     def get(self, *, case: Case, number: Number) -> Ending | None:
         """Return the ending of the noun.
