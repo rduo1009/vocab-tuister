@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import random
-from copy import deepcopy
 from typing import TYPE_CHECKING, Final, overload
 
 from ...utils import set_choice
@@ -74,10 +73,10 @@ def ask_question_without_sr(
     InvalidSettingsError
         If the settings in `settings` are invalid.
     """
-    vocab: Vocab = filter_words(vocab_list, settings)
+    filtered_vocab: Vocab = filter_words(vocab_list, settings)
     filtered_questions: set[QuestionClasses] = filter_questions(settings)
 
-    if len(vocab_list.vocab) < settings["number-multiplechoice-options"]:
+    if len(filtered_vocab) < settings["number-multiplechoice-options"]:
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_ENGTOLAT)
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_LATTOENG)
 
@@ -87,7 +86,7 @@ def ask_question_without_sr(
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:
-            chosen_word: _Word = random.choice(vocab)
+            chosen_word: _Word = random.choice(filtered_vocab)
             filtered_endings: Endings = filter_endings(
                 chosen_word.endings, settings
             )
@@ -126,14 +125,14 @@ def ask_question_without_sr(
 
                 case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
                     output = _generate_multiplechoice_engtolat(
-                        vocab,
+                        filtered_vocab,
                         chosen_word,
                         settings["number-multiplechoice-options"],
                     )
 
                 case QuestionClasses.MULTIPLECHOICE_LATTOENG:
                     output = _generate_multiplechoice_lattoeng(
-                        vocab,
+                        filtered_vocab,
                         chosen_word,
                         settings["number-multiplechoice-options"],
                     )
@@ -156,7 +155,7 @@ def ask_question_without_sr(
             )
         else:
             raise RuntimeError(
-                f"Failed to generate a valid question after {MAX_RETRIES} retries"
+                f"Failed to generate a valid question after {MAX_RETRIES} retries."
             )
 
 
@@ -221,10 +220,7 @@ def _generate_typein_engtolat(
         and ending_components.person == 2
     )
 
-    pronoun_flag: bool = isinstance(chosen_word, Pronoun) or (
-        isinstance(chosen_word, Noun)
-        and ending_components.subtype == ComponentsSubtype.PRONOUN
-    )
+    pronoun_flag: bool = isinstance(chosen_word, Pronoun)
 
     answers: set[str] = {chosen_ending}
 
@@ -526,7 +522,15 @@ def _generate_principal_parts_question(
     principal_parts: tuple[str, ...]
     match chosen_word:
         case Verb():
+            if chosen_word.conjugation == 0:  # irregular verb
+                return None
+
+            assert chosen_word.infinitive is not None
+            assert chosen_word.perfect is not None
+
             if chosen_word.ppp:
+                assert chosen_word.ppp is not None
+
                 principal_parts = (
                     chosen_word.present,
                     chosen_word.infinitive,
@@ -541,13 +545,12 @@ def _generate_principal_parts_question(
                 )
 
         case Noun():
-            if chosen_word.genitive:
-                principal_parts = (
-                    chosen_word.nominative,
-                    chosen_word.genitive,
-                )
-            else:  # irregular noun
+            if chosen_word.declension == 0:  # irregular noun
                 return None
+
+            assert chosen_word.genitive is not None
+
+            principal_parts = (chosen_word.nominative, chosen_word.genitive)
 
         case Adjective():
             match chosen_word.declension:
@@ -595,7 +598,7 @@ def _generate_multiplechoice_engtolat(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
     # Remove `chosen_word` from copy of `vocab_list`
-    vocab_list = deepcopy(vocab_list)  # sourcery skip: name-type-suffix
+    vocab_list = vocab_list.copy()  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
 
     # Get a single meaning if it is `MultipleMeanings`

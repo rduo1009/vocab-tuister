@@ -1,6 +1,7 @@
 @ Verb
 hear: audio, audire, audivi, auditus
 take: capio, capere, cepi
+say: inquam
 
 @ Noun
 girl: puella, puellae, (f)
@@ -8,6 +9,7 @@ farmer: agricola, agricolae, (m)
 boy: puer, pueri, (m)
 dog: canis, canis, (m)
 name: nomen, nominis, (n)
+I: ego
 
 @ Adjective
 large: ingens, ingentis, (3-1)

@@ -43,7 +43,7 @@ class RegularWord(_Word):
         word : str
         meaning : Meaning
         """
-        logger.debug("RegularWord(%s, %s)", word, meaning)
+        logger.debug("RegularWord(%s, meaning=%s)", word, meaning)
 
         super().__init__()
 
@@ -93,7 +93,7 @@ class RegularWord(_Word):
         return EndingComponents(string="")
 
     def __repr__(self) -> str:
-        return f"RegularWord({self.word}, {self.meaning})"
+        return f"RegularWord({self.word}, meaning={self.meaning})"
 
     def __str__(self) -> str:
         return f"{self.meaning}: {self.word}"

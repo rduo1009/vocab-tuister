@@ -108,17 +108,18 @@ class Noun(_Word):
             If the input is not valid (invalid value for `gender` or `genitive`).
         """
         logger.debug(
-            "Noun(%s, %s, %s, %s)", nominative, genitive, gender, meaning
+            "Noun(%s, %s, gender=%s, meaning=%s)",
+            nominative,
+            genitive,
+            gender,
+            meaning,
         )
 
         super().__init__()
 
-        if gender:
-            self.gender: Gender = gender
-
         self.nominative: str = nominative
-        if genitive:
-            self.genitive: str = genitive
+        self.genitive: str | None = genitive
+        self.gender: Gender | None = gender
         self.meaning: Meaning = meaning
         self.plurale_tantum: bool = False
 
@@ -130,6 +131,9 @@ class Noun(_Word):
             self.endings = IRREGULAR_NOUNS[nominative]
             self.declension = 0
             return
+
+        assert self.genitive is not None
+        assert self.gender is not None
 
         if not gender:
             raise InvalidInputError(
@@ -182,6 +186,8 @@ class Noun(_Word):
         return False
 
     def _find_declension(self) -> None:
+        assert self.genitive is not None
+
         # The ordering of this is strange because
         # e.g. ending -ei ends in 'i' as well as 'ei'
         # so 5th declension check must come before 2nd declension check, etc.
@@ -224,6 +230,8 @@ class Noun(_Word):
             )
 
     def _determine_endings(self) -> Endings:
+        assert self.genitive is not None
+
         match self.declension:
             case 1:
                 return {
@@ -407,12 +415,22 @@ class Noun(_Word):
         return output
 
     def __repr__(self) -> str:
+        if self.declension == 0:
+            return f"Noun({self.nominative}, meaning={self.meaning})"
+
+        assert self.gender is not None
+
         return (
             f"Noun({self.nominative}, {self.genitive}, "
-            f"{self.gender.regular}, {self.meaning})"
+            f"gender={self.gender.regular}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:
+        if self.declension == 0:
+            return f"{self.meaning}: {self.nominative}, (irregular)"
+
+        assert self.gender is not None
+
         return (
             f"{self.meaning}: {self.nominative}, "
             f"{self.genitive}, ({self.gender.shorthand})"

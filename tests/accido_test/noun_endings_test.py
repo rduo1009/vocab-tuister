@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
+from src.core.accido.edge_cases import IRREGULAR_NOUNS
 from src.core.accido.endings import Noun
 from src.core.accido.misc import Case, Gender, Number
 
@@ -151,6 +152,10 @@ class TestNounDeclension:
     ])])  # fmt: skip
     def test_fifthdeclension(self, noun_fifthdeclension, case, number, expected):
         assert noun_fifthdeclension.get(case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("word"), IRREGULAR_NOUNS.keys())
+    def test_irregularverb(self, word):
+        assert Noun(word, meaning="placeholder").endings == IRREGULAR_NOUNS[word]
 
 
 class TestNounNeuter:

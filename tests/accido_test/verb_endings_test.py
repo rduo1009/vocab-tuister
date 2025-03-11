@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
+from src.core.accido.edge_cases import IRREGULAR_VERBS
 from src.core.accido.endings import Verb
 from src.core.accido.misc import Case, Gender, Mood, MultipleEndings, Number, Tense, Voice
 
@@ -146,6 +147,10 @@ class TestVerbConjugation:
     def test_irregularverb_eo(self, tense, voice, mood, person, number, expected):
         word = Verb("abeo", "abire", "abii", "abitum", meaning="depart")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("word"), IRREGULAR_VERBS.keys())
+    def test_irregularverb(self, word):
+        assert Verb(word, meaning="placeholder").endings == IRREGULAR_VERBS[word]
 
 
 class TestIrregularVerbInflection:
