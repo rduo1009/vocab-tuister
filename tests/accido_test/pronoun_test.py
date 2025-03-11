@@ -53,4 +53,4 @@ def test_get():
 def test_errors_cannot_recognise():
     with pytest.raises(InvalidInputError) as error:
         _ = Pronoun("error", meaning="this").endings
-    assert str(error.value) == "Pronoun 'error' not recognised"
+    assert str(error.value) == "Pronoun 'error' not recognised."

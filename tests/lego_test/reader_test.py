@@ -82,7 +82,7 @@ def test_invalidlinefmt():
 def test_nopos():
     with pytest.raises(InvalidVocabFileFormatError) as error:
         read_vocab_file(Path("tests/lego_test/testdata/no_pos_list.txt"))
-    assert str(error.value) == "Part of speech was not given"
+    assert str(error.value) == "Part of speech was not given."
 
 
 def test_invalidverbfmt():

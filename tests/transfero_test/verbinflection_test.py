@@ -30,13 +30,13 @@ def test_invalid_type_infinitive():
 def test_verb_error_not_implemented():
     with pytest.raises(NotImplementedError) as error:
         find_verb_inflections("attack", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1))
-    assert str(error.value) == "The present passive indicative has not been implemented"
+    assert str(error.value) == "The present passive indicative has not been implemented."
 
 
 def test_participle_error_not_implemented():
     with pytest.raises(NotImplementedError) as error:
         find_verb_inflections("attack", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, case=Case.NOMINATIVE, gender=Gender.MASCULINE, number=Number.SINGULAR))
-    assert str(error.value) == "The present passive participle has not been implemented"
+    assert str(error.value) == "The present passive participle has not been implemented."
 
 
 # TODO: Parametrize this?
