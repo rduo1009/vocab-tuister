@@ -161,6 +161,8 @@ class Noun(_Word):
             }
 
     def _determine_if_i_stem(self) -> bool:
+        assert self.genitive is not None
+
         if not self.plurale_tantum:
             if self.gender in {Gender.MASCULINE, Gender.FEMININE}:
                 if (  # parisyllabic i-stem

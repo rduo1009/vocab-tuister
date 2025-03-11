@@ -828,9 +828,9 @@
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)'.
   INFO     src.core.rogo.asker:asker.py:141 Creating question of type ParseWordLatToCompQuestion with word 'boy: puer, pueri, (m)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type TypeInEngToLatQuestion with word 'name: nomen, nominis, (n)'.
-  DEBUG    src.core.accido._class_noun:_class_noun.py:378 nomen.get(nominative, plural)
-  DEBUG    src.core.accido._class_noun:_class_noun.py:378 nomen.get(accusative, plural)
-  DEBUG    src.core.accido._class_noun:_class_noun.py:378 nomen.get(vocative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(nominative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(accusative, plural)
+  DEBUG    src.core.accido._class_noun:_class_noun.py:380 nomen.get(vocative, plural)
   DEBUG    src.core.transfero.words:words.py:59 find_inflection(name, accusative plural, main=False)
   INFO     src.core.rogo.asker:asker.py:141 Creating question of type TypeInEngToLatQuestion with word 'name: nomen, nominis, (n)' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:99 Creating new question of type ParseWordLatToCompQuestion with word 'this: hic, haec, hoc'.
