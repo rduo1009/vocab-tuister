@@ -133,11 +133,11 @@ class Noun(_Word):
 
         if not gender:
             raise InvalidInputError(
-                f"Noun '{nominative}' is not irregular but gender not provided"
+                f"Noun '{nominative}' is not irregular but gender not provided."
             )
         if not genitive:
             raise InvalidInputError(
-                f"Noun '{nominative}' is not irregular but genitive not provided"
+                f"Noun '{nominative}' is not irregular but genitive not provided."
             )
 
         self._find_declension()
@@ -289,7 +289,7 @@ class Noun(_Word):
 
         if self.declension == 5:
             raise InvalidInputError(
-                "Fifth declension nouns cannot be neuter "
+                "Fifth declension nouns cannot be neuter. "
                 f"(noun '{self.nominative}' given)"
             )
 
@@ -364,7 +364,7 @@ class Noun(_Word):
                 case=Case(key[1:4]), number=Number(key[4:6])
             )
         except (ValueError, IndexError) as e:
-            raise InvalidInputError(f"Key '{key}' is invalid") from e
+            raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
         output.string = f"{output.case.regular} {output.number.regular}"
         if self.declension == 0:

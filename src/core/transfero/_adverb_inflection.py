@@ -48,7 +48,7 @@ def find_adverb_inflections(
     try:
         lemmas: tuple[str, ...] = lemminflect.getLemma(adverb, "ADV")
     except KeyError as e:
-        raise InvalidWordError(f"Word '{adverb}' is not an adverb") from e
+        raise InvalidWordError(f"Word '{adverb}' is not an adverb.") from e
 
     inflections: set[str] = set()
     for lemma in lemmas:
@@ -91,7 +91,7 @@ def find_main_adverb_inflection(
     try:
         lemma: str = lemminflect.getLemma(adverb, "ADV")[0]
     except KeyError as e:
-        raise InvalidWordError(f"Word '{adverb}' is not an adverb") from e
+        raise InvalidWordError(f"Word '{adverb}' is not an adverb.") from e
 
     return _inflect_lemma(lemma, components.degree)[0]
 

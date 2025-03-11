@@ -275,7 +275,7 @@ def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
 
                 if not current:
                     raise InvalidVocabFileFormatError(
-                        "Part of speech was not given"
+                        "Part of speech was not given."
                     )
 
                 vocab.append(_parse_line(current, latin_parts, meaning, line))

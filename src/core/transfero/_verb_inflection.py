@@ -79,7 +79,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     try:
         lemmas: tuple[str, ...] = lemminflect.getLemma(verb, "VERB")
     except KeyError as e:
-        raise InvalidWordError(f"Word {verb} is not a verb") from e
+        raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
     inflections: set[str] = set()
     if hasattr(components, "number") and hasattr(components, "person"):
@@ -131,7 +131,7 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
     try:
         lemma: str = lemminflect.getLemma(verb, "VERB")[0]
     except KeyError as e:
-        raise InvalidWordError(f"Word {verb} is not a verb") from e
+        raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
     if hasattr(components, "number") and hasattr(components, "person"):
         return _find_lemma(
@@ -190,7 +190,7 @@ def _find_lemma(  # noqa: PLR0917
         case _:
             raise NotImplementedError(
                 f"The {tense.regular} {voice.regular} "
-                f"{mood.regular} has not been implemented"
+                f"{mood.regular} has not been implemented."
             )
 
 
@@ -418,7 +418,7 @@ def _find_participle_inflections(
         case _:
             raise NotImplementedError(
                 f"The {components.tense.regular} {components.voice.regular} "
-                "participle has not been implemented"
+                "participle has not been implemented."
             )
 
 

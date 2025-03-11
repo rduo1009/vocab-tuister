@@ -83,7 +83,7 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
     try:
         lemmas: tuple[str, ...] = lemminflect.getLemma(noun, "NOUN")
     except KeyError as e:
-        raise InvalidWordError(f"Word {noun} is not a noun") from e
+        raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
     inflections: set[str] = set()
     for lemma in lemmas:
@@ -122,7 +122,7 @@ def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
     try:
         lemma: str = lemminflect.getLemma(noun, "NOUN")[0]
     except KeyError as e:
-        raise InvalidWordError(f"Word {noun} is not a noun") from e
+        raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
     return _inflect_lemma(lemma, components.case, components.number)[0]
 

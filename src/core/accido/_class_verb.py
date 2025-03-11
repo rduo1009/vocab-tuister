@@ -659,7 +659,7 @@ class Verb(_Word):
                     mood=Mood(key[7:10]),
                 )
             except ValueError as e:
-                raise InvalidInputError(f"Key '{key}' is invalid") from e
+                raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} "
@@ -680,7 +680,7 @@ class Verb(_Word):
                     person=person_value,
                 )
             except ValueError as e:
-                raise InvalidInputError(f"Key '{key}' is invalid") from e
+                raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} "
@@ -700,7 +700,7 @@ class Verb(_Word):
                     number=Number(key[14:16]),
                 )
             except ValueError as e:
-                raise InvalidInputError(f"Key '{key}' is invalid") from e
+                raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
             output.string = (
                 f"{output.tense.regular} {output.voice.regular} participle "
@@ -709,7 +709,7 @@ class Verb(_Word):
             )
             return output
 
-        raise InvalidInputError(f"Key '{key}' is invalid")
+        raise InvalidInputError(f"Key '{key}' is invalid.")
 
     def __repr__(self) -> str:
         if self.conjugation == 0:

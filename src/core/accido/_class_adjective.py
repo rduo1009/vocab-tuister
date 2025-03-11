@@ -182,7 +182,7 @@ class Adjective(_Word):
     def _212_endings(self) -> Endings:
         if len(self._principal_parts) != 3:
             raise InvalidInputError(
-                "2-1-2 adjectives must have 3 principal parts "
+                "2-1-2 adjectives must have 3 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
@@ -337,7 +337,7 @@ class Adjective(_Word):
     def _31_endings(self) -> Endings:
         if len(self._principal_parts) != 2:
             raise InvalidInputError(
-                "First-termination adjectives must have 2 principal parts "
+                "First-termination adjectives must have 2 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
@@ -345,7 +345,7 @@ class Adjective(_Word):
 
         if not self.mascgen.endswith("is"):
             raise InvalidInputError(
-                f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
+                f"Invalid genitive form: '{self.mascgen}'. (must end in '-is')"
             )
 
         self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
@@ -496,7 +496,7 @@ class Adjective(_Word):
     def _32_endings(self) -> Endings:
         if len(self._principal_parts) != 2:
             raise InvalidInputError(
-                "Second-termination adjectives must have 2 principal parts "
+                "Second-termination adjectives must have 2 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
@@ -649,7 +649,7 @@ class Adjective(_Word):
     def _33_endings(self) -> Endings:
         if len(self._principal_parts) != 3:
             raise InvalidInputError(
-                "Third-termination adjectives must have 3 principal parts "
+                "Third-termination adjectives must have 3 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
@@ -917,7 +917,7 @@ class Adjective(_Word):
                     number=Number(key[8:10]),
                 )
             except (ValueError, IndexError) as e:
-                raise InvalidInputError(f"Key '{key}' is invalid") from e
+                raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
             output.string = (
                 f"{output.degree.regular} {output.case.regular} "

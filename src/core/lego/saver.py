@@ -64,12 +64,12 @@ def save_vocab_dump(
     """
     if not file_path.parent.exists():
         raise FileNotFoundError(
-            f"The directory '{file_path.parent}' does not exist"
+            f"The directory '{file_path.parent}' does not exist."
         )
 
     if file_path.exists():
         warnings.warn(
-            f"The file '{file_path}' already exists and has been overwritten",
+            f"The file '{file_path}' already exists and has been overwritten.",
             stacklevel=2,
         )
 

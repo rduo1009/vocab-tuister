@@ -14,12 +14,12 @@ class TestAdjectiveErrors:
     def test_errors_wrong_number_principal_parts_212(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="212", meaning="happy")
-        assert str(error.value) == "2-1-2 adjectives must have 3 principal parts (adjective 'laetus' given)"
+        assert str(error.value) == "2-1-2 adjectives must have 3 principal parts (adjective 'laetus' given)."
 
     def test_errors_wrong_number_principal_parts_31(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", "laetum", declension="3", meaning="happy", termination=1)
-        assert str(error.value) == "First-termination adjectives must have 2 principal parts (adjective 'laetus' given)"
+        assert str(error.value) == "First-termination adjectives must have 2 principal parts (adjective 'laetus' given)."
 
     def test_errors_invalid_genitive(self):
         with pytest.raises(InvalidInputError) as error:
@@ -29,12 +29,12 @@ class TestAdjectiveErrors:
     def test_errors_wrong_number_principal_parts_32(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", "laetum", declension="3", meaning="happy", termination=2)
-        assert str(error.value) == "Second-termination adjectives must have 2 principal parts (adjective 'laetus' given)"
+        assert str(error.value) == "Second-termination adjectives must have 2 principal parts (adjective 'laetus' given)."
 
     def test_errors_wrong_number_principal_parts_33(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="3", meaning="happy", termination=3)
-        assert str(error.value) == "Third-termination adjectives must have 3 principal parts (adjective 'laetus' given)"
+        assert str(error.value) == "Third-termination adjectives must have 3 principal parts (adjective 'laetus' given)."
 
 
 class TestAdjectiveDunder:

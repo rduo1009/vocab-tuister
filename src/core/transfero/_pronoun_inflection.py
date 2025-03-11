@@ -82,7 +82,7 @@ def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
         return PRONOUNS[lemma][case, number]
     except KeyError as e:
         raise NotImplementedError(
-            f"Word {lemma} has not been implemented as a pronoun"
+            f"Word {lemma} has not been implemented as a pronoun."
         ) from e
 
 
