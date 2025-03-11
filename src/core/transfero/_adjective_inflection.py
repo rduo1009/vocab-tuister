@@ -49,7 +49,7 @@ def find_adjective_inflections(
         lemmas: tuple[str, ...] = lemminflect.getLemma(adjective, "ADJ")
     except KeyError as e:
         raise InvalidWordError(
-            f"Word '{adjective}' is not an adjective"
+            f"Word '{adjective}' is not an adjective."
         ) from e
 
     inflections: set[str] = set()
@@ -94,7 +94,7 @@ def find_main_adjective_inflection(
         lemma: str = lemminflect.getLemma(adjective, "ADJ")[0]
     except KeyError as e:
         raise InvalidWordError(
-            f"Word '{adjective}' is not an adjective"
+            f"Word '{adjective}' is not an adjective."
         ) from e
 
     return _inflect_lemma(lemma, components.degree)[0]

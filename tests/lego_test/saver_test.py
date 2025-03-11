@@ -44,4 +44,4 @@ def test_nodirectory():
     x = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     with pytest.raises(FileNotFoundError) as error:
         save_vocab_dump(Path("tests/lego_test/testdataajofsdifhbd/test_output/regular_list.test_output"), x)
-    assert str(error.value) == "The directory 'tests/lego_test/testdataajofsdifhbd/test_output' does not exist"
+    assert str(error.value) == "The directory 'tests/lego_test/testdataajofsdifhbd/test_output' does not exist."

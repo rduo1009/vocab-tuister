@@ -65,7 +65,7 @@ class Pronoun(_Word):
             self.endings = PRONOUNS[pronoun]
         except KeyError as e:
             raise InvalidInputError(
-                f"Pronoun '{pronoun}' not recognised"
+                f"Pronoun '{pronoun}' not recognised."
             ) from e
 
         self.pronoun: str = pronoun
@@ -149,7 +149,7 @@ class Pronoun(_Word):
                 number=Number(key[5:7]),
             )
         except (ValueError, IndexError) as e:
-            raise InvalidInputError(f"Key '{key}' is invalid") from e
+            raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
         output.string = (
             f"{output.case.regular} {output.number.regular} "
