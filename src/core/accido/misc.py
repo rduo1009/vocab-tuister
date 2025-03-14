@@ -434,6 +434,9 @@ class EndingComponents:
                 continue
 
             if self_value != other_value:
+                assert self_value is not None
+                assert other_value is not None
+
                 enum_class = self_value.__class__
                 enum_members = list(enum_class)
                 self_index = enum_members.index(self_value)
