@@ -32,16 +32,15 @@ from .question_classes import (
 from .rules import filter_endings, filter_questions, filter_words
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterable
+    from collections.abc import Iterable
 
     from ..accido.endings import _Word
-    from ..accido.misc import EndingComponents
-    from ..accido.type_aliases import Ending, Endings, Meaning
+    from ..accido.type_aliases import Ending, Endings
     from ..lego.misc import VocabList
     from .question_classes import Question
     from .type_aliases import Settings, Vocab
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 MAX_RETRIES: Final[int] = 1000
 
@@ -73,8 +72,8 @@ def ask_question_without_sr(
     InvalidSettingsError
         If the settings in `settings` are invalid.
     """
-    filtered_vocab: Vocab = filter_words(vocab_list, settings)
-    filtered_questions: set[QuestionClasses] = filter_questions(settings)
+    filtered_vocab = filter_words(vocab_list, settings)
+    filtered_questions = filter_questions(settings)
 
     if len(filtered_vocab) < settings["number-multiplechoice-options"]:
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_ENGTOLAT)
@@ -86,15 +85,13 @@ def ask_question_without_sr(
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:
-            chosen_word: _Word = random.choice(filtered_vocab)
-            filtered_endings: Endings = filter_endings(
-                chosen_word.endings, settings
-            )
+            chosen_word = random.choice(filtered_vocab)
+            filtered_endings = filter_endings(chosen_word.endings, settings)
             if not filtered_endings:
                 retries += 1
                 continue
 
-            question_type: QuestionClasses = set_choice(filtered_questions)
+            question_type = set_choice(filtered_questions)
 
             logger.debug(
                 "Creating new question of type %s with word '%s'.",
@@ -174,19 +171,15 @@ def _generate_typein_engtolat(
     chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInEngToLatQuestion | None:
     # Pick ending, getting the ending dict key to the ending as well
-    ending_components_key: str
-    chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Using the dict key, create an `EndingComponents`
-    ending_components: EndingComponents = chosen_word.create_components(
-        ending_components_key
-    )
+    ending_components = chosen_word.create_components(ending_components_key)
 
     # Unsupported endings
     # Subjunctives cannot be translated to English on their own
-    verb_subjunctive: bool = (
+    verb_subjunctive = (
         isinstance(chosen_word, Verb)
         and ending_components.mood == Mood.SUBJUNCTIVE
     )
@@ -195,7 +188,7 @@ def _generate_typein_engtolat(
         return None
 
     # Double-up endings
-    noun_nom_acc_voc: bool = isinstance(
+    noun_nom_acc_voc = isinstance(
         chosen_word, Noun
     ) and ending_components.case in {
         Case.NOMINATIVE,
@@ -203,31 +196,31 @@ def _generate_typein_engtolat(
         Case.VOCATIVE,
     }
 
-    adjective_not_adverb_flag: bool = (
+    adjective_not_adverb_flag = (
         isinstance(chosen_word, Adjective)
         and ending_components.subtype != ComponentsSubtype.ADVERB
     )
 
-    participle_flag: bool = (
+    participle_flag = (
         isinstance(chosen_word, Verb)
         and ending_components.subtype == ComponentsSubtype.PARTICIPLE
     )
 
-    verb_second_person_flag: bool = (
+    verb_second_person_flag = (
         isinstance(chosen_word, Verb)
         and ending_components.subtype
         not in {ComponentsSubtype.INFINITIVE, ComponentsSubtype.PARTICIPLE}
         and ending_components.person == 2
     )
 
-    pronoun_flag: bool = isinstance(chosen_word, Pronoun)
+    pronoun_flag = isinstance(chosen_word, Pronoun)
 
-    answers: set[str] = {chosen_ending}
+    answers = {chosen_ending}
 
     # Nominative, vocative, accusative nouns translate the same way
     # NOTE: Might change later? Give accusative nouns a separate meaning
     if noun_nom_acc_voc:
-        endings_to_add: tuple[Ending | None, ...] = (
+        endings_to_add = (
             chosen_word.get(
                 case=Case.NOMINATIVE, number=ending_components.number
             ),
@@ -301,7 +294,6 @@ def _generate_typein_engtolat(
             number=Number.PLURAL,
             person=2,
         ):
-            temp_second_person_plural: tuple[str, ...]
             if isinstance(second_person_plural, MultipleEndings):
                 temp_second_person_plural = tuple(
                     second_person_plural.get_all()
@@ -368,8 +360,8 @@ def _generate_typein_engtolat(
         )
 
     # Determine meaning
-    raw_meaning: str = str(chosen_word.meaning)  # __str__ returns main ending
-    inflected_meaning: str = set_choice(
+    raw_meaning = str(chosen_word.meaning)  # __str__ returns main ending
+    inflected_meaning = set_choice(
         find_inflection(raw_meaning, components=ending_components)
     )
 
@@ -381,21 +373,18 @@ def _generate_typein_engtolat(
 def _generate_typein_lattoeng(
     chosen_word: _Word, filtered_endings: Endings
 ) -> TypeInLatToEngQuestion | None:
-    chosen_ending: Ending
     # Pick ending
     _, chosen_ending = _pick_ending(filtered_endings)
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Find all possible `EndingComponents` for the ending
     # e.g. 'puellae' could be 'girls' or 'of the girl'
-    all_ending_components: list[EndingComponents] = chosen_word.find(
-        chosen_ending
-    )
+    all_ending_components = chosen_word.find(chosen_ending)
     possible_main_answers: set[str] = set()
     inflected_meanings: set[str] = set()
 
     for ending_components in all_ending_components:
-        verb_subjunctive: bool = (
+        verb_subjunctive = (
             isinstance(chosen_word, Verb)
             and ending_components.mood == Mood.SUBJUNCTIVE
         )
@@ -405,9 +394,7 @@ def _generate_typein_lattoeng(
             continue
 
         # Find uninflected meanings
-        raw_meaning: Meaning = chosen_word.meaning
-        main_meaning: str
-        meanings: set[str]
+        raw_meaning = chosen_word.meaning
         if isinstance(raw_meaning, MultipleMeanings):
             main_meaning = str(raw_meaning)  # __str__ returns the main meaning
             meanings = set(raw_meaning.meanings)
@@ -416,7 +403,6 @@ def _generate_typein_lattoeng(
             meanings = {raw_meaning}
 
         # Inflect meanings
-        meaning: str
         for meaning in meanings:
             inflected_meanings.update(
                 find_inflection(meaning, components=ending_components)
@@ -433,7 +419,7 @@ def _generate_typein_lattoeng(
         return None
 
     # Pick a main answer
-    main_answer: str = set_choice(possible_main_answers)
+    main_answer = set_choice(possible_main_answers)
 
     return TypeInLatToEngQuestion(
         prompt=chosen_ending,
@@ -450,19 +436,14 @@ def _generate_parse(
         return None
 
     # Pick ending
-    chosen_ending: Ending
     _, chosen_ending = _pick_ending(filtered_endings)
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Find possible `EndingComponents`
-    all_ending_components: set[EndingComponents] = set(
-        chosen_word.find(chosen_ending)
-    )
+    all_ending_components = set(chosen_word.find(chosen_ending))
 
     # Pick main ending components
-    main_ending_components: EndingComponents = set_choice(
-        all_ending_components
-    )
+    main_ending_components = set_choice(all_ending_components)
 
     return ParseWordLatToCompQuestion(
         prompt=chosen_ending,
@@ -480,18 +461,12 @@ def _generate_inflect(
         return None
 
     # Pick ending, getting the ending dict key to the ending as well
-    ending_components_key: str
-    chosen_ending: Ending
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
     # Find `EndingComponents` from dict key
-    ending_components: EndingComponents = chosen_word.create_components(
-        ending_components_key
-    )
+    ending_components = chosen_word.create_components(ending_components_key)
 
     # Convert `chosen_ending` to string if necessary
-    main_answer: str
-    answers: set[str]
     if isinstance(chosen_ending, MultipleEndings):
         # If the `MutipleEndings` has a `regular` attribute then use that
         if hasattr(chosen_ending, "regular"):
@@ -602,13 +577,13 @@ def _generate_multiplechoice_engtolat(
     vocab_list.remove(chosen_word)
 
     # Get a single meaning if it is `MultipleMeanings`
-    meaning: Meaning = chosen_word.meaning
+    meaning = chosen_word.meaning
     if isinstance(meaning, MultipleMeanings):
         meaning = random.choice(meaning.meanings)
 
     # Find answer and other choices
-    answer: str = chosen_word._first  # noqa: SLF001
-    other_choices: Generator[str] = (
+    answer = chosen_word._first  # noqa: SLF001
+    other_choices = (
         vocab._first  # noqa: SLF001
         for vocab in random.sample(
             vocab_list,
@@ -618,7 +593,7 @@ def _generate_multiplechoice_engtolat(
     )
 
     # Put together choices
-    choices: list[str] = [answer, *other_choices]
+    choices = [answer, *other_choices]
     random.shuffle(choices)
 
     return MultipleChoiceEngToLatQuestion(
@@ -629,21 +604,20 @@ def _generate_multiplechoice_engtolat(
 def _generate_multiplechoice_lattoeng(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceLatToEngQuestion:
-    prompt: str = chosen_word._first  # noqa: SLF001
+    prompt = chosen_word._first  # noqa: SLF001
 
     # Pick correct choice
-    chosen_word_meanings: tuple[str, ...]
     if isinstance(chosen_word.meaning, MultipleMeanings):
         chosen_word_meanings = tuple(chosen_word.meaning.meanings)
     else:
         chosen_word_meanings = (chosen_word.meaning,)
 
-    answer: str = random.choice(chosen_word_meanings)
+    answer = random.choice(chosen_word_meanings)
 
     # Pick other possible choices
     possible_choices: list[str] = []
     for vocab in vocab_list:
-        current_meaning: Meaning = vocab.meaning
+        current_meaning = vocab.meaning
         if isinstance(current_meaning, str):
             if current_meaning in chosen_word_meanings:
                 continue
@@ -654,7 +628,7 @@ def _generate_multiplechoice_lattoeng(
                 for meaning in current_meaning.meanings
                 if meaning not in chosen_word_meanings
             )
-    choices: list[str] = [
+    choices = [
         answer,
         *random.sample(possible_choices, number_multiplechoice_options - 1),
     ]

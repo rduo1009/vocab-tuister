@@ -302,25 +302,23 @@ class EndingComponents:
             Defaults to "".
         """
         if case:
-            self.case: Case = case
+            self.case = case
         if number:
-            self.number: Number = number
+            self.number = number
         if gender:
-            self.gender: Gender = gender
+            self.gender = gender
         if tense:
-            self.tense: Tense = tense
+            self.tense = tense
         if voice:
-            self.voice: Voice = voice
+            self.voice = voice
         if mood:
-            self.mood: Mood = mood
+            self.mood = mood
         if degree:
-            self.degree: Degree = degree
+            self.degree = degree
         if person:
-            self.person: Person = person
-        self.string: str = string
+            self.person = person
+        self.string = string
 
-        self.type: ComponentsType
-        self.subtype: ComponentsSubtype | None
         self.type, self.subtype = self._determine_type()
 
     def _get_non_null_attributes(self) -> list[str]:

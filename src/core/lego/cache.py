@@ -14,7 +14,7 @@ from .saver import save_vocab_dump
 if TYPE_CHECKING:
     from .misc import VocabList
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def _sha256sum(filename: Path) -> str:
@@ -89,8 +89,8 @@ def cache_vocab_file(
             stacklevel=2,
         )
 
-    cache_file_name: str = _sha256sum(vocab_file_path)
-    cache_path: Path = Path(cache_folder / cache_file_name)
+    cache_file_name = _sha256sum(vocab_file_path)
+    cache_path = Path(cache_folder / cache_file_name)
 
     if cache_path.exists():
         logger.info("Cache found for hash %s.", cache_file_name)
@@ -99,7 +99,7 @@ def cache_vocab_file(
 
     logger.info("No cache found for hash %s.", cache_file_name)
 
-    vocab_list: VocabList = read_vocab_file(
+    vocab_list = read_vocab_file(
         vocab_file_path
     )  # sourcery skip: name-type-suffix
     save_vocab_dump(cache_path, vocab_list)

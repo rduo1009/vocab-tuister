@@ -20,9 +20,9 @@ def count_syllables(word: str) -> int:
     int
         The number of syllables.
     """
-    num_syllables: int = 0
-    word_length: int = len(word)
-    i: int = 0  # Index in word
+    num_syllables = 0
+    word_length = len(word)
+    i = 0  # Index in word
 
     while i < word_length:
         if i < word_length - 1 and word[i : i + 2] in DIPHTHONGS:

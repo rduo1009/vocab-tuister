@@ -77,7 +77,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
         return _find_participle_inflections(verb, components)[1]
 
     try:
-        lemmas: tuple[str, ...] = lemminflect.getLemma(verb, "VERB")
+        lemmas = lemminflect.getLemma(verb, "VERB")
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
@@ -129,7 +129,7 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
         return _find_participle_inflections(verb, components)[0]
 
     try:
-        lemma: str = lemminflect.getLemma(verb, "VERB")[0]
+        lemma = lemminflect.getLemma(verb, "VERB")[0]
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
@@ -197,9 +197,9 @@ def _find_lemma(  # noqa: PLR0917
 def _find_preactind_inflections(  # mypy cannot manage tuple match
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    present_nonthird: str = lemminflect.getInflection(lemma, "VBP")[0]
-    present_third: str = lemminflect.getInflection(lemma, "VBZ")[0]
-    present_participle: str = lemminflect.getInflection(lemma, "VBG")[0]
+    present_nonthird = lemminflect.getInflection(lemma, "VBP")[0]
+    present_third = lemminflect.getInflection(lemma, "VBZ")[0]
+    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -242,10 +242,10 @@ def _find_preactind_inflections(  # mypy cannot manage tuple match
 def _find_impactind_inflections(  # mypy cannot manage tuple match
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    present_participle: str = lemminflect.getInflection(lemma, "VBG")[0]
+    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
 
     if lemma in STATIVE_VERBS:
-        past: str = lemminflect.getInflection(lemma, "VBD")[0]
+        past = lemminflect.getInflection(lemma, "VBD")[0]
 
         match (number, person):
             case (Number.SINGULAR, 1):
@@ -368,7 +368,7 @@ def _find_peractind_inflections(  # mypy cannot manage tuple match
 def _find_plpactind_inflections(  # mypy cannot manage tuple match
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    past_participle: str = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -399,20 +399,18 @@ def _find_plpactind_inflections(  # mypy cannot manage tuple match
 def _find_participle_inflections(
     verb: str, components: EndingComponents
 ) -> tuple[str, set[str]]:
-    lemma: str = lemminflect.getLemma(verb, "NOUN")[0]
+    lemma = lemminflect.getLemma(verb, "NOUN")[0]
 
     match (components.tense, components.voice):
         case (Tense.PERFECT, Voice.PASSIVE):
-            past_participle: str = lemminflect.getInflection(lemma, "VBN")[0]
+            past_participle = lemminflect.getInflection(lemma, "VBN")[0]
             return (
                 f"having been {past_participle}",
                 {f"having been {past_participle}"},
             )
 
         case (Tense.PRESENT, Voice.ACTIVE):
-            present_participle: str = lemminflect.getInflection(lemma, "VBG")[
-                0
-            ]
+            present_participle = lemminflect.getInflection(lemma, "VBG")[0]
             return (present_participle, {present_participle})
 
         case _:

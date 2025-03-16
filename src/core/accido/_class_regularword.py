@@ -12,7 +12,7 @@ from .misc import EndingComponents, MultipleMeanings
 if TYPE_CHECKING:
     from .type_aliases import Meaning
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -47,9 +47,9 @@ class RegularWord(_Word):
 
         super().__init__()
 
-        self.word: str = word
-        self._first: str = self.word
-        self.meaning: Meaning = meaning
+        self.word = word
+        self._first = self.word
+        self.meaning = meaning
         self.endings = {"": self.word}
 
     def get(self) -> str:
@@ -105,7 +105,6 @@ class RegularWord(_Word):
         if self.meaning == other.meaning:
             return RegularWord(self.word, meaning=self.meaning)
 
-        new_meaning: Meaning
         if isinstance(self.meaning, MultipleMeanings) or isinstance(
             other.meaning, MultipleMeanings
         ):

@@ -26,7 +26,7 @@ from .type_aliases import is_person
 if TYPE_CHECKING:
     from .type_aliases import Conjugation, Ending, Endings, Meaning, Person
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -118,11 +118,11 @@ class Verb(_Word):
 
         super().__init__()
 
-        self.present: str = present
-        self.infinitive: str | None = infinitive
-        self.perfect: str | None = perfect
-        self.ppp: str | None = ppp
-        self.meaning: Meaning = meaning
+        self.present = present
+        self.infinitive = infinitive
+        self.perfect = perfect
+        self.ppp = ppp
+        self.meaning = meaning
 
         self._first = self.present
         self.conjugation: Conjugation
@@ -132,13 +132,13 @@ class Verb(_Word):
             self.endings = irregular_endings
             self.conjugation = 0
             return
+
         assert self.infinitive is not None
         assert self.perfect is not None
 
         # Mixed conjugation
         if check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
-
         elif self.infinitive.endswith("are"):
             self.conjugation = 1
         elif self.infinitive.endswith("ire"):
@@ -160,9 +160,9 @@ class Verb(_Word):
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
-        self._pre_stem: str = self.present[:-1]
-        self._inf_stem: str = self.infinitive[:-3]
-        self._per_stem: str = self.perfect[:-1]
+        self._pre_stem = self.present[:-1]
+        self._inf_stem = self.infinitive[:-3]
+        self._per_stem = self.perfect[:-1]
 
         match self.conjugation:
             case 1:
@@ -418,13 +418,13 @@ class Verb(_Word):
         assert self.perfect is not None
         assert self.ppp is not None
 
-        self._preptc_stem: str = self.infinitive[:-2]
+        self._preptc_stem = self.infinitive[:-2]
         if self.conjugation == 4:
             self._preptc_stem += "e"
         if self.conjugation == 5:
             self._preptc_stem = self.infinitive[:-3]
             self._preptc_stem += "ie"
-        self._ppp_stem: str = self.ppp[:-2]
+        self._ppp_stem = self.ppp[:-2]
 
         return {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
@@ -611,15 +611,15 @@ class Verb(_Word):
                 participle_case=participle_case,
             )
 
-        short_tense: str = tense.shorthand
-        short_voice: str = voice.shorthand
+        short_tense = tense.shorthand
+        short_voice = voice.shorthand
         if number:
-            short_number: str = number.shorthand
+            short_number = number.shorthand
 
         if mood == Mood.INFINITIVE:
             return self.endings.get(f"V{short_tense}{short_voice}inf   ")
 
-        short_mood: str = mood.shorthand
+        short_mood = mood.shorthand
         return self.endings.get(
             f"V{short_tense}{short_voice}{short_mood}{short_number}{person}"
         )
@@ -636,8 +636,8 @@ class Verb(_Word):
         short_tense = tense.shorthand
         short_voice = voice.shorthand
         short_number = number.shorthand
-        short_gender: str = participle_gender.shorthand
-        short_case: str = participle_case.shorthand
+        short_gender = participle_gender.shorthand
+        short_case = participle_case.shorthand
 
         return self.endings.get(
             f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
@@ -664,8 +664,6 @@ class Verb(_Word):
         InvalidInputError
             If `key` is not a valid key for the word.
         """
-        output: EndingComponents
-
         if len(key) == 13 and key[7:10] == "inf":
             try:
                 output = EndingComponents(
@@ -788,7 +786,6 @@ class Verb(_Word):
                 meaning=self.meaning,
             )
 
-        new_meaning: Meaning
         if isinstance(self.meaning, MultipleMeanings) or isinstance(
             other.meaning, MultipleMeanings
         ):

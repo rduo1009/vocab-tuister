@@ -9,13 +9,7 @@ from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
-    from ..accido.type_aliases import (
-        AdjectiveDeclension,
-        Conjugation,
-        Endings,
-        NounDeclension,
-    )
+    from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
     from .type_aliases import Settings, Vocab
 
@@ -153,7 +147,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     def _filter_classes(vocab_list: Vocab, classes: tuple[type, ...]) -> Vocab:
         return [item for item in vocab_list if not isinstance(item, classes)]
 
-    vocab: Vocab = vocab_list.vocab.copy()
+    vocab = vocab_list.vocab.copy()
     to_exclude: list[type] = []
 
     if settings["exclude-nouns"]:
@@ -170,14 +164,12 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     if to_exclude:
         vocab = _filter_classes(vocab, tuple(to_exclude))
 
-    item: _Word
-
     # Iterate over copy of list to avoid errors
     for item in vocab.copy():
         match item:
             case Verb():
-                current_conjugation: Conjugation = item.conjugation
-                conjugation_excluded: bool = (
+                current_conjugation = item.conjugation
+                conjugation_excluded = (
                     (
                         settings["exclude-verb-first-conjugation"]
                         and current_conjugation == 1
@@ -207,8 +199,8 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                     vocab.remove(item)
 
             case Noun():
-                current_declension: NounDeclension = item.declension
-                declension_excluded: bool = (
+                current_declension = item.declension
+                declension_excluded = (
                     (
                         settings["exclude-noun-first-declension"]
                         and current_declension == 1
@@ -238,7 +230,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                     vocab.remove(item)
 
             case Adjective():
-                current_adj_declension: AdjectiveDeclension = item.declension
+                current_adj_declension = item.declension
                 if (
                     settings["exclude-adjective-212-declension"]
                     and current_adj_declension == "212"
@@ -265,11 +257,10 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
     Endings
         The filtered endings.
     """
-    filtered_endings: Endings = endings
-
+    filtered_endings = endings
     for setting, value in settings.items():
         if value and (setting in RULE_REGEX):
-            regex_pattern: str = RULE_REGEX[setting]
+            regex_pattern = RULE_REGEX[setting]
             filtered_endings = {
                 key: ending
                 for key, ending in filtered_endings.items()

@@ -11,10 +11,9 @@ from nltk import download
 from nltk.corpus import wordnet
 from nltk.data import find, path
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-_project_root: Path = Path(__file__).parent.parent.parent.parent
-_nltk_data_path: Path
+_project_root = Path(__file__).parent.parent.parent.parent
 
 # Frozen with PyInstaller
 if getattr(_sys, "frozen", False) and hasattr(
