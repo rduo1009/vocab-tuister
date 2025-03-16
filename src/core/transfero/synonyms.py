@@ -6,7 +6,6 @@ import logging
 import sys as _sys
 import warnings
 from pathlib import Path
-from typing import cast
 
 from nltk import download
 from nltk.corpus import wordnet
@@ -28,13 +27,13 @@ if getattr(_sys, "frozen", False) and hasattr(
     )
 
     # Read nltk corpora from package data
-    data: bytes = cast(
-        "bytes",
-        pkgutil.get_data(
-            "src.core.transfero", "nltk_data/corpora/wordnet.zip"
-        ),
+    data = pkgutil.get_data(
+        "src.core.transfero", "nltk_data/corpora/wordnet.zip"
     )
-    assert data is not None
+    if data is None:
+        raise LookupError(
+            "The wordnet dataset was not found in the package data."
+        )
 
     # Write nltk corpora in provided temporary directory
     Path(_nltk_data_path / "corpora" / "wordnet.zip").write_bytes(data)

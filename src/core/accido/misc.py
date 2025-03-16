@@ -23,22 +23,14 @@ if TYPE_CHECKING:
 
     @total_ordering
     class _EndingComponentEnum(Enum):
-        """Represents an enum used in an ``EndingComponents`` object."""
-
         # This is not actually the structure of the enum, but it helps with type
         # hinting. Each enum value has a regular value and a shorthand value.
         regular: str
         shorthand: str
 
-        def __str__(self) -> str:
-            # HACK: Makes formatting log messages easier.
-            return self.regular
+        def __str__(self) -> str: ...
 
-        def __lt__(self, other: object) -> bool:
-            if not isinstance(other, _EndingComponentEnum):
-                return NotImplemented
-
-            return str(self) < str(other)
+        def __lt__(self, other: object) -> bool: ...
 
 
 else:

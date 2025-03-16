@@ -146,9 +146,9 @@ class Noun(_Word):
 
         self._find_declension()
 
-        self.i_stem: bool = False
-        if self.declension == 3:
-            self.i_stem = self._determine_if_i_stem()
+        self.i_stem = (
+            self._determine_if_i_stem() if self.declension == 3 else False
+        )
 
         self.endings = self._determine_endings()
 

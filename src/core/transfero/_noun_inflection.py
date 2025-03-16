@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
@@ -16,9 +15,6 @@ if TYPE_CHECKING:
     from types import ModuleType
 
     from ..accido.misc import EndingComponents
-
-
-logger: logging.Logger = logging.getLogger(__name__)
 
 # Frozen with PyInstaller
 if getattr(_sys, "frozen", False) and hasattr(

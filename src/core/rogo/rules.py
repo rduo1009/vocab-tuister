@@ -292,9 +292,8 @@ def filter_questions(settings: Settings) -> set[QuestionClasses]:
     set[QuestionClasses]
         The filtered classes.
     """
-    classes: set[QuestionClasses] = {
+    return {
         value
         for key, value in CLASS_RULES.items()
         if settings[key]  # type: ignore[literal-required]
     }
-    return classes
