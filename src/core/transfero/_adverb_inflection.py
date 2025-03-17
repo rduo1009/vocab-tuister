@@ -46,7 +46,7 @@ def find_adverb_inflections(
         )
 
     try:
-        lemmas: tuple[str, ...] = lemminflect.getLemma(adverb, "ADV")
+        lemmas = lemminflect.getLemma(adverb, "ADV")
     except KeyError as e:
         raise InvalidWordError(f"Word '{adverb}' is not an adverb.") from e
 
@@ -83,13 +83,14 @@ def find_main_adverb_inflection(
     """
     if components.type is not ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
+
     if components.subtype != ComponentsSubtype.ADVERB:
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"
         )
 
     try:
-        lemma: str = lemminflect.getLemma(adverb, "ADV")[0]
+        lemma = lemminflect.getLemma(adverb, "ADV")[0]
     except KeyError as e:
         raise InvalidWordError(f"Word '{adverb}' is not an adverb.") from e
 

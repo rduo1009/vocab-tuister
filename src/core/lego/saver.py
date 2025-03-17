@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
     from .misc import VocabList
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def save_vocab_dump(
@@ -73,8 +73,8 @@ def save_vocab_dump(
             stacklevel=2,
         )
 
-    pickled_data: bytes = pickle.dumps(vocab_list)
-    signature: str = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
+    pickled_data = pickle.dumps(vocab_list)
+    signature = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
 
     if compress:
         # Add lz4 extension if it is not already there

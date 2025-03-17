@@ -31,7 +31,7 @@ if TYPE_CHECKING:
         Termination,
     )
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -127,22 +127,15 @@ class Adjective(_Word):
 
         super().__init__()
 
-        self._principal_parts: tuple[str, ...] = principal_parts
-        self.mascnom: str = self._principal_parts[0]
-        self.femnom: str
-        self.neutnom: str
-        self.mascgen: str
+        self._principal_parts = principal_parts
+        self.mascnom = self._principal_parts[0]
 
         self._first = self._principal_parts[0]
-        self.meaning: Meaning = meaning
-        self.declension: AdjectiveDeclension = declension
-        self.termination: Termination | None = termination
-        self.irregular_flag: bool = False
-        self.adverb_flag: bool = True
-
-        self._pos_stem: str
-        self._cmp_stem: str
-        self._spr_stem: str
+        self.meaning = meaning
+        self.declension = declension
+        self.termination = termination
+        self.irregular_flag = False
+        self.adverb_flag = True
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
             self.irregular_flag = True
@@ -156,9 +149,9 @@ class Adjective(_Word):
                 assert irregular_data[3] is not None
                 assert irregular_data[4] is not None
 
-                self._irregular_posadv: str = irregular_data[2]
-                self._irregular_cmpadv: str = irregular_data[3]
-                self._irregular_spradv: str = irregular_data[4]
+                self._irregular_posadv = irregular_data[2]
+                self._irregular_cmpadv = irregular_data[3]
+                self._irregular_spradv = irregular_data[4]
             else:
                 self.adverb_flag = False
 
@@ -866,8 +859,6 @@ class Adjective(_Word):
             adverb,
         )
 
-        short_degree: str
-
         if adverb:
             short_degree = degree.shorthand
             return self.endings.get(f"D{short_degree}")
@@ -877,9 +868,9 @@ class Adjective(_Word):
         assert number is not None
 
         short_degree = degree.shorthand
-        short_gender: str = gender.shorthand
-        short_case: str = case.shorthand
-        short_number: str = number.shorthand
+        short_gender = gender.shorthand
+        short_case = case.shorthand
+        short_number = number.shorthand
 
         return self.endings.get(
             f"A{short_degree}{short_gender}{short_case}{short_number}"
@@ -906,8 +897,6 @@ class Adjective(_Word):
         InvalidInputError
             If `key` is not a valid key for the word.
         """
-        output: EndingComponents
-
         if key[0] == "A":
             try:
                 output = EndingComponents(
@@ -984,7 +973,6 @@ class Adjective(_Word):
                 self.meaning,
             )
 
-        new_meaning: Meaning
         if isinstance(self.meaning, MultipleMeanings) or isinstance(
             other.meaning, MultipleMeanings
         ):

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
@@ -16,9 +15,6 @@ if TYPE_CHECKING:
     from types import ModuleType
 
     from ..accido.misc import EndingComponents
-
-
-logger: logging.Logger = logging.getLogger(__name__)
 
 # Frozen with PyInstaller
 if getattr(_sys, "frozen", False) and hasattr(
@@ -81,7 +77,7 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
     try:
-        lemmas: tuple[str, ...] = lemminflect.getLemma(noun, "NOUN")
+        lemmas = lemminflect.getLemma(noun, "NOUN")
     except KeyError as e:
         raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
@@ -120,7 +116,7 @@ def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
     try:
-        lemma: str = lemminflect.getLemma(noun, "NOUN")[0]
+        lemma = lemminflect.getLemma(noun, "NOUN")[0]
     except KeyError as e:
         raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
@@ -131,15 +127,14 @@ def _inflect_lemma(
     lemma: str, case: Case, number: Number
 ) -> tuple[str, set[str]]:
     base_forms: set[str] = set()
-    best_form: str
 
     if number == Number.SINGULAR:
         base_forms = {*lemminflect.getInflection(lemma, "NN")}
         best_form = lemminflect.getInflection(lemma, "NN")[0]
     else:
-        normal_plural: str = pluralinflect.plural_noun(lemma)
+        normal_plural = pluralinflect.plural_noun(lemma)
         pluralinflect.classical(all=True)
-        classical_plural: str = pluralinflect.plural_noun(lemma)
+        classical_plural = pluralinflect.plural_noun(lemma)
         pluralinflect.classical(all=False)
         base_forms.update({normal_plural, classical_plural})
 
@@ -153,7 +148,7 @@ def _inflect_lemma(
             return (best_form, base_forms)
 
         case Case.GENITIVE:
-            possessive_genitive: set[str] = {
+            possessive_genitive = {
                 _get_possessive(base_form) for base_form in base_forms
             }
             if number == Number.SINGULAR:
