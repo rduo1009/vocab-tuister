@@ -19,7 +19,7 @@ def compact[T](sequence: list[T]) -> list[T]:
     if not sequence:
         return []
 
-    add_groups: list[T] = [sequence[0]]
+    add_groups = [sequence[0]]
     for element in sequence[1:]:
         for i in range(len(add_groups)):
             try:

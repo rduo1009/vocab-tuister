@@ -27,12 +27,11 @@ if TYPE_CHECKING:
     from ..accido.endings import _Word
     from ..accido.type_aliases import Meaning
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 # TODO: replace with regenerating with vocablist text
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
-    word: _Word
     new_vocab: list[_Word] = []
 
     for word in vocab_list.vocab:
@@ -226,7 +225,6 @@ def read_vocab_file(file_path: Path) -> VocabList:
 
 def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
     vocab: list[_Word] = []
-    line: str
     current: _PartOfSpeech | Literal[""] = ""
 
     for line in (
@@ -262,14 +260,14 @@ def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
                         )
 
             case _:
-                parts: list[str] = line.strip().split(":")
+                parts = line.strip().split(":")
                 if len(parts) != 2:
                     raise InvalidVocabFileFormatError(
                         f"Invalid line format: '{line}'"
                     )
 
-                meaning: Meaning = _generate_meaning(parts[0].strip())
-                latin_parts: list[str] = [
+                meaning = _generate_meaning(parts[0].strip())
+                latin_parts = [
                     raw_part.strip() for raw_part in parts[1].split(",")
                 ]
 
@@ -358,7 +356,7 @@ def _parse_line(
                 f"Invalid adjective format: '{line}'"
             )
 
-        declension: str = latin_parts[-1].strip("()")
+        declension = latin_parts[-1].strip("()")
 
         if declension not in {"212", "2-1-2"} and not match(
             r"^3-.$", declension

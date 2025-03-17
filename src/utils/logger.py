@@ -86,7 +86,7 @@ class CustomLogFormatter(logging.Formatter):
         super().__init__()
 
         # Map logging levels to colours
-        self.level_colours: dict[int, _AnsiColour] = {
+        self.level_colours = {
             logging.DEBUG: LOGGER_PALETTE["debug_colour"],
             logging.INFO: LOGGER_PALETTE["info_colour"],
             logging.WARNING: LOGGER_PALETTE["warning_colour"],
@@ -107,12 +107,12 @@ class CustomLogFormatter(logging.Formatter):
         str
             The formatted log message.
         """
-        time_str: str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # noqa: DTZ005
-        colour: _AnsiColour = self.level_colours.get(
+        time_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # noqa: DTZ005
+        colour = self.level_colours.get(
             record.levelno, LOGGER_PALETTE["info_colour"]
         )
-        level_str: str = colour(record.levelname[:4])
-        caller_info_str: str = LOGGER_PALETTE["caller_colour"](
+        level_str = colour(record.levelname[:4])
+        caller_info_str = LOGGER_PALETTE["caller_colour"](
             f"{record.filename}:{record.lineno}"
         )
 

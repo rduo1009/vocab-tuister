@@ -14,7 +14,7 @@ from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
 if TYPE_CHECKING:
     from .type_aliases import Ending, Meaning
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -68,18 +68,18 @@ class Pronoun(_Word):
                 f"Pronoun '{pronoun}' not recognised."
             ) from e
 
-        self.pronoun: str = pronoun
+        self.pronoun = pronoun
         self._first = self.pronoun
-        self.meaning: Meaning = meaning
+        self.meaning = meaning
 
         # HACK: hopefully this is the case!
         assert isinstance(self.endings["Pmnomsg"], str)
         assert isinstance(self.endings["Pfnomsg"], str)
         assert isinstance(self.endings["Pnnomsg"], str)
 
-        self.mascnom: str = self.endings["Pmnomsg"]
-        self.femnom: str = self.endings["Pfnomsg"]
-        self.neutnom: str = self.endings["Pnnomsg"]
+        self.mascnom = self.endings["Pmnomsg"]
+        self.femnom = self.endings["Pfnomsg"]
+        self.neutnom = self.endings["Pnnomsg"]
 
     def get(
         self, *, case: Case, number: Number, gender: Gender
@@ -115,9 +115,9 @@ class Pronoun(_Word):
         Note that the arguments of ``get()`` are keyword-only.
         """
         logger.debug("%s.get(%s, %s, %s)", self._first, gender, case, number)
-        short_gender: str = gender.shorthand
-        short_case: str = case.shorthand
-        short_number: str = number.shorthand
+        short_gender = gender.shorthand
+        short_case = case.shorthand
+        short_number = number.shorthand
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
@@ -143,7 +143,7 @@ class Pronoun(_Word):
             If `key` is not a valid key for the word.
         """
         try:
-            output: EndingComponents = EndingComponents(
+            output = EndingComponents(
                 gender=Gender(key[1]),
                 case=Case(key[2:5]),
                 number=Number(key[5:7]),
@@ -170,7 +170,6 @@ class Pronoun(_Word):
         if self.meaning == other.meaning:
             return Pronoun(self.pronoun, meaning=self.meaning)
 
-        new_meaning: Meaning
         if isinstance(self.meaning, MultipleMeanings) or isinstance(
             other.meaning, MultipleMeanings
         ):
