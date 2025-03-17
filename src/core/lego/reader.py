@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import hmac
 import logging
@@ -10,7 +11,6 @@ from re import match
 from typing import TYPE_CHECKING, Literal, cast
 
 import dill as pickle
-import lz4.frame  # type: ignore[import-untyped]
 
 import src
 
@@ -120,7 +120,7 @@ def read_vocab_dump(filename: Path) -> VocabList:
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
     raised.
-    If the file ends in `.lz4`, the file is decompressed using lz4.
+    If the file ends in `.gzip`, the file is decompressed using lz4.
 
     Parameters
     ----------
@@ -144,10 +144,10 @@ def read_vocab_dump(filename: Path) -> VocabList:
     --------
     >>> read_vocab_dump(Path("path_to_file.pickle"))  # doctest: +SKIP
     """
-    if filename.suffix == ".lz4":
+    if filename.suffix == ".gzip":
         logger.info("File %s is being decompressed and read.", filename)
 
-        with lz4.frame.open(filename, "rb") as file:
+        with gzip.open(filename, "rb") as file:
             content = file.read()
             pickled_data = content[:-64]
             signature = content[-64:].decode()
