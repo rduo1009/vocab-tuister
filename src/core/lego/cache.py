@@ -67,8 +67,8 @@ def cache_vocab_file(
         If the cache folder did not exist and had to be created, or if the
         vocab dump file already exists and has been overwritten.
     MisleadingFilenameWarning
-        If the file path does not end in `.lz4` and the file is being
-        compressed, or if the file path ends in `.lz4` and the file is
+        If the file path does not end in `.gzip` and the file is being
+        compressed, or if the file path ends in `.gzip` and the file is
         not being compressed.
 
     Raises
