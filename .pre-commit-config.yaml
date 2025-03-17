@@ -35,7 +35,7 @@ repos:
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.10
+    rev: v0.11.0
     hooks:
       - id: ruff
         args: [--fix]
@@ -44,7 +44,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.64.6
+    rev: v1.64.7
     hooks:
       - id: golangci-lint
         args: [--fix]
