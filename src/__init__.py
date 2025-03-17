@@ -4,14 +4,14 @@ from __future__ import annotations
 
 import os as _os
 
-_seed: str | None = _os.getenv("VOCAB_TUISTER_RANDOM_SEED")
+_seed = _os.getenv("VOCAB_TUISTER_RANDOM_SEED")
 if _seed is not None:
     import random
     import sys as _sys
     import types as _types
 
     try:
-        _seed_value: int = int(_seed)
+        _seed_value = int(_seed)
     except ValueError as e:
         raise ValueError(
             f"Invalid seed value: {_seed}. Must be an integer."

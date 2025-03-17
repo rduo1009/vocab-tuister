@@ -38,7 +38,7 @@ def set_choice_pop[T](s: set[T]) -> T:
     T
         A random element from the set.
     """
-    value: T = random.choice(tuple(s))
+    value = random.choice(tuple(s))
     s.remove(value)
     return value
 
@@ -78,6 +78,6 @@ def set_choice_pop_sort[T: op.CanLt[Any]](s: set[T]) -> T:
     T
         A random element from the set.
     """
-    value: T = random.choice(sorted(s))
+    value = random.choice(sorted(s))
     s.remove(value)
     return value

@@ -22,7 +22,7 @@ from .syllables import count_syllables
 if TYPE_CHECKING:
     from .type_aliases import Ending, Endings, Meaning, NounDeclension
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
@@ -117,15 +117,14 @@ class Noun(_Word):
 
         super().__init__()
 
-        self.nominative: str = nominative
-        self.genitive: str | None = genitive
-        self.gender: Gender | None = gender
-        self.meaning: Meaning = meaning
-        self.plurale_tantum: bool = False
+        self.nominative = nominative
+        self.genitive = genitive
+        self.gender = gender
+        self.meaning = meaning
+        self.plurale_tantum = False
 
-        self._first: str = self.nominative
+        self._first = self.nominative
         self.declension: NounDeclension
-        self._stem: str
 
         if self.nominative in IRREGULAR_NOUNS:
             self.endings = IRREGULAR_NOUNS[nominative]
@@ -146,9 +145,9 @@ class Noun(_Word):
 
         self._find_declension()
 
-        self.i_stem: bool = False
-        if self.declension == 3:
-            self.i_stem = self._determine_if_i_stem()
+        self.i_stem = (
+            self._determine_if_i_stem() if self.declension == 3 else False
+        )
 
         self.endings = self._determine_endings()
 
@@ -379,8 +378,8 @@ class Noun(_Word):
         """
         logger.debug("%s.get(%s, %s)", self._first, case, number)
 
-        short_case: str = case.shorthand
-        short_number: str = number.shorthand
+        short_case = case.shorthand
+        short_number = number.shorthand
 
         return self.endings.get(f"N{short_case}{short_number}")
 
@@ -405,7 +404,7 @@ class Noun(_Word):
             If `key` is not a valid key for the word.
         """
         try:
-            output: EndingComponents = EndingComponents(
+            output = EndingComponents(
                 case=Case(key[1:4]), number=Number(key[4:6])
             )
         except (ValueError, IndexError) as e:
@@ -467,7 +466,6 @@ class Noun(_Word):
                 self.nominative, self.genitive, self.gender, self.meaning
             )
 
-        new_meaning: Meaning
         if isinstance(self.meaning, MultipleMeanings) or isinstance(
             other.meaning, MultipleMeanings
         ):

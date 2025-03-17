@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import hmac
 import logging
@@ -11,7 +12,6 @@ from re import match
 from typing import TYPE_CHECKING, Literal, cast
 
 import dill as pickle
-import lz4.frame  # type: ignore[import-untyped]
 
 import src
 
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from ..accido.endings import _Word
     from ..accido.type_aliases import Meaning
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
@@ -44,7 +44,7 @@ def read_vocab_dump(filename: Path) -> VocabList:
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
     raised.
-    If the file ends in `.lz4`, the file is decompressed using lz4.
+    If the file ends in `.gzip`, the file is decompressed using lz4.
 
     Parameters
     ----------
@@ -68,13 +68,13 @@ def read_vocab_dump(filename: Path) -> VocabList:
     --------
     >>> read_vocab_dump(Path("path_to_file.pickle"))  # doctest: +SKIP
     """
-    if filename.suffix == ".lz4":
+    if filename.suffix == ".gzip":
         logger.info("File %s is being decompressed and read.", filename)
 
-        with lz4.frame.open(filename, "rb") as file:
-            content: bytes = file.read()
-            pickled_data: bytes = content[:-64]
-            signature: str = content[-64:].decode()
+        with gzip.open(filename, "rb") as file:
+            content = file.read()
+            pickled_data = content[:-64]
+            signature = content[-64:].decode()
     else:
         logger.info("File %s being read.", filename)
 
@@ -153,7 +153,6 @@ def read_vocab_file(file_path: Path) -> VocabList:
 
 def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
     vocab: list[_Word] = []
-    line: str
     current: _PartOfSpeech | Literal[""] = ""
 
     for line in (
@@ -189,14 +188,14 @@ def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
                         )
 
             case _:
-                parts: list[str] = line.strip().split(":")
+                parts = line.strip().split(":")
                 if len(parts) != 2:
                     raise InvalidVocabFileFormatError(
                         f"Invalid line format: '{line}'"
                     )
 
-                meaning: Meaning = _generate_meaning(parts[0].strip())
-                latin_parts: list[str] = [
+                meaning = _generate_meaning(parts[0].strip())
+                latin_parts = [
                     raw_part.strip() for raw_part in parts[1].split(",")
                 ]
 
@@ -285,7 +284,7 @@ def _parse_line(
                 f"Invalid adjective format: '{line}'"
             )
 
-        declension: str = latin_parts[-1].strip("()")
+        declension = latin_parts[-1].strip("()")
 
         if declension not in {"212", "2-1-2"} and not match(
             r"^3-.$", declension

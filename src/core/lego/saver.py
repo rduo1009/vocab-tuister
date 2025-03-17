@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import hmac
 import logging
@@ -9,7 +10,6 @@ import warnings
 from typing import TYPE_CHECKING
 
 import dill as pickle
-import lz4.frame  # type: ignore[import-untyped]
 
 from .exceptions import MisleadingFilenameWarning
 from .misc import KEY
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
     from .misc import VocabList
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def save_vocab_dump(
@@ -30,8 +30,8 @@ def save_vocab_dump(
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with.
     The files can also be compressed using LZ4 compression. If this is
-    the case, the files will be saved with the `.lz4` extension, unless
-    the user has put the `.lz4` extension in the file path already.
+    the case, the files will be saved with the `.gzip` extension, unless
+    the user has put the `.gzip` extension in the file path already.
 
     Parameters
     ----------
@@ -52,8 +52,8 @@ def save_vocab_dump(
     UserWarning
         If the file already exists and has been overwritten.
     MisleadingFilenameWarning
-        If the file path does not end in `.lz4` and the file is being
-        compressed, or if the file path ends in `.lz4` and the file is
+        If the file path does not end in `.gzip` and the file is being
+        compressed, or if the file path ends in `.gzip` and the file is
         not being compressed.
 
     Examples
@@ -73,31 +73,31 @@ def save_vocab_dump(
             stacklevel=2,
         )
 
-    pickled_data: bytes = pickle.dumps(vocab_list)
-    signature: str = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
+    pickled_data = pickle.dumps(vocab_list)
+    signature = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
 
     if compress:
         # Add lz4 extension if it is not already there
-        if file_path.suffix != ".lz4":
+        if file_path.suffix != ".gzip":
             warnings.warn(
                 f"The file '{file_path}' is being compressed, "
-                "but the '.lz4' extension is not present and is being added.",
+                "but the '.gzip' extension is not present and is being added.",
                 category=MisleadingFilenameWarning,
                 stacklevel=2,
             )
-            file_path = file_path.with_suffix(f"{file_path.suffix}.lz4")
+            file_path = file_path.with_suffix(f"{file_path.suffix}.gzip")
 
         logger.info("Saving vocab list with compression to %s.", file_path)
 
-        with lz4.frame.open(file_path, "wb") as file:
+        with gzip.open(file_path, "wb") as file:
             file.write(pickled_data)
             file.write(signature.encode())
         return
 
-    if file_path.suffix == ".lz4":
+    if file_path.suffix == ".gzip":
         warnings.warn(
             f"The file '{file_path}' is not being compressed, "
-            "but the file extension ('.lz4') suggests it is.",
+            "but the file extension ('.gzip') suggests it is.",
             category=MisleadingFilenameWarning,
             stacklevel=2,
         )

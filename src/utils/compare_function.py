@@ -27,7 +27,7 @@ def compare[T](first: Sequence[T], second: Sequence[T]) -> bool:
     -----
     Code taken from https://stackoverflow.com/a/7829388
     """
-    comparison: list[T] = list(second)  # make a mutable copy
+    comparison = list(second)  # make a mutable copy
 
     try:
         for elem in first:

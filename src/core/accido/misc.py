@@ -23,22 +23,14 @@ if TYPE_CHECKING:
 
     @total_ordering
     class _EndingComponentEnum(Enum):
-        """Represents an enum used in an ``EndingComponents`` object."""
-
         # This is not actually the structure of the enum, but it helps with type
         # hinting. Each enum value has a regular value and a shorthand value.
         regular: str
         shorthand: str
 
-        def __str__(self) -> str:
-            # HACK: Makes formatting log messages easier.
-            return self.regular
+        def __str__(self) -> str: ...
 
-        def __lt__(self, other: object) -> bool:
-            if not isinstance(other, _EndingComponentEnum):
-                return NotImplemented
-
-            return str(self) < str(other)
+        def __lt__(self, other: object) -> bool: ...
 
 
 else:
@@ -310,25 +302,23 @@ class EndingComponents:
             Defaults to "".
         """
         if case:
-            self.case: Case = case
+            self.case = case
         if number:
-            self.number: Number = number
+            self.number = number
         if gender:
-            self.gender: Gender = gender
+            self.gender = gender
         if tense:
-            self.tense: Tense = tense
+            self.tense = tense
         if voice:
-            self.voice: Voice = voice
+            self.voice = voice
         if mood:
-            self.mood: Mood = mood
+            self.mood = mood
         if degree:
-            self.degree: Degree = degree
+            self.degree = degree
         if person:
-            self.person: Person = person
-        self.string: str = string
+            self.person = person
+        self.string = string
 
-        self.type: ComponentsType
-        self.subtype: ComponentsSubtype | None
         self.type, self.subtype = self._determine_type()
 
     def _get_non_null_attributes(self) -> list[str]:
@@ -387,19 +377,64 @@ class EndingComponents:
             getattr(self, attr) == getattr(other, attr) for attr in self_attrs
         )
 
+    @staticmethod
+    def _int_verb_subtypes(subtype: ComponentsSubtype | None) -> int:
+        return ({
+            None: 3,
+            ComponentsSubtype.INFINITIVE: 2,
+            ComponentsSubtype.PARTICIPLE: 1,
+        })[subtype]
+
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, EndingComponents):
             return NotImplemented
 
-        self_attrs = sorted(self._get_non_null_attributes())
-        other_attrs = sorted(other._get_non_null_attributes())
+        if self.type != other.type or self.subtype != other.subtype:
+            # adjectives > adverbs
+            if (self.type, other.type) == (ComponentsType.ADJECTIVE,) * 2:
+                # NOTE: subtype can only be ADVERB or None
+                # if self.subtype is not None, then other.subtype
+                # must be None, because self.subtype != other.subtype
+                return self.subtype is not None
 
-        if self_attrs != other_attrs:
-            return self_attrs < other_attrs  # Compare attribute names first
+            # normal verb > infinitive > participle
+            if (self.type, other.type) == (ComponentsType.VERB,) * 2:
+                return self.subtype != max(
+                    self.subtype, other.subtype, key=self._int_verb_subtypes
+                )
 
-        return tuple(getattr(self, attr) for attr in self_attrs) < tuple(
-            getattr(other, attr) for attr in other_attrs
-        )
+            return NotImplemented
+
+        priority_order = [
+            "tense",
+            "voice",
+            "mood",
+            "person",
+            "case",
+            "number",
+            "gender",
+            "degree",
+        ]
+
+        for attr in priority_order:
+            self_value = getattr(self, attr, None)
+            other_value = getattr(other, attr, None)
+
+            if self_value is None and other_value is None:
+                continue
+
+            if self_value != other_value:
+                assert self_value is not None
+                assert other_value is not None
+
+                enum_class = self_value.__class__
+                enum_members = list(enum_class)
+                self_index = enum_members.index(self_value)
+                other_index = enum_members.index(other_value)
+
+                return self_index > other_index
+
+        return False
 
     def __repr__(self) -> str:
         return self.string

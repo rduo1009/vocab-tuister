@@ -43,10 +43,10 @@ class VocabList:
         self.vocab = compact(self.vocab)
 
         # Set the version using the package version.
-        self.version: str = src.__version__
+        self.version = src.__version__
 
     def __repr__(self) -> str:
-        object_reprs: str = ", ".join(repr(word) for word in self.vocab)
+        object_reprs = ", ".join(repr(word) for word in self.vocab)
         return f"VocabList([{object_reprs}], version={self.version})"
 
     def __add__(self, other: object) -> VocabList:

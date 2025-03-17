@@ -40,13 +40,14 @@ def find_adjective_inflections(
     """
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
+
     if components.subtype is not None:
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"
         )
 
     try:
-        lemmas: tuple[str, ...] = lemminflect.getLemma(adjective, "ADJ")
+        lemmas = lemminflect.getLemma(adjective, "ADJ")
     except KeyError as e:
         raise InvalidWordError(
             f"Word '{adjective}' is not an adjective."
@@ -85,13 +86,14 @@ def find_main_adjective_inflection(
     """
     if components.type != ComponentsType.ADJECTIVE:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
+
     if components.subtype is not None:
         raise InvalidComponentsError(
             f"Invalid subtype: '{components.subtype}'"
         )
 
     try:
-        lemma: str = lemminflect.getLemma(adjective, "ADJ")[0]
+        lemma = lemminflect.getLemma(adjective, "ADJ")[0]
     except KeyError as e:
         raise InvalidWordError(
             f"Word '{adjective}' is not an adjective."
@@ -101,22 +103,20 @@ def find_main_adjective_inflection(
 
 
 def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, set[str]]:
-    not_comparable: bool = lemma in NOT_COMPARABLE_ADJECTIVES
+    not_comparable = lemma in NOT_COMPARABLE_ADJECTIVES
 
     match degree:
         case Degree.POSITIVE:
             return (lemma, {lemma})
 
         case Degree.COMPARATIVE:
-            comparatives: tuple[str, ...] = lemminflect.getInflection(
-                lemma, "RBR"
-            )
+            comparatives = lemminflect.getInflection(lemma, "RBR")
             return (
                 f"more {lemma}" if not_comparable else comparatives[0],
                 {*comparatives, f"more {lemma}"},
             )
 
-    superlatives: tuple[str, ...] = lemminflect.getInflection(lemma, "RBS")
+    superlatives = lemminflect.getInflection(lemma, "RBS")
     return (
         f"most {lemma}" if not_comparable else superlatives[0],
         {

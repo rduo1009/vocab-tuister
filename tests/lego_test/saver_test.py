@@ -21,22 +21,22 @@ def test_saver():
 
 def test_saver_wronglz4extension():
     x = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    with pytest.warns(MisleadingFilenameWarning, match=re.escape("The file 'tests/lego_test/testdata/test_output/regular_list.test_output.wrong.lz4' is not being compressed, but the file extension ('.lz4') suggests it is.")):
-        save_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.wrong.lz4"), x, compress=False)
+    with pytest.warns(MisleadingFilenameWarning, match=re.escape("The file 'tests/lego_test/testdata/test_output/regular_list.test_output.wrong.gzip' is not being compressed, but the file extension ('.gzip') suggests it is.")):
+        save_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.wrong.gzip"), x, compress=False)
 
 
 def test_saver_compress():
     x = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    save_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.lz4"), x, compress=True)
-    y = read_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.lz4"))
+    save_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.gzip"), x, compress=True)
+    y = read_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.test_output.gzip"))
     assert x == y
 
 
 def test_saver_compress_nolz4extension():
     x = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    with pytest.warns(MisleadingFilenameWarning, match=re.escape("The file 'tests/lego_test/testdata/test_output/regular_list.compressedtest_output' is being compressed, but the '.lz4' extension is not present and is being added.")):
+    with pytest.warns(MisleadingFilenameWarning, match=re.escape("The file 'tests/lego_test/testdata/test_output/regular_list.compressedtest_output' is being compressed, but the '.gzip' extension is not present and is being added.")):
         save_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.compressedtest_output"), x, compress=True)
-    y = read_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.compressedtest_output.lz4"))
+    y = read_vocab_dump(Path("tests/lego_test/testdata/test_output/regular_list.compressedtest_output.gzip"))
     assert x == y
 
 

@@ -25,7 +25,7 @@ from .adj_to_adv import adj_to_adv
 if TYPE_CHECKING:
     from ..accido.misc import EndingComponents
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 # fmt: off
