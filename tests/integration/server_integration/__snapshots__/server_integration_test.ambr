@@ -11,46 +11,46 @@
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5502
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
   INFO     src.server.app:app.py:63 Reading vocab list.
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Verb'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'hear: audio, audire, audivi, auditus'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Verb'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'hear: audio, audire, audivi, auditus'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'take: capio, capere, cepi'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'take: capio, capere, cepi'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(capio, capere, cepi, None, meaning=take)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'say: inquam'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'say: inquam'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(inquam, None, None, None, meaning=say)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Noun'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'girl: puella, puellae, (f)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Noun'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'girl: puella, puellae, (f)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puella, puellae, gender=feminine, meaning=girl)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'farmer: agricola, agricolae, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'farmer: agricola, agricolae, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'boy: puer, pueri, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'boy: puer, pueri, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puer, pueri, gender=masculine, meaning=boy)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'dog: canis, canis, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'dog: canis, canis, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(canis, canis, gender=masculine, meaning=dog)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'name: nomen, nominis, (n)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'name: nomen, nominis, (n)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(nomen, nominis, gender=neuter, meaning=name)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'I: ego'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'I: ego'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(ego, None, gender=None, meaning=I)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Adjective'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'large: ingens, ingentis, (3-1)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Adjective'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'large: ingens, ingentis, (3-1)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(ingens, ingentis, termination=1, declension=3, meaning=large)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'light: levis, leve, (3-2)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'light: levis, leve, (3-2)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(levis, leve, termination=2, declension=3, meaning=light)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'keen: acer, acris, acre, (3-3)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'keen: acer, acris, acre, (3-3)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(acer, acris, acre, termination=3, declension=3, meaning=keen)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'good: bonus, bona, bonum, (212)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'good: bonus, bona, bonum, (212)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(bonus, bona, bonum, termination=None, declension=212, meaning=good)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'happy: laetus, laeta, laetum, (2-1-2)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'happy: laetus, laeta, laetum, (2-1-2)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(laetus, laeta, laetum, termination=None, declension=212, meaning=happy)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Regular'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'into: in'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Regular'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'into: in'
   DEBUG    src.core.accido._class_regularword:_class_regularword.py:46 RegularWord(in, meaning=into)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'from: e'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'from: e'
   DEBUG    src.core.accido._class_regularword:_class_regularword.py:46 RegularWord(e, meaning=from)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Pronoun'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'this: hic, haec, hoc'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Pronoun'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'this: hic, haec, hoc'
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(hic, meaning=this)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'that: ille'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'that: ille'
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(ille, meaning=that)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5502 "POST /send-vocab HTTP/1.1" 200 20
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
@@ -72,7 +72,7 @@
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
   INFO     src.server.app:app.py:63 Reading vocab list.
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Cause an error'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Cause an error'
   ERROR    src.server.app:app.py:42 Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /send-vocab HTTP/1.1" 400 100
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
@@ -704,46 +704,46 @@
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5500
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
   INFO     src.server.app:app.py:63 Reading vocab list.
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Verb'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'hear: audio, audire, audivi, auditus'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Verb'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'hear: audio, audire, audivi, auditus'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'take: capio, capere, cepi'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'take: capio, capere, cepi'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(capio, capere, cepi, None, meaning=take)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'say: inquam'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'say: inquam'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(inquam, None, None, None, meaning=say)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Noun'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'girl: puella, puellae, (f)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Noun'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'girl: puella, puellae, (f)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puella, puellae, gender=feminine, meaning=girl)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'farmer: agricola, agricolae, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'farmer: agricola, agricolae, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(agricola, agricolae, gender=masculine, meaning=farmer)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'boy: puer, pueri, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'boy: puer, pueri, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(puer, pueri, gender=masculine, meaning=boy)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'dog: canis, canis, (m)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'dog: canis, canis, (m)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(canis, canis, gender=masculine, meaning=dog)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'name: nomen, nominis, (n)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'name: nomen, nominis, (n)'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(nomen, nominis, gender=neuter, meaning=name)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'I: ego'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'I: ego'
   DEBUG    src.core.accido._class_noun:_class_noun.py:110 Noun(ego, None, gender=None, meaning=I)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Adjective'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'large: ingens, ingentis, (3-1)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Adjective'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'large: ingens, ingentis, (3-1)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(ingens, ingentis, termination=1, declension=3, meaning=large)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'light: levis, leve, (3-2)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'light: levis, leve, (3-2)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(levis, leve, termination=2, declension=3, meaning=light)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'keen: acer, acris, acre, (3-3)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'keen: acer, acris, acre, (3-3)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(acer, acris, acre, termination=3, declension=3, meaning=keen)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'good: bonus, bona, bonum, (212)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'good: bonus, bona, bonum, (212)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(bonus, bona, bonum, termination=None, declension=212, meaning=good)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'happy: laetus, laeta, laetum, (2-1-2)'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'happy: laetus, laeta, laetum, (2-1-2)'
   DEBUG    src.core.accido._class_adjective:_class_adjective.py:120 Adjective(laetus, laeta, laetum, termination=None, declension=212, meaning=happy)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Regular'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'into: in'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Regular'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'into: in'
   DEBUG    src.core.accido._class_regularword:_class_regularword.py:46 RegularWord(in, meaning=into)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'from: e'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'from: e'
   DEBUG    src.core.accido._class_regularword:_class_regularword.py:46 RegularWord(e, meaning=from)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line '@ Pronoun'
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'this: hic, haec, hoc'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Pronoun'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'this: hic, haec, hoc'
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(hic, meaning=this)
-  DEBUG    src.core.lego.reader:reader.py:235 Reading line 'that: ille'
+  DEBUG    src.core.lego.reader:reader.py:163 Reading line 'that: ille'
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(ille, meaning=that)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /send-vocab HTTP/1.1" 200 20
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
