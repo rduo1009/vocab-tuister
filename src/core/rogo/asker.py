@@ -443,7 +443,7 @@ def _generate_parse(
     all_ending_components = set(chosen_word.find(chosen_ending))
 
     # Pick main ending components
-    main_ending_components = set_choice(all_ending_components)
+    main_ending_components = max(all_ending_components)
 
     return ParseWordLatToCompQuestion(
         prompt=chosen_ending,
