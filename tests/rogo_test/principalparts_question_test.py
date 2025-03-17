@@ -127,7 +127,7 @@ def test_principalparts_question():
 
 def test_principalparts_adjective():
     word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -138,7 +138,7 @@ def test_principalparts_adjective():
         assert output.principal_parts == ("laetus", "laeta", "laetum")
 
     word = Adjective("ingens", "ingentis", declension="3", termination=2, meaning="large")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -151,7 +151,7 @@ def test_principalparts_adjective():
 
 def test_principalparts_noun():
     word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -164,7 +164,7 @@ def test_principalparts_noun():
 
 def test_principalparts_pronoun():
     word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -177,7 +177,7 @@ def test_principalparts_pronoun():
 
 def test_principalparts_verb():
     word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -188,7 +188,7 @@ def test_principalparts_verb():
         assert output.principal_parts == ("doceo", "docere", "docui", "doctus")
 
     word = Verb("traho", "trahere", "traxi", meaning="drag")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):

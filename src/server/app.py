@@ -61,10 +61,10 @@ def send_vocab():
 
     try:
         logger.info("Reading vocab list.")
+        vocab_list_text = StringIO(request.get_data().decode("utf-8"))
         vocab_list = VocabList(
-            _read_vocab_file_internal(
-                StringIO(request.get_data().decode("utf-8"))
-            )
+            _read_vocab_file_internal(vocab_list_text),
+            vocab_list_text.getvalue(),
         )
     except (
         InvalidVocabDumpError,

@@ -173,7 +173,7 @@ exclude_components_verb = {
 
 def test_ending_exclusion_adjective():
     word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 50
 
     keys = tuple(exclude_components_adjective.keys())
@@ -197,7 +197,7 @@ def test_ending_exclusion_adjective():
 
 def test_ending_exclusion_noun():
     word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 50
 
     keys = tuple(exclude_components_noun.keys())
@@ -220,7 +220,7 @@ def test_ending_exclusion_noun():
 
 def test_ending_exclusion_pronoun():
     word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 50
 
     keys = tuple(exclude_components_pronoun.keys())
@@ -243,7 +243,7 @@ def test_ending_exclusion_pronoun():
 
 def test_ending_exclusion_verb():
     word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 50
 
     keys = tuple(exclude_components_verb.keys())
@@ -268,7 +268,7 @@ def test_ending_exclusion_verb():
 # Just copying the above test, as regular words should not cause any issues
 def test_ending_exclusion_regularword():
     word = RegularWord("sed", meaning="but")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 50
 
     keys = tuple(exclude_components_verb.keys())

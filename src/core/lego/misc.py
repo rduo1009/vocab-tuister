@@ -37,6 +37,7 @@ class VocabList:
     """
 
     vocab: list[_Word]
+    vocab_list_text: str
 
     def __post_init__(self) -> None:
         self.vocab = compact(self.vocab)
@@ -52,7 +53,10 @@ class VocabList:
         if not isinstance(other, VocabList) or self.version != other.version:
             return NotImplemented
 
-        return VocabList(self.vocab + other.vocab)
+        return VocabList(
+            self.vocab + other.vocab,
+            self.vocab_list_text + "\n" + other.vocab_list_text,
+        )
 
 
 """The key used to sign vocabulary pickle files."""

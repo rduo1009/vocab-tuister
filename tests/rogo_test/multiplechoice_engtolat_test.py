@@ -135,7 +135,7 @@ def test_multiplechoice_engtolat_adjective():
     word1 = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
     word2 = Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")
     word3 = Adjective("fortis", "forte", declension="3", termination=2, meaning="strong")
-    vocab_list = VocabList([word1, word2, word3])
+    vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -153,7 +153,7 @@ def test_multiplechoice_engtolat_noun():
     word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
     word2 = Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
     word3 = Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog")
-    vocab_list = VocabList([word1, word2, word3])
+    vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -171,7 +171,7 @@ def test_multiplechoice_engtolat_pronoun():
     word1 = Pronoun("hic", meaning="this")
     word2 = Pronoun("ille", meaning="that")
     word3 = Pronoun("qui", meaning="who")
-    vocab_list = VocabList([word1, word2, word3])
+    vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -189,7 +189,7 @@ def test_multiplechoice_engtolat_verb():
     word1 = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
     word2 = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
     word3 = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
-    vocab_list = VocabList([word1, word2, word3])
+    vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -207,7 +207,7 @@ def test_multiplechoice_engtolat_regularword():
     word1 = RegularWord("in", meaning="in")
     word2 = RegularWord("e", meaning="out of")
     word3 = RegularWord("post", meaning="after")
-    vocab_list = VocabList([word1, word2, word3])
+    vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):

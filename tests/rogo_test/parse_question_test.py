@@ -127,7 +127,7 @@ def test_parse_question():
 
 def test_parse_question_adjective():
     word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -144,7 +144,7 @@ def test_parse_question_adjective():
 
 def test_parse_question_noun():
     word = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -158,7 +158,7 @@ def test_parse_question_noun():
 
 def test_parse_question_pronoun():
     word = Pronoun("hic", meaning="this")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -172,7 +172,7 @@ def test_parse_question_pronoun():
 
 def test_parse_question_verb():
     word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
-    vocab_list = VocabList([word])
+    vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, settings):
