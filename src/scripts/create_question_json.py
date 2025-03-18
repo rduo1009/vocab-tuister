@@ -165,7 +165,9 @@ if __name__ == "__main__":
         output_dir.mkdir(parents=True, exist_ok=True)
 
     # Create sample vocab list
-    vocab: VocabList = VocabList(_read_vocab_file_internal(DEFAULT_VOCAB_LIST))
+    vocab: VocabList = VocabList(
+        _read_vocab_file_internal(DEFAULT_VOCAB_LIST), ""
+    )
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:

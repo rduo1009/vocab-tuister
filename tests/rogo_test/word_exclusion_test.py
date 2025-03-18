@@ -114,7 +114,7 @@ default_settings: Settings = {
 
 def test_word_exclusion_adjective():
     words: list[Adjective] = [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"), Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
-    vocab_list = VocabList(words)  # type: ignore[arg-type]
+    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
 
     settings = default_settings.copy()
 
@@ -136,7 +136,7 @@ def test_word_exclusion_noun():
         Noun("res", "rei", gender=Gender.FEMININE, meaning="thing"),
         Noun("ego", meaning="I"),
     ]
-    vocab_list = VocabList(words)  # type: ignore[arg-type]
+    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
 
     settings = default_settings.copy()
 
@@ -174,7 +174,7 @@ def test_word_exclusion_verb():
         Verb("aperio", "aperire", "aperui", "apertus", meaning="open"),
         Verb("abeo", "abire", "abii", "abitum", meaning="depart"),
     ]
-    vocab_list = VocabList(words)  # type: ignore[arg-type]
+    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
 
     settings = default_settings.copy()
 

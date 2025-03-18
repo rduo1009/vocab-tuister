@@ -15,26 +15,60 @@ from src.core.lego.reader import _regenerate_vocab_list, read_vocab_file
 
 def test_reader():
     l = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    assert l == VocabList([
-        Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-        Verb("capio", "capere", "cepi", meaning="take"),
-        Verb("inquam", meaning="say"),
-        Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
-        Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
-        Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
-        Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog"),
-        Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"),
-        Noun("ego", meaning="I"),
-        Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
-        Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
-        Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
-        Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
-        Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
-        RegularWord("in", meaning="into"),
-        RegularWord("e", meaning="from"),
-        Pronoun("hic", meaning="this"),
-        Pronoun("ille", meaning="that"),
-    ])
+    assert l == VocabList(
+        [
+            Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
+            Verb("capio", "capere", "cepi", meaning="take"),
+            Verb("inquam", meaning="say"),
+            Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
+            Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
+            Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
+            Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog"),
+            Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"),
+            Noun("ego", meaning="I"),
+            Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
+            Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
+            Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
+            Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
+            Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
+            Pronoun("hic", meaning="this"),
+            Pronoun("ille", meaning="that"),
+        ],
+        """@ Verb
+hear: audio, audire, audivi, auditus
+take: capio, capere, cepi
+say: inquam
+
+@ Noun
+girl: puella, puellae, (f)
+farmer: agricola, agricolae, (m)
+boy: puer, pueri, (m)
+dog: canis, canis, (m)
+name: nomen, nominis, (n)
+I: ego
+
+@ Adjective
+large: ingens, ingentis, (3-1)
+light: levis, leve, (3-2)
+keen: acer, acris, acre, (3-3)
+good: bonus, bona, bonum, (212)
+happy: laetus, laeta, laetum, (2-1-2)
+
+@ Regular
+into: in
+from: e
+
+@ Pronoun
+this: hic, haec, hoc
+that: ille
+
+# testing comments
+# 
+#
+# asnfdbjx""",
+    )
 
 
 def test_regenerate():
@@ -44,27 +78,62 @@ def test_regenerate():
 
 def test_reader_with_s():
     l = read_vocab_file(Path("tests/lego_test/testdata/regular_with_s_list.txt"))
-    assert l == VocabList([
-        Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-        Verb("capio", "capere", "cepi", meaning="take"),
-        Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
-        Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
-        Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
-        Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog"),
-        Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"),
-        Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
-        Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
-        Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
-        RegularWord("in", meaning="into"),
-        RegularWord("e", meaning="from"),
-        Pronoun("hic", meaning="this"),
-        Pronoun("ille", meaning="that"),
-    ])
+    assert l == VocabList(
+        [
+            Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
+            Verb("capio", "capere", "cepi", meaning="take"),
+            Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
+            Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
+            Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
+            Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog"),
+            Noun("nomen", "nominis", gender=Gender.NEUTER, meaning="name"),
+            Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
+            Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
+            Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
+            Pronoun("hic", meaning="this"),
+            Pronoun("ille", meaning="that"),
+        ],
+        """@Verbs
+hear: audio, audire, audivi, auditus
+take: capio, capere, cepi
+
+@Nouns
+girl: puella, puellae, (f)
+farmer: agricola, agricolae, (m)
+boy: puer, pueri, (m)
+dog: canis, canis, (m)
+name: nomen, nominis, (n)
+
+@Adjectives
+large: ingens, ingentis, (3-1)
+light: levis, leve, (3-2)
+keen: acer, acris, acre, (3-3)
+
+@Regulars
+into: in
+from: e
+
+@Pronouns
+this: hic, haec, hoc
+that: ille""",
+    )
 
 
 def test_multiple_meanings():
     l = read_vocab_file(Path("tests/lego_test/testdata/multiple_meanings_list.txt"))
-    assert l == VocabList([Verb("peto", "petere", "petivi", "petitus", meaning=MultipleMeanings(("attack", "make for", "seek", "ask"))), Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning=MultipleMeanings(("slave-girl", "maid")))])
+    assert l == VocabList(
+        [
+            Verb("peto", "petere", "petivi", "petitus", meaning=MultipleMeanings(("attack", "make for", "seek", "ask"))), 
+            Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning=MultipleMeanings(("slave-girl", "maid")))
+        ],
+        """@ Verbs
+attack / make for/seek/ask: peto, petere, petivi, petitus
+
+@ Noun
+slave-girl/    maid: ancilla, ancillae, (f)"""
+    )  # fmt: skip
 
 
 def test_invalidpos():

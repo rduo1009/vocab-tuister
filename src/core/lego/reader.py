@@ -7,6 +7,7 @@ import hashlib
 import hmac
 import logging
 import warnings
+from io import StringIO
 from re import match
 from typing import TYPE_CHECKING, Literal, cast
 
@@ -30,88 +31,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-# TODO: replace with regenerating with vocablist text
 def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
-    new_vocab: list[_Word] = []
-
-    for word in vocab_list.vocab:
-        match word:
-            case RegularWord():
-                new_vocab.append(RegularWord(word.word, meaning=word.meaning))
-
-            case Verb():
-                if word.infinitive is not None:
-                    assert word.perfect is not None
-
-                    if not word.ppp:
-                        new_vocab.append(
-                            Verb(
-                                word.present,
-                                word.infinitive,
-                                word.perfect,
-                                meaning=word.meaning,
-                            )
-                        )
-                    else:
-                        assert word.ppp is not None
-
-                        new_vocab.append(
-                            Verb(
-                                word.present,
-                                word.infinitive,
-                                word.perfect,
-                                word.ppp,
-                                meaning=word.meaning,
-                            )
-                        )
-                else:
-                    new_vocab.append(Verb(word.present, meaning=word.meaning))
-
-            case Noun():
-                if word.genitive is not None:
-                    assert word.gender is not None
-
-                    new_vocab.append(
-                        Noun(
-                            word.nominative,
-                            word.genitive,
-                            gender=word.gender,
-                            meaning=word.meaning,
-                        )
-                    )
-                else:
-                    new_vocab.append(
-                        Noun(word.nominative, meaning=word.meaning)
-                    )
-
-            case Adjective():
-                if word.declension == "212":
-                    new_vocab.append(
-                        Adjective(
-                            *word._principal_parts,  # noqa: SLF001
-                            declension="212",
-                            meaning=word.meaning,
-                        )
-                    )
-                else:
-                    assert word.termination is not None
-
-                    new_vocab.append(
-                        Adjective(
-                            *word._principal_parts,  # noqa: SLF001
-                            termination=word.termination,
-                            declension="3",
-                            meaning=word.meaning,
-                        )
-                    )
-
-            case Pronoun():
-                new_vocab.append(Pronoun(word.pronoun, meaning=word.meaning))
-
-            case _:
-                raise TypeError(f"Invalid type: {type(word)}")
-
-    return VocabList(new_vocab)
+    return VocabList(
+        _read_vocab_file_internal(StringIO(vocab_list.vocab_list_text)),
+        vocab_list.vocab_list_text,
+    )
 
 
 def read_vocab_dump(filename: Path) -> VocabList:
@@ -220,7 +144,11 @@ def read_vocab_file(file_path: Path) -> VocabList:
     >>> read_vocab_file(Path("path_to_file.txt"))  # doctest: +SKIP
     """
     with file_path.open("r") as file:
-        return VocabList(_read_vocab_file_internal(file))
+        contents = file.read()
+
+    return VocabList(
+        _read_vocab_file_internal(StringIO(contents)), str(contents)
+    )
 
 
 def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
