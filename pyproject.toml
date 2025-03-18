@@ -51,9 +51,7 @@ ruff = "0.9.9"
 doc8 = "1.1.2"
 rstfmt = "0.0.14"
 mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
-monkeytype = "23.3.0"
 interrogate = "1.7.0"
-pydoclint = "0.6.2"
 
 [tool.poetry.group.types.dependencies]
 types-regex = "2024.11.6.20250305"
