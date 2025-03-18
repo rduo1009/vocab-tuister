@@ -1,0 +1,84 @@
+[tox]
+requires = ["tox>=4.2"]
+env_list = ["3.13", "doctest", "type"]
+skip_missing_interpreters = true
+
+[env_run_base]
+description = "run tests using pytest"
+deps = ["icecream", "pytest", "pytest-xdist", "requests", "syrupy"]
+commands = [["pytest", "-m", "'not manual and not integration'"]]
+
+[env.doctest]
+description = "run doctests"
+deps = ["icecream", "pytest", "pytest-xdist", "requests", "syrupy"]
+commands = [
+    [
+        "pytest",
+        "--doctest-ignore-import-errors",
+        "--doctest-modules",
+        "--doctest-glob=*.rst",
+        "-m 'not manual and not integration'",
+        "src/",
+        "docs/",
+    ],
+]
+
+[env.type]
+description = "run type checks and check stubs"
+deps = ["icecream", "mypy", "optype", "pytest"]
+commands = [
+    [
+        "mypy",
+        "--install-types",
+        "--non-interactive ",
+        ".",
+    ],
+    [
+        "stubtest",
+        "dill",
+        "--mypy-config-file",
+        "mypy.ini",
+        "--allowlist",
+        "stubs/dill/allowlist",
+        "--ignore-unused-allowlist",
+    ],
+    [
+        "stubtest",
+        "lemminflect",
+        "--mypy-config-file",
+        "mypy.ini",
+        "--allowlist",
+        "stubs/lemminflect/allowlist",
+        "--ignore-unused-allowlist",
+    ],
+    [
+        "stubtest",
+        "nltk",
+        "--mypy-config-file",
+        "mypy.ini",
+        "--allowlist",
+        "stubs/nltk/allowlist",
+        "--ignore-unused-allowlist",
+    ],
+    [
+        "stubtest",
+        "colors",
+        "--mypy-config-file",
+        "mypy.ini",
+        "--allowlist",
+        "stubs/colors/allowlist",
+        "--ignore-unused-allowlist",
+    ],
+    [
+        "stubtest",
+        "aenum",
+        "--mypy-config-file",
+        "mypy.ini",
+        "--allowlist",
+        "stubs/aenum/allowlist",
+        "--ignore-unused-allowlist",
+    ],
+]
+
+[gh.python]
+"3.13" = ["py313", "type", "doctest"]
