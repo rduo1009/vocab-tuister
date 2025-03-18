@@ -51,7 +51,6 @@ ruff = "0.9.9"
 doc8 = "1.1.2"
 rstfmt = "0.0.14"
 mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
-monkeytype = "23.3.0"
 interrogate = "1.7.0"
 
 [tool.poetry.group.types.dependencies]
