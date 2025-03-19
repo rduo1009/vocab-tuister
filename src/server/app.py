@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import logging
+import traceback
 from io import StringIO
 from typing import TYPE_CHECKING, cast
 
@@ -17,10 +18,6 @@ from .._vendor.typeddict_validator import (
     DictMissingKeyException,
     DictValueTypeMismatchException,
     validate_typeddict,
-)
-from ..core.lego.exceptions import (
-    InvalidVocabDumpError,
-    InvalidVocabFileFormatError,
 )
 from ..core.lego.misc import VocabList
 from ..core.lego.reader import _read_vocab_file_internal
@@ -66,12 +63,9 @@ def send_vocab():
             _read_vocab_file_internal(vocab_list_text),
             vocab_list_text.getvalue(),
         )
-    except (
-        InvalidVocabDumpError,
-        InvalidVocabFileFormatError,
-        FileNotFoundError,
-    ) as e:
-        raise BadRequest(f"{e} ({type(e).__name__})") from e
+    except Exception as e:
+        tb = traceback.format_exc()
+        raise BadRequest(f"{type(e).__name__}: {e}\n{tb}") from e
 
     return "Vocab list received."
 
@@ -124,10 +118,14 @@ def create_session():
         ) from e
 
     logger.info("Returning %d questions.", question_amount)
-    return Response(
-        _generate_questions_json(vocab_list, question_amount, settings),
-        mimetype="application/json",
-    )
+    try:
+        return Response(
+            _generate_questions_json(vocab_list, question_amount, settings),
+            mimetype="application/json",
+        )
+    except Exception as e:
+        tb = traceback.format_exc()
+        raise BadRequest(f"{type(e).__name__}: {e}\n{tb}") from e
 
 
 def main_dev(port, *, debug=False):
