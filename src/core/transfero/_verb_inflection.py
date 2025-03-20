@@ -194,7 +194,7 @@ def _find_lemma(  # noqa: PLR0917
             )
 
 
-def _find_preactind_inflections(  # mypy cannot manage tuple match
+def _find_preactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     present_nonthird = lemminflect.getInflection(lemma, "VBP")[0]
@@ -239,7 +239,7 @@ def _find_preactind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_impactind_inflections(  # mypy cannot manage tuple match
+def _find_impactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     present_participle = lemminflect.getInflection(lemma, "VBG")[0]
@@ -319,7 +319,7 @@ def _find_impactind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_peractind_inflections(  # mypy cannot manage tuple match
+def _find_peractind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     past = lemminflect.getInflection(lemma, "VBD")[0]
@@ -365,7 +365,7 @@ def _find_peractind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_plpactind_inflections(  # mypy cannot manage tuple match
+def _find_plpactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
