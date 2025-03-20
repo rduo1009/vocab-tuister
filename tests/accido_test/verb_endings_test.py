@@ -101,19 +101,19 @@ class TestVerbConjugation:
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "facio", "facis", "facit", "facimus", "facitis", "faciunt",
-        "faciebam", "faciebas", "faciebat", "faciebamus", "faciebatis", "faciebant",
-        "feci", "fecisti", "fecit", "fecimus", "fecistis", "fecerunt",
-        "feceram", "feceras", "fecerat", "feceramus", "feceratis", "fecerant",
+        "capio", "capis", "capit", "capimus", "capitis", "capiunt",
+        "capiebam", "capiebas", "capiebat", "capiebamus", "capiebatis", "capiebant",
+        "cepi", "cepisti", "cepit", "cepimus", "cepistis", "ceperunt",
+        "ceperam", "ceperas", "ceperat", "ceperamus", "ceperatis", "ceperant",
 
-        "facere",
-        "face", "facite",
+        "capere",
+        "cape", "capite",
             
-        "facerem", "faceres", "faceret", "faceremus", "faceretis", "facerent",
-        "fecissem", "fecisses", "fecisset", "fecissemus", "fecissetis", "fecissent",
+        "caperem", "caperes", "caperet", "caperemus", "caperetis", "caperent",
+        "cepissem", "cepisses", "cepisset", "cepissemus", "cepissetis", "cepissent",
     ])])  # fmt: skip
     def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
-        word = Verb("facio", "facere", "feci", "factus", meaning="make")
+        word = Verb("capio", "capere", "cepi", "captus", meaning="take")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
