@@ -7,10 +7,10 @@
 # ---
 # name: test_cli_error_config.2
   '''
-  INFO     root:__main__.py:104 Using random seed '10'.
+  INFO     root:__main__.py:99 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5502
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
-  INFO     src.server.app:app.py:63 Reading vocab list.
+  INFO     src.server.app:app.py:60 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:163 Reading line 'hear: audio, audire, audivi, auditus'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
@@ -54,29 +54,51 @@
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(ille, meaning=that)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5502 "POST /send-vocab HTTP/1.1" 200 20
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5502
-  INFO     src.server.app:app.py:111 Validating settings.
-  ERROR    src.server.app:app.py:42 The settings provided are not valid: 'number-of-questions' (InvalidSettingsError)
+  INFO     src.server.app:app.py:105 Validating settings.
+  ERROR    src.server.app:app.py:39 The settings provided are not valid: 'number-of-questions' (InvalidSettingsError)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5502 "POST /session HTTP/1.1" 400 111
   
   '''
 # ---
 # name: test_cli_error_list
-  "Bad request: 400 Bad Request: Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)"
+  '''
+  Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
+  Traceback (most recent call last):
+    File "/Users/robertduong/coding/vocab-tuister/src/server/app.py", line 63, in send_vocab
+      _read_vocab_file_internal(vocab_list_text),
+      ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/Users/robertduong/coding/vocab-tuister/src/core/lego/reader.py", line 186, in _read_vocab_file_internal
+      raise InvalidVocabFileFormatError(
+          f"Invalid part of speech: '{line[1:].strip()}'"
+      )
+  src.core.lego.exceptions.InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
+  
+  '''
 # ---
 # name: test_cli_error_list.1
   'Bad request: 400 Bad Request: Vocab list has not been provided.'
 # ---
 # name: test_cli_error_list.2
   '''
-  INFO     root:__main__.py:104 Using random seed '10'.
+  INFO     root:__main__.py:99 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5501
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
-  INFO     src.server.app:app.py:63 Reading vocab list.
+  INFO     src.server.app:app.py:60 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Cause an error'
-  ERROR    src.server.app:app.py:42 Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)
-  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /send-vocab HTTP/1.1" 400 100
+  ERROR    src.server.app:app.py:39 InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
+  Traceback (most recent call last):
+    File "/Users/robertduong/coding/vocab-tuister/src/server/app.py", line 63, in send_vocab
+      _read_vocab_file_internal(vocab_list_text),
+      ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/Users/robertduong/coding/vocab-tuister/src/core/lego/reader.py", line 186, in _read_vocab_file_internal
+      raise InvalidVocabFileFormatError(
+          f"Invalid part of speech: '{line[1:].strip()}'"
+      )
+  src.core.lego.exceptions.InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
+  
+  DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /send-vocab HTTP/1.1" 400 630
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5501
-  ERROR    src.server.app:app.py:42 Vocab list has not been provided.
+  ERROR    src.server.app:app.py:39 Vocab list has not been provided.
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5501 "POST /session HTTP/1.1" 400 63
   
   '''
@@ -700,10 +722,10 @@
 # ---
 # name: test_cli_normal.2
   '''
-  INFO     root:__main__.py:104 Using random seed '10'.
+  INFO     root:__main__.py:99 Using random seed '10'.
   INFO     waitress:wasyncore.py:449 Serving on http://127.0.0.1:5500
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
-  INFO     src.server.app:app.py:63 Reading vocab list.
+  INFO     src.server.app:app.py:60 Reading vocab list.
   DEBUG    src.core.lego.reader:reader.py:163 Reading line '@ Verb'
   DEBUG    src.core.lego.reader:reader.py:163 Reading line 'hear: audio, audire, audivi, auditus'
   DEBUG    src.core.accido._class_verb:_class_verb.py:110 RegularWord(audio, audire, audivi, auditus, meaning=hear)
@@ -747,8 +769,8 @@
   DEBUG    src.core.accido._class_pronoun:_class_pronoun.py:60 Pronoun(ille, meaning=that)
   DEBUG    urllib3.connectionpool:connectionpool.py:544 http://127.0.0.1:5500 "POST /send-vocab HTTP/1.1" 200 20
   DEBUG    urllib3.connectionpool:connectionpool.py:241 Starting new HTTP connection (1): 127.0.0.1:5500
-  INFO     src.server.app:app.py:111 Validating settings.
-  INFO     src.server.app:app.py:126 Returning 50 questions.
+  INFO     src.server.app:app.py:105 Validating settings.
+  INFO     src.server.app:app.py:120 Returning 50 questions.
   DEBUG    src.core.rogo.asker:asker.py:96 Creating new question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi'.
   INFO     src.core.rogo.asker:asker.py:138 Creating question of type ParseWordLatToCompQuestion with word 'take: capio, capere, cepi' succeeded.
   DEBUG    src.core.rogo.asker:asker.py:96 Creating new question of type MultipleChoiceLatToEngQuestion with word 'hear: audio, audire, audivi, auditus'.
