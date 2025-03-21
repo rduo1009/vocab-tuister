@@ -200,6 +200,12 @@ class Verb(_Word):
             "Vimpactindpl1": f"{self._inf_stem}abamus",  # portabamus
             "Vimpactindpl2": f"{self._inf_stem}abatis",  # portabatis
             "Vimpactindpl3": f"{self._inf_stem}abant",  # portabant
+            "Vfutactindsg1": f"{self._inf_stem}abo",  # portabo
+            "Vfutactindsg2": f"{self._inf_stem}abis",  # portabis
+            "Vfutactindsg3": f"{self._inf_stem}abit",  # portabit
+            "Vfutactindpl1": f"{self._inf_stem}abimus",  # portabimus
+            "Vfutactindpl2": f"{self._inf_stem}abitis",  # portabitis
+            "Vfutactindpl3": f"{self._inf_stem}abunt",  # portabunt
             "Vperactindsg1": self.perfect,  # portavi
             "Vperactindsg2": f"{self._per_stem}isti",  # portavisti
             "Vperactindsg3": f"{self._per_stem}it",  # portavit
@@ -246,6 +252,12 @@ class Verb(_Word):
             "Vimpactindpl1": f"{self._inf_stem}ebamus",  # docebamus
             "Vimpactindpl2": f"{self._inf_stem}ebatis",  # docebatis
             "Vimpactindpl3": f"{self._inf_stem}ebant",  # docebant
+            "Vfutactindsg1": f"{self._inf_stem}ebo",  # docebo
+            "Vfutactindsg2": f"{self._inf_stem}ebis",  # docebis
+            "Vfutactindsg3": f"{self._inf_stem}ebit",  # docebit
+            "Vfutactindpl1": f"{self._inf_stem}ebimus",  # docebimus
+            "Vfutactindpl2": f"{self._inf_stem}ebitis",  # docebitis
+            "Vfutactindpl3": f"{self._inf_stem}ebunt",  # docebunt
             "Vperactindsg1": self.perfect,  # docui
             "Vperactindsg2": f"{self._per_stem}isti",  # docuisit
             "Vperactindsg3": f"{self._per_stem}it",  # docuit
@@ -292,6 +304,12 @@ class Verb(_Word):
             "Vimpactindpl1": f"{self._inf_stem}ebamus",  # trahebamus
             "Vimpactindpl2": f"{self._inf_stem}ebatis",  # trahebatis
             "Vimpactindpl3": f"{self._inf_stem}ebant",  # trahebant
+            "Vfutactindsg1": f"{self._inf_stem}am",  # traham
+            "Vfutactindsg2": f"{self._inf_stem}es",  # trahes
+            "Vfutactindsg3": f"{self._inf_stem}et",  # trahet
+            "Vfutactindpl1": f"{self._inf_stem}emus",  # trahemus
+            "Vfutactindpl2": f"{self._inf_stem}etis",  # trahetis
+            "Vfutactindpl3": f"{self._inf_stem}ent",  # trahent
             "Vperactindsg1": self.perfect,  # traxi
             "Vperactindsg2": f"{self._per_stem}isti",  # traxisti
             "Vperactindsg3": f"{self._per_stem}it",  # traxit
@@ -338,6 +356,12 @@ class Verb(_Word):
             "Vimpactindpl1": f"{self._inf_stem}iebamus",  # audiebamus
             "Vimpactindpl2": f"{self._inf_stem}iebatis",  # audiebatis
             "Vimpactindpl3": f"{self._inf_stem}iebant",  # audiebant
+            "Vfutactindsg1": f"{self._inf_stem}iam",  # veniam
+            "Vfutactindsg2": f"{self._inf_stem}ies",  # venies
+            "Vfutactindsg3": f"{self._inf_stem}iet",  # veniet
+            "Vfutactindpl1": f"{self._inf_stem}iemus",  # veniemus
+            "Vfutactindpl2": f"{self._inf_stem}ietis",  # venietis
+            "Vfutactindpl3": f"{self._inf_stem}ient",  # venient
             "Vperactindsg1": self.perfect,  # audivi
             "Vperactindsg2": f"{self._per_stem}isti",  # audivisti
             "Vperactindsg3": f"{self._per_stem}it",  # audivit
@@ -384,6 +408,12 @@ class Verb(_Word):
             "Vimpactindpl1": f"{self._inf_stem}iebamus",  # capiebamus
             "Vimpactindpl2": f"{self._inf_stem}iebatis",  # capiebatis
             "Vimpactindpl3": f"{self._inf_stem}iebant",  # capiebant
+            "Vfutactindsg1": f"{self._inf_stem}iam",  # capiam
+            "Vfutactindsg2": f"{self._inf_stem}ies",  # capies
+            "Vfutactindsg3": f"{self._inf_stem}iet",  # capiet
+            "Vfutactindpl1": f"{self._inf_stem}iemus",  # capiemus
+            "Vfutactindpl2": f"{self._inf_stem}ietis",  # capietis
+            "Vfutactindpl3": f"{self._inf_stem}ient",  # capient
             "Vperactindsg1": self.perfect,  # cepi
             "Vperactindsg2": f"{self._per_stem}isti",  # cepisti
             "Vperactindsg3": f"{self._per_stem}it",  # cepit
