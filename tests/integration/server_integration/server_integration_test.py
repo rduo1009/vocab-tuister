@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import contextlib
 import json
+import logging
 import os
 import threading
 from pathlib import Path
@@ -39,6 +40,7 @@ def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
 
 @pytest.mark.integration
 def test_cli_normal(caplog, snapshot, monkeypatch):
+    caplog.handler.setFormatter(logging.Formatter("%(levelname)-8s %(name)s: %(message)s"))
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5500, "regular", "regular")
 
     try:
@@ -62,6 +64,7 @@ def test_cli_normal(caplog, snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_list(caplog, snapshot, monkeypatch):
+    caplog.handler.setFormatter(logging.Formatter("%(levelname)-8s %(name)s: %(message)s"))
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5501, "error", "regular")
 
     try:
@@ -97,6 +100,7 @@ def test_cli_error_list(caplog, snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_config(caplog, snapshot, monkeypatch):
+    caplog.handler.setFormatter(logging.Formatter("%(levelname)-8s %(name)s: %(message)s"))
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5502, "regular", "error")
     try:
         sleep(5)
