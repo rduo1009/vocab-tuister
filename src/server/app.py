@@ -36,8 +36,11 @@ vocab_list: VocabList | None = None
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
-    logger.error(e.description)
-
+    logger.error(
+        "%s\n%s",
+        e.description,
+        "\n".join(traceback.format_tb(e.__traceback__)),
+    )
     return f"Bad request: {e}", 400
 
 
@@ -64,8 +67,9 @@ def send_vocab():
             vocab_list_text.getvalue(),
         )
     except Exception as e:
-        tb = traceback.format_exc()
-        raise BadRequest(f"{type(e).__name__}: {e}\n{tb}") from e
+        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
+            e.__traceback__
+        ) from e
 
     return "Vocab list received."
 
@@ -124,8 +128,9 @@ def create_session():
             mimetype="application/json",
         )
     except Exception as e:
-        tb = traceback.format_exc()
-        raise BadRequest(f"{type(e).__name__}: {e}\n{tb}") from e
+        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
+            e.__traceback__
+        ) from e
 
 
 def main_dev(port, *, debug=False):

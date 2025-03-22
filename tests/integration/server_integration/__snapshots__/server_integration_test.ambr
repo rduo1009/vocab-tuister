@@ -6,19 +6,7 @@
   "Bad request: 400 Bad Request: The settings provided are not valid: 'number-of-questions' (InvalidSettingsError)"
 # ---
 # name: test_cli_error_list
-  '''
-  Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
-  Traceback (most recent call last):
-    File "/Users/robertduong/coding/vocab-tuister/src/server/app.py", line 63, in send_vocab
-      _read_vocab_file_internal(vocab_list_text),
-      ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
-    File "/Users/robertduong/coding/vocab-tuister/src/core/lego/reader.py", line 186, in _read_vocab_file_internal
-      raise InvalidVocabFileFormatError(
-          f"Invalid part of speech: '{line[1:].strip()}'"
-      )
-  src.core.lego.exceptions.InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'
-  
-  '''
+  "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
 # ---
 # name: test_cli_error_list.1
   'Bad request: 400 Bad Request: Vocab list has not been provided.'
