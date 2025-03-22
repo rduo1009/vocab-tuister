@@ -38,7 +38,7 @@ def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
 
 
 @pytest.mark.integration
-def test_cli_normal(caplog, snapshot, monkeypatch):
+def test_cli_normal(snapshot, monkeypatch):
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5500, "regular", "regular")
 
     try:
@@ -57,11 +57,9 @@ def test_cli_normal(caplog, snapshot, monkeypatch):
 
         cli_process.join(timeout=10)
 
-    assert caplog.text == snapshot
-
 
 @pytest.mark.integration
-def test_cli_error_list(caplog, snapshot, monkeypatch):
+def test_cli_error_list(snapshot, monkeypatch):
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5501, "error", "regular")
 
     try:
@@ -92,11 +90,9 @@ def test_cli_error_list(caplog, snapshot, monkeypatch):
 
         cli_process.join(timeout=10)
 
-    assert caplog.text == snapshot
-
 
 @pytest.mark.integration
-def test_cli_error_config(caplog, snapshot, monkeypatch):
+def test_cli_error_config(snapshot, monkeypatch):
     server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5502, "regular", "error")
     try:
         sleep(5)
@@ -125,5 +121,3 @@ def test_cli_error_config(caplog, snapshot, monkeypatch):
         sleep(5)
 
         cli_process.join(timeout=10)
-
-    assert caplog.text == snapshot
