@@ -1,6 +1,6 @@
-[?25l[?2004h]2;Create Session ConfigVerb exclusions[0K
-[ ] All of them[0K
-[x] First conjugation verbs[0K
+[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[0K
+[38;2;225;123;52m[ ] All of them[0m[0K
+[1m[x] First conjugation verbs[0m[0K
 [ ] Second conjugation verbs[0K
 [ ] Third conjugation verbs[0K
 [ ] Fourth conjugation verbs[0K
@@ -19,7 +19,7 @@
 [ ] 1st person[0K
 [ ] 2nd person[0K
 [ ] 3rd person[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[21AParticiple exclusions[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[0K
 [B[ ] Present active[0K
 [ ] Perfect passive[0K
 [ ] Masculine gender[0K
@@ -33,7 +33,7 @@
 [ ] Ablative case[0K
 [ ] Singular number[0K
 [ ] Plural number[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[15ANoun exclusions[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[0J[300D[15A[1;4;4mNoun[0m[4m [0m[1;4;4mexclusions[0m[0K
 [B[ ] First declension nouns[0K
 [ ] Second declension nouns[0K
 [ ] Third declension nouns[0K
@@ -48,7 +48,7 @@
 [ ] Ablative case[0K
 [ ] Singular number[0K
 [ ] Plural number[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[16AAdjective exclusions[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[16A[1;4;4mAdjective[0m[4m [0m[1;4;4mexclusions[0m[0K
 [B[ ] First and second declension adjectives[0K
 [ ] Third declension adjectives[0K
 [ ] Masculine gender[0K
@@ -65,11 +65,11 @@
 [ ] Positive degree[0K
 [ ] Comparative degree[0K
 [ ] Superlative degree[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[18AAdverb exclusions[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[18A[1;4;4mAdverb[0m[4m [0m[1;4;4mexclusions[0m[0K
 [B[ ] Positive degree[0K
 [ ] Comparative degree[0K
 [ ] Superlative degree[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[5APronoun exclusions[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[0J[300D[5A[1;4;4mPronoun[0m[4m [0m[1;4;4mexclusions[0m[0K
 [B[ ] Masculine gender[0K
 [ ] Feminine gender[0K
 [ ] Neuter gender[0K
@@ -81,16 +81,16 @@
 [ ] Ablative case[0K
 [ ] Singular number[0K
 [ ] Plural number[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[13ARegular word exclusions[0K
-[B↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[2AQuestion types[0K
-[x] Type-in English to Latin questions[0K
-[x] Type-in Latin to English questions[0K
-[x] Parsing questions[0K
-[x] Inflecting questions[0K
-[x] Principal parts questions[0K
-[x] Multiple choice English to Latin questions[0K
-[x] Multiple choice Latin to English questions[0K
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[8AInput the number of options wanted for multiple-choice questions.[0K
-> Must be a positive integer                                                                                                                                                                                                                                                                                
-(press right to save and quit)[0K[0J[300D[2Ainput abc is not a number[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[13A[1;4;4mRegular[0m[4m [0m[1;4;4mword[0m[4m [0m[1;4;4mexclusions[0m[0K
+[B[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[0J[300D[2A[1;4;4mQuestion[0m[4m [0m[1;4;4mtypes[0m[0K
+[1;38;2;225;123;52m[x] Type-in English to Latin questions[0m[0K
+[1m[x] Type-in Latin to English questions[0m[0K
+[1m[x] Parsing questions[0m[0K
+[1m[x] Inflecting questions[0m[0K
+[1m[x] Principal parts questions[0m[0K
+[1m[x] Multiple choice English to Latin questions[0m[0K
+[1m[x] Multiple choice Latin to English questions[0m[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[8AInput the number of options wanted for multiple-choice questions.[0K
+> [7mM[0m[38;5;240must be a positive integer                                                                                                                                                                                                                                                                                [0m
+[2m(press right to save and quit)[0m[0K[0J[300D[2Ainput abc is not a number[0K
 [0K[0J[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
