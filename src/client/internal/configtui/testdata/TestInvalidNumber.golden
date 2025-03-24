@@ -1,97 +1,96 @@
-[?25l[?2004h]2;Create Session ConfigVerb exclusions
-[x] All of them
-[x] First conjugation verbs
-[ ] Second conjugation verbs
-[ ] Third conjugation verbs
-[ ] Fourth conjugation verbs
-[ ] Mixed conjugation verbs
-[ ] Irregular verbs
-[ ] Present active indicative
-[ ] Imperfect active indicative
-[ ] Perfect active indicative
-[ ] Pluperfect active indicative
-[ ] Present active infinitive
-[ ] Present active imperative
-[ ] Imperative active subjunctive
-[ ] Pluperfect active subjunctive
-[ ] Singular number
-[ ] Plural number
-[ ] 1st person
-[ ] 2nd person
-[ ] 3rd person
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitParticiple exclusions
-[ ] Present active
-[ ] Perfect passive
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitNoun exclusions
-[ ] All of them
-[ ] First declension nouns
-[ ] Second declension nouns
-[ ] Third declension nouns
-[ ] Fourth declension nouns
-[ ] Fifth declension nouns
-[ ] Irregular nouns
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitAdjective exclusions
-[ ] First and second declension adjectives
-[ ] Third declension adjectives
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-[ ] Positive degree
-[ ] Comparative degree
-[ ] Superlative degree
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitAdverb exclusions
-[ ] Positive degree
-[ ] Comparative degree
-[ ] Superlative degree
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitPronoun exclusions
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitRegular word exclusions
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitQuestion types
-[x] Type-in English to Latin questions
-[x] Type-in Latin to English questions
-[x] Parsing questions
-[x] Inflecting questions
-[x] Principal parts questions
-[x] Multiple choice English to Latin questions
-[x] Multiple choice Latin to English questions
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitInput the number of options wanted for multiple-choice questions.
+[?25l[?2004h]2;Create Session ConfigVerb exclusions[0K
+[ ] All of them[0K
+[x] First conjugation verbs[0K
+[ ] Second conjugation verbs[0K
+[ ] Third conjugation verbs[0K
+[ ] Fourth conjugation verbs[0K
+[ ] Mixed conjugation verbs[0K
+[ ] Irregular verbs[0K
+[ ] Present active indicative[0K
+[ ] Imperfect active indicative[0K
+[ ] Perfect active indicative[0K
+[ ] Pluperfect active indicative[0K
+[ ] Present active infinitive[0K
+[ ] Present active imperative[0K
+[ ] Imperative active subjunctive[0K
+[ ] Pluperfect active subjunctive[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+[ ] 1st person[0K
+[ ] 2nd person[0K
+[ ] 3rd person[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[21AParticiple exclusions[0K
+[B[ ] Present active[0K
+[ ] Perfect passive[0K
+[ ] Masculine gender[0K
+[ ] Feminine gender[0K
+[ ] Neuter gender[0K
+[ ] Nominative case[0K
+[ ] Vocative case[0K
+[ ] Accusative case[0K
+[ ] Genitive case[0K
+[ ] Dative case[0K
+[ ] Ablative case[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[15ANoun exclusions[0K
+[B[ ] First declension nouns[0K
+[ ] Second declension nouns[0K
+[ ] Third declension nouns[0K
+[ ] Fourth declension nouns[0K
+[ ] Fifth declension nouns[0K
+[ ] Irregular nouns[0K
+[ ] Nominative case[0K
+[ ] Vocative case[0K
+[ ] Accusative case[0K
+[ ] Genitive case[0K
+[ ] Dative case[0K
+[ ] Ablative case[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[16AAdjective exclusions[0K
+[B[ ] First and second declension adjectives[0K
+[ ] Third declension adjectives[0K
+[ ] Masculine gender[0K
+[ ] Feminine gender[0K
+[ ] Neuter gender[0K
+[ ] Nominative case[0K
+[ ] Vocative case[0K
+[ ] Accusative case[0K
+[ ] Genitive case[0K
+[ ] Dative case[0K
+[ ] Ablative case[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+[ ] Positive degree[0K
+[ ] Comparative degree[0K
+[ ] Superlative degree[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[18AAdverb exclusions[0K
+[B[ ] Positive degree[0K
+[ ] Comparative degree[0K
+[ ] Superlative degree[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[5APronoun exclusions[0K
+[B[ ] Masculine gender[0K
+[ ] Feminine gender[0K
+[ ] Neuter gender[0K
+[ ] Nominative case[0K
+[ ] Vocative case[0K
+[ ] Accusative case[0K
+[ ] Genitive case[0K
+[ ] Dative case[0K
+[ ] Ablative case[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[13ARegular word exclusions[0K
+[B↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[0J[300D[2AQuestion types[0K
+[x] Type-in English to Latin questions[0K
+[x] Type-in Latin to English questions[0K
+[x] Parsing questions[0K
+[x] Inflecting questions[0K
+[x] Principal parts questions[0K
+[x] Multiple choice English to Latin questions[0K
+[x] Multiple choice Latin to English questions[0K
+↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[0K[300D[8AInput the number of options wanted for multiple-choice questions.[0K
 > Must be a positive integer                                                                                                                                                                                                                                                                                
-(press right to save and quit)input abc is not a number
-[?2004l[?25h
+(press right to save and quit)[0K[0J[300D[2Ainput abc is not a number[0K
+[0K[0J[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

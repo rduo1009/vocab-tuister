@@ -1,65 +1,51 @@
-[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
-Question 1/6
-
-Translate to Latin: bar
-[ ] foo
-[ ] bar
-[ ] baz
-
-
-
-Score: 0/0 (0%)
-tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit[x] foo
-Answer is correct!
-Score: 1/1 (100%)
-Question 2/6
-[ ] foo
-
-[ ] foo
-[ ] bar
-[x] bar
-Answer is incorrect!
-Score: 1/2 (50%)
-Question 3/6
-Translate to Latin: foo
-[ ] baz
-[ ] bar
-[ ] qux
-
-[ ] baz
-[ ] bar
-[x] bar
-Answer is correct!
-Score: 2/3 (67%)
-Question 4/6
-[ ] baz
-[ ] bar
-
-[ ] baz
-[ ] bar
-[ ] bar
-[ ] qux
-[x] qux
-Answer is incorrect!
-Score: 2/4 (50%)
-Question 5/6
-Translate to Latin: baz
-[ ] bar
-[ ] foo
-[ ] qux
-
-[ ] bar
-[ ] foo
-[ ] foo
-[ ] qux
-[x] qux
-Answer is correct!
-Score: 3/5 (60%)
-Question 6/6
-[ ] bar
-[ ] qux
-
-[x] bar
-Answer is incorrect!
-Score: 3/6 (50%)
-[?2004l[?25h
+[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session[0K
+Question 1/6[0K
+[0K
+Translate to Latin: bar[0K
+[ ] foo[0K
+[ ] bar[0K
+[ ] baz[0K
+[0K
+[0K
+[0K
+Score: 0/0 (0%)[0K
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit[0K[300D[11A[B[B[B[B[x] foo[0K
+[B[B[BAnswer is correct![0K
+[BScore: 1/1 (100%)[0K
+[300D[11A[BQuestion 2/6[0K
+[B[B[ ] foo[0K
+[B[B[B[0K
+[B[B[300D[11A[B[B[B[B[B[x] bar[0K
+[B[BAnswer is incorrect![0K
+[BScore: 1/2 (50%)[0K
+[300D[11A[BQuestion 3/6[0K
+[BTranslate to Latin: foo[0K
+[ ] baz[0K
+[ ] bar[0K
+[ ] qux[0K
+[B[0K
+[B[B[300D[11A[B[B[B[B[B[x] bar[0K
+[B[BAnswer is correct![0K
+[BScore: 2/3 (67%)[0K
+[300D[11A[BQuestion 4/6[0K
+[B[B[B[ ] bar[0K
+[B[B[0K
+[B[B[300D[11A[B[B[B[B[B[B[x] qux[0K
+[BAnswer is incorrect![0K
+[BScore: 2/4 (50%)[0K
+[300D[11A[BQuestion 5/6[0K
+[BTranslate to Latin: baz[0K
+[ ] bar[0K
+[ ] foo[0K
+[ ] qux[0K
+[B[0K
+[B[B[300D[11A[B[B[B[B[B[B[x] qux[0K
+[BAnswer is correct![0K
+[BScore: 3/5 (60%)[0K
+[300D[11A[BQuestion 6/6[0K
+[B[B[B[B[ ] qux[0K
+[B[0K
+[B[B[300D[11A[B[B[B[B[x] bar[0K
+[B[B[BAnswer is incorrect![0K
+[BScore: 3/6 (50%)[0K
+[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

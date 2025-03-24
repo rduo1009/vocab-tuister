@@ -1,67 +1,63 @@
-[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
-Question 1/6
-
-Translate to English: foo
-> Write answer here...
-
-
-Score: 0/0 (0%)
-tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit> b 
-> ba 
-> baz 
-> baz 
-Answer is correct!
-Score: 1/1 (100%)
-Question 2/6
-> Write answer here...
-
-> b 
-> ba 
-> baz 
-> bazb 
-> bazba 
-> bazbaz 
-> bazbaz 
-Answer is correct!
-Score: 2/2 (100%)
-Question 3/6
-> Write answer here...
-
-> q 
-> qu 
-> qux 
-> qux  ✕ baz
-Answer is incorrect!
-Score: 2/3 (67%)
-Question 4/6
-Translate to English: bar
-> Write answer here...
-
-> q 
-> qu 
-> qux 
-> qux 
-Answer is correct!
-Score: 3/4 (75%)
-Question 5/6
-> Write answer here...
-
-> q 
-> qu 
-> qux 
-> quxq 
-> quxqu 
-> quxqux 
-> quxqux 
-Answer is correct!
-Score: 4/5 (80%)
-Question 6/6
-> Write answer here...
-
-> b 
-> ba 
-> baz 
-> baz  ✕ qux
-Answer is incorrect!
-Score: 4/6 (67%)
-[?2004l[?25h
+[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session[0K
+Question 1/6[0K
+[0K
+Translate to English: foo[0K
+> Write answer here...[0K
+[0K
+[0K
+Score: 0/0 (0%)[0K
+tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit[0K[300D[8A[B[B[B[B> b [0K
+[B[B[B[300D[8A[B[B[B[B> ba [0K
+[B[B[B[300D[8A[B[B[B[B> baz [0K
+[B[B[B[300D[8A[B[B[B[B[BAnswer is correct![0K
+[BScore: 1/1 (100%)[0K
+[300D[8A[BQuestion 2/6[0K
+[B[B> Write answer here...[0K
+[0K
+[B[B[300D[8A[B[B[B[B> b [0K
+[B[B[B[300D[8A[B[B[B[B> ba [0K
+[B[B[B[300D[8A[B[B[B[B> baz [0K
+[B[B[B[300D[8A[B[B[B[B> bazb [0K
+[B[B[B[300D[8A[B[B[B[B> bazba [0K
+[B[B[B[300D[8A[B[B[B[B> bazbaz [0K
+[B[B[B[300D[8A[B[B[B[B[BAnswer is correct![0K
+[BScore: 2/2 (100%)[0K
+[300D[8A[BQuestion 3/6[0K
+[B[B> Write answer here...[0K
+[0K
+[B[B[300D[8A[B[B[B[B> q [0K
+[B[B[B[300D[8A[B[B[B[B> qu [0K
+[B[B[B[300D[8A[B[B[B[B> qux [0K
+[B[B[B[300D[8A[B[B[B[B> qux  ✕ baz[0K
+Answer is incorrect![0K
+[BScore: 2/3 (67%)[0K
+[300D[8A[BQuestion 4/6[0K
+[BTranslate to English: bar[0K
+> Write answer here...[0K
+[0K
+[B[B[300D[8A[B[B[B[B> q [0K
+[B[B[B[300D[8A[B[B[B[B> qu [0K
+[B[B[B[300D[8A[B[B[B[B> qux [0K
+[B[B[B[300D[8A[B[B[B[B[BAnswer is correct![0K
+[BScore: 3/4 (75%)[0K
+[300D[8A[BQuestion 5/6[0K
+[B[B> Write answer here...[0K
+[0K
+[B[B[300D[8A[B[B[B[B> q [0K
+[B[B[B[300D[8A[B[B[B[B> qu [0K
+[B[B[B[300D[8A[B[B[B[B> qux [0K
+[B[B[B[300D[8A[B[B[B[B> quxq [0K
+[B[B[B[300D[8A[B[B[B[B> quxqu [0K
+[B[B[B[300D[8A[B[B[B[B> quxqux [0K
+[B[B[B[300D[8A[B[B[B[B[BAnswer is correct![0K
+[BScore: 4/5 (80%)[0K
+[300D[8A[BQuestion 6/6[0K
+[B[B> Write answer here...[0K
+[0K
+[B[B[300D[8A[B[B[B[B> b [0K
+[B[B[B[300D[8A[B[B[B[B> ba [0K
+[B[B[B[300D[8A[B[B[B[B> baz [0K
+[B[B[B[300D[8A[B[B[B[B> baz  ✕ qux[0K
+Answer is incorrect![0K
+[BScore: 4/6 (67%)[0K
+[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
