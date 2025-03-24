@@ -10,7 +10,9 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/listtui"
@@ -21,6 +23,10 @@ const (
 
 	millisecondDelay = 100
 )
+
+func init() {
+	lipgloss.SetColorProfile(termenv.TrueColor)
+}
 
 func readBts(tb testing.TB, r io.Reader) []byte {
 	tb.Helper()
