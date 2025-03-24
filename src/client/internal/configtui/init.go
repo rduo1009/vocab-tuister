@@ -1,10 +1,10 @@
 package configtui
 
 import (
-	"github.com/charmbracelet/bubbles/v2/textinput"
-	tea "github.com/charmbracelet/bubbletea/v2"
+	"github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
-func (m Model) Init() (tea.Model, tea.Cmd) {
-	return m, tea.Batch(textinput.Blink, tea.SetWindowTitle("Create Session Config"))
+func (m Model) Init() tea.Cmd {
+	return tea.Batch(textinput.Blink, tea.SetWindowTitle("Create Session Config"))
 }

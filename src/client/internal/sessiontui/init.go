@@ -11,8 +11,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/charmbracelet/bubbles/v2/textinput"
-	tea "github.com/charmbracelet/bubbletea/v2"
+	"github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
 	unionjson "github.com/widmogrod/mkunion/x/shared"
 
 	"github.com/rduo1009/vocab-tuister/src/client/pkg"
@@ -42,8 +42,8 @@ func extractJSONObjects(jsonList []byte) ([][]byte, error) {
 	return result, nil
 }
 
-func (m Model) Init() (tea.Model, tea.Cmd) {
-	return m, tea.Batch(
+func (m Model) Init() tea.Cmd {
+	return tea.Batch(
 		textinput.Blink,
 		tea.SetWindowTitle("Vocab Tester Session"),
 		func() tea.Msg {
