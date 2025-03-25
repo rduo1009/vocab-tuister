@@ -9,8 +9,10 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/teatest/v2"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/listtui"
@@ -21,6 +23,10 @@ const (
 
 	millisecondDelay = 100
 )
+
+func init() {
+	lipgloss.SetColorProfile(termenv.TrueColor)
+}
 
 func readBts(tb testing.TB, r io.Reader) []byte {
 	tb.Helper()
@@ -48,21 +54,20 @@ func setUpTUI(t *testing.T) (*teatest.TestModel, string) {
 	return tm, outputListFilepath
 }
 
-func sendKeyWithDelay(tm *teatest.TestModel, msg rune) {
-	tm.Send(tea.KeyPressMsg{Code: msg})
-	time.Sleep(time.Millisecond * millisecondDelay)
-}
-
-func sendModifiedKeyWithDelay(tm *teatest.TestModel, mod tea.KeyMod, msg rune) {
-	tm.Send(tea.KeyPressMsg{Mod: mod, Code: msg})
+func sendKeyWithDelay(tm *teatest.TestModel, keyType tea.KeyType, keyRunes ...rune) {
+	if keyType == tea.KeyRunes {
+		tm.Send(tea.KeyMsg{Type: keyType, Runes: keyRunes})
+	} else {
+		tm.Send(tea.KeyMsg{Type: keyType})
+	}
 	time.Sleep(time.Millisecond * millisecondDelay)
 }
 
 func typeWithDelay(tm *teatest.TestModel, s string) {
 	for _, c := range s {
-		tm.Send(tea.KeyPressMsg{
-			Code: c,
-			Text: string(c),
+		tm.Send(tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{c},
 		})
 		time.Sleep(time.Millisecond * millisecondDelay)
 	}
@@ -120,7 +125,7 @@ that: ille`
 		t.Logf("typed %s", line)
 	}
 	sendKeyWithDelay(tm, tea.KeyBackspace) // remove final line
-	sendModifiedKeyWithDelay(tm, tea.ModCtrl, 's')
+	sendKeyWithDelay(tm, tea.KeyCtrlS)
 
 	// Test program output
 	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second*3))

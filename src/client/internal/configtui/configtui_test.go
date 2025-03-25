@@ -8,8 +8,10 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/teatest/v2"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/configtui"
@@ -23,6 +25,10 @@ const (
 
 	millisecondDelay = 50
 )
+
+func init() {
+	lipgloss.SetColorProfile(termenv.TrueColor)
+}
 
 func readBts(tb testing.TB, r io.Reader) []byte {
 	tb.Helper()
@@ -77,8 +83,8 @@ func setUpTUI(t *testing.T) (*teatest.TestModel, string) {
 	return tm, outputConfigFilepath
 }
 
-func sendKeyWithDelay(tm *teatest.TestModel, msg rune) {
-	tm.Send(tea.KeyPressMsg{Code: msg})
+func sendKeyWithDelay(tm *teatest.TestModel, keyType tea.KeyType) {
+	tm.Send(tea.KeyMsg{Type: keyType})
 	time.Sleep(time.Millisecond * millisecondDelay)
 }
 
@@ -180,7 +186,7 @@ func TestSelect(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeySpace)
 	sendKeyWithDelay(tm, tea.KeyDown)
-	sendKeyWithDelay(tm, tea.KeyReturn)
+	sendKeyWithDelay(tm, tea.KeyEnter)
 	sendKeyWithDelay(tm, tea.KeyDown)
 
 	sendKeyWithDelay(tm, tea.KeyRight)
@@ -199,7 +205,7 @@ func TestDeselect(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeySpace)
 	sendKeyWithDelay(tm, tea.KeyDown)
-	sendKeyWithDelay(tm, tea.KeyReturn)
+	sendKeyWithDelay(tm, tea.KeyEnter)
 	sendKeyWithDelay(tm, tea.KeyDown)
 
 	sendKeyWithDelay(tm, tea.KeyRight)
@@ -207,7 +213,7 @@ func TestDeselect(t *testing.T) {
 
 	sendKeyWithDelay(tm, tea.KeySpace)
 	sendKeyWithDelay(tm, tea.KeyDown)
-	sendKeyWithDelay(tm, tea.KeyReturn)
+	sendKeyWithDelay(tm, tea.KeyEnter)
 	sendKeyWithDelay(tm, tea.KeyDown)
 
 	if err := tm.Quit(); err != nil {
@@ -252,7 +258,7 @@ func TestComplete(t *testing.T) {
 		sendKeyWithDelay(tm, tea.KeySpace)
 		sendKeyWithDelay(tm, tea.KeyDown)
 		sendKeyWithDelay(tm, tea.KeyDown)
-		sendKeyWithDelay(tm, tea.KeyReturn)
+		sendKeyWithDelay(tm, tea.KeyEnter)
 
 		sendKeyWithDelay(tm, tea.KeyRight)
 	}

@@ -3,8 +3,7 @@ package internal
 import (
 	"os"
 
-	"github.com/charmbracelet/lipgloss/v2"
-	lipglosscompat "github.com/charmbracelet/lipgloss/v2/compat"
+	"github.com/charmbracelet/lipgloss"
 	"golang.org/x/term"
 )
 
@@ -33,12 +32,12 @@ var (
 	ItalicStyle      = lipgloss.NewStyle().Italic(true)
 	BoldStyle        = lipgloss.NewStyle().Bold(true)
 
-	SelectedStyle        = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: darkOrange, Dark: lightOrange})
+	SelectedStyle        = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkOrange, Dark: lightOrange})
 	CheckedStyle         = lipgloss.NewStyle().Bold(true)
 	SelectedCheckedStyle = lipgloss.NewStyle().Inherit(SelectedStyle).Inherit(CheckedStyle)
 
-	TextinputFocusedStyle = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: darkPink, Dark: lightPink})
-	ChoiceSelectedStyle   = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: darkPink, Dark: lightPink})
-	CorrectStyle          = lipgloss.NewStyle().Bold(true).Foreground(lipglosscompat.AdaptiveColor{Light: darkGreen, Dark: lightGreen})
-	IncorrectStyle        = lipgloss.NewStyle().Bold(true).Foreground(lipglosscompat.AdaptiveColor{Light: darkRed, Dark: lightRed})
+	TextinputFocusedStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkPink, Dark: lightPink})
+	ChoiceSelectedStyle   = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkPink, Dark: lightPink})
+	CorrectStyle          = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: darkGreen, Dark: lightGreen})
+	IncorrectStyle        = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: darkRed, Dark: lightRed})
 )
