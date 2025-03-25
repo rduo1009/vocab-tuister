@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/charmbracelet/lipgloss/v2"
+	"github.com/charmbracelet/lipgloss"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/pkg/enums"
@@ -64,7 +64,7 @@ func (m Model) View() string {
 
 	switch m.questionMode {
 	case enums.Regular:
-		m.textinput.SetWidth(m.width)
+		m.textinput.Width = m.width
 
 		b.WriteString(questionStringRegular(currentQuestionStruct))
 		b.WriteRune('\n')
@@ -97,7 +97,7 @@ func (m Model) View() string {
 			currentQuestionStruct.(*questions.PrincipalPartsQuestion).PrincipalParts,
 		)
 
-		m.textinput.SetWidth(m.width)
+		m.textinput.Width = m.width
 
 		b.WriteString(questionStringPrincipalParts(currentQuestionStruct))
 		b.WriteRune('\n')

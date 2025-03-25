@@ -15,7 +15,7 @@ func (m Model) View() string {
 	var b strings.Builder
 
 	if m.mcOptionsNumberPage {
-		m.textinput.SetWidth(m.width)
+		m.textinput.Width = m.width
 
 		b.WriteString("Input the number of options wanted for multiple-choice questions.\n")
 		b.WriteString(m.textinput.View() + "\n")

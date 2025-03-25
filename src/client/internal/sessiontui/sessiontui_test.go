@@ -12,8 +12,10 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/teatest/v2"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/exp/teatest"
+	"github.com/muesli/termenv"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/sessiontui"
 )
@@ -26,6 +28,10 @@ const (
 
 	millisecondDelay = 50
 )
+
+func init() {
+	lipgloss.SetColorProfile(termenv.TrueColor)
+}
 
 func readBts(tb testing.TB, r io.Reader) []byte {
 	tb.Helper()
@@ -85,16 +91,16 @@ func setUpMockServer(t *testing.T, sessionResponse string) (*httptest.Server, in
 	return server, port
 }
 
-func sendKeyWithDelay(tm *teatest.TestModel, msg rune) {
-	tm.Send(tea.KeyPressMsg{Code: msg})
+func sendKeyWithDelay(tm *teatest.TestModel, keyType tea.KeyType) {
+	tm.Send(tea.KeyMsg{Type: keyType})
 	time.Sleep(time.Millisecond * millisecondDelay)
 }
 
 func typeWithDelay(tm *teatest.TestModel, s string) {
 	for _, c := range s {
-		tm.Send(tea.KeyPressMsg{
-			Code: c,
-			Text: string(c),
+		tm.Send(tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{c},
 		})
 		time.Sleep(time.Millisecond * millisecondDelay)
 	}
@@ -106,17 +112,17 @@ func answerMultipleChoiceOptionN(tm *teatest.TestModel, n int) {
 		sendKeyWithDelay(tm, tea.KeyDown)
 	}
 
-	sendKeyWithDelay(tm, tea.KeyReturn) // Answer question
-	tm.Type("abcdefg\n")                // Check if keys are locked
-	sendKeyWithDelay(tm, tea.KeyReturn) // Next question
+	sendKeyWithDelay(tm, tea.KeyEnter) // Answer question
+	tm.Type("abcdefg\n")               // Check if keys are locked
+	sendKeyWithDelay(tm, tea.KeyEnter) // Next question
 }
 
 func answerText(tm *teatest.TestModel, ans string) {
 	// Answer question
 	typeWithDelay(tm, ans)
-	sendKeyWithDelay(tm, tea.KeyReturn)
-	tm.Type("abcdefg\n")                // Check if keys are locked
-	sendKeyWithDelay(tm, tea.KeyReturn) // Next question
+	sendKeyWithDelay(tm, tea.KeyEnter)
+	tm.Type("abcdefg\n")               // Check if keys are locked
+	sendKeyWithDelay(tm, tea.KeyEnter) // Next question
 }
 
 func answerPrincipalParts(tm *teatest.TestModel, ss []string) {
@@ -125,9 +131,9 @@ func answerPrincipalParts(tm *teatest.TestModel, ss []string) {
 		typeWithDelay(tm, s)
 		sendKeyWithDelay(tm, tea.KeyDown)
 	}
-	sendKeyWithDelay(tm, tea.KeyReturn)
-	tm.Type("abcdefg\n")                // Check if keys are locked
-	sendKeyWithDelay(tm, tea.KeyReturn) // Next question
+	sendKeyWithDelay(tm, tea.KeyEnter)
+	tm.Type("abcdefg\n")               // Check if keys are locked
+	sendKeyWithDelay(tm, tea.KeyEnter) // Next question
 }
 
 func TestMain(m *testing.M) {

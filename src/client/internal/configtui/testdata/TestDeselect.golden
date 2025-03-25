@@ -1,70 +1,67 @@
-[?25l[?2004h]2;Create Session ConfigVerb exclusions
-[x] All of them
-[x] First conjugation verbs
-[ ] Second conjugation verbs
-[ ] Third conjugation verbs
-[ ] Fourth conjugation verbs
-[ ] Mixed conjugation verbs
-[ ] Irregular verbs
-[ ] Present active indicative
-[ ] Imperfect active indicative
-[ ] Perfect active indicative
-[ ] Pluperfect active indicative
-[ ] Present active infinitive
-[ ] Present active imperative
-[ ] Imperative active subjunctive
-[ ] Pluperfect active subjunctive
-[ ] Singular number
-[ ] Plural number
-[ ] 1st person
-[ ] 2nd person
-[ ] 3rd person
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[ ] All of them
-[ ] All of them
-[x] First conjugation verbs
-[ ] First conjugation verbs
-[ ] First conjugation verbs
-[ ] Second conjugation verbs
-Participle exclusions
-[x] All of them
-[ ] Present active
-[ ] Perfect passive
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitVerb exclusions
-[ ] All of them
-[ ] First conjugation verbs
-[ ] Second conjugation verbs
-[ ] Third conjugation verbs
-[ ] Fourth conjugation verbs
-[ ] Mixed conjugation verbs
-[ ] Irregular verbs
-[ ] Present active indicative
-[ ] Imperfect active indicative
-[ ] Perfect active indicative
-[ ] Pluperfect active indicative
-[ ] Present active infinitive
-[ ] Present active imperative
-[ ] Imperative active subjunctive
-[ ] Pluperfect active subjunctive
-[ ] Singular number
-[ ] Plural number
-[ ] 1st person
-[ ] 2nd person
-[ ] 3rd person
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[x] All of them
-[ ] First conjugation verbs
-[x] First conjugation verbs
-[x] First conjugation verbs
-[ ] Second conjugation verbs
-[?2004l[?25h
+[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[0K
+[38;2;225;123;52m[ ] All of them[0m[0K
+[1m[x] First conjugation verbs[0m[0K
+[ ] Second conjugation verbs[0K
+[ ] Third conjugation verbs[0K
+[ ] Fourth conjugation verbs[0K
+[ ] Mixed conjugation verbs[0K
+[ ] Irregular verbs[0K
+[ ] Present active indicative[0K
+[ ] Imperfect active indicative[0K
+[ ] Perfect active indicative[0K
+[ ] Pluperfect active indicative[0K
+[ ] Present active infinitive[0K
+[ ] Present active imperative[0K
+[ ] Imperative active subjunctive[0K
+[ ] Pluperfect active subjunctive[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+[ ] 1st person[0K
+[ ] 2nd person[0K
+[ ] 3rd person[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[21A[B[ ] All of them[0K
+[1;38;2;225;123;52m[x] First conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[21A[B[B[38;2;225;123;52m[ ] First conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[21A[B[B[ ] First conjugation verbs[0K
+[38;2;225;123;52m[ ] Second conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[0K
+[38;2;225;123;52m[ ] All of them[0m[0K
+[ ] Present active[0K
+[ ] Perfect passive[0K
+[ ] Masculine gender[0K
+[ ] Feminine gender[0K
+[ ] Neuter gender[0K
+[ ] Nominative case[0K
+[ ] Vocative case[0K
+[ ] Accusative case[0K
+[ ] Genitive case[0K
+[ ] Dative case[0K
+[ ] Ablative case[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[0J[300D[15A[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[0K
+[B[ ] First conjugation verbs[0K
+[ ] Second conjugation verbs[0K
+[ ] Third conjugation verbs[0K
+[ ] Fourth conjugation verbs[0K
+[ ] Mixed conjugation verbs[0K
+[ ] Irregular verbs[0K
+[ ] Present active indicative[0K
+[ ] Imperfect active indicative[0K
+[ ] Perfect active indicative[0K
+[ ] Pluperfect active indicative[0K
+[ ] Present active infinitive[0K
+[ ] Present active imperative[0K
+[ ] Imperative active subjunctive[0K
+[ ] Pluperfect active subjunctive[0K
+[ ] Singular number[0K
+[ ] Plural number[0K
+[ ] 1st person[0K
+[ ] 2nd person[0K
+[ ] 3rd person[0K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[21A[B[ ] All of them[0K
+[38;2;225;123;52m[ ] First conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[21A[B[B[1;38;2;225;123;52m[x] First conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[21A[B[B[1m[x] First conjugation verbs[0m[0K
+[38;2;225;123;52m[ ] Second conjugation verbs[0m[0K
+[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[B[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
