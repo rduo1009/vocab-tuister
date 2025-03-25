@@ -1,52 +1,69 @@
-run:
-  timeout: 5m
-
-issues:
-  exclude-dirs:
-    - src/_vendor
-
-linters-settings:
-  gofumpt:
-    extra-rules: true
-  gci:
-    sections:
-      - standard
-      - default
-      - prefix(github.com/rduo1009/vocab-tuister)
-    custom-order: true
+version: "2"
 
 linters:
-  disable-all: true
+  default: none
+
   enable:
     - bodyclose
     - dogsled
     - dupl
     - errcheck
     - errname
-    - gci
     - goconst
     - gocritic
     - godot
     - godox
-    - gofumpt
-    - goimports
     - goprintffuncname
-    - gosimple
     - govet
     - ineffassign
     - misspell
     - nakedret
+    - nilerr
     - noctx
     - nolintlint
+    - revive
     - rowserrcheck
     - staticcheck
-    - stylecheck
-    - revive
     - tagalign
-    - typecheck
     - unconvert
     - unparam
     - unused
-    - whitespace
     - wastedassign
-    - nilerr
+    - whitespace
+
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - src/_vendor
+      - third_party$
+      - builtin$
+      - examples$
+
+formatters:
+  enable:
+    - gci
+    - gofumpt
+    - goimports
+
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/rduo1009/vocab-tuister)
+      custom-order: true
+    gofumpt:
+      extra-rules: true
+
+  exclusions:
+    generated: lax
+    paths:
+      - src/_vendor
+      - third_party$
+      - builtin$
+      - examples$
