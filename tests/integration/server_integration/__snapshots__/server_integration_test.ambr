@@ -40,11 +40,11 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'imperfect active subjunctive plural 1st person',
+          'present active infinitive',
         ]),
         'dictionary_entry': 'take: capio, capere, cepi',
-        'main_answer': 'imperfect active subjunctive plural 1st person',
-        'prompt': 'caperemus',
+        'main_answer': 'present active infinitive',
+        'prompt': 'capere',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
@@ -330,10 +330,10 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'ceperat',
+          'cepit',
         ]),
-        'components': 'pluperfect active indicative singular 3rd person',
-        'main_answer': 'ceperat',
+        'components': 'perfect active indicative singular 3rd person',
+        'main_answer': 'cepit',
         'prompt': 'take: capio, capere, cepi',
       }),
       'question_type': 'ParseWordCompToLatQuestion',
@@ -504,24 +504,45 @@
     dict({
       'TypeInEngToLatQuestion': dict({
         'answers': list([
-          'cepi',
+          'capiam',
         ]),
-        'main_answer': 'cepi',
-        'prompt': 'I took',
+        'main_answer': 'capiam',
+        'prompt': 'I will take',
       }),
       'question_type': 'TypeInEngToLatQuestion',
     }),
     dict({
-      'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'e',
-        'choices': list([
-          'ingens',
-          'e',
-          'puella',
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'he shall be hearing',
+          'he shall hear',
+          'he will be hearing',
+          'he will hear',
+          'it shall be hearing',
+          'it shall hear',
+          'it will be hearing',
+          'it will hear',
+          'she shall be hearing',
+          'she shall hear',
+          'she will be hearing',
+          'she will hear',
         ]),
-        'prompt': 'from',
+        'main_answer': 'he will hear',
+        'prompt': 'audiet',
       }),
-      'question_type': 'MultipleChoiceEngToLatQuestion',
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'happier',
+          'more happily',
+          'more happy',
+        ]),
+        'main_answer': 'happier',
+        'prompt': 'laetius',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
     }),
     dict({
       'MultipleChoiceEngToLatQuestion': dict({
@@ -611,18 +632,6 @@
         ]),
         'main_answer': 'happier',
         'prompt': 'laetior',
-      }),
-      'question_type': 'TypeInLatToEngQuestion',
-    }),
-    dict({
-      'TypeInLatToEngQuestion': dict({
-        'answers': list([
-          'he was saying',
-          'it was saying',
-          'she was saying',
-        ]),
-        'main_answer': 'he was saying',
-        'prompt': 'inquiebat',
       }),
       'question_type': 'TypeInLatToEngQuestion',
     }),

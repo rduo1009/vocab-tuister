@@ -169,6 +169,12 @@ def _find_lemma(  # noqa: PLR0917
 
             return _find_impactind_inflections(lemma, number, person)
 
+        case (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE):
+            assert number is not None
+            assert person is not None
+
+            return _find_futactind_inflections(lemma, number, person)
+
         case (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
             assert number is not None
             assert person is not None
@@ -194,7 +200,7 @@ def _find_lemma(  # noqa: PLR0917
             )
 
 
-def _find_preactind_inflections(  # mypy cannot manage tuple match
+def _find_preactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     present_nonthird = lemminflect.getInflection(lemma, "VBP")[0]
@@ -239,7 +245,7 @@ def _find_preactind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_impactind_inflections(  # mypy cannot manage tuple match
+def _find_impactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     present_participle = lemminflect.getInflection(lemma, "VBG")[0]
@@ -319,7 +325,77 @@ def _find_impactind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_peractind_inflections(  # mypy cannot manage tuple match
+def _find_futactind_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    present = lemminflect.getInflection(lemma, "VBP")[0]
+    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I will {present}",
+                {
+                    f"I will {present}",
+                    f"I will be {present_participle}",
+                    f"I shall {present}",
+                    f"I shall be {present_participle}",
+                },
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we will {present}",
+                {
+                    f"we will {present}",
+                    f"we will be {present_participle}",
+                    f"we shall {present}",
+                    f"we shall be {present_participle}",
+                },
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you will {present}",
+                {
+                    f"you will {present}",
+                    f"you will be {present_participle}",
+                    f"you shall {present}",
+                    f"you shall be {present_participle}",
+                },
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he will {present}",
+                {
+                    f"he will {present}",
+                    f"he will be {present_participle}",
+                    f"he shall {present}",
+                    f"he shall be {present_participle}",
+                    f"she will {present}",
+                    f"she will be {present_participle}",
+                    f"she shall {present}",
+                    f"she shall be {present_participle}",
+                    f"it will {present}",
+                    f"it will be {present_participle}",
+                    f"it shall {present}",
+                    f"it shall be {present_participle}",
+                },
+            )
+
+    return (
+        f"they will {present}",
+        {
+            f"they will {present}",
+            f"they will be {present_participle}",
+            f"they shall {present}",
+            f"they shall be {present_participle}",
+        },
+    )
+
+
+def _find_peractind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     past = lemminflect.getInflection(lemma, "VBD")[0]
@@ -365,7 +441,7 @@ def _find_peractind_inflections(  # mypy cannot manage tuple match
     )
 
 
-def _find_plpactind_inflections(  # mypy cannot manage tuple match
+def _find_plpactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]

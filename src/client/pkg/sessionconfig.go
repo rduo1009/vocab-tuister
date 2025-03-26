@@ -71,6 +71,7 @@ type SessionConfig struct {
 	ExcludeVerb3rdPerson                   bool `json:"exclude-verb-3rd-person"`
 	ExcludeVerbFirstConjugation            bool `json:"exclude-verb-first-conjugation"`
 	ExcludeVerbFourthConjugation           bool `json:"exclude-verb-fourth-conjugation"`
+	ExcludeVerbFutureActiveIndicative      bool `json:"exclude-verb-future-active-indicative"`
 	ExcludeVerbImperfectActiveIndicative   bool `json:"exclude-verb-imperfect-active-indicative"`
 	ExcludeVerbImperfectActiveSubjunctive  bool `json:"exclude-verb-imperfect-active-subjunctive"`
 	ExcludeVerbIrregularConjugation        bool `json:"exclude-verb-irregular-conjugation"`
