@@ -218,6 +218,12 @@ class Verb(_Word):
             "Vplpactindpl1": f"{self._per_stem}eramus",  # portaveramus
             "Vplpactindpl2": f"{self._per_stem}eratis",  # portaveratis
             "Vplpactindpl3": f"{self._per_stem}erant",  # portaverant
+            "Vfpractindsg1": f"{self._per_stem}ero",  # portavero
+            "Vfpractindsg2": f"{self._per_stem}eris",  # portaveris
+            "Vfpractindsg3": f"{self._per_stem}erit",  # portaverit
+            "Vfpractindpl1": f"{self._per_stem}erimus",  # portaverimus
+            "Vfpractindpl2": f"{self._per_stem}eritis",  # portaveritis
+            "Vfpractindpl3": f"{self._per_stem}erint",  # portaverint
             "Vpreactinf   ": self.infinitive,  # portare
             "Vpreactipesg2": f"{self._inf_stem}a",  # porta
             "Vpreactipepl2": f"{self._inf_stem}ate",  # portate
@@ -270,6 +276,12 @@ class Verb(_Word):
             "Vplpactindpl1": f"{self._per_stem}eramus",  # docueramus
             "Vplpactindpl2": f"{self._per_stem}eratis",  # docueratis
             "Vplpactindpl3": f"{self._per_stem}erant",  # docuerant
+            "Vfpractindsg1": f"{self._per_stem}ero",  # docuero
+            "Vfpractindsg2": f"{self._per_stem}eris",  # docueris
+            "Vfpractindsg3": f"{self._per_stem}erit",  # docuerit
+            "Vfpractindpl1": f"{self._per_stem}erimus",  # docuerimus
+            "Vfpractindpl2": f"{self._per_stem}eritis",  # docueritis
+            "Vfpractindpl3": f"{self._per_stem}erint",  # docuerint
             "Vpreactinf   ": self.infinitive,  # docere
             "Vpreactipesg2": f"{self._inf_stem}e",  # doce
             "Vpreactipepl2": f"{self._inf_stem}ete",  # docete
@@ -322,6 +334,12 @@ class Verb(_Word):
             "Vplpactindpl1": f"{self._per_stem}eramus",  # traxeramus
             "Vplpactindpl2": f"{self._per_stem}eratis",  # traxeratis
             "Vplpactindpl3": f"{self._per_stem}erant",  # traxerant
+            "Vfpractindsg1": f"{self._per_stem}ero",  # traxero
+            "Vfpractindsg2": f"{self._per_stem}eris",  # traxeris
+            "Vfpractindsg3": f"{self._per_stem}erit",  # traxerit
+            "Vfpractindpl1": f"{self._per_stem}erimus",  # traxerimus
+            "Vfpractindpl2": f"{self._per_stem}eritis",  # traxeritis
+            "Vfpractindpl3": f"{self._per_stem}erint",  # traxerint
             "Vpreactinf   ": self.infinitive,  # trahere
             "Vpreactipesg2": f"{self._inf_stem}e",  # trahe
             "Vpreactipepl2": f"{self._inf_stem}ite",  # trahite
@@ -374,6 +392,12 @@ class Verb(_Word):
             "Vplpactindpl1": f"{self._per_stem}eramus",  # audiveramus
             "Vplpactindpl2": f"{self._per_stem}eratis",  # audiveratis
             "Vplpactindpl3": f"{self._per_stem}erant",  # audiverant
+            "Vfpractindsg1": f"{self._per_stem}ero",  # audivero
+            "Vfpractindsg2": f"{self._per_stem}eris",  # audiveris
+            "Vfpractindsg3": f"{self._per_stem}erit",  # audiverit
+            "Vfpractindpl1": f"{self._per_stem}erimus",  # audiverimus
+            "Vfpractindpl2": f"{self._per_stem}eritis",  # audiveritis
+            "Vfpractindpl3": f"{self._per_stem}erint",  # audiverint
             "Vpreactinf   ": self.infinitive,  # audire
             "Vpreactipesg2": f"{self._inf_stem}i",  # audi
             "Vpreactipepl2": f"{self._inf_stem}ite",  # audite
@@ -426,6 +450,12 @@ class Verb(_Word):
             "Vplpactindpl1": f"{self._per_stem}eramus",  # ceperamus
             "Vplpactindpl2": f"{self._per_stem}eratis",  # ceperatis
             "Vplpactindpl3": f"{self._per_stem}erant",  # ceperant
+            "Vfpractindsg1": f"{self._per_stem}ero",  # cepero
+            "Vfpractindsg2": f"{self._per_stem}eris",  # ceperis
+            "Vfpractindsg3": f"{self._per_stem}erit",  # ceperit
+            "Vfpractindpl1": f"{self._per_stem}erimus",  # ceperimus
+            "Vfpractindpl2": f"{self._per_stem}eritis",  # ceperitis
+            "Vfpractindpl3": f"{self._per_stem}erint",  # ceperint
             "Vpreactinf   ": self.infinitive,  # capere
             "Vpreactipesg2": f"{self._inf_stem}e",  # cape
             "Vpreactipepl2": f"{self._inf_stem}ite",  # capite

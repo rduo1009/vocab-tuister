@@ -18,6 +18,7 @@ RULE_REGEX: Final[dict[str, str]] = {
     "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-indicative": r"^Vimpactind[a-z][a-z]\d$",
     "exclude-verb-future-active-indicative": r"^Vfutactind[a-z][a-z]\d$",
+    "exclude-verb-future-perfect-active-indicative": r"^Vfpractind[a-z][a-z]\d$",
     "exclude-verb-perfect-active-indicative": r"^Vperactind[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-indicative": r"^Vplpactind[a-z][a-z]\d$",
     "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",

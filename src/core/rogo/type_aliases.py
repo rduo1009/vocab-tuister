@@ -14,6 +14,7 @@ Settings = TypedDict(
         "exclude-verb-future-active-indicative": ReadOnly[bool],
         "exclude-verb-perfect-active-indicative": ReadOnly[bool],
         "exclude-verb-pluperfect-active-indicative": ReadOnly[bool],
+        "exclude-verb-future-perfect-active-indicative": ReadOnly[bool],
         "exclude-verb-present-active-infinitive": ReadOnly[bool],
         "exclude-verb-present-active-imperative": ReadOnly[bool],
         "exclude-verb-imperfect-active-subjunctive": ReadOnly[bool],

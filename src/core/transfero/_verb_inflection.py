@@ -187,6 +187,12 @@ def _find_lemma(  # noqa: PLR0917
 
             return _find_plpactind_inflections(lemma, number, person)
 
+        case (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
+            assert number is not None
+            assert person is not None
+
+            return _find_fpractind_inflections(lemma, number, person)
+
         case (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE):
             return _find_preactinf_inflections(lemma)
 
@@ -470,6 +476,46 @@ def _find_plpactind_inflections(
             )
 
     return (f"they had {past_participle}", {f"they had {past_participle}"})
+
+
+def _find_fpractind_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I will have {past_participle}",
+                {f"I will have {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we will have {past_participle}",
+                {f"we will have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you will have {past_participle}",
+                {f"you will have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he will have {past_participle}",
+                {
+                    f"he will have {past_participle}",
+                    f"she will have {past_participle}",
+                    f"it will have {past_participle}",
+                },
+            )
+
+    return (
+        f"they will have {past_participle}",
+        {f"they will have {past_participle}"},
+    )
 
 
 def _find_participle_inflections(

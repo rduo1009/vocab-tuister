@@ -40,11 +40,11 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'present active infinitive',
+          'future perfect active indicative singular 1st person',
         ]),
         'dictionary_entry': 'take: capio, capere, cepi',
-        'main_answer': 'present active infinitive',
-        'prompt': 'capere',
+        'main_answer': 'future perfect active indicative singular 1st person',
+        'prompt': 'cepero',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
