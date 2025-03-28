@@ -39,6 +39,12 @@ VERB_COMBINATIONS = (
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
     (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
@@ -64,6 +70,7 @@ class TestVerbConjugation:
         "celabo", "celabis", "celabit", "celabimus", "celabitis", "celabunt",
         "celavi", "celavisti", "celavit", "celavimus", "celavistis", "celaverunt",
         "celaveram", "celaveras", "celaverat", "celaveramus", "celaveratis", "celaverant",
+        "celavero", "celaveris", "celaverit", "celaverimus", "celaveritis", "celaverint",
 
         "celare",
         "cela", "celate",
@@ -81,6 +88,7 @@ class TestVerbConjugation:
         "parebo", "parebis", "parebit", "parebimus", "parebitis", "parebunt",
         "parui", "paruisti", "paruit", "paruimus", "paruistis", "paruerunt",
         "parueram", "parueras", "paruerat", "parueramus", "parueratis", "paruerant",
+        "paruero", "parueris", "paruerit", "paruerimus", "parueritis", "paruerint",
 
         "parere",
         "pare", "parete",
@@ -98,6 +106,7 @@ class TestVerbConjugation:
         "deseram", "deseres", "deseret", "deseremus", "deseretis", "deserent",
         "deserui", "deseruisti", "deseruit", "deseruimus", "deseruistis", "deseruerunt",
         "deserueram", "deserueras", "deseruerat", "deserueramus", "deserueratis", "deseruerant",
+        "deseruero", "deserueris", "deseruerit", "deseruerimus", "deserueritis", "deseruerint",
 
         "deserere",
         "desere", "deserite",
@@ -115,6 +124,7 @@ class TestVerbConjugation:
         "capiam", "capies", "capiet", "capiemus", "capietis", "capient",
         "cepi", "cepisti", "cepit", "cepimus", "cepistis", "ceperunt",
         "ceperam", "ceperas", "ceperat", "ceperamus", "ceperatis", "ceperant",
+        "cepero", "ceperis", "ceperit", "ceperimus", "ceperitis", "ceperint",
 
         "capere",
         "cape", "capite",
@@ -132,6 +142,7 @@ class TestVerbConjugation:
         "aperiam", "aperies", "aperiet", "aperiemus", "aperietis", "aperient",
         "aperui", "aperuisti", "aperuit", "aperuimus", "aperuistis", "aperuerunt",
         "aperueram", "aperueras", "aperuerat", "aperueramus", "aperueratis", "aperuerant",
+        "aperuero", "aperueris", "aperuerit", "aperuerimus", "aperueritis", "aperuerint",
             
         "aperire",
         "aperi", "aperite",
@@ -149,6 +160,7 @@ class TestVerbConjugation:
         "abibo", "abibis", "abibit", "abibimus", "abibitis", "abibunt",
         "abii", "abisti", "abiit", "abiimus", "abistis", "abierunt",
         "abieram", "abieras", "abierat", "abieramus", "abieratis", "abierant",
+        "abiero", "abieris", "abierit", "abierimus", "abieritis", "abierint",
 
         "abire",
         "abi", "abite",
@@ -173,6 +185,7 @@ class TestIrregularVerbInflection:
         "ero", "eris", "erit", "erimus", "eritis", "erunt",
         "fui", "fuisti", "fuit", "fuimus", "fuistis", "fuerunt",
         "fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant",
+        "fuero", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
 
         "esse",
         "es", "este",
