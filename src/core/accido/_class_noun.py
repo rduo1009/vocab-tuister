@@ -192,7 +192,7 @@ class Noun(_Word):
         # The ordering of this is strange because
         # e.g. ending -ei ends in 'i' as well as 'ei'
         # so 5th declension check must come before 2nd declension check, etc.
-        if self.genitive.endswith("ei"):
+        if self.genitive.endswith("ei") and self.nominative.endswith("es"):
             self.declension = 5
             self._stem = self.genitive[:-2]  # diei > di-
         elif self.genitive.endswith("ae"):
