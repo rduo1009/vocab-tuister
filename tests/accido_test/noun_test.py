@@ -18,8 +18,8 @@ class TestNounErrors:
 
     def test_errors_fifth_declension_neuter(self):
         with pytest.raises(InvalidInputError) as error:
-            Noun("puer", "puerei", gender=Gender.NEUTER, meaning="boy")
-        assert str(error.value) == "Fifth declension nouns cannot be neuter. (noun 'puer' given)"
+            Noun("pueres", "puerei", gender=Gender.NEUTER, meaning="boy")  # doesn't really exist
+        assert str(error.value) == "Fifth declension nouns cannot be neuter. (noun 'pueres' given)"
 
 
 class TestNounDunder:
