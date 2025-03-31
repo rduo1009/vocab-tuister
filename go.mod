@@ -4,13 +4,16 @@ go 1.24
 
 require (
 	github.com/charmbracelet/bubbles v0.20.0
-	github.com/charmbracelet/bubbletea v1.2.4
+	github.com/charmbracelet/bubbletea v1.3.4
 	github.com/spf13/cobra v1.9.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
 	golang.org/x/term v0.30.0
 )
 
-require github.com/charmbracelet/lipgloss v1.0.0
+require (
+	github.com/charmbracelet/lipgloss v1.0.0
+	github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a
+)
 
 require (
 	github.com/agnivade/levenshtein v1.2.0 // indirect
@@ -30,7 +33,7 @@ require (
 	github.com/charmbracelet/ssh v0.0.0-20241211182756-4fe22b0f1b7c // indirect
 	github.com/charmbracelet/vhs v0.9.0 // indirect
 	github.com/charmbracelet/wish v1.4.4 // indirect
-	github.com/charmbracelet/x/ansi v0.4.5 // indirect
+	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/charmbracelet/x/conpty v0.1.0 // indirect
 	github.com/charmbracelet/x/errors v0.0.0-20240904165849-e8e43e13f84b // indirect
 	github.com/charmbracelet/x/exp/golden v0.0.0-20241011142426-46044092ad91 // indirect
@@ -69,7 +72,6 @@ require (
 	github.com/muesli/mango-pflag v0.1.0 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/roff v0.1.0 // indirect
-	github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
