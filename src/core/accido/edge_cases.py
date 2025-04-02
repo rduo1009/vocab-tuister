@@ -9,7 +9,9 @@ from .misc import MultipleEndings
 if TYPE_CHECKING:
     from .type_aliases import Endings
 
-#  NOTE: There are deponents, but am keeping them for future
+# -----------------------------------------------------------------------------
+# VERBS
+
 # TODO: Expand these
 MIXED_CONJUGATION_VERBS: Final[set[str]] = {
     "abicio",
@@ -848,6 +850,9 @@ def find_irregular_endings(present: str) -> Endings | None:
     return None
 
 
+# -----------------------------------------------------------------------------
+# NOUNS
+
 IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     "ego": {
         "Nnomsg": "ego",
@@ -889,6 +894,9 @@ IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     },
 }
 
+# -----------------------------------------------------------------------------
+# ADJECTIVES
+
 LIS_ADJECTIVES: Final[set[str]] = {
     "facilis",
     "difficilis",
@@ -925,6 +933,9 @@ IRREGULAR_ADJECTIVES: Final[
 
 # TODO: Add to this
 NO_ADVERB_ADJECTIVES = {"ingens"}
+
+# -----------------------------------------------------------------------------
+# PRONOUNS
 
 PRONOUNS: Final[dict[str, Endings]] = {
     "hic": {

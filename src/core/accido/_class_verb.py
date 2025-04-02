@@ -135,7 +135,7 @@ class Verb(_Word):
         self._first = self.present
         self.deponent = False
 
-        # -------------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # IRREGULAR VERBS
 
         if irregular_endings := find_irregular_endings(self.present):
@@ -153,7 +153,7 @@ class Verb(_Word):
                 f"Verb {self.present} is not irregular, but no perfect provided."
             )
 
-        # -------------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # DEPONENT VERBS
 
         if self.present.endswith("or"):
@@ -216,7 +216,7 @@ class Verb(_Word):
                 f"Verb {self.present} is not irregular or deponent, but no ppp provided."
             )
 
-        # -------------------------------------------------------------------
+        # ---------------------------------------------------------------------
         # NON-DEPONENT VERBS
 
         if check_mixed_conjugation_verb(self.present):
