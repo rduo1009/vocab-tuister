@@ -8,7 +8,11 @@ from typing import TYPE_CHECKING, Literal, overload
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import check_mixed_conjugation_verb, find_irregular_endings
+from .edge_cases import (
+    MISSING_PPP_VERBS,
+    check_mixed_conjugation_verb,
+    find_irregular_endings,
+)
 from .exceptions import InvalidInputError
 from .misc import (
     PERSON_SHORTHAND,
@@ -69,6 +73,7 @@ class Verb(_Word):
         "conjugation",
         "deponent",
         "infinitive",
+        "no_ppp",
         "perfect",
         "ppp",
         "present",
@@ -77,6 +82,8 @@ class Verb(_Word):
     # fmt: off
     @overload
     def __init__(self, present: str, *, meaning: Meaning) -> None: ...
+    @overload
+    def __init__(self, present: str, infinitive: str, *, meaning: Meaning) -> None: ...
     @overload
     def __init__(self, present: str, infinitive: str, perfect: str, *, meaning: Meaning) -> None: ...
     @overload
@@ -134,6 +141,7 @@ class Verb(_Word):
 
         self._first = self.present
         self.deponent = False
+        self.no_ppp = False
 
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
@@ -145,12 +153,12 @@ class Verb(_Word):
 
         if self.infinitive is None:
             raise InvalidInputError(
-                f"Verb {self.present} is not irregular, but no infinitive provided."
+                f"Verb '{self.present}' is not irregular, but no infinitive provided."
             )
 
         if self.perfect is None:
             raise InvalidInputError(
-                f"Verb {self.present} is not irregular, but no perfect provided."
+                f"Verb '{self.present}' is not irregular, but no perfect provided."
             )
 
         # ---------------------------------------------------------------------
@@ -159,7 +167,7 @@ class Verb(_Word):
         if self.present.endswith("or"):
             if self.ppp is not None:
                 raise InvalidInputError(
-                    f"Verb {self.present} is deponent, but ppp provided."
+                    f"Verb '{self.present}' is deponent, but ppp provided."
                 )
 
             self.deponent = True
@@ -182,14 +190,23 @@ class Verb(_Word):
                     f"Invalid infinitive form: '{self.infinitive}'"
                 )
 
-            if not self.perfect.endswith(" sum"):
-                raise InvalidInputError(
-                    f"Invalid perfect form: '{self.perfect}' (must have 'sum')"
-                )
+            if self.present in MISSING_PPP_VERBS:
+                self.no_ppp = True
+
+                if self.perfect is not None:
+                    raise InvalidInputError(
+                        f"Verb '{self.present}' has no ppp, but perfect provided."
+                    )
+            else:
+                if not self.perfect.endswith(" sum"):
+                    raise InvalidInputError(
+                        f"Invalid perfect form: '{self.perfect}' (must have 'sum')"
+                    )
+
+                self.ppp = self.perfect[:-4]
 
             self._pre_stem = self.present[:-2]
             self._per_stem = None
-            self.ppp = self.perfect[:-4]
 
             match self.conjugation:
                 case 1:
@@ -210,11 +227,6 @@ class Verb(_Word):
             self.endings |= self._participles()
 
             return
-
-        if self.ppp is None:
-            raise InvalidInputError(
-                f"Verb {self.present} is not irregular or deponent, but no ppp provided."
-            )
 
         # ---------------------------------------------------------------------
         # NON-DEPONENT VERBS
@@ -246,6 +258,24 @@ class Verb(_Word):
         self._inf_stem = self.infinitive[:-3]
         self._per_stem = self.perfect[:-1]
 
+        if self.present in MISSING_PPP_VERBS:
+            self.no_ppp = True
+
+            if self.ppp is not None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' has no ppp, but ppp provided."
+                )
+        else:
+            if self.ppp is None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' is not irregular or deponent, but no ppp provided."
+                )
+
+            # HACK: convert supine into ppp, even if the ppp doesn't really
+            # exist
+            if self.ppp.endswith("um"):
+                self.ppp = self.ppp[:-2] + "um"
+
         match self.conjugation:
             case 1:
                 self.endings = self._first_conjugation()
@@ -262,17 +292,11 @@ class Verb(_Word):
             case _:
                 self.endings = self._mixed_conjugation()
 
-        # HACK: convert supine into ppp, even if the ppp doesn't really
-        # exist
-        if self.ppp.endswith("um"):
-            self.ppp = self.ppp[:-2] + "um"
-
         self.endings |= self._participles()
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         # Passive forms
         endings: Endings = {
@@ -294,26 +318,33 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}abimur",  # portabimur
             "Vfutpasindpl2": f"{self._inf_stem}abimini",  # portabimini
             "Vfutpasindpl3": f"{self._inf_stem}abuntur",  # portabuntur
-            "Vperpasindsg1": f"{self.ppp} sum",  # portatus sum
-            "Vperpasindsg2": f"{self.ppp} es",  # portatus es
-            "Vperpasindsg3": f"{self.ppp} est",  # portatus est
-            "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # portati sumus
-            "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # portati estis
-            "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # portati sunt
-            "Vplppasindsg1": f"{self.ppp} eram",  # portatus eram
-            "Vplppasindsg2": f"{self.ppp} eras",  # portatus eras
-            "Vplppasindsg3": f"{self.ppp} erat",  # portatus erat
-            "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # portati eramus
-            "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # portati eratis
-            "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # portati erant
-            "Vfprpasindsg1": f"{self.ppp} ero",  # portatus ero
-            "Vfprpasindsg2": f"{self.ppp} eris",  # portatus eris
-            "Vfprpasindsg3": f"{self.ppp} erit",  # portatus erit
-            "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # portati erimus
-            "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # portati eritis
-            "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # portati erunt
             "Vprepasinf   ": f"{self._inf_stem}ari",  # portari
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # portatus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # portatus es
+                "Vperpasindsg3": f"{self.ppp} est",  # portatus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # portati sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # portati estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # portati sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # portatus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # portatus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # portatus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # portati eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # portati eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # portati erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # portatus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # portatus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # portatus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # portati erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # portati eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # portati erunt
+            }
+
         if self.deponent:
             return {
                 key[:4] + "dep" + key[7:]: value
@@ -378,7 +409,6 @@ class Verb(_Word):
     def _second_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}eor",  # doceor
@@ -399,26 +429,33 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}ebimur",  # docebimur
             "Vfutpasindpl2": f"{self._inf_stem}ebimini",  # docebimini
             "Vfutpasindpl3": f"{self._inf_stem}ebuntur",  # docebuntur
-            "Vperpasindsg1": f"{self.ppp} sum",  # doctus sum
-            "Vperpasindsg2": f"{self.ppp} es",  # doctus es
-            "Vperpasindsg3": f"{self.ppp} est",  # doctus est
-            "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # docti sumus
-            "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # docti estis
-            "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # docti sunt
-            "Vplppasindsg1": f"{self.ppp} eram",  # doctus eram
-            "Vplppasindsg2": f"{self.ppp} eras",  # doctus eras
-            "Vplppasindsg3": f"{self.ppp} erat",  # doctus erat
-            "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # docti eramus
-            "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # docti eratis
-            "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # docti erant
-            "Vfprpasindsg1": f"{self.ppp} ero",  # doctus ero
-            "Vfprpasindsg2": f"{self.ppp} eris",  # doctus eris
-            "Vfprpasindsg3": f"{self.ppp} erit",  # doctus erit
-            "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # docti erimus
-            "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # docti eritis
-            "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # docti erunt
             "Vprepasinf   ": f"{self._inf_stem}eri",  # doceri
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # doctus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # doctus es
+                "Vperpasindsg3": f"{self.ppp} est",  # doctus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # docti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # docti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # docti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # doctus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # doctus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # doctus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # docti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # docti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # docti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # doctus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # doctus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # doctus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # docti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # docti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # docti erunt
+            }
+
         if self.deponent:
             return {
                 key[:4] + "dep" + key[7:]: value
@@ -482,7 +519,6 @@ class Verb(_Word):
     def _third_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}or",  # trahor
@@ -503,26 +539,33 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}emur",  # trahemur
             "Vfutpasindpl2": f"{self._inf_stem}emini",  # trahemini
             "Vfutpasindpl3": f"{self._inf_stem}entur",  # trahentur
-            "Vperpasindsg1": f"{self.ppp} sum",  # tractus sum
-            "Vperpasindsg2": f"{self.ppp} es",  # tractus es
-            "Vperpasindsg3": f"{self.ppp} est",  # tractus est
-            "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # tracti sumus
-            "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # tracti estis
-            "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # tracti sunt
-            "Vplppasindsg1": f"{self.ppp} eram",  # tractus eram
-            "Vplppasindsg2": f"{self.ppp} eras",  # tractus eras
-            "Vplppasindsg3": f"{self.ppp} erat",  # tractus erat
-            "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # tracti eramus
-            "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # tracti eratis
-            "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # tracti erant
-            "Vfprpasindsg1": f"{self.ppp} ero",  # tractus ero
-            "Vfprpasindsg2": f"{self.ppp} eris",  # tractus eris
-            "Vfprpasindsg3": f"{self.ppp} erit",  # tractus erit
-            "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # tracti erimus
-            "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # tracti eritis
-            "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # tracti erunt
             "Vprepasinf   ": f"{self._inf_stem}i",  # trahi
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # tractus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # tractus es
+                "Vperpasindsg3": f"{self.ppp} est",  # tractus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # tracti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # tracti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # tracti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # tractus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # tractus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # tractus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # tracti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # tracti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # tracti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # tractus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # tractus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # tractus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # tracti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # tracti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # tracti erunt
+            }
+
         if self.deponent:
             return {
                 key[:4] + "dep" + key[7:]: value
@@ -586,7 +629,6 @@ class Verb(_Word):
     def _fourth_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}ior",  # audior
@@ -607,26 +649,33 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}iemur",  # audiemur
             "Vfutpasindpl2": f"{self._inf_stem}iemini",  # audiemini
             "Vfutpasindpl3": f"{self._inf_stem}ientur",  # audientur
-            "Vperpasindsg1": f"{self.ppp} sum",  # auditus sum
-            "Vperpasindsg2": f"{self.ppp} es",  # auditus es
-            "Vperpasindsg3": f"{self.ppp} est",  # auditus est
-            "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # auditi sumus
-            "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # auditi estis
-            "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # auditi sunt
-            "Vplppasindsg1": f"{self.ppp} eram",  # auditus eram
-            "Vplppasindsg2": f"{self.ppp} eras",  # auditus eras
-            "Vplppasindsg3": f"{self.ppp} erat",  # auditus erat
-            "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # auditi eramus
-            "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # auditi eratis
-            "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # auditi erant
-            "Vfprpasindsg1": f"{self.ppp} ero",  # auditus ero
-            "Vfprpasindsg2": f"{self.ppp} eris",  # auditus eris
-            "Vfprpasindsg3": f"{self.ppp} erit",  # auditus erit
-            "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # auditi erimus
-            "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # auditi eritis
-            "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # auditi erunt
             "Vprepasinf   ": f"{self._inf_stem}iri",  # audiri
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # auditus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # auditus es
+                "Vperpasindsg3": f"{self.ppp} est",  # auditus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # auditi sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # auditi estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # auditi sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # auditus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # auditus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # auditus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # auditi eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # auditi eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # auditi erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # auditus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # auditus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # auditus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # auditi erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # auditi eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # auditi erunt
+            }
+
         if self.deponent:
             return {
                 key[:4] + "dep" + key[7:]: value
@@ -690,7 +739,6 @@ class Verb(_Word):
     def _mixed_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}ior",  # capior
@@ -711,26 +759,33 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}iemur",  # capiemur
             "Vfutpasindpl2": f"{self._inf_stem}iemini",  # capiemini
             "Vfutpasindpl3": f"{self._inf_stem}ientur",  # capientur
-            "Vperpasindsg1": f"{self.ppp} sum",  # captus sum
-            "Vperpasindsg2": f"{self.ppp} es",  # captus es
-            "Vperpasindsg3": f"{self.ppp} est",  # captus est
-            "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # capti sumus
-            "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # capti estis
-            "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # capti sunt
-            "Vplppasindsg1": f"{self.ppp} eram",  # captus eram
-            "Vplppasindsg2": f"{self.ppp} eras",  # captus eras
-            "Vplppasindsg3": f"{self.ppp} erat",  # captus erat
-            "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # capti eramus
-            "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # capti eratis
-            "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # capti erant
-            "Vfprpasindsg1": f"{self.ppp} ero",  # captus ero
-            "Vfprpasindsg2": f"{self.ppp} eris",  # captus eris
-            "Vfprpasindsg3": f"{self.ppp} erit",  # captus erit
-            "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # capti erimus
-            "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # capti eritis
-            "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # capti erunt
             "Vprepasinf   ": f"{self._inf_stem}i",  # capi
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # captus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # captus es
+                "Vperpasindsg3": f"{self.ppp} est",  # captus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # capti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # capti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # capti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # captus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # captus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # captus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # capti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # capti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # capti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # captus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # captus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # captus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # capti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # capti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # capti erunt
+            }
+
         if self.deponent:
             return {
                 key[:4] + "dep" + key[7:]: value
@@ -794,7 +849,6 @@ class Verb(_Word):
     def _participles(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         self._preptc_stem = self.infinitive[:-2]
         if self.conjugation == 4:
@@ -802,9 +856,8 @@ class Verb(_Word):
         if self.conjugation == 5:
             self._preptc_stem = self.infinitive[:-3]
             self._preptc_stem += "ie"
-        self._ppp_stem = self.ppp[:-2]
 
-        return {
+        endings: Endings = {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmaccsg": f"{self._preptc_stem}ntem",  # portantem
@@ -850,43 +903,52 @@ class Verb(_Word):
             "Vpreactptcngenpl": f"{self._preptc_stem}ntium",  # portantium
             "Vpreactptcndatpl": f"{self._preptc_stem}ntibus",  # portantibus
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
-            "Vperpasptcmnomsg": self.ppp,  # portatus
-            "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
-            "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
-            "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
-            "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
-            "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
-            "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
-            "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
-            "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+            self._ppp_stem = self.ppp[:-2]
+
+            endings |= {
+                "Vperpasptcmnomsg": self.ppp,  # portatus
+                "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
+                "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
+                "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
+                "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
+                "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
+                "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
+                "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
+                "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
+            }
+
+        return endings
 
     # fmt: off
     @overload
