@@ -257,7 +257,7 @@ class TestVerbConjugation:
 
 
 # TODO: Rework this to be more like pronouns
-class TestIrregularVerbInflection:
+class TestIrregularVerbConjugation:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "sum", "es", "est", "sumus", "estis", "sunt",
         "eram", "eras", "erat", "eramus", "eratis", "erant",
@@ -281,6 +281,31 @@ class TestIrregularVerbInflection:
     ])])  # fmt: skip
     def test_irregular_verb_normal(self, tense, voice, mood, person, number, expected):
         word = Verb("sum", "esse", "fui", meaning="be")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "elego", "elegas", "elegat", "elegamus", "elegatis", "elegant",
+        "elegabam", "elegabas", "elegabat", "elegabamus", "elegabatis", "elegabant",
+        "elegabo", "elegabis", "elegabit", "elegabimus", "elegabitis", "elegabunt",
+        "elegavi", "elegavisti", "elegavit", "elegavimus", "elegavistis", "elegaverunt",
+        "elegaveram", "elegaveras", "elegaverat", "elegaveramus", "elegaveratis", "elegaverant",
+        "elegavero", "elegaveris", "elegaverit", "elegaverimus", "elegaveritis", "elegaverint",
+
+        "elegor", "elegaris", "elegatur", "elegamur", "elegamini", "elegantur",
+        "elegabar", "elegabaris", "elegabatur", "elegabamur", "elegabamini", "elegabantur",
+        "elegabor", "elegaberis", "elegabitur", "elegabimur", "elegabimini", "elegabuntur",
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+
+        "elegare", "elegari",
+        "elega", "elegate",
+
+        "elegarem", "elegares", "elegaret", "elegaremus", "elegaretis", "elegarent",
+        "elegavissem", "elegavisses", "elegavisset", "elegavissemus", "elegavissetis", "elegavissent",
+    ])])  # fmt: skip
+    def test_irregular_verb_no_ppp(self, tense, voice, mood, person, number, expected):
+        word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     # NOTE: Already covered!
@@ -579,4 +604,25 @@ class TestParticipleConjugation:
     ])])  # fmt: skip
     def test_participle_fourthconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+
+class TestIrregularParticipleConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "elegans", "elegans", "elegantem", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantes", "elegantes", "elegantes", "elegantium", "elegantibus", "elegantibus",
+        "elegans", "elegans", "elegantem", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantes", "elegantes", "elegantes", "elegantium", "elegantibus", "elegantibus",
+        "elegans", "elegans", "elegans", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantia", "elegantia", "elegantia", "elegantium", "elegantibus", "elegantibus",
+
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+    ])])  # fmt: skip
+    def test_irregular_participle_no_ppp(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
