@@ -170,7 +170,7 @@ def test_word_exclusion_noun():
 def test_word_exclusion_verb():
     words: Sequence[Verb] = [
         Verb("celo", "celare", "celavi", "celatus", meaning="hide"),
-        Verb("pareo", "parere", "parui", meaning="hide"),
+        Verb("pareo", "parere", "parui", "paritum", meaning="hide"),
         Verb("desero", "deserere", "deserui", "desertus", meaning="desert"),
         Verb("patefacio", "patefacere", "patefeci", "patefactus", meaning="reveal"),
         Verb("aperio", "aperire", "aperui", "apertus", meaning="open"),

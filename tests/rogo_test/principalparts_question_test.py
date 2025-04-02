@@ -189,7 +189,7 @@ def test_principalparts_verb():
         assert output.prompt == "doceo"
         assert output.principal_parts == ("doceo", "docere", "docui", "doctus")
 
-    word = Verb("traho", "trahere", "traxi", meaning="drag")
+    word = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
     vocab_list = VocabList([word], "")
     amount = 500
 
@@ -198,4 +198,4 @@ def test_principalparts_verb():
         assert output.check(output.principal_parts)
 
         assert output.prompt == "traho"
-        assert output.principal_parts == ("traho", "trahere", "traxi")
+        assert output.principal_parts == ("traho", "trahere", "traxi", "tractus")

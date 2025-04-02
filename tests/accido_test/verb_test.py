@@ -18,8 +18,8 @@ class TestVerbErrors:
 
     def test_errors_invalid_present(self):
         with pytest.raises(InvalidInputError) as error:
-            Verb("error", "celare", "celavi", "celatus", meaning="hide")
-        assert str(error.value) == "Invalid present form: 'error' (must end in '-o')"
+            Verb("errorr", "celare", "celavi", "celatus", meaning="hide")  # error ends in -or!
+        assert str(error.value) == "Invalid present form: 'errorr' (must end in '-o')"
 
     def test_errors_invalid_perfect(self):
         with pytest.raises(InvalidInputError) as error:
@@ -30,15 +30,15 @@ class TestVerbErrors:
 class TestVerbDunder:
     def test_getnone(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
-        assert not word.get(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, person=2, number=Number.PLURAL)
+        assert not word.get(tense=Tense.FUTURE_PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, person=2, number=Number.PLURAL)
 
     def test_repr(self):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         assert repr(word) == "Verb(celo, celare, celavi, celatus, meaning=hide)"
 
     def test_repr_noppp(self):
-        word = Verb("celo", "celare", "celavi", meaning="hide")
-        assert repr(word) == "Verb(celo, celare, celavi, meaning=hide)"
+        word = Verb("loquor", "loqui", "locutus sum", meaning="say")
+        assert repr(word) == "Verb(loquor, loqui, locutus sum, meaning=say)"
 
     def test_repr_irregular(self):
         word = Verb("inquam", meaning="say")
@@ -49,8 +49,8 @@ class TestVerbDunder:
         assert str(word) == "hide: celo, celare, celavi, celatus"
 
     def test_str_noppp(self):
-        word = Verb("celo", "celare", "celavi", meaning="hide")
-        assert str(word) == "hide: celo, celare, celavi"
+        word = Verb("loquor", "loqui", "locutus sum", meaning="say")
+        assert str(word) == "say: loquor, loqui, locutus sum"
 
     def test_str_irregular(self):
         word = Verb("inquam", meaning="say")
