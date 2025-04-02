@@ -243,13 +243,13 @@ def _parse_line(
         if len(latin_parts) == 1:
             return Verb(latin_parts[0], meaning=meaning)
 
-        # Verb without ppp
+        # Deponent verbs
         if len(latin_parts) == 3:
             return Verb(
                 latin_parts[0], latin_parts[1], latin_parts[2], meaning=meaning
             )
 
-        # Verb with ppp
+        # Non-deponent verbs
         return Verb(
             latin_parts[0],
             latin_parts[1],

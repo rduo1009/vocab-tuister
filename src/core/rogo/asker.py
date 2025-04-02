@@ -175,7 +175,9 @@ def _generate_typein_engtolat(
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Using the dict key, create an `EndingComponents`
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_normalmeth(
+        ending_components_key
+    )
 
     # Unsupported endings
     # Subjunctives cannot be translated to English on their own
@@ -464,7 +466,9 @@ def _generate_inflect(
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
     # Find `EndingComponents` from dict key
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_normalmeth(
+        ending_components_key
+    )
 
     # Convert `chosen_ending` to string if necessary
     if isinstance(chosen_ending, MultipleEndings):
