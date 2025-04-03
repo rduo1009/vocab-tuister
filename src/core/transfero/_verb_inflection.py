@@ -428,96 +428,116 @@ def _find_impactind_inflections(
 def _find_imppasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    past = lemminflect.getInflection(lemma, "VBD")[0]
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
-            return (f"I was being {past}", {f"I was being {past}"})
+            return (
+                f"I was {past_participle}",
+                {f"I was {past_participle}", f"I was being {past_participle}"},
+            )
 
         case (Number.PLURAL, 1):
-            return (f"we were being {past}", {f"we were being {past}"})
-
-        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
-            return (f"you were being {past}", {f"you were being {past}"})
-
-        case (Number.SINGULAR, 3):
             return (
-                f"he was being {past}",
+                f"we were {past_participle}",
                 {
-                    f"he was being {past}",
-                    f"she was being {past}",
-                    f"it was being {past}",
+                    f"we were {past_participle}",
+                    f"we were being {past_participle}",
                 },
             )
 
-    return (f"they were being {past}", {f"they were being {past}"})
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you were {past_participle}",
+                {
+                    f"you were {past_participle}",
+                    f"you were being {past_participle}",
+                },
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he was {past_participle}",
+                {
+                    f"he was {past_participle}",
+                    f"he was being {past_participle}",
+                    f"she was {past_participle}",
+                    f"she was being {past_participle}",
+                    f"it was {past_participle}",
+                    f"it was being {past_participle}",
+                },
+            )
+
+    return (
+        f"they were {past_participle}",
+        {f"they were {past_participle}", f"they were being {past_participle}"},
+    )
 
 
 def _find_futactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    present = lemminflect.getInflection(lemma, "VBP")[0]
     present_participle = lemminflect.getInflection(lemma, "VBG")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
             return (
-                f"I will {present}",
+                f"I will {lemma}",
                 {
-                    f"I will {present}",
+                    f"I will {lemma}",
                     f"I will be {present_participle}",
-                    f"I shall {present}",
+                    f"I shall {lemma}",
                     f"I shall be {present_participle}",
                 },
             )
 
         case (Number.PLURAL, 1):
             return (
-                f"we will {present}",
+                f"we will {lemma}",
                 {
-                    f"we will {present}",
+                    f"we will {lemma}",
                     f"we will be {present_participle}",
-                    f"we shall {present}",
+                    f"we shall {lemma}",
                     f"we shall be {present_participle}",
                 },
             )
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
             return (
-                f"you will {present}",
+                f"you will {lemma}",
                 {
-                    f"you will {present}",
+                    f"you will {lemma}",
                     f"you will be {present_participle}",
-                    f"you shall {present}",
+                    f"you shall {lemma}",
                     f"you shall be {present_participle}",
                 },
             )
 
         case (Number.SINGULAR, 3):
             return (
-                f"he will {present}",
+                f"he will {lemma}",
                 {
-                    f"he will {present}",
+                    f"he will {lemma}",
                     f"he will be {present_participle}",
-                    f"he shall {present}",
+                    f"he shall {lemma}",
                     f"he shall be {present_participle}",
-                    f"she will {present}",
+                    f"she will {lemma}",
                     f"she will be {present_participle}",
-                    f"she shall {present}",
+                    f"she shall {lemma}",
                     f"she shall be {present_participle}",
-                    f"it will {present}",
+                    f"it will {lemma}",
                     f"it will be {present_participle}",
-                    f"it shall {present}",
+                    f"it shall {lemma}",
                     f"it shall be {present_participle}",
                 },
             )
 
     return (
-        f"they will {present}",
+        f"they will {lemma}",
         {
-            f"they will {present}",
+            f"they will {lemma}",
             f"they will be {present_participle}",
-            f"they shall {present}",
+            f"they shall {lemma}",
             f"they shall be {present_participle}",
         },
     )
@@ -526,68 +546,68 @@ def _find_futactind_inflections(
 def _find_futpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    past = lemminflect.getInflection(lemma, "VBD")[0]
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
             return (
-                f"I will be {past}",
+                f"I will be {past_participle}",
                 {
-                    f"I will be {past}",
-                    f"I will be being {past}",
-                    f"I shall be {past}",
-                    f"I shall be being {past}",
+                    f"I will be {past_participle}",
+                    f"I will be being {past_participle}",
+                    f"I shall be {past_participle}",
+                    f"I shall be being {past_participle}",
                 },
             )
 
         case (Number.PLURAL, 1):
             return (
-                f"we will be {past}",
+                f"we will be {past_participle}",
                 {
-                    f"we will be {past}",
-                    f"we will be being {past}",
-                    f"we shall be {past}",
-                    f"we shall be being {past}",
+                    f"we will be {past_participle}",
+                    f"we will be being {past_participle}",
+                    f"we shall be {past_participle}",
+                    f"we shall be being {past_participle}",
                 },
             )
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
             return (
-                f"you will be {past}",
+                f"you will be {past_participle}",
                 {
-                    f"you will be {past}",
-                    f"you will be being {past}",
-                    f"you shall be {past}",
-                    f"you shall be being {past}",
+                    f"you will be {past_participle}",
+                    f"you will be being {past_participle}",
+                    f"you shall be {past_participle}",
+                    f"you shall be being {past_participle}",
                 },
             )
 
         case (Number.SINGULAR, 3):
             return (
-                f"he will be {past}",
+                f"he will be {past_participle}",
                 {
-                    f"he will be {past}",
-                    f"he will be being {past}",
-                    f"he shall be {past}",
-                    f"he shall be being {past}",
-                    f"she will be {past}",
-                    f"she will be being {past}",
-                    f"she shall be {past}",
-                    f"she shall be being {past}",
-                    f"it will be {past}",
-                    f"it will be being {past}",
-                    f"it shall be {past}",
-                    f"it shall be being {past}",
+                    f"he will be {past_participle}",
+                    f"he will be being {past_participle}",
+                    f"he shall be {past_participle}",
+                    f"he shall be being {past_participle}",
+                    f"she will be {past_participle}",
+                    f"she will be being {past_participle}",
+                    f"she shall be {past_participle}",
+                    f"she shall be being {past_participle}",
+                    f"it will be {past_participle}",
+                    f"it will be being {past_participle}",
+                    f"it shall be {past_participle}",
+                    f"it shall be being {past_participle}",
                 },
             )
 
     return (
-        f"they will be {past}",
+        f"they will be {past_participle}",
         {
-            f"they will be {past}",
-            f"they will be being {past}",
-            f"they shall be {past}",
-            f"they shall be being {past}",
+            f"they will be {past_participle}",
+            f"they will be being {past_participle}",
+            f"they shall be {past_participle}",
+            f"they shall be being {past_participle}",
         },
     )
 
@@ -641,40 +661,49 @@ def _find_peractind_inflections(
 def _find_perpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    past = lemminflect.getInflection(lemma, "VBD")[0]
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
-            return (f"I was {past}", {f"I was {past}", f"I have been {past}"})
+            return (
+                f"I have been {past_participle}",
+                {f"I was {past_participle}", f"I have been {past_participle}"},
+            )
 
         case (Number.PLURAL, 1):
             return (
-                f"we were {past}",
-                {f"we were {past}", f"we have been {past}"},
+                f"we have been {past_participle}",
+                {
+                    f"we were {past_participle}",
+                    f"we have been {past_participle}",
+                },
             )
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
             return (
-                f"you were {past}",
-                {f"you were {past}", f"you have been {past}"},
+                f"you have been {past_participle}",
+                {
+                    f"you were {past_participle}",
+                    f"you have been {past_participle}",
+                },
             )
 
         case (Number.SINGULAR, 3):
             return (
-                f"he was {past}",
+                f"he has been {past_participle}",
                 {
-                    f"he was {past}",
-                    f"he has been {past}",
-                    f"she was {past}",
-                    f"she has been {past}",
-                    f"it was {past}",
-                    f"it has been {past}",
+                    f"he was {past_participle}",
+                    f"he has been {past_participle}",
+                    f"she was {past_participle}",
+                    f"she has been {past_participle}",
+                    f"it was {past_participle}",
+                    f"it has been {past_participle}",
                 },
             )
 
     return (
-        f"they were {past}",
-        {f"they were {past}", f"they have been {past}"},
+        f"they have been {past_participle}",
+        {f"they were {past_participle}", f"they have been {past_participle}"},
     )
 
 
