@@ -122,7 +122,7 @@ class Pronoun(_Word):
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
-    def create_components_normalmeth(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -158,13 +158,13 @@ class Pronoun(_Word):
         return output
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     def create_components(key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
-        Deprecated in favour of ``create_components_normalmeth``.
+        Deprecated in favour of ``create_components_instance``.
         This function should not usually be used by the user.
 
         Parameters
@@ -183,7 +183,7 @@ class Pronoun(_Word):
             If `key` is not a valid key for the word.
         """
         placeholder_pronoun = Pronoun("hic", meaning="this")
-        return Pronoun.create_components_normalmeth(placeholder_pronoun, key)
+        return Pronoun.create_components_instance(placeholder_pronoun, key)
 
     def __repr__(self) -> str:
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"

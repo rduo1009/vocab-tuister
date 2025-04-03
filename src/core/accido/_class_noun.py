@@ -384,7 +384,7 @@ class Noun(_Word):
 
         return self.endings.get(f"N{short_case}{short_number}")
 
-    def create_components_normalmeth(self, key: str) -> EndingComponents:
+    def create_components_instance(self, key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -417,13 +417,13 @@ class Noun(_Word):
         return output
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     def create_components(key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
-        Deprecated in favour of ``create_components_normalmeth``.
+        Deprecated in favour of ``create_components_instance``.
         This function should not usually be used by the user.
 
         Parameters
@@ -445,7 +445,7 @@ class Noun(_Word):
         placeholder_noun = Noun(
             "ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl"
         )
-        return Noun.create_components_normalmeth(placeholder_noun, key)
+        return Noun.create_components_instance(placeholder_noun, key)
 
     def __repr__(self) -> str:
         if self.declension == 0:

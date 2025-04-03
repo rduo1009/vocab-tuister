@@ -877,7 +877,7 @@ class Adjective(_Word):
             f"A{short_degree}{short_gender}{short_case}{short_number}"
         )
 
-    def create_components_normalmeth(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -920,13 +920,13 @@ class Adjective(_Word):
         return output
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     def create_components(key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
-        Deprecated in favour of ``create_components_normalmeth``.
+        Deprecated in favour of ``create_components_instance``.
         This function should not usually be used by the user.
 
         Parameters
@@ -947,9 +947,7 @@ class Adjective(_Word):
         placeholder_adjective = Adjective(
             "laetus", "laeta", "laetum", declension="212", meaning="happy"
         )
-        return Adjective.create_components_normalmeth(
-            placeholder_adjective, key
-        )
+        return Adjective.create_components_instance(placeholder_adjective, key)
 
     def __str__(self) -> str:
         if self.declension == "3":

@@ -1131,7 +1131,7 @@ class Verb(_Word):
             f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
         )
 
-    def create_components_normalmeth(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -1212,13 +1212,13 @@ class Verb(_Word):
         raise InvalidInputError(f"Key '{key}' is invalid.")
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     def create_components(key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
-        Deprecated in favour of ``create_components_normalmeth`` instead.
+        Deprecated in favour of ``create_components_instance`` instead.
         This function should not usually be used by the user.
 
         Parameters
@@ -1239,7 +1239,7 @@ class Verb(_Word):
         placeholder_verb = Verb(
             "celo", "celare", "celavi", "celatus", meaning="hide"
         )
-        return Verb.create_components_normalmeth(placeholder_verb, key)
+        return Verb.create_components_instance(placeholder_verb, key)
 
     def __repr__(self) -> str:
         if self.conjugation == 0:

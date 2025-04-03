@@ -65,7 +65,7 @@ class _Word(ABC):  # noqa: PLW1641
             components that match `form`.
         """
         return [
-            self.create_components_normalmeth(key)
+            self.create_components_instance(key)
             for key, value in self.endings.items()
             if (isinstance(value, MultipleEndings) and form in value.get_all())
             or (not isinstance(value, MultipleEndings) and value == form)
@@ -79,10 +79,10 @@ class _Word(ABC):  # noqa: PLW1641
         ...
 
     @abstractmethod
-    def create_components_normalmeth(self, key: str) -> EndingComponents: ...
+    def create_components_instance(self, key: str) -> EndingComponents: ...
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     @abstractmethod
