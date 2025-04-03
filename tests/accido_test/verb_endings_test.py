@@ -507,6 +507,42 @@ PARTICIPLE_COMBINATIONS = (
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
 )
 
 
@@ -525,6 +561,13 @@ class TestParticipleConjugation:
         "portatae", "portatae", "portatas", "portatarum", "portatis", "portatis",
         "portatum", "portatum", "portatum", "portati", "portato", "portato",
         "portata", "portata", "portata", "portatorum", "portatis", "portatis",
+
+        "portaturus", "portature", "portaturum", "portaturi", "portaturo", "portaturo",
+        "portaturi", "portaturi", "portaturos", "portaturorum", "portaturis", "portaturis",
+        "portatura", "portatura", "portaturam", "portaturae", "portaturae", "portatura",
+        "portaturae", "portaturae", "portaturas", "portaturarum", "portaturis", "portaturis",
+        "portaturum", "portaturum", "portaturum", "portaturi", "portaturo", "portaturo",
+        "portatura", "portatura", "portatura", "portaturorum", "portaturis", "portaturis",
     ])])  # fmt: skip
     def test_participle_firstconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
@@ -544,6 +587,13 @@ class TestParticipleConjugation:
         "doctae", "doctae", "doctas", "doctarum", "doctis", "doctis",
         "doctum", "doctum", "doctum", "docti", "docto", "docto",
         "docta", "docta", "docta", "doctorum", "doctis", "doctis",
+
+        "docturus", "docture", "docturum", "docturi", "docturo", "docturo",
+        "docturi", "docturi", "docturos", "docturorum", "docturis", "docturis",
+        "doctura", "doctura", "docturam", "docturae", "docturae", "doctura",
+        "docturae", "docturae", "docturas", "docturarum", "docturis", "docturis",
+        "docturum", "docturum", "docturum", "docturi", "docturo", "docturo",
+        "doctura", "doctura", "doctura", "docturorum", "docturis", "docturis",
     ])])  # fmt: skip
     def test_participle_secondconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
@@ -563,6 +613,13 @@ class TestParticipleConjugation:
         "tractae", "tractae", "tractas", "tractarum", "tractis", "tractis",
         "tractum", "tractum", "tractum", "tracti", "tracto", "tracto",
         "tracta", "tracta", "tracta", "tractorum", "tractis", "tractis",
+
+        "tracturus", "tracture", "tracturum", "tracturi", "tracturo", "tracturo",
+        "tracturi", "tracturi", "tracturos", "tracturorum", "tracturis", "tracturis",
+        "tractura", "tractura", "tracturam", "tracturae", "tracturae", "tractura",
+        "tracturae", "tracturae", "tracturas", "tracturarum", "tracturis", "tracturis",
+        "tracturum", "tracturum", "tracturum", "tracturi", "tracturo", "tracturo",
+        "tractura", "tractura", "tractura", "tracturorum", "tracturis", "tracturis",
     ])])  # fmt: skip
     def test_participle_thirdconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("traho", "trahere", "traxi", "tractus", meaning="begin")
@@ -582,6 +639,13 @@ class TestParticipleConjugation:
         "occeptae", "occeptae", "occeptas", "occeptarum", "occeptis", "occeptis",
         "occeptum", "occeptum", "occeptum", "occepti", "occepto", "occepto",
         "occepta", "occepta", "occepta", "occeptorum", "occeptis", "occeptis",
+
+        "occepturus", "occepture", "occepturum", "occepturi", "occepturo", "occepturo",
+        "occepturi", "occepturi", "occepturos", "occepturorum", "occepturis", "occepturis",
+        "occeptura", "occeptura", "occepturam", "occepturae", "occepturae", "occeptura",
+        "occepturae", "occepturae", "occepturas", "occepturarum", "occepturis", "occepturis",
+        "occepturum", "occepturum", "occepturum", "occepturi", "occepturo", "occepturo",
+        "occeptura", "occeptura", "occeptura", "occepturorum", "occepturis", "occepturis",
     ])])  # fmt: skip
     def test_participle_mixedconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("occipio", "occipere", "occepi", "occeptus", meaning="begin")
@@ -601,6 +665,13 @@ class TestParticipleConjugation:
         "auditae", "auditae", "auditas", "auditarum", "auditis", "auditis",
         "auditum", "auditum", "auditum", "auditi", "audito", "audito",
         "audita", "audita", "audita", "auditorum", "auditis", "auditis",
+
+        "auditurus", "auditure", "auditurum", "audituri", "audituro", "audituro",
+        "audituri", "audituri", "audituros", "auditurorum", "audituris", "audituris",
+        "auditura", "auditura", "audituram", "auditurae", "auditurae", "auditura",
+        "auditurae", "auditurae", "audituras", "auditurarum", "audituris", "audituris",
+        "auditurum", "auditurum", "auditurum", "audituri", "audituro", "audituro",
+        "auditura", "auditura", "auditura", "auditurorum", "audituris", "audituris",
     ])])  # fmt: skip
     def test_participle_fourthconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
@@ -615,6 +686,13 @@ class TestIrregularParticipleConjugation:
         "elegantes", "elegantes", "elegantes", "elegantium", "elegantibus", "elegantibus",
         "elegans", "elegans", "elegans", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
         "elegantia", "elegantia", "elegantia", "elegantium", "elegantibus", "elegantibus",
+
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
 
         None, None, None, None, None, None,
         None, None, None, None, None, None,
