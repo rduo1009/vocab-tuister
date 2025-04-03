@@ -299,38 +299,50 @@ def _find_preactind_inflections(
 def _find_prepasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, set[str]]:
-    past = lemminflect.getInflection(lemma, "VBD")[0]
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     match (number, person):
         case (Number.SINGULAR, 1):
-            return (f"I am {past}", {f"I am {past}", f"I am being {past}"})
+            return (
+                f"I am {past_participle}",
+                {f"I am {past_participle}", f"I am being {past_participle}"},
+            )
 
         case (Number.PLURAL, 1):
             return (
-                f"we are {past}",
-                {f"we are {past}", f"we are being {past}"},
+                f"we are {past_participle}",
+                {
+                    f"we are {past_participle}",
+                    f"we are being {past_participle}",
+                },
             )
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
             return (
-                f"you are {past}",
-                {f"you are {past}", f"you are being {past}"},
+                f"you are {past_participle}",
+                {
+                    f"you are {past_participle}",
+                    f"you are being {past_participle}",
+                },
             )
 
         case (Number.SINGULAR, 3):
             return (
-                f"he is {past}",
+                f"he is {past_participle}",
                 {
-                    f"he is {past}",
-                    f"he is being {past}",
-                    f"she is {past}",
-                    f"she is being {past}",
-                    f"it is {past}",
-                    f"it is being {past}",
+                    f"he is {past_participle}",
+                    f"he is being {past_participle}",
+                    f"she is {past_participle}",
+                    f"she is being {past_participle}",
+                    f"it is {past_participle}",
+                    f"it is being {past_participle}",
                 },
             )
 
-    return (f"they are {past}", {f"they are {past}", f"they are being {past}"})
+    return (
+        f"they are {past_participle}",
+        {f"they are {past_participle}", f"they are being {past_participle}"},
+    )
 
 
 def _find_impactind_inflections(
