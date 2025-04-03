@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 # VERBS
 
 # Taken from https://en.wiktionary.org/w/index.php?title=Category:Latin_verbs_with_missing_supine_stem
-# Removals: accido (two meanings)
+# Removals: accido (two meanings), incumbo (probably mistake)
 MISSING_PPP_VERBS: Final[set[str]] = {
     "abaeto", "abago", "abarceo", "abbaeto", "abbatizo", "abbito", "abequito", "aberceo", "abhorresco", "abito", "abiturio",
     "abnato", "abnumero", "abnuto", "abolesco", "aboriscor", "aborto", "abrenuntio", "absilio", "absisto", "absono", "absto",
@@ -69,7 +69,7 @@ MISSING_PPP_VERBS: Final[set[str]] = {
     "hilaresco", "hinnio", "hirrio", "hisco", "hittio", "horior", "horreo", "horresco", "horripilo", "humeo", "ignesco",
     "illuceo", "illucesco", "imbibo", "immadesco", "immaneo", "immineo", "immurmuro", "impedico", "impendeo", "inacesco",
     "inaestuo", "inalbeo", "inalbesco", "inambulo", "inardesco", "inaresco", "incalesco", "incalfacio", "incandesco", "incanesco",
-    "incino", "inclaresco", "incolo", "increbesco", "increbresco", "incresco", "inculpo", "incumbo", "incurvesco", "indecoro",
+    "incino", "inclaresco", "incolo", "increbesco", "increbresco", "incresco", "inculpo", "incurvesco", "indecoro", 
     "indigeo", "indolesco", "induresco", "ineptio", "infenso", "infervesco", "infindo", "infit", "infremo", "infrendo",
     "ingemesco", "ingemisco", "ingravesco", "ingruo", "inhaeresco", "inhorreo", "inhorresco", "inluceo", "inlucesco", "inmaneo",
     "inmineo", "innotesco", "inoboedio", "inquilino", "insenesco", "inserto", "insisto", "insolesco", "insono", "instabilio",
