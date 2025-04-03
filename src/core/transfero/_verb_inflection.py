@@ -837,6 +837,10 @@ def _find_participle_inflections(
     lemma = lemminflect.getLemma(verb, "NOUN")[0]
 
     match (components.tense, components.voice):
+        case (Tense.PRESENT, Voice.ACTIVE):
+            present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+            return (present_participle, {present_participle})
+
         case (Tense.PERFECT, Voice.ACTIVE):
             past_participle = lemminflect.getInflection(lemma, "VBN")[0]
             return (f"having {past_participle}", {f"having {past_participle}"})
@@ -848,9 +852,8 @@ def _find_participle_inflections(
                 {f"having been {past_participle}", past_participle},
             )
 
-        case (Tense.PRESENT, Voice.ACTIVE):
-            present_participle = lemminflect.getInflection(lemma, "VBG")[0]
-            return (present_participle, {present_participle})
+        case (Tense.FUTURE, Voice.ACTIVE):
+            return (f"about to {lemma}", {f"about to {lemma}"})
 
         case _:
             raise NotImplementedError(
