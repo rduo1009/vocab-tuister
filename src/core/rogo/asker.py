@@ -82,6 +82,11 @@ def ask_question_without_sr(
     if not filtered_questions:
         raise InvalidSettingsError("No question type has been enabled.")
 
+    if not filtered_vocab:
+        raise InvalidSettingsError(
+            "No words in the vocabulary list after filtering."
+        )
+
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:

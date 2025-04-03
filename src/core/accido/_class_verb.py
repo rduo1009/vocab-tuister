@@ -986,6 +986,16 @@ class Verb(_Word):
                 "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
             }
 
+        if self.deponent:
+            return {
+                (
+                    key[:4] + "dep" + key[7:]
+                    if key[4:7] == Voice.ACTIVE.shorthand
+                    else key
+                ): value
+                for key, value in endings.items()
+            }
+
         return endings
 
     # fmt: off
