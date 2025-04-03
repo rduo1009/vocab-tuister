@@ -132,7 +132,7 @@ Note that the ``main`` parameter defaults to False.
    ...         case=Case.ACCUSATIVE
    ...     )
    ... )
-   {'having been attacked'}
+   {'having been attacked', 'attacked'}
    >>> find_inflection(
    ...     "attack",
    ...     EndingComponents(
