@@ -71,7 +71,7 @@ class RegularWord(_Word):
 
         return self.word
 
-    def create_components_normalmeth(self, key: str) -> EndingComponents:  # noqa: ARG002, PLR6301
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: ARG002, PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         In the case of a regular word, the returned ``EndingComponents`` object
@@ -91,13 +91,13 @@ class RegularWord(_Word):
         return EndingComponents(string="")
 
     @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_normalmeth` instead."
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
     )
     @staticmethod
     def create_components(key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
-        Deprecated in favour of ``create_components_normalmeth``.
+        Deprecated in favour of ``create_components_instance``.
         In the case of a regular word, the returned ``EndingComponents`` object
         will be empty.
         Note that this function should not usually be used by the user.
@@ -113,7 +113,7 @@ class RegularWord(_Word):
             The ``EndingComponents`` object created.
         """
         placeholder_regularword = RegularWord("sed", meaning="but")
-        return RegularWord.create_components_normalmeth(
+        return RegularWord.create_components_instance(
             placeholder_regularword, key
         )
 
