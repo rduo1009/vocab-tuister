@@ -81,10 +81,6 @@ VERB_COMBINATIONS = (
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
-    (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE, None, None),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
@@ -97,6 +93,10 @@ VERB_COMBINATIONS = (
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE, None, None),
 )
 
 
@@ -116,11 +116,12 @@ class TestVerbConjugation:
         "celatus eram", "celatus eras", "celatus erat", "celati eramus", "celati eratis", "celati erant",
         "celatus ero", "celatus eris", "celatus erit", "celati erimus", "celati eritis", "celati erunt",
 
-        "celare", "celari",
-        "cela", "celate",
-
         "celarem", "celares", "celaret", "celaremus", "celaretis", "celarent",
         "celavissem", "celavisses", "celavisset", "celavissemus", "celavissetis", "celavissent",
+
+        "cela", "celate",
+
+        "celare", "celari",
     ])])  # fmt: skip
     def test_firstconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
@@ -141,11 +142,12 @@ class TestVerbConjugation:
         "mansus eram", "mansus eras", "mansus erat", "mansi eramus", "mansi eratis", "mansi erant",
         "mansus ero", "mansus eris", "mansus erit", "mansi erimus", "mansi eritis", "mansi erunt",
 
-        "manere", "maneri",
-        "mane", "manete",
-
         "manerem", "maneres", "maneret", "maneremus", "maneretis", "manerent",
         "mansissem", "mansisses", "mansisset", "mansissemus", "mansissetis", "mansissent",
+
+        "mane", "manete",
+
+        "manere", "maneri",
     ])])  # fmt: skip
     def test_secondconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("maneo", "manere", "mansi", "mansus", meaning="stay")
@@ -166,11 +168,12 @@ class TestVerbConjugation:
         "desertus eram", "desertus eras", "desertus erat", "deserti eramus", "deserti eratis", "deserti erant",
         "desertus ero", "desertus eris", "desertus erit", "deserti erimus", "deserti eritis", "deserti erunt",
 
-        "deserere", "deseri",
-        "desere", "deserite",
-
         "desererem", "desereres", "desereret", "desereremus", "desereretis", "desererent",
         "deseruissem", "deseruisses", "deseruisset", "deseruissemus", "deseruissetis", "deseruissent",
+
+        "desere", "deserite",
+
+        "deserere", "deseri",
     ])])  # fmt: skip
     def test_thirdconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("desero", "deserere", "deserui", "desertus", meaning="desert")
@@ -191,11 +194,12 @@ class TestVerbConjugation:
         "captus eram", "captus eras", "captus erat", "capti eramus", "capti eratis", "capti erant",
         "captus ero", "captus eris", "captus erit", "capti erimus", "capti eritis", "capti erunt",
 
-        "capere", "capi",
-        "cape", "capite",
-            
         "caperem", "caperes", "caperet", "caperemus", "caperetis", "caperent",
         "cepissem", "cepisses", "cepisset", "cepissemus", "cepissetis", "cepissent",
+
+        "cape", "capite",
+
+        "capere", "capi",
     ])])  # fmt: skip
     def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("capio", "capere", "cepi", "captus", meaning="take")
@@ -216,11 +220,12 @@ class TestVerbConjugation:
         "apertus eram", "apertus eras", "apertus erat", "aperti eramus", "aperti eratis", "aperti erant",
         "apertus ero", "apertus eris", "apertus erit", "aperti erimus", "aperti eritis", "aperti erunt",
             
-        "aperire", "aperiri",
-        "aperi", "aperite",
-
         "aperirem", "aperires", "aperiret", "aperiremus", "aperiretis", "aperirent",
         "aperuissem", "aperuisses", "aperuisset", "aperuissemus", "aperuissetis", "aperuissent",
+
+        "aperi", "aperite",
+
+        "aperire", "aperiri",
     ])])  # fmt: skip
     def test_fourthconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("aperio", "aperire", "aperui", "apertus", meaning="open")
@@ -241,11 +246,12 @@ class TestVerbConjugation:
         "venitus eram", "venitus eras", "venitus erat", "veniti eramus", "veniti eratis", "veniti erant",
         "venitus ero", "venitus eris", "venitus erit", "veniti erimus", "veniti eritis", "veniti erunt",
 
-        "venire", "veniri",
-        "veni", "venite",
-            
         "venirem", "venires", "veniret", "veniremus", "veniretis", "venirent",
         "venissem", "venisses", "venisset", "venissemus", "venissetis", "venissent",
+
+        "veni", "venite",
+
+        "venire", "veniri",
     ])])  # fmt: skip
     def test_irregularverb_eo(self, tense, voice, mood, person, number, expected):
         word = Verb("veneo", "venire", "venii", "venitus", meaning="be sold")
@@ -273,11 +279,12 @@ class TestIrregularVerbConjugation:
         None, None, None, None, None, None,
         None, None, None, None, None, None,
 
-        "esse", None,
-        "es", "este",
-
         "essem", "esses", "esset", "essemus", "essetis", "essent",
         "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
+
+        "es", "este",
+
+        "esse", None,
     ])])  # fmt: skip
     def test_irregular_verb_normal(self, tense, voice, mood, person, number, expected):
         word = Verb("sum", "esse", "fui", meaning="be")
@@ -298,32 +305,16 @@ class TestIrregularVerbConjugation:
         None, None, None, None, None, None,
         None, None, None, None, None, None,
 
-        "elegare", "elegari",
-        "elega", "elegate",
-
         "elegarem", "elegares", "elegaret", "elegaremus", "elegaretis", "elegarent",
         "elegavissem", "elegavisses", "elegavisset", "elegavissemus", "elegavissetis", "elegavissent",
+
+        "elega", "elegate",
+
+        "elegare", "elegari",
     ])])  # fmt: skip
     def test_irregular_verb_no_ppp(self, tense, voice, mood, person, number, expected):
         word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
-
-    # NOTE: Already covered!
-    # @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    #     "adeo", "adis", "adit", "adimus", "aditis", "adeunt",
-    #     "adibam", "adibas", "adibat", "adibamus", "adibatis", "adibant",
-    #     "adii", "adisti", "adiit", "adiimus", "adistis", "adierunt",
-    #     "adieram", "adieras", "adierat", "adieramus", "adieratis", "adierant",
-
-    #     "adire",
-    #     "adi", "adite",
-
-    #     "adirem", "adires", "adiret", "adiremus", "adiretis", "adirent",
-    #     "adissem", "adisses", "adisset", "adissemus", "adissetis", "adissent",
-    # ])])
-    # def test_irregular_verb_derived(self, tense, voice, mood, person, number, expected):
-    #     word = Verb("adeo", "adire", "adii", "aditus", meaning="go to")
-    #     assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
 
 DEPONENT_COMBINATIONS = (
