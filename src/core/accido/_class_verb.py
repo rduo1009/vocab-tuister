@@ -390,12 +390,24 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # portaverimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # portaveritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # portaverint
+            "Vpreactsbjsg1": f"{self._inf_stem}em",  # portem
+            "Vpreactsbjsg2": f"{self._inf_stem}es",  # portes
+            "Vpreactsbjsg3": f"{self._inf_stem}et",  # portet
+            "Vpreactsbjpl1": f"{self._inf_stem}emus",  # portemus
+            "Vpreactsbjpl2": f"{self._inf_stem}etis",  # portetis
+            "Vpreactsbjpl3": f"{self._inf_stem}ent",  # portent
             "Vimpactsbjsg1": f"{self.infinitive}m",  # portarem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # portares
             "Vimpactsbjsg3": f"{self.infinitive}t",  # portaret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # portaremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # portaretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # portarent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # portaverim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # portaveris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # portaverit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # portaverimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # portaveritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # portaverint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # portavissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # portavisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # portavisset
@@ -500,12 +512,24 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # docuerimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # docueritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # docuerint
+            "Vpreactsbjsg1": f"{self._inf_stem}eam",  # doceam
+            "Vpreactsbjsg2": f"{self._inf_stem}eas",  # doceas
+            "Vpreactsbjsg3": f"{self._inf_stem}eat",  # doceat
+            "Vpreactsbjpl1": f"{self._inf_stem}eamus",  # doceamus
+            "Vpreactsbjpl2": f"{self._inf_stem}eatis",  # doceatis
+            "Vpreactsbjpl3": f"{self._inf_stem}eant",  # doceant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # docerem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # doceres
             "Vimpactsbjsg3": f"{self.infinitive}t",  # doceret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # doceremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # doceretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # docerent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # docuerim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # docueris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # docuerit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # docuerimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # docueritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # docuerint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # docuissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # docuisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # docuisset
@@ -610,12 +634,24 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # traxerimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # traxeritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # traxerint
+            "Vpreactsbjsg1": f"{self._inf_stem}am",  # traham
+            "Vpreactsbjsg2": f"{self._inf_stem}as",  # trahas
+            "Vpreactsbjsg3": f"{self._inf_stem}at",  # trahat
+            "Vpreactsbjpl1": f"{self._inf_stem}amus",  # trahamus
+            "Vpreactsbjpl2": f"{self._inf_stem}atis",  # trahatis
+            "Vpreactsbjpl3": f"{self._inf_stem}ant",  # trahant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # traherem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # traheres
             "Vimpactsbjsg3": f"{self.infinitive}t",  # traheret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # traheremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # traheretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # traherent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # traxerim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # traxeris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # traxerit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # traxerimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # traxeritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # traxerint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # traxissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # traxisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # traxisset
@@ -720,12 +756,24 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # audiverimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # audiveritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # audiverint
+            "Vpreactsbjsg1": f"{self._inf_stem}iam",  # audiam
+            "Vpreactsbjsg2": f"{self._inf_stem}ias",  # audias
+            "Vpreactsbjsg3": f"{self._inf_stem}iat",  # audiat
+            "Vpreactsbjpl1": f"{self._inf_stem}iamus",  # audiamus
+            "Vpreactsbjpl2": f"{self._inf_stem}iatis",  # audiatis
+            "Vpreactsbjpl3": f"{self._inf_stem}iant",  # audiant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # audirem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # audires
             "Vimpactsbjsg3": f"{self.infinitive}t",  # audiret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # audiremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # audiretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # audirent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # audiverim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # audiveris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # audiverit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # audiverimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # audiveritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # audiverint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # audivissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # audivisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # audivisset
@@ -830,12 +878,24 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # ceperimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # ceperitis
             "Vfpractindpl3": f"{self._per_stem}erint",  # ceperint
+            "Vpreactsbjsg1": f"{self._inf_stem}iam",  # capiam
+            "Vpreactsbjsg2": f"{self._inf_stem}ias",  # capias
+            "Vpreactsbjsg3": f"{self._inf_stem}iat",  # capiat
+            "Vpreactsbjpl1": f"{self._inf_stem}iamus",  # capiamus
+            "Vpreactsbjpl2": f"{self._inf_stem}iatis",  # capiatis
+            "Vpreactsbjpl3": f"{self._inf_stem}iant",  # capiant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # caperem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # caperes
             "Vimpactsbjsg3": f"{self.infinitive}t",  # caperet
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # caperemus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # caperetis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # caperent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # ceperim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # ceperis
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # ceperit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # ceperimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # ceperitis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # ceperint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # cepissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # cepisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # cepisset
