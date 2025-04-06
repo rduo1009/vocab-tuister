@@ -81,12 +81,24 @@ VERB_COMBINATIONS = (
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
@@ -116,7 +128,9 @@ class TestVerbConjugation:
         "celatus eram", "celatus eras", "celatus erat", "celati eramus", "celati eratis", "celati erant",
         "celatus ero", "celatus eris", "celatus erit", "celati erimus", "celati eritis", "celati erunt",
 
+        "celem", "celes", "celet", "celemus", "celetis", "celent",
         "celarem", "celares", "celaret", "celaremus", "celaretis", "celarent",
+        "celaverim", "celaveris", "celaverit", "celaverimus", "celaveritis", "celaverint",
         "celavissem", "celavisses", "celavisset", "celavissemus", "celavissetis", "celavissent",
 
         "cela", "celate",
@@ -142,7 +156,9 @@ class TestVerbConjugation:
         "mansus eram", "mansus eras", "mansus erat", "mansi eramus", "mansi eratis", "mansi erant",
         "mansus ero", "mansus eris", "mansus erit", "mansi erimus", "mansi eritis", "mansi erunt",
 
+        "maneam", "maneas", "maneat", "maneamus", "maneatis", "maneant",
         "manerem", "maneres", "maneret", "maneremus", "maneretis", "manerent",
+        "manserim", "manseris", "manserit", "manserimus", "manseritis", "manserint",
         "mansissem", "mansisses", "mansisset", "mansissemus", "mansissetis", "mansissent",
 
         "mane", "manete",
@@ -168,7 +184,9 @@ class TestVerbConjugation:
         "desertus eram", "desertus eras", "desertus erat", "deserti eramus", "deserti eratis", "deserti erant",
         "desertus ero", "desertus eris", "desertus erit", "deserti erimus", "deserti eritis", "deserti erunt",
 
+        "deseram", "deseras", "deserat", "deseramus", "deseratis", "deserant",
         "desererem", "desereres", "desereret", "desereremus", "desereretis", "desererent",
+        "deseruerim", "deserueris", "deseruerit", "deseruerimus", "deserueritis", "deseruerint",
         "deseruissem", "deseruisses", "deseruisset", "deseruissemus", "deseruissetis", "deseruissent",
 
         "desere", "deserite",
@@ -194,7 +212,9 @@ class TestVerbConjugation:
         "captus eram", "captus eras", "captus erat", "capti eramus", "capti eratis", "capti erant",
         "captus ero", "captus eris", "captus erit", "capti erimus", "capti eritis", "capti erunt",
 
+        "capiam", "capias", "capiat", "capiamus", "capiatis", "capiant",
         "caperem", "caperes", "caperet", "caperemus", "caperetis", "caperent",
+        "ceperim", "ceperis", "ceperit", "ceperimus", "ceperitis", "ceperint",
         "cepissem", "cepisses", "cepisset", "cepissemus", "cepissetis", "cepissent",
 
         "cape", "capite",
@@ -219,8 +239,10 @@ class TestVerbConjugation:
         "apertus sum", "apertus es", "apertus est", "aperti sumus", "aperti estis", "aperti sunt",
         "apertus eram", "apertus eras", "apertus erat", "aperti eramus", "aperti eratis", "aperti erant",
         "apertus ero", "apertus eris", "apertus erit", "aperti erimus", "aperti eritis", "aperti erunt",
-            
+
+        "aperiam", "aperias", "aperiat", "aperiamus", "aperiatis", "aperiant",
         "aperirem", "aperires", "aperiret", "aperiremus", "aperiretis", "aperirent",
+        "aperuerim", "aperueris", "aperuerit", "aperuerimus", "aperueritis", "aperuerint",
         "aperuissem", "aperuisses", "aperuisset", "aperuissemus", "aperuissetis", "aperuissent",
 
         "aperi", "aperite",
@@ -246,7 +268,9 @@ class TestVerbConjugation:
         "venitus eram", "venitus eras", "venitus erat", "veniti eramus", "veniti eratis", "veniti erant",
         "venitus ero", "venitus eris", "venitus erit", "veniti erimus", "veniti eritis", "veniti erunt",
 
+        "veneam", "veneas", "veneat", "veneamus", "veneatis", "veneant",
         "venirem", "venires", "veniret", "veniremus", "veniretis", "venirent",
+        "venierim", "venieris", "venierit", "venierimus", "venieritis", "venierint",
         "venissem", "venisses", "venisset", "venissemus", "venissetis", "venissent",
 
         "veni", "venite",
@@ -279,7 +303,9 @@ class TestIrregularVerbConjugation:
         None, None, None, None, None, None,
         None, None, None, None, None, None,
 
+        "sim", "sis", "sit", "simus", "sitis", "sint",
         "essem", "esses", "esset", "essemus", "essetis", "essent",
+        "fuerim", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
         "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
 
         "es", "este",
@@ -305,7 +331,9 @@ class TestIrregularVerbConjugation:
         None, None, None, None, None, None,
         None, None, None, None, None, None,
 
+        "elegem", "eleges", "eleget", "elegemus", "elegetis", "elegent",
         "elegarem", "elegares", "elegaret", "elegaremus", "elegaretis", "elegarent",
+        "elegaverim", "elegaveris", "elegaverit", "elegaverimus", "elegaveritis", "elegaverint",
         "elegavissem", "elegavisses", "elegavisset", "elegavissemus", "elegavissetis", "elegavissent",
 
         "elega", "elegate",
