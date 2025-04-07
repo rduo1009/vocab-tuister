@@ -78,7 +78,6 @@ class Verb(_Word):
         "_inf_stem",
         "_per_stem",
         "_ppp_stem",
-        "_pre_stem",
         "_preptc_stem",
         "conjugation",
         "deponent",
@@ -222,8 +221,7 @@ class Verb(_Word):
 
                 self.ppp = self.perfect[:-4]
 
-            self._pre_stem = self.present[:-2]
-            self._per_stem = None  # deprecated and unused
+            self._per_stem = None
 
             if is_irregular_verb(self.present):
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
@@ -293,7 +291,6 @@ class Verb(_Word):
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
-        self._pre_stem = self.present[:-2]
         self._inf_stem = self.infinitive[:-3]
         self._per_stem = self.perfect[:-1]
 
