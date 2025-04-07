@@ -7,11 +7,20 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 from warnings import deprecated
 
+from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
 from .edge_cases import (
+    DEFECTIVE_VERBS,
     MISSING_PPP_VERBS,
     check_mixed_conjugation_verb,
-    find_irregular_endings,
+    find_derived_verb_changes,
+    find_derived_verb_stems,
+    find_irregular_verb_changes,
+    find_irregular_verb_stems,
+    get_derived_verb_conjugation,
+    get_irregular_verb_conjugation,
+    is_derived_verb,
+    is_irregular_verb,
 )
 from .exceptions import InvalidInputError
 from .misc import (
@@ -147,7 +156,7 @@ class Verb(_Word):
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
 
-        if irregular_endings := find_irregular_endings(self.present):
+        if irregular_endings := DEFECTIVE_VERBS.get(self.present):
             self.endings = irregular_endings
             self.conjugation: Conjugation = 0
             return
@@ -162,6 +171,9 @@ class Verb(_Word):
                 f"Verb '{self.present}' is not irregular, but no perfect provided."
             )
 
+        irregular_flag = is_irregular_verb(self.present) or is_derived_verb(
+            self.present
+        )
         # ---------------------------------------------------------------------
         # DEPONENT VERBS
 
@@ -174,7 +186,11 @@ class Verb(_Word):
             self.deponent = True
 
             self._inf_stem = self.infinitive[:-3]
-            if check_mixed_conjugation_verb(self.present):
+            if is_irregular_verb(self.present):
+                self.conjugation = get_irregular_verb_conjugation(self.present)
+            elif is_derived_verb(self.present):
+                self.conjugation = get_derived_verb_conjugation(self.present)
+            elif check_mixed_conjugation_verb(self.present):
                 self._inf_stem = self.infinitive[:-1]
                 self.conjugation = 5
             elif self.infinitive.endswith("ari"):
@@ -207,7 +223,16 @@ class Verb(_Word):
                 self.ppp = self.perfect[:-4]
 
             self._pre_stem = self.present[:-2]
-            self._per_stem = None
+            self._per_stem = None  # deprecated and unused
+
+            if is_irregular_verb(self.present):
+                self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
+                    self.present
+                )
+            elif is_derived_verb(self.present):
+                self._inf_stem, self._preptc_stem = find_derived_verb_stems(
+                    self.present
+                )
 
             match self.conjugation:
                 case 1:
@@ -225,6 +250,15 @@ class Verb(_Word):
                 case _:
                     self.endings = self._mixed_conjugation()
 
+            # FIXME: Not true for deponents!
+            if not irregular_flag:
+                self._preptc_stem = self.infinitive[:-2]
+                if self.conjugation == 4:
+                    self._preptc_stem += "e"
+                if self.conjugation == 5:
+                    self._preptc_stem = self.infinitive[:-3]
+                    self._preptc_stem += "ie"
+
             self.endings |= self._participles()
 
             return
@@ -232,7 +266,11 @@ class Verb(_Word):
         # ---------------------------------------------------------------------
         # NON-DEPONENT VERBS
 
-        if check_mixed_conjugation_verb(self.present):
+        if is_irregular_verb(self.present):
+            self.conjugation = get_irregular_verb_conjugation(self.present)
+        elif is_derived_verb(self.present):
+            self.conjugation = get_derived_verb_conjugation(self.present)
+        elif check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
         elif self.infinitive.endswith("are"):
             self.conjugation = 1
@@ -245,12 +283,12 @@ class Verb(_Word):
                 f"Invalid infinitive form: '{self.infinitive}'"
             )
 
-        if not self.present.endswith("o"):
+        if not self.present.endswith("o") and not irregular_flag:
             raise InvalidInputError(
                 f"Invalid present form: '{self.present}' (must end in '-o')"
             )
 
-        if not self.perfect.endswith("i"):
+        if not self.perfect.endswith("i") and not irregular_flag:
             raise InvalidInputError(
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
@@ -277,6 +315,15 @@ class Verb(_Word):
             if self.ppp.endswith("um"):
                 self.ppp = self.ppp[:-2] + "um"
 
+        if is_irregular_verb(self.present):
+            self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
+                self.present
+            )
+        elif is_derived_verb(self.present):
+            self._inf_stem, self._preptc_stem = find_derived_verb_stems(
+                self.present
+            )
+
         match self.conjugation:
             case 1:
                 self.endings = self._first_conjugation()
@@ -293,7 +340,29 @@ class Verb(_Word):
             case _:
                 self.endings = self._mixed_conjugation()
 
+        if not irregular_flag:
+            self._preptc_stem = self.infinitive[:-2]
+            if self.conjugation == 4:
+                self._preptc_stem += "e"
+            if self.conjugation == 5:
+                self._preptc_stem = self.infinitive[:-3]
+                self._preptc_stem += "ie"
+
         self.endings |= self._participles()
+
+        if is_irregular_verb(self.present):
+            self.endings = apply_changes(
+                self.endings, find_irregular_verb_changes(self.present)
+            )
+        elif is_derived_verb(self.present):
+            self.endings = apply_changes(
+                self.endings,
+                find_derived_verb_changes(
+                    (self.present, self.infinitive, self.perfect, self.ppp)
+                    if self.ppp
+                    else (self.present, self.infinitive, self.perfect)
+                ),
+            )
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
@@ -910,13 +979,6 @@ class Verb(_Word):
     def _participles(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-
-        self._preptc_stem = self.infinitive[:-2]
-        if self.conjugation == 4:
-            self._preptc_stem += "e"
-        if self.conjugation == 5:
-            self._preptc_stem = self.infinitive[:-3]
-            self._preptc_stem += "ie"
 
         endings: Endings = {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
