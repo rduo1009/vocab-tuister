@@ -69,7 +69,6 @@ class Verb(_Word):
         "_inf_stem",
         "_per_stem",
         "_ppp_stem",
-        "_pre_stem",
         "_preptc_stem",
         "conjugation",
         "deponent",
@@ -206,7 +205,6 @@ class Verb(_Word):
 
                 self.ppp = self.perfect[:-4]
 
-            self._pre_stem = self.present[:-2]
             self._per_stem = None
 
             match self.conjugation:
@@ -255,7 +253,6 @@ class Verb(_Word):
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
-        self._pre_stem = self.present[:-2]
         self._inf_stem = self.infinitive[:-3]
         self._per_stem = self.perfect[:-1]
 
