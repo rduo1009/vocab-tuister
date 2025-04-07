@@ -45,21 +45,70 @@ VERB_COMBINATIONS = (
     (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
-    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE, None, None),
 )
 
 
@@ -72,32 +121,52 @@ class TestVerbConjugation:
         "celaveram", "celaveras", "celaverat", "celaveramus", "celaveratis", "celaverant",
         "celavero", "celaveris", "celaverit", "celaverimus", "celaveritis", "celaverint",
 
-        "celare",
+        "celor", "celaris", "celatur", "celamur", "celamini", "celantur",
+        "celabar", "celabaris", "celabatur", "celabamur", "celabamini", "celabantur",
+        "celabor", "celaberis", "celabitur", "celabimur", "celabimini", "celabuntur",
+        "celatus sum", "celatus es", "celatus est", "celati sumus", "celati estis", "celati sunt",
+        "celatus eram", "celatus eras", "celatus erat", "celati eramus", "celati eratis", "celati erant",
+        "celatus ero", "celatus eris", "celatus erit", "celati erimus", "celati eritis", "celati erunt",
+
+        "celem", "celes", "celet", "celemus", "celetis", "celent",
+        "celarem", "celares", "celaret", "celaremus", "celaretis", "celarent",
+        "celaverim", "celaveris", "celaverit", "celaverimus", "celaveritis", "celaverint",
+        "celavissem", "celavisses", "celavisset", "celavissemus", "celavissetis", "celavissent",
+
         "cela", "celate",
 
-        "celarem", "celares", "celaret", "celaremus", "celaretis", "celarent",
-        "celavissem", "celavisses", "celavisset", "celavissemus", "celavissetis", "celavissent",
+        "celare", "celari",
     ])])  # fmt: skip
     def test_firstconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "pareo", "pares", "paret", "paremus", "paretis", "parent",
-        "parebam", "parebas", "parebat", "parebamus", "parebatis", "parebant",
-        "parebo", "parebis", "parebit", "parebimus", "parebitis", "parebunt",
-        "parui", "paruisti", "paruit", "paruimus", "paruistis", "paruerunt",
-        "parueram", "parueras", "paruerat", "parueramus", "parueratis", "paruerant",
-        "paruero", "parueris", "paruerit", "paruerimus", "parueritis", "paruerint",
+        "maneo", "manes", "manet", "manemus", "manetis", "manent",
+        "manebam", "manebas", "manebat", "manebamus", "manebatis", "manebant",
+        "manebo", "manebis", "manebit", "manebimus", "manebitis", "manebunt",
+        "mansi", "mansisti", "mansit", "mansimus", "mansistis", "manserunt",
+        "manseram", "manseras", "manserat", "manseramus", "manseratis", "manserant",
+        "mansero", "manseris", "manserit", "manserimus", "manseritis", "manserint",
 
-        "parere",
-        "pare", "parete",
+        "maneor", "maneris", "manetur", "manemur", "manemini", "manentur",
+        "manebar", "manebaris", "manebatur", "manebamur", "manebamini", "manebantur",
+        "manebor", "maneberis", "manebitur", "manebimur", "manebimini", "manebuntur",
+        "mansus sum", "mansus es", "mansus est", "mansi sumus", "mansi estis", "mansi sunt",
+        "mansus eram", "mansus eras", "mansus erat", "mansi eramus", "mansi eratis", "mansi erant",
+        "mansus ero", "mansus eris", "mansus erit", "mansi erimus", "mansi eritis", "mansi erunt",
 
-        "parerem", "pareres", "pareret", "pareremus", "pareretis", "parerent",
-        "paruissem", "paruisses", "paruisset", "paruissemus", "paruissetis", "paruissent",
+        "maneam", "maneas", "maneat", "maneamus", "maneatis", "maneant",
+        "manerem", "maneres", "maneret", "maneremus", "maneretis", "manerent",
+        "manserim", "manseris", "manserit", "manserimus", "manseritis", "manserint",
+        "mansissem", "mansisses", "mansisset", "mansissemus", "mansissetis", "mansissent",
+
+        "mane", "manete",
+
+        "manere", "maneri",
     ])])  # fmt: skip
     def test_secondconjugation(self, tense, voice, mood, person, number, expected):
-        word = Verb("pareo", "parere", "parui", "paritus", meaning="appear")
+        word = Verb("maneo", "manere", "mansi", "mansus", meaning="stay")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
@@ -108,11 +177,21 @@ class TestVerbConjugation:
         "deserueram", "deserueras", "deseruerat", "deserueramus", "deserueratis", "deseruerant",
         "deseruero", "deserueris", "deseruerit", "deseruerimus", "deserueritis", "deseruerint",
 
-        "deserere",
+        "deseror", "desereris", "deseritur", "deserimur", "deserimini", "deseruntur",
+        "deserebar", "deserebaris", "deserebatur", "deserebamur", "deserebamini", "deserebantur",
+        "deserar", "desereris", "deseretur", "deseremur", "deseremini", "deserentur",
+        "desertus sum", "desertus es", "desertus est", "deserti sumus", "deserti estis", "deserti sunt",
+        "desertus eram", "desertus eras", "desertus erat", "deserti eramus", "deserti eratis", "deserti erant",
+        "desertus ero", "desertus eris", "desertus erit", "deserti erimus", "deserti eritis", "deserti erunt",
+
+        "deseram", "deseras", "deserat", "deseramus", "deseratis", "deserant",
+        "desererem", "desereres", "desereret", "desereremus", "desereretis", "desererent",
+        "deseruerim", "deserueris", "deseruerit", "deseruerimus", "deserueritis", "deseruerint",
+        "deseruissem", "deseruisses", "deseruisset", "deseruissemus", "deseruissetis", "deseruissent",
+
         "desere", "deserite",
 
-        "desererem", "desereres", "desereret", "desereremus", "desereretis", "desererent",
-        "deseruissem", "deseruisses", "deseruisset", "deseruissemus", "deseruissetis", "deseruissent",
+        "deserere", "deseri",
     ])])  # fmt: skip
     def test_thirdconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("desero", "deserere", "deserui", "desertus", meaning="desert")
@@ -126,11 +205,21 @@ class TestVerbConjugation:
         "ceperam", "ceperas", "ceperat", "ceperamus", "ceperatis", "ceperant",
         "cepero", "ceperis", "ceperit", "ceperimus", "ceperitis", "ceperint",
 
-        "capere",
-        "cape", "capite",
-            
+        "capior", "caperis", "capitur", "capimur", "capimini", "capiuntur",
+        "capiebar", "capiebaris", "capiebatur", "capiebamur", "capiebamini", "capiebantur",
+        "capiar", "capieris", "capietur", "capiemur", "capiemini", "capientur",
+        "captus sum", "captus es", "captus est", "capti sumus", "capti estis", "capti sunt",
+        "captus eram", "captus eras", "captus erat", "capti eramus", "capti eratis", "capti erant",
+        "captus ero", "captus eris", "captus erit", "capti erimus", "capti eritis", "capti erunt",
+
+        "capiam", "capias", "capiat", "capiamus", "capiatis", "capiant",
         "caperem", "caperes", "caperet", "caperemus", "caperetis", "caperent",
+        "ceperim", "ceperis", "ceperit", "ceperimus", "ceperitis", "ceperint",
         "cepissem", "cepisses", "cepisset", "cepissemus", "cepissetis", "cepissent",
+
+        "cape", "capite",
+
+        "capere", "capi",
     ])])  # fmt: skip
     def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("capio", "capere", "cepi", "captus", meaning="take")
@@ -143,33 +232,53 @@ class TestVerbConjugation:
         "aperui", "aperuisti", "aperuit", "aperuimus", "aperuistis", "aperuerunt",
         "aperueram", "aperueras", "aperuerat", "aperueramus", "aperueratis", "aperuerant",
         "aperuero", "aperueris", "aperuerit", "aperuerimus", "aperueritis", "aperuerint",
-            
-        "aperire",
+
+        "aperior", "aperiris", "aperitur", "aperimur", "aperimini", "aperiuntur",
+        "aperiebar", "aperiebaris", "aperiebatur", "aperiebamur", "aperiebamini", "aperiebantur",
+        "aperiar", "aperieris", "aperietur", "aperiemur", "aperiemini", "aperientur",
+        "apertus sum", "apertus es", "apertus est", "aperti sumus", "aperti estis", "aperti sunt",
+        "apertus eram", "apertus eras", "apertus erat", "aperti eramus", "aperti eratis", "aperti erant",
+        "apertus ero", "apertus eris", "apertus erit", "aperti erimus", "aperti eritis", "aperti erunt",
+
+        "aperiam", "aperias", "aperiat", "aperiamus", "aperiatis", "aperiant",
+        "aperirem", "aperires", "aperiret", "aperiremus", "aperiretis", "aperirent",
+        "aperuerim", "aperueris", "aperuerit", "aperuerimus", "aperueritis", "aperuerint",
+        "aperuissem", "aperuisses", "aperuisset", "aperuissemus", "aperuissetis", "aperuissent",
+
         "aperi", "aperite",
 
-        "aperirem", "aperires", "aperiret", "aperiremus", "aperiretis", "aperirent",
-        "aperuissem", "aperuisses", "aperuisset", "aperuissemus", "aperuissetis", "aperuissent",
+        "aperire", "aperiri",
     ])])  # fmt: skip
     def test_fourthconjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("aperio", "aperire", "aperui", "apertus", meaning="open")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "abeo", "abis", "abit", "abimus", "abitis", "abeunt",
-        "abibam", "abibas", "abibat", "abibamus", "abibatis", "abibant",
-        "abibo", "abibis", "abibit", "abibimus", "abibitis", "abibunt",
-        "abii", "abisti", "abiit", "abiimus", "abistis", "abierunt",
-        "abieram", "abieras", "abierat", "abieramus", "abieratis", "abierant",
-        "abiero", "abieris", "abierit", "abierimus", "abieritis", "abierint",
+        "veneo", "venis", "venit", "venimus", "venitis", "veneunt",
+        "venibam", "venibas", "venibat", "venibamus", "venibatis", "venibant",
+        "venibo", "venibis", "venibit", "venibimus", "venibitis", "venibunt",
+        "venii", "venisti", "veniit", "veniimus", "venistis", "venierunt",
+        "venieram", "venieras", "venierat", "venieramus", "venieratis", "venierant",
+        "veniero", "venieris", "venierit", "venierimus", "venieritis", "venierint",
 
-        "abire",
-        "abi", "abite",
-            
-        "abirem", "abires", "abiret", "abiremus", "abiretis", "abirent",
-        "abissem", "abisses", "abisset", "abissemus", "abissetis", "abissent",
+        "veneor", "veniris", "venitur", "venimur", "venimini", "veneuntur",
+        "venibar", "venibaris", "venibatur", "venibamur", "venibamini", "venibantur",
+        "venibor", "veniberis", "venibitur", "venibimur", "venibimini", "venibuntur",
+        "venitus sum", "venitus es", "venitus est", "veniti sumus", "veniti estis", "veniti sunt",
+        "venitus eram", "venitus eras", "venitus erat", "veniti eramus", "veniti eratis", "veniti erant",
+        "venitus ero", "venitus eris", "venitus erit", "veniti erimus", "veniti eritis", "veniti erunt",
+
+        "veneam", "veneas", "veneat", "veneamus", "veneatis", "veneant",
+        "venirem", "venires", "veniret", "veniremus", "veniretis", "venirent",
+        "venierim", "venieris", "venierit", "venierimus", "venieritis", "venierint",
+        "venissem", "venisses", "venisset", "venissemus", "venissetis", "venissent",
+
+        "veni", "venite",
+
+        "venire", "veniri",
     ])])  # fmt: skip
     def test_irregularverb_eo(self, tense, voice, mood, person, number, expected):
-        word = Verb("abeo", "abire", "abii", "abitum", meaning="depart")
+        word = Verb("veneo", "venire", "venii", "venitus", meaning="be sold")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("word"), IRREGULAR_VERBS.keys())
@@ -178,7 +287,7 @@ class TestVerbConjugation:
 
 
 # TODO: Rework this to be more like pronouns
-class TestIrregularVerbInflection:
+class TestIrregularVerbConjugation:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "sum", "es", "est", "sumus", "estis", "sunt",
         "eram", "eras", "erat", "eramus", "eratis", "erant",
@@ -187,32 +296,161 @@ class TestIrregularVerbInflection:
         "fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant",
         "fuero", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
 
-        "esse",
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+
+        "sim", "sis", "sit", "simus", "sitis", "sint",
+        "essem", "esses", "esset", "essemus", "essetis", "essent",
+        "fuerim", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
+        "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
+
         "es", "este",
 
-        "essem", "esses", "esset", "essemus", "essetis", "essent",
-        "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
+        "esse", None,
     ])])  # fmt: skip
     def test_irregular_verb_normal(self, tense, voice, mood, person, number, expected):
         word = Verb("sum", "esse", "fui", meaning="be")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-    # NOTE: Already covered!
-    # @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    #     "adeo", "adis", "adit", "adimus", "aditis", "adeunt",
-    #     "adibam", "adibas", "adibat", "adibamus", "adibatis", "adibant",
-    #     "adii", "adisti", "adiit", "adiimus", "adistis", "adierunt",
-    #     "adieram", "adieras", "adierat", "adieramus", "adieratis", "adierant",
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "elego", "elegas", "elegat", "elegamus", "elegatis", "elegant",
+        "elegabam", "elegabas", "elegabat", "elegabamus", "elegabatis", "elegabant",
+        "elegabo", "elegabis", "elegabit", "elegabimus", "elegabitis", "elegabunt",
+        "elegavi", "elegavisti", "elegavit", "elegavimus", "elegavistis", "elegaverunt",
+        "elegaveram", "elegaveras", "elegaverat", "elegaveramus", "elegaveratis", "elegaverant",
+        "elegavero", "elegaveris", "elegaverit", "elegaverimus", "elegaveritis", "elegaverint",
 
-    #     "adire",
-    #     "adi", "adite",
+        "elegor", "elegaris", "elegatur", "elegamur", "elegamini", "elegantur",
+        "elegabar", "elegabaris", "elegabatur", "elegabamur", "elegabamini", "elegabantur",
+        "elegabor", "elegaberis", "elegabitur", "elegabimur", "elegabimini", "elegabuntur",
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
 
-    #     "adirem", "adires", "adiret", "adiremus", "adiretis", "adirent",
-    #     "adissem", "adisses", "adisset", "adissemus", "adissetis", "adissent",
-    # ])])
-    # def test_irregular_verb_derived(self, tense, voice, mood, person, number, expected):
-    #     word = Verb("adeo", "adire", "adii", "aditus", meaning="go to")
-    #     assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+        "elegem", "eleges", "eleget", "elegemus", "elegetis", "elegent",
+        "elegarem", "elegares", "elegaret", "elegaremus", "elegaretis", "elegarent",
+        "elegaverim", "elegaveris", "elegaverit", "elegaverimus", "elegaveritis", "elegaverint",
+        "elegavissem", "elegavisses", "elegavisset", "elegavissemus", "elegavissetis", "elegavissent",
+
+        "elega", "elegate",
+
+        "elegare", "elegari",
+    ])])  # fmt: skip
+    def test_irregular_verb_no_ppp(self, tense, voice, mood, person, number, expected):
+        word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+
+DEPONENT_COMBINATIONS = (
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.DEPONENT, Mood.INFINITIVE, None, None),
+)
+
+
+class TestDeponentConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "conor", "conaris", "conatur", "conamur", "conamini", "conantur",
+        "conabar", "conabaris", "conabatur", "conabamur", "conabamini", "conabantur",
+        "conabor", "conaberis", "conabitur", "conabimur", "conabimini", "conabuntur",
+        "conatus sum", "conatus es", "conatus est", "conati sumus", "conati estis", "conati sunt",
+        "conatus eram", "conatus eras", "conatus erat", "conati eramus", "conati eratis", "conati erant",
+        "conatus ero", "conatus eris", "conatus erit", "conati erimus", "conati eritis", "conati erunt",
+        "conari",
+    ])])  # fmt: skip
+    def test_firstconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("conor", "conari", "conatus sum", meaning="try")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "vereor", "vereris", "veretur", "veremur", "veremini", "verentur",
+        "verebar", "verebaris", "verebatur", "verebamur", "verebamini", "verebantur",
+        "verebor", "vereberis", "verebitur", "verebimur", "verebimini", "verebuntur",
+        "veritus sum", "veritus es", "veritus est", "veriti sumus", "veriti estis", "veriti sunt",
+        "veritus eram", "veritus eras", "veritus erat", "veriti eramus", "veriti eratis", "veriti erant",
+        "veritus ero", "veritus eris", "veritus erit", "veriti erimus", "veriti eritis", "veriti erunt",
+        "vereri",
+    ])])  # fmt: skip
+    def test_secondconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("vereor", "vereri", "veritus sum", meaning="fear")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "sequor", "sequeris", "sequitur", "sequimur", "sequimini", "sequuntur",
+        "sequebar", "sequebaris", "sequebatur", "sequebamur", "sequebamini", "sequebantur",
+        "sequar", "sequeris", "sequetur", "sequemur", "sequemini", "sequentur",
+        "secutus sum", "secutus es", "secutus est", "secuti sumus", "secuti estis", "secuti sunt",
+        "secutus eram", "secutus eras", "secutus erat", "secuti eramus", "secuti eratis", "secuti erant",
+        "secutus ero", "secutus eris", "secutus erit", "secuti erimus", "secuti eritis", "secuti erunt",
+        "sequi",
+    ])])  # fmt: skip
+    def test_thirdconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("sequor", "sequi", "secutus sum", meaning="follow")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "ingredior", "ingrederis", "ingreditur", "ingredimur", "ingredimini", "ingrediuntur",
+        "ingrediebar", "ingrediebaris", "ingrediebatur", "ingrediebamur", "ingrediebamini", "ingrediebantur",
+        "ingrediar", "ingredieris", "ingredietur", "ingrediemur", "ingrediemini", "ingredientur",
+        "ingressus sum", "ingressus es", "ingressus est", "ingressi sumus", "ingressi estis", "ingressi sunt",
+        "ingressus eram", "ingressus eras", "ingressus erat", "ingressi eramus", "ingressi eratis", "ingressi erant",
+        "ingressus ero", "ingressus eris", "ingressus erit", "ingressi erimus", "ingressi eritis", "ingressi erunt",
+        "ingredi",
+    ])])  # fmt: skip
+    def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("ingredior", "ingredi", "ingressus sum", meaning="enter")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "orior", "oriris", "oritur", "orimur", "orimini", "oriuntur",
+        "oriebar", "oriebaris", "oriebatur", "oriebamur", "oriebamini", "oriebantur",
+        "oriar", "orieris", "orietur", "oriemur", "oriemini", "orientur",
+        "orsus sum", "orsus es", "orsus est", "orsi sumus", "orsi estis", "orsi sunt",
+        "orsus eram", "orsus eras", "orsus erat", "orsi eramus", "orsi eratis", "orsi erant",
+        "orsus ero", "orsus eris", "orsus erit", "orsi erimus", "orsi eritis", "orsi erunt",
+        "oriri",
+    ])])  # fmt: skip
+    def test_fourthconjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("orior", "oriri", "orsus sum", meaning="rise")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
 
 PARTICIPLE_COMBINATIONS = (
@@ -288,6 +526,42 @@ PARTICIPLE_COMBINATIONS = (
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
     (Tense.PERFECT, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
 )
 
 
@@ -306,6 +580,13 @@ class TestParticipleConjugation:
         "portatae", "portatae", "portatas", "portatarum", "portatis", "portatis",
         "portatum", "portatum", "portatum", "portati", "portato", "portato",
         "portata", "portata", "portata", "portatorum", "portatis", "portatis",
+
+        "portaturus", "portature", "portaturum", "portaturi", "portaturo", "portaturo",
+        "portaturi", "portaturi", "portaturos", "portaturorum", "portaturis", "portaturis",
+        "portatura", "portatura", "portaturam", "portaturae", "portaturae", "portatura",
+        "portaturae", "portaturae", "portaturas", "portaturarum", "portaturis", "portaturis",
+        "portaturum", "portaturum", "portaturum", "portaturi", "portaturo", "portaturo",
+        "portatura", "portatura", "portatura", "portaturorum", "portaturis", "portaturis",
     ])])  # fmt: skip
     def test_participle_firstconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
@@ -325,6 +606,13 @@ class TestParticipleConjugation:
         "doctae", "doctae", "doctas", "doctarum", "doctis", "doctis",
         "doctum", "doctum", "doctum", "docti", "docto", "docto",
         "docta", "docta", "docta", "doctorum", "doctis", "doctis",
+
+        "docturus", "docture", "docturum", "docturi", "docturo", "docturo",
+        "docturi", "docturi", "docturos", "docturorum", "docturis", "docturis",
+        "doctura", "doctura", "docturam", "docturae", "docturae", "doctura",
+        "docturae", "docturae", "docturas", "docturarum", "docturis", "docturis",
+        "docturum", "docturum", "docturum", "docturi", "docturo", "docturo",
+        "doctura", "doctura", "doctura", "docturorum", "docturis", "docturis",
     ])])  # fmt: skip
     def test_participle_secondconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
@@ -344,6 +632,13 @@ class TestParticipleConjugation:
         "tractae", "tractae", "tractas", "tractarum", "tractis", "tractis",
         "tractum", "tractum", "tractum", "tracti", "tracto", "tracto",
         "tracta", "tracta", "tracta", "tractorum", "tractis", "tractis",
+
+        "tracturus", "tracture", "tracturum", "tracturi", "tracturo", "tracturo",
+        "tracturi", "tracturi", "tracturos", "tracturorum", "tracturis", "tracturis",
+        "tractura", "tractura", "tracturam", "tracturae", "tracturae", "tractura",
+        "tracturae", "tracturae", "tracturas", "tracturarum", "tracturis", "tracturis",
+        "tracturum", "tracturum", "tracturum", "tracturi", "tracturo", "tracturo",
+        "tractura", "tractura", "tractura", "tracturorum", "tracturis", "tracturis",
     ])])  # fmt: skip
     def test_participle_thirdconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("traho", "trahere", "traxi", "tractus", meaning="begin")
@@ -363,6 +658,13 @@ class TestParticipleConjugation:
         "occeptae", "occeptae", "occeptas", "occeptarum", "occeptis", "occeptis",
         "occeptum", "occeptum", "occeptum", "occepti", "occepto", "occepto",
         "occepta", "occepta", "occepta", "occeptorum", "occeptis", "occeptis",
+
+        "occepturus", "occepture", "occepturum", "occepturi", "occepturo", "occepturo",
+        "occepturi", "occepturi", "occepturos", "occepturorum", "occepturis", "occepturis",
+        "occeptura", "occeptura", "occepturam", "occepturae", "occepturae", "occeptura",
+        "occepturae", "occepturae", "occepturas", "occepturarum", "occepturis", "occepturis",
+        "occepturum", "occepturum", "occepturum", "occepturi", "occepturo", "occepturo",
+        "occeptura", "occeptura", "occeptura", "occepturorum", "occepturis", "occepturis",
     ])])  # fmt: skip
     def test_participle_mixedconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("occipio", "occipere", "occepi", "occeptus", meaning="begin")
@@ -382,7 +684,42 @@ class TestParticipleConjugation:
         "auditae", "auditae", "auditas", "auditarum", "auditis", "auditis",
         "auditum", "auditum", "auditum", "auditi", "audito", "audito",
         "audita", "audita", "audita", "auditorum", "auditis", "auditis",
+
+        "auditurus", "auditure", "auditurum", "audituri", "audituro", "audituro",
+        "audituri", "audituri", "audituros", "auditurorum", "audituris", "audituris",
+        "auditura", "auditura", "audituram", "auditurae", "auditurae", "auditura",
+        "auditurae", "auditurae", "audituras", "auditurarum", "audituris", "audituris",
+        "auditurum", "auditurum", "auditurum", "audituri", "audituro", "audituro",
+        "auditura", "auditura", "auditura", "auditurorum", "audituris", "audituris",
     ])])  # fmt: skip
     def test_participle_fourthconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+
+class TestIrregularParticipleConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "elegans", "elegans", "elegantem", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantes", "elegantes", "elegantes", "elegantium", "elegantibus", "elegantibus",
+        "elegans", "elegans", "elegantem", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantes", "elegantes", "elegantes", "elegantium", "elegantibus", "elegantibus",
+        "elegans", "elegans", "elegans", "elegantis", "eleganti", MultipleEndings(regular="eleganti", absolute="elegante"),
+        "elegantia", "elegantia", "elegantia", "elegantium", "elegantibus", "elegantibus",
+
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+    ])])  # fmt: skip
+    def test_irregular_participle_no_ppp(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected

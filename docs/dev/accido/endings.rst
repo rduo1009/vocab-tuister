@@ -306,9 +306,7 @@ by a ``RegularWord`` class. For example:
 Verbs, and their participle forms are supported. Note that ``accido`` uses the
 perfect passive participle form as the fourth principal part (following the
 Cambridge Latin Course), not the supine as usually occurs (this might come in
-the future). One can also not include the perfect passive participle form
-(internally called ``ppp``), which would cause the resulting ``Verb`` object to
-not have participle endings.
+the future).
 
 Creating a Verb class
 =====================
@@ -379,17 +377,18 @@ For example:
    ... )
    'amatas'
 
-No participle forms
--------------------
+No ppp/supine
+-------------
 
-Not including the perfect passive participle form in the ``Verb`` object will
-mean that there will be not participle endings.
+Some verbs do not have a perfect passive participle or supine form. In this
+case, the fourth argument can be omitted. Verbs without a ppp or supine will
+lack passives in perfective tenses, and some participle forms.
 
 .. code:: python
 
    >>> from src.core.accido.endings import Verb
    >>> from src.core.accido.misc import Case, Gender, Mood, Number, Tense, Voice
-   >>> verb = Verb("amo", "amare", "amavi", meaning="love")
+   >>> verb = Verb("persisto", "persistere", "perstiti", meaning="persist")
    >>> verb.get(
    ...     tense=Tense.PERFECT,
    ...     voice=Voice.PASSIVE,

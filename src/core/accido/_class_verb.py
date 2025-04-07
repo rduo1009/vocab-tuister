@@ -5,9 +5,14 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
+from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import check_mixed_conjugation_verb, find_irregular_endings
+from .edge_cases import (
+    MISSING_PPP_VERBS,
+    check_mixed_conjugation_verb,
+    find_irregular_endings,
+)
 from .exceptions import InvalidInputError
 from .misc import (
     PERSON_SHORTHAND,
@@ -38,9 +43,11 @@ class Verb(_Word):
     present : str
     infinitive : str
     perfect : str
-    ppp : str
-        The present perfect participle form of the verb. If the verb does
-        not have participle endings, `ppp` is an empty string.
+        The infinitive and perfect forms, if the verb is not irregular.
+        ``None`` if not applicable.
+    ppp : str | None
+        The perfect passive participle form, if the verb is not
+        irregular or deponent. ``None`` if not applicable.
     meaning : Meaning
     conjugation : Conjugation
         The conjugation of the verb. The value 5 represents mixed
@@ -58,13 +65,15 @@ class Verb(_Word):
     """
 
     __slots__ = (
+        "_fap_stem",
         "_inf_stem",
         "_per_stem",
         "_ppp_stem",
-        "_pre_stem",
         "_preptc_stem",
         "conjugation",
+        "deponent",
         "infinitive",
+        "no_ppp",
         "perfect",
         "ppp",
         "present",
@@ -74,12 +83,14 @@ class Verb(_Word):
     @overload
     def __init__(self, present: str, *, meaning: Meaning) -> None: ...
     @overload
+    def __init__(self, present: str, infinitive: str, *, meaning: Meaning) -> None: ...
+    @overload
     def __init__(self, present: str, infinitive: str, perfect: str, *, meaning: Meaning) -> None: ...
     @overload
     def __init__(self, present: str, infinitive: str, perfect: str, ppp: str, *, meaning: Meaning) -> None: ...
     # fmt: on
 
-    def __init__(
+    def __init__(  # noqa: PLR0915
         self,
         present: str,
         infinitive: str | None = None,
@@ -98,14 +109,16 @@ class Verb(_Word):
             The infinitive and perfect forms, if the verb is not irregular.
             Defaults to ``None`` if not applicable.
         ppp : str | None
-            The present perfect participle form of the verb. If the verb does
-            not have participle endings, `ppp` defaults to ``None``.
+            The perfect passive participle form, if the verb is not
+            irregular or deponent. The supine can also be used here, but
+            is not supported. Defaults to ``None`` if not applicable.
         meaning : Meaning
 
         Raises
         ------
         InvalidInputError
-            If the input is invalid (incorrect `perfect` or `infinitive` values).
+            If the input is invalid (incorrect `perfect`, `infinitive`
+            or `ppp` values).
         """
         logger.debug(
             "RegularWord(%s, %s, %s, %s, meaning=%s)",
@@ -118,25 +131,105 @@ class Verb(_Word):
 
         super().__init__()
 
-        self.present = present
-        self.infinitive = infinitive
-        self.perfect = perfect
-        self.ppp = ppp
-        self.meaning = meaning
+        (
+            self.present,
+            self.infinitive,
+            self.perfect,
+            self.ppp,
+            self.meaning,
+        ) = (present, infinitive, perfect, ppp, meaning)
 
         self._first = self.present
-        self.conjugation: Conjugation
+        self.deponent = False
+        self.no_ppp = False
 
-        # Irregular verb
+        # ---------------------------------------------------------------------
+        # IRREGULAR VERBS
+
         if irregular_endings := find_irregular_endings(self.present):
             self.endings = irregular_endings
-            self.conjugation = 0
+            self.conjugation: Conjugation = 0
             return
 
-        assert self.infinitive is not None
-        assert self.perfect is not None
+        if self.infinitive is None:
+            raise InvalidInputError(
+                f"Verb '{self.present}' is not irregular, but no infinitive provided."
+            )
 
-        # Mixed conjugation
+        if self.perfect is None:
+            raise InvalidInputError(
+                f"Verb '{self.present}' is not irregular, but no perfect provided."
+            )
+
+        # ---------------------------------------------------------------------
+        # DEPONENT VERBS
+
+        if self.present.endswith("or"):
+            if self.ppp is not None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' is deponent, but ppp provided."
+                )
+
+            self.deponent = True
+
+            self._inf_stem = self.infinitive[:-3]
+            if check_mixed_conjugation_verb(self.present):
+                self._inf_stem = self.infinitive[:-1]
+                self.conjugation = 5
+            elif self.infinitive.endswith("ari"):
+                self.conjugation = 1
+            elif self.infinitive.endswith("eri"):
+                self.conjugation = 2
+            elif self.infinitive.endswith("iri"):
+                self.conjugation = 4
+            elif self.infinitive.endswith("i"):
+                self._inf_stem = self.infinitive[:-1]
+                self.conjugation = 3
+            else:
+                raise InvalidInputError(
+                    f"Invalid infinitive form: '{self.infinitive}'"
+                )
+
+            if self.present in MISSING_PPP_VERBS:
+                self.no_ppp = True
+
+                if self.perfect is not None:
+                    raise InvalidInputError(
+                        f"Verb '{self.present}' has no ppp, but perfect provided."
+                    )
+            else:
+                if not self.perfect.endswith(" sum"):
+                    raise InvalidInputError(
+                        f"Invalid perfect form: '{self.perfect}' (must have 'sum')"
+                    )
+
+                self.ppp = self.perfect[:-4]
+
+            self._per_stem = None
+
+            match self.conjugation:
+                case 1:
+                    self.endings = self._first_conjugation()
+
+                case 2:
+                    self.endings = self._second_conjugation()
+
+                case 3:
+                    self.endings = self._third_conjugation()
+
+                case 4:
+                    self.endings = self._fourth_conjugation()
+
+                case _:
+                    self.endings = self._mixed_conjugation()
+
+            self.endings |= self._participles()
+
+            return
+
+        # ---------------------------------------------------------------------
+        # NON-DEPONENT VERBS
+
         if check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
         elif self.infinitive.endswith("are"):
@@ -160,9 +253,26 @@ class Verb(_Word):
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
 
-        self._pre_stem = self.present[:-1]
         self._inf_stem = self.infinitive[:-3]
         self._per_stem = self.perfect[:-1]
+
+        if self.present in MISSING_PPP_VERBS:
+            self.no_ppp = True
+
+            if self.ppp is not None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' has no ppp, but ppp provided."
+                )
+        else:
+            if self.ppp is None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' is not irregular or deponent, but no ppp provided."
+                )
+
+            # HACK: convert supine into ppp, even if the ppp doesn't really
+            # exist
+            if self.ppp.endswith("um"):
+                self.ppp = self.ppp[:-2] + "um"
 
         match self.conjugation:
             case 1:
@@ -180,14 +290,67 @@ class Verb(_Word):
             case _:
                 self.endings = self._mixed_conjugation()
 
-        if self.ppp:
-            self.endings |= self._participles()
+        self.endings |= self._participles()
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        return {
+        # Passive forms
+        endings: Endings = {
+            "Vprepasindsg1": f"{self._inf_stem}or",  # portor
+            "Vprepasindsg2": f"{self._inf_stem}aris",  # portaris
+            "Vprepasindsg3": f"{self._inf_stem}atur",  # portatur
+            "Vprepasindpl1": f"{self._inf_stem}amur",  # portamur
+            "Vprepasindpl2": f"{self._inf_stem}amini",  # portamini
+            "Vprepasindpl3": f"{self._inf_stem}antur",  # portantur
+            "Vimppasindsg1": f"{self._inf_stem}abar",  # portabar
+            "Vimppasindsg2": f"{self._inf_stem}abaris",  # portabaris
+            "Vimppasindsg3": f"{self._inf_stem}abatur",  # portabatur
+            "Vimppasindpl1": f"{self._inf_stem}abamur",  # portabamur
+            "Vimppasindpl2": f"{self._inf_stem}abamini",  # portabamini
+            "Vimppasindpl3": f"{self._inf_stem}abantur",  # portabantur
+            "Vfutpasindsg1": f"{self._inf_stem}abor",  # portabor
+            "Vfutpasindsg2": f"{self._inf_stem}aberis",  # portaberis
+            "Vfutpasindsg3": f"{self._inf_stem}abitur",  # portabitur
+            "Vfutpasindpl1": f"{self._inf_stem}abimur",  # portabimur
+            "Vfutpasindpl2": f"{self._inf_stem}abimini",  # portabimini
+            "Vfutpasindpl3": f"{self._inf_stem}abuntur",  # portabuntur
+            "Vprepasinf   ": f"{self._inf_stem}ari",  # portari
+        }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # portatus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # portatus es
+                "Vperpasindsg3": f"{self.ppp} est",  # portatus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # portati sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # portati estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # portati sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # portatus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # portatus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # portatus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # portati eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # portati eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # portati erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # portatus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # portatus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # portatus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # portati erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # portati eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # portati erunt
+            }
+
+        if self.deponent:
+            return {
+                key[:4] + "dep" + key[7:]: value
+                for key, value in endings.items()
+            }
+
+        # Active forms
+        return endings | {
             "Vpreactindsg1": self.present,  # porto
             "Vpreactindsg2": f"{self._inf_stem}as",  # portas
             "Vpreactindsg3": f"{self._inf_stem}at",  # portat
@@ -224,28 +387,92 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # portaverimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # portaveritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # portaverint
-            "Vpreactinf   ": self.infinitive,  # portare
-            "Vpreactipesg2": f"{self._inf_stem}a",  # porta
-            "Vpreactipepl2": f"{self._inf_stem}ate",  # portate
+            "Vpreactsbjsg1": f"{self._inf_stem}em",  # portem
+            "Vpreactsbjsg2": f"{self._inf_stem}es",  # portes
+            "Vpreactsbjsg3": f"{self._inf_stem}et",  # portet
+            "Vpreactsbjpl1": f"{self._inf_stem}emus",  # portemus
+            "Vpreactsbjpl2": f"{self._inf_stem}etis",  # portetis
+            "Vpreactsbjpl3": f"{self._inf_stem}ent",  # portent
             "Vimpactsbjsg1": f"{self.infinitive}m",  # portarem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # portares
             "Vimpactsbjsg3": f"{self.infinitive}t",  # portaret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # portaremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # portaretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # portarent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # portaverim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # portaveris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # portaverit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # portaverimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # portaveritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # portaverint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # portavissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # portavisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # portavisset
             "Vplpactsbjpl1": f"{self._per_stem}issemus",  # portavissemus
             "Vplpactsbjpl2": f"{self._per_stem}issetis",  # portavissetis
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # portavissent
+            "Vpreactipesg2": f"{self._inf_stem}a",  # porta
+            "Vpreactipepl2": f"{self._inf_stem}ate",  # portate
+            "Vpreactinf   ": self.infinitive,  # portare
         }
 
     def _second_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        return {
+        endings: Endings = {
+            "Vprepasindsg1": f"{self._inf_stem}eor",  # doceor
+            "Vprepasindsg2": f"{self._inf_stem}eris",  # doceris
+            "Vprepasindsg3": f"{self._inf_stem}etur",  # docetur
+            "Vprepasindpl1": f"{self._inf_stem}emur",  # docemur
+            "Vprepasindpl2": f"{self._inf_stem}emini",  # docemini
+            "Vprepasindpl3": f"{self._inf_stem}entur",  # docentur
+            "Vimppasindsg1": f"{self._inf_stem}ebar",  # docebar
+            "Vimppasindsg2": f"{self._inf_stem}ebaris",  # docebaris
+            "Vimppasindsg3": f"{self._inf_stem}ebatur",  # docebatur
+            "Vimppasindpl1": f"{self._inf_stem}ebamur",  # docebamur
+            "Vimppasindpl2": f"{self._inf_stem}ebamini",  # docebamini
+            "Vimppasindpl3": f"{self._inf_stem}ebantur",  # docebantur
+            "Vfutpasindsg1": f"{self._inf_stem}ebor",  # docebor
+            "Vfutpasindsg2": f"{self._inf_stem}eberis",  # doceberis
+            "Vfutpasindsg3": f"{self._inf_stem}ebitur",  # docebitur
+            "Vfutpasindpl1": f"{self._inf_stem}ebimur",  # docebimur
+            "Vfutpasindpl2": f"{self._inf_stem}ebimini",  # docebimini
+            "Vfutpasindpl3": f"{self._inf_stem}ebuntur",  # docebuntur
+            "Vprepasinf   ": f"{self._inf_stem}eri",  # doceri
+        }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # doctus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # doctus es
+                "Vperpasindsg3": f"{self.ppp} est",  # doctus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # docti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # docti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # docti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # doctus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # doctus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # doctus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # docti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # docti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # docti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # doctus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # doctus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # doctus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # docti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # docti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # docti erunt
+            }
+
+        if self.deponent:
+            return {
+                key[:4] + "dep" + key[7:]: value
+                for key, value in endings.items()
+            }
+
+        return endings | {
             "Vpreactindsg1": self.present,  # doceo
             "Vpreactindsg2": f"{self._inf_stem}es",  # doces
             "Vpreactindsg3": f"{self._inf_stem}et",  # docet
@@ -282,28 +509,92 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # docuerimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # docueritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # docuerint
-            "Vpreactinf   ": self.infinitive,  # docere
-            "Vpreactipesg2": f"{self._inf_stem}e",  # doce
-            "Vpreactipepl2": f"{self._inf_stem}ete",  # docete
+            "Vpreactsbjsg1": f"{self._inf_stem}eam",  # doceam
+            "Vpreactsbjsg2": f"{self._inf_stem}eas",  # doceas
+            "Vpreactsbjsg3": f"{self._inf_stem}eat",  # doceat
+            "Vpreactsbjpl1": f"{self._inf_stem}eamus",  # doceamus
+            "Vpreactsbjpl2": f"{self._inf_stem}eatis",  # doceatis
+            "Vpreactsbjpl3": f"{self._inf_stem}eant",  # doceant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # docerem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # doceres
             "Vimpactsbjsg3": f"{self.infinitive}t",  # doceret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # doceremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # doceretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # docerent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # docuerim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # docueris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # docuerit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # docuerimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # docueritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # docuerint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # docuissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # docuisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # docuisset
             "Vplpactsbjpl1": f"{self._per_stem}issemus",  # docuissmus
             "Vplpactsbjpl2": f"{self._per_stem}issetis",  # docuissetis
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # docuissent
+            "Vpreactipesg2": f"{self._inf_stem}e",  # doce
+            "Vpreactipepl2": f"{self._inf_stem}ete",  # docete
+            "Vpreactinf   ": self.infinitive,  # docere
         }
 
     def _third_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        return {
+        endings: Endings = {
+            "Vprepasindsg1": f"{self._inf_stem}or",  # trahor
+            "Vprepasindsg2": f"{self._inf_stem}eris",  # traheris
+            "Vprepasindsg3": f"{self._inf_stem}itur",  # trahitur
+            "Vprepasindpl1": f"{self._inf_stem}imur",  # trahimur
+            "Vprepasindpl2": f"{self._inf_stem}imini",  # trahimini
+            "Vprepasindpl3": f"{self._inf_stem}untur",  # trahuntur
+            "Vimppasindsg1": f"{self._inf_stem}ebar",  # trahebar
+            "Vimppasindsg2": f"{self._inf_stem}ebaris",  # trahebaris
+            "Vimppasindsg3": f"{self._inf_stem}ebatur",  # trahebatur
+            "Vimppasindpl1": f"{self._inf_stem}ebamur",  # trahebamur
+            "Vimppasindpl2": f"{self._inf_stem}ebamini",  # trahebamini
+            "Vimppasindpl3": f"{self._inf_stem}ebantur",  # trahebantur
+            "Vfutpasindsg1": f"{self._inf_stem}ar",  # trahar
+            "Vfutpasindsg2": f"{self._inf_stem}eris",  # traheris
+            "Vfutpasindsg3": f"{self._inf_stem}etur",  # trahetur
+            "Vfutpasindpl1": f"{self._inf_stem}emur",  # trahemur
+            "Vfutpasindpl2": f"{self._inf_stem}emini",  # trahemini
+            "Vfutpasindpl3": f"{self._inf_stem}entur",  # trahentur
+            "Vprepasinf   ": f"{self._inf_stem}i",  # trahi
+        }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # tractus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # tractus es
+                "Vperpasindsg3": f"{self.ppp} est",  # tractus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # tracti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # tracti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # tracti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # tractus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # tractus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # tractus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # tracti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # tracti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # tracti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # tractus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # tractus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # tractus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # tracti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # tracti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # tracti erunt
+            }
+
+        if self.deponent:
+            return {
+                key[:4] + "dep" + key[7:]: value
+                for key, value in endings.items()
+            }
+
+        return endings | {
             "Vpreactindsg1": self.present,  # traho
             "Vpreactindsg2": f"{self._inf_stem}is",  # trahis
             "Vpreactindsg3": f"{self._inf_stem}it",  # trahit
@@ -340,28 +631,92 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # traxerimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # traxeritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # traxerint
-            "Vpreactinf   ": self.infinitive,  # trahere
-            "Vpreactipesg2": f"{self._inf_stem}e",  # trahe
-            "Vpreactipepl2": f"{self._inf_stem}ite",  # trahite
+            "Vpreactsbjsg1": f"{self._inf_stem}am",  # traham
+            "Vpreactsbjsg2": f"{self._inf_stem}as",  # trahas
+            "Vpreactsbjsg3": f"{self._inf_stem}at",  # trahat
+            "Vpreactsbjpl1": f"{self._inf_stem}amus",  # trahamus
+            "Vpreactsbjpl2": f"{self._inf_stem}atis",  # trahatis
+            "Vpreactsbjpl3": f"{self._inf_stem}ant",  # trahant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # traherem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # traheres
             "Vimpactsbjsg3": f"{self.infinitive}t",  # traheret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # traheremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # traheretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # traherent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # traxerim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # traxeris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # traxerit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # traxerimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # traxeritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # traxerint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # traxissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # traxisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # traxisset
             "Vplpactsbjpl1": f"{self._per_stem}issemus",  # traxissemus
             "Vplpactsbjpl2": f"{self._per_stem}issetis",  # traxissetis
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # traxissent
+            "Vpreactipesg2": f"{self._inf_stem}e",  # trahe
+            "Vpreactipepl2": f"{self._inf_stem}ite",  # trahite
+            "Vpreactinf   ": self.infinitive,  # trahere
         }
 
     def _fourth_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        return {
+        endings: Endings = {
+            "Vprepasindsg1": f"{self._inf_stem}ior",  # audior
+            "Vprepasindsg2": f"{self._inf_stem}iris",  # audiris
+            "Vprepasindsg3": f"{self._inf_stem}itur",  # auditur
+            "Vprepasindpl1": f"{self._inf_stem}imur",  # audimur
+            "Vprepasindpl2": f"{self._inf_stem}imini",  # audimini
+            "Vprepasindpl3": f"{self._inf_stem}iuntur",  # audiuntur
+            "Vimppasindsg1": f"{self._inf_stem}iebar",  # audiebar
+            "Vimppasindsg2": f"{self._inf_stem}iebaris",  # audiebaris
+            "Vimppasindsg3": f"{self._inf_stem}iebatur",  # audiebatur
+            "Vimppasindpl1": f"{self._inf_stem}iebamur",  # audiebamur
+            "Vimppasindpl2": f"{self._inf_stem}iebamini",  # audiebamini
+            "Vimppasindpl3": f"{self._inf_stem}iebantur",  # audiebantur
+            "Vfutpasindsg1": f"{self._inf_stem}iar",  # audiar
+            "Vfutpasindsg2": f"{self._inf_stem}ieris",  # audieris
+            "Vfutpasindsg3": f"{self._inf_stem}ietur",  # audietur
+            "Vfutpasindpl1": f"{self._inf_stem}iemur",  # audiemur
+            "Vfutpasindpl2": f"{self._inf_stem}iemini",  # audiemini
+            "Vfutpasindpl3": f"{self._inf_stem}ientur",  # audientur
+            "Vprepasinf   ": f"{self._inf_stem}iri",  # audiri
+        }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # auditus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # auditus es
+                "Vperpasindsg3": f"{self.ppp} est",  # auditus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # auditi sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # auditi estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # auditi sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # auditus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # auditus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # auditus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # auditi eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # auditi eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # auditi erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # auditus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # auditus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # auditus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # auditi erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # auditi eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # auditi erunt
+            }
+
+        if self.deponent:
+            return {
+                key[:4] + "dep" + key[7:]: value
+                for key, value in endings.items()
+            }
+
+        return endings | {
             "Vpreactindsg1": self.present,  # audio
             "Vpreactindsg2": f"{self._inf_stem}is",  # audis
             "Vpreactindsg3": f"{self._inf_stem}it",  # audit
@@ -398,28 +753,92 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # audiverimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # audiveritis
             "Vfpractindpl3": f"{self._per_stem}erint",  # audiverint
-            "Vpreactinf   ": self.infinitive,  # audire
-            "Vpreactipesg2": f"{self._inf_stem}i",  # audi
-            "Vpreactipepl2": f"{self._inf_stem}ite",  # audite
+            "Vpreactsbjsg1": f"{self._inf_stem}iam",  # audiam
+            "Vpreactsbjsg2": f"{self._inf_stem}ias",  # audias
+            "Vpreactsbjsg3": f"{self._inf_stem}iat",  # audiat
+            "Vpreactsbjpl1": f"{self._inf_stem}iamus",  # audiamus
+            "Vpreactsbjpl2": f"{self._inf_stem}iatis",  # audiatis
+            "Vpreactsbjpl3": f"{self._inf_stem}iant",  # audiant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # audirem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # audires
             "Vimpactsbjsg3": f"{self.infinitive}t",  # audiret
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # audiremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # audiretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # audirent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # audiverim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # audiveris
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # audiverit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # audiverimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # audiveritis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # audiverint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # audivissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # audivisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # audivisset
             "Vplpactsbjpl1": f"{self._per_stem}issemus",  # audivissemus
             "Vplpactsbjpl2": f"{self._per_stem}issetis",  # audivissetis
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # audivissent
+            "Vpreactipesg2": f"{self._inf_stem}i",  # audi
+            "Vpreactipepl2": f"{self._inf_stem}ite",  # audite
+            "Vpreactinf   ": self.infinitive,  # audire
         }
 
     def _mixed_conjugation(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        return {
+        endings: Endings = {
+            "Vprepasindsg1": f"{self._inf_stem}ior",  # capior
+            "Vprepasindsg2": f"{self._inf_stem}eris",  # caperis
+            "Vprepasindsg3": f"{self._inf_stem}itur",  # capitur
+            "Vprepasindpl1": f"{self._inf_stem}imur",  # capimur
+            "Vprepasindpl2": f"{self._inf_stem}imini",  # capimini
+            "Vprepasindpl3": f"{self._inf_stem}iuntur",  # capiuntur
+            "Vimppasindsg1": f"{self._inf_stem}iebar",  # capiebar
+            "Vimppasindsg2": f"{self._inf_stem}iebaris",  # capiebaris
+            "Vimppasindsg3": f"{self._inf_stem}iebatur",  # capiebatur
+            "Vimppasindpl1": f"{self._inf_stem}iebamur",  # capiebamur
+            "Vimppasindpl2": f"{self._inf_stem}iebamini",  # capiebamini
+            "Vimppasindpl3": f"{self._inf_stem}iebantur",  # capiebantur
+            "Vfutpasindsg1": f"{self._inf_stem}iar",  # capiar
+            "Vfutpasindsg2": f"{self._inf_stem}ieris",  # capieris
+            "Vfutpasindsg3": f"{self._inf_stem}ietur",  # capietur
+            "Vfutpasindpl1": f"{self._inf_stem}iemur",  # capiemur
+            "Vfutpasindpl2": f"{self._inf_stem}iemini",  # capiemini
+            "Vfutpasindpl3": f"{self._inf_stem}ientur",  # capientur
+            "Vprepasinf   ": f"{self._inf_stem}i",  # capi
+        }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+
+            endings |= {
+                "Vperpasindsg1": f"{self.ppp} sum",  # captus sum
+                "Vperpasindsg2": f"{self.ppp} es",  # captus es
+                "Vperpasindsg3": f"{self.ppp} est",  # captus est
+                "Vperpasindpl1": f"{self.ppp[:-2]}i sumus",  # capti sumus
+                "Vperpasindpl2": f"{self.ppp[:-2]}i estis",  # capti estis
+                "Vperpasindpl3": f"{self.ppp[:-2]}i sunt",  # capti sunt
+                "Vplppasindsg1": f"{self.ppp} eram",  # captus eram
+                "Vplppasindsg2": f"{self.ppp} eras",  # captus eras
+                "Vplppasindsg3": f"{self.ppp} erat",  # captus erat
+                "Vplppasindpl1": f"{self.ppp[:-2]}i eramus",  # capti eramus
+                "Vplppasindpl2": f"{self.ppp[:-2]}i eratis",  # capti eratis
+                "Vplppasindpl3": f"{self.ppp[:-2]}i erant",  # capti erant
+                "Vfprpasindsg1": f"{self.ppp} ero",  # captus ero
+                "Vfprpasindsg2": f"{self.ppp} eris",  # captus eris
+                "Vfprpasindsg3": f"{self.ppp} erit",  # captus erit
+                "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # capti erimus
+                "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # capti eritis
+                "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # capti erunt
+            }
+
+        if self.deponent:
+            return {
+                key[:4] + "dep" + key[7:]: value
+                for key, value in endings.items()
+            }
+
+        return endings | {
             "Vpreactindsg1": self.present,  # capio
             "Vpreactindsg2": f"{self._inf_stem}is",  # capis
             "Vpreactindsg3": f"{self._inf_stem}it",  # capit
@@ -456,27 +875,38 @@ class Verb(_Word):
             "Vfpractindpl1": f"{self._per_stem}erimus",  # ceperimus
             "Vfpractindpl2": f"{self._per_stem}eritis",  # ceperitis
             "Vfpractindpl3": f"{self._per_stem}erint",  # ceperint
-            "Vpreactinf   ": self.infinitive,  # capere
-            "Vpreactipesg2": f"{self._inf_stem}e",  # cape
-            "Vpreactipepl2": f"{self._inf_stem}ite",  # capite
+            "Vpreactsbjsg1": f"{self._inf_stem}iam",  # capiam
+            "Vpreactsbjsg2": f"{self._inf_stem}ias",  # capias
+            "Vpreactsbjsg3": f"{self._inf_stem}iat",  # capiat
+            "Vpreactsbjpl1": f"{self._inf_stem}iamus",  # capiamus
+            "Vpreactsbjpl2": f"{self._inf_stem}iatis",  # capiatis
+            "Vpreactsbjpl3": f"{self._inf_stem}iant",  # capiant
             "Vimpactsbjsg1": f"{self.infinitive}m",  # caperem
             "Vimpactsbjsg2": f"{self.infinitive}s",  # caperes
             "Vimpactsbjsg3": f"{self.infinitive}t",  # caperet
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # caperemus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # caperetis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # caperent
+            "Vperactsbjsg1": f"{self._per_stem}erim",  # ceperim
+            "Vperactsbjsg2": f"{self._per_stem}eris",  # ceperis
+            "Vperactsbjsg3": f"{self._per_stem}erit",  # ceperit
+            "Vperactsbjpl1": f"{self._per_stem}erimus",  # ceperimus
+            "Vperactsbjpl2": f"{self._per_stem}eritis",  # ceperitis
+            "Vperactsbjpl3": f"{self._per_stem}erint",  # ceperint
             "Vplpactsbjsg1": f"{self._per_stem}issem",  # cepissem
             "Vplpactsbjsg2": f"{self._per_stem}isses",  # cepisses
             "Vplpactsbjsg3": f"{self._per_stem}isset",  # cepisset
             "Vplpactsbjpl1": f"{self._per_stem}issemus",  # cepissemus
             "Vplpactsbjpl2": f"{self._per_stem}issetis",  # cepissetis
             "Vplpactsbjpl3": f"{self._per_stem}issent",  # cepissent
+            "Vpreactipesg2": f"{self._inf_stem}e",  # cape
+            "Vpreactipepl2": f"{self._inf_stem}ite",  # capite
+            "Vpreactinf   ": self.infinitive,  # capere
         }
 
     def _participles(self) -> Endings:
         assert self.infinitive is not None
         assert self.perfect is not None
-        assert self.ppp is not None
 
         self._preptc_stem = self.infinitive[:-2]
         if self.conjugation == 4:
@@ -484,9 +914,8 @@ class Verb(_Word):
         if self.conjugation == 5:
             self._preptc_stem = self.infinitive[:-3]
             self._preptc_stem += "ie"
-        self._ppp_stem = self.ppp[:-2]
 
-        return {
+        endings: Endings = {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmaccsg": f"{self._preptc_stem}ntem",  # portantem
@@ -532,43 +961,99 @@ class Verb(_Word):
             "Vpreactptcngenpl": f"{self._preptc_stem}ntium",  # portantium
             "Vpreactptcndatpl": f"{self._preptc_stem}ntibus",  # portantibus
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
-            "Vperpasptcmnomsg": self.ppp,  # portatustus
-            "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
-            "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
-            "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
-            "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
-            "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
-            "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
-            "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
-            "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
-            "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
-            "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
-            "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
-            "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
-            "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
-            "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
         }
+
+        if not self.no_ppp:
+            assert self.ppp is not None
+            self._ppp_stem = self.ppp[:-2]
+            self._fap_stem = self.ppp[:-1] + "r"
+
+            endings |= {
+                "Vperpasptcmnomsg": self.ppp,  # portatus
+                "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
+                "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
+                "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
+                "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
+                "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
+                "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
+                "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
+                "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
+                "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
+                "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
+                "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
+                "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
+                "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
+                "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
+                "Vfutactptcmnomsg": f"{self._fap_stem}us",  # portaturus
+                "Vfutactptcmvocsg": f"{self._fap_stem}e",  # portature
+                "Vfutactptcmaccsg": f"{self._fap_stem}um",  # portaturum
+                "Vfutactptcmgensg": f"{self._fap_stem}i",  # portaturi
+                "Vfutactptcmdatsg": f"{self._fap_stem}o",  # portaturo
+                "Vfutactptcmablsg": f"{self._fap_stem}o",  # portaturo
+                "Vfutactptcmnompl": f"{self._fap_stem}i",  # portaturi
+                "Vfutactptcmvocpl": f"{self._fap_stem}i",  # portaturi
+                "Vfutactptcmaccpl": f"{self._fap_stem}os",  # portaturos
+                "Vfutactptcmgenpl": f"{self._fap_stem}orum",  # portaturorum
+                "Vfutactptcmdatpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutactptcmablpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutactptcfnomsg": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcfvocsg": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcfaccsg": f"{self._fap_stem}am",  # portaturam
+                "Vfutactptcfgensg": f"{self._fap_stem}ae",  # portaturae
+                "Vfutactptcfdatsg": f"{self._fap_stem}ae",  # portaturae
+                "Vfutactptcfablsg": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcfnompl": f"{self._fap_stem}ae",  # portaturae
+                "Vfutactptcfvocpl": f"{self._fap_stem}ae",  # portaturae
+                "Vfutactptcfaccpl": f"{self._fap_stem}as",  # portaturas
+                "Vfutactptcfgenpl": f"{self._fap_stem}arum",  # portarum
+                "Vfutactptcfdatpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutactptcfablpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutactptcnnomsg": f"{self._fap_stem}um",  # portaturum
+                "Vfutactptcnvocsg": f"{self._fap_stem}um",  # portaturum
+                "Vfutactptcnaccsg": f"{self._fap_stem}um",  # portaturum
+                "Vfutactptcngensg": f"{self._fap_stem}i",  # portaturi
+                "Vfutactptcndatsg": f"{self._fap_stem}o",  # portaturo
+                "Vfutactptcnablsg": f"{self._fap_stem}o",  # portaturo
+                "Vfutactptcnnompl": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcnvocpl": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcnaccpl": f"{self._fap_stem}a",  # portatura
+                "Vfutactptcngenpl": f"{self._fap_stem}orum",  # portaturorum
+                "Vfutactptcndatpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
+            }
+
+        if self.deponent:
+            return {
+                (
+                    key[:4] + "dep" + key[7:]
+                    if key[4:7] == Voice.ACTIVE.shorthand
+                    else key
+                ): value
+                for key, value in endings.items()
+            }
+
+        return endings
 
     # fmt: off
     @overload
@@ -703,8 +1188,7 @@ class Verb(_Word):
             f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
         )
 
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -784,11 +1268,41 @@ class Verb(_Word):
 
         raise InvalidInputError(f"Key '{key}' is invalid.")
 
+    @deprecated(
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
+    )
+    @staticmethod
+    def create_components(key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        Deprecated in favour of ``create_components_instance`` instead.
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        placeholder_verb = Verb(
+            "celo", "celare", "celavi", "celatus", meaning="hide"
+        )
+        return Verb.create_components_instance(placeholder_verb, key)
+
     def __repr__(self) -> str:
         if self.conjugation == 0:
             return f"Verb({self.present}, meaning={self.meaning})"
 
-        if self.ppp is None:
+        if self.deponent:
             return (
                 f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
                 f"meaning={self.meaning})"
@@ -803,14 +1317,15 @@ class Verb(_Word):
         if self.conjugation == 0:
             return f"{self.meaning}: {self.present}"
 
-        if self.ppp:
+        if self.deponent:
             return (
-                f"{self.meaning}: {self.present}, {self.infinitive}, "
-                f"{self.perfect}, {self.ppp}"
+                f"{self.meaning}: {self.present}, "
+                f"{self.infinitive}, {self.perfect}"
             )
+
         return (
-            f"{self.meaning}: {self.present}, "
-            f"{self.infinitive}, {self.perfect}"
+            f"{self.meaning}: {self.present}, {self.infinitive}, "
+            f"{self.perfect}, {self.ppp}"
         )
 
     def __add__(self, other: object) -> Verb:
@@ -821,11 +1336,11 @@ class Verb(_Word):
             ppp: str | None,
             meaning: Meaning,
         ) -> Verb:
-            if (  # implies the others are not None as well
-                infinitive is not None
-            ):
+            if infinitive is not None:
                 assert perfect is not None
-                assert ppp is not None
+
+                if ppp is None:
+                    return Verb(present, infinitive, perfect, meaning=meaning)
 
                 return Verb(present, infinitive, perfect, ppp, meaning=meaning)
 
@@ -834,6 +1349,7 @@ class Verb(_Word):
         if not isinstance(other, Verb) or not (
             self.endings == other.endings
             and self.conjugation == other.conjugation
+            and self.deponent == other.deponent
         ):
             return NotImplemented
 
@@ -842,7 +1358,7 @@ class Verb(_Word):
                 self.present,
                 self.infinitive,
                 self.perfect,
-                self.ppp,
+                self.ppp if not self.deponent else None,
                 meaning=self.meaning,
             )
 
@@ -857,6 +1373,6 @@ class Verb(_Word):
             self.present,
             self.infinitive,
             self.perfect,
-            self.ppp,
+            self.ppp if not self.deponent else None,
             meaning=new_meaning,
         )

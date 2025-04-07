@@ -82,6 +82,11 @@ def ask_question_without_sr(
     if not filtered_questions:
         raise InvalidSettingsError("No question type has been enabled.")
 
+    if not filtered_vocab:
+        raise InvalidSettingsError(
+            "No words in the vocabulary list after filtering."
+        )
+
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:
@@ -175,7 +180,9 @@ def _generate_typein_engtolat(
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Using the dict key, create an `EndingComponents`
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_instance(
+        ending_components_key
+    )
 
     # Unsupported endings
     # Subjunctives cannot be translated to English on their own
@@ -464,7 +471,9 @@ def _generate_inflect(
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
     # Find `EndingComponents` from dict key
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_instance(
+        ending_components_key
+    )
 
     # Convert `chosen_ending` to string if necessary
     if isinstance(chosen_ending, MultipleEndings):
