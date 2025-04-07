@@ -11,6 +11,7 @@ from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
 from .edge_cases import (
     DEFECTIVE_VERBS,
+    FUTURE_ACTIVE_PARTICIPLE_VERBS,
     MISSING_PPP_VERBS,
     check_mixed_conjugation_verb,
     find_derived_verb_changes,
@@ -81,6 +82,7 @@ class Verb(_Word):
         "_preptc_stem",
         "conjugation",
         "deponent",
+        "fap_fourthpp",
         "infinitive",
         "no_ppp",
         "perfect",
@@ -151,6 +153,7 @@ class Verb(_Word):
         self._first = self.present
         self.deponent = False
         self.no_ppp = False
+        self.fap_fourthpp = False
 
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
@@ -257,6 +260,10 @@ class Verb(_Word):
                     self._preptc_stem = self.infinitive[:-3]
                     self._preptc_stem += "ie"
 
+            if not self.no_ppp:
+                self._ppp_stem = self.ppp[:-2]
+                self._fap_stem = self.ppp[:-1] + "r"
+
             self.endings |= self._participles()
 
             return
@@ -301,6 +308,14 @@ class Verb(_Word):
                 raise InvalidInputError(
                     f"Verb '{self.present}' has no ppp, but ppp provided."
                 )
+        elif self.present in FUTURE_ACTIVE_PARTICIPLE_VERBS:
+            self.no_ppp = True
+            self.fap_fourthpp = True
+
+            if self.ppp is None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' does not have a future active participle provided."
+                )
         else:
             if self.ppp is None:
                 raise InvalidInputError(
@@ -344,6 +359,17 @@ class Verb(_Word):
             if self.conjugation == 5:
                 self._preptc_stem = self.infinitive[:-3]
                 self._preptc_stem += "ie"
+
+        if self.fap_fourthpp:
+            assert self.ppp is not None
+
+            self._fap_stem = self.ppp[:-2]
+
+        elif not self.no_ppp:
+            assert self.ppp is not None
+
+            self._ppp_stem = self.ppp[:-2]
+            self._fap_stem = self.ppp[:-1] + "r"
 
         self.endings |= self._participles()
 
@@ -1025,48 +1051,8 @@ class Verb(_Word):
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
         }
 
-        if not self.no_ppp:
-            assert self.ppp is not None
-            self._ppp_stem = self.ppp[:-2]
-            self._fap_stem = self.ppp[:-1] + "r"
-
+        if (not self.no_ppp) or self.fap_fourthpp:
             endings |= {
-                "Vperpasptcmnomsg": self.ppp,  # portatus
-                "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
-                "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
-                "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
-                "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
-                "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
-                "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
-                "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
-                "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
                 "Vfutactptcmnomsg": f"{self._fap_stem}us",  # portaturus
                 "Vfutactptcmvocsg": f"{self._fap_stem}e",  # portature
                 "Vfutactptcmaccsg": f"{self._fap_stem}um",  # portaturum
@@ -1104,6 +1090,48 @@ class Verb(_Word):
                 "Vfutactptcndatpl": f"{self._fap_stem}is",  # portaturis
                 "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
             }
+
+            if not self.fap_fourthpp:
+                assert self.ppp is not None
+
+                endings |= {
+                    "Vperpasptcmnomsg": self.ppp,  # portatus
+                    "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
+                    "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
+                    "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
+                    "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
+                    "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
+                    "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
+                    "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
+                    "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
+                }
 
         if self.deponent:
             return {
