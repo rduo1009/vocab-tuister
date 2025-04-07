@@ -918,6 +918,103 @@ IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     },
 }
 
+IRREGULAR_DECLINED_NOUNS: Final[dict[str, Endings]] = {
+    "deus": {
+        "Nnomsg": "deus",
+        "Nvocsg": MultipleEndings(regular="dee", second="deus"),
+        "Naccsg": "deum",
+        "Ngensg": "dei",
+        "Ndatsg": "deo",
+        "Nablsg": "deo",
+        "Nnompl": MultipleEndings(regular="dei", second="di", third="dii"),
+        "Nvocpl": MultipleEndings(regular="dei", second="di", third="dii"),
+        "Naccpl": "deos",
+        "Ngenpl": MultipleEndings(regular="deorum", second="deum"),
+        "Ndatpl": MultipleEndings(regular="deis", second="dis", third="diis"),
+        "Nablpl": MultipleEndings(regular="deis", second="dis", third="diis"),
+    },
+    "dea": {
+        "Nnomsg": "dea",
+        "Nvocsg": "dea",
+        "Naccsg": "deam",
+        "Ngensg": "deae",
+        "Ndatsg": "deae",
+        "Nablsg": "dea",
+        "Nnompl": "deae",
+        "Nvocpl": "deae",
+        "Naccpl": "deas",
+        "Ngenpl": "dearum",
+        "Ndatpl": "deabus",
+        "Nablpl": "deabus",
+    },
+    "domus": {  # domus will be considered as a fourth declension noun only
+        "Nnomsg": "domus",
+        "Nvocsg": "domus",
+        "Naccsg": "domum",
+        "Ngensg": MultipleEndings(regular="domus", locative="domi"),
+        "Ndatsg": MultipleEndings(
+            regular="domui", second="domo", third="domu"
+        ),
+        "Nablsg": MultipleEndings(  # for consistency
+            regular="domu", second="domo"
+        ),
+        "Nnompl": "domus",
+        "Nvocpl": "domus",
+        "Naccpl": MultipleEndings(regular="domus", second="domos"),
+        "Ngenpl": MultipleEndings(regular="domuum", second="domorum"),
+        "Ndatpl": "domibus",
+        "Nablpl": "domibus",
+    },
+    "bos": {
+        "Nnomsg": "bos",
+        "Nvocsg": "bos",
+        "Naccsg": "bovem",
+        "Ngensg": "bovis",
+        "Ndatsg": "bovi",
+        "Nablsg": "bove",
+        "Nnompl": "boves",
+        "Nvocpl": "boves",
+        "Naccpl": "boves",
+        "Ngenpl": MultipleEndings(
+            regular="bovum", second="boum", third="boverum"
+        ),
+        "Ndatpl": MultipleEndings(
+            regular="bovibus", second="bobus", third="bubus"
+        ),
+        "Nablpl": MultipleEndings(
+            regular="bovibus", second="bobus", third="bubus"
+        ),
+    },
+    "epulum": {
+        "Nnomsg": "epulum",
+        "Nvocsg": "epulum",
+        "Naccsg": "epulum",
+        "Ngensg": "epuli",
+        "Ndatsg": "epulo",
+        "Nablsg": "epulo",
+        "Nnompl": MultipleEndings(regular="epula", second="epulae"),
+        "Nvocpl": MultipleEndings(regular="epula", second="epulae"),
+        "Naccpl": MultipleEndings(regular="epula", second="epulas"),
+        "Ngenpl": MultipleEndings(regular="epulorum", second="epularum"),
+        "Ndatpl": "epulis",
+        "Nablpl": "epulis",
+    },
+    "sus": {
+        "Nnomsg": "sus",
+        "Nvocsg": "sus",
+        "Naccsg": "suem",
+        "Ngensg": "suis",
+        "Ndatsg": "sui",
+        "Nablsg": "sue",
+        "Nnompl": "sues",
+        "Nvocpl": "sues",
+        "Naccpl": "sues",
+        "Ngenpl": "suum",
+        "Ndatpl": MultipleEndings(regular="suibus", second="subus"),
+        "Nablpl": MultipleEndings(regular="suibus", second="subus"),
+    },
+}
+
 # -----------------------------------------------------------------------------
 # ADJECTIVES
 

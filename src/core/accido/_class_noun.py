@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Final, overload
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import IRREGULAR_NOUNS
+from .edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from .exceptions import InvalidInputError
 from .misc import (
     Case,
@@ -233,6 +233,9 @@ class Noun(_Word):
 
     def _determine_endings(self) -> Endings:
         assert self.genitive is not None
+
+        if self.nominative in IRREGULAR_DECLINED_NOUNS:
+            return IRREGULAR_DECLINED_NOUNS[self.nominative]
 
         match self.declension:
             case 1:
