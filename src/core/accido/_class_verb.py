@@ -192,7 +192,7 @@ class Verb(_Word):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
             elif is_derived_verb(self.present):
                 self.conjugation = get_derived_verb_conjugation(self.present)
-            elif check_mixed_conjugation_verb(self.present):
+            elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
                 self._inf_stem = self.infinitive[:-1]
                 self.conjugation = 5
             elif self.infinitive.endswith("ari"):
@@ -275,7 +275,7 @@ class Verb(_Word):
             self.conjugation = get_irregular_verb_conjugation(self.present)
         elif is_derived_verb(self.present):
             self.conjugation = get_derived_verb_conjugation(self.present)
-        elif check_mixed_conjugation_verb(self.present):
+        elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
             self.conjugation = 5
         elif self.infinitive.endswith("are"):
             self.conjugation = 1

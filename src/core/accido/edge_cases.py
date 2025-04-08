@@ -869,7 +869,7 @@ def is_derived_verb(present: str) -> TypeIs[_DerivedVerb]:
 def _find_derived_verb_group(present: _DerivedVerb) -> _DerivedVerbGroups:
     for group_name, group in DERIVED_IRREGULAR_VERBS.items():
         if present in group:
-            return cast("_DerivedVerbGroups", group_name)
+            return group_name
 
     raise AssertionError("unreachable")
 
@@ -908,9 +908,12 @@ def find_derived_verb_stems(present: _DerivedVerb) -> tuple[str, str]:
         The present participle stem.
     """
     group = _find_derived_verb_group(present)
-    return (
-        present.removesuffix(_DERIVED_PRINCIPAL_STEMS[group][0]) + stem
-        for stem in DERIVED_IRREGULAR_VERB_STEMS[group]
+    return cast(
+        "tuple[str, str]",
+        tuple(
+            present.removesuffix(_DERIVED_PRINCIPAL_STEMS[group][0]) + stem
+            for stem in DERIVED_IRREGULAR_VERB_STEMS[group]
+        ),
     )
 
 
