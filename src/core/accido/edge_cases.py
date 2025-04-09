@@ -2,14 +2,20 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+import re
+from typing import TYPE_CHECKING, Annotated, Final, Literal, TypeIs, cast
 
+from ...utils.dict_changes import DictChanges
 from .misc import MultipleEndings
 
 if TYPE_CHECKING:
-    from .type_aliases import Endings
+    from collections.abc import Callable
 
-#  NOTE: There are deponents, but am keeping them for future
+    from .type_aliases import Conjugation, Ending, Endings
+
+# -----------------------------------------------------------------------------
+# MIXED CONJUGATION VERBS
+
 # TODO: Expand these
 MIXED_CONJUGATION_VERBS: Final[set[str]] = {
     "abicio",
@@ -69,423 +75,134 @@ def check_mixed_conjugation_verb(present: str) -> bool:
     )
 
 
-# TODO: Expand these
-IRREGULAR_VERBS: Final[dict[str, Endings]] = {
-    "sum": {
-        "Vpreactindsg1": "sum",
-        "Vpreactindsg2": "es",
-        "Vpreactindsg3": "est",
-        "Vpreactindpl1": "sumus",
-        "Vpreactindpl2": "estis",
-        "Vpreactindpl3": "sunt",
-        "Vimpactindsg1": "eram",
-        "Vimpactindsg2": "eras",
-        "Vimpactindsg3": "erat",
-        "Vimpactindpl1": "eramus",
-        "Vimpactindpl2": "eratis",
-        "Vimpactindpl3": "erant",
-        "Vfutactindsg1": "ero",
-        "Vfutactindsg2": "eris",
-        "Vfutactindsg3": "erit",
-        "Vfutactindpl1": "erimus",
-        "Vfutactindpl2": "eritis",
-        "Vfutactindpl3": "erunt",
-        "Vperactindsg1": "fui",
-        "Vperactindsg2": "fuisti",
-        "Vperactindsg3": "fuit",
-        "Vperactindpl1": "fuimus",
-        "Vperactindpl2": "fuistis",
-        "Vperactindpl3": "fuerunt",
-        "Vplpactindsg1": "fueram",
-        "Vplpactindsg2": "fueras",
-        "Vplpactindsg3": "fuerat",
-        "Vplpactindpl1": "fueramus",
-        "Vplpactindpl2": "fueratis",
-        "Vplpactindpl3": "fuerant",
-        "Vfpractindsg1": "fuero",
-        "Vfpractindsg2": "fueris",
-        "Vfpractindsg3": "fuerit",
-        "Vfpractindpl1": "fuerimus",
-        "Vfpractindpl2": "fueritis",
-        "Vfpractindpl3": "fuerint",
-        "Vpreactinf   ": "esse",
-        "Vpreactipesg2": "es",
-        "Vpreactipepl2": "este",
-        "Vimpactsbjsg1": "essem",
-        "Vimpactsbjsg2": "esses",
-        "Vimpactsbjsg3": "esset",
-        "Vimpactsbjpl1": "essemus",
-        "Vimpactsbjpl2": "essetis",
-        "Vimpactsbjpl3": "essent",
-        "Vplpactsbjsg1": "fuissem",
-        "Vplpactsbjsg2": "fuisses",
-        "Vplpactsbjsg3": "fuisset",
-        "Vplpactsbjpl1": "fuissemus",
-        "Vplpactsbjpl2": "fuissetis",
-        "Vplpactsbjpl3": "fuissent",
-    },
-    "possum": {  # no imperatives
-        "Vpreactindsg1": "possum",
-        "Vpreactindsg2": "potes",
-        "Vpreactindsg3": "potest",
-        "Vpreactindpl1": "possumus",
-        "Vpreactindpl2": "potestis",
-        "Vpreactindpl3": "possunt",
-        "Vimpactindsg1": "poteram",
-        "Vimpactindsg2": "poteras",
-        "Vimpactindsg3": "poterat",
-        "Vimpactindpl1": "poteramus",
-        "Vimpactindpl2": "poteratis",
-        "Vimpactindpl3": "poterant",
-        "Vfutactindsg1": "potero",
-        "Vfutactindsg2": "poteris",
-        "Vfutactindsg3": "poterit",
-        "Vfutactindpl1": "poterimus",
-        "Vfutactindpl2": "poteritis",
-        "Vfutactindpl3": "poterunt",
-        "Vperactindsg1": "potui",
-        "Vperactindsg2": "potuisti",
-        "Vperactindsg3": "potuit",
-        "Vperactindpl1": "potuimus",
-        "Vperactindpl2": "potuistis",
-        "Vperactindpl3": "potuerunt",
-        "Vplpactindsg1": "potueram",
-        "Vplpactindsg2": "potueras",
-        "Vplpactindsg3": "potuerat",
-        "Vplpactindpl1": "potueramus",
-        "Vplpactindpl2": "potueratis",
-        "Vplpactindpl3": "potuerant",
-        "Vfpractindsg1": "potuero",
-        "Vfpractindsg2": "potueris",
-        "Vfpractindsg3": "potuerit",
-        "Vfpractindpl1": "potuerimus",
-        "Vfpractindpl2": "potueritis",
-        "Vfpractindpl3": "potuerint",
-        "Vpreactinf   ": "posse",
-        "Vimpactsbjsg1": "possem",
-        "Vimpactsbjsg2": "posses",
-        "Vimpactsbjsg3": "posset",
-        "Vimpactsbjpl1": "possemus",
-        "Vimpactsbjpl2": "possetis",
-        "Vimpactsbjpl3": "possent",
-        "Vplpactsbjsg1": "potuissem",
-        "Vplpactsbjsg2": "potuisses",
-        "Vplpactsbjsg3": "potuisset",
-        "Vplpactsbjpl1": "potuissemus",
-        "Vplpactsbjpl2": "potuissetis",
-        "Vplpactsbjpl3": "potuissent",
-    },
-    "volo": {  # no imperatives
-        "Vpreactindsg1": "volo",
-        "Vpreactindsg2": "vis",
-        "Vpreactindsg3": "vult",
-        "Vpreactindpl1": "volumus",
-        "Vpreactindpl2": "vultis",
-        "Vpreactindpl3": "volunt",
-        "Vimpactindsg1": "volebam",
-        "Vimpactindsg2": "volebas",
-        "Vimpactindsg3": "volebat",
-        "Vimpactindpl1": "volebamus",
-        "Vimpactindpl2": "volebatis",
-        "Vimpactindpl3": "volebant",
-        "Vfutactindsg1": "volam",
-        "Vfutactindsg2": "voles",
-        "Vfutactindsg3": "volet",
-        "Vfutactindpl1": "volemus",
-        "Vfutactindpl2": "voletis",
-        "Vfutactindpl3": "volent",
-        "Vperactindsg1": "volui",
-        "Vperactindsg2": "voluisti",
-        "Vperactindsg3": "voluit",
-        "Vperactindpl1": "voluimus",
-        "Vperactindpl2": "voluistis",
-        "Vperactindpl3": "voluerunt",
-        "Vplpactindsg1": "volueram",
-        "Vplpactindsg2": "volueras",
-        "Vplpactindsg3": "voluerat",
-        "Vplpactindpl1": "volueramus",
-        "Vplpactindpl2": "volueratis",
-        "Vplpactindpl3": "voluerant",
-        "Vfpractindsg1": "voluero",
-        "Vfpractindsg2": "volueris",
-        "Vfpractindsg3": "voluerit",
-        "Vfpractindpl1": "voluerimus",
-        "Vfpractindpl2": "volueritis",
-        "Vfpractindpl3": "voluerint",
-        "Vpreactinf   ": "velle",
-        "Vimpactsbjsg1": "vellem",
-        "Vimpactsbjsg2": "velles",
-        "Vimpactsbjsg3": "vellet",
-        "Vimpactsbjpl1": "vellemus",
-        "Vimpactsbjpl2": "velletis",
-        "Vimpactsbjpl3": "vellent",
-        "Vplpactsbjsg1": "voluissem",
-        "Vplpactsbjsg2": "voluisses",
-        "Vplpactsbjsg3": "voluisset",
-        "Vplpactsbjpl1": "voluissemus",
-        "Vplpactsbjpl2": "voluissetis",
-        "Vplpactsbjpl3": "voluissent",
-    },
-    "nolo": {  # no imperatives
-        "Vpreactindsg1": "nolo",
-        "Vpreactindsg2": "non vis",
-        "Vpreactindsg3": "non vult",
-        "Vpreactindpl1": "nolumus",
-        "Vpreactindpl2": "non vultis",
-        "Vpreactindpl3": "nolunt",
-        "Vimpactindsg1": "nolebam",
-        "Vimpactindsg2": "nolebas",
-        "Vimpactindsg3": "nolebat",
-        "Vimpactindpl1": "nolebamus",
-        "Vimpactindpl2": "nolebatis",
-        "Vimpactindpl3": "nolebant",
-        "Vfutactindsg1": "nolam",
-        "Vfutactindsg2": "noles",
-        "Vfutactindsg3": "nolet",
-        "Vfutactindpl1": "nolemus",
-        "Vfutactindpl2": "noletis",
-        "Vfutactindpl3": "nolent",
-        "Vperactindsg1": "nolui",
-        "Vperactindsg2": "noluisti",
-        "Vperactindsg3": "noluit",
-        "Vperactindpl1": "noluimus",
-        "Vperactindpl2": "noluistis",
-        "Vperactindpl3": "noluerunt",
-        "Vplpactindsg1": "nolueram",
-        "Vplpactindsg2": "nolueras",
-        "Vplpactindsg3": "noluerat",
-        "Vplpactindpl1": "nolueramus",
-        "Vplpactindpl2": "nolueratis",
-        "Vplpactindpl3": "noluerant",
-        "Vfpractindsg1": "noluero",
-        "Vfpractindsg2": "nolueris",
-        "Vfpractindsg3": "noluerit",
-        "Vfpractindpl1": "noluerimus",
-        "Vfpractindpl2": "nolueritis",
-        "Vfpractindpl3": "noluerint",
-        "Vpreactinf   ": "nolle",
-        "Vimpactsbjsg1": "nollem",
-        "Vimpactsbjsg2": "nolles",
-        "Vimpactsbjsg3": "nollet",
-        "Vimpactsbjpl1": "nollemus",
-        "Vimpactsbjpl2": "nolletis",
-        "Vimpactsbjpl3": "nollent",
-        "Vplpactsbjsg1": "noluissem",
-        "Vplpactsbjsg2": "noluisses",
-        "Vplpactsbjsg3": "noluisset",
-        "Vplpactsbjpl1": "noluissemus",
-        "Vplpactsbjpl2": "noluissetis",
-        "Vplpactsbjpl3": "noluissent",
-    },
-    "fero": {
-        "Vpreactindsg1": "fero",
-        "Vpreactindsg2": "fers",
-        "Vpreactindsg3": "fert",
-        "Vpreactindpl1": "ferimus",
-        "Vpreactindpl2": "fertis",
-        "Vpreactindpl3": "ferunt",
-        "Vimpactindsg1": "ferebam",
-        "Vimpactindsg2": "ferebas",
-        "Vimpactindsg3": "ferebat",
-        "Vimpactindpl1": "ferebamus",
-        "Vimpactindpl2": "ferebatis",
-        "Vimpactindpl3": "ferebant",
-        "Vfutactindsg1": "feram",
-        "Vfutactindsg2": "feres",
-        "Vfutactindsg3": "feret",
-        "Vfutactindpl1": "feremus",
-        "Vfutactindpl2": "feretis",
-        "Vfutactindpl3": "ferent",
-        "Vperactindsg1": "tuli",
-        "Vperactindsg2": "tulisti",
-        "Vperactindsg3": "tulit",
-        "Vperactindpl1": "tulimus",
-        "Vperactindpl2": "tulistis",
-        "Vperactindpl3": "tulerunt",
-        "Vplpactindsg1": "tuleram",
-        "Vplpactindsg2": "tuleras",
-        "Vplpactindsg3": "tulerat",
-        "Vplpactindpl1": "tuleramus",
-        "Vplpactindpl2": "tuleratis",
-        "Vplpactindpl3": "tulerant",
-        "Vfpractindsg1": "tulero",
-        "Vfpractindsg2": "tuleris",
-        "Vfpractindsg3": "tulerit",
-        "Vfpractindpl1": "tulerimus",
-        "Vfpractindpl2": "tuleritis",
-        "Vfpractindpl3": "tulerint",
-        "Vpreactinf   ": "ferre",
-        "Vpreactipesg2": "fer",
-        "Vpreactipepl2": "ferte",
-        "Vimpactsbjsg1": "ferrem",
-        "Vimpactsbjsg2": "ferres",
-        "Vimpactsbjsg3": "ferret",
-        "Vimpactsbjpl1": "ferremus",
-        "Vimpactsbjpl2": "ferretis",
-        "Vimpactsbjpl3": "ferrent",
-        "Vplpactsbjsg1": "tulissem",
-        "Vplpactsbjsg2": "tulisses",
-        "Vplpactsbjsg3": "tulisset",
-        "Vplpactsbjpl1": "tulissemus",
-        "Vplpactsbjpl2": "tulissetis",
-        "Vplpactsbjpl3": "tulissent",
-    },
-    "eo": {
-        "Vpreactindsg1": "eo",
-        "Vpreactindsg2": "is",
-        "Vpreactindsg3": "it",
-        "Vpreactindpl1": "imus",
-        "Vpreactindpl2": "itis",
-        "Vpreactindpl3": "eunt",
-        "Vimpactindsg1": "ibam",
-        "Vimpactindsg2": "ibas",
-        "Vimpactindsg3": "ibat",
-        "Vimpactindpl1": "ibamus",
-        "Vimpactindpl2": "ibatis",
-        "Vimpactindpl3": "ibant",
-        "Vfutactindsg1": "ibo",
-        "Vfutactindsg2": "ibis",
-        "Vfutactindsg3": "ibit",
-        "Vfutactindpl1": "ibimus",
-        "Vfutactindpl2": "ibitis",
-        "Vfutactindpl3": "ibunt",
-        "Vperactindsg1": "ii",
-        "Vperactindsg2": "iisti",
-        "Vperactindsg3": "iit",
-        "Vperactindpl1": "iimus",
-        "Vperactindpl2": "iistis",
-        "Vperactindpl3": "ierunt",
-        "Vplpactindsg1": "ieram",
-        "Vplpactindsg2": "ieras",
-        "Vplpactindsg3": "ierat",
-        "Vplpactindpl1": "ieramus",
-        "Vplpactindpl2": "ieratis",
-        "Vplpactindpl3": "ierant",
-        "Vfpractindsg1": "iero",
-        "Vfpractindsg2": "ieris",
-        "Vfpractindsg3": "ierit",
-        "Vfpractindpl1": "ierimus",
-        "Vfpractindpl2": "ieritis",
-        "Vfpractindpl3": "ierint",
-        "Vpreactinf   ": "ire",
-        "Vpreactipesg2": "i",
-        "Vpreactipepl2": "ite",
-        "Vimpactsbjsg1": "irem",
-        "Vimpactsbjsg2": "ires",
-        "Vimpactsbjsg3": "iret",
-        "Vimpactsbjpl1": "iremus",
-        "Vimpactsbjpl2": "iretis",
-        "Vimpactsbjpl3": "irent",
-        "Vplpactsbjsg1": "iissem",
-        "Vplpactsbjsg2": "iisses",
-        "Vplpactsbjsg3": "iisset",
-        "Vplpactsbjpl1": "iissemus",
-        "Vplpactsbjpl2": "iissetis",
-        "Vplpactsbjpl3": "iissent",
-    },
-    "absum": {  # no imperatives
-        "Vpreactindsg1": "absum",
-        "Vpreactindsg2": "abes",
-        "Vpreactindsg3": "abest",
-        "Vpreactindpl1": "absumus",
-        "Vpreactindpl2": "abestis",
-        "Vpreactindpl3": "absunt",
-        "Vimpactindsg1": "aberam",
-        "Vimpactindsg2": "aberas",
-        "Vimpactindsg3": "aberat",
-        "Vimpactindpl1": "aberamus",
-        "Vimpactindpl2": "aberatis",
-        "Vimpactindpl3": "aberant",
-        "Vfutactindsg1": "abero",
-        "Vfutactindsg2": "aberis",
-        "Vfutactindsg3": "aberit",
-        "Vfutactindpl1": "aberimus",
-        "Vfutactindpl2": "aberitis",
-        "Vfutactindpl3": "aberunt",
-        "Vperactindsg1": "afui",
-        "Vperactindsg2": "afuisti",
-        "Vperactindsg3": "afuit",
-        "Vperactindpl1": "afuimus",
-        "Vperactindpl2": "afuistis",
-        "Vperactindpl3": "afuerunt",
-        "Vplpactindsg1": "afueram",
-        "Vplpactindsg2": "afueras",
-        "Vplpactindsg3": "afuerat",
-        "Vplpactindpl1": "afueramus",
-        "Vplpactindpl2": "afueratis",
-        "Vplpactindpl3": "afuerant",
-        "Vfpractindsg1": "afuero",
-        "Vfpractindsg2": "afueris",
-        "Vfpractindsg3": "afuerit",
-        "Vfpractindpl1": "afuerimus",
-        "Vfpractindpl2": "afueritis",
-        "Vfpractindpl3": "afuerint",
-        "Vpreactinf   ": "abesse",
-        "Vimpactsbjsg1": "abessem",
-        "Vimpactsbjsg2": "abesses",
-        "Vimpactsbjsg3": "abesset",
-        "Vimpactsbjpl1": "abessemus",
-        "Vimpactsbjpl2": "abessetis",
-        "Vimpactsbjpl3": "abessent",
-        "Vplpactsbjsg1": "afuissem",
-        "Vplpactsbjsg2": "afuisses",
-        "Vplpactsbjsg3": "afuisset",
-        "Vplpactsbjpl1": "afuissemus",
-        "Vplpactsbjpl2": "afuissetis",
-        "Vplpactsbjpl3": "afuissent",
-    },
-    "adsum": {  # no imperatives
-        "Vpreactindsg1": "adsum",
-        "Vpreactindsg2": "ades",
-        "Vpreactindsg3": "adest",
-        "Vpreactindpl1": "adsumus",
-        "Vpreactindpl2": "adestis",
-        "Vpreactindpl3": "adsunt",
-        "Vimpactindsg1": "aderam",
-        "Vimpactindsg2": "aderas",
-        "Vimpactindsg3": "aderat",
-        "Vimpactindpl1": "aderamus",
-        "Vimpactindpl2": "aderatis",
-        "Vimpactindpl3": "aderant",
-        "Vfutactindsg1": "adero",
-        "Vfutactindsg2": "aderis",
-        "Vfutactindsg3": "aderit",
-        "Vfutactindpl1": "aderimus",
-        "Vfutactindpl2": "aderitis",
-        "Vfutactindpl3": "aderunt",
-        "Vperactindsg1": "adfui",
-        "Vperactindsg2": "adfuisti",
-        "Vperactindsg3": "adfuit",
-        "Vperactindpl1": "adfuimus",
-        "Vperactindpl2": "adfuistis",
-        "Vperactindpl3": "adfuerunt",
-        "Vplpactindsg1": "adfueram",
-        "Vplpactindsg2": "adfueras",
-        "Vplpactindsg3": "adfuerat",
-        "Vplpactindpl1": "adfueramus",
-        "Vplpactindpl2": "adfueratis",
-        "Vplpactindpl3": "adfuerant",
-        "Vfpractindsg1": "adfuero",
-        "Vfpractindsg2": "adfueris",
-        "Vfpractindsg3": "adfuerit",
-        "Vfpractindpl1": "adfuerimus",
-        "Vfpractindpl2": "adfueritis",
-        "Vfpractindpl3": "adfuerint",
-        "Vpreactinf   ": "adesse",
-        "Vimpactsbjsg1": "adessem",
-        "Vimpactsbjsg2": "adesses",
-        "Vimpactsbjsg3": "adesset",
-        "Vimpactsbjpl1": "adessemus",
-        "Vimpactsbjpl2": "adessetis",
-        "Vimpactsbjpl3": "adessent",
-        "Vplpactsbjsg1": "adfuissem",
-        "Vplpactsbjsg2": "adfuisses",
-        "Vplpactsbjsg3": "adfuisset",
-        "Vplpactsbjpl1": "adfuissemus",
-        "Vplpactsbjpl2": "adfuissetis",
-        "Vplpactsbjpl3": "adfuissent",
-    },
-    "inquam": {  # defective conjugation
+# -----------------------------------------------------------------------------
+# VERBS WITH DIFFERENT PRINCIPAL PARTS
+
+# Taken from https://en.wiktionary.org/w/index.php?title=Category:Latin_verbs_with_missing_supine_stem
+# additions: possum (defective), nolo (defective)
+# deletions: accido (two meanings), incumbo (probably mistake)
+MISSING_PPP_VERBS: Final[set[str]] = {
+    "abaeto", "abago", "abarceo", "abbaeto", "abbatizo", "abbito", "abequito", "aberceo", "abhorresco", "abito", "abiturio",
+    "abnato", "abnumero", "abnuto", "abolesco", "aboriscor", "aborto", "abrenuntio", "absilio", "absisto", "absono", "absto",
+    "abstulo", "accano", "accersio", "accessito", "accieo", "accipitro", "accubo", "aceo", "acesco", "acetasco",
+    "acontizo", "adaestuo", "adambulo", "adaugesco", "adbello", "adbito", "adcubo", "addecet", "addenseo", "addisco", "addormio",
+    "addormisco", "aderro", "adesurio", "adfleo", "adformido", "adfremo", "adfrio", "adfulgeo", "adgemo", "adgravesco", "adiaceo",
+    "adincresco", "adjaceo", "adlubesco", "adluceo", "adludio", "adluo", "admeo", "admigro", "admugio", "adnicto", "adnubilo",
+    "adnullo", "adnuto", "adnutrio", "adoleo", "adolesco", "adpertineo", "adploro", "adpostulo", "adprenso", "adremigo", "adrepo",
+    "adservio", "adsibilo", "adsido", "adsisto", "adsono", "adsto", "adstrepo", "adstupeo", "adtolero", "adtollo", "adtorqueo",
+    "adurgeo", "advecto", "advesperascit", "advivo", "aegreo", "aegresco", "aerusco", "affleo", "afformido", "affremo", "affrio",
+    "affugio", "affulgeo", "aiio", "aio", "albeo", "albesco", "albicasco", "alesco", "algeo", "algesco", "allegorizo", "alluceo",
+    "alludio", "alluo", "alto", "amaresco", "ambigo", "amtruo", "amylo", "annicto", "anno", "annubilo", "annuto", "annutrio",
+    "antecello", "antecurro", "antepolleo", "antesto", "antevio", "antisto", "apage", "aperto", "apolactizo", "apotheco",
+    "apozymo", "apparesco", "appertineo", "apploro", "apposco", "appostulo", "apprenso", "apricor", "arboresco", "ardesco",
+    "areo", "aresco", "arguto", "arrepo", "assenesco", "asservio", "assibilo", "assido", "assisto", "assono", "astituo", "asto",
+    "astrepo", "astrifico", "astupeo", "attolero", "attollo", "attorqueo", "attorreo", "aufugio", "augesco", "augifico",
+    "auresco", "auroresco", "auroro", "aurugino", "autumnascit", "autumnescit", "autumno", "aveo", "baeto", "balbutio", "barbio",
+    "batto", "battuo", "batuo", "baulo", "bebo", "bellor", "beto", "blatio", "bombio", "bovinor", "bubo", "bubulcito", "bullesco",
+    "cacaturio", "calefacto", "calesco", "calleo", "calveo", "calvor", "cambio", "candeo", "candesco", "candico", "candifico",
+    "caneo", "canesco", "carro", "casso", "catulio", "caumo", "caurio", "caverno", "cedo", "celebresco", "cenaturio", "ceveo",
+    "cineresco", "cio", "circito", "circumcurro", "circumcurso", "circumdoleo", "circumerro", "circumfulgeo", "circumgesto",
+    "circumiaceo", "circumluceo", "circumluo", "circumpendeo", "circumsido", "circumsilio", "circumsisto", "circumsto",
+    "circumstupeo", "circumtergeo", "circumtono", "circumtorqueo", "circumtueor", "circumvado", "circumverto", "circumvestio",
+    "circumvorto", "clango", "clareo", "claresco", "claudeo", "clocito", "clueo", "clueor", "cluo", "coacesco", "coexsisto",
+    "cohaeresco", "cohorresco", "collineo", "colliquesco", "colluceo", "commadeo", "commaneo", "commarceo", "commemini",
+    "commeto", "commiseresco", "commitigo", "compalpo", "comparco", "compasco", "compendo", "comperco", "compesco", "compluit",
+    "comprecor", "computresco", "concaleo", "concalesco", "concallesco", "concido", "concupio", "condecet", "condenseo",
+    "condisco", "condoleo", "condolesco", "condormio", "condormisco", "conferveo", "confervesco", "confluo", "conforio",
+    "confremo", "confulgeo", "congemo", "congruo", "coniveo", "conluceo", "conniveo", "conpesco", "conputresco", "conquinisco",
+    "conresurgo", "conrideo", "consanesco", "consarrio", "consenesco", "consilesco", "consimilo", "consipio", "consono",
+    "constupeo", "consuadeo", "contabesco", "contenebresco", "conticeo", "conticesco", "conticisco", "continor", "contollo",
+    "contrasto", "contremesco", "contremisco", "contremo", "contumulo", "convaleo", "convecto", "convergo", "converro",
+    "convescor", "conviso", "convomo", "convorro", "cornesco", "correpo", "corresurgo", "corrideo", "cratio", "crebesco",
+    "crebresco", "crispio", "crocio", "crotolo", "crudesco", "cucio", "cucubo", "cucurio", "cunio", "cupisco", "cursito",
+    "decet", "decido", "decumbo", "dedecet", "dedisco", "dedoleo", "deeo", "defervesco", "defloreo", "defloresco", "defugio",
+    "dego", "degulo", "dehisco", "delambo", "deliquesco", "deliro", "delitesco", "delitisco", "delumbo", "demadesco", "demolio",
+    "denarro", "denormo", "denseo", "dependeo", "deposco", "depropero", "depudet", "derepo", "derigeo", "derigesco", "deruo",
+    "desenesco", "deserpo", "desideo", "desido", "desipio", "desorbeo", "despecto", "despuo", "destico", "desuesco", "desurgo",
+    "devigesco", "dicturio", "diffingo", "diffiteor", "diluceo", "dilucesco", "diluculat", "disconvenio", "discupio", "dishiasco",
+    "dispecto", "dispereo", "disquiro", "dissero", "disserpo", "dissideo", "dissono", "dissulto", "distaedet", "disto", "ditesco",
+    "divergo", "dormisco", "drenso", "drindio", "drivoro", "dulcesco", "duplo", "duresco", "edisco", "edormisco", "eduro",
+    "effervesco", "effervo", "effloreo", "effloresco", "effluo", "effulgeo", "elanguesco", "elatro", "elego", "eluceo",
+    "elucesco", "elugeo", "emacresco", "emarcesco", "ematuresco", "emeto", "emineo", "emolo", "eniteo", "enitesco", "enotesco",
+    "equio", "ercisco", "erubesco", "erudero", "escado", "eschado", "evalesco", "evanesco", "evilesco", "exacerbesco",
+    "exalbesco", "exaresco", "excado", "excandesco", "excido", "excommunico", "exhorreo", "exhorresco", "exilio", "existo",
+    "exolesco", "expallesco", "expaveo", "expavesco", "expectoro", "expetesso", "expetisso", "exposco", "exserto", "exsilio",
+    "exsolesco", "exsono", "exsplendesco", "extabesco", "extimesco", "extollo", "exurgeo", "fabrio", "faeteo", "fatisco", "felio",
+    "fervesco", "feteo", "fetesco", "fetifico", "fistulesco", "flacceo", "flaccesco", "flagro", "flaveo", "flavesco", "floreo",
+    "floresco", "foeteo", "folleo", "forio", "formico", "fraceo", "fracesco", "fraglo", "fragro", "frendesco", "frigefacto",
+    "frigeo", "frigesco", "frigutio", "fritinnio", "frondeo", "frondesco", "frugesco", "frutesco", "fulgeo", "fulgesco", "fulgo",
+    "furo", "furvesco", "gannio", "gingrio", "glabresco", "glabro", "glattio", "glaucio", "glisco", "glocio", "gloctoro",
+    "glottoro", "gracillo", "graduo", "grandesco", "grandinat", "gravesco", "hebeo", "hebesco", "herbesco", "hercisco", "hiasco",
+    "hilaresco", "hinnio", "hirrio", "hisco", "hittio", "horior", "horreo", "horresco", "horripilo", "humeo", "ignesco",
+    "illuceo", "illucesco", "imbibo", "immadesco", "immaneo", "immineo", "immurmuro", "impedico", "impendeo", "inacesco",
+    "inaestuo", "inalbeo", "inalbesco", "inambulo", "inardesco", "inaresco", "incalesco", "incalfacio", "incandesco", "incanesco",
+    "incino", "inclaresco", "incolo", "increbesco", "increbresco", "incresco", "inculpo", "incurvesco", "indecoro", 
+    "indigeo", "indolesco", "induresco", "ineptio", "infenso", "infervesco", "infindo", "infit", "infremo", "infrendo",
+    "ingemesco", "ingemisco", "ingravesco", "ingruo", "inhaeresco", "inhorreo", "inhorresco", "inluceo", "inlucesco", "inmaneo",
+    "inmineo", "innotesco", "inoboedio", "inquilino", "insenesco", "inserto", "insisto", "insolesco", "insono", "instabilio",
+    "instimulo", "instupeo", "intabesco", "intepeo", "intepesco", "interaresco", "interbito", "intercido", "interequito",
+    "interfluo", "interfugio", "interfulgeo", "interiaceo", "interjaceo", "interluceo", "intermaneo", "internecto", "interniteo",
+    "interquiesco", "intersono", "intersto", "intervolito", "intollo", "intremo", "intribuo", "intumesco", "inurgeo", "invalesco",
+    "invergo", "invesperascit", "inveterasco", "ito", "iuvenesco", "labasco", "lacteo", "lactesco", "lallo", "lampo", "lanceo",
+    "lancio", "langueo", "languesco", "lapidesco", "lassesco", "lateo", "latesco", "lentesco", "lipio", "liqueo", "liquesco",
+    "liquor", "liveo", "livido", "longisco", "loretho", "luceo", "lucesco", "lucisco", "luo", "lutesco", "maceo", "maceresco",
+    "macesco", "macresco", "madeo", "madesco", "maereo", "maledictito", "mammo", "marceo", "marcesco", "matresco", "maturesco",
+    "maumo", "medeor", "mellifico", "memini", "miccio", "mico", "mintrio", "minurrio", "miseresco", "miseret", "mitesco",
+    "mitilo", "moereo", "molio", "mollesco", "moror", "muceo", "mucesco", "murrio", "mutio", "muttio", "nauculor", "nausco",
+    "naviculor", "nigreo", "nigresco", "ningit", "ningo", "ninguit", "ninguo", "niteo", "nitesco", "nivesco", "no", "noctesco",
+    "nominito", "notesco", "nubilo", "nupturio", "obaresco", "obatresco", "obaudio", "obbrutesco", "obducto", "obdulcesco",
+    "obduresco", "obfulgeo", "obhorreo", "obiaceo", "objaceo", "oblanguesco", "oblitesco", "obmordeo", "obmutesco", "obnoxio",
+    "oboleo", "obrigesco", "obsido", "obsono", "obsordesco", "obstipesco", "obstupesco", "obsurdesco", "obtenebresco", "obtexo",
+    "obticeo", "obticesco", "obtingo", "obtorpeo", "obtorpesco", "obtueor", "occallesco", "occino", "offulgeo", "oleo", "olesco",
+    "olo", "onco", "oporteo", "oportet", "oppedo", "optingo", "oscitor", "paedagogo", "palleo", "pallesco", "palpebro", "pangito",
+    "papo", "pappo", "parturio", "passito", "pateo", "patesco", "patio", "patrisso", "patrizo", "pauperasco", "paveo", "pavesco",
+    "pelluceo", "pendeo", "percalleo", "percrebesco", "percrebresco", "perdisco", "perdo", "perdormisco", "perducto", "pereffluo",
+    "perferveo", "perfugio", "perhorreo", "perhorresco", "perlateo", "perlinio", "perluceo", "permereo", "perniteo", "peroleo",
+    "perpetuito", "perscisco", "persedeo", "perserpo", "persilio", "persisto", "pertimeo", "pertimesco", "pertineo", "pertingo",
+    "pertorqueo", "perurgeo", "perurgueo", "pervaleo", "pervigeo", "petesso", "petisso", "pilpito", "pinguesco", "pipilo",
+    "pipio", "pipo", "pisito", "plecto", "plipio", "pluit", "plumesco", "pluo", "polleo", "populo", "porceo", "posco", "posteo",
+    "praeambulo", "praeemineo", "praefloreo", "praefluo", "praefugio", "praefulgeo", "praegestio", "praeiaceo", "praejaceo",
+    "praeluceo", "praemando", "praeniteo", "praeoleo", "praependeo", "praepolleo", "praesagio", "praeservio", "praesipio",
+    "praesono", "praeterfluo", "praeterfugio", "praetimeo", "praevalesco", "procello", "procido", "profugio", "proluceo",
+    "promineo", "propalo", "prurio", "psallo", "pubesco", "pulpo", "purgito", "purpurasco", "puteo", "putesco", "putreo",
+    "putresco", "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco", "ravio", "rebullio", "recaleo",
+    "recommoneo", "recrepo", "recumbo", "redintegrasco", "redoleo", "redormio", "reducto", "refello", "refert", "referveo",
+    "refingo", "refloreo", "refrigesco", "refugio", "refulgeo", "relanguesco", "reluceo", "rememini", "reminisco", "reminiscor",
+    "remollesco", "remugio", "reneo", "renideo", "reniteo", "rennuo", "renuo", "reporrigo", "reposco", "resipisco", "resisto",
+    "resplendeo", "resto", "reticeo", "retono", "revindico", "reviresco", "revivesco", "revivisco", "revivo", "ricio", "ricto",
+    "rigeo", "rigesco", "rubeo", "rubesco", "rufesco", "rugio", "ruo", "sacio", "sagio", "salveo", "sanesco", "sanguino", "sapio",
+    "sardo", "satago", "scabo", "scateo", "scato", "scaturio", "scaturrio", "scopo", "scripturio", "seneo", "senesco", "sentisco",
+    "seresco", "sevio", "siccesco", "sicilio", "sido", "sileo", "silesco", "singultio", "soccito", "sordeo", "sordesco",
+    "sospito", "splendeo", "splendesco", "spumesco", "squaleo", "stabulo", "sternuo", "sterto", "stinguo", "stipendio",
+    "strideo", "strido", "stritto", "studeo", "stupeo", "stupesco", "subdoceo", "subedo", "subfulgeo", "subiaceo", "subjaceo",
+    "subluceo", "suboleo", "subrubeo", "subservio", "subsilio", "subsisto", "subsono", "subterfluo", "subterfugio", "subteriaceo",
+    "subterjaceo", "subtimeo", "suburgeo", "subvolo", "subvolvo", "succido", "succino", "succubo", "sufferveo", "suffringo",
+    "suffugio", "suffulgeo", "sugglutio", "sullaturio", "superbio", "supercresco", "supereffluo", "superemineo", "superextollo",
+    "superfluo", "superfugio", "superfulgeo", "superiaceo", "superimmineo", "superjaceo", "superluceo", "superobruo",
+    "supersapio", "supersto", "supertraho", "supervaleo", "supervivo", "supo", "suppedo", "supterfugio", "surio", "sustollo",
+    "tabeo", "tabesco", "temno", "tenebresco", "tenebrico", "tenerasco", "tepeo", "tepesco", "tetrinnio", "tibicino", "timeo",
+    "tinnipo", "tintino", "tongeo", "torculo", "torpeo", "torpesco", "traluceo", "transfluo", "transfulgeo", "transilio",
+    "transluceo", "transpicio", "transtineo", "transvado", "transvenio", "tremesco", "tremisco", "trico", "trittilo", "trucilo",
+    "tumeo", "tumesco", "tumido", "turgeo", "turgesco", "tussio", "udo", "umbresco", "umeo", "umesco", "unco", "urco", "urgeo",
+    "urgueo", "urvo", "vacefio", "vado", "vagio", "vago", "valesco", "vanesco", "vanno", "vegeo", "vento", "verecundor", "vergo",
+    "vervago", "vesanio", "vescor", "vesico", "vesperascit", "veterasco", "veteresco", "vibrisso", "vigeo", "vigesco", "vilesco",
+    "vireo", "viresco", "viridesco", "vissio", "vitulor", "vivesco",
+    "possum", "nolo",
+}  # fmt: skip
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem_except_in_the_future_active_participle
+FUTURE_ACTIVE_PARTICIPLE_VERBS: Final[set[str]] = {
+    "absum", "adsum", "assum", "caleo", "coest", "desum", "discrepo", "egeo", "exsto", "exto", "ferio", "incido", "insto",
+    "insum", "intersum", "obsto", "obsum", "paeniteo", "persto", "pervolo", "poeniteo", "praesum", "prosum", "subsum", "sum",
+    "supersum", "volo",
+}  # fmt: skip
+
+
+# -----------------------------------------------------------------------------
+# DEFECTIVE VERBS
+
+DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
+    "inquam": {
         "Vpreactindsg1": "inquam",
         "Vpreactindsg2": "inquis",
         "Vpreactindsg3": "inquit",
@@ -498,38 +215,350 @@ IRREGULAR_VERBS: Final[dict[str, Endings]] = {
         "Vperactindsg1": "inquii",
         "Vperactindsg2": "inquisti",
         "Vperactindsg3": "inquit",
+        "Vperactsbjsg3": "inquiat",
         "Vpreactipesg2": "inque",
-    },
+    }
+}
+
+# -----------------------------------------------------------------------------
+# IRREGULAR VERBS
+
+# TODO: Expand these
+
+type _IrregularVerb = Literal["sum", "possum", "volo", "nolo", "fero", "eo"]
+
+IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
+    "sum": 3,
+    "possum": 3,
+    "volo": 3,
+    "nolo": 3,
+    "fero": 3,
+    "eo": 4,  # no idea if this really matters?
+}
+
+IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
+    # (_inf_stem, _preptc_stem), unused or impossible stems are not provided
+    "sum": ("", ""),
+    "possum": ("", "pote"),
+    "volo": ("vol", "vole"),
+    "nolo": ("nol", "nole"),
+    "fero": ("fer", "fere"),
+    "eo": ("", "ie"),  # fourth conjugation-like?
+}
+
+IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
+    "sum": DictChanges(  # sum, esse, fui, futurus
+        # perfective indicative and subjunctive, imperfect subjunctive are regular
+        replacements={
+            "Vpreactindsg2": "es",
+            "Vpreactindsg3": "est",
+            "Vpreactindpl1": "sumus",
+            "Vpreactindpl2": "estis",
+            "Vpreactindpl3": "sunt",
+            "Vimpactindsg1": "eram",
+            "Vimpactindsg2": "eras",
+            "Vimpactindsg3": "erat",
+            "Vimpactindpl1": "eramus",
+            "Vimpactindpl2": "eratis",
+            "Vimpactindpl3": "erant",
+            "Vfutactindsg1": "ero",
+            "Vfutactindsg2": "eris",
+            "Vfutactindsg3": "erit",
+            "Vfutactindpl1": "erimus",
+            "Vfutactindpl2": "eritis",
+            "Vfutactindpl3": "erunt",
+            "Vpreactsbjsg1": "sim",
+            "Vpreactsbjsg2": "sis",
+            "Vpreactsbjsg3": "sit",
+            "Vpreactsbjpl1": "simus",
+            "Vpreactsbjpl2": "sitis",
+            "Vpreactsbjpl3": "sint",
+            "Vpreactipesg2": "es",
+            "Vpreactipepl2": "este",
+        },
+        additions={},
+        # no passives, present participles
+        deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.preactptc.*$")},
+    ),
+    "possum": DictChanges(  # possum, posse, potui
+        # perfective indicative and subjunctive, imperfect subjunctive are regular
+        replacements={
+            "Vpreactindsg2": "potes",
+            "Vpreactindsg3": "potest",
+            "Vpreactindpl1": "possumus",
+            "Vpreactindpl2": "potestis",
+            "Vpreactindpl3": "possunt",
+            "Vimpactindsg1": "poteram",
+            "Vimpactindsg2": "poteras",
+            "Vimpactindsg3": "poterat",
+            "Vimpactindpl1": "poteramus",
+            "Vimpactindpl2": "poteratis",
+            "Vimpactindpl3": "poterant",
+            "Vfutactindsg1": "potero",
+            "Vfutactindsg2": "poteris",
+            "Vfutactindsg3": "poterit",
+            "Vfutactindpl1": "poterimus",
+            "Vfutactindpl2": "poteritis",
+            "Vfutactindpl3": "poterunt",
+            "Vpreactsbjsg1": "possim",
+            "Vpreactsbjsg2": "possis",
+            "Vpreactsbjsg3": "possit",
+            "Vpreactsbjpl1": "possimus",
+            "Vpreactsbjpl2": "possitis",
+            "Vpreactsbjpl3": "possint",
+        },
+        additions={},
+        # no imperatives, passives
+        deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.{7}ipe.*$")},
+    ),
+    "volo": DictChanges(  # volo, velle, volui, voliturus
+        # only present indicative and subjunctive are irregular
+        replacements={
+            "Vpreactindsg2": "vis",
+            "Vpreactindsg3": "vult",
+            "Vpreactindpl1": "volumus",
+            "Vpreactindpl2": "vultis",
+            "Vpreactindpl3": "volunt",
+            "Vpreactsbjsg1": "velim",
+            "Vpreactsbjsg2": "velis",
+            "Vpreactsbjsg3": "velit",
+            "Vpreactsbjpl1": "velimus",
+            "Vpreactsbjpl2": "velitis",
+            "Vpreactsbjpl3": "velint",
+        },
+        additions={},
+        # no imperatives, passives
+        deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.{7}ipe.*$")},
+    ),
+    "nolo": DictChanges(  # nolo, nolle, nolui
+        # only present indicative and subjunctive, and imperative are irregular
+        replacements={
+            "Vpreactindsg1": "nolo",
+            "Vpreactindsg2": "non vis",
+            "Vpreactindsg3": "non vult",
+            "Vpreactindpl1": "nolumus",
+            "Vpreactindpl2": "non vultis",
+            "Vpreactindpl3": "nolunt",
+            "Vpreactsbjsg1": "nelim",
+            "Vpreactsbjsg2": "nelis",
+            "Vpreactsbjsg3": "nelit",
+            "Vpreactsbjpl1": "nelimus",
+            "Vpreactsbjpl2": "nelitis",
+            "Vpreactsbjpl3": "nelint",
+            "Vpreactipesg2": "noli",
+            "Vpreactipepl2": "nolite",
+        },
+        additions={},
+        # no passives
+        deletions={re.compile(r"^.{4}pas.*$")},
+    ),
+    "fero": DictChanges(  # fero, ferre, tuli, latus
+        # some forms are irregular
+        replacements={
+            "Vpreactindsg2": "fers",
+            "Vpreactindsg3": "fert",
+            "Vpreactindpl2": "fertis",
+            "Vprepasindsg2": "ferris",
+            "Vprepasindsg3": "fertur",
+            "Vpreactipesg2": "fer",
+            "Vpreactipepl2": "ferte",
+            "Vprepasinf   ": "ferri",
+        },
+        additions={},
+        deletions=set(),
+    ),
+    "eo": DictChanges(  # eo, ire, ii, itus
+        # various forms are regular throughout
+        replacements={
+            "Vpreactindpl3": "eunt",
+            "Vimpactindsg1": "ibam",
+            "Vimpactindsg2": "ibas",
+            "Vimpactindsg3": "ibat",
+            "Vimpactindpl1": "ibamus",
+            "Vimpactindpl2": "ibatis",
+            "Vimpactindpl3": "ibant",
+            "Vfutactindsg1": "ibo",
+            "Vfutactindsg2": "ibis",
+            "Vfutactindsg3": "ibit",
+            "Vfutactindpl1": "ibimus",
+            "Vfutactindpl2": "ibitis",
+            "Vfutactindpl3": "ibunt",
+            "Vperactindsg2": "isti",
+            "Vperactindpl2": "istis",
+            "Vprepasindsg1": "eor",
+            "Vprepasindpl3": "euntur",
+            "Vimppasindsg1": "ibar",
+            "Vimppasindsg2": "ibaris",
+            "Vimppasindsg3": "ibatur",
+            "Vimppasindpl1": "ibamur",
+            "Vimppasindpl2": "ibamini",
+            "Vimppasindpl3": "ibantur",
+            "Vfutpasindsg1": "ibor",
+            "Vfutpasindsg2": "iberis",
+            "Vfutpasindsg3": "ibitur",
+            "Vfutpasindpl1": "ibimur",
+            "Vfutpasindpl2": "ibimini",
+            "Vfutpasindpl3": "ibuntur",
+            "Vpreactsbjsg1": "eam",
+            "Vpreactsbjsg2": "eas",
+            "Vpreactsbjsg3": "eat",
+            "Vpreactsbjpl1": "eamus",
+            "Vpreactsbjpl2": "eatis",
+            "Vpreactsbjpl3": "eant",
+            "Vplpactsbjsg1": "issem",
+            "Vplpactsbjsg2": "isses",
+            "Vplpactsbjsg3": "isset",
+            "Vplpactsbjpl1": "issemus",
+            "Vplpactsbjpl2": "issetis",
+            "Vplpactsbjpl3": "issent",
+            "Vpreactptcmaccsg": "euntem",
+            "Vpreactptcmgensg": "euntis",
+            "Vpreactptcmdatsg": "eunti",
+            "Vpreactptcmablsg": MultipleEndings(
+                regular="eunti", absolute="eunte"
+            ),
+            "Vpreactptcmnompl": "euntes",
+            "Vpreactptcmvocpl": "euntes",
+            "Vpreactptcmaccpl": "euntes",
+            "Vpreactptcmgenpl": "euntium",
+            "Vpreactptcmdatpl": "euntibus",
+            "Vpreactptcmablpl": "euntibus",
+            "Vpreactptcfaccsg": "euntem",
+            "Vpreactptcfgensg": "euntis",
+            "Vpreactptcfdatsg": "eunti",
+            "Vpreactptcfablsg": MultipleEndings(
+                regular="eunti", absolute="eunte"
+            ),
+            "Vpreactptcfnompl": "euntes",
+            "Vpreactptcfvocpl": "euntes",
+            "Vpreactptcfaccpl": "euntes",
+            "Vpreactptcfgenpl": "euntium",
+            "Vpreactptcfdatpl": "euntibus",
+            "Vpreactptcfablpl": "euntibus",
+            "Vpreactptcngensg": "euntis",
+            "Vpreactptcndatsg": "eunti",
+            "Vpreactptcnablsg": MultipleEndings(
+                regular="eunti", absolute="eunte"
+            ),
+            "Vpreactptcnnompl": "euntia",
+            "Vpreactptcnvocpl": "euntia",
+            "Vpreactptcnaccpl": "euntia",
+            "Vpreactptcngenpl": "euntium",
+            "Vpreactptcndatpl": "euntibus",
+            "Vpreactptcnablpl": "euntibus",
+        },
+        additions={},
+        deletions=set(),
+    ),
 }
 
 
-# Contains verbs that are derived from the main irregular verbs (usually
-# having a prefix)
-DERIVED_IRREGULAR_VERBS: Final[dict[str, set[str]]] = {
-    "eo": {
-        "abeo",
-        "adeo",
-        "ambeo",
-        "circumeo",
-        "coeo",
-        "deeo",
-        "dispereo",
-        "exeo",
-        "ineo",
-        "intereo",
-        "introeo",
-        "nequeo",
-        "obeo",
-        "pereo",
-        "praetereo",
-        "prodeo",
-        "queo",
-        "redeo",
-        "subeo",
-        "transabeo",
-        "transeo",
-        "veneo",
+def is_irregular_verb(present: str) -> TypeIs[_IrregularVerb]:
+    """Return whether a verb is irregular (not prefix) by its present stem.
+
+    Parameters
+    ----------
+    present : str
+        The present stem of the verb.
+
+    Returns
+    -------
+    TypeIs[_IrregularVerbs]
+        Whether the verb is irregular.
+    """
+    return present in IRREGULAR_VERB_CHANGES
+
+
+def get_irregular_verb_conjugation(present: _IrregularVerb) -> Conjugation:
+    """Return the conjugation of an irregular verb.
+
+    Parameters
+    ----------
+    present : str
+        The present stem of the verb.
+
+    Returns
+    -------
+    Conjugation
+        The conjugation of the verb.
+    """
+    return IRREGULAR_VERB_CONJUGATION[present]
+
+
+def find_irregular_verb_stems(present: _IrregularVerb) -> tuple[str, str]:
+    """Return the infinitive and present participle stem of an irregular verb.
+
+    Parameters
+    ----------
+    present : _IrregularVerbs
+    The irregular verb.
+
+    Returns
+    -------
+    str
+        The infinitive stem.
+    str
+        The present participle stem.
+    """
+    return IRREGULAR_VERB_STEMS[present]
+
+
+def find_irregular_verb_changes(
+    present: _IrregularVerb,
+) -> DictChanges[Ending]:
+    """Return the changes for an irregular verb.
+
+    Parameters
+    ----------
+    present : _IrregularVerbs
+        The irregular verb.
+
+    Returns
+    -------
+    DictChanges[Ending]
+        The endings changes.
+    """
+    return IRREGULAR_VERB_CHANGES[present]
+
+
+# -----------------------------------------------------------------------------
+# DERIVED IRREGULAR VERBS (prefix)
+
+type _DerivedVerb = Annotated[
+    str, "A verb that is derived from an irregular verb."
+]
+type _DerivedVerbGroups = Literal[
+    "sum", "sum_preptc", "fero", "eo", "eo_impersonal_passive"
+]
+
+DERIVED_IRREGULAR_VERB_CONJUGATION: Final[
+    dict[_DerivedVerbGroups, Conjugation]
+] = {"sum": 3, "sum_preptc": 3, "fero": 3, "eo": 4, "eo_impersonal_passive": 4}
+
+
+DERIVED_IRREGULAR_VERB_STEMS: Final[
+    dict[_DerivedVerbGroups, tuple[str, str]]
+] = {
+    # (_inf_stem, _preptc_stem), unused or impossible stems are not provided
+    "sum": ("", ""),
+    "sum_preptc": ("", "se"),
+    "fero": ("fer", "fere"),
+    "eo": ("", "i"),
+    "eo_impersonal_passive": ("", "i"),
+}
+
+DERIVED_IRREGULAR_VERBS: Final[dict[_DerivedVerbGroups, set[_DerivedVerb]]] = {
+    "sum": {
+        "adsum",
+        "obsum",
+        "desum",
+        "insum",
+        "intersum",
+        "prosum",
+        "subsum",
+        "supersum",
     },
+    "sum_preptc": {"absum", "praesum"},
     "fero": {
         "affero",
         "aufero",
@@ -550,155 +579,375 @@ DERIVED_IRREGULAR_VERBS: Final[dict[str, set[str]]] = {
         "suffero",
         "transfero",
     },
-}
-
-
-# NOTE: This entire thing will probably need to be reworked at some point
-# Notably allowing the given perfect stem to be used so that I don't have
-# to write everything manually
-# FIXME: Complete above as the current system is actually causing bugs
-DERIVED_IRREGULAR_ENDINGS: Final[dict[str, Endings]] = {
     "eo": {
-        "Vpreactindsg1": "eo",
-        "Vpreactindsg2": "is",
-        "Vpreactindsg3": "it",
-        "Vpreactindpl1": "imus",
-        "Vpreactindpl2": "itis",
-        "Vpreactindpl3": "eunt",
-        "Vimpactindsg1": "ibam",
-        "Vimpactindsg2": "ibas",
-        "Vimpactindsg3": "ibat",
-        "Vimpactindpl1": "ibamus",
-        "Vimpactindpl2": "ibatis",
-        "Vimpactindpl3": "ibant",
-        "Vfutactindsg1": "ibo",
-        "Vfutactindsg2": "ibis",
-        "Vfutactindsg3": "ibit",
-        "Vfutactindpl1": "ibimus",
-        "Vfutactindpl2": "ibitis",
-        "Vfutactindpl3": "ibunt",
-        "Vperactindsg1": "ii",
-        "Vperactindsg2": "isti",
-        "Vperactindsg3": "iit",
-        "Vperactindpl1": "iimus",
-        "Vperactindpl2": "istis",
-        "Vperactindpl3": "ierunt",
-        "Vplpactindsg1": "ieram",
-        "Vplpactindsg2": "ieras",
-        "Vplpactindsg3": "ierat",
-        "Vplpactindpl1": "ieramus",
-        "Vplpactindpl2": "ieratis",
-        "Vplpactindpl3": "ierant",
-        "Vfpractindsg1": "iero",
-        "Vfpractindsg2": "ieris",
-        "Vfpractindsg3": "ierit",
-        "Vfpractindpl1": "ierimus",
-        "Vfpractindpl2": "ieritis",
-        "Vfpractindpl3": "ierint",
-        "Vpreactinf   ": "ire",
-        "Vpreactipesg2": "i",
-        "Vpreactipepl2": "ite",
-        "Vimpactsbjsg1": "irem",
-        "Vimpactsbjsg2": "ires",
-        "Vimpactsbjsg3": "iret",
-        "Vimpactsbjpl1": "iremus",
-        "Vimpactsbjpl2": "iretis",
-        "Vimpactsbjpl3": "irent",
-        "Vplpactsbjsg1": "issem",
-        "Vplpactsbjsg2": "isses",
-        "Vplpactsbjsg3": "isset",
-        "Vplpactsbjpl1": "issemus",
-        "Vplpactsbjpl2": "issetis",
-        "Vplpactsbjpl3": "issent",
+        "adeo",
+        "ambeo",
+        "circumeo",
+        "coeo",
+        "deeo",
+        "dispereo",
+        "exeo",
+        "ineo",
+        "intereo",
+        "introeo",
+        "nequeo",
+        "obeo",
+        "praetereo",
+        "prodeo",
+        "queo",
+        "subeo",
+        "transabeo",
+        "transeo",
+        "veneo",
     },
-    "fero": {
-        "Vpreactindsg1": "fero",
-        "Vpreactindsg2": "fers",
-        "Vpreactindsg3": "fert",
-        "Vpreactindpl1": "ferimus",
-        "Vpreactindpl2": "fertis",
-        "Vpreactindpl3": "ferunt",
-        "Vimpactindsg1": "ferebam",
-        "Vimpactindsg2": "ferebas",
-        "Vimpactindsg3": "ferebat",
-        "Vimpactindpl1": "ferebamus",
-        "Vimpactindpl2": "ferebatis",
-        "Vimpactindpl3": "ferebant",
-        "Vfutactindsg1": "feram",
-        "Vfutactindsg2": "feres",
-        "Vfutactindsg3": "feret",
-        "Vfutactindpl1": "feremus",
-        "Vfutactindpl2": "feretis",
-        "Vfutactindpl3": "ferent",
-        "Vperactindsg1": "tuli",
-        "Vperactindsg2": "tulisti",
-        "Vperactindsg3": "tulit",
-        "Vperactindpl1": "tulimus",
-        "Vperactindpl2": "tulistis",
-        "Vperactindpl3": "tulerunt",
-        "Vplpactindsg1": "tuleram",
-        "Vplpactindsg2": "tuleras",
-        "Vplpactindsg3": "tulerat",
-        "Vplpactindpl1": "tuleramus",
-        "Vplpactindpl2": "tuleratis",
-        "Vplpactindpl3": "tulerant",
-        "Vfpractindsg1": "tulero",
-        "Vfpractindsg2": "tuleris",
-        "Vfpractindsg3": "tulerit",
-        "Vfpractindpl1": "tulerimus",
-        "Vfpractindpl2": "tuleritis",
-        "Vfpractindpl3": "tulerint",
-        "Vpreactinf   ": "ferre",
-        "Vpreactipesg2": "fer",
-        "Vpreactipepl2": "ferte",
-        "Vimpactsbjsg1": "ferrem",
-        "Vimpactsbjsg2": "ferres",
-        "Vimpactsbjsg3": "ferret",
-        "Vimpactsbjpl1": "ferremus",
-        "Vimpactsbjpl2": "ferretis",
-        "Vimpactsbjpl3": "ferrent",
-        "Vplpactsbjsg1": "tulissem",
-        "Vplpactsbjsg2": "tulisses",
-        "Vplpactsbjsg3": "tulisset",
-        "Vplpactsbjpl1": "tulissemus",
-        "Vplpactsbjpl2": "tulissetis",
-        "Vplpactsbjpl3": "tulissent",
-    },
+    "eo_impersonal_passive": {"abeo", "pereo", "redeo"},
+}
+
+# TODO: Replace these with the new endings
+DERIVED_IRREGULAR_CHANGES: Final[
+    dict[_DerivedVerbGroups, Callable[[tuple[str, ...]], DictChanges[Ending]]]
+] = {
+    "sum": lambda x: DictChanges(  # e.g. adsum, adesse, adfui, adfuturus
+        # perfective indicative and subjunctive, imperfect subjunctive are regular
+        replacements={
+            "Vpreactindsg2": f"{x[0]}es",
+            "Vpreactindsg3": f"{x[0]}est",
+            "Vpreactindpl1": f"{x[0]}sumus",
+            "Vpreactindpl2": f"{x[0]}estis",
+            "Vpreactindpl3": f"{x[0]}sunt",
+            "Vimpactindsg1": f"{x[0]}eram",
+            "Vimpactindsg2": f"{x[0]}eras",
+            "Vimpactindsg3": f"{x[0]}erat",
+            "Vimpactindpl1": f"{x[0]}eramus",
+            "Vimpactindpl2": f"{x[0]}eratis",
+            "Vimpactindpl3": f"{x[0]}erant",
+            "Vfutactindsg1": f"{x[0]}ero",
+            "Vfutactindsg2": f"{x[0]}eris",
+            "Vfutactindsg3": f"{x[0]}erit",
+            "Vfutactindpl1": f"{x[0]}erimus",
+            "Vfutactindpl2": f"{x[0]}eritis",
+            "Vfutactindpl3": f"{x[0]}erunt",
+            "Vpreactsbjsg1": f"{x[0]}sim",
+            "Vpreactsbjsg2": f"{x[0]}sis",
+            "Vpreactsbjsg3": f"{x[0]}sit",
+            "Vpreactsbjpl1": f"{x[0]}simus",
+            "Vpreactsbjpl2": f"{x[0]}sitis",
+            "Vpreactsbjpl3": f"{x[0]}sint",
+            "Vpreactipesg2": f"{x[0]}es",
+            "Vpreactipepl2": f"{x[0]}este",
+        },
+        additions={},
+        # no passives, present participles
+        deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.preactptc.*$")},
+    ),
+    "sum_preptc": lambda x: DictChanges(  # e.g. absum, abesse, afui, afuturus
+        # perfective indicative and subjunctive, imperfect subjunctive are regular
+        replacements={
+            "Vpreactindsg2": f"{x[0]}es",
+            "Vpreactindsg3": f"{x[0]}est",
+            "Vpreactindpl1": f"{x[0]}sumus",
+            "Vpreactindpl2": f"{x[0]}estis",
+            "Vpreactindpl3": f"{x[0]}sunt",
+            "Vimpactindsg1": f"{x[0]}eram",
+            "Vimpactindsg2": f"{x[0]}eras",
+            "Vimpactindsg3": f"{x[0]}erat",
+            "Vimpactindpl1": f"{x[0]}eramus",
+            "Vimpactindpl2": f"{x[0]}eratis",
+            "Vimpactindpl3": f"{x[0]}erant",
+            "Vfutactindsg1": f"{x[0]}ero",
+            "Vfutactindsg2": f"{x[0]}eris",
+            "Vfutactindsg3": f"{x[0]}erit",
+            "Vfutactindpl1": f"{x[0]}erimus",
+            "Vfutactindpl2": f"{x[0]}eritis",
+            "Vfutactindpl3": f"{x[0]}erunt",
+            "Vpreactsbjsg1": f"{x[0]}sim",
+            "Vpreactsbjsg2": f"{x[0]}sis",
+            "Vpreactsbjsg3": f"{x[0]}sit",
+            "Vpreactsbjpl1": f"{x[0]}simus",
+            "Vpreactsbjpl2": f"{x[0]}sitis",
+            "Vpreactsbjpl3": f"{x[0]}sint",
+            "Vpreactipesg2": f"{x[0]}es",
+            "Vpreactipepl2": f"{x[0]}este",
+        },
+        additions={},
+        # no passives
+        deletions={re.compile(r"^.{4}pas.*$")},
+    ),
+    "fero": lambda x: DictChanges(  # e.g. affero, afferre, attuli, allatus
+        # some forms are irregular
+        replacements={
+            "Vpreactindsg2": f"{x[0]}fers",
+            "Vpreactindsg3": f"{x[0]}fert",
+            "Vpreactindpl2": f"{x[0]}fertis",
+            "Vprepasindsg2": f"{x[0]}ferris",
+            "Vprepasindsg3": f"{x[0]}fertur",
+            "Vpreactipesg2": f"{x[0]}fer",
+            "Vpreactipepl2": f"{x[0]}ferte",
+            "Vprepasinf   ": f"{x[0]}ferri",
+        },
+        additions={},
+        deletions=set(),
+    ),
+    "eo": lambda x: DictChanges(  # e.g. adeo, adire, adii, aditus
+        # various forms are regular throughout
+        replacements={
+            "Vpreactindpl3": f"{x[0]}eunt",
+            "Vimpactindsg1": f"{x[0]}ibam",
+            "Vimpactindsg2": f"{x[0]}ibas",
+            "Vimpactindsg3": f"{x[0]}ibat",
+            "Vimpactindpl1": f"{x[0]}ibamus",
+            "Vimpactindpl2": f"{x[0]}ibatis",
+            "Vimpactindpl3": f"{x[0]}ibant",
+            "Vfutactindsg1": f"{x[0]}ibo",
+            "Vfutactindsg2": f"{x[0]}ibis",
+            "Vfutactindsg3": f"{x[0]}ibit",
+            "Vfutactindpl1": f"{x[0]}ibimus",
+            "Vfutactindpl2": f"{x[0]}ibitis",
+            "Vfutactindpl3": f"{x[0]}ibunt",
+            "Vperactindsg2": f"{x[2]}isti",
+            "Vperactindpl2": f"{x[2]}istis",
+            "Vprepasindsg1": f"{x[0]}eor",
+            "Vprepasindpl3": f"{x[0]}euntur",
+            "Vimppasindsg1": f"{x[0]}ibar",
+            "Vimppasindsg2": f"{x[0]}ibaris",
+            "Vimppasindsg3": f"{x[0]}ibatur",
+            "Vimppasindpl1": f"{x[0]}ibamur",
+            "Vimppasindpl2": f"{x[0]}ibamini",
+            "Vimppasindpl3": f"{x[0]}ibantur",
+            "Vfutpasindsg1": f"{x[0]}ibor",
+            "Vfutpasindsg2": f"{x[0]}iberis",
+            "Vfutpasindsg3": f"{x[0]}ibitur",
+            "Vfutpasindpl1": f"{x[0]}ibimur",
+            "Vfutpasindpl2": f"{x[0]}ibimini",
+            "Vfutpasindpl3": f"{x[0]}ibuntur",
+            "Vpreactsbjsg1": f"{x[0]}eam",
+            "Vpreactsbjsg2": f"{x[0]}eas",
+            "Vpreactsbjsg3": f"{x[0]}eat",
+            "Vpreactsbjpl1": f"{x[0]}eamus",
+            "Vpreactsbjpl2": f"{x[0]}eatis",
+            "Vpreactsbjpl3": f"{x[0]}eant",
+            "Vplpactsbjsg1": f"{x[2]}issem",
+            "Vplpactsbjsg2": f"{x[2]}isses",
+            "Vplpactsbjsg3": f"{x[2]}isset",
+            "Vplpactsbjpl1": f"{x[2]}issemus",
+            "Vplpactsbjpl2": f"{x[2]}issetis",
+            "Vplpactsbjpl3": f"{x[2]}issent",
+            "Vpreactptcmaccsg": f"{x[0]}euntem",
+            "Vpreactptcmgensg": f"{x[0]}euntis",
+            "Vpreactptcmdatsg": f"{x[0]}eunti",
+            "Vpreactptcmablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcmnompl": f"{x[0]}euntes",
+            "Vpreactptcmvocpl": f"{x[0]}euntes",
+            "Vpreactptcmaccpl": f"{x[0]}euntes",
+            "Vpreactptcmgenpl": f"{x[0]}euntium",
+            "Vpreactptcmdatpl": f"{x[0]}euntibus",
+            "Vpreactptcmablpl": f"{x[0]}euntibus",
+            "Vpreactptcfaccsg": f"{x[0]}euntem",
+            "Vpreactptcfgensg": f"{x[0]}euntis",
+            "Vpreactptcfdatsg": f"{x[0]}eunti",
+            "Vpreactptcfablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcfnompl": f"{x[0]}euntes",
+            "Vpreactptcfvocpl": f"{x[0]}euntes",
+            "Vpreactptcfaccpl": f"{x[0]}euntes",
+            "Vpreactptcfgenpl": f"{x[0]}euntium",
+            "Vpreactptcfdatpl": f"{x[0]}euntibus",
+            "Vpreactptcfablpl": f"{x[0]}euntibus",
+            "Vpreactptcngensg": f"{x[0]}euntis",
+            "Vpreactptcndatsg": f"{x[0]}eunti",
+            "Vpreactptcnablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcnnompl": f"{x[0]}euntia",
+            "Vpreactptcnvocpl": f"{x[0]}euntia",
+            "Vpreactptcnaccpl": f"{x[0]}euntia",
+            "Vpreactptcngenpl": f"{x[0]}euntium",
+            "Vpreactptcndatpl": f"{x[0]}euntibus",
+            "Vpreactptcnablpl": f"{x[0]}euntibus",
+        },
+        additions={},
+        deletions=set(),
+    ),
+    "eo_impersonal_passive": lambda x: DictChanges(  # e.g. abeo, abire, abii, abitus
+        # various forms are regular throughout
+        replacements={
+            "Vpreactindpl3": f"{x[0]}eunt",
+            "Vimpactindsg1": f"{x[0]}ibam",
+            "Vimpactindsg2": f"{x[0]}ibas",
+            "Vimpactindsg3": f"{x[0]}ibat",
+            "Vimpactindpl1": f"{x[0]}ibamus",
+            "Vimpactindpl2": f"{x[0]}ibatis",
+            "Vimpactindpl3": f"{x[0]}ibant",
+            "Vfutactindsg1": f"{x[0]}ibo",
+            "Vfutactindsg2": f"{x[0]}ibis",
+            "Vfutactindsg3": f"{x[0]}ibit",
+            "Vfutactindpl1": f"{x[0]}ibimus",
+            "Vfutactindpl2": f"{x[0]}ibitis",
+            "Vfutactindpl3": f"{x[0]}ibunt",
+            "Vimppasindsg3": f"{x[0]}ibatur",
+            "Vfutpasindsg3": f"{x[0]}ibitur",
+            "Vperactindsg2": f"{x[2]}isti",
+            "Vperactindpl2": f"{x[2]}istis",
+            "Vpreactsbjsg3": f"{x[0]}eat",
+            "Vplpactsbjsg1": f"{x[2]}issem",
+            "Vplpactsbjsg2": f"{x[2]}isses",
+            "Vplpactsbjsg3": f"{x[2]}isset",
+            "Vplpactsbjpl1": f"{x[2]}issemus",
+            "Vplpactsbjpl2": f"{x[2]}issetis",
+            "Vplpactsbjpl3": f"{x[2]}issent",
+            "Vpreactptcmaccsg": f"{x[0]}euntem",
+            "Vpreactptcmgensg": f"{x[0]}euntis",
+            "Vpreactptcmdatsg": f"{x[0]}eunti",
+            "Vpreactptcmablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcmnompl": f"{x[0]}euntes",
+            "Vpreactptcmvocpl": f"{x[0]}euntes",
+            "Vpreactptcmaccpl": f"{x[0]}euntes",
+            "Vpreactptcmgenpl": f"{x[0]}euntium",
+            "Vpreactptcmdatpl": f"{x[0]}euntibus",
+            "Vpreactptcmablpl": f"{x[0]}euntibus",
+            "Vpreactptcfaccsg": f"{x[0]}euntem",
+            "Vpreactptcfgensg": f"{x[0]}euntis",
+            "Vpreactptcfdatsg": f"{x[0]}eunti",
+            "Vpreactptcfablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcfnompl": f"{x[0]}euntes",
+            "Vpreactptcfvocpl": f"{x[0]}euntes",
+            "Vpreactptcfaccpl": f"{x[0]}euntes",
+            "Vpreactptcfgenpl": f"{x[0]}euntium",
+            "Vpreactptcfdatpl": f"{x[0]}euntibus",
+            "Vpreactptcfablpl": f"{x[0]}euntibus",
+            "Vpreactptcngensg": f"{x[0]}euntis",
+            "Vpreactptcndatsg": f"{x[0]}eunti",
+            "Vpreactptcnablsg": MultipleEndings(
+                regular=f"{x[0]}eunti", absolute=f"{x[0]}eunte"
+            ),
+            "Vpreactptcnnompl": f"{x[0]}euntia",
+            "Vpreactptcnvocpl": f"{x[0]}euntia",
+            "Vpreactptcnaccpl": f"{x[0]}euntia",
+            "Vpreactptcngenpl": f"{x[0]}euntium",
+            "Vpreactptcndatpl": f"{x[0]}euntibus",
+            "Vpreactptcnablpl": f"{x[0]}euntibus",
+        },
+        additions={},
+        deletions=set(),
+    ),
+}
+
+_DERIVED_PRINCIPAL_STEMS: Final[
+    dict[_DerivedVerbGroups, tuple[str, str, str, str]]
+] = {
+    "sum": ("sum", "esse", "fui", "futurus"),
+    "sum_preptc": ("sum", "esse", "fui", "futurus"),
+    "fero": ("fero", "ferre", "tuli", "latus"),
+    "eo": ("eo", "ire", "ii", "itus"),
+    "eo_impersonal_passive": ("eo", "ire", "ii", "itus"),
 }
 
 
-def find_irregular_endings(present: str) -> Endings | None:
-    """Detect if a verb is irregular and return its endings.
+def is_derived_verb(present: str) -> TypeIs[_DerivedVerb]:
+    """Return whether a verb is irregular (not prefix) by its present stem.
 
     Parameters
     ----------
     present : str
-        The present form verb to check.
+        The present stem of the verb.
 
     Returns
     -------
-    Endings | None
-        The endings. ``None`` if the verb is not irregular.
+    TypeIs[_DerivedVerb]
+        The irregular verb.
     """
+    return any(present in group for group in DERIVED_IRREGULAR_VERBS.values())
 
-    def _prefix(
-        pre: str, endings: Endings
-    ) -> dict[str, str | MultipleEndings]:
-        return {key: pre + value for key, value in endings.items()}
 
-    if present in IRREGULAR_VERBS:
-        return IRREGULAR_VERBS[present]
+def _find_derived_verb_group(present: _DerivedVerb) -> _DerivedVerbGroups:
+    for group_name, group in DERIVED_IRREGULAR_VERBS.items():
+        if present in group:
+            return group_name
 
-    for irregular_suffix, suffix_list in DERIVED_IRREGULAR_VERBS.items():
-        if present in suffix_list:
-            return _prefix(
-                # FIXME: Fix this - use `removesuffix` instead
-                present.rstrip(irregular_suffix),
-                DERIVED_IRREGULAR_ENDINGS[irregular_suffix],
-            )
+    raise AssertionError("unreachable")
 
-    return None
 
+def get_derived_verb_conjugation(present: _DerivedVerb) -> Conjugation:
+    """Return the conjugation of an derived verb.
+
+    Parameters
+    ----------
+    present : _DerivedVerb
+        The present stem of the verb.
+
+    Returns
+    -------
+    Conjugation
+        The conjugation of the verb.
+    """
+    return DERIVED_IRREGULAR_VERB_CONJUGATION[
+        _find_derived_verb_group(present)
+    ]
+
+
+def find_derived_verb_stems(present: _DerivedVerb) -> tuple[str, str]:
+    """Return the infinitive and present participle stem of a derived verb.
+
+    Parameters
+    ----------
+    present : _DerivedVerb
+        The present stem of the verb.
+
+    Returns
+    -------
+    str
+        The infinitive stem.
+    str
+        The present participle stem.
+    """
+    group = _find_derived_verb_group(present)
+    return cast(
+        "tuple[str, str]",
+        tuple(
+            present.removesuffix(_DERIVED_PRINCIPAL_STEMS[group][0]) + stem
+            for stem in DERIVED_IRREGULAR_VERB_STEMS[group]
+        ),
+    )
+
+
+def find_derived_verb_changes(
+    principal_parts: tuple[str, ...],
+) -> DictChanges[Ending]:
+    """Find the changes for a derived verb.
+
+    Strip the main part from the principal parts (e.g. absum -> ab-), and
+    generate endings changes using that.
+
+    Parameters
+    ----------
+    principal_parts : tuple[str, ...]
+        The principal parts of the verb.
+
+    Returns
+    -------
+    DictChanges[Ending]
+        The endings changes.
+    """
+    group = _find_derived_verb_group(principal_parts[0])
+    principal_parts = principal_parts[1:]
+    derived_principal_stems = _DERIVED_PRINCIPAL_STEMS[group][1:]
+    return DERIVED_IRREGULAR_CHANGES[group](
+        tuple(
+            pp.removesuffix(derived_principal_stems[i])
+            for i, pp in enumerate(principal_parts)
+        )
+    )
+
+
+# -----------------------------------------------------------------------------
+# NOUNS
 
 IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     "ego": {
@@ -741,6 +990,106 @@ IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     },
 }
 
+IRREGULAR_DECLINED_NOUNS: Final[dict[str, Endings]] = {
+    "deus": {
+        "Nnomsg": "deus",
+        "Nvocsg": MultipleEndings(regular="dee", second="deus"),
+        "Naccsg": "deum",
+        "Ngensg": "dei",
+        "Ndatsg": "deo",
+        "Nablsg": "deo",
+        "Nnompl": MultipleEndings(regular="dei", second="di", third="dii"),
+        "Nvocpl": MultipleEndings(regular="dei", second="di", third="dii"),
+        "Naccpl": "deos",
+        "Ngenpl": MultipleEndings(regular="deorum", second="deum"),
+        "Ndatpl": MultipleEndings(regular="deis", second="dis", third="diis"),
+        "Nablpl": MultipleEndings(regular="deis", second="dis", third="diis"),
+    },
+    "dea": {
+        "Nnomsg": "dea",
+        "Nvocsg": "dea",
+        "Naccsg": "deam",
+        "Ngensg": "deae",
+        "Ndatsg": "deae",
+        "Nablsg": "dea",
+        "Nnompl": "deae",
+        "Nvocpl": "deae",
+        "Naccpl": "deas",
+        "Ngenpl": "dearum",
+        "Ndatpl": "deabus",
+        "Nablpl": "deabus",
+    },
+    "domus": {  # domus will be considered as a fourth declension noun only
+        "Nnomsg": "domus",
+        "Nvocsg": "domus",
+        "Naccsg": "domum",
+        "Ngensg": MultipleEndings(regular="domus", locative="domi"),
+        "Ndatsg": MultipleEndings(
+            regular="domui", second="domo", third="domu"
+        ),
+        "Nablsg": MultipleEndings(  # for consistency
+            regular="domu", second="domo"
+        ),
+        "Nnompl": "domus",
+        "Nvocpl": "domus",
+        "Naccpl": MultipleEndings(regular="domus", second="domos"),
+        "Ngenpl": MultipleEndings(regular="domuum", second="domorum"),
+        "Ndatpl": "domibus",
+        "Nablpl": "domibus",
+    },
+    "bos": {
+        "Nnomsg": "bos",
+        "Nvocsg": "bos",
+        "Naccsg": "bovem",
+        "Ngensg": "bovis",
+        "Ndatsg": "bovi",
+        "Nablsg": "bove",
+        "Nnompl": "boves",
+        "Nvocpl": "boves",
+        "Naccpl": "boves",
+        "Ngenpl": MultipleEndings(
+            regular="bovum", second="boum", third="boverum"
+        ),
+        "Ndatpl": MultipleEndings(
+            regular="bovibus", second="bobus", third="bubus"
+        ),
+        "Nablpl": MultipleEndings(
+            regular="bovibus", second="bobus", third="bubus"
+        ),
+    },
+    "epulum": {
+        "Nnomsg": "epulum",
+        "Nvocsg": "epulum",
+        "Naccsg": "epulum",
+        "Ngensg": "epuli",
+        "Ndatsg": "epulo",
+        "Nablsg": "epulo",
+        "Nnompl": MultipleEndings(regular="epula", second="epulae"),
+        "Nvocpl": MultipleEndings(regular="epula", second="epulae"),
+        "Naccpl": MultipleEndings(regular="epula", second="epulas"),
+        "Ngenpl": MultipleEndings(regular="epulorum", second="epularum"),
+        "Ndatpl": "epulis",
+        "Nablpl": "epulis",
+    },
+    "sus": {
+        "Nnomsg": "sus",
+        "Nvocsg": "sus",
+        "Naccsg": "suem",
+        "Ngensg": "suis",
+        "Ndatsg": "sui",
+        "Nablsg": "sue",
+        "Nnompl": "sues",
+        "Nvocpl": "sues",
+        "Naccpl": "sues",
+        "Ngenpl": "suum",
+        "Ndatpl": MultipleEndings(regular="suibus", second="subus"),
+        "Nablpl": MultipleEndings(regular="suibus", second="subus"),
+    },
+}
+
+# -----------------------------------------------------------------------------
+# ADJECTIVES
+
 LIS_ADJECTIVES: Final[set[str]] = {
     "facilis",
     "difficilis",
@@ -777,6 +1126,9 @@ IRREGULAR_ADJECTIVES: Final[
 
 # TODO: Add to this
 NO_ADVERB_ADJECTIVES = {"ingens"}
+
+# -----------------------------------------------------------------------------
+# PRONOUNS
 
 PRONOUNS: Final[dict[str, Endings]] = {
     "hic": {
