@@ -350,10 +350,10 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'cepisset',
+          'caperet',
         ]),
-        'components': 'pluperfect active subjunctive singular 3rd person',
-        'main_answer': 'cepisset',
+        'components': 'imperfect active subjunctive singular 3rd person',
+        'main_answer': 'caperet',
         'prompt': 'take: capio, capere, cepi, captus',
       }),
       'question_type': 'ParseWordCompToLatQuestion',
@@ -525,13 +525,24 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'imperfect active indicative singular 3rd person',
+          'present active imperative singular 2nd person',
         ]),
         'dictionary_entry': 'say: inquam',
-        'main_answer': 'imperfect active indicative singular 3rd person',
-        'prompt': 'inquiebat',
+        'main_answer': 'present active imperative singular 2nd person',
+        'prompt': 'inque',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'keener',
+          'more keen',
+        ]),
+        'main_answer': 'keener',
+        'prompt': 'acriori',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
     }),
     dict({
       'TypeInEngToLatQuestion': dict({
@@ -619,16 +630,6 @@
         'prompt': 'ingens',
       }),
       'question_type': 'PrincipalPartsQuestion',
-    }),
-    dict({
-      'TypeInLatToEngQuestion': dict({
-        'answers': list([
-          'light',
-        ]),
-        'main_answer': 'light',
-        'prompt': 'leve',
-      }),
-      'question_type': 'TypeInLatToEngQuestion',
     }),
   ])
 # ---

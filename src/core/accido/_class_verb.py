@@ -7,11 +7,21 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 from warnings import deprecated
 
+from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
 from .edge_cases import (
+    DEFECTIVE_VERBS,
+    FUTURE_ACTIVE_PARTICIPLE_VERBS,
     MISSING_PPP_VERBS,
     check_mixed_conjugation_verb,
-    find_irregular_endings,
+    find_derived_verb_changes,
+    find_derived_verb_stems,
+    find_irregular_verb_changes,
+    find_irregular_verb_stems,
+    get_derived_verb_conjugation,
+    get_irregular_verb_conjugation,
+    is_derived_verb,
+    is_irregular_verb,
 )
 from .exceptions import InvalidInputError
 from .misc import (
@@ -72,6 +82,7 @@ class Verb(_Word):
         "_preptc_stem",
         "conjugation",
         "deponent",
+        "fap_fourthpp",
         "infinitive",
         "no_ppp",
         "perfect",
@@ -142,11 +153,12 @@ class Verb(_Word):
         self._first = self.present
         self.deponent = False
         self.no_ppp = False
+        self.fap_fourthpp = False
 
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
 
-        if irregular_endings := find_irregular_endings(self.present):
+        if irregular_endings := DEFECTIVE_VERBS.get(self.present):
             self.endings = irregular_endings
             self.conjugation: Conjugation = 0
             return
@@ -161,6 +173,9 @@ class Verb(_Word):
                 f"Verb '{self.present}' is not irregular, but no perfect provided."
             )
 
+        irregular_flag = is_irregular_verb(self.present) or is_derived_verb(
+            self.present
+        )
         # ---------------------------------------------------------------------
         # DEPONENT VERBS
 
@@ -173,7 +188,11 @@ class Verb(_Word):
             self.deponent = True
 
             self._inf_stem = self.infinitive[:-3]
-            if check_mixed_conjugation_verb(self.present):
+            if is_irregular_verb(self.present):
+                self.conjugation = get_irregular_verb_conjugation(self.present)
+            elif is_derived_verb(self.present):
+                self.conjugation = get_derived_verb_conjugation(self.present)
+            elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
                 self._inf_stem = self.infinitive[:-1]
                 self.conjugation = 5
             elif self.infinitive.endswith("ari"):
@@ -207,6 +226,15 @@ class Verb(_Word):
 
             self._per_stem = None
 
+            if is_irregular_verb(self.present):
+                self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
+                    self.present
+                )
+            elif is_derived_verb(self.present):
+                self._inf_stem, self._preptc_stem = find_derived_verb_stems(
+                    self.present
+                )
+
             match self.conjugation:
                 case 1:
                     self.endings = self._first_conjugation()
@@ -223,6 +251,19 @@ class Verb(_Word):
                 case _:
                     self.endings = self._mixed_conjugation()
 
+            # FIXME: Not true for deponents!
+            if not irregular_flag:
+                self._preptc_stem = self.infinitive[:-2]
+                if self.conjugation == 4:
+                    self._preptc_stem += "e"
+                if self.conjugation == 5:
+                    self._preptc_stem = self.infinitive[:-3]
+                    self._preptc_stem += "ie"
+
+            if not self.no_ppp:
+                self._ppp_stem = self.ppp[:-2]
+                self._fap_stem = self.ppp[:-1] + "r"
+
             self.endings |= self._participles()
 
             return
@@ -230,7 +271,11 @@ class Verb(_Word):
         # ---------------------------------------------------------------------
         # NON-DEPONENT VERBS
 
-        if check_mixed_conjugation_verb(self.present):
+        if is_irregular_verb(self.present):
+            self.conjugation = get_irregular_verb_conjugation(self.present)
+        elif is_derived_verb(self.present):
+            self.conjugation = get_derived_verb_conjugation(self.present)
+        elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
             self.conjugation = 5
         elif self.infinitive.endswith("are"):
             self.conjugation = 1
@@ -243,12 +288,12 @@ class Verb(_Word):
                 f"Invalid infinitive form: '{self.infinitive}'"
             )
 
-        if not self.present.endswith("o"):
+        if not self.present.endswith("o") and not irregular_flag:
             raise InvalidInputError(
                 f"Invalid present form: '{self.present}' (must end in '-o')"
             )
 
-        if not self.perfect.endswith("i"):
+        if not self.perfect.endswith("i") and not irregular_flag:
             raise InvalidInputError(
                 f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
             )
@@ -263,6 +308,14 @@ class Verb(_Word):
                 raise InvalidInputError(
                     f"Verb '{self.present}' has no ppp, but ppp provided."
                 )
+        elif self.present in FUTURE_ACTIVE_PARTICIPLE_VERBS:
+            self.no_ppp = True
+            self.fap_fourthpp = True
+
+            if self.ppp is None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' does not have a future active participle provided."
+                )
         else:
             if self.ppp is None:
                 raise InvalidInputError(
@@ -273,6 +326,15 @@ class Verb(_Word):
             # exist
             if self.ppp.endswith("um"):
                 self.ppp = self.ppp[:-2] + "um"
+
+        if is_irregular_verb(self.present):
+            self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
+                self.present
+            )
+        elif is_derived_verb(self.present):
+            self._inf_stem, self._preptc_stem = find_derived_verb_stems(
+                self.present
+            )
 
         match self.conjugation:
             case 1:
@@ -290,7 +352,40 @@ class Verb(_Word):
             case _:
                 self.endings = self._mixed_conjugation()
 
+        if not irregular_flag:
+            self._preptc_stem = self.infinitive[:-2]
+            if self.conjugation == 4:
+                self._preptc_stem += "e"
+            if self.conjugation == 5:
+                self._preptc_stem = self.infinitive[:-3]
+                self._preptc_stem += "ie"
+
+        if self.fap_fourthpp:
+            assert self.ppp is not None
+
+            self._fap_stem = self.ppp[:-2]
+
+        elif not self.no_ppp:
+            assert self.ppp is not None
+
+            self._ppp_stem = self.ppp[:-2]
+            self._fap_stem = self.ppp[:-1] + "r"
+
         self.endings |= self._participles()
+
+        if is_irregular_verb(self.present):
+            self.endings = apply_changes(
+                self.endings, find_irregular_verb_changes(self.present)
+            )
+        elif is_derived_verb(self.present):
+            self.endings = apply_changes(
+                self.endings,
+                find_derived_verb_changes(
+                    (self.present, self.infinitive, self.perfect, self.ppp)
+                    if self.ppp
+                    else (self.present, self.infinitive, self.perfect)
+                ),
+            )
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
@@ -908,13 +1003,6 @@ class Verb(_Word):
         assert self.infinitive is not None
         assert self.perfect is not None
 
-        self._preptc_stem = self.infinitive[:-2]
-        if self.conjugation == 4:
-            self._preptc_stem += "e"
-        if self.conjugation == 5:
-            self._preptc_stem = self.infinitive[:-3]
-            self._preptc_stem += "ie"
-
         endings: Endings = {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
@@ -963,48 +1051,8 @@ class Verb(_Word):
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
         }
 
-        if not self.no_ppp:
-            assert self.ppp is not None
-            self._ppp_stem = self.ppp[:-2]
-            self._fap_stem = self.ppp[:-1] + "r"
-
+        if (not self.no_ppp) or self.fap_fourthpp:
             endings |= {
-                "Vperpasptcmnomsg": self.ppp,  # portatus
-                "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
-                "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
-                "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
-                "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
-                "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
-                "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
-                "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
-                "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
-                "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
-                "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
-                "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
-                "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
-                "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
-                "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
                 "Vfutactptcmnomsg": f"{self._fap_stem}us",  # portaturus
                 "Vfutactptcmvocsg": f"{self._fap_stem}e",  # portature
                 "Vfutactptcmaccsg": f"{self._fap_stem}um",  # portaturum
@@ -1042,6 +1090,48 @@ class Verb(_Word):
                 "Vfutactptcndatpl": f"{self._fap_stem}is",  # portaturis
                 "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
             }
+
+            if not self.fap_fourthpp:
+                assert self.ppp is not None
+
+                endings |= {
+                    "Vperpasptcmnomsg": self.ppp,  # portatus
+                    "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
+                    "Vperpasptcmaccsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcmgensg": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmdatsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcmablsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcmnompl": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmvocpl": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcmaccpl": f"{self._ppp_stem}os",  # portatos
+                    "Vperpasptcmgenpl": f"{self._ppp_stem}orum",  # portatorum
+                    "Vperpasptcmdatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcmablpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcfnomsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfvocsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfaccsg": f"{self._ppp_stem}am",  # portatam
+                    "Vperpasptcfgensg": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfdatsg": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfablsg": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcfnompl": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfvocpl": f"{self._ppp_stem}ae",  # portatae
+                    "Vperpasptcfaccpl": f"{self._ppp_stem}as",  # portatas
+                    "Vperpasptcfgenpl": f"{self._ppp_stem}arum",  # portarum
+                    "Vperpasptcfdatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcfablpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcnnomsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcnvocsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcnaccsg": f"{self._ppp_stem}um",  # portatum
+                    "Vperpasptcngensg": f"{self._ppp_stem}i",  # portati
+                    "Vperpasptcndatsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcnablsg": f"{self._ppp_stem}o",  # portato
+                    "Vperpasptcnnompl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcnvocpl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcnaccpl": f"{self._ppp_stem}a",  # portata
+                    "Vperpasptcngenpl": f"{self._ppp_stem}orum",  # portatorum
+                    "Vperpasptcndatpl": f"{self._ppp_stem}is",  # portatis
+                    "Vperpasptcnablpl": f"{self._ppp_stem}is",  # portatis
+                }
 
         if self.deponent:
             return {
