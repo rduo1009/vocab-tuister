@@ -26,7 +26,7 @@ const (
 
 	numberOfQuestions = 6
 
-	millisecondDelay = 50
+	millisecondDelay = 200
 )
 
 func init() {
