@@ -7,10 +7,13 @@ require (
 	github.com/charmbracelet/bubbletea v1.2.4
 	github.com/spf13/cobra v1.9.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
-	golang.org/x/term v0.30.0
+	golang.org/x/term v0.31.0
 )
 
-require github.com/charmbracelet/lipgloss v1.0.0
+require (
+	github.com/charmbracelet/lipgloss v1.0.0
+	github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a
+)
 
 require (
 	github.com/agnivade/levenshtein v1.2.0 // indirect
@@ -69,7 +72,6 @@ require (
 	github.com/muesli/mango-pflag v0.1.0 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/roff v0.1.0 // indirect
-	github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
@@ -91,7 +93,7 @@ require (
 	golang.org/x/mod v0.23.0 // indirect
 	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
