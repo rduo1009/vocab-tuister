@@ -1,6 +1,6 @@
 """Custom logger for vocab-tuister."""
 
-# ruff: noqa: T201, ARG001
+# ruff: noqa: ARG001
 
 from __future__ import annotations
 
