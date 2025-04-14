@@ -21,7 +21,7 @@ import (
 const (
 	outputListFile = "output-list.txt"
 
-	millisecondDelay = 100
+	millisecondDelay = 200
 )
 
 func init() {

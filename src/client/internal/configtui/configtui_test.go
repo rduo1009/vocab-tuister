@@ -23,7 +23,7 @@ const (
 	firstPageColumns = 20
 	numberOfPages    = 9
 
-	millisecondDelay = 50
+	millisecondDelay = 200
 )
 
 func init() {

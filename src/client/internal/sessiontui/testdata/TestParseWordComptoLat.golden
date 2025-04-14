@@ -1,67 +1,329 @@
-[?25l[?2004h]2;Vocab Tester Session[1;4;4mVocab[0m[4m [0m[1;4;4mTester[0m[4m [0m[1;4;4mSession[0m[0K
-Question 1/6[0K
-[0K
-What is [3mbar[0m in the quz?[0K
-> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[0K
-Score: 0/0 (0%)[0K
-[38;2;97;97;97mtab[0m [38;2;73;73;73mnext option[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⏎[0m [38;2;73;73;73msubmit answer[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+h[0m [38;2;73;73;73mtoggle additional help[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[8A[B[B[B[B> f[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> fo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> foo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> [1;38;2;77;255;77mfoo[0m [0K
-Answer is correct![0K
-[BScore: 1/1 (100%)[0K
-[300D[8A[BQuestion 2/6[0K
-[B[B> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[B[B[300D[8A[B[B[B[B> f[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> fo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> foo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> foof[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> foofo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> foofoo[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> [1;38;2;77;255;77mfoofoo[0m [0K
-Answer is correct![0K
-[BScore: 2/2 (100%)[0K
-[300D[8A[BQuestion 3/6[0K
-[B[B> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[B[B[300D[8A[B[B[B[B> b[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> ba[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> bar[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> bar [1;38;2;255;77;77m ✕ foo[0m[0K
-Answer is incorrect![0K
-[BScore: 2/3 (67%)[0K
-[300D[8A[BQuestion 4/6[0K
-[BWhat is [3mfoo[0m in the quux?[0K
-> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[B[B[300D[8A[B[B[B[B> b[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> ba[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> bar[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> [1;38;2;77;255;77mbar[0m [0K
-Answer is correct![0K
-[BScore: 3/4 (75%)[0K
-[300D[8A[BQuestion 5/6[0K
-[B[B> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[B[B[300D[8A[B[B[B[B> b[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> ba[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> bar[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> barb[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> barba[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> barbar[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> [1;38;2;77;255;77mbarbar[0m [0K
-Answer is correct![0K
-[BScore: 4/5 (80%)[0K
-[300D[8A[BQuestion 6/6[0K
-[B[B> [7mW[0m[38;5;240mrite answer here...[0m[0K
-[0K
-[B[B[300D[8A[B[B[B[B> b[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> ba[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> baz[7m [0m[0K
-[B[B[B[300D[8A[B[B[B[B> baz [1;38;2;255;77;77m ✕ bar[0m[0K
-Answer is incorrect![0K
-[BScore: 4/6 (67%)[0K
+[?25l[?2004h]2;Vocab Tester Session[1;4;4mVocab[0m[4m [0m[1;4;4mTester[0m[4m [0m[1;4;4mSession[0m[K
+Question 1/6[K
+[K
+What is [3mbar[0m in the quz?[K
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+[K
+Score: 0/0 (0%)[K
+[38;2;97;97;97mtab[0m [38;2;73;73;73mnext option[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⏎[0m [38;2;73;73;73msubmit answer[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+h[0m [38;2;73;73;73mtoggle additional help[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[8A
+
+
+
+> f[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> fo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mfoo[0m [K
+Answer is correct![K
+
+Score: 1/1 (100%)[K
+[300D[8A
+Question 2/6[K
+
+
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mWrite answer here...[0m[K
+
+
+
+[300D[8A
+
+
+
+> f[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> fo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foof[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foofo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foofoo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mfoofoo[0m [K
+Answer is correct![K
+
+Score: 2/2 (100%)[K
+[300D[8A
+Question 3/6[K
+
+
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mWrite answer here...[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar [1;38;2;255;77;77m ✕ foo[0m[K
+Answer is incorrect![K
+
+Score: 2/3 (67%)[K
+[300D[8A
+Question 4/6[K
+
+What is [3mfoo[0m in the quux?[K
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mWrite answer here...[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mbar[0m [K
+Answer is correct![K
+
+Score: 3/4 (75%)[K
+[300D[8A
+Question 5/6[K
+
+
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mWrite answer here...[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barb[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barbar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mbarbar[0m [K
+Answer is correct![K
+
+Score: 4/5 (80%)[K
+[300D[8A
+Question 6/6[K
+
+
+> [7mW[0m[38;5;240mrite answer here...[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mWrite answer here...[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> baz[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> baz [1;38;2;255;77;77m ✕ bar[0m[K
+Answer is incorrect![K
+
+Score: 4/6 (67%)[K
 [300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
