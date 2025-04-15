@@ -1,6 +1,6 @@
 """The Flask API that sends questions to the client."""
 
-# ruff: noqa: D103, TRY400
+# ruff: noqa: D103
 
 from __future__ import annotations
 
