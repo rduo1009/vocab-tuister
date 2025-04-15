@@ -357,19 +357,37 @@ def _find_impactind_inflections(
             case (Number.SINGULAR, 1):
                 return (
                     f"I {past}",
-                    {f"I {past}", f"I was {present_participle}"},
+                    {
+                        f"I {past}",
+                        f"I was {present_participle}",
+                        f"I used to {lemma}",
+                        f"I began to {lemma}",
+                        f"I kept {present_participle}",
+                    },
                 )
 
             case (Number.PLURAL, 1):
                 return (
                     f"we {past}",
-                    {f"we {past}", f"we were {present_participle}"},
+                    {
+                        f"we {past}",
+                        f"we were {present_participle}",
+                        f"we used to {lemma}",
+                        f"we began to {lemma}",
+                        f"we kept {present_participle}",
+                    },
                 )
 
             case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
                 return (
                     f"you {past}",
-                    {f"you {past}", f"you were {present_participle}"},
+                    {
+                        f"you {past}",
+                        f"you were {present_participle}",
+                        f"you used to {lemma}",
+                        f"you began to {lemma}",
+                        f"you kept {present_participle}",
+                    },
                 )
 
             case (Number.SINGULAR, 3):
@@ -378,35 +396,65 @@ def _find_impactind_inflections(
                     {
                         f"he {past}",
                         f"he was {present_participle}",
+                        f"he used to {lemma}",
+                        f"he began to {lemma}",
+                        f"he kept {present_participle}",
                         f"she {past}",
                         f"she was {present_participle}",
+                        f"she used to {lemma}",
+                        f"she began to {lemma}",
+                        f"she kept {present_participle}",
                         f"it {past}",
                         f"it was {present_participle}",
+                        f"it used to {lemma}",
+                        f"it began to {lemma}",
+                        f"it kept {present_participle}",
                     },
                 )
 
         return (
             f"they {past}",
-            {f"they {past}", f"they were {present_participle}"},
+            {
+                f"they {past}",
+                f"they were {present_participle}",
+                f"they used to {lemma}",
+                f"they began to {lemma}",
+                f"they kept {present_participle}",
+            },
         )
 
     match (number, person):
         case (Number.SINGULAR, 1):
             return (
                 f"I was {present_participle}",
-                {f"I was {present_participle}"},
+                {
+                    f"I was {present_participle}",
+                    f"I used to {lemma}",
+                    f"I began to {lemma}",
+                    f"I kept {present_participle}",
+                },
             )
 
         case (Number.PLURAL, 1):
             return (
                 f"we were {present_participle}",
-                {f"we were {present_participle}"},
+                {
+                    f"we were {present_participle}",
+                    f"we used to {lemma}",
+                    f"we began to {lemma}",
+                    f"we kept {present_participle}",
+                },
             )
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
             return (
                 f"you were {present_participle}",
-                {f"you were {present_participle}"},
+                {
+                    f"you were {present_participle}",
+                    f"you used to {lemma}",
+                    f"you began to {lemma}",
+                    f"you kept {present_participle}",
+                },
             )
 
         case (Number.SINGULAR, 3):
@@ -414,14 +462,28 @@ def _find_impactind_inflections(
                 f"he was {present_participle}",
                 {
                     f"he was {present_participle}",
+                    f"he used to {lemma}",
+                    f"he began to {lemma}",
+                    f"he kept {present_participle}",
                     f"she was {present_participle}",
+                    f"she used to {lemma}",
+                    f"she began to {lemma}",
+                    f"she kept {present_participle}",
                     f"it was {present_participle}",
+                    f"it used to {lemma}",
+                    f"it began to {lemma}",
+                    f"it kept {present_participle}",
                 },
             )
 
     return (
         f"they were {present_participle}",
-        {f"they were {present_participle}"},
+        {
+            f"they were {present_participle}",
+            f"they used to {lemma}",
+            f"they began to {lemma}",
+            f"they kept {present_participle}",
+        },
     )
 
 
@@ -434,7 +496,13 @@ def _find_imppasind_inflections(
         case (Number.SINGULAR, 1):
             return (
                 f"I was {past_participle}",
-                {f"I was {past_participle}", f"I was being {past_participle}"},
+                {
+                    f"I was {past_participle}",
+                    f"I was being {past_participle}",
+                    f"I used to be {past_participle}",
+                    f"I began to be {past_participle}",
+                    f"I kept being {past_participle}",
+                },
             )
 
         case (Number.PLURAL, 1):
@@ -443,6 +511,9 @@ def _find_imppasind_inflections(
                 {
                     f"we were {past_participle}",
                     f"we were being {past_participle}",
+                    f"we used to be {past_participle}",
+                    f"we began to be {past_participle}",
+                    f"we kept being {past_participle}",
                 },
             )
 
@@ -452,6 +523,9 @@ def _find_imppasind_inflections(
                 {
                     f"you were {past_participle}",
                     f"you were being {past_participle}",
+                    f"you used to be {past_participle}",
+                    f"you began to be {past_participle}",
+                    f"you kept being {past_participle}",
                 },
             )
 
@@ -461,16 +535,31 @@ def _find_imppasind_inflections(
                 {
                     f"he was {past_participle}",
                     f"he was being {past_participle}",
+                    f"he used to be {past_participle}",
+                    f"he began to be {past_participle}",
+                    f"he kept being {past_participle}",
                     f"she was {past_participle}",
                     f"she was being {past_participle}",
+                    f"she used to be {past_participle}",
+                    f"she began to be {past_participle}",
+                    f"she kept being {past_participle}",
                     f"it was {past_participle}",
                     f"it was being {past_participle}",
+                    f"it used to be {past_participle}",
+                    f"it began to be {past_participle}",
+                    f"it kept being {past_participle}",
                 },
             )
 
     return (
         f"they were {past_participle}",
-        {f"they were {past_participle}", f"they were being {past_participle}"},
+        {
+            f"they were {past_participle}",
+            f"they were being {past_participle}",
+            f"they used to be {past_participle}",
+            f"they began to be {past_participle}",
+            f"they kept being {past_participle}",
+        },
     )
 
 
