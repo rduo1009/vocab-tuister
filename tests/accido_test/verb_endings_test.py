@@ -423,67 +423,7 @@ class TestVerbConjugation:
         assert Verb(pp[0], pp[1], pp[2], pp[3], meaning="placeholder").endings == IRREGULAR_VERBS[word]  # type: ignore[arg-type]
 
 
-# TODO: Rework this to be more like pronouns
-# FIXME: Clean this up
 class TestIrregularVerbConjugation:
-    # @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    #     "sum", "es", "est", "sumus", "estis", "sunt",
-    #     "eram", "eras", "erat", "eramus", "eratis", "erant",
-    #     "ero", "eris", "erit", "erimus", "eritis", "erunt",
-    #     "fui", "fuisti", "fuit", "fuimus", "fuistis", "fuerunt",
-    #     "fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant",
-    #     "fuero", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
-
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-
-    #     "sim", "sis", "sit", "simus", "sitis", "sint",
-    #     "essem", "esses", "esset", "essemus", "essetis", "essent",
-    #     "fuerim", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
-    #     "fuissem", "fuisses", "fuisset", "fuissemus", "fuissetis", "fuissent",
-
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-    #     None, None, None, None, None, None,
-
-    #     "es", "este",
-
-    #     "esse", None,
-    # def test_irregular_verb_normal(self, tense, voice, mood, person, number, expected):
-    #     word = Verb("sum", "esse", "fui", "futurus", meaning="be")
-    #     assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
-
-    # @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-    #     "eo", "is", "it", "imus", "itis", "eunt",
-    #     "ibam", "ibas", "ibat", "ibamus", "ibatis", "ibant",
-    #     "ibo", "ibis", "ibit", "ibimus", "ibitis", "ibunt",
-    #     "ii", "isti", "iit", "iimus", "istis", "ierunt",
-    #     "ieram", "ieras", "ierat", "ieramus", "ieratis", "ierant",
-    #     "iero", "ieris", "ierit", "ierimus", "ieritis", "ierint",
-
-    #     "eor", "iris", "itur", "imur", "imini", "euntur",
-    #     "ibar", "ibaris", "ibatur", "ibamur", "ibamini", "ibantur",
-    #     "ibor", "iberis", "ibitur", "ibimur", "ibimini", "ibuntur",
-    #     "itus sum", "itus es", "itus est", "iti sumus", "iti estis", "iti sunt",
-    #     "itus eram", "itus eras", "itus erat", "iti eramus", "iti eratis", "iti erant",
-    #     "itus ero", "itus eris", "itus erit", "iti erimus", "iti eritis", "iti erunt",
-
-    #     "eam", "eas", "eat", "eamus", "eatis", "eant",
-    #     "irem", "ires", "iret", "iremus", "iretis", "irent",
-    #     "ierim", "ieris", "ierit", "ierimus", "ieritis", "ierint",
-    #     "issem", "isses", "isset", "issemus", "issetis", "issent",
-
-    #     "i", "ite",
-    #     "ire", "iri",
-    # def test_irregular_verb_normal2(self, tense, voice, mood, person, number, expected):
-    #     word = Verb("eo", "ire", "ii", "itus", meaning="go")
-    #     assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
-
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "elego", "elegas", "elegat", "elegamus", "elegatis", "elegant",
         "elegabam", "elegabas", "elegabat", "elegabamus", "elegabatis", "elegabant",
