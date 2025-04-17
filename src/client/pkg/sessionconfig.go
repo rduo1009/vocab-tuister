@@ -83,6 +83,7 @@ type SessionConfig struct {
 	ExcludeVerbIrregularConjugation           bool `json:"exclude-verb-irregular-conjugation"`
 	ExcludeVerbMixedConjugation               bool `json:"exclude-verb-mixed-conjugation"`
 	ExcludeVerbPerfectActiveIndicative        bool `json:"exclude-verb-perfect-active-indicative"`
+	ExcludeVerbPerfectActiveSubjunctive       bool `json:"exclude-verb-perfect-active-subjunctive"`
 	ExcludeVerbPerfectPassiveIndicative       bool `json:"exclude-verb-perfect-passive-indicative"`
 	ExcludeVerbPluperfectActiveIndicative     bool `json:"exclude-verb-pluperfect-active-indicative"`
 	ExcludeVerbPluperfectActiveSubjunctive    bool `json:"exclude-verb-pluperfect-active-subjunctive"`
@@ -91,6 +92,7 @@ type SessionConfig struct {
 	ExcludeVerbPresentActiveImperative        bool `json:"exclude-verb-present-active-imperative"`
 	ExcludeVerbPresentActiveIndicative        bool `json:"exclude-verb-present-active-indicative"`
 	ExcludeVerbPresentActiveInfinitive        bool `json:"exclude-verb-present-active-infinitive"`
+	ExcludeVerbPresentActiveSubjunctive       bool `json:"exclude-verb-present-active-subjunctive"`
 	ExcludeVerbPresentPassiveIndicative       bool `json:"exclude-verb-present-passive-indicative"`
 	ExcludeVerbPresentPassiveInfinitive       bool `json:"exclude-verb-present-passive-infinitive"`
 	ExcludeVerbSecondConjugation              bool `json:"exclude-verb-second-conjugation"`
