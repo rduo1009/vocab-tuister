@@ -1,6 +1,8 @@
 @ Verb
 hear: audio, audire, audivi, auditus
-take: capio, capere, cepi
+take: capio, capere, cepi, captus
+try: conor, conari, conatus sum
+enter: ingredior, ingredi, ingressus sum
 say: inquam
 
 @ Noun

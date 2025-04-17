@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..lego.misc import VocabList
     from .type_aliases import Settings, Vocab
 
+
 RULE_REGEX: Final[dict[str, str]] = {
     # Verb tense/voice/mood
     "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
@@ -21,10 +22,17 @@ RULE_REGEX: Final[dict[str, str]] = {
     "exclude-verb-future-perfect-active-indicative": r"^Vfpractind[a-z][a-z]\d$",
     "exclude-verb-perfect-active-indicative": r"^Vperactind[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-indicative": r"^Vplpactind[a-z][a-z]\d$",
-    "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
-    "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude-verb-present-passive-indicative": r"^Vprepasind[a-z][a-z]\d$",
+    "exclude-verb-imperfect-passive-indicative": r"^Vimppasind[a-z][a-z]\d$",
+    "exclude-verb-future-passive-indicative": r"^Vfutpasind[a-z][a-z]\d$",
+    "exclude-verb-future-perfect-passive-indicative": r"^Vfprpasind[a-z][a-z]\d$",
+    "exclude-verb-perfect-passive-indicative": r"^Vperpasind[a-z][a-z]\d$",
+    "exclude-verb-pluperfect-passive-indicative": r"^Vplppasind[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-subjunctive": r"^Vimpactsbj[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-subjunctive": r"^Vplpactsbj[a-z][a-z]\d$",
+    "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
+    "exclude-verb-present-passive-infinitive": r"^Vprepasinf   $",
 
     # Verb number
     "exclude-verb-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg\d$",
@@ -41,6 +49,7 @@ RULE_REGEX: Final[dict[str, str]] = {
     # Participle tense/voice
     "exclude-participle-present-active": r"^Vpreactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
     "exclude-participle-perfect-passive": r"^Vperpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude-participle-future-active": r"^Vfutactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle gender
     "exclude-participle-masculine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcm[a-z][a-z][a-z][a-z][a-z]$",
@@ -200,6 +209,9 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                 if conjugation_excluded:
                     vocab.remove(item)
 
+                if settings["exclude-deponents"] and item.deponent:
+                    vocab.remove(item)
+
             case Noun():
                 current_declension = item.declension
                 declension_excluded = (
@@ -241,6 +253,7 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                     and current_adj_declension == "3"
                 ):
                     vocab.remove(item)
+
     return vocab
 
 
