@@ -58,14 +58,14 @@ func (m Model) Init() tea.Cmd {
 				return errMsg{err}
 			}
 
-			var sessionConfig pkg.SessionConfig
-			err = json.Unmarshal(sessionConfigData, &sessionConfig)
+			var rawSessionConfig map[string]any
+			err = json.Unmarshal(sessionConfigData, &rawSessionConfig)
 			if err != nil {
 				return errMsg{err}
 			}
-			sessionConfig.NumberOfQuestions = m.numberOfQuestions
+			rawSessionConfig["number-of-questions"] = m.numberOfQuestions
 
-			sessionConfigData, err = json.Marshal(sessionConfig)
+			sessionConfigData, err = json.Marshal(rawSessionConfig)
 			if err != nil {
 				return errMsg{err}
 			}
@@ -166,6 +166,12 @@ func (m Model) Init() tea.Cmd {
 						len(response),
 					),
 				}
+			}
+
+			var sessionConfig pkg.SessionConfig
+			err = json.Unmarshal(sessionConfigData, &sessionConfig)
+			if err != nil {
+				return errMsg{err}
 			}
 
 			return initOkMsg{
