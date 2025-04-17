@@ -350,25 +350,25 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'caperet',
+          'captorum',
         ]),
-        'components': 'imperfect active subjunctive singular 3rd person',
-        'main_answer': 'caperet',
+        'components': 'perfect passive participle neuter genitive plural',
+        'main_answer': 'captorum',
         'prompt': 'take: capio, capere, cepi, captus',
       }),
       'question_type': 'ParseWordCompToLatQuestion',
     }),
     dict({
-      'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'puer',
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'I',
         'choices': list([
-          'laetus',
-          'puer',
-          'nomen',
+          'happy',
+          'I',
+          'dog',
         ]),
-        'prompt': 'boy',
+        'prompt': 'ego',
       }),
-      'question_type': 'MultipleChoiceEngToLatQuestion',
+      'question_type': 'MultipleChoiceLatToEngQuestion',
     }),
     dict({
       'TypeInLatToEngQuestion': dict({

@@ -411,6 +411,18 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}abimur",  # portabimur
             "Vfutpasindpl2": f"{self._inf_stem}abimini",  # portabimini
             "Vfutpasindpl3": f"{self._inf_stem}abuntur",  # portabuntur
+            "Vprepassbjsg1": f"{self._inf_stem}er",  # porter
+            "Vprepassbjsg2": f"{self._inf_stem}eris",  # porteris
+            "Vprepassbjsg3": f"{self._inf_stem}etur",  # portetur
+            "Vprepassbjpl1": f"{self._inf_stem}emur",  # portemur
+            "Vprepassbjpl2": f"{self._inf_stem}emini",  # portemini
+            "Vprepassbjpl3": f"{self._inf_stem}entur",  # portentur
+            "Vimppassbjsg1": f"{self.infinitive}r",  # portarer
+            "Vimppassbjsg2": f"{self.infinitive}ris",  # portareris
+            "Vimppassbjsg3": f"{self.infinitive}tur",  # portaretur
+            "Vimppassbjpl1": f"{self.infinitive}mur",  # portaremur
+            "Vimppassbjpl2": f"{self.infinitive}mini",  # portaremini
+            "Vimppassbjpl3": f"{self.infinitive}ntur",  # portarentur
             "Vprepasinf   ": f"{self._inf_stem}ari",  # portari
         }
 
@@ -436,6 +448,18 @@ class Verb(_Word):
                 "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # portati erimus
                 "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # portati eritis
                 "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # portati erunt
+                "Vperpassbjsg1": f"{self.ppp} sim",  # portatus sim
+                "Vperpassbjsg2": f"{self.ppp} sis",  # portatus sis
+                "Vperpassbjsg3": f"{self.ppp} sit",  # portatus sit
+                "Vperpassbjpl1": f"{self.ppp[:-2]}i simus",  # portati simus
+                "Vperpassbjpl2": f"{self.ppp[:-2]}i sitis",  # portati sitis
+                "Vperpassbjpl3": f"{self.ppp[:-2]}i sint",  # portati sint
+                "Vplppassbjsg1": f"{self.ppp} essem",  # portatus essem
+                "Vplppassbjsg2": f"{self.ppp} esses",  # portatus esses
+                "Vplppassbjsg3": f"{self.ppp} esset",  # portatus esset
+                "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # portati essemus
+                "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # portati essetis
+                "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # portati essent
             }
 
         if self.deponent:
@@ -534,6 +558,18 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}ebimur",  # docebimur
             "Vfutpasindpl2": f"{self._inf_stem}ebimini",  # docebimini
             "Vfutpasindpl3": f"{self._inf_stem}ebuntur",  # docebuntur
+            "Vprepassbjsg1": f"{self._inf_stem}ear",  # docear
+            "Vprepassbjsg2": f"{self._inf_stem}earis",  # docearis
+            "Vprepassbjsg3": f"{self._inf_stem}eatur",  # doceatur
+            "Vprepassbjpl1": f"{self._inf_stem}eamur",  # doceamur
+            "Vprepassbjpl2": f"{self._inf_stem}eamini",  # doceamini
+            "Vprepassbjpl3": f"{self._inf_stem}eantur",  # doceantur
+            "Vimppassbjsg1": f"{self.infinitive}r",  # docerer
+            "Vimppassbjsg2": f"{self.infinitive}ris",  # docereris
+            "Vimppassbjsg3": f"{self.infinitive}tur",  # doceretur
+            "Vimppassbjpl1": f"{self.infinitive}mur",  # doceremur
+            "Vimppassbjpl2": f"{self.infinitive}mini",  # doceremini
+            "Vimppassbjpl3": f"{self.infinitive}ntur",  # docerentur
             "Vprepasinf   ": f"{self._inf_stem}eri",  # doceri
         }
 
@@ -559,6 +595,18 @@ class Verb(_Word):
                 "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # docti erimus
                 "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # docti eritis
                 "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # docti erunt
+                "Vperpassbjsg1": f"{self.ppp} sim",  # doctus sim
+                "Vperpassbjsg2": f"{self.ppp} sis",  # doctus sis
+                "Vperpassbjsg3": f"{self.ppp} sit",  # doctus sit
+                "Vperpassbjpl1": f"{self.ppp[:-2]}i simus",  # docti simus
+                "Vperpassbjpl2": f"{self.ppp[:-2]}i sitis",  # docti sitis
+                "Vperpassbjpl3": f"{self.ppp[:-2]}i sint",  # docti sint
+                "Vplppassbjsg1": f"{self.ppp} essem",  # doctus essem
+                "Vplppassbjsg2": f"{self.ppp} esses",  # doctus esses
+                "Vplppassbjsg3": f"{self.ppp} esset",  # doctus esset
+                "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # docti essemus
+                "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # docti essetis
+                "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # docti essent
             }
 
         if self.deponent:
@@ -656,6 +704,18 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}emur",  # trahemur
             "Vfutpasindpl2": f"{self._inf_stem}emini",  # trahemini
             "Vfutpasindpl3": f"{self._inf_stem}entur",  # trahentur
+            "Vprepassbjsg1": f"{self._inf_stem}ar",  # trahar
+            "Vprepassbjsg2": f"{self._inf_stem}aris",  # traharis
+            "Vprepassbjsg3": f"{self._inf_stem}atur",  # trahatur
+            "Vprepassbjpl1": f"{self._inf_stem}amur",  # trahamur
+            "Vprepassbjpl2": f"{self._inf_stem}amini",  # trahamini
+            "Vprepassbjpl3": f"{self._inf_stem}antur",  # trahantur
+            "Vimppassbjsg1": f"{self.infinitive}r",  # traherer
+            "Vimppassbjsg2": f"{self.infinitive}ris",  # trahereris
+            "Vimppassbjsg3": f"{self.infinitive}tur",  # traheretur
+            "Vimppassbjpl1": f"{self.infinitive}mur",  # traheremur
+            "Vimppassbjpl2": f"{self.infinitive}mini",  # traheremini
+            "Vimppassbjpl3": f"{self.infinitive}ntur",  # traherentur
             "Vprepasinf   ": f"{self._inf_stem}i",  # trahi
         }
 
@@ -681,6 +741,18 @@ class Verb(_Word):
                 "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # tracti erimus
                 "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # tracti eritis
                 "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # tracti erunt
+                "Vperpassbjsg1": f"{self.ppp} sim",  # tractus sim
+                "Vperpassbjsg2": f"{self.ppp} sis",  # tractus sis
+                "Vperpassbjsg3": f"{self.ppp} sit",  # tractus sit
+                "Vperpassbjpl1": f"{self.ppp[:-2]}i simus",  # tracti simus
+                "Vperpassbjpl2": f"{self.ppp[:-2]}i sitis",  # tracti sitis
+                "Vperpassbjpl3": f"{self.ppp[:-2]}i sint",  # tracti sint
+                "Vplppassbjsg1": f"{self.ppp} essem",  # tractus essem
+                "Vplppassbjsg2": f"{self.ppp} esses",  # tractus esses
+                "Vplppassbjsg3": f"{self.ppp} esset",  # tractus esset
+                "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # tracti essemus
+                "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # tracti essetis
+                "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # tracti essent
             }
 
         if self.deponent:
@@ -778,6 +850,18 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}iemur",  # audiemur
             "Vfutpasindpl2": f"{self._inf_stem}iemini",  # audiemini
             "Vfutpasindpl3": f"{self._inf_stem}ientur",  # audientur
+            "Vprepassbjsg1": f"{self._inf_stem}iar",  # audiar
+            "Vprepassbjsg2": f"{self._inf_stem}iaris",  # audiaris
+            "Vprepassbjsg3": f"{self._inf_stem}iatur",  # audiatur
+            "Vprepassbjpl1": f"{self._inf_stem}iamur",  # audiamur
+            "Vprepassbjpl2": f"{self._inf_stem}iamini",  # audiamini
+            "Vprepassbjpl3": f"{self._inf_stem}iantur",  # audiantur
+            "Vimppassbjsg1": f"{self.infinitive}r",  # audirer
+            "Vimppassbjsg2": f"{self.infinitive}ris",  # audireris
+            "Vimppassbjsg3": f"{self.infinitive}tur",  # audiretur
+            "Vimppassbjpl1": f"{self.infinitive}mur",  # audiremur
+            "Vimppassbjpl2": f"{self.infinitive}mini",  # audiremini
+            "Vimppassbjpl3": f"{self.infinitive}ntur",  # audirentur
             "Vprepasinf   ": f"{self._inf_stem}iri",  # audiri
         }
 
@@ -803,6 +887,18 @@ class Verb(_Word):
                 "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # auditi erimus
                 "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # auditi eritis
                 "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # auditi erunt
+                "Vperpassbjsg1": f"{self.ppp} sim",  # auditus sim
+                "Vperpassbjsg2": f"{self.ppp} sis",  # auditus sis
+                "Vperpassbjsg3": f"{self.ppp} sit",  # auditus sit
+                "Vperpassbjpl1": f"{self.ppp[:-2]}i simus",  # auditi simus
+                "Vperpassbjpl2": f"{self.ppp[:-2]}i sitis",  # auditi sitis
+                "Vperpassbjpl3": f"{self.ppp[:-2]}i sint",  # auditi sint
+                "Vplppassbjsg1": f"{self.ppp} essem",  # auditus essem
+                "Vplppassbjsg2": f"{self.ppp} esses",  # auditus esses
+                "Vplppassbjsg3": f"{self.ppp} esset",  # auditus esset
+                "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # auditi essemus
+                "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # auditi essetis
+                "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # auditi essent
             }
 
         if self.deponent:
@@ -900,6 +996,18 @@ class Verb(_Word):
             "Vfutpasindpl1": f"{self._inf_stem}iemur",  # capiemur
             "Vfutpasindpl2": f"{self._inf_stem}iemini",  # capiemini
             "Vfutpasindpl3": f"{self._inf_stem}ientur",  # capientur
+            "Vprepassbjsg1": f"{self._inf_stem}iar",  # capiar
+            "Vprepassbjsg2": f"{self._inf_stem}iaris",  # capiaris
+            "Vprepassbjsg3": f"{self._inf_stem}iatur",  # capiatur
+            "Vprepassbjpl1": f"{self._inf_stem}iamur",  # capiamur
+            "Vprepassbjpl2": f"{self._inf_stem}iamini",  # capiamini
+            "Vprepassbjpl3": f"{self._inf_stem}iantur",  # capiantur
+            "Vimppassbjsg1": f"{self.infinitive}r",  # caperer
+            "Vimppassbjsg2": f"{self.infinitive}ris",  # capereris
+            "Vimppassbjsg3": f"{self.infinitive}tur",  # caperetur
+            "Vimppassbjpl1": f"{self.infinitive}mur",  # caperemur
+            "Vimppassbjpl2": f"{self.infinitive}mini",  # caperemini
+            "Vimppassbjpl3": f"{self.infinitive}ntur",  # caperentur
             "Vprepasinf   ": f"{self._inf_stem}i",  # capi
         }
 
@@ -925,6 +1033,18 @@ class Verb(_Word):
                 "Vfprpasindpl1": f"{self.ppp[:-2]}i erimus",  # capti erimus
                 "Vfprpasindpl2": f"{self.ppp[:-2]}i eritis",  # capti eritis
                 "Vfprpasindpl3": f"{self.ppp[:-2]}i erunt",  # capti erunt
+                "Vperpassbjsg1": f"{self.ppp} sim",  # captus sim
+                "Vperpassbjsg2": f"{self.ppp} sis",  # captus sis
+                "Vperpassbjsg3": f"{self.ppp} sit",  # captus sit
+                "Vperpassbjpl1": f"{self.ppp[:-2]}i simus",  # capti simus
+                "Vperpassbjpl2": f"{self.ppp[:-2]}i sitis",  # capti sitis
+                "Vperpassbjpl3": f"{self.ppp[:-2]}i sint",  # capti sint
+                "Vplppassbjsg1": f"{self.ppp} essem",  # captus essem
+                "Vplppassbjsg2": f"{self.ppp} esses",  # captus esses
+                "Vplppassbjsg3": f"{self.ppp} esset",  # captus esset
+                "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # capti essemus
+                "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # capti essetis
+                "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # capti essent
             }
 
         if self.deponent:
