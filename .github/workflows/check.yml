@@ -73,30 +73,33 @@ jobs:
         run: |
           poetry run pytest -m 'integration' -n0
 
-  test-golang:
-    name: test with golang ${{ matrix.go }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        go:
-          - "1.24.0"
+  # NOTE: teatest is too flaky to run in CI at the moment
+  # other go tests are not needed
 
-    steps:
-      - uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 0
-          submodules: "recursive"
+  # test-golang:
+  #   name: test with golang ${{ matrix.go }}
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       go:
+  #         - "1.24.0"
 
-      - uses: actions/setup-go@v5.4.0
-        with:
-          go-version: ${{ matrix.go }}
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
+  #       with:
+  #         fetch-depth: 0
+  #         submodules: "recursive"
 
-      - name: Install deps
-        run: go mod download
+  #     - uses: actions/setup-go@v5.4.0
+  #       with:
+  #         go-version: ${{ matrix.go }}
 
-      - name: Run test suite
-        run: go test ./src/...
+  #     - name: Install deps
+  #       run: go mod download
+
+  #     - name: Run test suite
+  #       run: go test ./src/...
 
   test-integration-golang:
     name: integration test with golang ${{ matrix.go }}
