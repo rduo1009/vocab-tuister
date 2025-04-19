@@ -609,7 +609,6 @@ DERIVED_IRREGULAR_VERBS: Final[dict[_DerivedVerbGroups, set[_DerivedVerb]]] = {
     "eo_impersonal_passive": {"abeo", "pereo", "redeo"},
 }
 
-# TODO: Replace these with the new endings
 DERIVED_IRREGULAR_CHANGES: Final[
     dict[_DerivedVerbGroups, Callable[[tuple[str, ...]], DictChanges[Ending]]]
 ] = {
