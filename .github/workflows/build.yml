@@ -80,7 +80,7 @@ jobs:
           poe build --target-arch x86_64
 
       - name: Release
-        uses: softprops/action-gh-release@v2.2.1
+        uses: softprops/action-gh-release@v2.2.2
         with:
           files: |
             dist/*
