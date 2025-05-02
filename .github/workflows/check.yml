@@ -28,7 +28,7 @@ jobs:
       #     path: ".tox"
       #     key: ${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml','tox.ini','poetry.lock') }}
 
-      - uses: actions/setup-python@v5.5.0
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ matrix.py }}
 
@@ -59,7 +59,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-python@v5.5.0
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ matrix.py }}
 
