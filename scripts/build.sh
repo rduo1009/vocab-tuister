@@ -22,15 +22,15 @@ fi
 dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        pyinstaller vocab-tuister-server.spec --clean -- --debug
+        pyinstaller vocab-tuister-server.spec -- --debug
     else
-        pyinstaller vocab-tuister-server.spec --clean
+        pyinstaller vocab-tuister-server.spec
     fi
 else
     if [[ $debug == "True" ]]; then
-        pyinstaller vocab-tuister-server.spec --clean -- --debug --target-arch $target_arch
+        pyinstaller vocab-tuister-server.spec -- --debug --target-arch $target_arch
     else
-        pyinstaller vocab-tuister-server.spec --clean -- --target-arch $target_arch
+        pyinstaller vocab-tuister-server.spec -- --target-arch $target_arch
     fi
 fi
 
