@@ -71,13 +71,7 @@ jobs:
         if: ${{ matrix.os == 'macos-14' }}
         run: |
           poetry config virtualenvs.in-project true
-          poe build --target-arch arm64
-
-      - name: Build project
-        if: ${{ matrix.os == 'macos-13' }}
-        run: |
-          poetry config virtualenvs.in-project true
-          poe build --target-arch x86_64
+          poe build --target-arch universal2
 
       - name: Release
         uses: softprops/action-gh-release@v2.2.2
