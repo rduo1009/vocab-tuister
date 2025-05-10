@@ -18,7 +18,7 @@ if [[ "$target_arch" == "universal2" ]]; then
     fi
 fi
 
-# Build
+# Build python server
 dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
@@ -34,6 +34,7 @@ else
     fi
 fi
 
+# Determine client binary name
 if [[ -n "$target_arch" ]]; then
     clientbin_name="darwin-$target_arch"
 else
@@ -55,7 +56,12 @@ else
             fi
             ;;
         MINGW*|CYGWIN*|MSYS*)
-            clientbin_name="windows"
+            arch=$(uname -m)
+            if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+                clientbin_name="windows-arm64"
+            else
+                clientbin_name="windows-x86_64"
+            fi
             ;;
         *)
             echo "Unknown OS"
@@ -64,11 +70,19 @@ else
     esac
 fi
 
+# Add Windows .exe extension for the output file
+if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
+    output_file="./dist/vocab-tuister-${clientbin_name}.exe"
+else
+    output_file="./dist/vocab-tuister-${clientbin_name}"
+fi
+
+# Build go client
 go mod tidy
 go generate -x src/generate.go
 go build \
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
-    -o "./dist/vocab-tuister-$clientbin_name" \
+    -o "$output_file" \
     ./src/main.go
 
 # echo -n "Do you want to reinstall all deps? (Y/n) "
