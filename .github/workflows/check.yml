@@ -96,7 +96,27 @@ jobs:
         run: go mod download
 
       - name: Run test suite
+        id: run-tests
         run: go test ./src/...
+        continue-on-error: true
+
+      - name: Update test data
+        if: steps.run-tests.outcome == 'failure'
+        run: go test ./src/client/internal/... -update
+
+      - name: Upload changed files
+        if: steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: changed-files
+          path: |
+            src/client/internal/configtui/testdata/
+            src/client/internal/listtui/testdata
+            src/client/internal/sessiontui/testdata
+
+      - name: Fail workflow if applicable
+        if: steps.run-tests.outcome == 'failure'
+        run: exit 1
 
   test-integration-golang:
     name: integration test with golang ${{ matrix.go }}

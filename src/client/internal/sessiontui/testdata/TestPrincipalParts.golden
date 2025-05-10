@@ -2,8 +2,8 @@
 Question 1/6[K
 [K
 Principal parts of [3mfoo[0m[K
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
 [K
 [K
 Score: 0/0 (0%)[K
@@ -48,7 +48,7 @@ Score: 0/0 (0%)[K
 
 
 > foo1 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -101,8 +101,8 @@ Score: 1/1 (100%)[K
 Question 2/6[K
 
 
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
 [K
 
 
@@ -110,7 +110,7 @@ Question 2/6[K
 
 
 
-[38;2;255;51;153m> [0m[38;5;240mFirst principal part[0m[K
+[38;2;255;51;153m> [0m[38;5;240mF[0m[K
 
 
 
@@ -156,7 +156,7 @@ Question 2/6[K
 
 
 > foo1 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -209,8 +209,8 @@ Score: 1/2 (50%)[K
 Question 3/6[K
 
 
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
 [K
 
 
@@ -218,7 +218,7 @@ Question 3/6[K
 
 
 
-[38;2;255;51;153m> [0m[38;5;240mFirst principal part[0m[K
+[38;2;255;51;153m> [0m[38;5;240mF[0m[K
 
 
 
@@ -264,7 +264,7 @@ Question 3/6[K
 
 
 > foo3 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -317,9 +317,9 @@ Score: 1/3 (33%)[K
 Question 4/6[K
 
 Principal parts of [3mbar[0m[K
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
-> [38;5;240mThird principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
+> [38;5;240mT[0m[K
 
 [K
 Score: 1/3 (33%)[K
@@ -327,7 +327,7 @@ Score: 1/3 (33%)[K
 
 
 
-[38;2;255;51;153m> [0m[38;5;240mFirst principal part[0m[K
+[38;2;255;51;153m> [0m[38;5;240mF[0m[K
 
 
 
@@ -378,7 +378,7 @@ Score: 1/3 (33%)[K
 
 
 > bar1 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -429,7 +429,7 @@ Score: 1/3 (33%)[K
 
 
 > bar2 [K
-[38;2;255;51;153m> [0m[7mT[0m[38;5;240mhird principal part[0m[K
+[38;2;255;51;153m> [0m[7mT[0m[K
 
 
 
@@ -487,9 +487,9 @@ Score: 2/4 (50%)[K
 Question 5/6[K
 
 
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
-> [38;5;240mThird principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
+> [38;5;240mT[0m[K
 [K
 
 
@@ -538,7 +538,7 @@ Question 5/6[K
 
 
 > bar0 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -589,7 +589,7 @@ Question 5/6[K
 
 
 > bar2 [K
-[38;2;255;51;153m> [0m[7mT[0m[38;5;240mhird principal part[0m[K
+[38;2;255;51;153m> [0m[7mT[0m[K
 
 
 
@@ -647,9 +647,9 @@ Score: 2/5 (40%)[K
 Question 6/6[K
 
 
-[38;2;255;51;153m> [0m[7mF[0m[38;5;240mirst principal part[0m[K
-> [38;5;240mSecond principal part[0m[K
-> [38;5;240mThird principal part[0m[K
+[38;2;255;51;153m> [0m[7mF[0m[K
+> [38;5;240mS[0m[K
+> [38;5;240mT[0m[K
 [K
 
 
@@ -698,7 +698,7 @@ Question 6/6[K
 
 
 > bar4 [K
-[38;2;255;51;153m> [0m[7mS[0m[38;5;240mecond principal part[0m[K
+[38;2;255;51;153m> [0m[7mS[0m[K
 
 
 
@@ -749,7 +749,7 @@ Question 6/6[K
 
 
 > bar5 [K
-[38;2;255;51;153m> [0m[7mT[0m[38;5;240mhird principal part[0m[K
+[38;2;255;51;153m> [0m[7mT[0m[K
 
 
 

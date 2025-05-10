@@ -3,7 +3,7 @@ module github.com/rduo1009/vocab-tuister
 go 1.24
 
 require (
-	github.com/charmbracelet/bubbles v0.20.0
+	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
 	github.com/spf13/cobra v1.9.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
