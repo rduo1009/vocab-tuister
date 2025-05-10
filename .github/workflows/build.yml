@@ -46,7 +46,7 @@ jobs:
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
       - name: Setup project
-        if: ${{ matrix.os == 'windows-2019' }}
+        if: ${{ ( matrix.os == 'windows-2019' ) || ( matrix.os == 'windows-11-arm' ) }}
         run: |
           python3 -m venv .venv
           source .venv/Scripts/activate
@@ -55,7 +55,7 @@ jobs:
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Setup project
-        if: ${{ matrix.os != 'windows-2019' }}
+        if: ${{ ( matrix.os != 'windows-2019' ) && ( matrix.os != 'windows-11-arm' ) }}
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
