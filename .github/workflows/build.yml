@@ -1,15 +1,9 @@
 name: build
-on:
-  push:
-    tags:
-      - "v*.*.*-*"
+on: workflow_dispatch
 
 defaults:
   run:
     shell: bash
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -73,8 +67,8 @@ jobs:
           poetry config virtualenvs.in-project true
           poe build --target-arch universal2
 
-      - name: Release
-        uses: softprops/action-gh-release@v2.2.2
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.6.2
         with:
-          files: |
-            dist/*
+          name: build-${{ matrix.os }}
+          path: dist/*
