@@ -13,11 +13,11 @@ poetry env remove --all
 poetry install --only main
 
 REM Build python server
-dunamai from any > __version__.txt
+poetry run dunamai from any > __version__.txt
 if "%debug%"=="True" (
-    pyinstaller vocab-tuister-server.spec --clean -- --debug
+    poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug
 ) else (
-    pyinstaller vocab-tuister-server.spec --clean
+    poetry run pyinstaller vocab-tuister-server.spec --clean
 )
 
 REM Determine client binary name

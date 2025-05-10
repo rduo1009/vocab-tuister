@@ -46,15 +46,6 @@ jobs:
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
       - name: Setup project
-        if: ${{ ( matrix.os == 'windows-2019' ) || ( matrix.os == 'windows-11-arm' ) }}
-        run: |
-          python3 -m venv .venv
-          source .venv/Scripts/activate
-          go install ./src/_vendor/mkunion/cmd/mkunion
-          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          echo PATH=$PATH >> $GITHUB_ENV
-
-      - name: Setup project
         if: ${{ ( matrix.os != 'windows-2019' ) && ( matrix.os != 'windows-11-arm' ) }}
         run: |
           python3 -m venv .venv
@@ -63,22 +54,45 @@ jobs:
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
-      - name: Build project
-        if: ${{ ( matrix.os != 'macos-13' ) && ( matrix.os != 'macos-14' ) }}
+      - name: Setup project
+        if: ${{ matrix.os == 'windows-2019' }}
         run: |
           poetry config virtualenvs.in-project true
+          poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\x64\python.exe"
+          source .venv/Scripts/activate
+          go install ./src/_vendor/mkunion/cmd/mkunion
+          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
+          echo PATH=$PATH >> $GITHUB_ENV
+
+      - name: Setup project
+        if: ${{ matrix.os == 'windows-11-arm'}}
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\arm64\python.exe"
+          source .venv/Scripts/activate
+          go install ./src/_vendor/mkunion/cmd/mkunion
+          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
+          echo PATH=$PATH >> $GITHUB_ENV
+
+      # HACK: Have to workaround using poe as there are weird errors for some reason
+      - name: Build project
+        if: ${{ ( matrix.os == 'windows-2019' ) || ( matrix.os == 'windows-11-arm' ) }}
+        run: |
+          ./scripts/build.bat
+
+      - name: Build project
+        if: ${{ ( matrix.os == 'ubuntu-22.04' ) || ( matrix.os == 'ubuntu-22.04-arm' ) }}
+        run: |
           poe build
 
       - name: Build project
         if: ${{ matrix.os == 'macos-14' }}
         run: |
-          poetry config virtualenvs.in-project true
           poe build --target-arch arm64
 
       - name: Build project
         if: ${{ matrix.os == 'macos-13' }}
         run: |
-          poetry config virtualenvs.in-project true
           poe build --target-arch x86_64
 
       - name: Upload build artifacts
