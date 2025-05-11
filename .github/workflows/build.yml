@@ -40,16 +40,27 @@ jobs:
 
       - name: Install deps
         run: |
-          python3 -m pip install --user pipx
+          python --version
+          which python
+          python -m pip install --user pipx
+          which pipx
           pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
+          which poetry
+
+      - name: Add pipx poetry to PATH for PowerShell
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        run: |
+          $pipxBin = "$env:USERPROFILE\.local\Scripts"
+          echo "##[debug]Adding $pipxBin to PATH"
+          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+        shell: pwsh
 
       - name: Setup project
-        if: ${{ ( matrix.os != 'windows-2019' ) && ( matrix.os != 'windows-11-arm' ) }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
+          poetry config virtualenvs.in-project true
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
@@ -59,7 +70,6 @@ jobs:
         run: |
           poetry config virtualenvs.in-project true
           poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\x64\python.exe"
-          source .venv/Scripts/activate
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
@@ -69,19 +79,19 @@ jobs:
         run: |
           poetry config virtualenvs.in-project true
           poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\arm64\python.exe"
-          source .venv/Scripts/activate
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
       # HACK: Have to workaround using poe as there are weird errors for some reason
       - name: Build project
-        if: ${{ ( matrix.os == 'windows-2019' ) || ( matrix.os == 'windows-11-arm' ) }}
+        if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
-          ./scripts/build.bat
+          scripts/build-gh.ps1
+        shell: pwsh
 
       - name: Build project
-        if: ${{ ( matrix.os == 'ubuntu-22.04' ) || ( matrix.os == 'ubuntu-22.04-arm' ) }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
           poe build
 

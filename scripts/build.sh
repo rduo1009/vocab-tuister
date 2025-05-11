@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
+
 if [[ $debug == "True" ]]; then
     echo "====== DEBUG MODE ======"
 fi
 
 # Only install necessary deps to speed up build
-# poetry install --only main --sync # slower
+# poetry sync --only main # slower
 poetry env remove --all
 poetry install --only main
 
@@ -22,15 +24,15 @@ fi
 poetry run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug
     else
-        poetry run pyinstaller vocab-tuister-server.spec --clean
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean
     fi
 else
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug --target-arch $target_arch
     else
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --target-arch $target_arch
     fi
 fi
 
@@ -79,9 +81,9 @@ fi
 
 # Build go client
 go mod tidy
-go generate -x src/generate.go
+go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
 go build \
-    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
+    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
     -o "$output_file" \
     ./src/main.go
 
