@@ -43,11 +43,18 @@ jobs:
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
+      - name: Add pipx poetry to PATH for PowerShell
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        run: |
+          $pipxBin = "$env:USERPROFILE\.local\Scripts"
+          echo "##[debug]Adding $pipxBin to PATH"
+          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATHs
+        shell: pwsh
+
       - name: Setup project
         if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
+          poetry config virtualenvs.in-project true
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
