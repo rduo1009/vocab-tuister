@@ -44,6 +44,9 @@ jobs:
           pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo "$APPDATA\Python\Scripts" >> "$GITHUB_PATH"
+          fi
 
       - name: Setup project
         if: ${{ ( matrix.os != 'windows-2019' ) && ( matrix.os != 'windows-11-arm' ) }}
