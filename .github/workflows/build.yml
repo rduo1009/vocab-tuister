@@ -1,15 +1,9 @@
 name: build
-on:
-  push:
-    tags:
-      - "v*.*.*-*"
+on: workflow_dispatch
 
 defaults:
   run:
     shell: bash
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -17,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04-arm, macos-13, macos-14]
+        os: [ubuntu-22.04, ubuntu-22.04-arm, macos-14]
         python:
           - 3.13.1
       fail-fast: false
@@ -71,16 +65,10 @@ jobs:
         if: ${{ matrix.os == 'macos-14' }}
         run: |
           poetry config virtualenvs.in-project true
-          poe build --target-arch arm64
+          poe build --target-arch universal2
 
-      - name: Build project
-        if: ${{ matrix.os == 'macos-13' }}
-        run: |
-          poetry config virtualenvs.in-project true
-          poe build --target-arch x86_64
-
-      - name: Release
-        uses: softprops/action-gh-release@v2.2.2
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.6.2
         with:
-          files: |
-            dist/*
+          name: build-${{ matrix.os }}
+          path: dist/*
