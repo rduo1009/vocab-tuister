@@ -40,13 +40,8 @@ jobs:
 
       - name: Install deps
         run: |
-          python3 -m pip install --user pipx
-          pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "$APPDATA\Python\Scripts" >> "$GITHUB_PATH"
-          fi
 
       - name: Setup project
         if: ${{ !startsWith(matrix.os, 'windows') }}

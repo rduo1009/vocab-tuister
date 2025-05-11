@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ $debug == "True" ]]; then
     echo "====== DEBUG MODE ======"
 fi
