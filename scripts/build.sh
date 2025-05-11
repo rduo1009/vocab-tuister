@@ -24,15 +24,15 @@ fi
 poetry run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug
     else
-        poetry run pyinstaller vocab-tuister-server.spec --clean
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean
     fi
 else
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug --target-arch $target_arch
     else
-        poetry run pyinstaller vocab-tuister-server.spec --clean -- --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --target-arch $target_arch
     fi
 fi
 
@@ -83,7 +83,7 @@ fi
 go mod tidy
 go generate -x src/generate.go
 go build \
-    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
+    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
     -o "$output_file" \
     ./src/main.go
 

@@ -14,10 +14,10 @@ poetry install --only main
 # Build python server
 poetry run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    poetry run pyinstaller vocab-tuister-server.spec --clean -- --debug
+    poetry run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    poetry run pyinstaller vocab-tuister-server.spec --clean
+    poetry run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -31,7 +31,7 @@ else {
 }
 
 # Build go client
-$version = (dunamai from any)
+$version = (poetry run dunamai from any)
 go mod tidy
 go generate -x src/generate.go
 go build `
