@@ -1,8 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Unused by default, but useful if someone wants to build on their own computer.
-
 if "%debug%"=="True" (
     echo ====== DEBUG MODE ======
 )

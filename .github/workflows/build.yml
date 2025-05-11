@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Setup project
-        if: ${{ ( matrix.os != 'windows-2019' ) && ( matrix.os != 'windows-11-arm' ) }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
@@ -77,14 +77,19 @@ jobs:
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
+      - name: Add Poetry to PATH (Windows)
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        run: echo "$env:APPDATA\Python\Scripts" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
       # HACK: Have to workaround using poe as there are weird errors for some reason
       - name: Build project
-        if: ${{ ( matrix.os == 'windows-2019' ) || ( matrix.os == 'windows-11-arm' ) }}
+        if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
           ./scripts/build.bat
 
       - name: Build project
-        if: ${{ ( matrix.os == 'ubuntu-22.04' ) || ( matrix.os == 'ubuntu-22.04-arm' ) }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
           poe build
 
