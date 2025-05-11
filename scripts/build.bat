@@ -29,6 +29,7 @@ if "%OS%"=="Windows_NT" (
 )
 
 REM Build go client
+for /f "tokens=*" %%v in ('dunamai from any') do set version=%%v
 go mod tidy
 go generate -x src/generate.go
 go build ^
