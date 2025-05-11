@@ -1,15 +1,9 @@
 name: build
-on:
-  push:
-    tags:
-      - "v*.*.*-*"
+on: workflow_dispatch
 
 defaults:
   run:
     shell: bash
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -17,7 +11,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-22.04-arm, macos-13, macos-14]
+        os:
+          [
+            ubuntu-22.04,
+            ubuntu-22.04-arm,
+            macos-13,
+            macos-14,
+            windows-2019,
+            windows-11-arm,
+          ]
         python:
           - 3.13.1
       fail-fast: false
@@ -38,49 +40,67 @@ jobs:
 
       - name: Install deps
         run: |
-          python3 -m pip install --user pipx
-          pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
+
+      - name: Add pipx poetry to PATH for PowerShell
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        run: |
+          $pipxBin = "$env:USERPROFILE\.local\Scripts"
+          echo "##[debug]Adding $pipxBin to PATH"
+          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATHs
+        shell: pwsh
+
+      - name: Setup project
+        if: ${{ !startsWith(matrix.os, 'windows') }}
+        run: |
+          poetry config virtualenvs.in-project true
+          go install ./src/_vendor/mkunion/cmd/mkunion
+          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
+          echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Setup project
         if: ${{ matrix.os == 'windows-2019' }}
         run: |
-          python3 -m venv .venv
-          source .venv/Scripts/activate
+          poetry config virtualenvs.in-project true
+          poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\x64\python.exe"
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Setup project
-        if: ${{ matrix.os != 'windows-2019' }}
+        if: ${{ matrix.os == 'windows-11-arm'}}
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
+          poetry config virtualenvs.in-project true
+          poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\arm64\python.exe"
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
 
+      # HACK: Have to workaround using poe as there are weird errors for some reason
       - name: Build project
-        if: ${{ ( matrix.os != 'macos-13' ) && ( matrix.os != 'macos-14' ) }}
+        if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
-          poetry config virtualenvs.in-project true
+          scripts/build.ps1
+        shell: pwsh
+
+      - name: Build project
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: |
           poe build
 
       - name: Build project
         if: ${{ matrix.os == 'macos-14' }}
         run: |
-          poetry config virtualenvs.in-project true
           poe build --target-arch arm64
 
       - name: Build project
         if: ${{ matrix.os == 'macos-13' }}
         run: |
-          poetry config virtualenvs.in-project true
           poe build --target-arch x86_64
 
-      - name: Release
-        uses: softprops/action-gh-release@v2.2.2
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4.6.2
         with:
-          files: |
-            dist/*
+          name: build-${{ matrix.os }}
+          path: dist/*

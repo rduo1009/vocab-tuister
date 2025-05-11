@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ $debug == "True" ]]; then
     echo "====== DEBUG MODE ======"
 fi
@@ -12,28 +14,29 @@ poetry install --only main
 # Install deps that need to be in universal2
 if [[ "$target_arch" == "universal2" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        python3 -m pip install --force https://files.pythonhosted.org/packages/90/73/bcb0e36614601016552fa9344544a3a2ae1809dc1401b100eab02e772e1f/regex-2024.11.6-cp313-cp313-macosx_10_13_universal2.whl
-        python3 -m pip install --force https://files.pythonhosted.org/packages/83/0e/67eb10a7ecc77a0c2bbe2b0235765b98d164d81600746914bebada795e97/MarkupSafe-3.0.2-cp313-cp313-macosx_10_13_universal2.whl
-        python3 -m pip install --force src/_build/macos/wheels/*.whl
+        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/90/73/bcb0e36614601016552fa9344544a3a2ae1809dc1401b100eab02e772e1f/regex-2024.11.6-cp313-cp313-macosx_10_13_universal2.whl
+        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/83/0e/67eb10a7ecc77a0c2bbe2b0235765b98d164d81600746914bebada795e97/MarkupSafe-3.0.2-cp313-cp313-macosx_10_13_universal2.whl
+        poetry run python3 -m pip install --force src/_build/macos/wheels/*.whl
     fi
 fi
 
-# Build
-dunamai from any > __version__.txt
+# Build python server
+poetry run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        pyinstaller vocab-tuister-server.spec --clean -- --debug
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug
     else
-        pyinstaller vocab-tuister-server.spec --clean
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean
     fi
 else
     if [[ $debug == "True" ]]; then
-        pyinstaller vocab-tuister-server.spec --clean -- --debug --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug --target-arch $target_arch
     else
-        pyinstaller vocab-tuister-server.spec --clean -- --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --target-arch $target_arch
     fi
 fi
 
+# Determine client binary name
 if [[ -n "$target_arch" ]]; then
     clientbin_name="darwin-$target_arch"
 else
@@ -55,7 +58,12 @@ else
             fi
             ;;
         MINGW*|CYGWIN*|MSYS*)
-            clientbin_name="windows"
+            arch=$(uname -m)
+            if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+                clientbin_name="windows-arm64"
+            else
+                clientbin_name="windows-x86_64"
+            fi
             ;;
         *)
             echo "Unknown OS"
@@ -64,11 +72,19 @@ else
     esac
 fi
 
+# Add Windows .exe extension for the output file
+if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
+    output_file="./dist/vocab-tuister-${clientbin_name}.exe"
+else
+    output_file="./dist/vocab-tuister-${clientbin_name}"
+fi
+
+# Build go client
 go mod tidy
 go generate -x src/generate.go
 go build \
-    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(dunamai from any)" \
-    -o "./dist/vocab-tuister-$clientbin_name" \
+    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
+    -o "$output_file" \
     ./src/main.go
 
 # echo -n "Do you want to reinstall all deps? (Y/n) "
