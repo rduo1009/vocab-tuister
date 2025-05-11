@@ -75,6 +75,7 @@ go mod tidy
 go generate -x src/generate.go
 if [[ "$build_universal2" == "true" ]]; then
     tmpdir=$(mktemp -d)
+    version=$(dunamai from any)
 
     GOOS=darwin GOARCH=arm64 go build \
         -o "$tmpdir/arm64" \
