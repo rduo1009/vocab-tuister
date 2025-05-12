@@ -48,7 +48,7 @@ jobs:
         run: |
           $pipxBin = "$env:USERPROFILE\.local\Scripts"
           echo "##[debug]Adding $pipxBin to PATH"
-          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATHs
+          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
         shell: pwsh
 
       - name: Setup project
