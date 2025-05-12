@@ -10,17 +10,17 @@ if ($env:debug -eq "True") {
 }
 
 # Only install necessary deps to speed up build
-C:\Program Files (x86)\pipx_bin\poetry.exe sync --only main # slower but works better?
-# C:\Program Files (x86)\pipx_bin\poetry.exe env remove --all
-# C:\Program Files (x86)\pipx_bin\poetry.exe install --only main
+& "C:\Program Files (x86)\pipx_bin\poetry.exe" sync --only main # slower but works better?
+# & "C:\Program Files (x86)\pipx_bin\poetry.exe" env remove --all
+# & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --only main
 
 # Build python server
-C:\Program Files (x86)\pipx_bin\poetry.exe run dunamai from any | Set-Content -Path "__version__.txt"
+& "C:\Program Files (x86)\pipx_bin\poetry.exe" run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    C:\Program Files (x86)\pipx_bin\poetry.exe run pyinstaller vocab-tuister-server.spec -- --clean
+    & "C:\Program Files (x86)\pipx_bin\poetry.exe" run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    C:\Program Files (x86)\pipx_bin\poetry.exe run pyinstaller vocab-tuister-server.spec
+    & "C:\Program Files (x86)\pipx_bin\poetry.exe" run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -34,7 +34,7 @@ else {
 }
 
 # Build go client
-$version = (C:\Program Files (x86)\pipx_bin\poetry.exe run dunamai from any)
+$version = (& "C:\Program Files (x86)\pipx_bin\poetry.exe" run dunamai from any)
 go mod tidy
 go generate -x ./...; if (-not (git diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
 go build `
@@ -47,8 +47,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     C:\Program Files (x86)\pipx_bin\poetry.exe install --sync
+#     & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --sync
 # }
 # else {
-#     C:\Program Files (x86)\pipx_bin\poetry.exe install --only main --sync
+#     & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --only main --sync
 # }
