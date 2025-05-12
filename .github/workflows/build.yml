@@ -41,13 +41,13 @@ jobs:
       - name: Install deps
         run: |
           python --version
-          where python
+          which python
           python -m pip install --user pipx
-          where pipx
+          which pipx
           pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
-          where poetry
+          which poetry
 
       - name: Add pipx poetry to PATH for PowerShell
         if: ${{ startsWith(matrix.os, 'windows') }}
@@ -87,7 +87,7 @@ jobs:
       - name: Build project
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
-          scripts/build.ps1
+          scripts/build-gh.ps1
         shell: pwsh
 
       - name: Build project
