@@ -7,17 +7,17 @@ if ($env:debug -eq "True") {
 }
 
 # Only install necessary deps to speed up build
-# poetry install --only main --sync # slower
-poetry.exe env remove --all
-poetry.exe install --only main
+poetry sync --only main # slower but works better?
+# poetry env remove --all
+# poetry install --only main
 
 # Build python server
-poetry.exe run dunamai from any | Set-Content -Path "__version__.txt"
+poetry run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    poetry.exe run pyinstaller vocab-tuister-server.spec -- --clean
+    poetry run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    poetry.exe run pyinstaller vocab-tuister-server.spec
+    poetry run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -31,9 +31,9 @@ else {
 }
 
 # Build go client
-$version = (poetry.exe run dunamai from any)
+$version = (poetry run dunamai from any)
 go mod tidy
-go generate -x src/generate.go
+go generate -x ./...; if (-not (git diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
     -o ".\dist\vocab-tuister-$clientbin_name.exe" `
@@ -44,8 +44,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     poetry.exe install --sync
+#     poetry install --sync
 # }
 # else {
-#     poetry.exe install --only main --sync
+#     poetry install --only main --sync
 # }

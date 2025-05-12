@@ -7,7 +7,7 @@ if [[ $debug == "True" ]]; then
 fi
 
 # Only install necessary deps to speed up build
-# poetry install --only main --sync # slower
+# poetry sync --only main # slower
 poetry env remove --all
 poetry install --only main
 
@@ -81,7 +81,7 @@ fi
 
 # Build go client
 go mod tidy
-go generate -x src/generate.go
+go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
 go build \
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
     -o "$output_file" \

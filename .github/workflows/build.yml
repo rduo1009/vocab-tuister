@@ -40,10 +40,14 @@ jobs:
 
       - name: Install deps
         run: |
-          python3.13 -m pip install --user pipx
+          python --version
+          where python
+          python -m pip install --user pipx
+          where pipx
           pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
+          where poetry
 
       - name: Add pipx poetry to PATH for PowerShell
         if: ${{ startsWith(matrix.os, 'windows') }}
