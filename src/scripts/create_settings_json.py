@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))  # fmt: skip  # noqa: PTH100, PTH118, PTH120
+
 import json
 from pathlib import Path
 from typing import Any, get_type_hints

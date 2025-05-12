@@ -43,14 +43,6 @@ jobs:
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
 
-      - name: Add pipx poetry to PATH for PowerShell
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        run: |
-          $pipxBin = "$env:USERPROFILE\.local\Scripts"
-          echo "##[debug]Adding $pipxBin to PATH"
-          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
-        shell: pwsh
-
       - name: Setup project
         if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |

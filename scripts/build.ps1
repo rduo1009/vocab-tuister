@@ -8,16 +8,16 @@ if ($env:debug -eq "True") {
 
 # Only install necessary deps to speed up build
 # poetry install --only main --sync # slower
-poetry env remove --all
-poetry install --only main
+poetry.exe env remove --all
+poetry.exe install --only main
 
 # Build python server
-poetry run dunamai from any | Set-Content -Path "__version__.txt"
+poetry.exe run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    poetry run pyinstaller vocab-tuister-server.spec -- --clean
+    poetry.exe run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    poetry run pyinstaller vocab-tuister-server.spec
+    poetry.exe run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -31,7 +31,7 @@ else {
 }
 
 # Build go client
-$version = (poetry run dunamai from any)
+$version = (poetry.exe run dunamai from any)
 go mod tidy
 go generate -x src/generate.go
 go build `
@@ -44,8 +44,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     poetry install --sync
+#     poetry.exe install --sync
 # }
 # else {
-#     poetry install --only main --sync
+#     poetry.exe install --only main --sync
 # }
