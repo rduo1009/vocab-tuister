@@ -8,21 +8,17 @@ import json
 import logging
 import traceback
 from io import StringIO
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, Response, render_template, request
 from waitress import serve
 from werkzeug.exceptions import BadRequest
 
-from .._vendor.typeddict_validator import (
-    DictMissingKeyException,
-    DictValueTypeMismatchException,
-    validate_typeddict,
-)
 from ..core.lego.misc import VocabList
 from ..core.lego.reader import _read_vocab_file_internal
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
+from ..utils.typeddict_validator import validate_typeddict
 from .json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
@@ -107,24 +103,27 @@ def create_session():
         raise BadRequest("Vocab list has not been provided.")
 
     logger.info("Validating settings.")
-    settings = request.get_json()
+    settings: dict[str, Any] = request.get_json()
     try:
-        question_amount = settings["number-of-questions"]
-        del settings["number-of-questions"]
+        question_amount = settings.pop("number-of-questions")
         validate_typeddict(settings, Settings)
-    except (
-        DictMissingKeyException,
-        DictValueTypeMismatchException,
-        KeyError,
-    ) as e:
+    except (ExceptionGroup, KeyError) as e:
+        error_message_detail = str(e)
+        if isinstance(e, ExceptionGroup):
+            error_message_detail = "; ".join(
+                str(sub_ex) for sub_ex in e.exceptions
+            )
+
         raise BadRequest(
-            f"The settings provided are not valid: {e} (InvalidSettingsError)"
+            f"The settings provided are not valid: {error_message_detail} (InvalidSettingsError)"
         ) from e
 
     logger.info("Returning %d questions.", question_amount)
     try:
         return Response(
-            _generate_questions_json(vocab_list, question_amount, settings),
+            _generate_questions_json(
+                vocab_list, question_amount, cast("Settings", settings)
+            ),
             mimetype="application/json",
         )
     except Exception as e:
