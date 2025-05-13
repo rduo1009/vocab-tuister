@@ -30,9 +30,9 @@ if [[ -z "$target_arch" ]]; then
     fi
 else
     if [[ $debug == "True" ]]; then
-        pyinstaller vocab-tuister-server.spec -- --debug --target-arch $target_arch
+        pyinstaller vocab-tuister-server.spec -- --debug --target-arch "$target_arch"
     else
-        pyinstaller vocab-tuister-server.spec -- --target-arch $target_arch
+        pyinstaller vocab-tuister-server.spec -- --target-arch "$target_arch"
     fi
 fi
 
