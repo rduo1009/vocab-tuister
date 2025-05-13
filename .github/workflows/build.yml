@@ -62,7 +62,7 @@ jobs:
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Build project
-        if: ${{ ( matrix.os != 'macos-13' ) && ( matrix.os != 'macos-14' ) }}
+        if: ${{ matrix.os != 'macos-14' }}
         run: |
           poetry config virtualenvs.in-project true
           poe build
