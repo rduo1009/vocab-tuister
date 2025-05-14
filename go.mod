@@ -5,14 +5,10 @@ go 1.24
 require (
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.5
+	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/spf13/cobra v1.9.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
 	golang.org/x/term v0.31.0
-)
-
-require (
-	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/muesli/termenv v0.16.0
 )
 
 require (
@@ -110,6 +106,7 @@ require (
 
 require (
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250317102001-c803e5cafd0b // test
+	github.com/muesli/termenv v0.16.0 // test
 	github.com/stretchr/testify v1.10.0 // test
 )
 
