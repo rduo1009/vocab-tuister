@@ -12,27 +12,6 @@ repos:
     hooks:
       - id: poetry-lock
 
-  - repo: https://github.com/python-poetry/poetry-plugin-export
-    rev: 1.9.0
-    hooks:
-      - id: poetry-export
-        args:
-          [
-            "--format=requirements.txt",
-            "--output=requirements.txt",
-            "--without-hashes",
-            "--without-urls",
-          ]
-      - id: poetry-export
-        args:
-          [
-            "--format=requirements.txt",
-            "--output=requirements-dev.txt",
-            "--without-hashes",
-            "--without-urls",
-            "--with=dev,types",
-          ]
-
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.8

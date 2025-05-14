@@ -72,7 +72,6 @@
         "static": "folder_styles"
     },
     "catppuccin-icons.associations.files": { // or whatever icon extension you use
-        "requirements-dev.txt": "python-config",
         "settings.json.sample": "json",
         ".coveragerc": "ini",
         "vocab-tuister-server.spec": "python-config"
