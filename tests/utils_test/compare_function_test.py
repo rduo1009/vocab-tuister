@@ -20,13 +20,13 @@ def test_equal_sequences():
 def test_unequal_sequences():
     first = [1, 2, 3]
     second = [1, 2, 4]
-    assert not (compare(first, second))
+    assert not compare(first, second)
 
 
 def test_different_length_sequences():
     first = [1, 2, 3]
     second = [1, 2]
-    assert not (compare(first, second))
+    assert not compare(first, second)
 
 
 def test_empty_sequences():
@@ -62,4 +62,4 @@ def test_mixed_type_sequences():
 def test_one_empty_sequence():
     first = [1, 2, 3]
     second: Sequence[int] = []
-    assert not (compare(first, second))
+    assert not compare(first, second)
