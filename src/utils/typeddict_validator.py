@@ -6,7 +6,7 @@ from typing import (
     Any,
     NamedTuple,
     TypedDict,
-    TypeGuard,
+    TypeIs,
     TypeVar,
     Union,
     get_args,
@@ -109,7 +109,7 @@ class DictIncorrectTypeError(Exception):
 T = TypeVar("T", bound=TypedDict)  # type: ignore[valid-type]
 
 
-def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeGuard[T]:
+def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
     """Validate a dictionary against a TypedDict type.
 
     This function checks if the given dictionary `d` conforms to the structure
