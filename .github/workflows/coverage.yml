@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-python@v5.4.0
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.13.2"
 
@@ -35,7 +35,7 @@ jobs:
         run: ./scripts/coverage.sh
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5.4.0
+        uses: codecov/codecov-action@v5.4.2
         with:
           files: ./reports/coverage/pycoverage.xml,./reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}

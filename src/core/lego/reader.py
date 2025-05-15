@@ -44,7 +44,7 @@ def read_vocab_dump(filename: Path) -> VocabList:
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
     raised.
-    If the file ends in `.gzip`, the file is decompressed using lz4.
+    If the file ends in `.gzip`, the file is decompressed using gzip.
 
     Parameters
     ----------

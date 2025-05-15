@@ -30,11 +30,11 @@ dependencies = [
 ]
 
 [tool.poetry]
-version = "0.0.0"                         # placeholder
 requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
 exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
+version = "0.0.0"                         # placeholder
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
@@ -52,6 +52,7 @@ doc8 = "1.1.2"
 rstfmt = "0.0.14"
 mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
 interrogate = "1.7.0"
+griffe = "1.7.2"
 
 [tool.poetry.group.types.dependencies]
 types-regex = "2024.11.6.20250305"

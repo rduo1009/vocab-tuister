@@ -1,49 +1,39 @@
-[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[0K
-[38;2;225;123;52m[ ] All of them[0m[0K
-[ ] Deponent verbs[0K
-[ ] First conjugation verbs[0K
-[ ] Second conjugation verbs[0K
-[ ] Third conjugation verbs[0K
-[ ] Fourth conjugation verbs[0K
-[ ] Mixed conjugation verbs[0K
-[ ] Irregular verbs[0K
-[ ] Present active indicative[0K
-[ ] Imperfect active indicative[0K
-[ ] Future active indicative[0K
-[ ] Perfect active indicative[0K
-[ ] Pluperfect active indicative[0K
-[ ] Future perfect active indicative[0K
-[ ] Present passive indicative[0K
-[ ] Imperfect passive indicative[0K
-[ ] Future passive indicative[0K
-[ ] Perfect passive indicative[0K
-[ ] Pluperfect passive indicative[0K
-[ ] Future perfect passive indicative[0K
-[ ] Present active subjunctive[0K
-[ ] Imperfect active subjunctive[0K
-[ ] Perfect active subjunctive[0K
-[ ] Pluperfect active subjunctive[0K
-[ ] Present active imperative[0K
-[ ] Present active infinitive[0K
-[ ] Present passive infinitive[0K
-[ ] Singular number[0K
-[ ] Plural number[0K
-[ ] 1st person[0K
-[ ] 2nd person[0K
-[ ] 3rd person[0K
-[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[300D[33A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[0K
-[B[ ] Present active[0K
-[ ] Perfect passive[0K
-[ ] Future active[0K
-[ ] Masculine gender[0K
-[ ] Feminine gender[0K
-[ ] Neuter gender[0K
-[ ] Nominative case[0K
-[ ] Vocative case[0K
-[ ] Accusative case[0K
-[ ] Genitive case[0K
-[ ] Dative case[0K
-[ ] Ablative case[0K
-[ ] Singular number[0K
-[ ] Plural number[0K
-[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[0K[0J[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
+[?25l[?2004h]2;Create Session Config
+[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] First conjugation verbs[K
+[ ] Second conjugation verbs[K
+[ ] Third conjugation verbs[K
+[ ] Fourth conjugation verbs[K
+[ ] Mixed conjugation verbs[K
+[ ] Irregular verbs[K
+[ ] Present active indicative[K
+[ ] Imperfect active indicative[K
+[ ] Perfect active indicative[K
+[ ] Pluperfect active indicative[K
+[ ] Present active infinitive[K
+[ ] Present active imperative[K
+[ ] Imperative active subjunctive[K
+[ ] Pluperfect active subjunctive[K
+[ ] Singular number[K
+[ ] Plural number[K
+[ ] 1st person[K
+[ ] 2nd person[K
+[ ] 3rd person[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[K
+
+[ ] Present active[K
+[ ] Perfect passive[K
+[ ] Masculine gender[K
+[ ] Feminine gender[K
+[ ] Neuter gender[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[2K
+[?2004l[?25h[?1002l[?1003l[?1006l
