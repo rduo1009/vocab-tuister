@@ -158,9 +158,7 @@ def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
 
     all_keys = set(annotations.keys())
     # __required_keys__ and __optional_keys__ are standard attributes for TypedDict
-    required_keys: frozenset[str] | set[str] = getattr(
-        td_type, "__required_keys__", set()
-    )
+    required_keys = set(getattr(td_type, "__required_keys__", set()))
     # If __required_keys__ is not present (e.g. older Python or non-total dicts without it)
     # and td_type.__total__ is True, all annotated keys are required.
     # However, relying on __required_keys__ is generally safer for modern TypedDict.
