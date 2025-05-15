@@ -47,6 +47,7 @@ func (m Model) Init() tea.Cmd {
 		textinput.Blink,
 		tea.SetWindowTitle("Vocab Tester Session"),
 		func() tea.Msg {
+			// Read vocab list and session config files
 			vocabListData, err := os.ReadFile(m.vocabListPath)
 			if err != nil {
 				return errMsg{err}
@@ -58,14 +59,16 @@ func (m Model) Init() tea.Cmd {
 				return errMsg{err}
 			}
 
-			var sessionConfig pkg.SessionConfig
-			err = json.Unmarshal(sessionConfigData, &sessionConfig)
+			// Add user provided number of questions to temporary session config map
+			var rawSessionConfig map[string]any
+			err = json.Unmarshal(sessionConfigData, &rawSessionConfig)
 			if err != nil {
 				return errMsg{err}
 			}
-			sessionConfig.NumberOfQuestions = m.numberOfQuestions
+			rawSessionConfig["number-of-questions"] = m.numberOfQuestions
 
-			sessionConfigData, err = json.Marshal(sessionConfig)
+			// Marshal the updated session config
+			sessionConfigData, err = json.Marshal(rawSessionConfig)
 			if err != nil {
 				return errMsg{err}
 			}
@@ -75,6 +78,7 @@ func (m Model) Init() tea.Cmd {
 
 			client := &http.Client{}
 
+			// Send vocab list to server
 			vocabListURL := fmt.Sprintf(
 				"http://localhost:%d/%s",
 				m.serverPort,
@@ -108,6 +112,7 @@ func (m Model) Init() tea.Cmd {
 				}
 			}
 
+			// Send session config to server
 			sessionConfigURL := fmt.Sprintf(
 				"http://localhost:%d/%s",
 				m.serverPort,
@@ -139,6 +144,7 @@ func (m Model) Init() tea.Cmd {
 				}
 			}
 
+			// Read response from server
 			body, err := io.ReadAll(resp2.Body)
 			if err != nil {
 				return errMsg{err}
@@ -149,6 +155,7 @@ func (m Model) Init() tea.Cmd {
 				return errMsg{err}
 			}
 
+			// Unmarshal response into questions.Questions type
 			var response questions.Questions
 			for _, object := range objects {
 				part, err := unionjson.JSONUnmarshal[questions.Question](object)
@@ -166,6 +173,14 @@ func (m Model) Init() tea.Cmd {
 						len(response),
 					),
 				}
+			}
+
+			// The sessionConfigData has been verified by the server now, so we can unmarshal it
+			// into a pkg.SessionConfig type
+			var sessionConfig pkg.SessionConfig
+			err = json.Unmarshal(sessionConfigData, &sessionConfig)
+			if err != nil {
+				return errMsg{err}
 			}
 
 			return initOkMsg{

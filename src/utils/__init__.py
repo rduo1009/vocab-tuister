@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 from .. import _seed
-from . import logger
+from . import dict_changes, logger
 from .compact_function import compact as compact
 from .compare_function import compare as compare
 from .duplicates import (
@@ -28,6 +28,7 @@ __all__ = [
     "compact",
     "compare",
     "contains_duplicates",
+    "dict_changes",
     "logger",
     "remove_duplicates",
     "set_choice",

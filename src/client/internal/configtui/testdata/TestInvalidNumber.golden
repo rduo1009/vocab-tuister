@@ -1,4 +1,5 @@
-[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
+[?25l[?2004h]2;Create Session Config
+[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
 [38;2;225;123;52m[ ] All of them[0m[K
 [1m[x] First conjugation verbs[0m[K
 [ ] Second conjugation verbs[K
@@ -99,4 +100,5 @@
 [38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[8AInput the number of options wanted for multiple-choice questions.[K
 > [7mM[0m[38;5;240must be a positive integer                                                                                                                                                                                                                                                                                [0m
 [2m(press right to save and quit)[0m[K[J[300D[2Ainput abc is not a number[K
-[K[J[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l
+[K[J[300D[2K
+[?2004l[?25h[?1002l[?1003l[?1006l
