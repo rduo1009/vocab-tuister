@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import (  # type: ignore[attr-defined]
     Any,
     NamedTuple,
+    NotRequired,
     ReadOnly,
     TypeIs,
     Union,
@@ -127,6 +128,27 @@ def _unwrap_readonly(type_hint: Any) -> Any:
     return type_hint
 
 
+def _unwrap_notrequired(type_hint: Any) -> Any:
+    """Unwrap NotRequired[T] to T, otherwise return the type_hint as is.
+
+    Parameters
+    ----------
+    type_hint : Any
+        The type hint to potentially unwrap.
+
+    Returns
+    -------
+    Any
+        The unwrapped type if type_hint was NotRequired[T], otherwise type_hint.
+    """
+    origin = get_origin(type_hint)
+    if origin is NotRequired:  # Ensure NotRequired is imported
+        args = get_args(type_hint)
+        if args:  # NotRequired[T] should have one argument T
+            return args[0]
+    return type_hint
+
+
 def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
     d: dict[str, Any], td_type: type[T]
 ) -> TypeIs[T]:
@@ -134,10 +156,10 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
 
     This function checks if the given dictionary `d` conforms to the structure
     and types defined by the `TypedDict` `td_type`. It verifies:
-    1. All required keys are present.
+    1. All required keys are present (respecting `NotRequired`).
     2. No extra keys are present.
     3. Values for all present keys match their expected types, including handling
-       for `ReadOnly`, `Union`, and `Any`.
+       for `ReadOnly`, `NotRequired`, `Union`, and `Any`.
 
     Parameters
     ----------
@@ -171,24 +193,20 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
       `ReadOnly` types within a `Union` are also handled.
     - For `Any` type, any value is considered valid.
     - `ReadOnly[T]` fields are validated against type `T`.
+    - `NotRequired[T]` fields, if present, are validated against type `T`.
     - Validation of nested `TypedDict`s and elements within generic collections
       (like `list[int]`) is not currently implemented and will result in a
       `NotImplementedError`.
     """
     errors: list[Exception] = []
-    # Get all annotations from the TypedDict
-    annotations = get_type_hints(
-        td_type, include_extras=True
-    )  # include_extras for ReadOnly etc.
+    # Get all annotations from the TypedDict, include_extras is important for ReadOnly/NotRequired
+    annotations = get_type_hints(td_type, include_extras=True)
 
-    # Determine all keys and required keys from the TypedDict
     all_keys = set(annotations.keys())
-    # __required_keys__ is a standard attribute for TypedDicts.
-    # It lists keys that must be present.
+    # __required_keys__ should correctly list only keys not marked as NotRequired
+    # if the TypedDict is total=True.
     required_keys = set(getattr(td_type, "__required_keys__", set()))
 
-    # Fallback if __required_keys__ is not present (e.g., older Python or specific TypedDict definitions)
-    # and td_type.__total__ is True (default), all annotated keys are considered required.
     if not hasattr(td_type, "__required_keys__") and getattr(
         td_type, "__total__", True
     ):
@@ -206,30 +224,42 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
     if extra:
         errors.append(DictExtraKeyError(tuple(sorted(extra))))
 
-    # 3. Type Checking for common keys (keys present in both dict and TypedDict spec)
+    # 3. Type Checking for common keys
     common_keys = dict_keys.intersection(all_keys)
     incorrect_type_details: dict[str, IncorrectTypeDetail] = {}
 
     for k in common_keys:
         value = d[k]
-        # original_expected_type is what's defined in TypedDict (e.g., ReadOnly[int])
+        # This is the type as defined in the TypedDict (e.g., NotRequired[ReadOnly[int]])
         original_expected_type = annotations[k]
-        # effective_expected_type is the type to use for validation (e.g., int from ReadOnly[int])
-        effective_expected_type = _unwrap_readonly(original_expected_type)
 
-        # Get origin and args for the effective type for further checks (Union, Any, etc.)
+        # If a key is present, its NotRequired status is fulfilled. Unwrap to get the inner type.
+        # e.g., NotRequired[ReadOnly[int]] -> ReadOnly[int]
+        # e.g., NotRequired[str] -> str
+        type_after_notrequired_unwrap = _unwrap_notrequired(
+            original_expected_type
+        )
+
+        # Then unwrap ReadOnly to get the actual type for validation.
+        # e.g., ReadOnly[int] -> int (from previous step or directly)
+        # e.g., str -> str (no change if not ReadOnly)
+        effective_expected_type = _unwrap_readonly(
+            type_after_notrequired_unwrap
+        )
+
         origin_effective_type = get_origin(effective_expected_type)
         args_effective_type = get_args(effective_expected_type)
 
-        if effective_expected_type is Any:  # Any type matches anything
+        if effective_expected_type is Any:
             continue
 
         if origin_effective_type is Union:
             is_valid_union_member = False
-            # args_effective_type contains members of the Union, e.g., (int, str) for Union[int, str]
             for union_member_type in args_effective_type:
                 # A Union member itself could be ReadOnly, e.g., Union[ReadOnly[int], str]
                 # So, unwrap it too for the isinstance check.
+                # NotRequired is not expected inside a Union's args like Union[NotRequired[T], Y]
+                # as Optional[T] (Union[T, None]) is the way for optionality within a Union.
                 effective_union_member_type = _unwrap_readonly(
                     union_member_type
                 )
@@ -237,7 +267,6 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
                 if effective_union_member_type is type(None) and value is None:
                     is_valid_union_member = True
                     break
-                # isinstance(value, type(None)) doesn't work for non-None values if value is not None
                 if effective_union_member_type is not type(
                     None
                 ) and isinstance(value, effective_union_member_type):
@@ -248,8 +277,6 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
                     expected=original_expected_type,  # Report original annotation
                     actual=type(value),
                 )
-        # Check if it's a TypedDict (for nested structures - currently NotImplemented)
-        # Duck typing: TypedDicts are types, have __annotations__ and __total__ attributes.
         elif (
             isinstance(effective_expected_type, type)
             and hasattr(effective_expected_type, "__annotations__")
@@ -258,14 +285,10 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
             raise NotImplementedError(
                 f"Validation of nested TypedDict for key '{k}' ('{effective_expected_type.__name__}') is not yet implemented."
             )
-        # Check for generic collections (list, dict, set, tuple - currently NotImplemented for element types)
         elif origin_effective_type in {list, dict, set, tuple}:
-            # This placeholder is for when element validation of generic collections is needed.
-            # Currently, it means if a type like list[int] is encountered, it's not deeply validated.
             raise NotImplementedError(
                 f"Validation of elements within generic collection for key '{k}' ({origin_effective_type}) is not yet implemented."
             )
-        # Default: direct isinstance check for non-generic, non-Union, non-Any simple types or classes
         elif not isinstance(value, effective_expected_type):
             incorrect_type_details[k] = IncorrectTypeDetail(
                 expected=original_expected_type,  # Report original annotation
