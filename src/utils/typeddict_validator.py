@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from typing import (
+from typing import (  # type: ignore[attr-defined]
     Any,
     NamedTuple,
-    TypedDict,
+    ReadOnly,
     TypeIs,
-    TypeVar,
     Union,
+    _TypedDictMeta,  # noqa: PLC2701
     get_args,
     get_origin,
     get_type_hints,
@@ -22,7 +22,7 @@ class IncorrectTypeDetail(NamedTuple):
     Attributes
     ----------
     expected : Any
-        The expected type for the key.
+        The expected type for the key, as defined in the TypedDict.
     actual : Any
         The actual type found for the key.
     """
@@ -106,17 +106,38 @@ class DictIncorrectTypeError(Exception):
         super().__init__(self.message)
 
 
-T = TypeVar("T", bound=TypedDict)  # type: ignore[valid-type]
+def _unwrap_readonly(type_hint: Any) -> Any:
+    """Unwrap ReadOnly[T] to T, otherwise return the type_hint as is.
+
+    Parameters
+    ----------
+    type_hint : Any
+        The type hint to potentially unwrap.
+
+    Returns
+    -------
+    Any
+        The unwrapped type if type_hint was ReadOnly[T], otherwise type_hint.
+    """
+    origin = get_origin(type_hint)
+    if origin is ReadOnly:
+        args = get_args(type_hint)
+        if args:  # ReadOnly[T] should have one argument T
+            return args[0]
+    return type_hint
 
 
-def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
+def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
+    d: dict[str, Any], td_type: type[T]
+) -> TypeIs[T]:
     """Validate a dictionary against a TypedDict type.
 
     This function checks if the given dictionary `d` conforms to the structure
     and types defined by the `TypedDict` `td_type`. It verifies:
     1. All required keys are present.
     2. No extra keys are present.
-    3. Values for all present keys match their expected types.
+    3. Values for all present keys match their expected types, including handling
+       for `ReadOnly`, `Union`, and `Any`.
 
     Parameters
     ----------
@@ -127,7 +148,7 @@ def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
 
     Returns
     -------
-    TypeGuard[T]
+    TypeIs[T]
         Returns `True` if the dictionary `d` is a valid instance of `td_type`.
         Otherwise, it raises an `ExceptionGroup` containing specific errors.
 
@@ -140,7 +161,6 @@ def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
         - `DictMissingKeyError`: If required keys are missing.
         - `DictExtraKeyError`: If unexpected keys are present.
         - `DictIncorrectTypeError`: If values have incorrect types.
-
     NotImplementedError
         If validation for nested TypedDicts or generic collection elements is
         attempted.
@@ -148,20 +168,27 @@ def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
     Notes
     -----
     - For `Union` types, the value must match at least one of the types in the Union.
+      `ReadOnly` types within a `Union` are also handled.
     - For `Any` type, any value is considered valid.
+    - `ReadOnly[T]` fields are validated against type `T`.
     - Validation of nested `TypedDict`s and elements within generic collections
       (like `list[int]`) is not currently implemented and will result in a
-      `NotImplementedError` being raised.
+      `NotImplementedError`.
     """
     errors: list[Exception] = []
-    annotations = get_type_hints(td_type)
+    # Get all annotations from the TypedDict
+    annotations = get_type_hints(
+        td_type, include_extras=True
+    )  # include_extras for ReadOnly etc.
 
+    # Determine all keys and required keys from the TypedDict
     all_keys = set(annotations.keys())
-    # __required_keys__ and __optional_keys__ are standard attributes for TypedDict
+    # __required_keys__ is a standard attribute for TypedDicts.
+    # It lists keys that must be present.
     required_keys = set(getattr(td_type, "__required_keys__", set()))
-    # If __required_keys__ is not present (e.g. older Python or non-total dicts without it)
-    # and td_type.__total__ is True, all annotated keys are required.
-    # However, relying on __required_keys__ is generally safer for modern TypedDict.
+
+    # Fallback if __required_keys__ is not present (e.g., older Python or specific TypedDict definitions)
+    # and td_type.__total__ is True (default), all annotated keys are considered required.
     if not hasattr(td_type, "__required_keys__") and getattr(
         td_type, "__total__", True
     ):
@@ -179,54 +206,70 @@ def validate_typeddict[T](d: dict[str, Any], td_type: type[T]) -> TypeIs[T]:
     if extra:
         errors.append(DictExtraKeyError(tuple(sorted(extra))))
 
-    # 3. Type Checking for common keys
+    # 3. Type Checking for common keys (keys present in both dict and TypedDict spec)
     common_keys = dict_keys.intersection(all_keys)
     incorrect_type_details: dict[str, IncorrectTypeDetail] = {}
 
     for k in common_keys:
-        v = d[k]
-        expected_type = annotations[k]
-        origin_type = get_origin(expected_type)
-        args_type = get_args(expected_type)
+        value = d[k]
+        # original_expected_type is what's defined in TypedDict (e.g., ReadOnly[int])
+        original_expected_type = annotations[k]
+        # effective_expected_type is the type to use for validation (e.g., int from ReadOnly[int])
+        effective_expected_type = _unwrap_readonly(original_expected_type)
 
-        if expected_type is Any:
-            continue  # Any type matches anything
+        # Get origin and args for the effective type for further checks (Union, Any, etc.)
+        origin_effective_type = get_origin(effective_expected_type)
+        args_effective_type = get_args(effective_expected_type)
 
-        if origin_type is Union:
-            # For Union[A, B, NoneType], get_args might return (A, B, type(None))
-            # isinstance(None, type(None)) is True
-            is_valid_union_type = False
-            for union_arg_type in args_type:
-                if union_arg_type is type(None) and v is None:
-                    is_valid_union_type = True
-                    break
-                # isinstance(value, type(None)) doesn't work for non-None values
-                if union_arg_type is not type(None) and isinstance(
-                    v, union_arg_type
-                ):
-                    is_valid_union_type = True
-                    break
-            if not is_valid_union_type:
-                incorrect_type_details[k] = IncorrectTypeDetail(
-                    expected=expected_type, actual=type(v)
+        if effective_expected_type is Any:  # Any type matches anything
+            continue
+
+        if origin_effective_type is Union:
+            is_valid_union_member = False
+            # args_effective_type contains members of the Union, e.g., (int, str) for Union[int, str]
+            for union_member_type in args_effective_type:
+                # A Union member itself could be ReadOnly, e.g., Union[ReadOnly[int], str]
+                # So, unwrap it too for the isinstance check.
+                effective_union_member_type = _unwrap_readonly(
+                    union_member_type
                 )
-        elif hasattr(expected_type, "__annotations__") and hasattr(
-            expected_type, "__total__"
-        ):  # Check if it's a TypedDict
-            # This is a placeholder for nested TypedDict validation
-            raise NotImplementedError(
-                f"Validation of nested TypedDict for key '{k}' is not yet implemented."
-            )
 
-        elif origin_type in {list, dict, set, tuple}:
-            # This is a placeholder for generic collection element validation
+                if effective_union_member_type is type(None) and value is None:
+                    is_valid_union_member = True
+                    break
+                # isinstance(value, type(None)) doesn't work for non-None values if value is not None
+                if effective_union_member_type is not type(
+                    None
+                ) and isinstance(value, effective_union_member_type):
+                    is_valid_union_member = True
+                    break
+            if not is_valid_union_member:
+                incorrect_type_details[k] = IncorrectTypeDetail(
+                    expected=original_expected_type,  # Report original annotation
+                    actual=type(value),
+                )
+        # Check if it's a TypedDict (for nested structures - currently NotImplemented)
+        # Duck typing: TypedDicts are types, have __annotations__ and __total__ attributes.
+        elif (
+            isinstance(effective_expected_type, type)
+            and hasattr(effective_expected_type, "__annotations__")
+            and hasattr(effective_expected_type, "__total__")
+        ):
             raise NotImplementedError(
-                f"Validation of elements within generic collection for key '{k}' ({origin_type}) is not yet implemented."
+                f"Validation of nested TypedDict for key '{k}' ('{effective_expected_type.__name__}') is not yet implemented."
             )
-
-        elif not isinstance(v, expected_type):
+        # Check for generic collections (list, dict, set, tuple - currently NotImplemented for element types)
+        elif origin_effective_type in {list, dict, set, tuple}:
+            # This placeholder is for when element validation of generic collections is needed.
+            # Currently, it means if a type like list[int] is encountered, it's not deeply validated.
+            raise NotImplementedError(
+                f"Validation of elements within generic collection for key '{k}' ({origin_effective_type}) is not yet implemented."
+            )
+        # Default: direct isinstance check for non-generic, non-Union, non-Any simple types or classes
+        elif not isinstance(value, effective_expected_type):
             incorrect_type_details[k] = IncorrectTypeDetail(
-                expected=expected_type, actual=type(v)
+                expected=original_expected_type,  # Report original annotation
+                actual=type(value),
             )
 
     if incorrect_type_details:
