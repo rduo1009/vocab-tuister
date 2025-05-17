@@ -189,7 +189,7 @@ def test_cli_error_type1_config(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_type2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5504, "regular", "errortype2")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5505, "regular", "errortype2")
     try:
         sleep(5)
 
