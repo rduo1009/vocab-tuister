@@ -248,46 +248,49 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
         # This is the type as defined in the TypedDict (e.g., NotRequired[ReadOnly[int]])
         original_expected_type = annotations[k]
 
-        # If a key is present, its NotRequired status is fulfilled. Unwrap to get the inner type.
-        # e.g., NotRequired[ReadOnly[int]] -> ReadOnly[int]
-        # e.g., NotRequired[str] -> str
+        # Determine the "core" type by unwrapping NotRequired then ReadOnly.
+        # This core type is used to determine the fundamental structure (Union, TypedDict, etc.)
+        # and for direct isinstance checks if it's a simple, non-generic type.
+        # Order: NotRequired is handled first (if key is present, its optionality is met),
+        # then ReadOnly (to get the underlying type for validation).
         type_after_notrequired_unwrap = _unwrap_notrequired(
             original_expected_type
         )
-
-        # Then unwrap ReadOnly to get the actual type for validation.
-        # e.g., ReadOnly[int] -> int (from previous step or directly)
-        # e.g., str -> str (no change if not ReadOnly)
-        effective_expected_type = _unwrap_readonly(
+        core_type_for_structure_check = _unwrap_readonly(
             type_after_notrequired_unwrap
         )
 
-        origin_effective_type = get_origin(effective_expected_type)
-        args_effective_type = get_args(effective_expected_type)
+        origin_of_core_structure = get_origin(core_type_for_structure_check)
+        args_of_core_structure = get_args(core_type_for_structure_check)
 
-        if effective_expected_type is Any:
+        if core_type_for_structure_check is Any:
             continue
 
-        if origin_effective_type is Union:
+        if origin_of_core_structure is Union:
             is_valid_union_member = False
-            for union_member_type in args_effective_type:
-                # A Union member itself could be ReadOnly, e.g., Union[ReadOnly[int], str]
-                # So, unwrap it too for the isinstance check.
-                # NotRequired is not expected inside a Union's args like Union[NotRequired[T], Y]
-                # as Optional[T] (Union[T, None]) is the way for optionality within a Union.
-                effective_union_member_type = _unwrap_readonly(
-                    union_member_type
+            # args_of_core_structure contains the direct arguments of the Union.
+            # For example, if core_type_for_structure_check is Union[ReadOnly[int], str],
+            # then args_of_core_structure would be (ReadOnly[int], str).
+            for union_arg_type in args_of_core_structure:
+                # Each argument type from the Union must also be fully unwrapped
+                # (NotRequired then ReadOnly) before an isinstance check.
+                # This handles cases like Union[ReadOnly[int], str] or even Union[NotRequired[int], str]
+                # if such a pattern was used in the TypedDict definition.
+                fully_unwrapped_union_member = _unwrap_readonly(
+                    _unwrap_notrequired(union_arg_type)
                 )
 
-                if effective_union_member_type is type(None) and value is None:
+                if (
+                    fully_unwrapped_union_member is type(None)
+                    and value is None
+                ):
                     is_valid_union_member = True
                     break
-                # The type ignore is for cases where effective_union_member_type might be
-                # a generic alias (e.g., list[int]) not directly usable by isinstance.
-                # However, this path is usually for simple types or None in a Union.
-                if effective_union_member_type is not type(
+                # The type ignore is for isinstance with generic aliases, though
+                # fully_unwrapped_union_member should typically be a concrete type here.
+                if fully_unwrapped_union_member is not type(
                     None
-                ) and isinstance(value, effective_union_member_type):  # type: ignore[arg-type]
+                ) and isinstance(value, fully_unwrapped_union_member):  # type: ignore[arg-type]
                     is_valid_union_member = True
                     break
             if not is_valid_union_member:
@@ -296,22 +299,24 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
                     actual=type(value),
                 )
         elif (
-            isinstance(effective_expected_type, type)
-            and hasattr(effective_expected_type, "__annotations__")
-            and hasattr(effective_expected_type, "__total__")
+            # Check if the core type itself is a TypedDict definition
+            isinstance(core_type_for_structure_check, type)
+            and hasattr(core_type_for_structure_check, "__annotations__")
+            and hasattr(core_type_for_structure_check, "__total__")
         ):
             raise NotImplementedError(
-                f"Validation of nested TypedDict for key '{k}' ('{effective_expected_type.__name__}') is not yet implemented."
+                f"Validation of nested TypedDict for key '{k}' ('{core_type_for_structure_check.__name__}') is not yet implemented."
             )
-        elif origin_effective_type in {list, dict, set, tuple}:
+        elif origin_of_core_structure in {list, dict, set, tuple}:
+            # Check if the origin of the core type is a generic collection
             raise NotImplementedError(
-                f"Validation of elements within generic collection for key '{k}' ({origin_effective_type}) is not yet implemented."
+                f"Validation of elements within generic collection for key '{k}' ({origin_of_core_structure}) is not yet implemented."
             )
-        # The type ignore is for cases where effective_expected_type might be
-        # a generic alias (e.g., list[int]) not directly usable by isinstance.
-        # The NotImplementedError above for common collections should catch most,
-        # but other complex types (e.g. Callable) might reach here.
-        elif not isinstance(value, effective_expected_type):  # type: ignore[arg-type]
+        # Fallback: direct isinstance check against the core type
+        # (e.g., for str, int, bool, or custom classes not covered above).
+        # The type ignore is for isinstance with generic aliases if core_type_for_structure_check
+        # somehow remains a complex generic not caught by earlier checks.
+        elif not isinstance(value, core_type_for_structure_check):  # type: ignore[arg-type]
             incorrect_type_details[k] = IncorrectTypeDetail(
                 expected=original_expected_type,  # Report original annotation
                 actual=type(value),
