@@ -9,98 +9,112 @@ import pytest
 from src.utils.typeddict_validator import DictExtraKeyError, DictIncorrectTypeError, DictMissingKeyError, IncorrectTypeDetail, validate_typeddict
 
 
-# Define TypedDicts for testing
+# --- Existing TypedDicts (abbreviated for brevity, ensure they are fully defined in your actual file) ---
 class SimpleTypedDict(TypedDict):
-    """A simple TypedDict for testing."""
-
     name: str
     age: int
     is_member: bool
 
 
 class OptionalTypedDict(TypedDict, total=False):
-    """A TypedDict with optional fields (total=False means all fields are NotRequired)."""
-
     name: str
     city: str
     zip_code: int
 
 
 class RequiredOptionalTypedDict(TypedDict):
-    """A TypedDict with a mix of required, Optional (Union[T, None]), and NotRequired fields."""
-
     id: int
-    description: Optional[str]  # Required, but can be str or None
-    notes: NotRequired[str]  # Truly optional (can be missing)
+    description: Optional[str]
+    notes: NotRequired[str]
 
 
 class AnyFieldTypedDict(TypedDict):
-    """A TypedDict with an Any field."""
-
     required_field: str
     any_field: Any
 
 
 class UnionTypedDict(TypedDict):
-    """A TypedDict with a Union field."""
-
     identifier: str | int
-    # This field is required, but its value can be float or None
     status_value: float | None
 
 
 class NestedTypedDictParent(TypedDict):
-    """A TypedDict that contains another TypedDict (for NotImplementedError)."""
-
     parent_field: str
     child: SimpleTypedDict
 
 
 class GenericCollectionTypedDict(TypedDict):
-    """A TypedDict with generic collection types (for NotImplementedError)."""
-
     int_list: list[int]
     str_bool_dict: dict[str, bool]
 
 
 class UnionTypedDictTotalFalse(TypedDict, total=False):
-    """A TypedDict with a Union field, where total=False makes all fields NotRequired."""
-
     identifier: str | int
     optional_union_val: float | None
 
 
-# --- TypedDicts for ReadOnly tests ---
 class ReadOnlySimpleTD(TypedDict):
-    """A TypedDict with ReadOnly fields."""
-
     name: ReadOnly[str]
     count: ReadOnly[int]
 
 
 class ReadOnlyComplexTD(TypedDict):
-    """A TypedDict with ReadOnly, Optional, and NotRequired fields."""
-
-    id: ReadOnly[str]  # Required ReadOnly
-    value: ReadOnly[Optional[int]]  # Required, ReadOnly, can be int or None
-    description: NotRequired[ReadOnly[str]]  # NotRequired, ReadOnly if present
-    config: ReadOnly[Union[str, bool, None]]  # Required, ReadOnly, Union
+    id: ReadOnly[str]
+    value: ReadOnly[Optional[int]]
+    description: NotRequired[ReadOnly[str]]
+    config: ReadOnly[Union[str, bool, None]]
 
 
 class ReadOnlyNestedParentTD(TypedDict):
-    """A TypedDict with a ReadOnly nested TypedDict."""
-
     parent_id: str
-    read_only_child: ReadOnly[SimpleTypedDict]  # For NotImplementedError test
+    read_only_child: ReadOnly[SimpleTypedDict]
 
 
 class ReadOnlyGenericCollectionTD(TypedDict):
-    """A TypedDict with a ReadOnly generic collection."""
-
-    read_only_list: ReadOnly[list[int]]  # For NotImplementedError test
+    read_only_list: ReadOnly[list[int]]
 
 
-# Test Cases
+class TotalFalseDict(TypedDict, total=False):
+    name: str
+    value: int
+
+
+# --- New TypedDicts for testing specific fixes ---
+
+
+# For required_keys fix (NotRequired in total=True TypedDicts)
+class TotalTrueExplicitNotRequired(TypedDict):  # total=True is default
+    req_field: str
+    opt_field: NotRequired[int]
+    req_union_can_be_none: Union[bool, None]  # This field is required, value can be bool or None
+
+
+class TotalTrueNotRequiredReadOnly(TypedDict):  # total=True is default
+    req_ro_field: ReadOnly[str]
+    opt_ro_field: NotRequired[ReadOnly[int]]
+
+
+# For enhanced Union handling with ReadOnly/NotRequired wrappers
+class AdvancedUnionTD(TypedDict):
+    # Field where Union is wrapped by ReadOnly
+    field_ro_union: ReadOnly[Union[str, int, None]]
+    # Field where Union is wrapped by NotRequired
+    field_nr_union: NotRequired[Union[str, bool]]
+    # Field where Union is wrapped by NotRequired then ReadOnly
+    field_nr_ro_union: NotRequired[ReadOnly[Union[float, None]]]
+    # Field where Union is wrapped by ReadOnly then NotRequired
+    # If present, value must conform to Union[int, bool]
+    field_ro_nr_union: ReadOnly[NotRequired[Union[int, bool]]]
+
+    # Field where Union members are ReadOnly
+    field_union_with_ro_member: Union[ReadOnly[str], int]
+    field_union_with_multiple_ro_members: Union[ReadOnly[bool], ReadOnly[float], None]
+
+
+# --- Test Cases ---
+
+
+# ... (Keep existing tests from test_validate_typeddict_success_perfect_match to test_validate_typeddict_success_any_field) ...
 def test_validate_typeddict_success_perfect_match():
     """Tests successful validation with a perfect match."""
     data = {"name": "Alice", "age": 30, "is_member": True}
@@ -109,7 +123,7 @@ def test_validate_typeddict_success_perfect_match():
 
 def test_validate_typeddict_success_optionalfields_td_missing():
     """Tests successful validation for OptionalTypedDict (total=False) when keys are missing."""
-    data = {"name": "Bob"}  # city and zip_code are missing, which is fine for total=False
+    data = {"name": "Bob"}
     assert validate_typeddict(data, OptionalTypedDict) is True
 
 
@@ -117,20 +131,17 @@ def test_validate_typeddict_success_optionalfields_td_present():
     """Tests successful validation for OptionalTypedDict (total=False) when keys are present."""
     data = {"name": "Charlie", "city": "London", "zip_code": 12345}
     assert validate_typeddict(data, OptionalTypedDict) is True
-    data_partial = {"city": "Paris"}  # name and zip_code missing, fine for total=False
+    data_partial = {"city": "Paris"}
     assert validate_typeddict(data_partial, OptionalTypedDict) is True
 
 
+# MODIFIED for required_keys fix: `notes` field should now be correctly optional
 def test_validate_typeddict_success_required_optional_fields():
     """
     Tests successful validation for RequiredOptionalTypedDict.
-    NOTE: Test data adjusted assuming 'notes: NotRequired[str]' might be treated as
-    required by TypedDict.__required_keys__ in some Python versions (e.g., observed in 3.13.2).
+    'notes: NotRequired[str]' should be truly optional.
     """
-    # Original data1 assumed 'notes' (NotRequired) could be missing:
-    # data1 = {"id": 1, "description": "Test"}
-    # Adjusted data1 to include 'notes':
-    data1 = {"id": 1, "description": "Test", "notes": "Default notes"}
+    data1 = {"id": 1, "description": "Test"}  # 'notes' is missing, should be fine
     assert validate_typeddict(data1, RequiredOptionalTypedDict) is True
 
     data2 = {"id": 2, "description": None, "notes": "Some notes"}
@@ -139,28 +150,29 @@ def test_validate_typeddict_success_required_optional_fields():
     data3 = {"id": 3, "description": "Another test", "notes": "More notes"}
     assert validate_typeddict(data3, RequiredOptionalTypedDict) is True
 
+    # Test case where only required fields are present and NotRequired is missing
+    data4 = {"id": 4, "description": None}
+    assert validate_typeddict(data4, RequiredOptionalTypedDict) is True
+
 
 def test_validate_typeddict_success_any_field():
     """Tests successful validation with an Any field."""
     data_str = {"required_field": "test", "any_field": "string_value"}
     assert validate_typeddict(data_str, AnyFieldTypedDict) is True
-
     data_int = {"required_field": "test", "any_field": 123}
     assert validate_typeddict(data_int, AnyFieldTypedDict) is True
-
     data_list = {"required_field": "test", "any_field": [1, 2, 3]}
     assert validate_typeddict(data_list, AnyFieldTypedDict) is True
-
     data_none = {"required_field": "test", "any_field": None}
     assert validate_typeddict(data_none, AnyFieldTypedDict) is True
 
 
+# ... (Keep existing error tests from test_validate_typeddict_missing_key_single to test_validate_typeddict_union_type_invalid) ...
 def test_validate_typeddict_missing_key_single():
     """Tests DictMissingKeyError for a single missing required key."""
     data = {"name": "Alice", "is_member": True}  # age is missing
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictMissingKeyError)
@@ -172,11 +184,10 @@ def test_validate_typeddict_missing_keys_multiple():
     data = {"is_member": True}  # name and age are missing
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictMissingKeyError)
-    assert error.missing_keys == ("age", "name")  # sorted
+    assert error.missing_keys == ("age", "name")
 
 
 def test_validate_typeddict_extra_key_single():
@@ -184,7 +195,6 @@ def test_validate_typeddict_extra_key_single():
     data = {"name": "Alice", "age": 30, "is_member": True, "extra_field": "value"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictExtraKeyError)
@@ -196,19 +206,17 @@ def test_validate_typeddict_extra_keys_multiple():
     data = {"name": "Alice", "age": 30, "is_member": True, "extra1": "val1", "extra2": "val2"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictExtraKeyError)
-    assert error.extra_keys == ("extra1", "extra2")  # sorted
+    assert error.extra_keys == ("extra1", "extra2")
 
 
 def test_validate_typeddict_incorrect_type_single():
     """Tests DictIncorrectTypeError for a single incorrect type."""
-    data = {"name": "Alice", "age": "thirty", "is_member": True}  # age is str, not int
+    data = {"name": "Alice", "age": "thirty", "is_member": True}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
@@ -221,7 +229,6 @@ def test_validate_typeddict_incorrect_types_multiple():
     data = {"name": 123, "age": "thirty", "is_member": "yes"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
@@ -233,28 +240,21 @@ def test_validate_typeddict_incorrect_types_multiple():
 
 def test_validate_typeddict_union_type_valid():
     """Tests successful validation with Union types."""
-    # UnionTypedDict: identifier: str | int, status_value: float | None
     data_str_float = {"identifier": "id123", "status_value": math.pi}
     assert validate_typeddict(data_str_float, UnionTypedDict) is True
-
     data_int_none = {"identifier": 123, "status_value": None}
     assert validate_typeddict(data_int_none, UnionTypedDict) is True
-
-    # UnionTypedDictTotalFalse: identifier: str | int, optional_union_val: float | None (total=False)
-    data_optional_missing_total_false = {"identifier": "id456"}  # optional_union_val missing
+    data_optional_missing_total_false = {"identifier": "id456"}
     assert validate_typeddict(data_optional_missing_total_false, UnionTypedDictTotalFalse) is True
-
     data_optional_none_total_false = {"identifier": "id789", "optional_union_val": None}
     assert validate_typeddict(data_optional_none_total_false, UnionTypedDictTotalFalse) is True
 
 
 def test_validate_typeddict_union_type_invalid():
     """Tests DictIncorrectTypeError for an invalid Union type."""
-    # UnionTypedDict: identifier: str | int, status_value: float | None
     data = {"identifier": [1.0], "status_value": "text"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, UnionTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
@@ -271,11 +271,11 @@ def test_validate_typeddict_readonly_simple_success():
     assert validate_typeddict(data, ReadOnlySimpleTD) is True
 
 
+# MODIFIED for required_keys fix: `description` field should now be correctly optional
 def test_validate_typeddict_readonly_complex_success():
     """
     Tests successful validation for TypedDict with various ReadOnly fields.
-    NOTE: Test data adjusted assuming 'description: NotRequired[ReadOnly[str]]'
-    might be treated as required by TypedDict.__required_keys__ in some Python versions (e.g., observed in 3.13.2).
+    'description: NotRequired[ReadOnly[str]]' should be truly optional.
     """
     # ReadOnlyComplexTD:
     #   id: ReadOnly[str]
@@ -283,10 +283,7 @@ def test_validate_typeddict_readonly_complex_success():
     #   description: NotRequired[ReadOnly[str]]
     #   config: ReadOnly[Union[str, bool, None]]
 
-    # Original data1 assumed 'description' (NotRequired) could be missing:
-    # data1 = {"id": "item1", "value": 123, "config": "active"}
-    # Adjusted data1 to include 'description':
-    data1 = {"id": "item1", "value": 123, "description": "desc_val_1", "config": "active"}
+    data1 = {"id": "item1", "value": 123, "config": "active"}  # 'description' missing, should be OK
     assert validate_typeddict(data1, ReadOnlyComplexTD) is True
 
     data2 = {"id": "item2", "value": None, "description": "A test item", "config": True}
@@ -295,20 +292,15 @@ def test_validate_typeddict_readonly_complex_success():
     data3 = {"id": "item3", "value": 456, "description": "Another item", "config": None}
     assert validate_typeddict(data3, ReadOnlyComplexTD) is True
 
-    # Original data4 assumed 'description' could be missing:
-    # data4 = {"id": "item4", "value": 789, "config": False}
-    # Adjusted data4 to include 'description':
-    data4 = {"id": "item4", "value": 789, "description": "desc_val_4", "config": False}
+    data4 = {"id": "item4", "value": 789, "config": False}  # 'description' missing, should be OK
     assert validate_typeddict(data4, ReadOnlyComplexTD) is True
 
 
 def test_validate_typeddict_readonly_simple_incorrect_type():
     """Tests DictIncorrectTypeError for a ReadOnly field with an incorrect type."""
-    # ReadOnlySimpleTD: name: ReadOnly[str], count: ReadOnly[int]
-    data = {"name": "test", "count": "many"}  # count should be int
+    data = {"name": "test", "count": "many"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, ReadOnlySimpleTD)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
@@ -317,64 +309,260 @@ def test_validate_typeddict_readonly_simple_incorrect_type():
     assert error.incorrect_types["count"].actual == str
 
 
+# MODIFIED for required_keys fix: `description` can be legitimately missing.
 def test_validate_typeddict_readonly_optional_incorrect_type():
-    """
-    Tests DictIncorrectTypeError for a ReadOnly[Optional[T]] field.
-    NOTE: Added 'description' to test data assuming it might be treated as required
-    by TypedDict.__required_keys__ in some Python versions (e.g., observed in 3.13.2),
-    to ensure only one error (the intended one for 'value') is raised.
-    """
+    """Tests DictIncorrectTypeError for a ReadOnly[Optional[T]] field."""
     # ReadOnlyComplexTD.value: ReadOnly[Optional[int]]
-    # Original data: data = {"id": "itemX", "value": "not_an_int", "config": "cfg"}
-    # Adjusted data:
-    data = {"id": "itemX", "value": "not_an_int", "description": "valid_desc", "config": "cfg"}
+    # `description` is NotRequired, so it can be omitted.
+    data = {"id": "itemX", "value": "not_an_int", "config": "cfg"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, ReadOnlyComplexTD)
-
-    assert len(excinfo.value.exceptions) == 1  # Should now only be one error for 'value'
+    assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
     assert "value" in error.incorrect_types
-    assert error.incorrect_types["value"].expected == ReadOnly[Optional[int]]
+    assert error.incorrect_types["value"].expected == ReadOnly[Optional[int]]  # Original annotation
     assert error.incorrect_types["value"].actual == str
 
 
+# MODIFIED for required_keys fix: `description` can be legitimately missing.
 def test_validate_typeddict_readonly_union_incorrect_type():
-    """
-    Tests DictIncorrectTypeError for a ReadOnly[Union[A,B,...]] field.
-    NOTE: Added 'description' to test data assuming it might be treated as required
-    by TypedDict.__required_keys__ in some Python versions (e.g., observed in 3.13.2),
-    to ensure only one error (the intended one for 'config') is raised.
-    """
+    """Tests DictIncorrectTypeError for a ReadOnly[Union[A,B,...]] field."""
     # ReadOnlyComplexTD.config: ReadOnly[Union[str, bool, None]]
-    # Original data: data = {"id": "itemY", "value": 10, "config": 123.45}
-    # Adjusted data:
-    data = {"id": "itemY", "value": 10, "description": "valid_desc", "config": 123.45}
+    # `description` is NotRequired, so it can be omitted.
+    data = {"id": "itemY", "value": 10, "config": 123.45}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, ReadOnlyComplexTD)
-
-    assert len(excinfo.value.exceptions) == 1  # Should now only be one error for 'config'
+    assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictIncorrectTypeError)
     assert "config" in error.incorrect_types
-    assert error.incorrect_types["config"].expected == ReadOnly[Union[str, bool, None]]
+    assert error.incorrect_types["config"].expected == ReadOnly[Union[str, bool, None]]  # Original
     assert error.incorrect_types["config"].actual == float
 
 
 def test_validate_typeddict_readonly_required_field_missing():
     """Tests DictMissingKeyError for a required ReadOnly field."""
-    # ReadOnlySimpleTD: name: ReadOnly[str], count: ReadOnly[int] (both required)
-    data = {"name": "only_name"}  # 'count' is missing
+    data = {"name": "only_name"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, ReadOnlySimpleTD)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictMissingKeyError)
     assert error.missing_keys == ("count",)
 
 
+# --- NEW TESTS FOR `required_keys` FIX (Total=True with NotRequired) ---
+def test_total_true_explicit_notrequired_success_and_missing_handling():
+    """Tests TotalTrueExplicitNotRequired for correct handling of NotRequired fields."""
+    # opt_field is NotRequired[int]
+    # req_union_can_be_none is Union[bool, None] (so it's required, can be None)
+
+    # Case 1: opt_field missing (should be valid)
+    data_opt_missing = {"req_field": "test", "req_union_can_be_none": True}
+    assert validate_typeddict(data_opt_missing, TotalTrueExplicitNotRequired) is True
+
+    data_opt_missing_none = {"req_field": "test", "req_union_can_be_none": None}
+    assert validate_typeddict(data_opt_missing_none, TotalTrueExplicitNotRequired) is True
+
+    # Case 2: opt_field present and correct
+    data_opt_present = {"req_field": "test", "opt_field": 123, "req_union_can_be_none": False}
+    assert validate_typeddict(data_opt_present, TotalTrueExplicitNotRequired) is True
+
+    # Case 3: opt_field present but incorrect type
+    data_opt_incorrect = {"req_field": "test", "opt_field": "wrong", "req_union_can_be_none": True}
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict(data_opt_incorrect, TotalTrueExplicitNotRequired)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert err.incorrect_types["opt_field"].expected == NotRequired[int]
+    assert err.incorrect_types["opt_field"].actual == str
+
+    # Case 4: req_field missing
+    data_req_missing = {"opt_field": 123, "req_union_can_be_none": None}
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict(data_req_missing, TotalTrueExplicitNotRequired)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictMissingKeyError)
+    assert err.missing_keys == ("req_field",)
+
+    # Case 5: req_union_can_be_none missing (it's required despite being Union with None)
+    data_req_union_missing = {"req_field": "test", "opt_field": 123}
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict(data_req_union_missing, TotalTrueExplicitNotRequired)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictMissingKeyError)
+    assert err.missing_keys == ("req_union_can_be_none",)
+
+
+def test_total_true_notrequired_readonly_success_and_missing():
+    """Tests TotalTrueNotRequiredReadOnly for NotRequired[ReadOnly[T]] fields."""
+    # opt_ro_field: NotRequired[ReadOnly[int]]
+
+    # Case 1: opt_ro_field missing (should be valid)
+    data_opt_missing = {"req_ro_field": "test"}
+    assert validate_typeddict(data_opt_missing, TotalTrueNotRequiredReadOnly) is True
+
+    # Case 2: opt_ro_field present and correct
+    data_opt_present = {"req_ro_field": "test", "opt_ro_field": 100}
+    assert validate_typeddict(data_opt_present, TotalTrueNotRequiredReadOnly) is True
+
+    # Case 3: opt_ro_field present but incorrect type
+    data_opt_incorrect = {"req_ro_field": "test", "opt_ro_field": "wrong_type"}
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict(data_opt_incorrect, TotalTrueNotRequiredReadOnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert err.incorrect_types["opt_ro_field"].expected == NotRequired[ReadOnly[int]]
+    assert err.incorrect_types["opt_ro_field"].actual == str
+
+    # Case 4: req_ro_field missing
+    data_req_missing = {"opt_ro_field": 100}
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict(data_req_missing, TotalTrueNotRequiredReadOnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictMissingKeyError)
+    assert err.missing_keys == ("req_ro_field",)
+
+
+# --- NEW TESTS FOR ENHANCED UNION HANDLING ---
+def test_advanced_union_readonly_wrapped_union_success_and_fail():
+    """Tests a field like: ReadOnly[Union[str, int, None]]."""
+
+    class TempROUnionOnly(TypedDict):  # Define a local, minimal TypedDict
+        field_ro_union: ReadOnly[Union[str, int, None]]
+
+    # Success cases
+    assert validate_typeddict({"field_ro_union": "text"}, TempROUnionOnly) is True
+    assert validate_typeddict({"field_ro_union": 123}, TempROUnionOnly) is True
+    assert validate_typeddict({"field_ro_union": None}, TempROUnionOnly) is True
+
+    # Failure case
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field_ro_union": 123.45}, TempROUnionOnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert err.incorrect_types["field_ro_union"].expected == ReadOnly[Union[str, int, None]]
+    assert err.incorrect_types["field_ro_union"].actual == float
+
+
+def test_advanced_union_notrequired_wrapped_union_success_and_fail():
+    """Tests AdvancedUnionTD field_nr_union: NotRequired[Union[str, bool]]."""
+
+    # field_nr_union is NotRequired, so other fields (if any) would need to be present.
+    # For this TD, if field_nr_union is the only field, an empty dict is not valid
+    # because the TD itself is total=True by default, meaning field_ro_union etc. are required.
+    # Let's assume we provide all other required fields for simplicity or use a total=False TD.
+    # For this test, we focus on `field_nr_union` if present.
+    # To make it simpler, let's define a minimal TD for this one field:
+    class TempNROnly(TypedDict):
+        field_nr_union: NotRequired[Union[str, bool]]
+
+    # Success cases
+    assert validate_typeddict({}, TempNROnly) is True  # Missing is OK
+    assert validate_typeddict({"field_nr_union": "text"}, TempNROnly) is True
+    assert validate_typeddict({"field_nr_union": True}, TempNROnly) is True
+
+    # Failure case
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field_nr_union": 123}, TempNROnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert err.incorrect_types["field_nr_union"].expected == NotRequired[Union[str, bool]]
+    assert err.incorrect_types["field_nr_union"].actual == int
+
+
+def test_advanced_union_nr_ro_wrapped_union_success_and_fail():
+    """Tests AdvancedUnionTD field_nr_ro_union: NotRequired[ReadOnly[Union[float, None]]]."""
+
+    class TempNRROOnly(TypedDict):
+        field_nr_ro_union: NotRequired[ReadOnly[Union[float, None]]]
+
+    # Success cases
+    assert validate_typeddict({}, TempNRROOnly) is True  # Missing is OK
+    assert validate_typeddict({"field_nr_ro_union": 123.45}, TempNRROOnly) is True
+    assert validate_typeddict({"field_nr_ro_union": None}, TempNRROOnly) is True
+
+    # Failure case
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field_nr_ro_union": "text"}, TempNRROOnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert err.incorrect_types["field_nr_ro_union"].expected == NotRequired[ReadOnly[Union[float, None]]]
+    assert err.incorrect_types["field_nr_ro_union"].actual == str
+
+
+def test_advanced_union_ro_nr_wrapped_union_success_and_fail():
+    """Tests AdvancedUnionTD field_ro_nr_union: ReadOnly[NotRequired[Union[int, bool]]]."""
+
+    # This field is required because ReadOnly[...] is not NotRequired[...]
+    # The NotRequired is *inside* ReadOnly.
+    # If the key is present, its value must match Union[int, bool].
+    class TempRONROnly(TypedDict):
+        field_ro_nr_union: ReadOnly[NotRequired[Union[int, bool]]]
+
+    # Success cases
+    assert validate_typeddict({"field_ro_nr_union": 123}, TempRONROnly) is True
+    assert validate_typeddict({"field_ro_nr_union": True}, TempRONROnly) is True
+
+    # Failure case (wrong type)
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field_ro_nr_union": "text"}, TempRONROnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictIncorrectTypeError)
+    assert "field_ro_nr_union" in err.incorrect_types
+    assert err.incorrect_types["field_ro_nr_union"].expected == ReadOnly[NotRequired[Union[int, bool]]]
+    assert err.incorrect_types["field_ro_nr_union"].actual == str
+
+    # Failure case (missing key - this field IS required by the TypedDict structure)
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({}, TempRONROnly)
+    err = excinfo.value.exceptions[0]
+    assert isinstance(err, DictMissingKeyError)
+    assert err.missing_keys == ("field_ro_nr_union",)
+
+
+def test_advanced_union_members_wrapped_success_and_fail():
+    """Tests AdvancedUnionTD fields with ReadOnly members in Union."""
+
+    # field_union_with_ro_member: Union[ReadOnly[str], int]
+    # field_union_with_multiple_ro_members: Union[ReadOnly[bool], ReadOnly[float], None]
+    class TempUnionMembers(TypedDict):
+        field1: Union[ReadOnly[str], int]
+        field2: Union[ReadOnly[bool], ReadOnly[float], None]
+
+    # Success cases for field1
+    assert validate_typeddict({"field1": "text", "field2": None}, TempUnionMembers) is True
+    assert validate_typeddict({"field1": 123, "field2": None}, TempUnionMembers) is True
+
+    # Success cases for field2
+    assert validate_typeddict({"field1": 1, "field2": True}, TempUnionMembers) is True
+    assert validate_typeddict({"field1": 1, "field2": math.pi}, TempUnionMembers) is True
+    assert validate_typeddict({"field1": 1, "field2": None}, TempUnionMembers) is True
+
+    # Failure case for field1
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field1": 123.45, "field2": None}, TempUnionMembers)
+    errs = {type(e) for e in excinfo.value.exceptions}
+    assert DictIncorrectTypeError in errs
+    incorrect_type_error = next(e for e in excinfo.value.exceptions if isinstance(e, DictIncorrectTypeError))
+    assert "field1" in incorrect_type_error.incorrect_types
+    assert incorrect_type_error.incorrect_types["field1"].expected == Union[ReadOnly[str], int]
+    assert incorrect_type_error.incorrect_types["field1"].actual == float
+
+    # Failure case for field2
+    with pytest.raises(ExceptionGroup) as excinfo:
+        validate_typeddict({"field1": "s", "field2": "string"}, TempUnionMembers)
+    errs = {type(e) for e in excinfo.value.exceptions}
+    assert DictIncorrectTypeError in errs
+    incorrect_type_error = next(e for e in excinfo.value.exceptions if isinstance(e, DictIncorrectTypeError))
+    assert "field2" in incorrect_type_error.incorrect_types
+    assert incorrect_type_error.incorrect_types["field2"].expected == Union[ReadOnly[bool], ReadOnly[float], None]
+    assert incorrect_type_error.incorrect_types["field2"].actual == str
+
+
 # --- NotImplementedError Cases (including ReadOnly variants) ---
+# ... (Keep existing NotImplementedError tests) ...
 def test_validate_typeddict_notimplemented_nested_typeddict():
     """Tests NotImplementedError for nested TypedDict."""
     data = {"parent_field": "value", "child": {"name": "Nested", "age": 1, "is_member": False}}
@@ -411,28 +599,21 @@ def test_validate_typeddict_notimplemented_generic_collection_dict():
 
 
 # --- General Behavior and Error Grouping ---
+# ... (Keep existing General Behavior tests) ...
 def test_validate_typeddict_exception_group_multiple_errors():
     """Tests that multiple different errors are reported in one ExceptionGroup."""
-    data = {
-        # "name": "Alice", # Missing 'name' (age is also missing)
-        "is_member": "yes",  # Incorrect type for 'is_member'
-        "extra_field": "extra_value",  # Extra key
-    }  # 'age' is missing as well
+    data = {"is_member": "yes", "extra_field": "extra_value"}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     errors = excinfo.value.exceptions
     assert len(errors) == 3
-
     assert any(isinstance(e, DictMissingKeyError) for e in errors)
     missing_key_error = next(e for e in errors if isinstance(e, DictMissingKeyError))
     assert missing_key_error.missing_keys == ("age", "name")
-
     assert any(isinstance(e, DictIncorrectTypeError) for e in errors)
     incorrect_type_error = next(e for e in errors if isinstance(e, DictIncorrectTypeError))
     assert "is_member" in incorrect_type_error.incorrect_types
     assert incorrect_type_error.incorrect_types["is_member"] == IncorrectTypeDetail(expected=bool, actual=str)
-
     assert any(isinstance(e, DictExtraKeyError) for e in errors)
     extra_key_error = next(e for e in errors if isinstance(e, DictExtraKeyError))
     assert extra_key_error.extra_keys == ("extra_field",)
@@ -440,17 +621,9 @@ def test_validate_typeddict_exception_group_multiple_errors():
 
 def test_validate_typeddict_notimplemented_error_takes_precedence_in_loop():
     """
-    Tests that if a NotImplementedError occurs for a field, validation stops for that field,
-    but other errors might still be collected before or an ExceptionGroup might be raised
-    if the NotImplementedError itself is not the primary error from validate_typeddict.
-    The current implementation raises NotImplementedError directly, halting other checks.
+    Tests that if a NotImplementedError occurs for a field, validation stops for that field.
     """
-    data = {
-        "parent_field": 123,  # Incorrect type
-        "child": {"name": "Nested", "age": 1, "is_member": False},  # This will trigger NotImplementedError
-        "extra": "key",  # This might not be checked if NotImplementedError halts early
-    }
-    # The validator raises NotImplementedError directly, it doesn't group it.
+    data = {"parent_field": 123, "child": {"name": "Nested", "age": 1, "is_member": False}, "extra": "key"}
     with pytest.raises(NotImplementedError, match="Validation of nested TypedDict for key 'child'"):
         validate_typeddict(data, NestedTypedDictParent)
 
@@ -462,14 +635,8 @@ def test_typeguard_returns_true_on_success():
     assert result is True
 
 
-# Test for total=False behavior regarding required keys
-class TotalFalseDict(TypedDict, total=False):
-    """A TypedDict with total=False."""
-
-    name: str
-    value: int
-
-
+# --- total=False Tests ---
+# ... (Keep existing total=False tests) ...
 def test_validate_typeddict_total_false_all_present():
     """Test total=False with all keys present."""
     data = {"name": "Test", "value": 1}
@@ -506,14 +673,10 @@ def test_validate_typeddict_legacy_total_true_missing_key():
     Test behavior when __required_keys__ might be absent but total=True (default).
     SimpleTypedDict is total=True by default.
     """
-    data = {"name": "Alice", "is_member": True}  # age is missing
+    data = {"name": "Alice", "is_member": True}
     with pytest.raises(ExceptionGroup) as excinfo:
         validate_typeddict(data, SimpleTypedDict)
-
     assert len(excinfo.value.exceptions) == 1
     error = excinfo.value.exceptions[0]
     assert isinstance(error, DictMissingKeyError)
     assert "age" in error.missing_keys
-    # This implicitly tests the fallback logic where if __required_keys__ was somehow
-    # not present, __total__=True would make all annotated keys required.
-    # In modern Python, __required_keys__ is typically present for total=True TypedDicts.
