@@ -300,7 +300,7 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
                 # this would need more complex handling, but usually, union members are simpler.
                 if effective_union_member_type is not type(
                     None
-                ) and isinstance(value, effective_union_member_type):  # type: ignore[arg-type]
+                ) and isinstance(value, effective_union_member_type):
                     is_valid_union_member = True
                     break
             if not is_valid_union_member:
@@ -332,7 +332,7 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
                 f"Validation of elements within generic collection for key '{k}' ({origin_of_core_structure}) is not yet implemented."
             )
         # Fallback for simple types (int, str, etc.) after all wrappers and structures are handled
-        elif not isinstance(value, core_structural_type):  # type: ignore[arg-type]
+        elif not isinstance(value, core_structural_type):
             incorrect_type_details[k] = IncorrectTypeDetail(
                 expected=original_expected_type,  # Report original annotation
                 actual=type(value),
