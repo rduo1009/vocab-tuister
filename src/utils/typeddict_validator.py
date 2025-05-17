@@ -149,7 +149,7 @@ def _unwrap_notrequired(type_hint: Any) -> Any:
     return type_hint
 
 
-def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
+def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
     d: dict[str, Any], td_type: type[T]
 ) -> TypeIs[T]:
     """Validate a dictionary against a TypedDict type.
@@ -245,52 +245,62 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
 
     for k in common_keys:
         value = d[k]
-        # This is the type as defined in the TypedDict (e.g., NotRequired[ReadOnly[int]])
         original_expected_type = annotations[k]
 
-        # Determine the "core" type by unwrapping NotRequired then ReadOnly.
-        # This core type is used to determine the fundamental structure (Union, TypedDict, etc.)
-        # and for direct isinstance checks if it's a simple, non-generic type.
-        # Order: NotRequired is handled first (if key is present, its optionality is met),
-        # then ReadOnly (to get the underlying type for validation).
-        type_after_notrequired_unwrap = _unwrap_notrequired(
-            original_expected_type
-        )
-        core_type_for_structure_check = _unwrap_readonly(
-            type_after_notrequired_unwrap
-        )
+        # Refined unwrapping for core structural type analysis
+        type_being_unwrapped = original_expected_type
 
-        origin_of_core_structure = get_origin(core_type_for_structure_check)
-        args_of_core_structure = get_args(core_type_for_structure_check)
+        # Iteratively unwrap NotRequired and ReadOnly until neither is the outermost type,
+        # or the type becomes simple (no origin). This handles nested wrappers like
+        # ReadOnly[NotRequired[T]] or NotRequired[ReadOnly[T]].
+        while True:
+            origin = get_origin(type_being_unwrapped)
+            if origin is NotRequired:
+                type_being_unwrapped = _unwrap_notrequired(
+                    type_being_unwrapped
+                )
+            elif origin is ReadOnly:
+                type_being_unwrapped = _unwrap_readonly(type_being_unwrapped)
+            else:
+                # No more NotRequired or ReadOnly wrappers at this level, or it's a base type.
+                break
 
-        if core_type_for_structure_check is Any:
+        core_structural_type = type_being_unwrapped
+
+        origin_of_core_structure = get_origin(core_structural_type)
+        args_of_core_structure = get_args(core_structural_type)
+
+        if core_structural_type is Any:
             continue
 
         if origin_of_core_structure is Union:
             is_valid_union_member = False
-            # args_of_core_structure contains the direct arguments of the Union.
-            # For example, if core_type_for_structure_check is Union[ReadOnly[int], str],
-            # then args_of_core_structure would be (ReadOnly[int], str).
-            for union_arg_type in args_of_core_structure:
-                # Each argument type from the Union must also be fully unwrapped
-                # (NotRequired then ReadOnly) before an isinstance check.
-                # This handles cases like Union[ReadOnly[int], str] or even Union[NotRequired[int], str]
-                # if such a pattern was used in the TypedDict definition.
-                fully_unwrapped_union_member = _unwrap_readonly(
-                    _unwrap_notrequired(union_arg_type)
-                )
+            for union_member_type_from_args in args_of_core_structure:
+                # Fully unwrap each member of the union before isinstance check
+                effective_union_member_type = union_member_type_from_args
+                while True:  # Iteratively unwrap this member
+                    member_origin = get_origin(effective_union_member_type)
+                    if member_origin is NotRequired:
+                        effective_union_member_type = _unwrap_notrequired(
+                            effective_union_member_type
+                        )
+                    elif member_origin is ReadOnly:
+                        effective_union_member_type = _unwrap_readonly(
+                            effective_union_member_type
+                        )
+                    else:
+                        break
 
-                if (
-                    fully_unwrapped_union_member is type(None)
-                    and value is None
-                ):
+                if effective_union_member_type is type(None) and value is None:
                     is_valid_union_member = True
                     break
-                # The type ignore is for isinstance with generic aliases, though
-                # fully_unwrapped_union_member should typically be a concrete type here.
-                if fully_unwrapped_union_member is not type(
+                # Ensure effective_union_member_type is a type or tuple of types for isinstance
+                # For simple types, it will be the type itself.
+                # For Union[A,B] (if it somehow wasn't caught by outer Union check and is a member),
+                # this would need more complex handling, but usually, union members are simpler.
+                if effective_union_member_type is not type(
                     None
-                ) and isinstance(value, fully_unwrapped_union_member):  # type: ignore[arg-type]
+                ) and isinstance(value, effective_union_member_type):  # type: ignore[arg-type]
                     is_valid_union_member = True
                     break
             if not is_valid_union_member:
@@ -299,24 +309,30 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
                     actual=type(value),
                 )
         elif (
-            # Check if the core type itself is a TypedDict definition
-            isinstance(core_type_for_structure_check, type)
-            and hasattr(core_type_for_structure_check, "__annotations__")
-            and hasattr(core_type_for_structure_check, "__total__")
+            isinstance(core_structural_type, type)  # Check if it's a class
+            and hasattr(
+                core_structural_type, "__annotations__"
+            )  # TypedDicts have __annotations__
+            and hasattr(
+                core_structural_type, "__total__"
+            )  # TypedDicts have __total__
         ):
+            # This is a basic check for TypedDict. A more robust check might involve _TypedDictMeta
+            # if isinstance(core_structural_type, _TypedDictMeta) but _TypedDictMeta is private.
             raise NotImplementedError(
-                f"Validation of nested TypedDict for key '{k}' ('{core_type_for_structure_check.__name__}') is not yet implemented."
+                f"Validation of nested TypedDict for key '{k}' ('{core_structural_type.__name__}') is not yet implemented."
             )
-        elif origin_of_core_structure in {list, dict, set, tuple}:
-            # Check if the origin of the core type is a generic collection
+        elif origin_of_core_structure in {
+            list,
+            dict,
+            set,
+            tuple,
+        }:  # Check for common generic collections
             raise NotImplementedError(
                 f"Validation of elements within generic collection for key '{k}' ({origin_of_core_structure}) is not yet implemented."
             )
-        # Fallback: direct isinstance check against the core type
-        # (e.g., for str, int, bool, or custom classes not covered above).
-        # The type ignore is for isinstance with generic aliases if core_type_for_structure_check
-        # somehow remains a complex generic not caught by earlier checks.
-        elif not isinstance(value, core_type_for_structure_check):  # type: ignore[arg-type]
+        # Fallback for simple types (int, str, etc.) after all wrappers and structures are handled
+        elif not isinstance(value, core_structural_type):  # type: ignore[arg-type]
             incorrect_type_details[k] = IncorrectTypeDetail(
                 expected=original_expected_type,  # Report original annotation
                 actual=type(value),
