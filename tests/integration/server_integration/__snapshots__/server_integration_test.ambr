@@ -5,11 +5,38 @@
 # name: test_cli_error_config.1
   "Bad request: 400 Bad Request: The settings provided are not valid: 'number-of-questions' (InvalidSettingsError)"
 # ---
+# name: test_cli_error_extra_config
+  'Vocab list received.'
+# ---
+# name: test_cli_error_extra_config.1
+  "Bad request: 400 Bad Request: Unrecognised settings were provided: 'cause-an-error'. (InvalidSettingsError)"
+# ---
 # name: test_cli_error_list
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
 # ---
 # name: test_cli_error_list.1
   'Bad request: 400 Bad Request: Vocab list has not been provided.'
+# ---
+# name: test_cli_error_missing_config
+  'Vocab list received.'
+# ---
+# name: test_cli_error_missing_config.1
+  "Bad request: 400 Bad Request: Required settings are missing: 'number-of-questions'. (InvalidSettingsError)"
+# ---
+# name: test_cli_error_type1_config
+  'Vocab list received.'
+# ---
+# name: test_cli_error_type1_config.1
+  "Bad request: 400 Bad Request: Expected type typing.ReadOnly[bool] for 'include-typein-lattoeng', but received type int; Expected type typing.ReadOnly[int] for 'number-multiplechoice-options', but received type str. (InvalidSettingsError)"
+# ---
+# name: test_cli_error_type2_config
+  'Vocab list received.'
+# ---
+# name: test_cli_error_type2_config.1
+  "Bad request: 400 Bad Request: Invalid settings: 'number-of-questions' must be an integer (got type str). (InvalidSettingsError)"
+# ---
+# name: test_cli_error_type_config
+  'Vocab list received.'
 # ---
 # name: test_cli_list_badpos
   "Bad request: 400 Bad Request: Invalid part of speech: 'Cause an error' (InvalidVocabFileFormatError)"
