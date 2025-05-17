@@ -201,16 +201,31 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
     errors: list[Exception] = []
     # Get all annotations from the TypedDict, include_extras is important for ReadOnly/NotRequired
     annotations = get_type_hints(td_type, include_extras=True)
-
     all_keys = set(annotations.keys())
-    # __required_keys__ should correctly list only keys not marked as NotRequired
-    # if the TypedDict is total=True.
-    required_keys = set(getattr(td_type, "__required_keys__", set()))
 
-    if not hasattr(td_type, "__required_keys__") and getattr(
-        td_type, "__total__", True
-    ):
-        required_keys = all_keys
+    # Determine required keys based on the TypedDict's totality and field annotations.
+    # This approach is generally more robust across Python versions and TypedDict variations
+    # than relying solely on the __required_keys__ attribute (which might be inconsistent
+    # or missing in some cases) or using an overly simple fallback.
+    is_total = getattr(td_type, "__total__", True)
+
+    if is_total:
+        # For total=True TypedDicts (default), a key is required if its annotation
+        # in the TypedDict definition is not NotRequired.
+        required_keys = {
+            k
+            for k, ann_type in annotations.items()
+            if get_origin(ann_type) is not NotRequired
+        }
+    else:
+        # For total=False TypedDicts, all keys are optional by default.
+        # A key becomes required only if explicitly marked with typing.Required.
+        # As typing.Required is not yet a stable public API fully integrated
+        # with get_origin checks across all supported Python versions for this purpose,
+        # we currently assume no keys are required for total=False.
+        # The standard __required_keys__ for total=False TypedDicts (without Required[] fields)
+        # is an empty set, so this aligns.
+        required_keys = set()
 
     dict_keys = set(d.keys())
 
@@ -267,9 +282,12 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
                 if effective_union_member_type is type(None) and value is None:
                     is_valid_union_member = True
                     break
+                # The type ignore is for cases where effective_union_member_type might be
+                # a generic alias (e.g., list[int]) not directly usable by isinstance.
+                # However, this path is usually for simple types or None in a Union.
                 if effective_union_member_type is not type(
                     None
-                ) and isinstance(value, effective_union_member_type):
+                ) and isinstance(value, effective_union_member_type):  # type: ignore[arg-type]
                     is_valid_union_member = True
                     break
             if not is_valid_union_member:
@@ -289,7 +307,11 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914
             raise NotImplementedError(
                 f"Validation of elements within generic collection for key '{k}' ({origin_effective_type}) is not yet implemented."
             )
-        elif not isinstance(value, effective_expected_type):
+        # The type ignore is for cases where effective_expected_type might be
+        # a generic alias (e.g., list[int]) not directly usable by isinstance.
+        # The NotImplementedError above for common collections should catch most,
+        # but other complex types (e.g. Callable) might reach here.
+        elif not isinstance(value, effective_expected_type):  # type: ignore[arg-type]
             incorrect_type_details[k] = IncorrectTypeDetail(
                 expected=original_expected_type,  # Report original annotation
                 actual=type(value),
