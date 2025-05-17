@@ -18,7 +18,12 @@ from ..core.lego.misc import VocabList
 from ..core.lego.reader import _read_vocab_file_internal
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
-from ..utils.typeddict_validator import validate_typeddict
+from ..utils.typeddict_validator import (
+    DictExtraKeyError,
+    DictIncorrectTypeError,
+    DictMissingKeyError,
+    validate_typeddict,
+)
 from .json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
@@ -106,17 +111,57 @@ def create_session():
     settings: dict[str, Any] = request.get_json()
     try:
         question_amount = settings.pop("number-of-questions")
-        validate_typeddict(settings, Settings)
-    except (ExceptionGroup, KeyError) as e:
-        error_message_detail = str(e)
-        if isinstance(e, ExceptionGroup):
-            error_message_detail = "; ".join(
-                str(sub_ex) for sub_ex in e.exceptions
-            )
-
+    except KeyError as e:
         raise BadRequest(
-            f"The settings provided are not valid: {error_message_detail} (InvalidSettingsError)"
+            "Required settings are missing: 'number-of-questions'. "
+            "(InvalidSettingsError)"
         ) from e
+
+    logger.info(question_amount)
+    if not isinstance(question_amount, int):
+        raise BadRequest(
+            "Invalid settings: 'number-of-questions' must be an integer (got "
+            f"type {type(question_amount).__name__}). (InvalidSettingsError)"
+        )
+
+    try:
+        validate_typeddict(settings, Settings)
+    except* DictMissingKeyError as eg:
+        specific_error = eg.exceptions[0]
+        keys_str = ", ".join(
+            f"'{k}'" for k in sorted(specific_error.missing_keys)
+        )
+        raise BadRequest(
+            f"Required settings are missing: {keys_str}. (InvalidSettingsError)"
+        ) from eg
+
+    except* DictExtraKeyError as eg:
+        specific_error = eg.exceptions[0]
+        keys_str = ", ".join(
+            f"'{k}'" for k in sorted(specific_error.extra_keys)
+        )
+        raise BadRequest(
+            f"Unrecognised settings were provided: {keys_str}. "
+            "(InvalidSettingsError)"
+        ) from eg
+
+    except* DictIncorrectTypeError as eg:
+        specific_error = eg.exceptions[0]
+        type_error_details = []
+        for field, detail in sorted(specific_error.incorrect_types.items()):
+            expected_type_str = str(detail.expected)
+            actual_type_str = (
+                detail.actual.__name__
+                if hasattr(detail.actual, "__name__")
+                else str(detail.actual)
+            )
+            type_error_details.append(
+                f"Expected type {expected_type_str} for '{field}', but received"
+                f" type {actual_type_str}"
+            )
+        raise BadRequest(
+            f"{'; '.join(type_error_details)}. (InvalidSettingsError)"
+        ) from eg
 
     logger.info("Returning %d questions.", question_amount)
     try:
