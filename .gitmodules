@@ -1,6 +1,3 @@
-[submodule "src/_vendor/typeddict_validator"]
-	path = src/_vendor/typeddict_validator
-	url = https://github.com/rduo1009/typeddict-validator
 [submodule "src/_build"]
 	path = src/_build
 	url = https://github.com/rduo1009/vocab-tuister-build
