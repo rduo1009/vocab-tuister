@@ -117,7 +117,6 @@ def create_session():
             "(InvalidSettingsError)"
         ) from e
 
-    logger.info(question_amount)
     if not isinstance(question_amount, int):
         raise BadRequest(
             "Invalid settings: 'number-of-questions' must be an integer (got "
