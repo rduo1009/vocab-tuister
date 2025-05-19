@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 from .. import _seed
-from . import dict_changes, logger
+from . import dict_changes, logger, typeddict_validator
 from .compact_function import compact as compact
 from .compare_function import compare as compare
 from .duplicates import (
@@ -33,4 +33,5 @@ __all__ = [
     "remove_duplicates",
     "set_choice",
     "set_choice_pop",
+    "typeddict_validator",
 ]
