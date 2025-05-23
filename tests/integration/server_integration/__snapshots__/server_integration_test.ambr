@@ -3,7 +3,7 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_extra_config.1
-  "Bad request: 400 Bad Request: Unrecognised settings were provided: 'cause-an-error'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_list
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
@@ -21,13 +21,13 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_missing2_config.1
-  "Bad request: 400 Bad Request: Required settings are missing: 'number-multiplechoice-options'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type1_config
   'Vocab list received.'
 # ---
 # name: test_cli_error_type1_config.1
-  "Bad request: 400 Bad Request: Expected type typing.ReadOnly[bool] for 'include-typein-lattoeng', but received type int; Expected type typing.ReadOnly[int] for 'number-multiplechoice-options', but received type str. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type2_config
   'Vocab list received.'
