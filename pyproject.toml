@@ -51,6 +51,7 @@ ruff = "0.11.9"
 doc8 = "1.1.2"
 rstfmt = "0.0.14"
 mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
+basedpyright = "1.29.1"
 interrogate = "1.7.0"
 griffe = "1.7.3"
 
