@@ -1,59 +1,75 @@
-import enum as enum
-import sqlite3 as sqlite3
+# pyright: reportAny=false, reportExplicitAny=false
 
-from _typeshed import Incomplete
+from __future__ import annotations
+
+from collections import OrderedDict
+from collections.abc import Iterator, Mapping, Sequence
+from typing import Any, Literal, TypeVar
 
 from ._common import *
 
+no_arg: object
+
+_EnumTypeSelf = TypeVar("_EnumTypeSelf", bound="EnumType")
+
+_InitParamType = str | list[str] | None
+_SettingsParamType = Sequence[str] | str
+
+class EnumDict(OrderedDict[str, Any]): ...
+
+_T = TypeVar("_T", bound="EnumType")
+
 class EnumType(type):
     @classmethod
-    def __prepare__(
-        metacls: Incomplete,
-        cls: Incomplete,
-        bases: Incomplete,
-        init: Incomplete | None = None,
-        start: Incomplete | None = None,
-        settings: Incomplete = (),
-        boundary: Incomplete | None = None,
-        **kwds: Incomplete,
-    ) -> Incomplete: ...
-    def __init__(
-        cls: Incomplete, *args: Incomplete, **kwds: Incomplete
-    ) -> None: ...
+    def __prepare__(  # type: ignore[override]
+        metacls: type[_EnumTypeSelf],
+        cls: str,
+        bases: tuple[type, ...],
+        init: _InitParamType = None,
+        start: int | None = None,
+        settings: _SettingsParamType = (),
+        boundary: Any | None = None,
+        **kwds: Any,
+    ) -> EnumDict: ...
+    def __init__(cls: EnumType, *args: Any, **kwds: Any) -> None: ...
     def __new__(
-        metacls: Incomplete,
-        cls: Incomplete,
-        bases: Incomplete,
-        clsdict: Incomplete,
-        init: Incomplete | None = None,
-        start: Incomplete | None = None,
-        settings: Incomplete = (),
-        boundary: Incomplete | None = None,
-        **kwds: Incomplete,
-    ) -> Incomplete: ...
-    def __bool__(cls: Incomplete) -> bool: ...
+        metacls: type[_EnumTypeSelf],
+        name: str,
+        bases: tuple[type, ...],
+        clsdict: Mapping[str, Any] | EnumDict,
+        init: _InitParamType = None,
+        start: int | None = None,
+        settings: _SettingsParamType = (),
+        boundary: Any | None = None,
+        **kwds: Any,
+    ) -> type[object]: ...
+    def __bool__(cls: EnumType) -> Literal[True]: ...
     def __call__(
-        cls: Incomplete,
-        value: Incomplete = ...,
-        names: Incomplete | None = None,
-        module: Incomplete | None = None,
-        qualname: Incomplete | None = None,
-        type: Incomplete | None = None,
+        cls: EnumType,
+        value: Any = no_arg,
+        names: str
+        | Sequence[str | tuple[str, Any]]
+        | Mapping[str, Any]
+        | None = None,
+        module: str | None = None,
+        qualname: str | None = None,
+        type: type | None = None,
         start: int = 1,
-        boundary: Incomplete | None = None,
-    ) -> Incomplete: ...
-    def __contains__(cls: Incomplete, value: Incomplete) -> bool: ...
-    def __delattr__(cls: Incomplete, attr: Incomplete) -> None: ...
-    def __dir__(cls: Incomplete) -> Incomplete: ...
-    def __members__(cls: Incomplete) -> Incomplete: ...
-    def __getitem__(cls: Incomplete, name: Incomplete) -> Incomplete: ...
-    def __iter__(cls: Incomplete) -> Incomplete: ...
-    def __reversed__(cls: Incomplete) -> Incomplete: ...
-    def __len__(cls: Incomplete) -> int: ...
+        boundary: Any | None = None,
+    ) -> EnumType: ...
+    def __contains__(cls: EnumType, member_or_value: Any) -> bool: ...
+    def __delattr__(cls: EnumType, attr: str) -> None: ...
+    def __dir__(cls: EnumType) -> list[str]: ...
+    @property
+    def __members__(cls: EnumType) -> Mapping[str, EnumType]: ...
+    def __getitem__(cls: EnumType, name: str) -> EnumType: ...
+    def __iter__(cls: EnumType) -> Iterator[EnumType]: ...
+    def __reversed__(cls: EnumType) -> Iterator[EnumType]: ...
+    def __len__(cls: EnumType) -> int: ...
+    def __repr__(cls: EnumType) -> str: ...
+    def __setattr__(cls: EnumType, name: str, value: Any) -> None: ...
+
     __nonzero__ = __bool__
-    def __setattr__(
-        cls: Incomplete, name: Incomplete, value: Incomplete
-    ) -> None: ...
 
 Enum: EnumType
 MultiValue: constant
