@@ -1,3 +1,5 @@
+# pyright: reportGeneralTypeIssues=false
+
 from __future__ import annotations
 
 import os
@@ -135,7 +137,7 @@ def test_inflect_question():
         assert type(output) is ParseWordCompToLatQuestion
 
         assert output.check(output.main_answer)
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_inflect_question_adjective():

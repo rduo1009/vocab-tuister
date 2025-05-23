@@ -1,3 +1,5 @@
+# pyright: reportTypedDictNotRequiredAccess=false
+
 from __future__ import annotations
 
 import os
@@ -196,8 +198,8 @@ def test_ending_exclusion_adjective():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
-        settings["exclude-adverbs"] = True  # type: ignore[typeddict-readonly-mutated]
+            settings[key] = True
+        settings["exclude-adverbs"] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -220,7 +222,7 @@ def test_ending_exclusion_noun():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -243,7 +245,7 @@ def test_ending_exclusion_pronoun():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -266,8 +268,8 @@ def test_ending_exclusion_verb():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
-        settings["exclude-participles"] = True  # type: ignore[typeddict-readonly-mutated]
+            settings[key] = True
+        settings["exclude-participles"] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -291,7 +293,7 @@ def test_ending_exclusion_regularword():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):

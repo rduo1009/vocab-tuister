@@ -1,15 +1,17 @@
 """Contains a TypedDict validator function."""
 
+# pyright: basic
+
 from __future__ import annotations
 
-from typing import (  # type: ignore[attr-defined]
+from typing import (
     Any,
     NamedTuple,
     NotRequired,
     ReadOnly,
     TypeIs,
     Union,
-    _TypedDictMeta,  # noqa: PLC2701
+    _TypedDictMeta,  # noqa: PLC2701 # pyright: ignore[reportAttributeAccessIssue]
     get_args,
     get_origin,
     get_type_hints,

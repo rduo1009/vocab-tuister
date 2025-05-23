@@ -36,7 +36,7 @@ vocab_list: VocabList | None = None
 
 
 @app.errorhandler(BadRequest)
-def handle_bad_request(e):
+def handle_bad_request(e: BadRequest) -> tuple[str, int]:
     logger.error(
         "%s\n%s",
         e.description,
@@ -124,7 +124,8 @@ def create_session():
         )
 
     try:
-        validate_typeddict(settings, Settings)
+        _ = validate_typeddict(settings, Settings)
+
     except* DictMissingKeyError as eg:
         missingkey_error = cast("DictMissingKeyError", eg.exceptions[0])
         keys_str = ", ".join(
@@ -146,7 +147,7 @@ def create_session():
 
     except* DictIncorrectTypeError as eg:
         incorrecttype_error = cast("DictIncorrectTypeError", eg.exceptions[0])
-        type_error_details = []
+        type_error_details: list[str] = []
         for field, detail in sorted(
             incorrecttype_error.incorrect_types.items()
         ):
@@ -168,7 +169,9 @@ def create_session():
     try:
         return Response(
             _generate_questions_json(
-                vocab_list, question_amount, cast("Settings", settings)
+                vocab_list,
+                question_amount,
+                cast("Settings", settings),  # pyright: ignore[reportInvalidCast]
             ),
             mimetype="application/json",
         )
@@ -178,9 +181,9 @@ def create_session():
         ) from e
 
 
-def main_dev(port, *, debug=False):
+def main_dev(port: int, *, debug: bool = False):
     app.run(host="127.0.0.1", port=port, debug=debug)
 
 
-def main(port):
+def main(port: int):
     serve(app, host="127.0.0.1", port=port)

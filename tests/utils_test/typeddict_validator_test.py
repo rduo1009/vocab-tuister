@@ -1,5 +1,6 @@
 """Unit tests for the typeddict_validator module."""
 
+# pyright: basic
 # ruff: noqa: UP045, UP007
 
 import math
@@ -107,8 +108,8 @@ class AdvancedUnionTD(TypedDict):
     field_ro_nr_union: ReadOnly[NotRequired[Union[int, bool]]]
 
     # Field where Union members are ReadOnly
-    field_union_with_ro_member: Union[ReadOnly[str], int]  # type: ignore[valid-type]
-    field_union_with_multiple_ro_members: Union[ReadOnly[bool], ReadOnly[float], None]  # type: ignore[valid-type]
+    field_union_with_ro_member: Union[ReadOnly[str], int]
+    field_union_with_multiple_ro_members: Union[ReadOnly[bool], ReadOnly[float], None]
 
 
 # --- Test Cases ---
@@ -528,8 +529,8 @@ def test_advanced_union_members_wrapped_success_and_fail():
     # field_union_with_ro_member: Union[ReadOnly[str], int]
     # field_union_with_multiple_ro_members: Union[ReadOnly[bool], ReadOnly[float], None]
     class TempUnionMembers(TypedDict):
-        field1: Union[ReadOnly[str], int]  # type: ignore[valid-type]
-        field2: Union[ReadOnly[bool], ReadOnly[float], None]  # type: ignore[valid-type]
+        field1: Union[ReadOnly[str], int]
+        field2: Union[ReadOnly[bool], ReadOnly[float], None]
 
     # Success cases for field1
     assert validate_typeddict({"field1": "text", "field2": None}, TempUnionMembers) is True
