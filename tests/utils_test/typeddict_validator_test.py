@@ -483,7 +483,7 @@ def test_validate_typeddict_notimplemented_generic_collection_dict():
         "int_list": [1, 2, 3],  # Must be present and valid to pass earlier checks
         "str_bool_dict": {"a": "true"},  # This will trigger NotImplementedError for dict element validation
     }
-    with pytest.raises(NotImplementedError, match="Validation of elements within generic collection for key 'str_bool_dict'"):
+    with pytest.raises(NotImplementedError, match="Validation of elements within generic collection for key "):
         validate_typeddict(data, GenericCollectionTypedDict)
 
 

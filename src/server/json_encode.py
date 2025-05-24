@@ -76,7 +76,7 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                     "prompt": o.prompt,
                     "dictionary_entry": o.dictionary_entry,
                     "main_answer": o.main_answer.string,
-                    "answers": [answer.string for answer in o.answers],
+                    "answers": sorted([answer.string for answer in o.answers]),
                     # "main_answer": self.default(obj.main_answer),
                     # "answers": [self.default(answer) for answer in obj.answers],
                 }
