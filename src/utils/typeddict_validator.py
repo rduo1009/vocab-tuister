@@ -174,20 +174,19 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
     -------
     TypeIs[T]
         Returns `True` if the dictionary `d` is a valid instance of `td_type`.
-        Otherwise, it raises an `ExceptionGroup` containing specific errors.
+        Otherwise, it raises the first validation error encountered.
 
     Raises
     ------
-    ExceptionGroup
-        An `ExceptionGroup` is raised if validation fails. The group contains
-        a list of specific errors encountered during validation, which can be
-        instances of:
-        - `DictMissingKeyError`: If required keys are missing.
-        - `DictExtraKeyError`: If unexpected keys are present.
-        - `DictIncorrectTypeError`: If values have incorrect types.
+    DictMissingKeyError
+        If one or more required keys are missing. The error will list all missing keys.
+    DictExtraKeyError
+        If one or more unexpected (extra) keys are present. The error will list all extra keys.
+    DictIncorrectTypeError
+        If a value has an incorrect type for its key. Reports the first such incorrect type encountered.
     NotImplementedError
         If validation for nested TypedDicts or generic collection elements is
-        attempted.
+        attempted (e.g., for a key whose type is another TypedDict or a generic like `list[int]`).
 
     Notes
     -----
@@ -200,61 +199,45 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
       (like `list[int]`) is not currently implemented and will result in a
       `NotImplementedError`.
     """
-    errors: list[Exception] = []
     # Get all annotations from the TypedDict, include_extras is important for ReadOnly/NotRequired
     annotations = get_type_hints(td_type, include_extras=True)
     all_keys = set(annotations.keys())
 
     # Determine required keys based on the TypedDict's totality and field annotations.
-    # This approach is generally more robust across Python versions and TypedDict variations
-    # than relying solely on the __required_keys__ attribute (which might be inconsistent
-    # or missing in some cases) or using an overly simple fallback.
     is_total = getattr(td_type, "__total__", True)
 
     if is_total:
-        # For total=True TypedDicts (default), a key is required if its annotation
-        # in the TypedDict definition is not NotRequired.
         required_keys = {
             k
             for k, ann_type in annotations.items()
             if get_origin(ann_type) is not NotRequired
         }
     else:
-        # For total=False TypedDicts, all keys are optional by default.
-        # A key becomes required only if explicitly marked with typing.Required.
-        # As typing.Required is not yet a stable public API fully integrated
-        # with get_origin checks across all supported Python versions for this purpose,
-        # we currently assume no keys are required for total=False.
-        # The standard __required_keys__ for total=False TypedDicts (without Required[] fields)
-        # is an empty set, so this aligns.
-        required_keys = set()
+        required_keys = (
+            set()
+        )  # For total=False, keys are optional unless marked Required.
+        # Assuming Required is not handled here based on original comment.
 
     dict_keys = set(d.keys())
 
     # 1. Check for missing keys
     missing = required_keys - dict_keys
     if missing:
-        errors.append(DictMissingKeyError(tuple(sorted(missing))))
+        raise DictMissingKeyError(tuple(sorted(missing)))
 
     # 2. Check for extra keys
     extra = dict_keys - all_keys
     if extra:
-        errors.append(DictExtraKeyError(tuple(sorted(extra))))
+        raise DictExtraKeyError(tuple(sorted(extra)))
 
     # 3. Type Checking for common keys
     common_keys = dict_keys.intersection(all_keys)
-    incorrect_type_details: dict[str, IncorrectTypeDetail] = {}
 
-    for k in common_keys:
+    for k in common_keys:  # noqa: PLR1702
         value = d[k]
         original_expected_type = annotations[k]
 
-        # Refined unwrapping for core structural type analysis
         type_being_unwrapped = original_expected_type
-
-        # Iteratively unwrap NotRequired and ReadOnly until neither is the outermost type,
-        # or the type becomes simple (no origin). This handles nested wrappers like
-        # ReadOnly[NotRequired[T]] or NotRequired[ReadOnly[T]].
         while True:
             origin = get_origin(type_being_unwrapped)
             if origin is NotRequired:
@@ -264,9 +247,7 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
             elif origin is ReadOnly:
                 type_being_unwrapped = _unwrap_readonly(type_being_unwrapped)
             else:
-                # No more NotRequired or ReadOnly wrappers at this level, or it's a base type.
                 break
-
         core_structural_type = type_being_unwrapped
 
         origin_of_core_structure = get_origin(core_structural_type)
@@ -278,9 +259,8 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
         if origin_of_core_structure is Union:
             is_valid_union_member = False
             for union_member_type_from_args in args_of_core_structure:
-                # Fully unwrap each member of the union before isinstance check
                 effective_union_member_type = union_member_type_from_args
-                while True:  # Iteratively unwrap this member
+                while True:
                     member_origin = get_origin(effective_union_member_type)
                     if member_origin is NotRequired:
                         effective_union_member_type = _unwrap_notrequired(
@@ -296,54 +276,64 @@ def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
                 if effective_union_member_type is type(None) and value is None:
                     is_valid_union_member = True
                     break
-                # Ensure effective_union_member_type is a type or tuple of types for isinstance
-                # For simple types, it will be the type itself.
-                # For Union[A,B] (if it somehow wasn't caught by outer Union check and is a member),
-                # this would need more complex handling, but usually, union members are simpler.
-                if effective_union_member_type is not type(
-                    None
-                ) and isinstance(value, effective_union_member_type):
-                    is_valid_union_member = True
-                    break
+                if effective_union_member_type is not type(None):
+                    try:
+                        # isinstance can fail with non-type arguments (e.g. unsubscripted generics like Union)
+                        if isinstance(value, effective_union_member_type):
+                            is_valid_union_member = True
+                            break
+                    except TypeError:
+                        # If effective_union_member_type is not a valid type for isinstance,
+                        # this path might be problematic. This function assumes simple types or
+                        # valid subscripted generics as union members.
+                        # A common case for TypeError here is if effective_union_member_type is something like `list` (bare)
+                        # when expecting `list[int]`. However, the current logic handles list/dict/set/tuple later.
+                        # This specific check is for members of a Union.
+                        pass  # Could log a warning or handle more gracefully if needed.
+
             if not is_valid_union_member:
-                incorrect_type_details[k] = IncorrectTypeDetail(
-                    expected=original_expected_type,  # Report original annotation
-                    actual=type(value),
-                )
+                raise DictIncorrectTypeError({
+                    k: IncorrectTypeDetail(
+                        expected=original_expected_type, actual=type(value)
+                    )
+                })
         elif (
-            isinstance(core_structural_type, type)  # Check if it's a class
-            and hasattr(
-                core_structural_type, "__annotations__"
-            )  # TypedDicts have __annotations__
-            and hasattr(
-                core_structural_type, "__total__"
-            )  # TypedDicts have __total__
+            isinstance(core_structural_type, type)
+            and hasattr(core_structural_type, "__annotations__")
+            and hasattr(core_structural_type, "__total__")
         ):
-            # This is a basic check for TypedDict. A more robust check might involve _TypedDictMeta
-            # if isinstance(core_structural_type, _TypedDictMeta) but _TypedDictMeta is private.
             raise NotImplementedError(
                 f"Validation of nested TypedDict for key '{k}' ('{core_structural_type.__name__}') is not yet implemented."
             )
-        elif origin_of_core_structure in {
-            list,
-            dict,
-            set,
-            tuple,
-        }:  # Check for common generic collections
+        elif origin_of_core_structure in {list, dict, set, tuple}:
             raise NotImplementedError(
                 f"Validation of elements within generic collection for key '{k}' ({origin_of_core_structure}) is not yet implemented."
             )
-        # Fallback for simple types (int, str, etc.) after all wrappers and structures are handled
-        elif not isinstance(value, core_structural_type):
-            incorrect_type_details[k] = IncorrectTypeDetail(
-                expected=original_expected_type,  # Report original annotation
-                actual=type(value),
-            )
-
-    if incorrect_type_details:
-        errors.append(DictIncorrectTypeError(incorrect_type_details))
-
-    if errors:
-        raise ExceptionGroup("TypedDict validation failed", errors)
+        else:
+            # Fallback for simple types (int, str, etc.) and other non-Union complex types
+            # that are not explicitly handled generic collections or nested TypedDicts.
+            # This also includes cases where core_structural_type might be an unsubscripted generic
+            # like `list` if `isinstance(value, list)` is the desired check.
+            try:
+                if not isinstance(value, core_structural_type):
+                    raise DictIncorrectTypeError({
+                        k: IncorrectTypeDetail(
+                            expected=original_expected_type, actual=type(value)
+                        )
+                    })
+            except TypeError as e:
+                # This can happen if core_structural_type is not a class or tuple of classes,
+                # e.g., if it's a complex type alias or a generic that wasn't fully resolved
+                # or handled by prior checks (like unsubscripted `List` from `typing.List`).
+                # The original code had this implicit fallback.
+                # For robustness, one might want to log or raise a more specific error here.
+                # For now, mimic original behavior which might lead to DictIncorrectTypeError if this check is meaningful,
+                # or pass through if isinstance itself errors for other reasons.
+                # A simple way to make it raise for type mismatch:
+                raise DictIncorrectTypeError({
+                    k: IncorrectTypeDetail(
+                        expected=original_expected_type, actual=type(value)
+                    )
+                }) from e
 
     return True

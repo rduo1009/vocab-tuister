@@ -125,32 +125,22 @@ def create_session():
 
     try:
         _ = validate_typeddict(settings, Settings)
-
-    except* DictMissingKeyError as eg:
-        missingkey_error = cast("DictMissingKeyError", eg.exceptions[0])
-        keys_str = ", ".join(
-            f"'{k}'" for k in sorted(missingkey_error.missing_keys)
-        )
+    except DictMissingKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
         raise BadRequest(
             f"Required settings are missing: {keys_str}. (InvalidSettingsError)"
-        ) from eg
+        ) from e
 
-    except* DictExtraKeyError as eg:
-        extrakey_error = cast("DictExtraKeyError", eg.exceptions[0])
-        keys_str = ", ".join(
-            f"'{k}'" for k in sorted(extrakey_error.extra_keys)
-        )
+    except DictExtraKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
         raise BadRequest(
             f"Unrecognised settings were provided: {keys_str}. "
             "(InvalidSettingsError)"
-        ) from eg
+        ) from e
 
-    except* DictIncorrectTypeError as eg:
-        incorrecttype_error = cast("DictIncorrectTypeError", eg.exceptions[0])
+    except DictIncorrectTypeError as e:
         type_error_details: list[str] = []
-        for field, detail in sorted(
-            incorrecttype_error.incorrect_types.items()
-        ):
+        for field, detail in sorted(e.incorrect_types.items()):
             expected_type_str = str(detail.expected)
             actual_type_str = (
                 detail.actual.__name__
@@ -163,7 +153,7 @@ def create_session():
             )
         raise BadRequest(
             f"{'; '.join(type_error_details)}. (InvalidSettingsError)"
-        ) from eg
+        ) from e
 
     logger.info("Returning %d questions.", question_amount)
     try:

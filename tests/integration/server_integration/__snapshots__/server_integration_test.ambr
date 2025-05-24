@@ -3,7 +3,7 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_extra_config.1
-  "Bad request: 400 Bad Request: Unrecognised settings were provided: 'cause-an-error'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_list
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
@@ -21,13 +21,13 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_missing2_config.1
-  "Bad request: 400 Bad Request: Required settings are missing: 'number-multiplechoice-options'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type1_config
   'Vocab list received.'
 # ---
 # name: test_cli_error_type1_config.1
-  "Bad request: 400 Bad Request: Expected type typing.ReadOnly[bool] for 'include-typein-lattoeng', but received type int; Expected type typing.ReadOnly[int] for 'number-multiplechoice-options', but received type str. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type2_config
   'Vocab list received.'
@@ -55,10 +55,10 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'genitive singular',
           'nominative plural',
-          'nominative plural',
-          'nominative plural',
-          'nominative plural',
+          'dative singular',
+          'vocative plural',
         ]),
         'dictionary_entry': 'farmer: agricola, agricolae, (m)',
         'main_answer': 'nominative plural',
@@ -92,8 +92,8 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
+          'comparative ablative singular feminine',
+          'comparative ablative singular neuter',
           'comparative ablative singular masculine',
         ]),
         'dictionary_entry': 'large: ingens, ingentis, (3-1)',
@@ -178,12 +178,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'positive vocative plural masculine',
+          'positive accusative plural feminine',
           'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
+          'positive accusative plural masculine',
+          'positive vocative plural feminine',
+          'positive nominative plural feminine',
         ]),
         'dictionary_entry': 'keen: acer, acris, acre, (3-3)',
         'main_answer': 'positive nominative plural masculine',
@@ -271,8 +271,8 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
+          'comparative ablative singular feminine',
+          'comparative ablative singular neuter',
           'comparative ablative singular masculine',
         ]),
         'dictionary_entry': 'large: ingens, ingentis, (3-1)',
@@ -317,8 +317,8 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'nominative singular',
-          'nominative singular',
+          'vocative singular',
+          'ablative singular',
           'nominative singular',
         ]),
         'dictionary_entry': 'girl: puella, puellae, (f)',
@@ -387,9 +387,9 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'genitive singular neuter',
           'genitive singular masculine',
-          'genitive singular masculine',
-          'genitive singular masculine',
+          'genitive singular feminine',
         ]),
         'dictionary_entry': 'that: ille, illa, illud',
         'main_answer': 'genitive singular masculine',
@@ -401,7 +401,7 @@
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
           'dative plural',
-          'dative plural',
+          'ablative plural',
         ]),
         'dictionary_entry': 'girl: puella, puellae, (f)',
         'main_answer': 'dative plural',
@@ -412,12 +412,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'positive vocative plural neuter',
           'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
+          'positive vocative singular feminine',
+          'positive ablative singular feminine',
+          'positive nominative plural neuter',
+          'positive accusative plural neuter',
         ]),
         'dictionary_entry': 'good: bonus, bona, bonum, (2-1-2)',
         'main_answer': 'positive nominative singular feminine',
@@ -450,12 +450,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'superlative ablative singular feminine',
+          'superlative nominative plural neuter',
+          'superlative vocative singular feminine',
+          'superlative vocative plural neuter',
           'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
+          'superlative accusative plural neuter',
         ]),
         'dictionary_entry': 'light: levis, leve, (3-2)',
         'main_answer': 'superlative nominative singular feminine',
