@@ -1329,6 +1329,24 @@ pytest = ">=8.3.3"
 testing = ["covdefaults (>=2.3)", "coverage (>=7.6.1)", "pytest-mock (>=3.14)"]
 
 [[package]]
+name = "pytest-pythonhashseed"
+version = "1.0.1"
+description = "Pytest plugin to set PYTHONHASHSEED env var."
+optional = false
+python-versions = ">=3.6"
+groups = ["dev"]
+files = [
+    {file = "pytest_pythonhashseed-1.0.1-py3-none-any.whl", hash = "sha256:334eb0bd26f076de5244562314a1d11f27b19c9ef1c94622809e36427e3d09ef"},
+    {file = "pytest_pythonhashseed-1.0.1.tar.gz", hash = "sha256:b5681f15d9e7f9efca4f92d527e1f768c78fb65e4aa537044eef33d3f1d731c2"},
+]
+
+[package.dependencies]
+pytest = ">=3.0.0"
+
+[package.extras]
+test = ["pytest", "pytest-cov", "pytest-ruff", "ruff (==0.1.15)"]
+
+[[package]]
 name = "pytest-sugar"
 version = "1.0.0"
 description = "pytest-sugar is a plugin for pytest that changes the default look and feel of pytest (e.g. progressbar, show tests that fail instantly)."
@@ -1982,4 +2000,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "b79e876e35462659e4b48db6bd94149c52ca568c6d56cd6c7801429050651971"
+content-hash = "5e35d72e53116c11fbf5c2bce4017c386604ec168e7e034f464e00aa83581809"

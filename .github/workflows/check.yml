@@ -77,7 +77,7 @@ jobs:
 
       - name: Update test data
         if: steps.run-tests.outcome == 'failure'
-        run: poetry run pytest --snapshot-update -m 'integration' -n0
+        run: poetry run pytest --pythonhashseed 1 --snapshot-update -m 'integration' -n0
 
       - name: Upload changed files
         if: steps.run-tests.outcome == 'failure'
