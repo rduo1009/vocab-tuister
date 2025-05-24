@@ -56,9 +56,9 @@
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
           'vocative plural',
-          'nominative plural',
           'dative singular',
           'genitive singular',
+          'nominative plural',
         ]),
         'dictionary_entry': 'farmer: agricola, agricolae, (m)',
         'main_answer': 'nominative plural',
@@ -92,8 +92,8 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'comparative ablative singular masculine',
           'comparative ablative singular feminine',
+          'comparative ablative singular masculine',
           'comparative ablative singular neuter',
         ]),
         'dictionary_entry': 'large: ingens, ingentis, (3-1)',
