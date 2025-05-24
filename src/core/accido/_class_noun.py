@@ -67,7 +67,7 @@ class Noun(_Word):
     tantum fifth declension nouns (there doesn't seem to be any).
     """
 
-    __slots__ = (
+    __slots__: tuple[str, ...] = (
         "_stem",
         "declension",
         "gender",
@@ -118,17 +118,17 @@ class Noun(_Word):
 
         super().__init__()
 
-        self.nominative = nominative
-        self.genitive = genitive
-        self.gender = gender
-        self.meaning = meaning
-        self.plurale_tantum = False
+        self.nominative: str = nominative
+        self.genitive: str | None = genitive
+        self.gender: Gender | None = gender
+        self.meaning: Meaning = meaning
+        self.plurale_tantum: bool = False
 
-        self._first = self.nominative
+        self._first: str = self.nominative
         self.declension: NounDeclension
 
         if self.nominative in IRREGULAR_NOUNS:
-            self.endings = IRREGULAR_NOUNS[nominative]
+            self.endings: Endings = IRREGULAR_NOUNS[nominative]
             self.declension = 0
             return
 
@@ -144,9 +144,10 @@ class Noun(_Word):
                 f"Noun '{nominative}' is not irregular but genitive not provided."
             )
 
+        self._stem: str
         self._find_declension()
 
-        self.i_stem = (
+        self.i_stem: bool = (
             self._determine_if_i_stem() if self.declension == 3 else False
         )
 
@@ -308,20 +309,26 @@ class Noun(_Word):
                     "Nablpl": f"{self._stem}ibus",  # manibus
                 }
 
-        return {
-            "Nnomsg": self.nominative,  # res
-            "Nvocsg": self.nominative,  # res
-            "Naccsg": f"{self._stem}em",  # rem
-            "Ngensg": f"{self._stem}ei",  # rei
-            "Ndatsg": f"{self._stem}ei",  # rei
-            "Nablsg": f"{self._stem}e",  # re
-            "Nnompl": f"{self._stem}es",  # res
-            "Nvocpl": f"{self._stem}es",  # res
-            "Naccpl": f"{self._stem}es",  # res
-            "Ngenpl": f"{self._stem}erum",  # rerum
-            "Ndatpl": f"{self._stem}ebus",  # rebus
-            "Nablpl": f"{self._stem}ebus",  # rebus
-        }
+            case 5:
+                return {
+                    "Nnomsg": self.nominative,  # res
+                    "Nvocsg": self.nominative,  # res
+                    "Naccsg": f"{self._stem}em",  # rem
+                    "Ngensg": f"{self._stem}ei",  # rei
+                    "Ndatsg": f"{self._stem}ei",  # rei
+                    "Nablsg": f"{self._stem}e",  # re
+                    "Nnompl": f"{self._stem}es",  # res
+                    "Nvocpl": f"{self._stem}es",  # res
+                    "Naccpl": f"{self._stem}es",  # res
+                    "Ngenpl": f"{self._stem}erum",  # rerum
+                    "Ndatpl": f"{self._stem}ebus",  # rebus
+                    "Nablpl": f"{self._stem}ebus",  # rebus
+                }
+
+            case _:
+                raise ValueError(
+                    f"Declension '{self.declension}' not recognised."
+                )
 
     def _neuter_endings(self) -> None:
         self.endings["Nvocsg"] = self.nominative  # templum
@@ -409,7 +416,7 @@ class Noun(_Word):
         """
         try:
             output = EndingComponents(
-                case=Case(key[1:4]), number=Number(key[4:6])
+                case=Case(key[1:4]), number=Number(value=key[4:6])
             )
         except (ValueError, IndexError) as e:
             raise InvalidInputError(f"Key '{key}' is invalid.") from e

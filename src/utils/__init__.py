@@ -13,7 +13,7 @@ from .duplicates import (
 
 # Seed has been set
 if _seed is not None and not TYPE_CHECKING:
-    from .set_functions import (
+    from .set_functions import (  # pyright: ignore[reportUnreachable]
         set_choice_pop_sort as set_choice_pop,
         set_choice_sort as set_choice,
     )

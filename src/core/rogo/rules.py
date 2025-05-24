@@ -256,6 +256,9 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                 ):
                     vocab.remove(item)
 
+            case _:
+                pass
+
     return vocab
 
 
@@ -300,8 +303,4 @@ def filter_questions(settings: Settings) -> set[QuestionClasses]:
     set[QuestionClasses]
         The filtered classes.
     """
-    return {
-        value
-        for key, value in CLASS_RULES.items()
-        if settings[key]  # type: ignore[literal-required]
-    }
+    return {value for key, value in CLASS_RULES.items() if settings[key]}

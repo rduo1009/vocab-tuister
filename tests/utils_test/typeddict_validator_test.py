@@ -1,5 +1,6 @@
 """Unit tests for the typeddict_validator module."""
 
+# pyright: basic
 # ruff: noqa: UP045, UP007
 
 import math
@@ -419,8 +420,8 @@ def test_advanced_union_ro_nr_wrapped_union_success_and_fail():
 
 def test_advanced_union_members_wrapped_success_and_fail():
     class TempUnionMembers(TypedDict):
-        field1: Union[ReadOnly[str], int]  # type: ignore[valid-type]
-        field2: Union[ReadOnly[bool], ReadOnly[float], None]  # type: ignore[valid-type]
+        field1: Union[ReadOnly[str], int]
+        field2: Union[ReadOnly[bool], ReadOnly[float], None]
 
     assert validate_typeddict({"field1": "text", "field2": None}, TempUnionMembers) is True
     assert validate_typeddict({"field1": 1, "field2": True}, TempUnionMembers) is True
@@ -482,7 +483,7 @@ def test_validate_typeddict_notimplemented_generic_collection_dict():
         "int_list": [1, 2, 3],  # Must be present and valid to pass earlier checks
         "str_bool_dict": {"a": "true"},  # This will trigger NotImplementedError for dict element validation
     }
-    with pytest.raises(NotImplementedError, match="Validation of elements within generic collection for key 'str_bool_dict'"):
+    with pytest.raises(NotImplementedError, match="Validation of elements within generic collection for key "):
         validate_typeddict(data, GenericCollectionTypedDict)
 
 

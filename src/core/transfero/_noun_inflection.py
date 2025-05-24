@@ -12,16 +12,17 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from types import ModuleType
 
     from ..accido.misc import EndingComponents
 
 # Frozen with PyInstaller
-if getattr(_sys, "frozen", False) and hasattr(
-    _sys, "_MEIPASS"
+if (
+    getattr(_sys, "frozen", False)
+    and hasattr(_sys, "_MEIPASS")
+    and not TYPE_CHECKING
 ):  # pragma: no cover
 
-    def _typechecked(
+    def _typechecked(  # pyright: ignore[reportUnreachable]
         target: Callable[..., Any] | None = None,
         *args: Any,  # noqa: ARG001
         **kwargs: Any,  # noqa: ARG001
@@ -34,7 +35,7 @@ if getattr(_sys, "frozen", False) and hasattr(
         typechecked = _typechecked
 
     # Monkeypatch typeguard, as not supported with pyinstaller
-    _sys.modules["typeguard"] = cast("ModuleType", _TypeguardModule)
+    _sys.modules["typeguard"] = cast("object", _TypeguardModule)
 
 from ..._vendor.inflect import engine
 
@@ -197,35 +198,44 @@ def _inflect_lemma(
                 ),
             )
 
-    if number == Number.SINGULAR:
-        return (
-            f"by the {best_form}",
-            (
-                base_forms
-                | {f"with the {base_form}" for base_form in base_forms}
-                | {
-                    pluralinflect.inflect(f"with a('{base_form}')")
-                    for base_form in base_forms
-                }
-                | {f"by the {base_form}" for base_form in base_forms}
-                | {
-                    pluralinflect.inflect(f"by a('{base_form}')")
-                    for base_form in base_forms
-                }
-                | {f"by means of the {base_form}" for base_form in base_forms}
-                | {
-                    pluralinflect.inflect(f"by means of a('{base_form}')")
-                    for base_form in base_forms
-                }
-            ),
-        )
+        case Case.ABLATIVE:
+            if number == Number.SINGULAR:
+                return (
+                    f"by the {best_form}",
+                    (
+                        base_forms
+                        | {f"with the {base_form}" for base_form in base_forms}
+                        | {
+                            pluralinflect.inflect(f"with a('{base_form}')")
+                            for base_form in base_forms
+                        }
+                        | {f"by the {base_form}" for base_form in base_forms}
+                        | {
+                            pluralinflect.inflect(f"by a('{base_form}')")
+                            for base_form in base_forms
+                        }
+                        | {
+                            f"by means of the {base_form}"
+                            for base_form in base_forms
+                        }
+                        | {
+                            pluralinflect.inflect(
+                                f"by means of a('{base_form}')"
+                            )
+                            for base_form in base_forms
+                        }
+                    ),
+                )
 
-    return (
-        f"by the {best_form}",
-        (
-            base_forms
-            | {f"with the {base_form}" for base_form in base_forms}
-            | {f"by the {base_form}" for base_form in base_forms}
-            | {f"by means of the {base_form}" for base_form in base_forms}
-        ),
-    )
+            return (
+                f"by the {best_form}",
+                (
+                    base_forms
+                    | {f"with the {base_form}" for base_form in base_forms}
+                    | {f"by the {base_form}" for base_form in base_forms}
+                    | {
+                        f"by means of the {base_form}"
+                        for base_form in base_forms
+                    }
+                ),
+            )

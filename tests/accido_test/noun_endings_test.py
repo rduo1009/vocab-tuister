@@ -1,3 +1,5 @@
+# pyright: reportAny=false
+
 import os
 import sys
 

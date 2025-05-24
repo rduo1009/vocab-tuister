@@ -131,7 +131,7 @@ def test_typein_lattoeng():
     for output in ask_question_without_sr(vocab_list, amount, settings):
         assert type(output) is TypeInLatToEngQuestion
 
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_typein_lattoeng_check():

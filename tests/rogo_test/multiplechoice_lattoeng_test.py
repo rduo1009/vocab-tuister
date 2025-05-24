@@ -140,7 +140,7 @@ def test_multiplechoice_lattoeng():
         assert output.answer in output.choices
         assert len(output.choices) == 3
 
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_multiplechoice_engtolat_adjective():

@@ -65,6 +65,6 @@ def remove_duplicates[C: op.CanLt[Any]](sequence: Sequence[C]) -> Sequence[C]:
     Code taken from https://stackoverflow.com/a/10784473
     """
     if _is_hashable(sequence):
-        return type(sequence)(set(sequence))  # type: ignore[call-arg]
+        return type(sequence)(set(sequence))  # pyright: ignore[reportCallIssue]
 
-    return type(sequence)(k for k, v in groupby(sorted(sequence)))  # type: ignore[call-arg]
+    return type(sequence)(k for k, _ in groupby(sorted(sequence)))  # pyright: ignore[reportCallIssue]

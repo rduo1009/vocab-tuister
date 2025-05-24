@@ -1,5 +1,7 @@
 """A wrapper for the Python packages used by ``vocab-tester``."""
 
+# pyright: reportAttributeAccessIssue=false
+
 from __future__ import annotations
 
 import os as _os
@@ -20,18 +22,18 @@ if _seed is not None:
     _custom_random = _types.ModuleType("random")
     _custom_random_class = random.Random(_seed_value)
 
-    _custom_random.Random = random.Random  # type: ignore[attr-defined]
-    _custom_random.SystemRandom = random.SystemRandom  # type: ignore[attr-defined]
+    _custom_random.Random = random.Random
+    _custom_random.SystemRandom = random.SystemRandom
 
-    _custom_random.random = _custom_random_class.random  # type: ignore[attr-defined]
-    _custom_random.uniform = _custom_random_class.uniform  # type: ignore[attr-defined]
+    _custom_random.random = _custom_random_class.random
+    _custom_random.uniform = _custom_random_class.uniform
 
-    _custom_random.randint = _custom_random_class.randint  # type: ignore[attr-defined]
-    _custom_random.randrange = _custom_random_class.randrange  # type: ignore[attr-defined]
+    _custom_random.randint = _custom_random_class.randint
+    _custom_random.randrange = _custom_random_class.randrange
 
-    _custom_random.choice = _custom_random_class.choice  # type: ignore[attr-defined]
-    _custom_random.sample = _custom_random_class.sample  # type: ignore[attr-defined]
-    _custom_random.shuffle = _custom_random_class.shuffle  # type: ignore[attr-defined]
+    _custom_random.choice = _custom_random_class.choice
+    _custom_random.sample = _custom_random_class.sample
+    _custom_random.shuffle = _custom_random_class.shuffle
 
     _sys.modules["random"] = _custom_random
 

@@ -72,7 +72,7 @@ class Adjective(_Word):
     adjectives.
     """
 
-    __slots__ = (
+    __slots__: tuple[str, ...] = (
         "_cmp_stem",
         "_irregular_cmpadv",
         "_irregular_posadv",
@@ -128,31 +128,31 @@ class Adjective(_Word):
 
         super().__init__()
 
-        self._principal_parts = principal_parts
-        self.mascnom = self._principal_parts[0]
+        self._principal_parts: tuple[str, ...] = principal_parts
+        self.mascnom: str = self._principal_parts[0]
 
-        self._first = self._principal_parts[0]
-        self.meaning = meaning
-        self.declension = declension
-        self.termination = termination
-        self.irregular_flag = False
-        self.adverb_flag = True
+        self._first: str = self._principal_parts[0]
+        self.meaning: Meaning = meaning
+        self.declension: AdjectiveDeclension = declension
+        self.termination: Termination | None = termination
+        self.irregular_flag: bool = False
+        self.adverb_flag: bool = True
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
             self.irregular_flag = True
             irregular_data = IRREGULAR_ADJECTIVES[self.mascnom]
 
-            self._cmp_stem = irregular_data[0]
-            self._spr_stem = irregular_data[1]
+            self._cmp_stem: str = irregular_data[0]
+            self._spr_stem: str = irregular_data[1]
 
             if None not in irregular_data[2:]:
                 assert irregular_data[2] is not None
                 assert irregular_data[3] is not None
                 assert irregular_data[4] is not None
 
-                self._irregular_posadv = irregular_data[2]
-                self._irregular_cmpadv = irregular_data[3]
-                self._irregular_spradv = irregular_data[4]
+                self._irregular_posadv: str = irregular_data[2]
+                self._irregular_cmpadv: str = irregular_data[3]
+                self._irregular_spradv: str = irregular_data[4]
             else:
                 self.adverb_flag = False
 
@@ -160,8 +160,13 @@ class Adjective(_Word):
             self.adverb_flag = False
 
         if self.declension == "212":
-            self.endings = self._212_endings()
+            self.endings: Endings = self._212_endings()
             return
+
+        self._pos_stem: str
+        self.femnom: str
+        self.mascgen: str
+        self.neutnom: str
 
         match self.termination:
             case 1:

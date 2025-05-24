@@ -135,7 +135,7 @@ def test_principalparts_question():
         assert type(output) is PrincipalPartsQuestion
 
         assert output.check(output.principal_parts)
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_principalparts_adjective():

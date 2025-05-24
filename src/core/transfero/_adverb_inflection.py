@@ -105,14 +105,15 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, set[str]]:
         case Degree.COMPARATIVE:
             return (f"more {lemma}", {f"more {lemma}"})
 
-    return (
-        f"most {lemma}",
-        {
-            f"most {lemma}",
-            f"very {lemma}",
-            f"extremely {lemma}",
-            f"rather {lemma}",
-            f"too {lemma}",
-            f"quite {lemma}",
-        },
-    )
+        case Degree.SUPERLATIVE:
+            return (
+                f"most {lemma}",
+                {
+                    f"most {lemma}",
+                    f"very {lemma}",
+                    f"extremely {lemma}",
+                    f"rather {lemma}",
+                    f"too {lemma}",
+                    f"quite {lemma}",
+                },
+            )

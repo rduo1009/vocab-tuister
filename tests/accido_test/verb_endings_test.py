@@ -420,7 +420,7 @@ class TestVerbConjugation:
             "inquam": ("inquam", None, None, None),
         }[word]
 
-        assert Verb(pp[0], pp[1], pp[2], pp[3], meaning="placeholder").endings == IRREGULAR_VERBS[word]  # type: ignore[arg-type]
+        assert Verb(pp[0], pp[1], pp[2], pp[3], meaning="placeholder").endings == IRREGULAR_VERBS[word]  # pyright: ignore[reportArgumentType]
 
 
 class TestIrregularVerbConjugation:
