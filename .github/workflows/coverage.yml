@@ -25,6 +25,7 @@ jobs:
 
       - name: Install project deps
         run: |
+          sudo apt update
           sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install poetry dunamai
