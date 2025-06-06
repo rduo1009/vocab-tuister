@@ -1,5 +1,7 @@
 """Representation of a Latin verb with endings."""
 
+# pyright: reportImplicitOverride=false
+
 from __future__ import annotations
 
 import logging
@@ -74,7 +76,7 @@ class Verb(_Word):
     Note that all arguments of ``Verb`` are keyword-only.
     """
 
-    __slots__ = (
+    __slots__: tuple[str, ...] = (
         "_fap_stem",
         "_inf_stem",
         "_per_stem",
@@ -142,24 +144,25 @@ class Verb(_Word):
 
         super().__init__()
 
-        (
-            self.present,
-            self.infinitive,
-            self.perfect,
-            self.ppp,
-            self.meaning,
-        ) = (present, infinitive, perfect, ppp, meaning)
+        self.present: str = present
+        self.infinitive: str | None = infinitive
+        self.perfect: str | None = perfect
+        self.ppp: str | None = ppp
+        self.meaning: Meaning = meaning
 
-        self._first = self.present
-        self.deponent = False
-        self.no_ppp = False
-        self.fap_fourthpp = False
+        self._first: str = self.present
+        self.deponent: bool = False
+        self.no_ppp: bool = False
+        self.fap_fourthpp: bool = False
+
+        self._ppp_stem: str | None = None
+        self._fap_stem: str | None = None
 
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
 
         if irregular_endings := DEFECTIVE_VERBS.get(self.present):
-            self.endings = irregular_endings
+            self.endings: Endings = irregular_endings
             self.conjugation: Conjugation = 0
             return
 
@@ -187,12 +190,12 @@ class Verb(_Word):
 
             self.deponent = True
 
-            self._inf_stem = self.infinitive[:-3]
+            self._inf_stem: str = self.infinitive[:-3]
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
             elif is_derived_verb(self.present):
                 self.conjugation = get_derived_verb_conjugation(self.present)
-            elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
+            elif check_mixed_conjugation_verb(self.present):
                 self._inf_stem = self.infinitive[:-1]
                 self.conjugation = 5
             elif self.infinitive.endswith("ari"):
@@ -211,11 +214,6 @@ class Verb(_Word):
 
             if self.present in MISSING_PPP_VERBS:
                 self.no_ppp = True
-
-                if self.perfect is not None:
-                    raise InvalidInputError(
-                        f"Verb '{self.present}' has no ppp, but perfect provided."
-                    )
             else:
                 if not self.perfect.endswith(" sum"):
                     raise InvalidInputError(
@@ -224,9 +222,10 @@ class Verb(_Word):
 
                 self.ppp = self.perfect[:-4]
 
-            self._per_stem = None
+            self._per_stem: str | None = None
 
             if is_irregular_verb(self.present):
+                self._preptc_stem: str
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
@@ -261,6 +260,7 @@ class Verb(_Word):
                     self._preptc_stem += "ie"
 
             if not self.no_ppp:
+                assert self.ppp is not None
                 self._ppp_stem = self.ppp[:-2]
                 self._fap_stem = self.ppp[:-1] + "r"
 
@@ -275,7 +275,7 @@ class Verb(_Word):
             self.conjugation = get_irregular_verb_conjugation(self.present)
         elif is_derived_verb(self.present):
             self.conjugation = get_derived_verb_conjugation(self.present)
-        elif check_mixed_conjugation_verb(self.present):  # type: ignore[unreachable]
+        elif check_mixed_conjugation_verb(self.present):
             self.conjugation = 5
         elif self.infinitive.endswith("are"):
             self.conjugation = 1
@@ -362,12 +362,10 @@ class Verb(_Word):
 
         if self.fap_fourthpp:
             assert self.ppp is not None
-
             self._fap_stem = self.ppp[:-2]
 
         elif not self.no_ppp:
             assert self.ppp is not None
-
             self._ppp_stem = self.ppp[:-2]
             self._fap_stem = self.ppp[:-1] + "r"
 
@@ -428,7 +426,6 @@ class Verb(_Word):
 
         if not self.no_ppp:
             assert self.ppp is not None
-
             endings |= {
                 "Vperpasindsg1": f"{self.ppp} sum",  # portatus sum
                 "Vperpasindsg2": f"{self.ppp} es",  # portatus es
@@ -575,7 +572,6 @@ class Verb(_Word):
 
         if not self.no_ppp:
             assert self.ppp is not None
-
             endings |= {
                 "Vperpasindsg1": f"{self.ppp} sum",  # doctus sum
                 "Vperpasindsg2": f"{self.ppp} es",  # doctus es
@@ -721,7 +717,6 @@ class Verb(_Word):
 
         if not self.no_ppp:
             assert self.ppp is not None
-
             endings |= {
                 "Vperpasindsg1": f"{self.ppp} sum",  # tractus sum
                 "Vperpasindsg2": f"{self.ppp} es",  # tractus es
@@ -867,7 +862,6 @@ class Verb(_Word):
 
         if not self.no_ppp:
             assert self.ppp is not None
-
             endings |= {
                 "Vperpasindsg1": f"{self.ppp} sum",  # auditus sum
                 "Vperpasindsg2": f"{self.ppp} es",  # auditus es
@@ -1013,7 +1007,6 @@ class Verb(_Word):
 
         if not self.no_ppp:
             assert self.ppp is not None
-
             endings |= {
                 "Vperpasindsg1": f"{self.ppp} sum",  # captus sum
                 "Vperpasindsg2": f"{self.ppp} es",  # captus es
@@ -1213,7 +1206,6 @@ class Verb(_Word):
 
             if not self.fap_fourthpp:
                 assert self.ppp is not None
-
                 endings |= {
                     "Vperpasptcmnomsg": self.ppp,  # portatus
                     "Vperpasptcmvocsg": f"{self._ppp_stem}e",  # portate
@@ -1368,8 +1360,7 @@ class Verb(_Word):
 
         short_tense = tense.shorthand
         short_voice = voice.shorthand
-        if number:
-            short_number = number.shorthand
+        short_number = number.shorthand if number else None
 
         if mood == Mood.INFINITIVE:
             return self.endings.get(f"V{short_tense}{short_voice}inf   ")
@@ -1564,7 +1555,7 @@ class Verb(_Word):
             return NotImplemented
 
         if self.meaning == other.meaning:
-            _create_verb(
+            return _create_verb(
                 self.present,
                 self.infinitive,
                 self.perfect,

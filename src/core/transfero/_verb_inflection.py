@@ -290,10 +290,11 @@ def _find_preactind_inflections(
                 },
             )
 
-    return (
-        f"they {present_nonthird}",
-        {f"they {present_nonthird}", f"they are {present_participle}"},
-    )
+        case _:
+            return (
+                f"they {present_nonthird}",
+                {f"they {present_nonthird}", f"they are {present_participle}"},
+            )
 
 
 def _find_prepasind_inflections(
@@ -339,10 +340,14 @@ def _find_prepasind_inflections(
                 },
             )
 
-    return (
-        f"they are {past_participle}",
-        {f"they are {past_participle}", f"they are being {past_participle}"},
-    )
+        case _:
+            return (
+                f"they are {past_participle}",
+                {
+                    f"they are {past_participle}",
+                    f"they are being {past_participle}",
+                },
+            )
 
 
 def _find_impactind_inflections(
@@ -412,16 +417,17 @@ def _find_impactind_inflections(
                     },
                 )
 
-        return (
-            f"they {past}",
-            {
-                f"they {past}",
-                f"they were {present_participle}",
-                f"they used to {lemma}",
-                f"they began to {lemma}",
-                f"they kept {present_participle}",
-            },
-        )
+            case _:
+                return (
+                    f"they {past}",
+                    {
+                        f"they {past}",
+                        f"they were {present_participle}",
+                        f"they used to {lemma}",
+                        f"they began to {lemma}",
+                        f"they kept {present_participle}",
+                    },
+                )
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -476,15 +482,16 @@ def _find_impactind_inflections(
                 },
             )
 
-    return (
-        f"they were {present_participle}",
-        {
-            f"they were {present_participle}",
-            f"they used to {lemma}",
-            f"they began to {lemma}",
-            f"they kept {present_participle}",
-        },
-    )
+        case _:
+            return (
+                f"they were {present_participle}",
+                {
+                    f"they were {present_participle}",
+                    f"they used to {lemma}",
+                    f"they began to {lemma}",
+                    f"they kept {present_participle}",
+                },
+            )
 
 
 def _find_imppasind_inflections(
@@ -551,16 +558,17 @@ def _find_imppasind_inflections(
                 },
             )
 
-    return (
-        f"they were {past_participle}",
-        {
-            f"they were {past_participle}",
-            f"they were being {past_participle}",
-            f"they used to be {past_participle}",
-            f"they began to be {past_participle}",
-            f"they kept being {past_participle}",
-        },
-    )
+        case _:
+            return (
+                f"they were {past_participle}",
+                {
+                    f"they were {past_participle}",
+                    f"they were being {past_participle}",
+                    f"they used to be {past_participle}",
+                    f"they began to be {past_participle}",
+                    f"they kept being {past_participle}",
+                },
+            )
 
 
 def _find_futactind_inflections(
@@ -621,15 +629,16 @@ def _find_futactind_inflections(
                 },
             )
 
-    return (
-        f"they will {lemma}",
-        {
-            f"they will {lemma}",
-            f"they will be {present_participle}",
-            f"they shall {lemma}",
-            f"they shall be {present_participle}",
-        },
-    )
+        case _:
+            return (
+                f"they will {lemma}",
+                {
+                    f"they will {lemma}",
+                    f"they will be {present_participle}",
+                    f"they shall {lemma}",
+                    f"they shall be {present_participle}",
+                },
+            )
 
 
 def _find_futpasind_inflections(
@@ -690,15 +699,16 @@ def _find_futpasind_inflections(
                 },
             )
 
-    return (
-        f"they will be {past_participle}",
-        {
-            f"they will be {past_participle}",
-            f"they will be being {past_participle}",
-            f"they shall be {past_participle}",
-            f"they shall be being {past_participle}",
-        },
-    )
+        case _:
+            return (
+                f"they will be {past_participle}",
+                {
+                    f"they will be {past_participle}",
+                    f"they will be being {past_participle}",
+                    f"they shall be {past_participle}",
+                    f"they shall be being {past_participle}",
+                },
+            )
 
 
 def _find_peractind_inflections(
@@ -741,10 +751,11 @@ def _find_peractind_inflections(
                 },
             )
 
-    return (
-        f"they {past}",
-        {f"they {past}", f"they have {past}", f"they did {lemma}"},
-    )
+        case _:
+            return (
+                f"they {past}",
+                {f"they {past}", f"they have {past}", f"they did {lemma}"},
+            )
 
 
 def _find_perpasind_inflections(
@@ -790,10 +801,14 @@ def _find_perpasind_inflections(
                 },
             )
 
-    return (
-        f"they have been {past_participle}",
-        {f"they were {past_participle}", f"they have been {past_participle}"},
-    )
+        case _:
+            return (
+                f"they have been {past_participle}",
+                {
+                    f"they were {past_participle}",
+                    f"they have been {past_participle}",
+                },
+            )
 
 
 def _find_plpactind_inflections(
@@ -824,7 +839,11 @@ def _find_plpactind_inflections(
                 },
             )
 
-    return (f"they had {past_participle}", {f"they had {past_participle}"})
+        case _:
+            return (
+                f"they had {past_participle}",
+                {f"they had {past_participle}"},
+            )
 
 
 def _find_plppasind_inflections(
@@ -861,10 +880,11 @@ def _find_plppasind_inflections(
                 },
             )
 
-    return (
-        f"they had been {past_participle}",
-        {f"they had been {past_participle}"},
-    )
+        case _:
+            return (
+                f"they had been {past_participle}",
+                {f"they had been {past_participle}"},
+            )
 
 
 def _find_fpractind_inflections(
@@ -901,10 +921,11 @@ def _find_fpractind_inflections(
                 },
             )
 
-    return (
-        f"they will have {past_participle}",
-        {f"they will have {past_participle}"},
-    )
+        case _:
+            return (
+                f"they will have {past_participle}",
+                {f"they will have {past_participle}"},
+            )
 
 
 def _find_fprpasind_inflections(
@@ -941,10 +962,11 @@ def _find_fprpasind_inflections(
                 },
             )
 
-    return (
-        f"they will have been {past_participle}",
-        {f"they will have been {past_participle}"},
-    )
+        case _:
+            return (
+                f"they will have been {past_participle}",
+                {f"they will have been {past_participle}"},
+            )
 
 
 def _find_preipe_inflections(lemma: str) -> tuple[str, set[str]]:

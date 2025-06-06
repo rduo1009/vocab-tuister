@@ -116,16 +116,17 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, set[str]]:
                 {*comparatives, f"more {lemma}"},
             )
 
-    superlatives = lemminflect.getInflection(lemma, "RBS")
-    return (
-        f"most {lemma}" if not_comparable else superlatives[0],
-        {
-            *superlatives,
-            f"most {lemma}",
-            f"very {lemma}",
-            f"extremely {lemma}",
-            f"rather {lemma}",
-            f"too {lemma}",
-            f"quite {lemma}",
-        },
-    )
+        case _:
+            superlatives = lemminflect.getInflection(lemma, "RBS")
+            return (
+                f"most {lemma}" if not_comparable else superlatives[0],
+                {
+                    *superlatives,
+                    f"most {lemma}",
+                    f"very {lemma}",
+                    f"extremely {lemma}",
+                    f"rather {lemma}",
+                    f"too {lemma}",
+                    f"quite {lemma}",
+                },
+            )

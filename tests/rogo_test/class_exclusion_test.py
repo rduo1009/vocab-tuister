@@ -135,7 +135,7 @@ def test_class_exclusion():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         vocab = filter_words(vocab_list, settings)
         for word in vocab:

@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:
-        DEFAULT_SETTINGS[setting] = True  # type: ignore[literal-required]
+        DEFAULT_SETTINGS[setting] = True
 
         data_generator: Generator[str] = _generate_questions_wrap(
             vocab_list=vocab,
@@ -201,4 +201,4 @@ if __name__ == "__main__":
             for data_str in data_generator:
                 output_file.write(data_str + "\n")
 
-        DEFAULT_SETTINGS[setting] = False  # type: ignore[literal-required]
+        DEFAULT_SETTINGS[setting] = False

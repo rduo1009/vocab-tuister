@@ -1,5 +1,7 @@
 """Representation of a Latin word."""
 
+# pyright: reportImplicitOverride=false, reportExplicitAny=false, reportAny=false
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -31,7 +33,7 @@ class _Word(ABC):  # noqa: PLW1641
         The meaning of the word.
     """
 
-    __slots__ = ("_first", "endings", "meaning")
+    __slots__: tuple[str, ...] = ("_first", "endings", "meaning")
 
     endings: Endings
     _first: str

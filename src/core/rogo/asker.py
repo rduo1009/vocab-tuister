@@ -1,10 +1,13 @@
 """Contains functions that generate questions and check answers."""
 
+# ruff: noqa: SLF001
+# pyright: reportPrivateUsage=false
+
 from __future__ import annotations
 
 import logging
 import random
-from typing import TYPE_CHECKING, Final, overload
+from typing import TYPE_CHECKING, Final, cast, overload
 
 from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
@@ -227,6 +230,8 @@ def _generate_typein_engtolat(
     # Nominative, vocative, accusative nouns translate the same way
     # NOTE: Might change later? Give accusative nouns a separate meaning
     if noun_nom_acc_voc:
+        assert isinstance(chosen_word, Noun)
+
         endings_to_add = (
             chosen_word.get(
                 case=Case.NOMINATIVE, number=ending_components.number
@@ -247,6 +252,8 @@ def _generate_typein_engtolat(
 
     # Adjectives all translate the same if they have the same degree
     elif adjective_not_adverb_flag:
+        assert isinstance(chosen_word, Adjective)
+
         answers = {
             item
             for key, value in chosen_word.endings.items()
@@ -270,6 +277,8 @@ def _generate_typein_engtolat(
 
     # All participles translate the same way
     elif participle_flag:
+        assert isinstance(chosen_word, Verb)
+
         answers = {
             item
             for key, value in chosen_word.endings.items()
@@ -294,6 +303,8 @@ def _generate_typein_engtolat(
 
     # English doesn't have 2nd person plural, so it's the same as singular
     elif verb_second_person_flag:
+        assert isinstance(chosen_word, Verb)
+
         if second_person_plural := chosen_word.get(
             tense=ending_components.tense,
             voice=ending_components.voice,
@@ -317,6 +328,7 @@ def _generate_typein_engtolat(
 
     # All pronouns translate the same way if same case and number
     elif pronoun_flag:
+        assert isinstance(chosen_word, Pronoun)
 
         @overload
         def _convert_to_tuple(ending: Ending) -> tuple[str, ...]: ...
@@ -335,27 +347,16 @@ def _generate_typein_engtolat(
             return (ending,)
 
         answers = {
-            *_convert_to_tuple(
+            answer
+            for gender in (Gender.MASCULINE, Gender.FEMININE, Gender.NEUTER)
+            for answer in _convert_to_tuple(
                 chosen_word.get(
                     case=ending_components.case,
                     number=ending_components.number,
-                    gender=Gender.MASCULINE,
+                    gender=gender,
                 )
-            ),
-            *_convert_to_tuple(
-                chosen_word.get(
-                    case=ending_components.case,
-                    number=ending_components.number,
-                    gender=Gender.FEMININE,
-                )
-            ),
-            *_convert_to_tuple(
-                chosen_word.get(
-                    case=ending_components.case,
-                    number=ending_components.number,
-                    gender=Gender.NEUTER,
-                )
-            ),
+            )
+            if answer is not None
         }
 
         chosen_ending = str(
@@ -479,7 +480,7 @@ def _generate_inflect(
     if isinstance(chosen_ending, MultipleEndings):
         # If the `MutipleEndings` has a `regular` attribute then use that
         if hasattr(chosen_ending, "regular"):
-            main_answer = chosen_ending.regular
+            main_answer = cast("str", chosen_ending.regular)
         else:
             main_answer = random.choice(chosen_ending.get_all())
         answers = set(chosen_ending.get_all())
@@ -562,6 +563,10 @@ def _generate_principal_parts_question(
                                 chosen_word.femnom,
                                 chosen_word.neutnom,
                             )
+                        case _:
+                            raise ValueError(
+                                f"Termination '{chosen_word.termination}' not recognised."
+                            )
 
         case Pronoun():
             principal_parts = (
@@ -591,9 +596,9 @@ def _generate_multiplechoice_engtolat(
         meaning = random.choice(meaning.meanings)
 
     # Find answer and other choices
-    answer = chosen_word._first  # noqa: SLF001
+    answer = chosen_word._first
     other_choices = (
-        vocab._first  # noqa: SLF001
+        vocab._first
         for vocab in random.sample(
             vocab_list,
             # minus one as the chosen word is already in the question
@@ -613,7 +618,7 @@ def _generate_multiplechoice_engtolat(
 def _generate_multiplechoice_lattoeng(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceLatToEngQuestion:
-    prompt = chosen_word._first  # noqa: SLF001
+    prompt = chosen_word._first
 
     # Pick correct choice
     if isinstance(chosen_word.meaning, MultipleMeanings):

@@ -1,3 +1,5 @@
+# pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
+
 import os
 import sys
 

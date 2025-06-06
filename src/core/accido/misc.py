@@ -1,5 +1,7 @@
 """Contains miscellaneous functions, classes and constants used by ``accido``."""
 
+# pyright: reportUninitializedInstanceVariable=false, reportAny=false
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -303,23 +305,25 @@ class EndingComponents:
             Defaults to "".
         """
         if case:
-            self.case = case
+            self.case: Case = case
         if number:
-            self.number = number
+            self.number: Number = number
         if gender:
-            self.gender = gender
+            self.gender: Gender = gender
         if tense:
-            self.tense = tense
+            self.tense: Tense = tense
         if voice:
-            self.voice = voice
+            self.voice: Voice = voice
         if mood:
-            self.mood = mood
+            self.mood: Mood = mood
         if degree:
-            self.degree = degree
+            self.degree: Degree = degree
         if person:
-            self.person = person
-        self.string = string
+            self.person: Person = person
+        self.string: str = string
 
+        self.type: ComponentsType
+        self.subtype: ComponentsSubtype | None
         self.type, self.subtype = self._determine_type()
 
     def _get_non_null_attributes(self) -> list[str]:

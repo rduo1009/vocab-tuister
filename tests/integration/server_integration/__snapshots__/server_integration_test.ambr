@@ -55,10 +55,10 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'dative singular',
+          'genitive singular',
           'nominative plural',
-          'nominative plural',
-          'nominative plural',
-          'nominative plural',
+          'vocative plural',
         ]),
         'dictionary_entry': 'farmer: agricola, agricolae, (m)',
         'main_answer': 'nominative plural',
@@ -92,9 +92,9 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'comparative ablative singular feminine',
           'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
+          'comparative ablative singular neuter',
         ]),
         'dictionary_entry': 'large: ingens, ingentis, (3-1)',
         'main_answer': 'comparative ablative singular masculine',
@@ -178,12 +178,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'positive accusative plural feminine',
+          'positive accusative plural masculine',
+          'positive nominative plural feminine',
           'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
-          'positive nominative plural masculine',
+          'positive vocative plural feminine',
+          'positive vocative plural masculine',
         ]),
         'dictionary_entry': 'keen: acer, acris, acre, (3-3)',
         'main_answer': 'positive nominative plural masculine',
@@ -271,9 +271,9 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'comparative ablative singular feminine',
           'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
-          'comparative ablative singular masculine',
+          'comparative ablative singular neuter',
         ]),
         'dictionary_entry': 'large: ingens, ingentis, (3-1)',
         'main_answer': 'comparative ablative singular masculine',
@@ -317,9 +317,9 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'ablative singular',
           'nominative singular',
-          'nominative singular',
-          'nominative singular',
+          'vocative singular',
         ]),
         'dictionary_entry': 'girl: puella, puellae, (f)',
         'main_answer': 'nominative singular',
@@ -387,9 +387,9 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'genitive singular feminine',
           'genitive singular masculine',
-          'genitive singular masculine',
-          'genitive singular masculine',
+          'genitive singular neuter',
         ]),
         'dictionary_entry': 'that: ille, illa, illud',
         'main_answer': 'genitive singular masculine',
@@ -400,7 +400,7 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'dative plural',
+          'ablative plural',
           'dative plural',
         ]),
         'dictionary_entry': 'girl: puella, puellae, (f)',
@@ -412,12 +412,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'positive ablative singular feminine',
+          'positive accusative plural neuter',
+          'positive nominative plural neuter',
           'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
-          'positive nominative singular feminine',
+          'positive vocative plural neuter',
+          'positive vocative singular feminine',
         ]),
         'dictionary_entry': 'good: bonus, bona, bonum, (2-1-2)',
         'main_answer': 'positive nominative singular feminine',
@@ -450,12 +450,12 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
+          'superlative ablative singular feminine',
+          'superlative accusative plural neuter',
+          'superlative nominative plural neuter',
           'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
-          'superlative nominative singular feminine',
+          'superlative vocative plural neuter',
+          'superlative vocative singular feminine',
         ]),
         'dictionary_entry': 'light: levis, leve, (3-2)',
         'main_answer': 'superlative nominative singular feminine',
