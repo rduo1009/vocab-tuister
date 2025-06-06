@@ -65,6 +65,7 @@ jobs:
 
       - name: Install deps
         run: |
+          sudo apt update
           sudo apt install pipx
           pipx install poetry
           poetry install
@@ -139,6 +140,7 @@ jobs:
 
       - name: Install deps
         run: |
+          sudo apt update
           sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install dunamai
