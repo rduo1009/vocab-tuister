@@ -21,7 +21,7 @@ const (
 	outputConfigFile = "output-config.json"
 
 	firstPageColumns = 20
-	numberOfPages    = 9
+	numberOfPages    = 10
 
 	millisecondDelay = 200
 )

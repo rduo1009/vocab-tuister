@@ -111,12 +111,16 @@ def ask_question_without_sr(
             match question_type:
                 case QuestionClasses.TYPEIN_ENGTOLAT:
                     output = _generate_typein_engtolat(
-                        chosen_word, filtered_endings
+                        chosen_word,
+                        filtered_endings,
+                        english_subjunctives=settings["english-subjunctives"],
                     )
 
                 case QuestionClasses.TYPEIN_LATTOENG:
                     output = _generate_typein_lattoeng(
-                        chosen_word, filtered_endings
+                        chosen_word,
+                        filtered_endings,
+                        english_subjunctives=settings["english-subjunctives"],
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
@@ -176,7 +180,10 @@ def _pick_ending_from_multipleendings(ending: Ending) -> str:
 
 
 def _generate_typein_engtolat(
-    chosen_word: _Word, filtered_endings: Endings
+    chosen_word: _Word,
+    filtered_endings: Endings,
+    *,
+    english_subjunctives: bool = False,
 ) -> TypeInEngToLatQuestion | None:
     # Pick ending, getting the ending dict key to the ending as well
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
@@ -188,10 +195,11 @@ def _generate_typein_engtolat(
     )
 
     # Unsupported endings
-    # Subjunctives cannot be translated to English on their own
+    # Subjunctives cannot be translated to English if the setting is not selected
     verb_subjunctive = (
         isinstance(chosen_word, Verb)
         and ending_components.mood == Mood.SUBJUNCTIVE
+        and not english_subjunctives
     )
 
     if verb_subjunctive:
@@ -379,7 +387,10 @@ def _generate_typein_engtolat(
 
 
 def _generate_typein_lattoeng(
-    chosen_word: _Word, filtered_endings: Endings
+    chosen_word: _Word,
+    filtered_endings: Endings,
+    *,
+    english_subjunctives: bool = False,
 ) -> TypeInLatToEngQuestion | None:
     # Pick ending
     _, chosen_ending = _pick_ending(filtered_endings)
@@ -395,9 +406,10 @@ def _generate_typein_lattoeng(
         verb_subjunctive = (
             isinstance(chosen_word, Verb)
             and ending_components.mood == Mood.SUBJUNCTIVE
+            and not english_subjunctives
         )
 
-        # Subjunctives cannot be translated to English on their own
+        # Subjunctives cannot be translated to English if the setting is not selected
         if verb_subjunctive:
             continue
 

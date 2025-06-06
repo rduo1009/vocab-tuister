@@ -114,5 +114,7 @@
     "include-inflect": true,
     "include-principal-parts": true,
     "include-multiplechoice-engtolat": true,
-    "include-multiplechoice-lattoeng": true
+    "include-multiplechoice-lattoeng": true,
+
+    "english-subjunctives": true
 }

@@ -112,6 +112,8 @@ Settings = TypedDict(
         "exclude-participle-singular": ReadOnly[bool],
         "exclude-participle-plural": ReadOnly[bool],
 
+        "english-subjunctives": ReadOnly[bool],
+
         "include-typein-engtolat": ReadOnly[bool],
         "include-typein-lattoeng": ReadOnly[bool],
         "include-parse": ReadOnly[bool],

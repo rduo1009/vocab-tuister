@@ -165,6 +165,11 @@ var wizard = SettingsWizard{
 			},
 		},
 		{
+			Title: "Miscellaneous settings", Settings: []Setting{
+				{InternalName: "english-subjunctives", DisplayName: "English translations of subjunctive verbs", Checked: false},
+			},
+		},
+		{
 			Title: "Question types", Settings: []Setting{
 				{InternalName: "include-typein-engtolat", DisplayName: "Type-in English to Latin questions", Checked: true},
 				{InternalName: "include-typein-lattoeng", DisplayName: "Type-in Latin to English questions", Checked: true},

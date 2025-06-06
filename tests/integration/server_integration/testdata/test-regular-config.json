@@ -116,6 +116,8 @@
     "include-multiplechoice-engtolat": true,
     "include-multiplechoice-lattoeng": true,
 
+    "english-subjunctives": true,
+    
     "number-multiplechoice-options": 3,
     "number-of-questions": 50
 }

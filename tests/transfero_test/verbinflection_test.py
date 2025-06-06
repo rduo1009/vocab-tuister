@@ -29,8 +29,8 @@ def test_invalid_type_infinitive():
 
 def test_verb_error_not_implemented():
     with pytest.raises(NotImplementedError) as error:
-        find_verb_inflections("attack", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1))
-    assert str(error.value) == "The present passive subjunctive has not been implemented."
+        find_verb_inflections("attack", EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1))
+    assert str(error.value) == "The future passive subjunctive has not been implemented."  # it doesn't exist
 
 
 def test_participle_error_not_implemented():

@@ -49,9 +49,6 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     If a participle is queried, ``find_participle_inflections`` is ran
     instead.
 
-    Note that subjunctives are not supported as they do not have an exact
-    translation in English.
-
     Parameters
     ----------
     verb : str
@@ -162,78 +159,11 @@ def _find_lemma(  # noqa: PLR0917
     number: Number | None = None,
     person: Person | None = None,
 ) -> tuple[str, set[str]]:
-    match (tense, voice, mood):
-        case (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
+    to_match = (tense, voice, mood)
 
-            return _find_preactind_inflections(lemma, number, person)
-
-        case (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_impactind_inflections(lemma, number, person)
-
-        case (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_futactind_inflections(lemma, number, person)
-
-        case (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_peractind_inflections(lemma, number, person)
-
-        case (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_plpactind_inflections(lemma, number, person)
-
-        case (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_fpractind_inflections(lemma, number, person)
-
-        case (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_prepasind_inflections(lemma, number, person)
-
-        case (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_imppasind_inflections(lemma, number, person)
-
-        case (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_futpasind_inflections(lemma, number, person)
-
-        case (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_perpasind_inflections(lemma, number, person)
-
-        case (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_plppasind_inflections(lemma, number, person)
-
-        case (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE):
-            assert number is not None
-            assert person is not None
-
-            return _find_fprpasind_inflections(lemma, number, person)
+    match to_match:
+        case (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE):
+            return _find_preipe_inflections(lemma)
 
         case (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE):
             return _find_preactinf_inflections(lemma)
@@ -241,14 +171,80 @@ def _find_lemma(  # noqa: PLR0917
         case (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE):
             return _find_prepasinf_inflections(lemma)
 
-        case (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE):
-            return _find_preipe_inflections(lemma)
+        case _:
+            pass
+
+    assert number is not None
+    assert person is not None
+
+    match to_match:
+        case (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_preactind_inflections(lemma, number, person)
+
+        case (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_impactind_inflections(lemma, number, person)
+
+        case (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_futactind_inflections(lemma, number, person)
+
+        case (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_peractind_inflections(lemma, number, person)
+
+        case (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_plpactind_inflections(lemma, number, person)
+
+        case (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE):
+            return _find_fpractind_inflections(lemma, number, person)
+
+        case (Tense.PRESENT, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_prepasind_inflections(lemma, number, person)
+
+        case (Tense.IMPERFECT, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_imppasind_inflections(lemma, number, person)
+
+        case (Tense.FUTURE, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_futpasind_inflections(lemma, number, person)
+
+        case (Tense.PERFECT, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_perpasind_inflections(lemma, number, person)
+
+        case (Tense.PLUPERFECT, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_plppasind_inflections(lemma, number, person)
+
+        case (Tense.FUTURE_PERFECT, Voice.PASSIVE, Mood.INDICATIVE):
+            return _find_fprpasind_inflections(lemma, number, person)
+
+        case (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE):
+            return _find_preactsbj_inflections(lemma, number, person)
+
+        case (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE):
+            return _find_impactsbj_inflections(lemma, number, person)
+
+        case (Tense.PERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE):
+            return _find_peractsbj_inflections(lemma, number, person)
+
+        case (Tense.PLUPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE):
+            return _find_plpactsbj_inflections(lemma, number, person)
+
+        case (Tense.PRESENT, Voice.PASSIVE, Mood.SUBJUNCTIVE):
+            return _find_prepassbj_inflections(lemma, number, person)
+
+        case (Tense.IMPERFECT, Voice.PASSIVE, Mood.SUBJUNCTIVE):
+            return _find_imppassbj_inflections(lemma, number, person)
+
+        case (Tense.PERFECT, Voice.PASSIVE, Mood.SUBJUNCTIVE):
+            return _find_perpassbj_inflections(lemma, number, person)
+
+        case (Tense.PLUPERFECT, Voice.PASSIVE, Mood.SUBJUNCTIVE):
+            return _find_plppassbj_inflections(lemma, number, person)
 
         case _:
-            raise NotImplementedError(
-                f"The {tense.regular} {voice.regular} "
-                f"{mood.regular} has not been implemented."
-            )
+            pass
+
+    raise NotImplementedError(
+        f"The {tense.regular} {voice.regular} "
+        f"{mood.regular} has not been implemented."
+    )
 
 
 def _find_preactind_inflections(
@@ -981,6 +977,302 @@ def _find_prepasinf_inflections(lemma: str) -> tuple[str, set[str]]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     return (f"to be {past_participle}", {f"to be {past_participle}"})
+
+
+def _find_preactsbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (f"I may {lemma}", {f"I may {lemma}"})
+
+        case (Number.PLURAL, 1):
+            return (f"we may {lemma}", {f"we may {lemma}"})
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (f"you may {lemma}", {f"you may {lemma}"})
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he may {lemma}",
+                {f"he may {lemma}", f"she may {lemma}", f"it may {lemma}"},
+            )
+
+        case _:
+            return (f"they may {lemma}", {f"they may {lemma}"})
+
+
+def _find_impactsbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (f"I might {lemma}", {f"I might {lemma}"})
+
+        case (Number.PLURAL, 1):
+            return (f"we might {lemma}", {f"we might {lemma}"})
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (f"you might {lemma}", {f"you might {lemma}"})
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he might {lemma}",
+                {
+                    f"he might {lemma}",
+                    f"she might {lemma}",
+                    f"it might {lemma}",
+                },
+            )
+
+        case _:
+            return (f"they might {lemma}", {f"they might {lemma}"})
+
+
+def _find_peractsbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I may have {past_participle}",
+                {f"I may have {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we may have {past_participle}",
+                {f"we may have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you may have {past_participle}",
+                {f"you may have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he may have {past_participle}",
+                {
+                    f"he may have {past_participle}",
+                    f"she may have {past_participle}",
+                    f"it may have {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they may have {past_participle}",
+                {f"they may have {past_participle}"},
+            )
+
+
+def _find_plpactsbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I might have {past_participle}",
+                {f"I might have {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we might have {past_participle}",
+                {f"we might have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you might have {past_participle}",
+                {f"you might have {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he might have {past_participle}",
+                {
+                    f"he might have {past_participle}",
+                    f"she might have {past_participle}",
+                    f"it might have {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they might have {past_participle}",
+                {f"they might have {past_participle}"},
+            )
+
+
+def _find_prepassbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I may be {past_participle}",
+                {f"I may be {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we may be {past_participle}",
+                {f"we may be {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you may be {past_participle}",
+                {f"you may be {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he may be {past_participle}",
+                {
+                    f"he may be {past_participle}",
+                    f"she may be {past_participle}",
+                    f"it may be {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they may be {past_participle}",
+                {f"they may be {past_participle}"},
+            )
+
+
+def _find_imppassbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I might be {past_participle}",
+                {f"I might be {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we might be {past_participle}",
+                {f"we might be {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you might be {past_participle}",
+                {f"you might be {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he might be {past_participle}",
+                {
+                    f"he might be {past_participle}",
+                    f"she might be {past_participle}",
+                    f"it might be {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they might be {past_participle}",
+                {f"they might be {past_participle}"},
+            )
+
+
+def _find_perpassbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I may have been {past_participle}",
+                {f"I may have been {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we may have been {past_participle}",
+                {f"we may have been {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you may have been {past_participle}",
+                {f"you may have been {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he may have been {past_participle}",
+                {
+                    f"he may have been {past_participle}",
+                    f"she may have been {past_participle}",
+                    f"it may have been {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they may have been {past_participle}",
+                {f"they may have been {past_participle}"},
+            )
+
+
+def _find_plppassbj_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 1):
+            return (
+                f"I might have been {past_participle}",
+                {f"I might have been {past_participle}"},
+            )
+
+        case (Number.PLURAL, 1):
+            return (
+                f"we might have been {past_participle}",
+                {f"we might have been {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
+            return (
+                f"you might have been {past_participle}",
+                {f"you might have been {past_participle}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"he might have been {past_participle}",
+                {
+                    f"he might have been {past_participle}",
+                    f"she might have been {past_participle}",
+                    f"it might have been {past_participle}",
+                },
+            )
+
+        case _:
+            return (
+                f"they might have been {past_participle}",
+                {f"they might have been {past_participle}"},
+            )
 
 
 def _find_participle_inflections(

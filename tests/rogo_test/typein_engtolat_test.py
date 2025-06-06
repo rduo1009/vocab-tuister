@@ -113,6 +113,7 @@ settings: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
     "include-typein-engtolat": True,
     "include-typein-lattoeng": False,
     "include-parse": False,

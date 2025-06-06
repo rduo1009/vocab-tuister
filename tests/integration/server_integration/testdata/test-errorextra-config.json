@@ -91,6 +91,7 @@
     "include-principal-parts": true,
     "include-typein-engtolat": true,
     "include-typein-lattoeng": true,
+    "english-subjunctives": true,
     "number-multiplechoice-options": 3,
     "number-of-questions": 50,
     "cause-an-error": true
