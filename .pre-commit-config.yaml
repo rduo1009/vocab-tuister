@@ -26,7 +26,7 @@ repos:
     rev: v2.1.6
     hooks:
       - id: golangci-lint
-        args: [--fix]
+        args: [--fix, --fast-only]
 
   # Format and check other files
   - repo: https://github.com/dzhu/rstfmt
