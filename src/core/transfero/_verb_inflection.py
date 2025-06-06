@@ -290,7 +290,7 @@ def _find_preactind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they {present_nonthird}",
                 {f"they {present_nonthird}", f"they are {present_participle}"},
@@ -340,7 +340,7 @@ def _find_prepasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they are {past_participle}",
                 {
@@ -417,7 +417,7 @@ def _find_impactind_inflections(
                     },
                 )
 
-            case (Number.PLURAL, 3):
+            case _:
                 return (
                     f"they {past}",
                     {
@@ -482,7 +482,7 @@ def _find_impactind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they were {present_participle}",
                 {
@@ -558,7 +558,7 @@ def _find_imppasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they were {past_participle}",
                 {
@@ -629,7 +629,7 @@ def _find_futactind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they will {lemma}",
                 {
@@ -699,7 +699,7 @@ def _find_futpasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they will be {past_participle}",
                 {
@@ -751,7 +751,7 @@ def _find_peractind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they {past}",
                 {f"they {past}", f"they have {past}", f"they did {lemma}"},
@@ -801,7 +801,7 @@ def _find_perpasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they have been {past_participle}",
                 {
@@ -839,7 +839,7 @@ def _find_plpactind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they had {past_participle}",
                 {f"they had {past_participle}"},
@@ -880,7 +880,7 @@ def _find_plppasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they had been {past_participle}",
                 {f"they had been {past_participle}"},
@@ -921,7 +921,7 @@ def _find_fpractind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they will have {past_participle}",
                 {f"they will have {past_participle}"},
@@ -962,7 +962,7 @@ def _find_fprpasind_inflections(
                 },
             )
 
-        case (Number.PLURAL, 3):
+        case _:
             return (
                 f"they will have been {past_participle}",
                 {f"they will have been {past_participle}"},

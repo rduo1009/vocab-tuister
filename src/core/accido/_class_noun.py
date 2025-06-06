@@ -309,7 +309,7 @@ class Noun(_Word):
                     "Nablpl": f"{self._stem}ibus",  # manibus
                 }
 
-            case 5:
+            case _:
                 return {
                     "Nnomsg": self.nominative,  # res
                     "Nvocsg": self.nominative,  # res
@@ -324,11 +324,6 @@ class Noun(_Word):
                     "Ndatpl": f"{self._stem}ebus",  # rebus
                     "Nablpl": f"{self._stem}ebus",  # rebus
                 }
-
-            case _:
-                raise ValueError(
-                    f"Declension '{self.declension}' not recognised."
-                )
 
     def _neuter_endings(self) -> None:
         self.endings["Nvocsg"] = self.nominative  # templum

@@ -198,7 +198,7 @@ def _inflect_lemma(
                 ),
             )
 
-        case Case.ABLATIVE:
+        case _:
             if number == Number.SINGULAR:
                 return (
                     f"by the {best_form}",
