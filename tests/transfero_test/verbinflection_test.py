@@ -58,6 +58,20 @@ class TestVerbInflection:
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you are attacked", "you are being attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they are attacked", "they are being attacked"}
 
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I may attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you may attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he may attack", "she may attack", "it may attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we may attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you may attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they may attack"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I may be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you may be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he may be attacked", "she may be attacked", "it may be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we may be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you may be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they may be attacked"}
+
     def test_verb_imperfect(self):
         word = "attack"
 
@@ -74,6 +88,20 @@ class TestVerbInflection:
         assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were being attacked", "we were attacked", "we used to be attacked", "we began to be attacked", "we kept being attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you were being attacked", "you were attacked", "you used to be attacked", "you began to be attacked", "you kept being attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were being attacked", "they were attacked", "they used to be attacked", "they began to be attacked", "they kept being attacked"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I might attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you might attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he might attack", "she might attack", "it might attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we might attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you might attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they might attack"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I might be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you might be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he might be attacked", "she might be attacked", "it might be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we might be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you might be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they might be attacked"}
 
     def test_verb_future(self):
         word = "attack"
@@ -109,6 +137,20 @@ class TestVerbInflection:
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you were attacked", "you have been attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were attacked", "they have been attacked"}
 
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I may have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you may have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he may have attacked", "she may have attacked", "it may have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we may have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you may have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they may have attacked"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I may have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you may have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he may have been attacked", "she may have been attacked", "it may have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we may have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you may have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they may have been attacked"}
+
     def test_verb_pluperfect(self):
         word = "attack"
 
@@ -125,6 +167,20 @@ class TestVerbInflection:
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we had been attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you had been attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they had been attacked"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I might have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you might have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he might have attacked", "she might have attacked", "it might have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we might have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you might have attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they might have attacked"}
+
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I might have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == {"you might have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == {"he might have been attacked", "she might have been attacked", "it might have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == {"we might have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == {"you might have been attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == {"they might have been attacked"}
 
     def test_verb_future_perfect(self):
         word = "attack"
@@ -165,6 +221,8 @@ class TestVerbInflection:
         assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you were having", "you had", "you used to have", "you began to have", "you kept having"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were having", "they had", "they used to have", "they began to have", "they kept having"}
 
+
+class TestMainVerbInflection:
     def test_main_verb_present(self):
         word = "attack"
 
@@ -180,6 +238,20 @@ class TestVerbInflection:
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == "he is attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == "we are attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == "you are attacked"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I may attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you may attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he may attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we may attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you may attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they may attack"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I may be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you may be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he may be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we may be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you may be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they may be attacked"
 
     def test_main_verb_imperfect(self):
         word = "attack"
@@ -197,6 +269,20 @@ class TestVerbInflection:
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == "we were attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == "you were attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == "they were attacked"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I might attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you might attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he might attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we might attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you might attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they might attack"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I might be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you might be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he might be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we might be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you might be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they might be attacked"
 
     def test_main_verb_future(self):
         word = "attack"
@@ -231,6 +317,20 @@ class TestVerbInflection:
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == "you have been attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == "they have been attacked"
 
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I may have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you may have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he may have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we may have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you may have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they may have attacked"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I may have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you may have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he may have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we may have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you may have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they may have been attacked"
+
     def test_main_verb_pluperfect(self):
         word = "attack"
 
@@ -247,6 +347,20 @@ class TestVerbInflection:
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == "we had been attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == "you had been attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == "they had been attacked"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I might have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you might have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he might have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we might have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you might have attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they might have attacked"
+
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == "I might have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2)) == "you might have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3)) == "he might have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1)) == "we might have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2)) == "you might have been attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3)) == "they might have been attacked"
 
     def test_main_verb_future_perfect(self):
         word = "attack"
@@ -288,19 +402,19 @@ class TestVerbInflection:
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == "they had"
 
 
-class TestParticipleInflection:
-    def test_participle_inflections(self):
-        word = "attack"
+def test_participle_inflections():
+    word = "attack"
 
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"having been attacked", "attacked"}
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"having attacked"}
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"attacking"}
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"about to attack"}
+    assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"having been attacked", "attacked"}
+    assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"having attacked"}
+    assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"attacking"}
+    assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == {"about to attack"}
 
-    def test_main_participle_inflections(self):
-        word = "attack"
 
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "having been attacked"
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "having attacked"
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "attacking"
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "about to attack"
+def test_main_participle_inflections():
+    word = "attack"
+
+    assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "having been attacked"
+    assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "having attacked"
+    assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "attacking"
+    assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "about to attack"
