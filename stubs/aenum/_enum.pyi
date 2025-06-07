@@ -17,8 +17,6 @@ _SettingsParamType = Sequence[str] | str
 
 class EnumDict(OrderedDict[str, Any]): ...
 
-_T = TypeVar("_T", bound="EnumType")
-
 class EnumType(type):
     @classmethod
     def __prepare__(  # type: ignore[override]
