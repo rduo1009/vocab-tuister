@@ -27,9 +27,18 @@ settings: Settings = {
     "exclude-verb-pluperfect-active-indicative": False,
     "exclude-verb-future-perfect-active-indicative": False,
     "exclude-verb-present-active-infinitive": False,
+    "exclude-verb-present-passive-infinitive": False,
     "exclude-verb-present-active-imperative": False,
+    "exclude-verb-present-active-subjunctive": False,
     "exclude-verb-imperfect-active-subjunctive": False,
+    "exclude-verb-perfect-active-subjunctive": False,
     "exclude-verb-pluperfect-active-subjunctive": False,
+    "exclude-verb-present-passive-indicative": False,
+    "exclude-verb-imperfect-passive-indicative": False,
+    "exclude-verb-future-passive-indicative": False,
+    "exclude-verb-perfect-passive-indicative": False,
+    "exclude-verb-pluperfect-passive-indicative": False,
+    "exclude-verb-future-perfect-passive-indicative": False,
     "exclude-verb-singular": False,
     "exclude-verb-plural": False,
     "exclude-verb-1st-person": False,
@@ -38,6 +47,7 @@ settings: Settings = {
     "exclude-participles": False,
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
+    "exclude-participle-future-active": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,
@@ -88,6 +98,7 @@ settings: Settings = {
     "exclude-pronoun-plural": False,
     "exclude-nouns": False,
     "exclude-verbs": False,
+    "exclude-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,
@@ -105,6 +116,7 @@ settings: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
     "include-parse": False,
@@ -124,7 +136,7 @@ def test_principalparts_question():
         assert type(output) is PrincipalPartsQuestion
 
         assert output.check(output.principal_parts)
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_principalparts_adjective():
@@ -189,7 +201,7 @@ def test_principalparts_verb():
         assert output.prompt == "doceo"
         assert output.principal_parts == ("doceo", "docere", "docui", "doctus")
 
-    word = Verb("traho", "trahere", "traxi", meaning="drag")
+    word = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
     vocab_list = VocabList([word], "")
     amount = 500
 
@@ -198,4 +210,4 @@ def test_principalparts_verb():
         assert output.check(output.principal_parts)
 
         assert output.prompt == "traho"
-        assert output.principal_parts == ("traho", "trahere", "traxi")
+        assert output.principal_parts == ("traho", "trahere", "traxi", "tractus")

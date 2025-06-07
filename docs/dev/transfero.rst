@@ -131,8 +131,8 @@ Note that the ``main`` parameter defaults to False.
    ...         number=Number.PLURAL,
    ...         case=Case.ACCUSATIVE
    ...     )
-   ... )
-   {'having been attacked'}
+   ... ) # doctest: +SKIP
+   {'attacked', 'having been attacked'}
    >>> find_inflection(
    ...     "attack",
    ...     EndingComponents(

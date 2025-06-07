@@ -7,7 +7,7 @@ from __future__ import annotations
 import logging
 import sys
 import warnings
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
 
 from cyclopts import App, Parameter, Token
 from cyclopts.types import UInt16
@@ -21,13 +21,16 @@ from src.utils.logger import (
     log_uncaught_exceptions,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
 # Initialise logger
 logger = logging.getLogger()
 logging.captureWarnings(capture=True)
 
 # Set custom formatting for warnings and exceptions
 warnings.formatwarning = custom_formatwarning
-sys.excepthook = log_uncaught_exceptions  # type: ignore[assignment]
+sys.excepthook = log_uncaught_exceptions
 
 # Set custom handler for logs
 for handler in logger.handlers.copy():
@@ -57,7 +60,7 @@ def _set_verbosity(verbosity: int) -> None:
 
 
 def _verbosity_converter(
-    type_: type[tuple[bool, ...]], tokens: list[Token]
+    type_: type[tuple[bool, ...]], tokens: Sequence[Token]
 ) -> tuple[bool, ...]:
     assert type_ == tuple[bool, ...]
 
