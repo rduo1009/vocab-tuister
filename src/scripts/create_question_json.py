@@ -71,6 +71,7 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
     "exclude-participle-future-active": False,
+    "exclude-gerundives": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,

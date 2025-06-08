@@ -1162,6 +1162,42 @@ class Verb(_Word):
             "Vpreactptcngenpl": f"{self._preptc_stem}ntium",  # portantium
             "Vpreactptcndatpl": f"{self._preptc_stem}ntibus",  # portantibus
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
+            "Vfutpasptcmnomsg": f"{self._preptc_stem}ndus",  # portandus
+            "Vfutpasptcmvocsg": f"{self._preptc_stem}nde",  # portande
+            "Vfutpasptcmaccsg": f"{self._preptc_stem}ndum",  # portandum
+            "Vfutpasptcmgensg": f"{self._preptc_stem}ndi",  # portandi
+            "Vfutpasptcmdatsg": f"{self._preptc_stem}ndo",  # portando
+            "Vfutpasptcmablsg": f"{self._preptc_stem}ndo",  # portando
+            "Vfutpasptcmnompl": f"{self._preptc_stem}ndi",  # portandi
+            "Vfutpasptcmvocpl": f"{self._preptc_stem}ndi",  # portandi
+            "Vfutpasptcmaccpl": f"{self._preptc_stem}ndos",  # portandos
+            "Vfutpasptcmgenpl": f"{self._preptc_stem}ndorum",  # portandorum
+            "Vfutpasptcmdatpl": f"{self._preptc_stem}ndis",  # portandis
+            "Vfutpasptcmablpl": f"{self._preptc_stem}ndis",  # portandis
+            "Vfutpasptcfnomsg": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcfvocsg": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcfaccsg": f"{self._preptc_stem}ndam",  # portandam
+            "Vfutpasptcfgensg": f"{self._preptc_stem}ndae",  # portandae
+            "Vfutpasptcfdatsg": f"{self._preptc_stem}ndae",  # portandae
+            "Vfutpasptcfablsg": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcfnompl": f"{self._preptc_stem}ndae",  # portandae
+            "Vfutpasptcfvocpl": f"{self._preptc_stem}ndae",  # portandae
+            "Vfutpasptcfaccpl": f"{self._preptc_stem}ndas",  # portandas
+            "Vfutpasptcfgenpl": f"{self._preptc_stem}ndarum",  # portandarum
+            "Vfutpasptcfdatpl": f"{self._preptc_stem}ndis",  # portandis
+            "Vfutpasptcfablpl": f"{self._preptc_stem}ndis",  # portandis
+            "Vfutpasptcnnomsg": f"{self._preptc_stem}ndum",  # portandum
+            "Vfutpasptcnvocsg": f"{self._preptc_stem}ndum",  # portandum
+            "Vfutpasptcnaccsg": f"{self._preptc_stem}ndum",  # portandum
+            "Vfutpasptcngensg": f"{self._preptc_stem}ndi",  # portandi
+            "Vfutpasptcndatsg": f"{self._preptc_stem}ndo",  # portando
+            "Vfutpasptcnablsg": f"{self._preptc_stem}ndo",  # portando
+            "Vfutpasptcnnompl": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcnvocpl": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcnaccpl": f"{self._preptc_stem}nda",  # portanda
+            "Vfutpasptcngenpl": f"{self._preptc_stem}ndorum",  # portandorum
+            "Vfutpasptcndatpl": f"{self._preptc_stem}ndis",  # portandis
+            "Vfutpasptcnablpl": f"{self._preptc_stem}ndis",  # portandis
         }
 
         if (not self.no_ppp) or self.fap_fourthpp:
@@ -1460,11 +1496,17 @@ class Verb(_Word):
             except ValueError as e:
                 raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
-            output.string = (
-                f"{output.tense.regular} {output.voice.regular} participle "
-                f"{output.gender.regular} {output.case.regular} "
-                f"{output.number.regular}"
-            )
+            if (output.tense, output.voice) == (Tense.FUTURE, Voice.PASSIVE):
+                output.string = (
+                    f"gerundive {output.gender.regular} {output.case.regular} "
+                    f"{output.number.regular}"
+                )
+            else:
+                output.string = (
+                    f"{output.tense.regular} {output.voice.regular} participle "
+                    f"{output.gender.regular} {output.case.regular} "
+                    f"{output.number.regular}"
+                )
             return output
 
         raise InvalidInputError(f"Key '{key}' is invalid.")

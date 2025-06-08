@@ -11,10 +11,9 @@ from .question_classes import QuestionClasses
 if TYPE_CHECKING:
     from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
-    from .type_aliases import Settings, Vocab
+    from .type_aliases import Settings, SettingsRules, Vocab
 
-
-RULE_REGEX: Final[dict[str, str]] = {
+RULE_REGEX: Final[SettingsRules] = {
     # Verb tense/voice/mood
     "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-indicative": r"^Vimpactind[a-z][a-z]\d$",
@@ -52,6 +51,7 @@ RULE_REGEX: Final[dict[str, str]] = {
     "exclude-participle-present-active": r"^Vpreactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
     "exclude-participle-perfect-passive": r"^Vperpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
     "exclude-participle-future-active": r"^Vfutactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude-gerundives": r"^Vfutpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle gender
     "exclude-participle-masculine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcm[a-z][a-z][a-z][a-z][a-z]$",
@@ -280,7 +280,7 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
     filtered_endings = endings
     for setting, value in settings.items():
         if value and (setting in RULE_REGEX):
-            regex_pattern = RULE_REGEX[setting]
+            regex_pattern: str = RULE_REGEX[setting]
             filtered_endings = {
                 key: ending
                 for key, ending in filtered_endings.items()

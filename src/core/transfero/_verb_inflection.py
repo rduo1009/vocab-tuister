@@ -1299,6 +1299,16 @@ def _find_participle_inflections(
         case (Tense.FUTURE, Voice.ACTIVE):
             return (f"about to {lemma}", {f"about to {lemma}"})
 
+        case (Tense.FUTURE, Voice.PASSIVE):
+            past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+            return (
+                f"requiring to be {past_participle}",
+                {
+                    f"requiring to be {past_participle}",
+                    f"to be {past_participle}",
+                },
+            )
+
         case _:
             raise NotImplementedError(
                 f"The {components.tense.regular} {components.voice.regular} "

@@ -84,6 +84,7 @@
     "exclude-verb-third-conjugation": false,
     "exclude-verb-mixed-conjugation": false,
     "exclude-verbs": false,
+    "exclude-gerundives": false,
     "include-inflect": true,
     "include-multiplechoice-engtolat": true,
     "include-multiplechoice-lattoeng": true,

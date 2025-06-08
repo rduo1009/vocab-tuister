@@ -353,25 +353,25 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'captorum',
+          'capiendi',
         ]),
-        'components': 'perfect passive participle neuter genitive plural',
-        'main_answer': 'captorum',
+        'components': 'gerundive masculine genitive singular',
+        'main_answer': 'capiendi',
         'prompt': 'take: capio, capere, cepi, captus',
       }),
       'question_type': 'ParseWordCompToLatQuestion',
     }),
     dict({
-      'MultipleChoiceLatToEngQuestion': dict({
-        'answer': 'I',
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'puer',
         'choices': list([
-          'happy',
-          'I',
-          'dog',
+          'laetus',
+          'puer',
+          'nomen',
         ]),
-        'prompt': 'ego',
+        'prompt': 'boy',
       }),
-      'question_type': 'MultipleChoiceLatToEngQuestion',
+      'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
     dict({
       'TypeInLatToEngQuestion': dict({

@@ -96,6 +96,11 @@ var wizard = SettingsWizard{
 			},
 		},
 		{
+			Title: "Other verb exclusions", Settings: []Setting{
+				{InternalName: "exclude-gerundives", DisplayName: "Gerundives", Checked: false},
+			},
+		},
+		{
 			Title: "Noun exclusions", Settings: []Setting{
 				{InternalName: "exclude-nouns", DisplayName: "All of them", Checked: false},
 				{InternalName: "exclude-noun-first-declension", DisplayName: "First declension nouns", Checked: false},

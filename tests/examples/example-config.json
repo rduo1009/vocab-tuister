@@ -46,6 +46,7 @@
   "exclude-participle-present-active": false,
   "exclude-participle-perfect-passive": false,
   "exclude-participle-future-active": false,
+  "exclude-gerundives": false,
   "exclude-participle-masculine": false,
   "exclude-participle-feminine": false,
   "exclude-participle-neuter": false,
