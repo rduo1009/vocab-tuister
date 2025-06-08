@@ -19,6 +19,8 @@ from ..accido.misc import (
     MultipleEndings,
     MultipleMeanings,
     Number,
+    Tense,
+    Voice,
 )
 from ..transfero.words import find_inflection
 from .exceptions import InvalidSettingsError
@@ -179,7 +181,7 @@ def _pick_ending_from_multipleendings(ending: Ending) -> str:
     return ending
 
 
-def _generate_typein_engtolat(
+def _generate_typein_engtolat(  # noqa: PLR0915
     chosen_word: _Word,
     filtered_endings: Endings,
     *,
@@ -202,7 +204,16 @@ def _generate_typein_engtolat(
         and not english_subjunctives
     )
 
-    if verb_subjunctive:
+    # Gerundives translate weirdly (and too similar to present passive infinitive)
+    verb_gerundive_flag = (
+        isinstance(chosen_word, Verb)
+        and ending_components.subtype == ComponentsSubtype.PARTICIPLE
+        and ending_components.tense == Tense.FUTURE
+        and ending_components.voice == Voice.PASSIVE
+        and ending_components.mood == Mood.PARTICIPLE
+    )
+
+    if verb_subjunctive or verb_gerundive_flag:
         return None
 
     # Double-up endings
