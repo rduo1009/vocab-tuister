@@ -197,6 +197,13 @@ FUTURE_ACTIVE_PARTICIPLE_VERBS: Final[set[str]] = {
     "supersum", "volo",
 }  # fmt: skip
 
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_gerund
+MISSING_GERUND_VERBS: Final[set[str]] = {
+    "absum", "adsum", "aiio", "aio", "assum", "cedo", "coepi", "coest", "commemini", "desum", "inquam", "insum",
+    "intersum", "libet", "lubet", "malo", "memini", "nolo", "obsum", "odi", "perlibet", "pervolo", "possum", "praesum",
+    "prosum", "recoepi", "rememini", "subsum", "sum", "supersum", "volo",
+}  # fmt: skip
+
 
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS
@@ -488,6 +495,10 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
             "Vfutpasptcngenpl": "eundorum",
             "Vfutpasptcndatpl": "eundis",
             "Vfutpasptcnablpl": "eundis",
+            "Vgeracc": "eundum",
+            "Vgergen": "eundi",
+            "Vgerdat": "eundo",
+            "Vgerabl": "eundo",
         },
         additions={},
         deletions=set(),

@@ -108,6 +108,9 @@
   "exclude-pronoun-singular": false,
   "exclude-pronoun-plural": false,
 
+  "english-subjunctives": false,
+  "english-verbal-nouns": false,
+
   "include-typein-engtolat": true,
   "include-typein-lattoeng": true,
   "include-parse": true,
@@ -115,8 +118,6 @@
   "include-principal-parts": true,
   "include-multiplechoice-engtolat": true,
   "include-multiplechoice-lattoeng": true,
-
-  "english-subjunctives": true,
 
   "number-multiplechoice-options": 3
 }

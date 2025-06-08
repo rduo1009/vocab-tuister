@@ -94,6 +94,7 @@ class Mood(
     IMPERATIVE = "imperative", "ipe"
     SUBJUNCTIVE = "subjunctive", "sbj"
     PARTICIPLE = "participle", "ptc"
+    GERUND = "gerund", "ger"
 
 
 class Case(
@@ -153,6 +154,7 @@ class ComponentsSubtype(StrEnum):
 
     INFINITIVE = auto()
     PARTICIPLE = auto()
+    VERBAL_NOUN = auto()
     ADVERB = auto()
     PRONOUN = auto()
 
@@ -262,6 +264,8 @@ class EndingComponents:
     @overload
     def __init__(self, *, tense: Tense, voice: Voice, mood: Mood, string: str = "") -> None: ...
     @overload
+    def __init__(self, *, mood: Mood, case: Case, string: str = "") -> None: ...
+    @overload
     def __init__(self, *, string: str = "") -> None: ...  
     # fmt: on
 
@@ -354,6 +358,9 @@ class EndingComponents:
         }:
             return (ComponentsType.VERB, ComponentsSubtype.PARTICIPLE)
 
+        if set(attributes) == {"mood", "case"}:
+            return (ComponentsType.VERB, ComponentsSubtype.VERBAL_NOUN)
+
         if set(attributes) == {"degree"}:
             return (ComponentsType.ADJECTIVE, ComponentsSubtype.ADVERB)
 
@@ -388,6 +395,7 @@ class EndingComponents:
             None: 3,
             ComponentsSubtype.INFINITIVE: 2,
             ComponentsSubtype.PARTICIPLE: 1,
+            ComponentsSubtype.VERBAL_NOUN: 0,
         })[subtype]
 
     def __lt__(self, other: object) -> bool:
@@ -402,7 +410,7 @@ class EndingComponents:
                 # must be None, because self.subtype != other.subtype
                 return self.subtype is not None
 
-            # normal verb > infinitive > participle
+            # normal verb > infinitive > participle > verbal noun
             if (self.type, other.type) == (ComponentsType.VERB,) * 2:
                 return self.subtype != max(
                     self.subtype, other.subtype, key=self._int_verb_subtypes

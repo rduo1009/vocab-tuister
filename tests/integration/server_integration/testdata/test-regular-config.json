@@ -59,6 +59,8 @@
     "exclude-participle-singular": false,
     "exclude-participle-plural": false,
 
+    "exclude-gerunds": false,
+
     "exclude-noun-first-declension": false,
     "exclude-noun-second-declension": false,
     "exclude-noun-third-declension": false,
@@ -93,7 +95,6 @@
     "exclude-adjective-comparative": false,
     "exclude-adjective-superlative": false,
 
-
     "exclude-adverb-positive": false,
     "exclude-adverb-comparative": false,
     "exclude-adverb-superlative": false,
@@ -118,6 +119,7 @@
     "include-multiplechoice-lattoeng": true,
 
     "english-subjunctives": true,
+    "english-verbal-nouns": true,
     
     "number-multiplechoice-options": 3,
     "number-of-questions": 50

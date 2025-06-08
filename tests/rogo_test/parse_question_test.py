@@ -62,6 +62,7 @@ settings: Settings = {
     "exclude-participle-ablative": False,
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
+    "exclude-gerunds": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,
@@ -120,6 +121,7 @@ settings: Settings = {
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
     "english-subjunctives": True,
+    "english-verbal-nouns": True,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
     "include-parse": True,
@@ -206,6 +208,9 @@ def test_parse_question_verb():
                     assert output.prompt in true_prompt.get_all()
                 else:
                     pytest.fail(f"Did not expect true_prompt to be {type(true_prompt)}")
+            elif answer.subtype == ComponentsSubtype.VERBAL_NOUN:
+                assert answer.mood == Mood.GERUND
+                assert word.get(mood=answer.mood, participle_case=answer.case) == output.prompt
             elif answer.subtype == ComponentsSubtype.INFINITIVE:
                 assert answer.mood == Mood.INFINITIVE
                 assert word.get(tense=answer.tense, voice=answer.voice, mood=answer.mood) == output.prompt

@@ -4,6 +4,7 @@ package pkg
 
 type SessionConfig struct {
 	EnglishSubjunctives                       bool `json:"english-subjunctives"`
+	EnglishVerbalNouns                        bool `json:"english-verbal-nouns"`
 	ExcludeAdjective212Declension             bool `json:"exclude-adjective-212-declension"`
 	ExcludeAdjectiveAblative                  bool `json:"exclude-adjective-ablative"`
 	ExcludeAdjectiveAccusative                bool `json:"exclude-adjective-accusative"`
@@ -27,6 +28,7 @@ type SessionConfig struct {
 	ExcludeAdverbs                            bool `json:"exclude-adverbs"`
 	ExcludeDeponents                          bool `json:"exclude-deponents"`
 	ExcludeGerundives                         bool `json:"exclude-gerundives"`
+	ExcludeGerunds                            bool `json:"exclude-gerunds"`
 	ExcludeNounAblative                       bool `json:"exclude-noun-ablative"`
 	ExcludeNounAccusative                     bool `json:"exclude-noun-accusative"`
 	ExcludeNounDative                         bool `json:"exclude-noun-dative"`

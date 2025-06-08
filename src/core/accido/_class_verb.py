@@ -14,6 +14,7 @@ from ._class_word import _Word
 from .edge_cases import (
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
+    MISSING_GERUND_VERBS,
     MISSING_PPP_VERBS,
     check_mixed_conjugation_verb,
     find_derived_verb_changes,
@@ -86,6 +87,7 @@ class Verb(_Word):
         "deponent",
         "fap_fourthpp",
         "infinitive",
+        "no_gerund",
         "no_ppp",
         "perfect",
         "ppp",
@@ -154,6 +156,7 @@ class Verb(_Word):
         self.deponent: bool = False
         self.no_ppp: bool = False
         self.fap_fourthpp: bool = False
+        self.no_gerund: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -265,6 +268,21 @@ class Verb(_Word):
                 self._fap_stem = self.ppp[:-1] + "r"
 
             self.endings |= self._participles()
+            self.endings |= self._verbal_nouns()
+
+            if is_irregular_verb(self.present):
+                self.endings = apply_changes(
+                    self.endings, find_irregular_verb_changes(self.present)
+                )
+            elif is_derived_verb(self.present):
+                self.endings = apply_changes(
+                    self.endings,
+                    find_derived_verb_changes(
+                        (self.present, self.infinitive, self.perfect, self.ppp)
+                        if self.ppp
+                        else (self.present, self.infinitive, self.perfect)
+                    ),
+                )
 
             return
 
@@ -300,6 +318,9 @@ class Verb(_Word):
 
         self._inf_stem = self.infinitive[:-3]
         self._per_stem = self.perfect[:-1]
+
+        if self.present in MISSING_GERUND_VERBS:
+            self.no_gerund = True
 
         if self.present in MISSING_PPP_VERBS:
             self.no_ppp = True
@@ -370,6 +391,7 @@ class Verb(_Word):
             self._fap_stem = self.ppp[:-1] + "r"
 
         self.endings |= self._participles()
+        self.endings |= self._verbal_nouns()
 
         if is_irregular_verb(self.present):
             self.endings = apply_changes(
@@ -1293,6 +1315,19 @@ class Verb(_Word):
 
         return endings
 
+    def _verbal_nouns(self) -> Endings:
+        endings: Endings = {}
+
+        if not self.no_gerund:
+            endings |= {
+                "Vgeracc": f"{self._preptc_stem}ndum",  # portandum
+                "Vgergen": f"{self._preptc_stem}ndi",  # portandi
+                "Vgerdat": f"{self._preptc_stem}ndo",  # portando
+                "Vgerabl": f"{self._preptc_stem}ndo",  # portando
+            }
+
+        return endings
+
     # fmt: off
     @overload
     def get(self, *, tense: Tense, voice: Voice, mood: Mood, person: Person, number: Number) -> Ending | None: ...
@@ -1300,13 +1335,15 @@ class Verb(_Word):
     def get(self, *, tense: Tense, voice: Voice, mood: Literal[Mood.PARTICIPLE], number: Number, participle_gender: Gender, participle_case: Case) -> Ending | None: ...
     @overload
     def get(self, *, tense: Tense, voice: Voice, mood: Literal[Mood.INFINITIVE]) -> Ending | None: ...
+    @overload
+    def get(self, *, mood: Literal[Mood.GERUND], participle_case: Literal[Case.ACCUSATIVE, Case.GENITIVE, Case.DATIVE, Case.ABLATIVE]) -> Ending | None: ...
     # fmt: on
 
     def get(
         self,
         *,
-        tense: Tense,
-        voice: Voice,
+        tense: Tense | None = None,
+        voice: Voice | None = None,
         mood: Mood,
         person: Person | None = None,
         number: Number | None = None,
@@ -1319,10 +1356,10 @@ class Verb(_Word):
 
         Parameters
         ----------
-        tense : Tense
-            The tense of the ending.
-        voice : Voice
-            The voice of the ending.
+        tense : Tense | None
+            The tense of the ending, if applicable (not verbal noun).
+        voice : Voice | None
+            The voice of the ending, if applicable (not verbal noun).
         mood : Mood
             The mood of the ending.
         person : Person | None
@@ -1369,6 +1406,11 @@ class Verb(_Word):
         'celare'
 
         Infinitives.
+
+        >>> foo.get(mood=Mood.GERUND, participle_case=Case.ACCUSATIVE)
+        'celandum'
+
+        Verbal nouns.
         """
         logger.debug(
             "RegularWord(%s, %s, %s, %s, %s, %s, %s)",
@@ -1380,6 +1422,15 @@ class Verb(_Word):
             number,
             person,
         )
+
+        if mood == Mood.GERUND:
+            assert participle_case is not None
+
+            short_case = participle_case.shorthand
+            return self.endings.get(f"Vger{short_case}")
+
+        assert tense is not None
+        assert voice is not None
 
         if mood == Mood.PARTICIPLE:
             assert number is not None
@@ -1507,6 +1558,17 @@ class Verb(_Word):
                     f"{output.gender.regular} {output.case.regular} "
                     f"{output.number.regular}"
                 )
+            return output
+
+        if len(key) == 7 and key[1:4] == "ger":
+            try:
+                output = EndingComponents(
+                    mood=Mood.GERUND, case=Case(key[4:7])
+                )
+            except ValueError as e:
+                raise InvalidInputError(f"Key '{key}' is invalid.") from e
+
+            output.string = f"gerund {output.case.regular}"
             return output
 
         raise InvalidInputError(f"Key '{key}' is invalid.")

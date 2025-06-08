@@ -116,6 +116,7 @@ def ask_question_without_sr(
                         chosen_word,
                         filtered_endings,
                         english_subjunctives=settings["english-subjunctives"],
+                        english_verbal_nouns=settings["english-verbal-nouns"],
                     )
 
                 case QuestionClasses.TYPEIN_LATTOENG:
@@ -123,6 +124,7 @@ def ask_question_without_sr(
                         chosen_word,
                         filtered_endings,
                         english_subjunctives=settings["english-subjunctives"],
+                        english_verbal_nouns=settings["english-verbal-nouns"],
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
@@ -181,11 +183,12 @@ def _pick_ending_from_multipleendings(ending: Ending) -> str:
     return ending
 
 
-def _generate_typein_engtolat(  # noqa: PLR0915
+def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
     chosen_word: _Word,
     filtered_endings: Endings,
     *,
     english_subjunctives: bool = False,
+    english_verbal_nouns: bool = False,
 ) -> TypeInEngToLatQuestion | None:
     # Pick ending, getting the ending dict key to the ending as well
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
@@ -213,7 +216,13 @@ def _generate_typein_engtolat(  # noqa: PLR0915
         and ending_components.mood == Mood.PARTICIPLE
     )
 
-    if verb_subjunctive or verb_gerundive_flag:
+    verb_verbal_noun_flag = (
+        isinstance(chosen_word, Verb)
+        and ending_components.subtype == ComponentsSubtype.VERBAL_NOUN
+        and not english_verbal_nouns
+    )
+
+    if verb_subjunctive or verb_gerundive_flag or verb_verbal_noun_flag:
         return None
 
     # Double-up endings
@@ -238,7 +247,11 @@ def _generate_typein_engtolat(  # noqa: PLR0915
     verb_second_person_flag = (
         isinstance(chosen_word, Verb)
         and ending_components.subtype
-        not in {ComponentsSubtype.INFINITIVE, ComponentsSubtype.PARTICIPLE}
+        not in {
+            ComponentsSubtype.INFINITIVE,
+            ComponentsSubtype.PARTICIPLE,
+            ComponentsSubtype.VERBAL_NOUN,
+        }
         and ending_components.person == 2
     )
 
@@ -402,6 +415,7 @@ def _generate_typein_lattoeng(
     filtered_endings: Endings,
     *,
     english_subjunctives: bool = False,
+    english_verbal_nouns: bool = False,
 ) -> TypeInLatToEngQuestion | None:
     # Pick ending
     _, chosen_ending = _pick_ending(filtered_endings)
@@ -420,8 +434,14 @@ def _generate_typein_lattoeng(
             and not english_subjunctives
         )
 
+        verb_verbal_noun_flag = (
+            isinstance(chosen_word, Verb)
+            and ending_components.subtype == ComponentsSubtype.VERBAL_NOUN
+            and not english_verbal_nouns
+        )
+
         # Subjunctives cannot be translated to English if the setting is not selected
-        if verb_subjunctive:
+        if verb_subjunctive or verb_verbal_noun_flag:
             continue
 
         # Find uninflected meanings

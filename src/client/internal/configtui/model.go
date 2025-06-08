@@ -98,6 +98,7 @@ var wizard = SettingsWizard{
 		{
 			Title: "Other verb exclusions", Settings: []Setting{
 				{InternalName: "exclude-gerundives", DisplayName: "Gerundives", Checked: false},
+				{InternalName: "exclude-gerunds", DisplayName: "Gerunds", Checked: false},
 			},
 		},
 		{
@@ -172,6 +173,7 @@ var wizard = SettingsWizard{
 		{
 			Title: "Miscellaneous settings", Settings: []Setting{
 				{InternalName: "english-subjunctives", DisplayName: "English translations of subjunctive verbs", Checked: false},
+				{InternalName: "english-verbal-nouns", DisplayName: "English translations of verbal nouns (gerunds/supines)", Checked: false},
 			},
 		},
 		{

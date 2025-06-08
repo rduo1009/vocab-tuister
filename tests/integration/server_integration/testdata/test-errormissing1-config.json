@@ -59,6 +59,8 @@
     "exclude-participle-singular": false,
     "exclude-participle-plural": false,
 
+    "exclude-gerunds": false,
+
     "exclude-noun-first-declension": false,
     "exclude-noun-second-declension": false,
     "exclude-noun-third-declension": false,
@@ -92,7 +94,6 @@
     "exclude-adjective-positive": false,
     "exclude-adjective-comparative": false,
     "exclude-adjective-superlative": false,
-
 
     "exclude-adverb-positive": false,
     "exclude-adverb-comparative": false,

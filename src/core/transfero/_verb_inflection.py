@@ -70,6 +70,9 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     """
     _verify_verb_inflections(components)
 
+    if components.mood == Mood.GERUND:
+        return _find_verbal_noun_inflections(verb, components)[1]
+
     if components.voice == Voice.DEPONENT:
         components.voice = Voice.ACTIVE
 
@@ -124,6 +127,9 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
         If `components` is invalid.
     """
     _verify_verb_inflections(components)
+
+    if components.mood == Mood.GERUND:
+        return _find_verbal_noun_inflections(verb, components)[0]
 
     if components.voice == Voice.DEPONENT:
         components.voice = Voice.ACTIVE
@@ -1313,4 +1319,20 @@ def _find_participle_inflections(
             raise NotImplementedError(
                 f"The {components.tense.regular} {components.voice.regular} "
                 "participle has not been implemented."
+            )
+
+
+def _find_verbal_noun_inflections(
+    verb: str, components: EndingComponents
+) -> tuple[str, set[str]]:
+    lemma = lemminflect.getLemma(verb, "NOUN")[0]
+
+    match components.mood:
+        case Mood.GERUND:
+            present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+            return (present_participle, {present_participle})
+
+        case _:
+            raise NotImplementedError(
+                f"The {components.mood.regular} has not been implemented."
             )

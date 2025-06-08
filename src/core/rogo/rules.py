@@ -70,6 +70,9 @@ RULE_REGEX: Final[SettingsRules] = {
     "exclude-participle-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]sg$",
     "exclude-participle-plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]pl$",
 
+    # Verbal nouns
+    "exclude-gerunds": r"^Vger[a-z][a-z][a-z]$",
+
     # Noun case
     "exclude-noun-nominative": r"^Nnom[a-z][a-z]$",
     "exclude-noun-vocative": r"^Nvoc[a-z][a-z]$",

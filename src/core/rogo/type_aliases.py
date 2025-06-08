@@ -113,7 +113,10 @@ Settings = TypedDict(
         "exclude-participle-singular": ReadOnly[bool],
         "exclude-participle-plural": ReadOnly[bool],
 
+        "exclude-gerunds": ReadOnly[bool],
+
         "english-subjunctives": ReadOnly[bool],
+        "english-verbal-nouns": ReadOnly[bool],
 
         "include-typein-engtolat": ReadOnly[bool],
         "include-typein-lattoeng": ReadOnly[bool],
@@ -212,5 +215,7 @@ SettingsRules = TypedDict(
         "exclude-participle-ablative": ReadOnly[str],
         "exclude-participle-singular": ReadOnly[str],
         "exclude-participle-plural": ReadOnly[str],
+
+        "exclude-gerunds": ReadOnly[str],
     },
 )  # fmt: skip
