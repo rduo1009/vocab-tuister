@@ -1,7 +1,7 @@
 line-length = 79
 unsafe-fixes = true
 target-version = "py313"
-exclude = ["src/_vendor/**", "src/_build/**"]
+exclude = ["src/_vendor/**"]
 
 [lint]
 preview = true
