@@ -420,3 +420,21 @@ def test_main_participle_inflections():
     assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "attacking"
     assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "about to attack"
     assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE)) == "requiring to be attacked"
+
+
+def test_verbalnoun_inflections():
+    word = "attack"
+
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.ACCUSATIVE)) == {"attacking"}
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.GENITIVE)) == {"attacking"}
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.DATIVE)) == {"attacking"}
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.ABLATIVE)) == {"attacking"}
+
+
+def test_main_verbalnoun_inflections():
+    word = "attack"
+
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.ACCUSATIVE)) == "attacking"
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.GENITIVE)) == "attacking"
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.DATIVE)) == "attacking"
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.ABLATIVE)) == "attacking"

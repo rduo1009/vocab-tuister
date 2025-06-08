@@ -46,6 +46,7 @@ IRREGULAR_VERBS = {
         "Vfutactptcfablpl": "laturis", "Vfutactptcfablsg": "latura", "Vfutactptcfaccpl": "laturas", "Vfutactptcfaccsg": "laturam", "Vfutactptcfdatpl": "laturis", "Vfutactptcfdatsg": "laturae", "Vfutactptcfgenpl": "laturarum", "Vfutactptcfgensg": "laturae", "Vfutactptcfnompl": "laturae", "Vfutactptcfnomsg": "latura", "Vfutactptcfvocpl": "laturae", "Vfutactptcfvocsg": "latura", "Vfutactptcmablpl": "laturis", "Vfutactptcmablsg": "laturo", "Vfutactptcmaccpl": "laturos", "Vfutactptcmaccsg": "laturum", "Vfutactptcmdatpl": "laturis", "Vfutactptcmdatsg": "laturo", "Vfutactptcmgenpl": "laturorum", "Vfutactptcmgensg": "laturi", "Vfutactptcmnompl": "laturi", "Vfutactptcmnomsg": "laturus", "Vfutactptcmvocpl": "laturi", "Vfutactptcmvocsg": "lature", "Vfutactptcnablpl": "laturis", "Vfutactptcnablsg": "laturo", "Vfutactptcnaccpl": "latura", "Vfutactptcnaccsg": "laturum", "Vfutactptcndatpl": "laturis", "Vfutactptcndatsg": "laturo", "Vfutactptcngenpl": "laturorum", "Vfutactptcngensg": "laturi", "Vfutactptcnnompl": "latura", "Vfutactptcnnomsg": "laturum", "Vfutactptcnvocpl": "latura", "Vfutactptcnvocsg": "laturum",
         "Vperpasptcfablpl": "latis", "Vperpasptcfablsg": "lata", "Vperpasptcfaccpl": "latas", "Vperpasptcfaccsg": "latam", "Vperpasptcfdatpl": "latis", "Vperpasptcfdatsg": "latae", "Vperpasptcfgenpl": "latarum", "Vperpasptcfgensg": "latae", "Vperpasptcfnompl": "latae", "Vperpasptcfnomsg": "lata", "Vperpasptcfvocpl": "latae", "Vperpasptcfvocsg": "lata", "Vperpasptcmablpl": "latis", "Vperpasptcmablsg": "lato", "Vperpasptcmaccpl": "latos", "Vperpasptcmaccsg": "latum", "Vperpasptcmdatpl": "latis", "Vperpasptcmdatsg": "lato", "Vperpasptcmgenpl": "latorum", "Vperpasptcmgensg": "lati", "Vperpasptcmnompl": "lati", "Vperpasptcmnomsg": "latus", "Vperpasptcmvocpl": "lati", "Vperpasptcmvocsg": "late", "Vperpasptcnablpl": "latis", "Vperpasptcnablsg": "lato", "Vperpasptcnaccpl": "lata", "Vperpasptcnaccsg": "latum", "Vperpasptcndatpl": "latis", "Vperpasptcndatsg": "lato", "Vperpasptcngenpl": "latorum", "Vperpasptcngensg": "lati", "Vperpasptcnnompl": "lata", "Vperpasptcnnomsg": "latum", "Vperpasptcnvocpl": "lata", "Vperpasptcnvocsg": "latum",
         "Vfutpasptcfablpl": "ferendis", "Vfutpasptcfablsg": "ferenda", "Vfutpasptcfaccpl": "ferendas", "Vfutpasptcfaccsg": "ferendam", "Vfutpasptcfdatpl": "ferendis", "Vfutpasptcfdatsg": "ferendae", "Vfutpasptcfgenpl": "ferendarum", "Vfutpasptcfgensg": "ferendae", "Vfutpasptcfnompl": "ferendae", "Vfutpasptcfnomsg": "ferenda", "Vfutpasptcfvocpl": "ferendae", "Vfutpasptcfvocsg": "ferenda", "Vfutpasptcmablpl": "ferendis", "Vfutpasptcmablsg": "ferendo", "Vfutpasptcmaccpl": "ferendos", "Vfutpasptcmaccsg": "ferendum", "Vfutpasptcmdatpl": "ferendis", "Vfutpasptcmdatsg": "ferendo", "Vfutpasptcmgenpl": "ferendorum", "Vfutpasptcmgensg": "ferendi", "Vfutpasptcmnompl": "ferendi", "Vfutpasptcmnomsg": "ferendus", "Vfutpasptcmvocpl": "ferendi", "Vfutpasptcmvocsg": "ferende", "Vfutpasptcnablpl": "ferendis", "Vfutpasptcnablsg": "ferendo", "Vfutpasptcnaccpl": "ferenda", "Vfutpasptcnaccsg": "ferendum", "Vfutpasptcndatpl": "ferendis", "Vfutpasptcndatsg": "ferendo", "Vfutpasptcngenpl": "ferendorum", "Vfutpasptcngensg": "ferendi", "Vfutpasptcnnompl": "ferenda", "Vfutpasptcnnomsg": "ferendum", "Vfutpasptcnvocpl": "ferenda", "Vfutpasptcnvocsg": "ferendum",
+        "Vgeracc": "ferendum", "Vgergen": "ferendi", "Vgerdat": "ferendo", "Vgerabl": "ferendo",
     },
     "eo": {
         "Vpreactindsg1": "eo", "Vpreactindsg2": "is", "Vpreactindsg3": "it", "Vpreactindpl1": "imus", "Vpreactindpl2": "itis", "Vpreactindpl3": "eunt", "Vimpactindsg1": "ibam", "Vimpactindsg2": "ibas", "Vimpactindsg3": "ibat", "Vimpactindpl1": "ibamus", "Vimpactindpl2": "ibatis", "Vimpactindpl3": "ibant", "Vfutactindsg1": "ibo", "Vfutactindsg2": "ibis", "Vfutactindsg3": "ibit", "Vfutactindpl1": "ibimus", "Vfutactindpl2": "ibitis", "Vfutactindpl3": "ibunt", "Vperactindsg1": "ii", "Vperactindsg2": "isti", "Vperactindsg3": "iit", "Vperactindpl1": "iimus", "Vperactindpl2": "istis", "Vperactindpl3": "ierunt", "Vplpactindsg1": "ieram", "Vplpactindsg2": "ieras", "Vplpactindsg3": "ierat", "Vplpactindpl1": "ieramus", "Vplpactindpl2": "ieratis", "Vplpactindpl3": "ierant", "Vfpractindsg1": "iero", "Vfpractindsg2": "ieris", "Vfpractindsg3": "ierit", "Vfpractindpl1": "ierimus", "Vfpractindpl2": "ieritis", "Vfpractindpl3": "ierint",
@@ -58,6 +59,7 @@ IRREGULAR_VERBS = {
         "Vfutactptcfablpl": "ituris", "Vfutactptcfablsg": "itura", "Vfutactptcfaccpl": "ituras", "Vfutactptcfaccsg": "ituram", "Vfutactptcfdatpl": "ituris", "Vfutactptcfdatsg": "iturae", "Vfutactptcfgenpl": "iturarum", "Vfutactptcfgensg": "iturae", "Vfutactptcfnompl": "iturae", "Vfutactptcfnomsg": "itura", "Vfutactptcfvocpl": "iturae", "Vfutactptcfvocsg": "itura", "Vfutactptcmablpl": "ituris", "Vfutactptcmablsg": "ituro", "Vfutactptcmaccpl": "ituros", "Vfutactptcmaccsg": "iturum", "Vfutactptcmdatpl": "ituris", "Vfutactptcmdatsg": "ituro", "Vfutactptcmgenpl": "iturorum", "Vfutactptcmgensg": "ituri", "Vfutactptcmnompl": "ituri", "Vfutactptcmnomsg": "iturus", "Vfutactptcmvocpl": "ituri", "Vfutactptcmvocsg": "iture", "Vfutactptcnablpl": "ituris", "Vfutactptcnablsg": "ituro", "Vfutactptcnaccpl": "itura", "Vfutactptcnaccsg": "iturum", "Vfutactptcndatpl": "ituris", "Vfutactptcndatsg": "ituro", "Vfutactptcngenpl": "iturorum", "Vfutactptcngensg": "ituri", "Vfutactptcnnompl": "itura", "Vfutactptcnnomsg": "iturum", "Vfutactptcnvocpl": "itura", "Vfutactptcnvocsg": "iturum",
         "Vperpasptcfablpl": "itis", "Vperpasptcfablsg": "ita", "Vperpasptcfaccpl": "itas", "Vperpasptcfaccsg": "itam", "Vperpasptcfdatpl": "itis", "Vperpasptcfdatsg": "itae", "Vperpasptcfgenpl": "itarum", "Vperpasptcfgensg": "itae", "Vperpasptcfnompl": "itae", "Vperpasptcfnomsg": "ita", "Vperpasptcfvocpl": "itae", "Vperpasptcfvocsg": "ita", "Vperpasptcmablpl": "itis", "Vperpasptcmablsg": "ito", "Vperpasptcmaccpl": "itos", "Vperpasptcmaccsg": "itum", "Vperpasptcmdatpl": "itis", "Vperpasptcmdatsg": "ito", "Vperpasptcmgenpl": "itorum", "Vperpasptcmgensg": "iti", "Vperpasptcmnompl": "iti", "Vperpasptcmnomsg": "itus", "Vperpasptcmvocpl": "iti", "Vperpasptcmvocsg": "ite", "Vperpasptcnablpl": "itis", "Vperpasptcnablsg": "ito", "Vperpasptcnaccpl": "ita", "Vperpasptcnaccsg": "itum", "Vperpasptcndatpl": "itis", "Vperpasptcndatsg": "ito", "Vperpasptcngenpl": "itorum", "Vperpasptcngensg": "iti", "Vperpasptcnnompl": "ita", "Vperpasptcnnomsg": "itum", "Vperpasptcnvocpl": "ita", "Vperpasptcnvocsg": "itum",
         "Vfutpasptcfablpl": "eundis", "Vfutpasptcfablsg": "eunda", "Vfutpasptcfaccpl": "eundas", "Vfutpasptcfaccsg": "eundam", "Vfutpasptcfdatpl": "eundis", "Vfutpasptcfdatsg": "eundae", "Vfutpasptcfgenpl": "eundarum", "Vfutpasptcfgensg": "eundae", "Vfutpasptcfnompl": "eundae", "Vfutpasptcfnomsg": "eunda", "Vfutpasptcfvocpl": "eundae", "Vfutpasptcfvocsg": "eunda", "Vfutpasptcmablpl": "eundis", "Vfutpasptcmablsg": "eundo", "Vfutpasptcmaccpl": "eundos", "Vfutpasptcmaccsg": "eundum", "Vfutpasptcmdatpl": "eundis", "Vfutpasptcmdatsg": "eundo", "Vfutpasptcmgenpl": "eundorum", "Vfutpasptcmgensg": "eundi", "Vfutpasptcmnompl": "eundi", "Vfutpasptcmnomsg": "eundus", "Vfutpasptcmvocpl": "eundi", "Vfutpasptcmvocsg": "eunde", "Vfutpasptcnablpl": "eundis", "Vfutpasptcnablsg": "eundo", "Vfutpasptcnaccpl": "eunda", "Vfutpasptcnaccsg": "eundum", "Vfutpasptcndatpl": "eundis", "Vfutpasptcndatsg": "eundo", "Vfutpasptcngenpl": "eundorum", "Vfutpasptcngensg": "eundi", "Vfutpasptcnnompl": "eunda", "Vfutpasptcnnomsg": "eundum", "Vfutpasptcnvocpl": "eunda", "Vfutpasptcnvocsg": "eundum",
+        "Vgeracc": "eundum", "Vgergen": "eundi", "Vgerdat": "eundo", "Vgerabl": "eundo",
     },
     "absum": {
         "Vpreactindsg1": "absum", "Vpreactindsg2": "abes", "Vpreactindsg3": "abest", "Vpreactindpl1": "absumus", "Vpreactindpl2": "abestis", "Vpreactindpl3": "absunt", "Vimpactindsg1": "aberam", "Vimpactindsg2": "aberas", "Vimpactindsg3": "aberat", "Vimpactindpl1": "aberamus", "Vimpactindpl2": "aberatis", "Vimpactindpl3": "aberant", "Vfutactindsg1": "abero", "Vfutactindsg2": "aberis", "Vfutactindsg3": "aberit", "Vfutactindpl1": "aberimus", "Vfutactindpl2": "aberitis", "Vfutactindpl3": "aberunt", "Vperactindsg1": "afui", "Vperactindsg2": "afuisti", "Vperactindsg3": "afuit", "Vperactindpl1": "afuimus", "Vperactindpl2": "afuistis", "Vperactindpl3": "afuerunt", "Vplpactindsg1": "afueram", "Vplpactindsg2": "afueras", "Vplpactindsg3": "afuerat", "Vplpactindpl1": "afueramus", "Vplpactindpl2": "afueratis", "Vplpactindpl3": "afuerant", "Vfpractindsg1": "afuero", "Vfpractindsg2": "afueris", "Vfpractindsg3": "afuerit", "Vfpractindpl1": "afuerimus", "Vfpractindpl2": "afueritis", "Vfpractindpl3": "afuerint",
@@ -915,3 +917,48 @@ class TestIrregularParticipleConjugation:
     def test_irregular_participle_no_ppp(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+
+VERBAL_NOUN_COMBINATIONS = (
+    (Mood.GERUND, Case.ACCUSATIVE),
+    (Mood.GERUND, Case.GENITIVE),
+    (Mood.GERUND, Case.DATIVE),
+    (Mood.GERUND, Case.ABLATIVE),
+)  # fmt: skip
+
+
+class TestVerbalNounConjugation:
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "portandum", "portandi", "portando", "portando"
+    ])])  # fmt: skip
+    def test_verbalnoun_firstconjugation(self, mood, case, expected):
+        word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "docendum", "docendi", "docendo", "docendo"
+    ])])  # fmt: skip
+    def test_verbalnoun_secondconjugation(self, mood, case, expected):
+        word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "trahendum", "trahendi", "trahendo", "trahendo"
+    ])])  # fmt: skip
+    def test_verbalnoun_thirdconjugation(self, mood, case, expected):
+        word = Verb("traho", "trahere", "traxi", "tractus", meaning="begin")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "occipiendum", "occipiendi", "occipiendo", "occipiendo"
+    ])])  # fmt: skip
+    def test_verbalnoun_mixedconjugation(self, mood, case, expected):
+        word = Verb("occipio", "occipere", "occepi", "occeptus", meaning="begin")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "audiendum", "audiendi", "audiendo", "audiendo"
+    ])])  # fmt: skip
+    def test_verbalnoun_fourthconjugation(self, mood, case, expected):
+        word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
+        assert word.get(mood=mood, participle_case=case) == expected
