@@ -665,6 +665,8 @@ def _generate_multiplechoice_lattoeng(
                 for meaning in current_meaning.meanings
                 if meaning not in chosen_word_meanings
             )
+
+    # Put together choices
     choices = [
         answer,
         *random.sample(possible_choices, number_multiplechoice_options - 1),
