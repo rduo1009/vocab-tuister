@@ -45,6 +45,7 @@ IRREGULAR_VERBS = {
         "Vpreactptcfablpl": "ferentibus", "Vpreactptcfablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcfaccpl": "ferentes", "Vpreactptcfaccsg": "ferentem", "Vpreactptcfdatpl": "ferentibus", "Vpreactptcfdatsg": "ferenti", "Vpreactptcfgenpl": "ferentium", "Vpreactptcfgensg": "ferentis", "Vpreactptcfnompl": "ferentes", "Vpreactptcfnomsg": "ferens", "Vpreactptcfvocpl": "ferentes", "Vpreactptcfvocsg": "ferens", "Vpreactptcmablpl": "ferentibus", "Vpreactptcmablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcmaccpl": "ferentes", "Vpreactptcmaccsg": "ferentem", "Vpreactptcmdatpl": "ferentibus", "Vpreactptcmdatsg": "ferenti", "Vpreactptcmgenpl": "ferentium", "Vpreactptcmgensg": "ferentis", "Vpreactptcmnompl": "ferentes", "Vpreactptcmnomsg": "ferens", "Vpreactptcmvocpl": "ferentes", "Vpreactptcmvocsg": "ferens", "Vpreactptcnablpl": "ferentibus", "Vpreactptcnablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcnaccpl": "ferentia", "Vpreactptcnaccsg": "ferens", "Vpreactptcndatpl": "ferentibus", "Vpreactptcndatsg": "ferenti", "Vpreactptcngenpl": "ferentium", "Vpreactptcngensg": "ferentis", "Vpreactptcnnompl": "ferentia", "Vpreactptcnnomsg": "ferens", "Vpreactptcnvocpl": "ferentia", "Vpreactptcnvocsg": "ferens",
         "Vfutactptcfablpl": "laturis", "Vfutactptcfablsg": "latura", "Vfutactptcfaccpl": "laturas", "Vfutactptcfaccsg": "laturam", "Vfutactptcfdatpl": "laturis", "Vfutactptcfdatsg": "laturae", "Vfutactptcfgenpl": "laturarum", "Vfutactptcfgensg": "laturae", "Vfutactptcfnompl": "laturae", "Vfutactptcfnomsg": "latura", "Vfutactptcfvocpl": "laturae", "Vfutactptcfvocsg": "latura", "Vfutactptcmablpl": "laturis", "Vfutactptcmablsg": "laturo", "Vfutactptcmaccpl": "laturos", "Vfutactptcmaccsg": "laturum", "Vfutactptcmdatpl": "laturis", "Vfutactptcmdatsg": "laturo", "Vfutactptcmgenpl": "laturorum", "Vfutactptcmgensg": "laturi", "Vfutactptcmnompl": "laturi", "Vfutactptcmnomsg": "laturus", "Vfutactptcmvocpl": "laturi", "Vfutactptcmvocsg": "lature", "Vfutactptcnablpl": "laturis", "Vfutactptcnablsg": "laturo", "Vfutactptcnaccpl": "latura", "Vfutactptcnaccsg": "laturum", "Vfutactptcndatpl": "laturis", "Vfutactptcndatsg": "laturo", "Vfutactptcngenpl": "laturorum", "Vfutactptcngensg": "laturi", "Vfutactptcnnompl": "latura", "Vfutactptcnnomsg": "laturum", "Vfutactptcnvocpl": "latura", "Vfutactptcnvocsg": "laturum",
         "Vperpasptcfablpl": "latis", "Vperpasptcfablsg": "lata", "Vperpasptcfaccpl": "latas", "Vperpasptcfaccsg": "latam", "Vperpasptcfdatpl": "latis", "Vperpasptcfdatsg": "latae", "Vperpasptcfgenpl": "latarum", "Vperpasptcfgensg": "latae", "Vperpasptcfnompl": "latae", "Vperpasptcfnomsg": "lata", "Vperpasptcfvocpl": "latae", "Vperpasptcfvocsg": "lata", "Vperpasptcmablpl": "latis", "Vperpasptcmablsg": "lato", "Vperpasptcmaccpl": "latos", "Vperpasptcmaccsg": "latum", "Vperpasptcmdatpl": "latis", "Vperpasptcmdatsg": "lato", "Vperpasptcmgenpl": "latorum", "Vperpasptcmgensg": "lati", "Vperpasptcmnompl": "lati", "Vperpasptcmnomsg": "latus", "Vperpasptcmvocpl": "lati", "Vperpasptcmvocsg": "late", "Vperpasptcnablpl": "latis", "Vperpasptcnablsg": "lato", "Vperpasptcnaccpl": "lata", "Vperpasptcnaccsg": "latum", "Vperpasptcndatpl": "latis", "Vperpasptcndatsg": "lato", "Vperpasptcngenpl": "latorum", "Vperpasptcngensg": "lati", "Vperpasptcnnompl": "lata", "Vperpasptcnnomsg": "latum", "Vperpasptcnvocpl": "lata", "Vperpasptcnvocsg": "latum",
+        "Vfutpasptcfablpl": "ferendis", "Vfutpasptcfablsg": "ferenda", "Vfutpasptcfaccpl": "ferendas", "Vfutpasptcfaccsg": "ferendam", "Vfutpasptcfdatpl": "ferendis", "Vfutpasptcfdatsg": "ferendae", "Vfutpasptcfgenpl": "ferendarum", "Vfutpasptcfgensg": "ferendae", "Vfutpasptcfnompl": "ferendae", "Vfutpasptcfnomsg": "ferenda", "Vfutpasptcfvocpl": "ferendae", "Vfutpasptcfvocsg": "ferenda", "Vfutpasptcmablpl": "ferendis", "Vfutpasptcmablsg": "ferendo", "Vfutpasptcmaccpl": "ferendos", "Vfutpasptcmaccsg": "ferendum", "Vfutpasptcmdatpl": "ferendis", "Vfutpasptcmdatsg": "ferendo", "Vfutpasptcmgenpl": "ferendorum", "Vfutpasptcmgensg": "ferendi", "Vfutpasptcmnompl": "ferendi", "Vfutpasptcmnomsg": "ferendus", "Vfutpasptcmvocpl": "ferendi", "Vfutpasptcmvocsg": "ferende", "Vfutpasptcnablpl": "ferendis", "Vfutpasptcnablsg": "ferendo", "Vfutpasptcnaccpl": "ferenda", "Vfutpasptcnaccsg": "ferendum", "Vfutpasptcndatpl": "ferendis", "Vfutpasptcndatsg": "ferendo", "Vfutpasptcngenpl": "ferendorum", "Vfutpasptcngensg": "ferendi", "Vfutpasptcnnompl": "ferenda", "Vfutpasptcnnomsg": "ferendum", "Vfutpasptcnvocpl": "ferenda", "Vfutpasptcnvocsg": "ferendum",
     },
     "eo": {
         "Vpreactindsg1": "eo", "Vpreactindsg2": "is", "Vpreactindsg3": "it", "Vpreactindpl1": "imus", "Vpreactindpl2": "itis", "Vpreactindpl3": "eunt", "Vimpactindsg1": "ibam", "Vimpactindsg2": "ibas", "Vimpactindsg3": "ibat", "Vimpactindpl1": "ibamus", "Vimpactindpl2": "ibatis", "Vimpactindpl3": "ibant", "Vfutactindsg1": "ibo", "Vfutactindsg2": "ibis", "Vfutactindsg3": "ibit", "Vfutactindpl1": "ibimus", "Vfutactindpl2": "ibitis", "Vfutactindpl3": "ibunt", "Vperactindsg1": "ii", "Vperactindsg2": "isti", "Vperactindsg3": "iit", "Vperactindpl1": "iimus", "Vperactindpl2": "istis", "Vperactindpl3": "ierunt", "Vplpactindsg1": "ieram", "Vplpactindsg2": "ieras", "Vplpactindsg3": "ierat", "Vplpactindpl1": "ieramus", "Vplpactindpl2": "ieratis", "Vplpactindpl3": "ierant", "Vfpractindsg1": "iero", "Vfpractindsg2": "ieris", "Vfpractindsg3": "ierit", "Vfpractindpl1": "ierimus", "Vfpractindpl2": "ieritis", "Vfpractindpl3": "ierint",
@@ -56,6 +57,7 @@ IRREGULAR_VERBS = {
         "Vpreactptcfablpl": "euntibus", "Vpreactptcfablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcfaccpl": "euntes", "Vpreactptcfaccsg": "euntem", "Vpreactptcfdatpl": "euntibus", "Vpreactptcfdatsg": "eunti", "Vpreactptcfgenpl": "euntium", "Vpreactptcfgensg": "euntis", "Vpreactptcfnompl": "euntes", "Vpreactptcfnomsg": "iens", "Vpreactptcfvocpl": "euntes", "Vpreactptcfvocsg": "iens", "Vpreactptcmablpl": "euntibus", "Vpreactptcmablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcmaccpl": "euntes", "Vpreactptcmaccsg": "euntem", "Vpreactptcmdatpl": "euntibus", "Vpreactptcmdatsg": "eunti", "Vpreactptcmgenpl": "euntium", "Vpreactptcmgensg": "euntis", "Vpreactptcmnompl": "euntes", "Vpreactptcmnomsg": "iens", "Vpreactptcmvocpl": "euntes", "Vpreactptcmvocsg": "iens", "Vpreactptcnablpl": "euntibus", "Vpreactptcnablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcnaccpl": "euntia", "Vpreactptcnaccsg": "iens", "Vpreactptcndatpl": "euntibus", "Vpreactptcndatsg": "eunti", "Vpreactptcngenpl": "euntium", "Vpreactptcngensg": "euntis", "Vpreactptcnnompl": "euntia", "Vpreactptcnnomsg": "iens", "Vpreactptcnvocpl": "euntia", "Vpreactptcnvocsg": "iens",
         "Vfutactptcfablpl": "ituris", "Vfutactptcfablsg": "itura", "Vfutactptcfaccpl": "ituras", "Vfutactptcfaccsg": "ituram", "Vfutactptcfdatpl": "ituris", "Vfutactptcfdatsg": "iturae", "Vfutactptcfgenpl": "iturarum", "Vfutactptcfgensg": "iturae", "Vfutactptcfnompl": "iturae", "Vfutactptcfnomsg": "itura", "Vfutactptcfvocpl": "iturae", "Vfutactptcfvocsg": "itura", "Vfutactptcmablpl": "ituris", "Vfutactptcmablsg": "ituro", "Vfutactptcmaccpl": "ituros", "Vfutactptcmaccsg": "iturum", "Vfutactptcmdatpl": "ituris", "Vfutactptcmdatsg": "ituro", "Vfutactptcmgenpl": "iturorum", "Vfutactptcmgensg": "ituri", "Vfutactptcmnompl": "ituri", "Vfutactptcmnomsg": "iturus", "Vfutactptcmvocpl": "ituri", "Vfutactptcmvocsg": "iture", "Vfutactptcnablpl": "ituris", "Vfutactptcnablsg": "ituro", "Vfutactptcnaccpl": "itura", "Vfutactptcnaccsg": "iturum", "Vfutactptcndatpl": "ituris", "Vfutactptcndatsg": "ituro", "Vfutactptcngenpl": "iturorum", "Vfutactptcngensg": "ituri", "Vfutactptcnnompl": "itura", "Vfutactptcnnomsg": "iturum", "Vfutactptcnvocpl": "itura", "Vfutactptcnvocsg": "iturum",
         "Vperpasptcfablpl": "itis", "Vperpasptcfablsg": "ita", "Vperpasptcfaccpl": "itas", "Vperpasptcfaccsg": "itam", "Vperpasptcfdatpl": "itis", "Vperpasptcfdatsg": "itae", "Vperpasptcfgenpl": "itarum", "Vperpasptcfgensg": "itae", "Vperpasptcfnompl": "itae", "Vperpasptcfnomsg": "ita", "Vperpasptcfvocpl": "itae", "Vperpasptcfvocsg": "ita", "Vperpasptcmablpl": "itis", "Vperpasptcmablsg": "ito", "Vperpasptcmaccpl": "itos", "Vperpasptcmaccsg": "itum", "Vperpasptcmdatpl": "itis", "Vperpasptcmdatsg": "ito", "Vperpasptcmgenpl": "itorum", "Vperpasptcmgensg": "iti", "Vperpasptcmnompl": "iti", "Vperpasptcmnomsg": "itus", "Vperpasptcmvocpl": "iti", "Vperpasptcmvocsg": "ite", "Vperpasptcnablpl": "itis", "Vperpasptcnablsg": "ito", "Vperpasptcnaccpl": "ita", "Vperpasptcnaccsg": "itum", "Vperpasptcndatpl": "itis", "Vperpasptcndatsg": "ito", "Vperpasptcngenpl": "itorum", "Vperpasptcngensg": "iti", "Vperpasptcnnompl": "ita", "Vperpasptcnnomsg": "itum", "Vperpasptcnvocpl": "ita", "Vperpasptcnvocsg": "itum",
+        "Vfutpasptcfablpl": "eundis", "Vfutpasptcfablsg": "eunda", "Vfutpasptcfaccpl": "eundas", "Vfutpasptcfaccsg": "eundam", "Vfutpasptcfdatpl": "eundis", "Vfutpasptcfdatsg": "eundae", "Vfutpasptcfgenpl": "eundarum", "Vfutpasptcfgensg": "eundae", "Vfutpasptcfnompl": "eundae", "Vfutpasptcfnomsg": "eunda", "Vfutpasptcfvocpl": "eundae", "Vfutpasptcfvocsg": "eunda", "Vfutpasptcmablpl": "eundis", "Vfutpasptcmablsg": "eundo", "Vfutpasptcmaccpl": "eundos", "Vfutpasptcmaccsg": "eundum", "Vfutpasptcmdatpl": "eundis", "Vfutpasptcmdatsg": "eundo", "Vfutpasptcmgenpl": "eundorum", "Vfutpasptcmgensg": "eundi", "Vfutpasptcmnompl": "eundi", "Vfutpasptcmnomsg": "eundus", "Vfutpasptcmvocpl": "eundi", "Vfutpasptcmvocsg": "eunde", "Vfutpasptcnablpl": "eundis", "Vfutpasptcnablsg": "eundo", "Vfutpasptcnaccpl": "eunda", "Vfutpasptcnaccsg": "eundum", "Vfutpasptcndatpl": "eundis", "Vfutpasptcndatsg": "eundo", "Vfutpasptcngenpl": "eundorum", "Vfutpasptcngensg": "eundi", "Vfutpasptcnnompl": "eunda", "Vfutpasptcnnomsg": "eundum", "Vfutpasptcnvocpl": "eunda", "Vfutpasptcnvocsg": "eundum",
     },
     "absum": {
         "Vpreactindsg1": "absum", "Vpreactindsg2": "abes", "Vpreactindsg3": "abest", "Vpreactindpl1": "absumus", "Vpreactindpl2": "abestis", "Vpreactindpl3": "absunt", "Vimpactindsg1": "aberam", "Vimpactindsg2": "aberas", "Vimpactindsg3": "aberat", "Vimpactindpl1": "aberamus", "Vimpactindpl2": "aberatis", "Vimpactindpl3": "aberant", "Vfutactindsg1": "abero", "Vfutactindsg2": "aberis", "Vfutactindsg3": "aberit", "Vfutactindpl1": "aberimus", "Vfutactindpl2": "aberitis", "Vfutactindpl3": "aberunt", "Vperactindsg1": "afui", "Vperactindsg2": "afuisti", "Vperactindsg3": "afuit", "Vperactindpl1": "afuimus", "Vperactindpl2": "afuistis", "Vperactindpl3": "afuerunt", "Vplpactindsg1": "afueram", "Vplpactindsg2": "afueras", "Vplpactindsg3": "afuerat", "Vplpactindpl1": "afueramus", "Vplpactindpl2": "afueratis", "Vplpactindpl3": "afuerant", "Vfpractindsg1": "afuero", "Vfpractindsg2": "afueris", "Vfpractindsg3": "afuerit", "Vfpractindpl1": "afuerimus", "Vfpractindpl2": "afueritis", "Vfpractindpl3": "afuerint",
@@ -674,6 +676,42 @@ PARTICIPLE_COMBINATIONS = (
     (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
     (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
     (Tense.FUTURE, Voice.ACTIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.DATIVE, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
 )
 
 
@@ -699,6 +737,13 @@ class TestParticipleConjugation:
         "portaturae", "portaturae", "portaturas", "portaturarum", "portaturis", "portaturis",
         "portaturum", "portaturum", "portaturum", "portaturi", "portaturo", "portaturo",
         "portatura", "portatura", "portatura", "portaturorum", "portaturis", "portaturis",
+
+        "portandus", "portande", "portandum", "portandi", "portando", "portando",
+        "portandi", "portandi", "portandos", "portandorum", "portandis", "portandis",
+        "portanda", "portanda", "portandam", "portandae", "portandae", "portanda",
+        "portandae", "portandae", "portandas", "portandarum", "portandis", "portandis",
+        "portandum", "portandum", "portandum", "portandi", "portando", "portando",
+        "portanda", "portanda", "portanda", "portandorum", "portandis", "portandis",
     ])])  # fmt: skip
     def test_participle_firstconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("porto", "portare", "portavi", "portatus", meaning="carry")
@@ -725,6 +770,13 @@ class TestParticipleConjugation:
         "docturae", "docturae", "docturas", "docturarum", "docturis", "docturis",
         "docturum", "docturum", "docturum", "docturi", "docturo", "docturo",
         "doctura", "doctura", "doctura", "docturorum", "docturis", "docturis",
+
+        "docendus", "docende", "docendum", "docendi", "docendo", "docendo",
+        "docendi", "docendi", "docendos", "docendorum", "docendis", "docendis",
+        "docenda", "docenda", "docendam", "docendae", "docendae", "docenda",
+        "docendae", "docendae", "docendas", "docendarum", "docendis", "docendis",
+        "docendum", "docendum", "docendum", "docendi", "docendo", "docendo",
+        "docenda", "docenda", "docenda", "docendorum", "docendis", "docendis",
     ])])  # fmt: skip
     def test_participle_secondconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
@@ -751,6 +803,13 @@ class TestParticipleConjugation:
         "tracturae", "tracturae", "tracturas", "tracturarum", "tracturis", "tracturis",
         "tracturum", "tracturum", "tracturum", "tracturi", "tracturo", "tracturo",
         "tractura", "tractura", "tractura", "tracturorum", "tracturis", "tracturis",
+
+        "trahendus", "trahende", "trahendum", "trahendi", "trahendo", "trahendo",
+        "trahendi", "trahendi", "trahendos", "trahendorum", "trahendis", "trahendis",
+        "trahenda", "trahenda", "trahendam", "trahendae", "trahendae", "trahenda",
+        "trahendae", "trahendae", "trahendas", "trahendarum", "trahendis", "trahendis",
+        "trahendum", "trahendum", "trahendum", "trahendi", "trahendo", "trahendo",
+        "trahenda", "trahenda", "trahenda", "trahendorum", "trahendis", "trahendis",
     ])])  # fmt: skip
     def test_participle_thirdconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("traho", "trahere", "traxi", "tractus", meaning="begin")
@@ -777,6 +836,13 @@ class TestParticipleConjugation:
         "occepturae", "occepturae", "occepturas", "occepturarum", "occepturis", "occepturis",
         "occepturum", "occepturum", "occepturum", "occepturi", "occepturo", "occepturo",
         "occeptura", "occeptura", "occeptura", "occepturorum", "occepturis", "occepturis",
+
+        "occipiendus", "occipiende", "occipiendum", "occipiendi", "occipiendo", "occipiendo",
+        "occipiendi", "occipiendi", "occipiendos", "occipiendorum", "occipiendis", "occipiendis",
+        "occipienda", "occipienda", "occipiendam", "occipiendae", "occipiendae", "occipienda",
+        "occipiendae", "occipiendae", "occipiendas", "occipiendarum", "occipiendis", "occipiendis",
+        "occipiendum", "occipiendum", "occipiendum", "occipiendi", "occipiendo", "occipiendo",
+        "occipienda", "occipienda", "occipienda", "occipiendorum", "occipiendis", "occipiendis",
     ])])  # fmt: skip
     def test_participle_mixedconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("occipio", "occipere", "occepi", "occeptus", meaning="begin")
@@ -803,6 +869,13 @@ class TestParticipleConjugation:
         "auditurae", "auditurae", "audituras", "auditurarum", "audituris", "audituris",
         "auditurum", "auditurum", "auditurum", "audituri", "audituro", "audituro",
         "auditura", "auditura", "auditura", "auditurorum", "audituris", "audituris",
+
+        "audiendus", "audiende", "audiendum", "audiendi", "audiendo", "audiendo",
+        "audiendi", "audiendi", "audiendos", "audiendorum", "audiendis", "audiendis",
+        "audienda", "audienda", "audiendam", "audiendae", "audiendae", "audienda",
+        "audiendae", "audiendae", "audiendas", "audiendarum", "audiendis", "audiendis",
+        "audiendum", "audiendum", "audiendum", "audiendi", "audiendo", "audiendo",
+        "audienda", "audienda", "audienda", "audiendorum", "audiendis", "audiendis",
     ])])  # fmt: skip
     def test_participle_fourthconjugation(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
@@ -831,6 +904,13 @@ class TestIrregularParticipleConjugation:
         None, None, None, None, None, None,
         None, None, None, None, None, None,
         None, None, None, None, None, None,
+
+        "elegandus", "elegande", "elegandum", "elegandi", "elegando", "elegando",
+        "elegandi", "elegandi", "elegandos", "elegandorum", "elegandis", "elegandis",
+        "eleganda", "eleganda", "elegandam", "elegandae", "elegandae", "eleganda",
+        "elegandae", "elegandae", "elegandas", "elegandarum", "elegandis", "elegandis",
+        "elegandum", "elegandum", "elegandum", "elegandi", "elegando", "elegando",
+        "eleganda", "eleganda", "eleganda", "elegandorum", "elegandis", "elegandis",
     ])])  # fmt: skip
     def test_irregular_participle_no_ppp(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("elego", "elegare", "elegavi", meaning="bequeath away")
