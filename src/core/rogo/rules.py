@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, Final, cast
 
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
@@ -280,7 +280,7 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
     filtered_endings = endings
     for setting, value in settings.items():
         if value and (setting in RULE_REGEX):
-            regex_pattern: str = RULE_REGEX[setting]
+            regex_pattern = cast("str", RULE_REGEX[setting])
             filtered_endings = {
                 key: ending
                 for key, ending in filtered_endings.items()
