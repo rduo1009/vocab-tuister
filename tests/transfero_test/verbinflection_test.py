@@ -429,6 +429,8 @@ def test_verbalnoun_inflections():
     assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.GENITIVE)) == {"attacking"}
     assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.DATIVE)) == {"attacking"}
     assert find_verb_inflections(word, EndingComponents(mood=Mood.GERUND, case=Case.ABLATIVE)) == {"attacking"}
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.SUPINE, case=Case.ACCUSATIVE)) == {"to attack"}
+    assert find_verb_inflections(word, EndingComponents(mood=Mood.SUPINE, case=Case.ABLATIVE)) == {"to attack"}
 
 
 def test_main_verbalnoun_inflections():
@@ -438,3 +440,5 @@ def test_main_verbalnoun_inflections():
     assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.GENITIVE)) == "attacking"
     assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.DATIVE)) == "attacking"
     assert find_main_verb_inflection(word, EndingComponents(mood=Mood.GERUND, case=Case.ABLATIVE)) == "attacking"
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.SUPINE, case=Case.ACCUSATIVE)) == "to attack"
+    assert find_main_verb_inflection(word, EndingComponents(mood=Mood.SUPINE, case=Case.ABLATIVE)) == "to attack"
