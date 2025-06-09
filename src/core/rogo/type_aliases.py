@@ -114,6 +114,7 @@ Settings = TypedDict(
         "exclude-participle-plural": ReadOnly[bool],
 
         "exclude-gerunds": ReadOnly[bool],
+        "exclude-supines": ReadOnly[bool],
 
         "english-subjunctives": ReadOnly[bool],
         "english-verbal-nouns": ReadOnly[bool],
@@ -217,5 +218,6 @@ SettingsRules = TypedDict(
         "exclude-participle-plural": ReadOnly[str],
 
         "exclude-gerunds": ReadOnly[str],
+        "exclude-supines": ReadOnly[str],
     },
 )  # fmt: skip

@@ -61,6 +61,7 @@ settings: Settings = {
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
     "exclude-gerunds": False,
+    "exclude-supines": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,

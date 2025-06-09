@@ -72,6 +72,7 @@ RULE_REGEX: Final[SettingsRules] = {
 
     # Verbal nouns
     "exclude-gerunds": r"^Vger[a-z][a-z][a-z]$",
+    "exclude-supines": r"^Vsup[a-z][a-z][a-z]$",
 
     # Noun case
     "exclude-noun-nominative": r"^Nnom[a-z][a-z]$",

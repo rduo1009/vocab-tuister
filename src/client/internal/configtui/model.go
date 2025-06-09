@@ -99,6 +99,7 @@ var wizard = SettingsWizard{
 			Title: "Other verb exclusions", Settings: []Setting{
 				{InternalName: "exclude-gerundives", DisplayName: "Gerundives", Checked: false},
 				{InternalName: "exclude-gerunds", DisplayName: "Gerunds", Checked: false},
+				{InternalName: "exclude-supines", DisplayName: "Supines", Checked: false},
 			},
 		},
 		{

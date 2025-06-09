@@ -95,6 +95,7 @@ class Mood(
     SUBJUNCTIVE = "subjunctive", "sbj"
     PARTICIPLE = "participle", "ptc"
     GERUND = "gerund", "ger"
+    SUPINE = "supine", "sup"
 
 
 class Case(

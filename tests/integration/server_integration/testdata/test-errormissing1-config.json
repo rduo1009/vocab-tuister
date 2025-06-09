@@ -60,6 +60,7 @@
     "exclude-participle-plural": false,
 
     "exclude-gerunds": false,
+    "exclude-supines": false,
 
     "exclude-noun-first-declension": false,
     "exclude-noun-second-declension": false,

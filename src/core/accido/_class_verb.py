@@ -89,6 +89,7 @@ class Verb(_Word):
         "infinitive",
         "no_gerund",
         "no_ppp",
+        "no_supine",
         "perfect",
         "ppp",
         "present",
@@ -157,6 +158,7 @@ class Verb(_Word):
         self.no_ppp: bool = False
         self.fap_fourthpp: bool = False
         self.no_gerund: bool = False
+        self.no_supine: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -217,6 +219,7 @@ class Verb(_Word):
 
             if self.present in MISSING_PPP_VERBS:
                 self.no_ppp = True
+                self.no_supine = True
             else:
                 if not self.perfect.endswith(" sum"):
                     raise InvalidInputError(
@@ -324,6 +327,7 @@ class Verb(_Word):
 
         if self.present in MISSING_PPP_VERBS:
             self.no_ppp = True
+            self.no_supine = True
 
             if self.ppp is not None:
                 raise InvalidInputError(
@@ -331,6 +335,7 @@ class Verb(_Word):
                 )
         elif self.present in FUTURE_ACTIVE_PARTICIPLE_VERBS:
             self.no_ppp = True
+            self.no_supine = True
             self.fap_fourthpp = True
 
             if self.ppp is None:
@@ -1326,6 +1331,12 @@ class Verb(_Word):
                 "Vgerabl": f"{self._preptc_stem}ndo",  # portando
             }
 
+        if not self.no_supine:
+            endings |= {
+                "Vsupacc": f"{self._ppp_stem}um",  # portatum
+                "Vsupabl": f"{self._ppp_stem}u",  # portatu
+            }
+
         return endings
 
     # fmt: off
@@ -1336,7 +1347,7 @@ class Verb(_Word):
     @overload
     def get(self, *, tense: Tense, voice: Voice, mood: Literal[Mood.INFINITIVE]) -> Ending | None: ...
     @overload
-    def get(self, *, mood: Literal[Mood.GERUND], participle_case: Literal[Case.ACCUSATIVE, Case.GENITIVE, Case.DATIVE, Case.ABLATIVE]) -> Ending | None: ...
+    def get(self, *, mood: Literal[Mood.GERUND, Mood.SUPINE], participle_case: Literal[Case.ACCUSATIVE, Case.GENITIVE, Case.DATIVE, Case.ABLATIVE]) -> Ending | None: ...
     # fmt: on
 
     def get(
@@ -1423,11 +1434,12 @@ class Verb(_Word):
             person,
         )
 
-        if mood == Mood.GERUND:
+        if mood in {Mood.GERUND, Mood.SUPINE}:
             assert participle_case is not None
 
+            short_mood = mood.shorthand
             short_case = participle_case.shorthand
-            return self.endings.get(f"Vger{short_case}")
+            return self.endings.get(f"V{short_mood}{short_case}")
 
         assert tense is not None
         assert voice is not None
@@ -1560,15 +1572,15 @@ class Verb(_Word):
                 )
             return output
 
-        if len(key) == 7 and key[1:4] == "ger":
+        if len(key) == 7 and key[1:4] in {"ger", "sup"}:
             try:
                 output = EndingComponents(
-                    mood=Mood.GERUND, case=Case(key[4:7])
+                    mood=Mood(key[1:4]), case=Case(key[4:7])
                 )
             except ValueError as e:
                 raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
-            output.string = f"gerund {output.case.regular}"
+            output.string = f"{output.mood.regular} {output.case.regular}"
             return output
 
         raise InvalidInputError(f"Key '{key}' is invalid.")

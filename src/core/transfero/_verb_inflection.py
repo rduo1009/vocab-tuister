@@ -70,7 +70,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     """
     _verify_verb_inflections(components)
 
-    if components.mood == Mood.GERUND:
+    if components.mood in {Mood.GERUND, Mood.SUPINE}:
         return _find_verbal_noun_inflections(verb, components)[1]
 
     if components.voice == Voice.DEPONENT:
@@ -128,7 +128,7 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
     """
     _verify_verb_inflections(components)
 
-    if components.mood == Mood.GERUND:
+    if components.subtype == ComponentsSubtype.VERBAL_NOUN:
         return _find_verbal_noun_inflections(verb, components)[0]
 
     if components.voice == Voice.DEPONENT:
@@ -1331,6 +1331,9 @@ def _find_verbal_noun_inflections(
         case Mood.GERUND:
             present_participle = lemminflect.getInflection(lemma, "VBG")[0]
             return (present_participle, {present_participle})
+
+        case Mood.SUPINE:
+            return (f"to {lemma}", {f"to {lemma}"})
 
         case _:
             raise NotImplementedError(
