@@ -2,8 +2,6 @@
 
 # ruff: noqa: D103
 
-from __future__ import annotations
-
 import json
 import logging
 import traceback
@@ -77,7 +75,7 @@ def send_vocab():
 
 def generate_questions_sample_json(
     vocab_list: VocabList, question_amount: int, settings: Settings
-) -> Generator[str]:
+) -> "Generator[str]":
     return (
         json.dumps(question, cls=QuestionClassEncoder)
         for question in ask_question_without_sr(
