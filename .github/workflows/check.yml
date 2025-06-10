@@ -65,6 +65,7 @@ jobs:
 
       - name: Install deps
         run: |
+          sudo apt update
           sudo apt install pipx
           pipx install poetry
           poetry install
@@ -88,7 +89,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5.5.0
         with:
           go-version: ${{ matrix.go }}
 
@@ -133,12 +134,13 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5.5.0
         with:
           go-version: ${{ matrix.go }}
 
       - name: Install deps
         run: |
+          sudo apt update
           sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install dunamai
