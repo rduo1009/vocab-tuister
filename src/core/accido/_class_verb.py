@@ -451,6 +451,7 @@ class Verb(_Word):
             "Vprepasinf   ": f"{self._inf_stem}ari",  # portari
         }
 
+        # Passive forms that use ppp
         if not self.no_ppp:
             assert self.ppp is not None
             endings |= {
@@ -563,6 +564,7 @@ class Verb(_Word):
         assert self.infinitive is not None
         assert self.perfect is not None
 
+        # Passive forms
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}eor",  # doceor
             "Vprepasindsg2": f"{self._inf_stem}eris",  # doceris
@@ -597,6 +599,7 @@ class Verb(_Word):
             "Vprepasinf   ": f"{self._inf_stem}eri",  # doceri
         }
 
+        # Passive forms that use ppp
         if not self.no_ppp:
             assert self.ppp is not None
             endings |= {
@@ -638,6 +641,7 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # doceo
             "Vpreactindsg2": f"{self._inf_stem}es",  # doces
@@ -708,6 +712,7 @@ class Verb(_Word):
         assert self.infinitive is not None
         assert self.perfect is not None
 
+        # Passive forms
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}or",  # trahor
             "Vprepasindsg2": f"{self._inf_stem}eris",  # traheris
@@ -742,6 +747,7 @@ class Verb(_Word):
             "Vprepasinf   ": f"{self._inf_stem}i",  # trahi
         }
 
+        # Passive forms that use ppp
         if not self.no_ppp:
             assert self.ppp is not None
             endings |= {
@@ -783,6 +789,7 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # traho
             "Vpreactindsg2": f"{self._inf_stem}is",  # trahis
@@ -853,6 +860,7 @@ class Verb(_Word):
         assert self.infinitive is not None
         assert self.perfect is not None
 
+        # Passive forms
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}ior",  # audior
             "Vprepasindsg2": f"{self._inf_stem}iris",  # audiris
@@ -887,6 +895,7 @@ class Verb(_Word):
             "Vprepasinf   ": f"{self._inf_stem}iri",  # audiri
         }
 
+        # Passive forms that use ppp
         if not self.no_ppp:
             assert self.ppp is not None
             endings |= {
@@ -928,6 +937,7 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # audio
             "Vpreactindsg2": f"{self._inf_stem}is",  # audis
@@ -998,6 +1008,7 @@ class Verb(_Word):
         assert self.infinitive is not None
         assert self.perfect is not None
 
+        # Passive forms
         endings: Endings = {
             "Vprepasindsg1": f"{self._inf_stem}ior",  # capior
             "Vprepasindsg2": f"{self._inf_stem}eris",  # caperis
@@ -1032,6 +1043,7 @@ class Verb(_Word):
             "Vprepasinf   ": f"{self._inf_stem}i",  # capi
         }
 
+        # Passive forms that use ppp
         if not self.no_ppp:
             assert self.ppp is not None
             endings |= {
@@ -1073,6 +1085,7 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # capio
             "Vpreactindsg2": f"{self._inf_stem}is",  # capis
