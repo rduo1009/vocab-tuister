@@ -256,14 +256,16 @@ class Verb(_Word):
                 case _:
                     self.endings = self._mixed_conjugation()
 
-            # FIXME: Not true for deponents!
             if not irregular_flag:
-                self._preptc_stem = self.infinitive[:-2]
-                if self.conjugation == 4:
-                    self._preptc_stem += "e"
-                if self.conjugation == 5:
-                    self._preptc_stem = self.infinitive[:-3]
-                    self._preptc_stem += "ie"
+                # conari -> cona-, vereri -> vere-
+                if self.conjugation in {1, 2}:
+                    self._preptc_stem = self.infinitive[:-2]
+                if self.conjugation == 3:  # sequi -> seque-
+                    self._preptc_stem = self.infinitive[:-1] + "e"
+                if self.conjugation == 4:  # experiri -> experie-
+                    self._preptc_stem = self.infinitive[:-2] + "e"
+                if self.conjugation == 5:  # ingredi -> ingredie-
+                    self._preptc_stem = self.infinitive + "e"
 
             if not self.no_ppp:
                 assert self.ppp is not None
