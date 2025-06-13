@@ -107,7 +107,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5.5.0
         with:
           go-version: ${{ matrix.go }}
 
@@ -152,7 +152,7 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5.5.0
         with:
           go-version: ${{ matrix.go }}
 
