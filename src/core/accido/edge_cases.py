@@ -82,7 +82,7 @@ def check_mixed_conjugation_verb(present: str) -> bool:
 # and one of those is defective, then the word will show up here even the other
 # etymologies are not defective.
 
-# Taken from https://en.wiktionary.org/w/index.php?title=Category:Latin_verbs_with_missing_supine_stem
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem
 # additions: possum (defective), nolo (defective)
 # deletions: accido (two meanings), incumbo (probably mistake)
 MISSING_PPP_VERBS: Final[set[str]] = {
@@ -269,6 +269,10 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
     "umesco", "unco", "urco", "urvo", "vanesco", "vanno", "vento", "vervago", "vesanio", "vesico", "veterasco", "veteresco",
     "vibrisso", "vieo", "vilesco", "viresco", "viridesco", "vissio",
 }  # fmt: skip
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_future
+# deletions: cedo (two meanings), apage (will be considered as a completely defective verb)
+MISSING_FUTURE_VERBS = {"adsoleo", "assoleo", "soleo"}
 
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS

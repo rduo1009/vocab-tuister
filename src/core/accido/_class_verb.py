@@ -14,6 +14,7 @@ from ._class_word import _Word
 from .edge_cases import (
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
+    MISSING_FUTURE_VERBS,
     MISSING_GERUND_VERBS,
     MISSING_PERFECT_VERBS,
     MISSING_PPP_VERBS,
@@ -88,6 +89,7 @@ class Verb(_Word):
         "deponent",
         "fap_fourthpp",
         "infinitive",
+        "no_future",
         "no_gerund",
         "no_perfect",
         "no_ppp",
@@ -162,6 +164,7 @@ class Verb(_Word):
         self.no_gerund: bool = False
         self.no_supine: bool = False
         self.no_perfect: bool = False
+        self.no_future: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -274,6 +277,7 @@ class Verb(_Word):
             self.endings |= self._participles()
             self.endings |= self._verbal_nouns()
 
+            # Override endings for irregular and defective verbs
             if is_irregular_verb(self.present):
                 self.endings = apply_changes(
                     self.endings, find_irregular_verb_changes(self.present)
@@ -354,6 +358,11 @@ class Verb(_Word):
         if self.present in MISSING_GERUND_VERBS:
             self.no_gerund = True
 
+        # FIXME: this only applies to 'soleo' and derivatives, which are semideponent
+        # need to move to semideponent branch when its implemented
+        if self.present in MISSING_FUTURE_VERBS:
+            self.no_future = True
+
         if not self.present.endswith("o") and not irregular_flag:
             raise InvalidInputError(
                 f"Invalid present form: '{self.present}' (must end in '-o')"
@@ -411,6 +420,7 @@ class Verb(_Word):
         self.endings |= self._participles()
         self.endings |= self._verbal_nouns()
 
+        # Override endings for irregular and defective verbs
         if is_irregular_verb(self.present):
             self.endings = apply_changes(
                 self.endings, find_irregular_verb_changes(self.present)
@@ -425,6 +435,15 @@ class Verb(_Word):
                     else (self.present, self.infinitive, self.perfect)
                 ),
             )
+
+        # FIXME: similar to above as well
+        if self.no_future:
+            self.endings = {
+                key: value
+                for key, value in self.endings.items()
+                if key[1:4]
+                not in {Tense.FUTURE.shorthand, Tense.FUTURE_PERFECT.shorthand}
+            }
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
