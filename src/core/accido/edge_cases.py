@@ -78,6 +78,10 @@ def check_mixed_conjugation_verb(present: str) -> bool:
 # -----------------------------------------------------------------------------
 # VERBS WITH DIFFERENT PRINCIPAL PARTS
 
+# FIXME: These lists are incorrect in places. If a verb has multiple etymologies,
+# and one of those is defective, then the word will show up here even the other
+# etymologies are not defective.
+
 # Taken from https://en.wiktionary.org/w/index.php?title=Category:Latin_verbs_with_missing_supine_stem
 # additions: possum (defective), nolo (defective)
 # deletions: accido (two meanings), incumbo (probably mistake)
@@ -202,6 +206,68 @@ MISSING_GERUND_VERBS: Final[set[str]] = {
     "absum", "adsum", "aiio", "aio", "assum", "cedo", "coepi", "coest", "commemini", "desum", "inquam", "insum", "intersum",
     "libet", "lubet", "malo", "memini", "nolo", "obsum", "odi", "perlibet", "pervolo", "possum", "praesum", "prosum", "recoepi",
     "rememini", "subsum", "sum", "supersum", "volo",
+}  # fmt: skip
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_perfect_stem
+MISSING_PERFECT_VERBS: Final[set[str]] = {
+    "abaeto", "abago", "abarceo", "abbaeto", "abbito", "aberceo", "abhorresco", "abiturio", "abnato", "abnumero", "absono",
+    "absto", "accessito", "accieo", "accipitro", "accubo", "acontizo", "adaugesco", "adbello", "adbito", "adcubo", "addenseo",
+    "addormio", "addormisco", "adfleo", "adformido", "adfremo", "adfrio", "adgemo", "adgravesco", "adincresco", "adlubesco",
+    "adludio", "admeo", "admugio", "adnicto", "adnubilo", "adnuto", "adnutrio", "adoleo", "adolesco", "adpostulo", "adprenso",
+    "adservio", "adsibilo", "adsono", "adstrepo", "adtolero", "adtollo", "adtorqueo", "adurgeo", "advecto", "aegreo", "aegresco",
+    "aerusco", "affleo", "afformido", "affremo", "affrio", "albeo", "albesco", "albicasco", "alesco", "alludio", "alto",
+    "amaresco", "ambigo", "amoeno", "amtruo", "amylo", "annicto", "anno", "annubilo", "annuto", "annutrio", "antecello",
+    "antecurro", "antepolleo", "antevio", "apage", "aperto", "apolactizo", "apotheco", "apozymo", "apparesco", "apposco",
+    "appostulo", "apprenso", "arboresco", "arguto", "assenesco", "asservio", "assibilo", "assono", "astituo", "astrepo",
+    "astrifico", "attolero", "attollo", "attorqueo", "attorreo", "auctifico", "augesco", "augifico", "auresco", "auroresco",
+    "auroro", "aurugino", "autumnascit", "auxilio", "aveo", "baeto", "barbio", "bebo", "beto", "blandio", "blatio", "bombio",
+    "bubo", "bubulcito", "bullesco", "cacaturio", "calefacto", "calesco", "calo", "calveo", "candico", "candifico", "carnifico", 
+    "carro", "catulio", "caurio", "cedo", "celebresco", "cenaturio", "cineresco", "cio", "circito", "circumcurro", "circumdoleo",
+    "circumgesto", "circumluo", "circumpendeo", "circumsido", "circumstupeo", "circumtergeo", "circumtorqueo", "circumverto",
+    "circumvestio", "circumvorto", "clareo", "clarigo", "claudeo", "claudo", "clocito", "clueo", "cluo", "collineo", "commeto",
+    "commiseresco", "commitigo", "compalpo", "compasco", "compendo", "concavo", "concupio", "condenseo", "condormio", "confarreo",
+    "conresurgo", "conrideo", "consarrio", "consimilo", "consipio", "consuadeo", "contenebresco", "contigno", "contollo",
+    "contumulo", "convaleo", "convecto", "convergo", "converro", "conviso", "convomo", "convorro", "cornesco", "corresurgo",
+    "corrideo", "cratio", "crispio", "crocio", "crotolo", "cucurio", "cunio", "cupisco", "cursito", "deeo", "defloreo", "degravo",
+    "degulo", "delambo", "delumbo", "demadesco", "demolio", "demordeo", "denarro", "denormo", "denseo", "depango", "depecto",
+    "depropero", "derigeo", "deserpo", "desorbeo", "despecto", "despuo", "destico", "desuesco", "desurgo", "devigesco",
+    "dicturio", "diffingo", "diiugo", "dilorico", "disconvenio", "discupio", "dishiasco", "disiugo", "dispecto", "displodo",
+    "disquiro", "dissero", "disserpo", "dissulto", "distaedet", "ditesco", "diverbero", "divergo", "dormisco", "drenso",
+    "drindio", "drivoro", "duplo", "edormisco", "eduro", "effervo", "effusco", "effutio", "elaqueo", "elatro", "ematuresco",
+    "emeto", "emolo", "eniteo", "enotesco", "equio", "ercisco", "erudero", "eviscero", "exacerbesco", "excalfacio", "excarnifico",
+    "excommunico", "exolesco", "expaveo", "expectoro", "expetesso", "expetisso", "exserto", "exsolesco", "exsplendesco", "exsto",
+    "exterebro", "exto", "extollo", "exurgeo", "faeteo", "fatisco", "felio", "fervesco", "feteo", "fetesco", "fetifico",
+    "fistulesco", "flacceo", "flavesco", "floresco", "foeteo", "folleo", "formico", "fraceo", "frendesco", "frigefacto",
+    "frigutio", "fritinnio", "frugesco", "frutesco", "fulgesco", "furvesco", "gingrio", "glabresco", "glabro", "glattio",
+    "glaucio", "glisco", "glocio", "gracillo", "graduo", "grandesco", "grandinat", "gravesco", "hebeo", "hebesco", "herbesco",
+    "hercisco", "hiasco", "hilaresco", "hirrio", "hisco", "hittio", "hiulco", "horripilo", "humeo", "ignesco", "illuceo",
+    "imbrico", "immordeo", "immurmuro", "impedico", "impendeo", "impeto", "impetrio", "inaestuo", "inalbeo", "inalbesco",
+    "incalfacio", "incero", "inculpo", "incurvesco", "indecoro", "ineptio", "infenso", "infervesco", "infindo", "infrendo",
+    "ingravesco", "inhaeresco", "inluceo", "inoboedio", "inserto", "insolesco", "instabilio", "instimulo", "intepesco",
+    "interaresco", "interbito", "interequito", "intermaneo", "internecto", "intervolito", "intollo", "intribuo", "inurgeo",
+    "invergo", "invesperascit", "kalo", "labasco", "lacteo", "lactesco", "lallo", "lanceo", "lancio", "langueo", "lapidesco",
+    "largio", "lassesco", "latesco", "leno", "lentesco", "lipio", "liveo", "livido", "longisco", "loretho", "lucisco", "lutesco",
+    "maceo", "maceresco", "macesco", "maledictito", "mammo", "marcesco", "matresco", "mellifico", "miccio", "mintrio", "minurrio",
+    "miseresco", "mitesco", "mitilo", "moereo", "molio", "mollesco", "muceo", "mucesco", "murrio", "nausco", "nigreo", "nitesco",
+    "nivesco", "noctesco", "nominito", "nubilo", "obaresco", "obatresco", "obducto", "obmordeo", "obnoxio", "obsido", "obsono",
+    "obtenebresco", "obticeo", "obtorpeo", "offusco", "olesco", "olo", "onco", "oppedo", "paedagogo", "palpebro", "pangito",
+    "passito", "patio", "patrisso", "patrizo", "pauperasco", "pavesco", "perdormisco", "perducto", "pereffluo", "perlinio",
+    "perlino", "perpetuito", "perscisco", "pertingo", "pertorqueo", "petesso", "petisso", "pilo", "pilpito", "pinguesco",
+    "pipilo", "pipio", "pipo", "pisito", "plecto", "plipio", "plumesco", "polleo", "populo", "porceo", "posteo", "praefluo",
+    "praegestio", "praemando", "praemoveo", "praeoleo", "praependeo", "praeservio", "praeterfluo", "praetorqueo", "praevalesco",
+    "procello", "procido", "propalo", "prurio", "pulpo", "purgito", "purpurasco", "puteo", "quadripartio", "quadruplo", "quatio",
+    "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco", "ravio", "recommoneo", "redintegrasco", "redormio",
+    "reducto", "refingo", "reminisco", "remollesco", "remollio", "remugio", "reneo", "reporrigo", "reposco", "retono",
+    "revindico", "revivo", "ricio", "ricto", "rigeo", "rufesco", "ruo", "sacio", "sagio", "salivo", "sallo", "salveo", "sanesco",
+    "sanguino", "sardo", "satago", "scopo", "scripturio", "seneo", "sentisco", "seresco", "sevio", "siccesco", "sicilio",
+    "silesco", "singultio", "soccito", "sospito", "spumesco", "stabulo", "stinguo", "stritto", "subdoceo", "subinvideo",
+    "subservio", "subsono", "subterfluo", "suburgeo", "subvolo", "subvolvo", "succino", "succubo", "suffringo", "sugglutio",
+    "sullaturio", "superbio", "supereffluo", "superextollo", "superfulgeo", "superimmineo", "superluceo", "superobruo",
+    "superoccupo", "supertraho", "supervaleo", "supervestio", "supo", "suppedo", "surio", "sustollo", "tenebresco", "tenerasco",
+    "tetrinnio", "tibicino", "tinnipo", "tongeo", "torculo", "traluceo", "transluceo", "transpicio", "transtineo", "transvenio",
+    "tremesco", "tremisco", "trico", "trittilo", "trucilo", "tueo", "tumeo", "tumido", "turgesco", "tussio", "umbresco", "umeo",
+    "umesco", "unco", "urco", "urvo", "vanesco", "vanno", "vento", "vervago", "vesanio", "vesico", "veterasco", "veteresco",
+    "vibrisso", "vieo", "vilesco", "viresco", "viridesco", "vissio",
 }  # fmt: skip
 
 # -----------------------------------------------------------------------------

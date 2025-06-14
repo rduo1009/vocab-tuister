@@ -15,6 +15,7 @@ from .edge_cases import (
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
     MISSING_GERUND_VERBS,
+    MISSING_PERFECT_VERBS,
     MISSING_PPP_VERBS,
     check_mixed_conjugation_verb,
     find_derived_verb_changes,
@@ -88,6 +89,7 @@ class Verb(_Word):
         "fap_fourthpp",
         "infinitive",
         "no_gerund",
+        "no_perfect",
         "no_ppp",
         "no_supine",
         "perfect",
@@ -159,6 +161,7 @@ class Verb(_Word):
         self.fap_fourthpp: bool = False
         self.no_gerund: bool = False
         self.no_supine: bool = False
+        self.no_perfect: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -176,47 +179,28 @@ class Verb(_Word):
                 f"Verb '{self.present}' is not irregular, but no infinitive provided."
             )
 
-        if self.perfect is None:
-            raise InvalidInputError(
-                f"Verb '{self.present}' is not irregular, but no perfect provided."
-            )
-
         irregular_flag = is_irregular_verb(self.present) or is_derived_verb(
             self.present
         )
+
         # ---------------------------------------------------------------------
         # DEPONENT VERBS
 
         if self.present.endswith("or"):
+            self.deponent = True
+
+            # Verifying all arguments provided
+            if self.perfect is None:  # no deponents that lack a perfect stem
+                raise InvalidInputError(
+                    f"Verb '{self.present}' is not irregular, but no perfect provided."
+                )
+
             if self.ppp is not None:
                 raise InvalidInputError(
                     f"Verb '{self.present}' is deponent, but ppp provided."
                 )
 
-            self.deponent = True
-
-            self._inf_stem: str = self.infinitive[:-3]
-            if is_irregular_verb(self.present):
-                self.conjugation = get_irregular_verb_conjugation(self.present)
-            elif is_derived_verb(self.present):
-                self.conjugation = get_derived_verb_conjugation(self.present)
-            elif check_mixed_conjugation_verb(self.present):
-                self._inf_stem = self.infinitive[:-1]
-                self.conjugation = 5
-            elif self.infinitive.endswith("ari"):
-                self.conjugation = 1
-            elif self.infinitive.endswith("eri"):
-                self.conjugation = 2
-            elif self.infinitive.endswith("iri"):
-                self.conjugation = 4
-            elif self.infinitive.endswith("i"):
-                self._inf_stem = self.infinitive[:-1]
-                self.conjugation = 3
-            else:
-                raise InvalidInputError(
-                    f"Invalid infinitive form: '{self.infinitive}'"
-                )
-
+            # Handle defective verbs
             if self.present in MISSING_PPP_VERBS:
                 self.no_ppp = True
                 self.no_supine = True
@@ -227,19 +211,50 @@ class Verb(_Word):
                     )
 
                 self.ppp = self.perfect[:-4]
+                self._ppp_stem = self.ppp[:-2]
+                self._fap_stem = self.ppp[:-1] + "r"
 
-            self._per_stem: str | None = None
-
+            # Determine stems
+            self._inf_stem: str
             if is_irregular_verb(self.present):
+                self.conjugation = get_irregular_verb_conjugation(self.present)
                 self._preptc_stem: str
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
             elif is_derived_verb(self.present):
+                self.conjugation = get_derived_verb_conjugation(self.present)
                 self._inf_stem, self._preptc_stem = find_derived_verb_stems(
                     self.present
                 )
+            elif check_mixed_conjugation_verb(self.present):
+                self.conjugation = 5
+                self._inf_stem = self.infinitive[:-1]
+                self._preptc_stem = self.infinitive + "e"
+            elif self.infinitive.endswith("ari"):
+                self.conjugation = 1
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-2]
+            elif self.infinitive.endswith("eri"):
+                self.conjugation = 2
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-2]
+            elif self.infinitive.endswith("iri"):
+                self.conjugation = 4
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-2] + "e"
+            elif self.infinitive.endswith("i"):
+                self.conjugation = 3
+                self._inf_stem = self.infinitive[:-1]
+                self._preptc_stem = self.infinitive[:-1] + "e"
+            else:
+                raise InvalidInputError(
+                    f"Invalid infinitive form: '{self.infinitive}'"
+                )
 
+            self._per_stem: str | None = None
+
+            # Determine endings
             match self.conjugation:
                 case 1:
                     self.endings = self._first_conjugation()
@@ -255,22 +270,6 @@ class Verb(_Word):
 
                 case _:
                     self.endings = self._mixed_conjugation()
-
-            if not irregular_flag:
-                # conari -> cona-, vereri -> vere-
-                if self.conjugation in {1, 2}:
-                    self._preptc_stem = self.infinitive[:-2]
-                if self.conjugation == 3:  # sequi -> seque-
-                    self._preptc_stem = self.infinitive[:-1] + "e"
-                if self.conjugation == 4:  # experiri -> experie-
-                    self._preptc_stem = self.infinitive[:-2] + "e"
-                if self.conjugation == 5:  # ingredi -> ingredie-
-                    self._preptc_stem = self.infinitive + "e"
-
-            if not self.no_ppp:
-                assert self.ppp is not None
-                self._ppp_stem = self.ppp[:-2]
-                self._fap_stem = self.ppp[:-1] + "r"
 
             self.endings |= self._participles()
             self.endings |= self._verbal_nouns()
@@ -294,76 +293,105 @@ class Verb(_Word):
         # ---------------------------------------------------------------------
         # NON-DEPONENT VERBS
 
-        if is_irregular_verb(self.present):
-            self.conjugation = get_irregular_verb_conjugation(self.present)
-        elif is_derived_verb(self.present):
-            self.conjugation = get_derived_verb_conjugation(self.present)
-        elif check_mixed_conjugation_verb(self.present):
-            self.conjugation = 5
-        elif self.infinitive.endswith("are"):
-            self.conjugation = 1
-        elif self.infinitive.endswith("ire"):
-            self.conjugation = 4
-        elif self.infinitive.endswith("ere"):
-            self.conjugation = 2 if self.present.endswith("eo") else 3
+        # Handle defective verbs
+        if self.present in MISSING_PERFECT_VERBS:
+            # if only three args, then the form in `perfect` is actually the ppp
+            if not self.ppp:
+                self.ppp = self.perfect
+                del self.perfect
+
+            elif self.perfect is not None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' has no perfect, but perfect provided."
+                )
+
+            self.no_perfect = True
         else:
-            raise InvalidInputError(
-                f"Invalid infinitive form: '{self.infinitive}'"
-            )
+            if self.perfect is None:
+                raise InvalidInputError(
+                    f"Verb '{self.present}' is not irregular, but no perfect provided."
+                )
 
-        if not self.present.endswith("o") and not irregular_flag:
-            raise InvalidInputError(
-                f"Invalid present form: '{self.present}' (must end in '-o')"
-            )
+            if not self.perfect.endswith("i") and not irregular_flag:
+                raise InvalidInputError(
+                    f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
+                )
 
-        if not self.perfect.endswith("i") and not irregular_flag:
-            raise InvalidInputError(
-                f"Invalid perfect form: '{self.perfect}' (must end in '-i')"
-            )
-
-        self._inf_stem = self.infinitive[:-3]
-        self._per_stem = self.perfect[:-1]
-
-        if self.present in MISSING_GERUND_VERBS:
-            self.no_gerund = True
+            self._per_stem = self.perfect[:-1]
 
         if self.present in MISSING_PPP_VERBS:
-            self.no_ppp = True
-            self.no_supine = True
-
             if self.ppp is not None:
                 raise InvalidInputError(
                     f"Verb '{self.present}' has no ppp, but ppp provided."
                 )
-        elif self.present in FUTURE_ACTIVE_PARTICIPLE_VERBS:
+
             self.no_ppp = True
             self.no_supine = True
-            self.fap_fourthpp = True
-
+        elif self.present in FUTURE_ACTIVE_PARTICIPLE_VERBS:
             if self.ppp is None:
                 raise InvalidInputError(
                     f"Verb '{self.present}' does not have a future active participle provided."
                 )
+
+            self.no_ppp = True
+            self.no_supine = True
+            self.fap_fourthpp = True
+
+            self._fap_stem = self.ppp[:-2]
         else:
             if self.ppp is None:
                 raise InvalidInputError(
                     f"Verb '{self.present}' is not irregular or deponent, but no ppp provided."
                 )
 
-            # HACK: convert supine into ppp, even if the ppp doesn't really
-            # exist
+            # HACK: convert supine into ppp, even if the ppp doesn't exist
             if self.ppp.endswith("um"):
                 self.ppp = self.ppp[:-2] + "um"
 
+            self._ppp_stem = self.ppp[:-2]
+            self._fap_stem = self.ppp[:-1] + "r"
+
+        if self.present in MISSING_GERUND_VERBS:
+            self.no_gerund = True
+
+        if not self.present.endswith("o") and not irregular_flag:
+            raise InvalidInputError(
+                f"Invalid present form: '{self.present}' (must end in '-o')"
+            )
+
+        # Determine stems
         if is_irregular_verb(self.present):
+            self.conjugation = get_irregular_verb_conjugation(self.present)
             self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                 self.present
             )
         elif is_derived_verb(self.present):
+            self.conjugation = get_derived_verb_conjugation(self.present)
             self._inf_stem, self._preptc_stem = find_derived_verb_stems(
                 self.present
             )
+        elif check_mixed_conjugation_verb(self.present):
+            self.conjugation = 5
+            self._inf_stem = self.infinitive[:-3]
+            self._preptc_stem = self.infinitive[:-3] + "ie"
+        elif self.infinitive.endswith("are"):
+            self.conjugation = 1
+            self._inf_stem = self.infinitive[:-3]
+            self._preptc_stem = self.infinitive[:-2]
+        elif self.infinitive.endswith("ire"):
+            self.conjugation = 4
+            self._inf_stem = self.infinitive[:-3]
+            self._preptc_stem = self.infinitive[:-2] + "e"
+        elif self.infinitive.endswith("ere"):
+            self.conjugation = 2 if self.present.endswith("eo") else 3
+            self._inf_stem = self.infinitive[:-3]
+            self._preptc_stem = self.infinitive[:-2]
+        else:
+            raise InvalidInputError(
+                f"Invalid infinitive form: '{self.infinitive}'"
+            )
 
+        # Determine endings
         match self.conjugation:
             case 1:
                 self.endings = self._first_conjugation()
@@ -380,23 +408,6 @@ class Verb(_Word):
             case _:
                 self.endings = self._mixed_conjugation()
 
-        if not irregular_flag:
-            self._preptc_stem = self.infinitive[:-2]
-            if self.conjugation == 4:
-                self._preptc_stem += "e"
-            if self.conjugation == 5:
-                self._preptc_stem = self.infinitive[:-3]
-                self._preptc_stem += "ie"
-
-        if self.fap_fourthpp:
-            assert self.ppp is not None
-            self._fap_stem = self.ppp[:-2]
-
-        elif not self.no_ppp:
-            assert self.ppp is not None
-            self._ppp_stem = self.ppp[:-2]
-            self._fap_stem = self.ppp[:-1] + "r"
-
         self.endings |= self._participles()
         self.endings |= self._verbal_nouns()
 
@@ -405,6 +416,7 @@ class Verb(_Word):
                 self.endings, find_irregular_verb_changes(self.present)
             )
         elif is_derived_verb(self.present):
+            assert self.perfect is not None
             self.endings = apply_changes(
                 self.endings,
                 find_derived_verb_changes(
@@ -416,7 +428,6 @@ class Verb(_Word):
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
-        assert self.perfect is not None
 
         # Passive forms
         endings: Endings = {
@@ -495,6 +506,42 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms that use perfect stem
+        if not self.no_perfect:
+            assert self.perfect is not None
+            endings |= {
+                "Vperactindsg1": self.perfect,  # portavi
+                "Vperactindsg2": f"{self._per_stem}isti",  # portavisti
+                "Vperactindsg3": f"{self._per_stem}it",  # portavit
+                "Vperactindpl1": f"{self._per_stem}imus",  # portavimus
+                "Vperactindpl2": f"{self._per_stem}istis",  # portavistis
+                "Vperactindpl3": f"{self._per_stem}erunt",  # portaverunt
+                "Vplpactindsg1": f"{self._per_stem}eram",  # portaveram
+                "Vplpactindsg2": f"{self._per_stem}eras",  # portaveras
+                "Vplpactindsg3": f"{self._per_stem}erat",  # portaverat
+                "Vplpactindpl1": f"{self._per_stem}eramus",  # portaveramus
+                "Vplpactindpl2": f"{self._per_stem}eratis",  # portaveratis
+                "Vplpactindpl3": f"{self._per_stem}erant",  # portaverant
+                "Vfpractindsg1": f"{self._per_stem}ero",  # portavero
+                "Vfpractindsg2": f"{self._per_stem}eris",  # portaveris
+                "Vfpractindsg3": f"{self._per_stem}erit",  # portaverit
+                "Vfpractindpl1": f"{self._per_stem}erimus",  # portaverimus
+                "Vfpractindpl2": f"{self._per_stem}eritis",  # portaveritis
+                "Vfpractindpl3": f"{self._per_stem}erint",  # portaverint
+                "Vperactsbjsg1": f"{self._per_stem}erim",  # portaverim
+                "Vperactsbjsg2": f"{self._per_stem}eris",  # portaveris
+                "Vperactsbjsg3": f"{self._per_stem}erit",  # portaverit
+                "Vperactsbjpl1": f"{self._per_stem}erimus",  # portaverimus
+                "Vperactsbjpl2": f"{self._per_stem}eritis",  # portaveritis
+                "Vperactsbjpl3": f"{self._per_stem}erint",  # portaverint
+                "Vplpactsbjsg1": f"{self._per_stem}issem",  # portavissem
+                "Vplpactsbjsg2": f"{self._per_stem}isses",  # portavisses
+                "Vplpactsbjsg3": f"{self._per_stem}isset",  # portavisset
+                "Vplpactsbjpl1": f"{self._per_stem}issemus",  # portavissemus
+                "Vplpactsbjpl2": f"{self._per_stem}issetis",  # portavissetis
+                "Vplpactsbjpl3": f"{self._per_stem}issent",  # portavissent
+            }
+
         # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # porto
@@ -515,24 +562,6 @@ class Verb(_Word):
             "Vfutactindpl1": f"{self._inf_stem}abimus",  # portabimus
             "Vfutactindpl2": f"{self._inf_stem}abitis",  # portabitis
             "Vfutactindpl3": f"{self._inf_stem}abunt",  # portabunt
-            "Vperactindsg1": self.perfect,  # portavi
-            "Vperactindsg2": f"{self._per_stem}isti",  # portavisti
-            "Vperactindsg3": f"{self._per_stem}it",  # portavit
-            "Vperactindpl1": f"{self._per_stem}imus",  # portavimus
-            "Vperactindpl2": f"{self._per_stem}istis",  # portavistis
-            "Vperactindpl3": f"{self._per_stem}erunt",  # portaverunt
-            "Vplpactindsg1": f"{self._per_stem}eram",  # portaveram
-            "Vplpactindsg2": f"{self._per_stem}eras",  # portaveras
-            "Vplpactindsg3": f"{self._per_stem}erat",  # portaverat
-            "Vplpactindpl1": f"{self._per_stem}eramus",  # portaveramus
-            "Vplpactindpl2": f"{self._per_stem}eratis",  # portaveratis
-            "Vplpactindpl3": f"{self._per_stem}erant",  # portaverant
-            "Vfpractindsg1": f"{self._per_stem}ero",  # portavero
-            "Vfpractindsg2": f"{self._per_stem}eris",  # portaveris
-            "Vfpractindsg3": f"{self._per_stem}erit",  # portaverit
-            "Vfpractindpl1": f"{self._per_stem}erimus",  # portaverimus
-            "Vfpractindpl2": f"{self._per_stem}eritis",  # portaveritis
-            "Vfpractindpl3": f"{self._per_stem}erint",  # portaverint
             "Vpreactsbjsg1": f"{self._inf_stem}em",  # portem
             "Vpreactsbjsg2": f"{self._inf_stem}es",  # portes
             "Vpreactsbjsg3": f"{self._inf_stem}et",  # portet
@@ -545,18 +574,6 @@ class Verb(_Word):
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # portaremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # portaretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # portarent
-            "Vperactsbjsg1": f"{self._per_stem}erim",  # portaverim
-            "Vperactsbjsg2": f"{self._per_stem}eris",  # portaveris
-            "Vperactsbjsg3": f"{self._per_stem}erit",  # portaverit
-            "Vperactsbjpl1": f"{self._per_stem}erimus",  # portaverimus
-            "Vperactsbjpl2": f"{self._per_stem}eritis",  # portaveritis
-            "Vperactsbjpl3": f"{self._per_stem}erint",  # portaverint
-            "Vplpactsbjsg1": f"{self._per_stem}issem",  # portavissem
-            "Vplpactsbjsg2": f"{self._per_stem}isses",  # portavisses
-            "Vplpactsbjsg3": f"{self._per_stem}isset",  # portavisset
-            "Vplpactsbjpl1": f"{self._per_stem}issemus",  # portavissemus
-            "Vplpactsbjpl2": f"{self._per_stem}issetis",  # portavissetis
-            "Vplpactsbjpl3": f"{self._per_stem}issent",  # portavissent
             "Vpreactipesg2": f"{self._inf_stem}a",  # porta
             "Vpreactipepl2": f"{self._inf_stem}ate",  # portate
             "Vpreactinf   ": self.infinitive,  # portare
@@ -564,7 +581,6 @@ class Verb(_Word):
 
     def _second_conjugation(self) -> Endings:
         assert self.infinitive is not None
-        assert self.perfect is not None
 
         # Passive forms
         endings: Endings = {
@@ -643,6 +659,42 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms that use perfect stem
+        if not self.no_perfect:
+            assert self.perfect is not None
+            endings |= {
+                "Vperactindsg1": self.perfect,  # docui
+                "Vperactindsg2": f"{self._per_stem}isti",  # docuisit
+                "Vperactindsg3": f"{self._per_stem}it",  # docuit
+                "Vperactindpl1": f"{self._per_stem}imus",  # docuimus
+                "Vperactindpl2": f"{self._per_stem}istis",  # docuistis
+                "Vperactindpl3": f"{self._per_stem}erunt",  # docuerunt
+                "Vplpactindsg1": f"{self._per_stem}eram",  # docueram
+                "Vplpactindsg2": f"{self._per_stem}eras",  # docueras
+                "Vplpactindsg3": f"{self._per_stem}erat",  # docuerat
+                "Vplpactindpl1": f"{self._per_stem}eramus",  # docueramus
+                "Vplpactindpl2": f"{self._per_stem}eratis",  # docueratis
+                "Vplpactindpl3": f"{self._per_stem}erant",  # docuerant
+                "Vfpractindsg1": f"{self._per_stem}ero",  # docuero
+                "Vfpractindsg2": f"{self._per_stem}eris",  # docueris
+                "Vfpractindsg3": f"{self._per_stem}erit",  # docuerit
+                "Vfpractindpl1": f"{self._per_stem}erimus",  # docuerimus
+                "Vfpractindpl2": f"{self._per_stem}eritis",  # docueritis
+                "Vfpractindpl3": f"{self._per_stem}erint",  # docuerint
+                "Vperactsbjsg1": f"{self._per_stem}erim",  # docuerim
+                "Vperactsbjsg2": f"{self._per_stem}eris",  # docueris
+                "Vperactsbjsg3": f"{self._per_stem}erit",  # docuerit
+                "Vperactsbjpl1": f"{self._per_stem}erimus",  # docuerimus
+                "Vperactsbjpl2": f"{self._per_stem}eritis",  # docueritis
+                "Vperactsbjpl3": f"{self._per_stem}erint",  # docuerint
+                "Vplpactsbjsg1": f"{self._per_stem}issem",  # docuissem
+                "Vplpactsbjsg2": f"{self._per_stem}isses",  # docuisses
+                "Vplpactsbjsg3": f"{self._per_stem}isset",  # docuisset
+                "Vplpactsbjpl1": f"{self._per_stem}issemus",  # docuissmus
+                "Vplpactsbjpl2": f"{self._per_stem}issetis",  # docuissetis
+                "Vplpactsbjpl3": f"{self._per_stem}issent",  # docuissent
+            }
+
         # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # doceo
@@ -663,24 +715,6 @@ class Verb(_Word):
             "Vfutactindpl1": f"{self._inf_stem}ebimus",  # docebimus
             "Vfutactindpl2": f"{self._inf_stem}ebitis",  # docebitis
             "Vfutactindpl3": f"{self._inf_stem}ebunt",  # docebunt
-            "Vperactindsg1": self.perfect,  # docui
-            "Vperactindsg2": f"{self._per_stem}isti",  # docuisit
-            "Vperactindsg3": f"{self._per_stem}it",  # docuit
-            "Vperactindpl1": f"{self._per_stem}imus",  # docuimus
-            "Vperactindpl2": f"{self._per_stem}istis",  # docuistis
-            "Vperactindpl3": f"{self._per_stem}erunt",  # docuerunt
-            "Vplpactindsg1": f"{self._per_stem}eram",  # docueram
-            "Vplpactindsg2": f"{self._per_stem}eras",  # docueras
-            "Vplpactindsg3": f"{self._per_stem}erat",  # docuerat
-            "Vplpactindpl1": f"{self._per_stem}eramus",  # docueramus
-            "Vplpactindpl2": f"{self._per_stem}eratis",  # docueratis
-            "Vplpactindpl3": f"{self._per_stem}erant",  # docuerant
-            "Vfpractindsg1": f"{self._per_stem}ero",  # docuero
-            "Vfpractindsg2": f"{self._per_stem}eris",  # docueris
-            "Vfpractindsg3": f"{self._per_stem}erit",  # docuerit
-            "Vfpractindpl1": f"{self._per_stem}erimus",  # docuerimus
-            "Vfpractindpl2": f"{self._per_stem}eritis",  # docueritis
-            "Vfpractindpl3": f"{self._per_stem}erint",  # docuerint
             "Vpreactsbjsg1": f"{self._inf_stem}eam",  # doceam
             "Vpreactsbjsg2": f"{self._inf_stem}eas",  # doceas
             "Vpreactsbjsg3": f"{self._inf_stem}eat",  # doceat
@@ -693,18 +727,6 @@ class Verb(_Word):
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # doceremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # doceretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # docerent
-            "Vperactsbjsg1": f"{self._per_stem}erim",  # docuerim
-            "Vperactsbjsg2": f"{self._per_stem}eris",  # docueris
-            "Vperactsbjsg3": f"{self._per_stem}erit",  # docuerit
-            "Vperactsbjpl1": f"{self._per_stem}erimus",  # docuerimus
-            "Vperactsbjpl2": f"{self._per_stem}eritis",  # docueritis
-            "Vperactsbjpl3": f"{self._per_stem}erint",  # docuerint
-            "Vplpactsbjsg1": f"{self._per_stem}issem",  # docuissem
-            "Vplpactsbjsg2": f"{self._per_stem}isses",  # docuisses
-            "Vplpactsbjsg3": f"{self._per_stem}isset",  # docuisset
-            "Vplpactsbjpl1": f"{self._per_stem}issemus",  # docuissmus
-            "Vplpactsbjpl2": f"{self._per_stem}issetis",  # docuissetis
-            "Vplpactsbjpl3": f"{self._per_stem}issent",  # docuissent
             "Vpreactipesg2": f"{self._inf_stem}e",  # doce
             "Vpreactipepl2": f"{self._inf_stem}ete",  # docete
             "Vpreactinf   ": self.infinitive,  # docere
@@ -712,7 +734,6 @@ class Verb(_Word):
 
     def _third_conjugation(self) -> Endings:
         assert self.infinitive is not None
-        assert self.perfect is not None
 
         # Passive forms
         endings: Endings = {
@@ -791,6 +812,42 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms that use perfect stem
+        if not self.no_perfect:
+            assert self.perfect is not None
+            endings |= {
+                "Vperactindsg1": self.perfect,  # traxi
+                "Vperactindsg2": f"{self._per_stem}isti",  # traxisti
+                "Vperactindsg3": f"{self._per_stem}it",  # traxit
+                "Vperactindpl1": f"{self._per_stem}imus",  # traximus
+                "Vperactindpl2": f"{self._per_stem}istis",  # traxistis
+                "Vperactindpl3": f"{self._per_stem}erunt",  # traxerunt
+                "Vplpactindsg1": f"{self._per_stem}eram",  # traxeram
+                "Vplpactindsg2": f"{self._per_stem}eras",  # traxeras
+                "Vplpactindsg3": f"{self._per_stem}erat",  # traxerat
+                "Vplpactindpl1": f"{self._per_stem}eramus",  # traxeramus
+                "Vplpactindpl2": f"{self._per_stem}eratis",  # traxeratis
+                "Vplpactindpl3": f"{self._per_stem}erant",  # traxerant
+                "Vfpractindsg1": f"{self._per_stem}ero",  # traxero
+                "Vfpractindsg2": f"{self._per_stem}eris",  # traxeris
+                "Vfpractindsg3": f"{self._per_stem}erit",  # traxerit
+                "Vfpractindpl1": f"{self._per_stem}erimus",  # traxerimus
+                "Vfpractindpl2": f"{self._per_stem}eritis",  # traxeritis
+                "Vfpractindpl3": f"{self._per_stem}erint",  # traxerint
+                "Vperactsbjsg1": f"{self._per_stem}erim",  # traxerim
+                "Vperactsbjsg2": f"{self._per_stem}eris",  # traxeris
+                "Vperactsbjsg3": f"{self._per_stem}erit",  # traxerit
+                "Vperactsbjpl1": f"{self._per_stem}erimus",  # traxerimus
+                "Vperactsbjpl2": f"{self._per_stem}eritis",  # traxeritis
+                "Vperactsbjpl3": f"{self._per_stem}erint",  # traxerint
+                "Vplpactsbjsg1": f"{self._per_stem}issem",  # traxissem
+                "Vplpactsbjsg2": f"{self._per_stem}isses",  # traxisses
+                "Vplpactsbjsg3": f"{self._per_stem}isset",  # traxisset
+                "Vplpactsbjpl1": f"{self._per_stem}issemus",  # traxissemus
+                "Vplpactsbjpl2": f"{self._per_stem}issetis",  # traxissetis
+                "Vplpactsbjpl3": f"{self._per_stem}issent",  # traxissent
+            }
+
         # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # traho
@@ -811,24 +868,6 @@ class Verb(_Word):
             "Vfutactindpl1": f"{self._inf_stem}emus",  # trahemus
             "Vfutactindpl2": f"{self._inf_stem}etis",  # trahetis
             "Vfutactindpl3": f"{self._inf_stem}ent",  # trahent
-            "Vperactindsg1": self.perfect,  # traxi
-            "Vperactindsg2": f"{self._per_stem}isti",  # traxisti
-            "Vperactindsg3": f"{self._per_stem}it",  # traxit
-            "Vperactindpl1": f"{self._per_stem}imus",  # traximus
-            "Vperactindpl2": f"{self._per_stem}istis",  # traxistis
-            "Vperactindpl3": f"{self._per_stem}erunt",  # traxerunt
-            "Vplpactindsg1": f"{self._per_stem}eram",  # traxeram
-            "Vplpactindsg2": f"{self._per_stem}eras",  # traxeras
-            "Vplpactindsg3": f"{self._per_stem}erat",  # traxerat
-            "Vplpactindpl1": f"{self._per_stem}eramus",  # traxeramus
-            "Vplpactindpl2": f"{self._per_stem}eratis",  # traxeratis
-            "Vplpactindpl3": f"{self._per_stem}erant",  # traxerant
-            "Vfpractindsg1": f"{self._per_stem}ero",  # traxero
-            "Vfpractindsg2": f"{self._per_stem}eris",  # traxeris
-            "Vfpractindsg3": f"{self._per_stem}erit",  # traxerit
-            "Vfpractindpl1": f"{self._per_stem}erimus",  # traxerimus
-            "Vfpractindpl2": f"{self._per_stem}eritis",  # traxeritis
-            "Vfpractindpl3": f"{self._per_stem}erint",  # traxerint
             "Vpreactsbjsg1": f"{self._inf_stem}am",  # traham
             "Vpreactsbjsg2": f"{self._inf_stem}as",  # trahas
             "Vpreactsbjsg3": f"{self._inf_stem}at",  # trahat
@@ -841,18 +880,6 @@ class Verb(_Word):
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # traheremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # traheretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # traherent
-            "Vperactsbjsg1": f"{self._per_stem}erim",  # traxerim
-            "Vperactsbjsg2": f"{self._per_stem}eris",  # traxeris
-            "Vperactsbjsg3": f"{self._per_stem}erit",  # traxerit
-            "Vperactsbjpl1": f"{self._per_stem}erimus",  # traxerimus
-            "Vperactsbjpl2": f"{self._per_stem}eritis",  # traxeritis
-            "Vperactsbjpl3": f"{self._per_stem}erint",  # traxerint
-            "Vplpactsbjsg1": f"{self._per_stem}issem",  # traxissem
-            "Vplpactsbjsg2": f"{self._per_stem}isses",  # traxisses
-            "Vplpactsbjsg3": f"{self._per_stem}isset",  # traxisset
-            "Vplpactsbjpl1": f"{self._per_stem}issemus",  # traxissemus
-            "Vplpactsbjpl2": f"{self._per_stem}issetis",  # traxissetis
-            "Vplpactsbjpl3": f"{self._per_stem}issent",  # traxissent
             "Vpreactipesg2": f"{self._inf_stem}e",  # trahe
             "Vpreactipepl2": f"{self._inf_stem}ite",  # trahite
             "Vpreactinf   ": self.infinitive,  # trahere
@@ -860,7 +887,6 @@ class Verb(_Word):
 
     def _fourth_conjugation(self) -> Endings:
         assert self.infinitive is not None
-        assert self.perfect is not None
 
         # Passive forms
         endings: Endings = {
@@ -939,6 +965,42 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms that use perfect stem
+        if not self.no_perfect:
+            assert self.perfect is not None
+            endings |= {
+                "Vperactindsg1": self.perfect,  # audivi
+                "Vperactindsg2": f"{self._per_stem}isti",  # audivisti
+                "Vperactindsg3": f"{self._per_stem}it",  # audivit
+                "Vperactindpl1": f"{self._per_stem}imus",  # audivimus
+                "Vperactindpl2": f"{self._per_stem}istis",  # audivistis
+                "Vperactindpl3": f"{self._per_stem}erunt",  # audiverunt
+                "Vplpactindsg1": f"{self._per_stem}eram",  # audiveram
+                "Vplpactindsg2": f"{self._per_stem}eras",  # audiveras
+                "Vplpactindsg3": f"{self._per_stem}erat",  # audiverat
+                "Vplpactindpl1": f"{self._per_stem}eramus",  # audiveramus
+                "Vplpactindpl2": f"{self._per_stem}eratis",  # audiveratis
+                "Vplpactindpl3": f"{self._per_stem}erant",  # audiverant
+                "Vfpractindsg1": f"{self._per_stem}ero",  # audivero
+                "Vfpractindsg2": f"{self._per_stem}eris",  # audiveris
+                "Vfpractindsg3": f"{self._per_stem}erit",  # audiverit
+                "Vfpractindpl1": f"{self._per_stem}erimus",  # audiverimus
+                "Vfpractindpl2": f"{self._per_stem}eritis",  # audiveritis
+                "Vfpractindpl3": f"{self._per_stem}erint",  # audiverint
+                "Vperactsbjsg1": f"{self._per_stem}erim",  # audiverim
+                "Vperactsbjsg2": f"{self._per_stem}eris",  # audiveris
+                "Vperactsbjsg3": f"{self._per_stem}erit",  # audiverit
+                "Vperactsbjpl1": f"{self._per_stem}erimus",  # audiverimus
+                "Vperactsbjpl2": f"{self._per_stem}eritis",  # audiveritis
+                "Vperactsbjpl3": f"{self._per_stem}erint",  # audiverint
+                "Vplpactsbjsg1": f"{self._per_stem}issem",  # audivissem
+                "Vplpactsbjsg2": f"{self._per_stem}isses",  # audivisses
+                "Vplpactsbjsg3": f"{self._per_stem}isset",  # audivisset
+                "Vplpactsbjpl1": f"{self._per_stem}issemus",  # audivissemus
+                "Vplpactsbjpl2": f"{self._per_stem}issetis",  # audivissetis
+                "Vplpactsbjpl3": f"{self._per_stem}issent",  # audivissent
+            }
+
         # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # audio
@@ -959,24 +1021,6 @@ class Verb(_Word):
             "Vfutactindpl1": f"{self._inf_stem}iemus",  # veniemus
             "Vfutactindpl2": f"{self._inf_stem}ietis",  # venietis
             "Vfutactindpl3": f"{self._inf_stem}ient",  # venient
-            "Vperactindsg1": self.perfect,  # audivi
-            "Vperactindsg2": f"{self._per_stem}isti",  # audivisti
-            "Vperactindsg3": f"{self._per_stem}it",  # audivit
-            "Vperactindpl1": f"{self._per_stem}imus",  # audivimus
-            "Vperactindpl2": f"{self._per_stem}istis",  # audivistis
-            "Vperactindpl3": f"{self._per_stem}erunt",  # audiverunt
-            "Vplpactindsg1": f"{self._per_stem}eram",  # audiveram
-            "Vplpactindsg2": f"{self._per_stem}eras",  # audiveras
-            "Vplpactindsg3": f"{self._per_stem}erat",  # audiverat
-            "Vplpactindpl1": f"{self._per_stem}eramus",  # audiveramus
-            "Vplpactindpl2": f"{self._per_stem}eratis",  # audiveratis
-            "Vplpactindpl3": f"{self._per_stem}erant",  # audiverant
-            "Vfpractindsg1": f"{self._per_stem}ero",  # audivero
-            "Vfpractindsg2": f"{self._per_stem}eris",  # audiveris
-            "Vfpractindsg3": f"{self._per_stem}erit",  # audiverit
-            "Vfpractindpl1": f"{self._per_stem}erimus",  # audiverimus
-            "Vfpractindpl2": f"{self._per_stem}eritis",  # audiveritis
-            "Vfpractindpl3": f"{self._per_stem}erint",  # audiverint
             "Vpreactsbjsg1": f"{self._inf_stem}iam",  # audiam
             "Vpreactsbjsg2": f"{self._inf_stem}ias",  # audias
             "Vpreactsbjsg3": f"{self._inf_stem}iat",  # audiat
@@ -989,18 +1033,6 @@ class Verb(_Word):
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # audiremus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # audiretis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # audirent
-            "Vperactsbjsg1": f"{self._per_stem}erim",  # audiverim
-            "Vperactsbjsg2": f"{self._per_stem}eris",  # audiveris
-            "Vperactsbjsg3": f"{self._per_stem}erit",  # audiverit
-            "Vperactsbjpl1": f"{self._per_stem}erimus",  # audiverimus
-            "Vperactsbjpl2": f"{self._per_stem}eritis",  # audiveritis
-            "Vperactsbjpl3": f"{self._per_stem}erint",  # audiverint
-            "Vplpactsbjsg1": f"{self._per_stem}issem",  # audivissem
-            "Vplpactsbjsg2": f"{self._per_stem}isses",  # audivisses
-            "Vplpactsbjsg3": f"{self._per_stem}isset",  # audivisset
-            "Vplpactsbjpl1": f"{self._per_stem}issemus",  # audivissemus
-            "Vplpactsbjpl2": f"{self._per_stem}issetis",  # audivissetis
-            "Vplpactsbjpl3": f"{self._per_stem}issent",  # audivissent
             "Vpreactipesg2": f"{self._inf_stem}i",  # audi
             "Vpreactipepl2": f"{self._inf_stem}ite",  # audite
             "Vpreactinf   ": self.infinitive,  # audire
@@ -1008,7 +1040,6 @@ class Verb(_Word):
 
     def _mixed_conjugation(self) -> Endings:
         assert self.infinitive is not None
-        assert self.perfect is not None
 
         # Passive forms
         endings: Endings = {
@@ -1087,6 +1118,42 @@ class Verb(_Word):
                 for key, value in endings.items()
             }
 
+        # Active forms that use perfect stem
+        if not self.no_perfect:
+            assert self.perfect is not None
+            endings |= {
+                "Vperactindsg1": self.perfect,  # cepi
+                "Vperactindsg2": f"{self._per_stem}isti",  # cepisti
+                "Vperactindsg3": f"{self._per_stem}it",  # cepit
+                "Vperactindpl1": f"{self._per_stem}imus",  # cepimus
+                "Vperactindpl2": f"{self._per_stem}istis",  # cepistis
+                "Vperactindpl3": f"{self._per_stem}erunt",  # ceperunt
+                "Vplpactindsg1": f"{self._per_stem}eram",  # ceperam
+                "Vplpactindsg2": f"{self._per_stem}eras",  # ceperas
+                "Vplpactindsg3": f"{self._per_stem}erat",  # ceperat
+                "Vplpactindpl1": f"{self._per_stem}eramus",  # ceperamus
+                "Vplpactindpl2": f"{self._per_stem}eratis",  # ceperatis
+                "Vplpactindpl3": f"{self._per_stem}erant",  # ceperant
+                "Vfpractindsg1": f"{self._per_stem}ero",  # cepero
+                "Vfpractindsg2": f"{self._per_stem}eris",  # ceperis
+                "Vfpractindsg3": f"{self._per_stem}erit",  # ceperit
+                "Vfpractindpl1": f"{self._per_stem}erimus",  # ceperimus
+                "Vfpractindpl2": f"{self._per_stem}eritis",  # ceperitis
+                "Vfpractindpl3": f"{self._per_stem}erint",  # ceperint
+                "Vperactsbjsg1": f"{self._per_stem}erim",  # ceperim
+                "Vperactsbjsg2": f"{self._per_stem}eris",  # ceperis
+                "Vperactsbjsg3": f"{self._per_stem}erit",  # ceperit
+                "Vperactsbjpl1": f"{self._per_stem}erimus",  # ceperimus
+                "Vperactsbjpl2": f"{self._per_stem}eritis",  # ceperitis
+                "Vperactsbjpl3": f"{self._per_stem}erint",  # ceperint
+                "Vplpactsbjsg1": f"{self._per_stem}issem",  # cepissem
+                "Vplpactsbjsg2": f"{self._per_stem}isses",  # cepisses
+                "Vplpactsbjsg3": f"{self._per_stem}isset",  # cepisset
+                "Vplpactsbjpl1": f"{self._per_stem}issemus",  # cepissemus
+                "Vplpactsbjpl2": f"{self._per_stem}issetis",  # cepissetis
+                "Vplpactsbjpl3": f"{self._per_stem}issent",  # cepissent
+            }
+
         # Active forms
         return endings | {
             "Vpreactindsg1": self.present,  # capio
@@ -1107,24 +1174,6 @@ class Verb(_Word):
             "Vfutactindpl1": f"{self._inf_stem}iemus",  # capiemus
             "Vfutactindpl2": f"{self._inf_stem}ietis",  # capietis
             "Vfutactindpl3": f"{self._inf_stem}ient",  # capient
-            "Vperactindsg1": self.perfect,  # cepi
-            "Vperactindsg2": f"{self._per_stem}isti",  # cepisti
-            "Vperactindsg3": f"{self._per_stem}it",  # cepit
-            "Vperactindpl1": f"{self._per_stem}imus",  # cepimus
-            "Vperactindpl2": f"{self._per_stem}istis",  # cepistis
-            "Vperactindpl3": f"{self._per_stem}erunt",  # ceperunt
-            "Vplpactindsg1": f"{self._per_stem}eram",  # ceperam
-            "Vplpactindsg2": f"{self._per_stem}eras",  # ceperas
-            "Vplpactindsg3": f"{self._per_stem}erat",  # ceperat
-            "Vplpactindpl1": f"{self._per_stem}eramus",  # ceperamus
-            "Vplpactindpl2": f"{self._per_stem}eratis",  # ceperatis
-            "Vplpactindpl3": f"{self._per_stem}erant",  # ceperant
-            "Vfpractindsg1": f"{self._per_stem}ero",  # cepero
-            "Vfpractindsg2": f"{self._per_stem}eris",  # ceperis
-            "Vfpractindsg3": f"{self._per_stem}erit",  # ceperit
-            "Vfpractindpl1": f"{self._per_stem}erimus",  # ceperimus
-            "Vfpractindpl2": f"{self._per_stem}eritis",  # ceperitis
-            "Vfpractindpl3": f"{self._per_stem}erint",  # ceperint
             "Vpreactsbjsg1": f"{self._inf_stem}iam",  # capiam
             "Vpreactsbjsg2": f"{self._inf_stem}ias",  # capias
             "Vpreactsbjsg3": f"{self._inf_stem}iat",  # capiat
@@ -1137,27 +1186,12 @@ class Verb(_Word):
             "Vimpactsbjpl1": f"{self.infinitive}mus",  # caperemus
             "Vimpactsbjpl2": f"{self.infinitive}tis",  # caperetis
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # caperent
-            "Vperactsbjsg1": f"{self._per_stem}erim",  # ceperim
-            "Vperactsbjsg2": f"{self._per_stem}eris",  # ceperis
-            "Vperactsbjsg3": f"{self._per_stem}erit",  # ceperit
-            "Vperactsbjpl1": f"{self._per_stem}erimus",  # ceperimus
-            "Vperactsbjpl2": f"{self._per_stem}eritis",  # ceperitis
-            "Vperactsbjpl3": f"{self._per_stem}erint",  # ceperint
-            "Vplpactsbjsg1": f"{self._per_stem}issem",  # cepissem
-            "Vplpactsbjsg2": f"{self._per_stem}isses",  # cepisses
-            "Vplpactsbjsg3": f"{self._per_stem}isset",  # cepisset
-            "Vplpactsbjpl1": f"{self._per_stem}issemus",  # cepissemus
-            "Vplpactsbjpl2": f"{self._per_stem}issetis",  # cepissetis
-            "Vplpactsbjpl3": f"{self._per_stem}issent",  # cepissent
             "Vpreactipesg2": f"{self._inf_stem}e",  # cape
             "Vpreactipepl2": f"{self._inf_stem}ite",  # capite
             "Vpreactinf   ": self.infinitive,  # capere
         }
 
     def _participles(self) -> Endings:
-        assert self.infinitive is not None
-        assert self.perfect is not None
-
         endings: Endings = {
             "Vpreactptcmnomsg": f"{self._preptc_stem}ns",  # portans
             "Vpreactptcmvocsg": f"{self._preptc_stem}ns",  # portans
