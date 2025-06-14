@@ -1,4 +1,6 @@
-from _typeshed import Incomplete
+from __future__ import annotations
+
+from typing import TextIO
 
 def download(
     info_or_id: str | None = None,
@@ -8,5 +10,5 @@ def download(
     prefix: str = "[nltk_data] ",
     halt_on_error: bool = True,
     raise_on_error: bool = False,
-    print_error_to: Incomplete = ...,
+    print_error_to: TextIO | None = None,
 ) -> bool: ...

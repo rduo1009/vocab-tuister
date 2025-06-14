@@ -1,10 +1,13 @@
 """Contains functions that generate questions and check answers."""
 
+# ruff: noqa: SLF001
+# pyright: reportPrivateUsage=false
+
 from __future__ import annotations
 
 import logging
 import random
-from typing import TYPE_CHECKING, Final, overload
+from typing import TYPE_CHECKING, Final, cast, overload
 
 from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
@@ -16,6 +19,8 @@ from ..accido.misc import (
     MultipleEndings,
     MultipleMeanings,
     Number,
+    Tense,
+    Voice,
 )
 from ..transfero.words import find_inflection
 from .exceptions import InvalidSettingsError
@@ -82,6 +87,11 @@ def ask_question_without_sr(
     if not filtered_questions:
         raise InvalidSettingsError("No question type has been enabled.")
 
+    if not filtered_vocab:
+        raise InvalidSettingsError(
+            "No words in the vocabulary list after filtering."
+        )
+
     for _ in range(amount):
         retries = 0
         while retries < MAX_RETRIES:
@@ -103,12 +113,18 @@ def ask_question_without_sr(
             match question_type:
                 case QuestionClasses.TYPEIN_ENGTOLAT:
                     output = _generate_typein_engtolat(
-                        chosen_word, filtered_endings
+                        chosen_word,
+                        filtered_endings,
+                        english_subjunctives=settings["english-subjunctives"],
+                        english_verbal_nouns=settings["english-verbal-nouns"],
                     )
 
                 case QuestionClasses.TYPEIN_LATTOENG:
                     output = _generate_typein_lattoeng(
-                        chosen_word, filtered_endings
+                        chosen_word,
+                        filtered_endings,
+                        english_subjunctives=settings["english-subjunctives"],
+                        english_verbal_nouns=settings["english-verbal-nouns"],
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
@@ -167,24 +183,46 @@ def _pick_ending_from_multipleendings(ending: Ending) -> str:
     return ending
 
 
-def _generate_typein_engtolat(
-    chosen_word: _Word, filtered_endings: Endings
+def _generate_typein_engtolat(  # noqa: PLR0914, PLR0915
+    chosen_word: _Word,
+    filtered_endings: Endings,
+    *,
+    english_subjunctives: bool = False,
+    english_verbal_nouns: bool = False,
 ) -> TypeInEngToLatQuestion | None:
     # Pick ending, getting the ending dict key to the ending as well
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
     chosen_ending = _pick_ending_from_multipleendings(chosen_ending)
 
     # Using the dict key, create an `EndingComponents`
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_instance(
+        ending_components_key
+    )
 
     # Unsupported endings
-    # Subjunctives cannot be translated to English on their own
+    # Subjunctives cannot be translated to English if the setting is not selected
     verb_subjunctive = (
         isinstance(chosen_word, Verb)
         and ending_components.mood == Mood.SUBJUNCTIVE
+        and not english_subjunctives
     )
 
-    if verb_subjunctive:
+    # Gerundives translate weirdly (and too similar to present passive infinitive)
+    verb_gerundive_flag = (
+        isinstance(chosen_word, Verb)
+        and ending_components.subtype == ComponentsSubtype.PARTICIPLE
+        and ending_components.tense == Tense.FUTURE
+        and ending_components.voice == Voice.PASSIVE
+        and ending_components.mood == Mood.PARTICIPLE
+    )
+
+    verb_verbal_noun_flag = (
+        isinstance(chosen_word, Verb)
+        and ending_components.subtype == ComponentsSubtype.VERBAL_NOUN
+        and not english_verbal_nouns
+    )
+
+    if verb_subjunctive or verb_gerundive_flag or verb_verbal_noun_flag:
         return None
 
     # Double-up endings
@@ -209,7 +247,11 @@ def _generate_typein_engtolat(
     verb_second_person_flag = (
         isinstance(chosen_word, Verb)
         and ending_components.subtype
-        not in {ComponentsSubtype.INFINITIVE, ComponentsSubtype.PARTICIPLE}
+        not in {
+            ComponentsSubtype.INFINITIVE,
+            ComponentsSubtype.PARTICIPLE,
+            ComponentsSubtype.VERBAL_NOUN,
+        }
         and ending_components.person == 2
     )
 
@@ -220,6 +262,8 @@ def _generate_typein_engtolat(
     # Nominative, vocative, accusative nouns translate the same way
     # NOTE: Might change later? Give accusative nouns a separate meaning
     if noun_nom_acc_voc:
+        assert isinstance(chosen_word, Noun)
+
         endings_to_add = (
             chosen_word.get(
                 case=Case.NOMINATIVE, number=ending_components.number
@@ -240,6 +284,8 @@ def _generate_typein_engtolat(
 
     # Adjectives all translate the same if they have the same degree
     elif adjective_not_adverb_flag:
+        assert isinstance(chosen_word, Adjective)
+
         answers = {
             item
             for key, value in chosen_word.endings.items()
@@ -263,6 +309,8 @@ def _generate_typein_engtolat(
 
     # All participles translate the same way
     elif participle_flag:
+        assert isinstance(chosen_word, Verb)
+
         answers = {
             item
             for key, value in chosen_word.endings.items()
@@ -287,6 +335,8 @@ def _generate_typein_engtolat(
 
     # English doesn't have 2nd person plural, so it's the same as singular
     elif verb_second_person_flag:
+        assert isinstance(chosen_word, Verb)
+
         if second_person_plural := chosen_word.get(
             tense=ending_components.tense,
             voice=ending_components.voice,
@@ -310,6 +360,7 @@ def _generate_typein_engtolat(
 
     # All pronouns translate the same way if same case and number
     elif pronoun_flag:
+        assert isinstance(chosen_word, Pronoun)
 
         @overload
         def _convert_to_tuple(ending: Ending) -> tuple[str, ...]: ...
@@ -328,27 +379,16 @@ def _generate_typein_engtolat(
             return (ending,)
 
         answers = {
-            *_convert_to_tuple(
+            answer
+            for gender in (Gender.MASCULINE, Gender.FEMININE, Gender.NEUTER)
+            for answer in _convert_to_tuple(
                 chosen_word.get(
                     case=ending_components.case,
                     number=ending_components.number,
-                    gender=Gender.MASCULINE,
+                    gender=gender,
                 )
-            ),
-            *_convert_to_tuple(
-                chosen_word.get(
-                    case=ending_components.case,
-                    number=ending_components.number,
-                    gender=Gender.FEMININE,
-                )
-            ),
-            *_convert_to_tuple(
-                chosen_word.get(
-                    case=ending_components.case,
-                    number=ending_components.number,
-                    gender=Gender.NEUTER,
-                )
-            ),
+            )
+            if answer is not None
         }
 
         chosen_ending = str(
@@ -371,7 +411,11 @@ def _generate_typein_engtolat(
 
 
 def _generate_typein_lattoeng(
-    chosen_word: _Word, filtered_endings: Endings
+    chosen_word: _Word,
+    filtered_endings: Endings,
+    *,
+    english_subjunctives: bool = False,
+    english_verbal_nouns: bool = False,
 ) -> TypeInLatToEngQuestion | None:
     # Pick ending
     _, chosen_ending = _pick_ending(filtered_endings)
@@ -387,10 +431,17 @@ def _generate_typein_lattoeng(
         verb_subjunctive = (
             isinstance(chosen_word, Verb)
             and ending_components.mood == Mood.SUBJUNCTIVE
+            and not english_subjunctives
         )
 
-        # Subjunctives cannot be translated to English on their own
-        if verb_subjunctive:
+        verb_verbal_noun_flag = (
+            isinstance(chosen_word, Verb)
+            and ending_components.subtype == ComponentsSubtype.VERBAL_NOUN
+            and not english_verbal_nouns
+        )
+
+        # Subjunctives cannot be translated to English if the setting is not selected
+        if verb_subjunctive or verb_verbal_noun_flag:
             continue
 
         # Find uninflected meanings
@@ -464,13 +515,15 @@ def _generate_inflect(
     ending_components_key, chosen_ending = _pick_ending(filtered_endings)
 
     # Find `EndingComponents` from dict key
-    ending_components = chosen_word.create_components(ending_components_key)
+    ending_components = chosen_word.create_components_instance(
+        ending_components_key
+    )
 
     # Convert `chosen_ending` to string if necessary
     if isinstance(chosen_ending, MultipleEndings):
         # If the `MutipleEndings` has a `regular` attribute then use that
         if hasattr(chosen_ending, "regular"):
-            main_answer = chosen_ending.regular
+            main_answer = cast("str", chosen_ending.regular)
         else:
             main_answer = random.choice(chosen_ending.get_all())
         answers = set(chosen_ending.get_all())
@@ -553,6 +606,10 @@ def _generate_principal_parts_question(
                                 chosen_word.femnom,
                                 chosen_word.neutnom,
                             )
+                        case _:
+                            raise ValueError(
+                                f"Termination '{chosen_word.termination}' not recognised."
+                            )
 
         case Pronoun():
             principal_parts = (
@@ -582,9 +639,9 @@ def _generate_multiplechoice_engtolat(
         meaning = random.choice(meaning.meanings)
 
     # Find answer and other choices
-    answer = chosen_word._first  # noqa: SLF001
+    answer = chosen_word._first
     other_choices = (
-        vocab._first  # noqa: SLF001
+        vocab._first
         for vocab in random.sample(
             vocab_list,
             # minus one as the chosen word is already in the question
@@ -604,7 +661,7 @@ def _generate_multiplechoice_engtolat(
 def _generate_multiplechoice_lattoeng(
     vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
 ) -> MultipleChoiceLatToEngQuestion:
-    prompt = chosen_word._first  # noqa: SLF001
+    prompt = chosen_word._first
 
     # Pick correct choice
     if isinstance(chosen_word.meaning, MultipleMeanings):
@@ -628,6 +685,8 @@ def _generate_multiplechoice_lattoeng(
                 for meaning in current_meaning.meanings
                 if meaning not in chosen_word_meanings
             )
+
+    # Put together choices
     choices = [
         answer,
         *random.sample(possible_choices, number_multiplechoice_options - 1),
