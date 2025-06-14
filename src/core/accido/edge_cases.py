@@ -272,7 +272,11 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_future
 # deletions: cedo (two meanings), apage (will be considered as a completely defective verb)
-MISSING_FUTURE_VERBS = {"adsoleo", "assoleo", "soleo"}
+MISSING_FUTURE_VERBS: Final[set[str]] = {"adsoleo", "assoleo", "soleo"}
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_supine_stem_with_missing_future_active_participle
+# deletions: all verbs ending in 'fio' (should be grouped with 'facio')
+MISSING_FAP_VERBS: Final[set[str]] = {"libet", "lubet", "perlibet"}
 
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS

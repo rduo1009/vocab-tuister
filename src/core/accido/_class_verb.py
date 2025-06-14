@@ -14,6 +14,7 @@ from ._class_word import _Word
 from .edge_cases import (
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
+    MISSING_FAP_VERBS,
     MISSING_FUTURE_VERBS,
     MISSING_GERUND_VERBS,
     MISSING_PERFECT_VERBS,
@@ -89,6 +90,7 @@ class Verb(_Word):
         "deponent",
         "fap_fourthpp",
         "infinitive",
+        "no_fap",
         "no_future",
         "no_gerund",
         "no_perfect",
@@ -165,6 +167,7 @@ class Verb(_Word):
         self.no_supine: bool = False
         self.no_perfect: bool = False
         self.no_future: bool = False
+        self.no_fap: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -355,13 +358,12 @@ class Verb(_Word):
             self._ppp_stem = self.ppp[:-2]
             self._fap_stem = self.ppp[:-1] + "r"
 
-        if self.present in MISSING_GERUND_VERBS:
-            self.no_gerund = True
+        self.no_gerund = self.present in MISSING_GERUND_VERBS
+        self.no_fap = self.present in MISSING_FAP_VERBS
 
         # FIXME: this only applies to 'soleo' and derivatives, which are semideponent
         # need to move to semideponent branch when its implemented
-        if self.present in MISSING_FUTURE_VERBS:
-            self.no_future = True
+        self.no_future = self.present in MISSING_FUTURE_VERBS
 
         if not self.present.endswith("o") and not irregular_flag:
             raise InvalidInputError(
@@ -1257,83 +1259,88 @@ class Verb(_Word):
             "Vpreactptcngenpl": f"{self._preptc_stem}ntium",  # portantium
             "Vpreactptcndatpl": f"{self._preptc_stem}ntibus",  # portantibus
             "Vpreactptcnablpl": f"{self._preptc_stem}ntibus",  # portantibus
-            "Vfutpasptcmnomsg": f"{self._preptc_stem}ndus",  # portandus
-            "Vfutpasptcmvocsg": f"{self._preptc_stem}nde",  # portande
-            "Vfutpasptcmaccsg": f"{self._preptc_stem}ndum",  # portandum
-            "Vfutpasptcmgensg": f"{self._preptc_stem}ndi",  # portandi
-            "Vfutpasptcmdatsg": f"{self._preptc_stem}ndo",  # portando
-            "Vfutpasptcmablsg": f"{self._preptc_stem}ndo",  # portando
-            "Vfutpasptcmnompl": f"{self._preptc_stem}ndi",  # portandi
-            "Vfutpasptcmvocpl": f"{self._preptc_stem}ndi",  # portandi
-            "Vfutpasptcmaccpl": f"{self._preptc_stem}ndos",  # portandos
-            "Vfutpasptcmgenpl": f"{self._preptc_stem}ndorum",  # portandorum
-            "Vfutpasptcmdatpl": f"{self._preptc_stem}ndis",  # portandis
-            "Vfutpasptcmablpl": f"{self._preptc_stem}ndis",  # portandis
-            "Vfutpasptcfnomsg": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcfvocsg": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcfaccsg": f"{self._preptc_stem}ndam",  # portandam
-            "Vfutpasptcfgensg": f"{self._preptc_stem}ndae",  # portandae
-            "Vfutpasptcfdatsg": f"{self._preptc_stem}ndae",  # portandae
-            "Vfutpasptcfablsg": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcfnompl": f"{self._preptc_stem}ndae",  # portandae
-            "Vfutpasptcfvocpl": f"{self._preptc_stem}ndae",  # portandae
-            "Vfutpasptcfaccpl": f"{self._preptc_stem}ndas",  # portandas
-            "Vfutpasptcfgenpl": f"{self._preptc_stem}ndarum",  # portandarum
-            "Vfutpasptcfdatpl": f"{self._preptc_stem}ndis",  # portandis
-            "Vfutpasptcfablpl": f"{self._preptc_stem}ndis",  # portandis
-            "Vfutpasptcnnomsg": f"{self._preptc_stem}ndum",  # portandum
-            "Vfutpasptcnvocsg": f"{self._preptc_stem}ndum",  # portandum
-            "Vfutpasptcnaccsg": f"{self._preptc_stem}ndum",  # portandum
-            "Vfutpasptcngensg": f"{self._preptc_stem}ndi",  # portandi
-            "Vfutpasptcndatsg": f"{self._preptc_stem}ndo",  # portando
-            "Vfutpasptcnablsg": f"{self._preptc_stem}ndo",  # portando
-            "Vfutpasptcnnompl": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcnvocpl": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcnaccpl": f"{self._preptc_stem}nda",  # portanda
-            "Vfutpasptcngenpl": f"{self._preptc_stem}ndorum",  # portandorum
-            "Vfutpasptcndatpl": f"{self._preptc_stem}ndis",  # portandis
-            "Vfutpasptcnablpl": f"{self._preptc_stem}ndis",  # portandis
         }
 
-        if (not self.no_ppp) or self.fap_fourthpp:
+        if not self.no_fap:
             endings |= {
-                "Vfutactptcmnomsg": f"{self._fap_stem}us",  # portaturus
-                "Vfutactptcmvocsg": f"{self._fap_stem}e",  # portature
-                "Vfutactptcmaccsg": f"{self._fap_stem}um",  # portaturum
-                "Vfutactptcmgensg": f"{self._fap_stem}i",  # portaturi
-                "Vfutactptcmdatsg": f"{self._fap_stem}o",  # portaturo
-                "Vfutactptcmablsg": f"{self._fap_stem}o",  # portaturo
-                "Vfutactptcmnompl": f"{self._fap_stem}i",  # portaturi
-                "Vfutactptcmvocpl": f"{self._fap_stem}i",  # portaturi
-                "Vfutactptcmaccpl": f"{self._fap_stem}os",  # portaturos
-                "Vfutactptcmgenpl": f"{self._fap_stem}orum",  # portaturorum
-                "Vfutactptcmdatpl": f"{self._fap_stem}is",  # portaturis
-                "Vfutactptcmablpl": f"{self._fap_stem}is",  # portaturis
-                "Vfutactptcfnomsg": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcfvocsg": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcfaccsg": f"{self._fap_stem}am",  # portaturam
-                "Vfutactptcfgensg": f"{self._fap_stem}ae",  # portaturae
-                "Vfutactptcfdatsg": f"{self._fap_stem}ae",  # portaturae
-                "Vfutactptcfablsg": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcfnompl": f"{self._fap_stem}ae",  # portaturae
-                "Vfutactptcfvocpl": f"{self._fap_stem}ae",  # portaturae
-                "Vfutactptcfaccpl": f"{self._fap_stem}as",  # portaturas
-                "Vfutactptcfgenpl": f"{self._fap_stem}arum",  # portarum
-                "Vfutactptcfdatpl": f"{self._fap_stem}is",  # portaturis
-                "Vfutactptcfablpl": f"{self._fap_stem}is",  # portaturis
-                "Vfutactptcnnomsg": f"{self._fap_stem}um",  # portaturum
-                "Vfutactptcnvocsg": f"{self._fap_stem}um",  # portaturum
-                "Vfutactptcnaccsg": f"{self._fap_stem}um",  # portaturum
-                "Vfutactptcngensg": f"{self._fap_stem}i",  # portaturi
-                "Vfutactptcndatsg": f"{self._fap_stem}o",  # portaturo
-                "Vfutactptcnablsg": f"{self._fap_stem}o",  # portaturo
-                "Vfutactptcnnompl": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcnvocpl": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcnaccpl": f"{self._fap_stem}a",  # portatura
-                "Vfutactptcngenpl": f"{self._fap_stem}orum",  # portaturorum
-                "Vfutactptcndatpl": f"{self._fap_stem}is",  # portaturis
-                "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
+                "Vfutpasptcmnomsg": f"{self._preptc_stem}ndus",  # portandus
+                "Vfutpasptcmvocsg": f"{self._preptc_stem}nde",  # portande
+                "Vfutpasptcmaccsg": f"{self._preptc_stem}ndum",  # portandum
+                "Vfutpasptcmgensg": f"{self._preptc_stem}ndi",  # portandi
+                "Vfutpasptcmdatsg": f"{self._preptc_stem}ndo",  # portando
+                "Vfutpasptcmablsg": f"{self._preptc_stem}ndo",  # portando
+                "Vfutpasptcmnompl": f"{self._preptc_stem}ndi",  # portandi
+                "Vfutpasptcmvocpl": f"{self._preptc_stem}ndi",  # portandi
+                "Vfutpasptcmaccpl": f"{self._preptc_stem}ndos",  # portandos
+                "Vfutpasptcmgenpl": f"{self._preptc_stem}ndorum",  # portandorum
+                "Vfutpasptcmdatpl": f"{self._preptc_stem}ndis",  # portandis
+                "Vfutpasptcmablpl": f"{self._preptc_stem}ndis",  # portandis
+                "Vfutpasptcfnomsg": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcfvocsg": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcfaccsg": f"{self._preptc_stem}ndam",  # portandam
+                "Vfutpasptcfgensg": f"{self._preptc_stem}ndae",  # portandae
+                "Vfutpasptcfdatsg": f"{self._preptc_stem}ndae",  # portandae
+                "Vfutpasptcfablsg": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcfnompl": f"{self._preptc_stem}ndae",  # portandae
+                "Vfutpasptcfvocpl": f"{self._preptc_stem}ndae",  # portandae
+                "Vfutpasptcfaccpl": f"{self._preptc_stem}ndas",  # portandas
+                "Vfutpasptcfgenpl": f"{self._preptc_stem}ndarum",  # portandarum
+                "Vfutpasptcfdatpl": f"{self._preptc_stem}ndis",  # portandis
+                "Vfutpasptcfablpl": f"{self._preptc_stem}ndis",  # portandis
+                "Vfutpasptcnnomsg": f"{self._preptc_stem}ndum",  # portandum
+                "Vfutpasptcnvocsg": f"{self._preptc_stem}ndum",  # portandum
+                "Vfutpasptcnaccsg": f"{self._preptc_stem}ndum",  # portandum
+                "Vfutpasptcngensg": f"{self._preptc_stem}ndi",  # portandi
+                "Vfutpasptcndatsg": f"{self._preptc_stem}ndo",  # portando
+                "Vfutpasptcnablsg": f"{self._preptc_stem}ndo",  # portando
+                "Vfutpasptcnnompl": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcnvocpl": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcnaccpl": f"{self._preptc_stem}nda",  # portanda
+                "Vfutpasptcngenpl": f"{self._preptc_stem}ndorum",  # portandorum
+                "Vfutpasptcndatpl": f"{self._preptc_stem}ndis",  # portandis
+                "Vfutpasptcnablpl": f"{self._preptc_stem}ndis",  # portandis
             }
+
+        if (not self.no_ppp) or self.fap_fourthpp:
+            if not self.no_fap:
+                endings |= {
+                    "Vfutactptcmnomsg": f"{self._fap_stem}us",  # portaturus
+                    "Vfutactptcmvocsg": f"{self._fap_stem}e",  # portature
+                    "Vfutactptcmaccsg": f"{self._fap_stem}um",  # portaturum
+                    "Vfutactptcmgensg": f"{self._fap_stem}i",  # portaturi
+                    "Vfutactptcmdatsg": f"{self._fap_stem}o",  # portaturo
+                    "Vfutactptcmablsg": f"{self._fap_stem}o",  # portaturo
+                    "Vfutactptcmnompl": f"{self._fap_stem}i",  # portaturi
+                    "Vfutactptcmvocpl": f"{self._fap_stem}i",  # portaturi
+                    "Vfutactptcmaccpl": f"{self._fap_stem}os",  # portaturos
+                    "Vfutactptcmgenpl": f"{self._fap_stem}orum",  # portaturorum
+                    "Vfutactptcmdatpl": f"{self._fap_stem}is",  # portaturis
+                    "Vfutactptcmablpl": f"{self._fap_stem}is",  # portaturis
+                    "Vfutactptcfnomsg": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcfvocsg": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcfaccsg": f"{self._fap_stem}am",  # portaturam
+                    "Vfutactptcfgensg": f"{self._fap_stem}ae",  # portaturae
+                    "Vfutactptcfdatsg": f"{self._fap_stem}ae",  # portaturae
+                    "Vfutactptcfablsg": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcfnompl": f"{self._fap_stem}ae",  # portaturae
+                    "Vfutactptcfvocpl": f"{self._fap_stem}ae",  # portaturae
+                    "Vfutactptcfaccpl": f"{self._fap_stem}as",  # portaturas
+                    "Vfutactptcfgenpl": f"{self._fap_stem}arum",  # portarum
+                    "Vfutactptcfdatpl": f"{self._fap_stem}is",  # portaturis
+                    "Vfutactptcfablpl": f"{self._fap_stem}is",  # portaturis
+                    "Vfutactptcnnomsg": f"{self._fap_stem}um",  # portaturum
+                    "Vfutactptcnvocsg": f"{self._fap_stem}um",  # portaturum
+                    "Vfutactptcnaccsg": f"{self._fap_stem}um",  # portaturum
+                    "Vfutactptcngensg": f"{self._fap_stem}i",  # portaturi
+                    "Vfutactptcndatsg": f"{self._fap_stem}o",  # portaturo
+                    "Vfutactptcnablsg": f"{self._fap_stem}o",  # portaturo
+                    "Vfutactptcnnompl": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcnvocpl": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcnaccpl": f"{self._fap_stem}a",  # portatura
+                    "Vfutactptcngenpl": f"{self._fap_stem}orum",  # portaturorum
+                    "Vfutactptcndatpl": f"{self._fap_stem}is",  # portaturis
+                    "Vfutactptcnablpl": f"{self._fap_stem}is",  # portaturis
+                }
 
             if not self.fap_fourthpp:
                 assert self.ppp is not None
