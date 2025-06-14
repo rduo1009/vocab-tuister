@@ -271,7 +271,7 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_future
-# deletions: cedo (two meanings), apage (will be considered as a completely defective verb)
+# deletions: cedo (two meanings), apage (not really a verb)
 MISSING_FUTURE_VERBS: Final[set[str]] = {"adsoleo", "assoleo", "soleo"}
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_supine_stem_with_missing_future_active_participle
