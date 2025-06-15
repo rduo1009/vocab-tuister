@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
+from warnings import deprecated
 
 from ._class_word import _Word
 from .edge_cases import (
@@ -71,7 +72,7 @@ class Adjective(_Word):
     adjectives.
     """
 
-    __slots__ = (
+    __slots__: tuple[str, ...] = (
         "_cmp_stem",
         "_irregular_cmpadv",
         "_irregular_posadv",
@@ -127,31 +128,31 @@ class Adjective(_Word):
 
         super().__init__()
 
-        self._principal_parts = principal_parts
-        self.mascnom = self._principal_parts[0]
+        self._principal_parts: tuple[str, ...] = principal_parts
+        self.mascnom: str = self._principal_parts[0]
 
-        self._first = self._principal_parts[0]
-        self.meaning = meaning
-        self.declension = declension
-        self.termination = termination
-        self.irregular_flag = False
-        self.adverb_flag = True
+        self._first: str = self._principal_parts[0]
+        self.meaning: Meaning = meaning
+        self.declension: AdjectiveDeclension = declension
+        self.termination: Termination | None = termination
+        self.irregular_flag: bool = False
+        self.adverb_flag: bool = True
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
             self.irregular_flag = True
             irregular_data = IRREGULAR_ADJECTIVES[self.mascnom]
 
-            self._cmp_stem = irregular_data[0]
-            self._spr_stem = irregular_data[1]
+            self._cmp_stem: str = irregular_data[0]
+            self._spr_stem: str = irregular_data[1]
 
             if None not in irregular_data[2:]:
                 assert irregular_data[2] is not None
                 assert irregular_data[3] is not None
                 assert irregular_data[4] is not None
 
-                self._irregular_posadv = irregular_data[2]
-                self._irregular_cmpadv = irregular_data[3]
-                self._irregular_spradv = irregular_data[4]
+                self._irregular_posadv: str = irregular_data[2]
+                self._irregular_cmpadv: str = irregular_data[3]
+                self._irregular_spradv: str = irregular_data[4]
             else:
                 self.adverb_flag = False
 
@@ -159,8 +160,13 @@ class Adjective(_Word):
             self.adverb_flag = False
 
         if self.declension == "212":
-            self.endings = self._212_endings()
+            self.endings: Endings = self._212_endings()
             return
+
+        self._pos_stem: str
+        self.femnom: str
+        self.mascgen: str
+        self.neutnom: str
 
         match self.termination:
             case 1:
@@ -876,8 +882,7 @@ class Adjective(_Word):
             f"A{short_degree}{short_gender}{short_case}{short_number}"
         )
 
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -918,6 +923,36 @@ class Adjective(_Word):
             output.string = output.degree.regular
 
         return output
+
+    @deprecated(
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
+    )
+    @staticmethod
+    def create_components(key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        Deprecated in favour of ``create_components_instance``.
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        placeholder_adjective = Adjective(
+            "laetus", "laeta", "laetum", declension="212", meaning="happy"
+        )
+        return Adjective.create_components_instance(placeholder_adjective, key)
 
     def __str__(self) -> str:
         if self.declension == "3":

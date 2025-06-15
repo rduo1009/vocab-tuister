@@ -49,6 +49,8 @@
     "exclude-participle-singular": false,
     "exclude-participle-vocative": false,
     "exclude-participles": false,
+    "exclude-gerunds": false,
+    "exclude-supines": false,
     "exclude-pronoun-ablative": false,
     "exclude-pronoun-accusative": false,
     "exclude-pronoun-dative": false,
@@ -90,5 +92,7 @@
     "include-principal-parts": true,
     "include-typein-engtolat": true,
     "include-typein-lattoeng": true,
+    "english-subjunctives": true,
+    "english-verbal-nouns": true,
     "number-multiplechoice-options": 3
 }

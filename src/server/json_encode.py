@@ -1,5 +1,7 @@
 """Contains a custom encoder for converting some vocab-tester classes to JSON."""
 
+# pyright: reportExplicitAny=false
+
 from __future__ import annotations
 
 from json import JSONEncoder
@@ -28,12 +30,12 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 
 
 class QuestionClassEncoder(JSONEncoder):  # noqa: D101
-    def default(self, obj: object) -> dict[str, Any]:  # noqa: D102
-        match obj:
+    def default(self, o: object) -> dict[str, Any]:  # noqa: D102
+        match o:
             # NOTE: The tester tui currently uses the component string representation
             # case EndingComponents():
             #     ending_components_json = {}
-            #     for key, value in obj.__dict__.items():
+            #     for key, value in o.__dict__.items():
             #         if key in ENDING_COMPONENTS_ATTRS:
             #             if isinstance(value, _EndingComponentEnum):
             #                 ending_components_json[key] = value.regular
@@ -46,37 +48,35 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
             case MultipleChoiceEngToLatQuestion():
                 return {
                     "question_type": "MultipleChoiceEngToLatQuestion",
-                    "prompt": obj.prompt,
-                    "answer": obj.answer,
-                    "choices": list(obj.choices),
+                    "prompt": o.prompt,
+                    "answer": o.answer,
+                    "choices": list(o.choices),
                 }
 
             case MultipleChoiceLatToEngQuestion():
                 return {
                     "question_type": "MultipleChoiceLatToEngQuestion",
-                    "prompt": obj.prompt,
-                    "answer": obj.answer,
-                    "choices": list(obj.choices),
+                    "prompt": o.prompt,
+                    "answer": o.answer,
+                    "choices": list(o.choices),
                 }
 
             case ParseWordCompToLatQuestion():
                 return {
                     "question_type": "ParseWordCompToLatQuestion",
-                    "prompt": obj.prompt,
-                    "components": obj.components.string,
-                    "main_answer": obj.main_answer,
-                    "answers": sorted(obj.answers),
+                    "prompt": o.prompt,
+                    "components": o.components.string,
+                    "main_answer": o.main_answer,
+                    "answers": sorted(o.answers),
                 }
 
             case ParseWordLatToCompQuestion():
                 return {
                     "question_type": "ParseWordLatToCompQuestion",
-                    "prompt": obj.prompt,
-                    "dictionary_entry": obj.dictionary_entry,
-                    "main_answer": obj.main_answer.string,
-                    "answers": [
-                        obj.main_answer.string for answer in obj.answers
-                    ],
+                    "prompt": o.prompt,
+                    "dictionary_entry": o.dictionary_entry,
+                    "main_answer": o.main_answer.string,
+                    "answers": sorted([answer.string for answer in o.answers]),
                     # "main_answer": self.default(obj.main_answer),
                     # "answers": [self.default(answer) for answer in obj.answers],
                 }
@@ -84,28 +84,31 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
             case PrincipalPartsQuestion():
                 return {
                     "question_type": "PrincipalPartsQuestion",
-                    "prompt": obj.prompt,
-                    "principal_parts": list(obj.principal_parts),
+                    "prompt": o.prompt,
+                    "principal_parts": list(o.principal_parts),
                 }
 
             case TypeInEngToLatQuestion():
                 return {
                     "question_type": "TypeInEngToLatQuestion",
-                    "prompt": obj.prompt,
-                    "main_answer": obj.main_answer,
-                    "answers": sorted(obj.answers),
+                    "prompt": o.prompt,
+                    "main_answer": o.main_answer,
+                    "answers": sorted(o.answers),
                 }
 
             case TypeInLatToEngQuestion():
                 return {
                     "question_type": "TypeInLatToEngQuestion",
-                    "prompt": obj.prompt,
-                    "main_answer": obj.main_answer,
-                    "answers": sorted(obj.answers),
+                    "prompt": o.prompt,
+                    "main_answer": o.main_answer,
+                    "answers": sorted(o.answers),
                 }
 
+            case _:
+                pass
+
         # this actually throws error
-        return cast("dict[str, Any]", super().default(obj))
+        return cast("dict[str, Any]", super().default(o))
 
 
 QuestionClassEncoder.__doc__ = JSONEncoder.__doc__

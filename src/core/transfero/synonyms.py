@@ -1,5 +1,7 @@
 """Contains a function that finds synonyms of English words."""
 
+# pyright: reportUnusedCallResult=false
+
 from __future__ import annotations
 
 import logging

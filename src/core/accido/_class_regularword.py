@@ -5,11 +5,14 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
+from warnings import deprecated
 
 from ._class_word import _Word
 from .misc import EndingComponents, MultipleMeanings
 
 if TYPE_CHECKING:
+    from src.core.accido.type_aliases import Endings
+
     from .type_aliases import Meaning
 
 logger = logging.getLogger(__name__)
@@ -33,7 +36,7 @@ class RegularWord(_Word):
     Note that the arguments of ``RegularWord`` are keyword-only.
     """
 
-    __slots__ = ("word",)
+    __slots__: tuple[str, ...] = ("word",)
 
     def __init__(self, word: str, *, meaning: Meaning) -> None:
         """Initialise RegularWord.
@@ -47,10 +50,10 @@ class RegularWord(_Word):
 
         super().__init__()
 
-        self.word = word
-        self._first = self.word
-        self.meaning = meaning
-        self.endings = {"": self.word}
+        self.word: str = word
+        self._first: str = self.word
+        self.meaning: Meaning = meaning
+        self.endings: Endings = {"": self.word}
 
     def get(self) -> str:
         """Return the word.
@@ -70,10 +73,7 @@ class RegularWord(_Word):
 
         return self.word
 
-    @staticmethod
-    def create_components(
-        key: str,  # noqa: ARG004
-    ) -> EndingComponents:
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         In the case of a regular word, the returned ``EndingComponents`` object
@@ -90,7 +90,36 @@ class RegularWord(_Word):
         EndingComponents
             The ``EndingComponents`` object created.
         """
+        del key
+
         return EndingComponents(string="")
+
+    @deprecated(
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
+    )
+    @staticmethod
+    def create_components(key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        Deprecated in favour of ``create_components_instance``.
+        In the case of a regular word, the returned ``EndingComponents`` object
+        will be empty.
+        Note that this function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+        """
+        placeholder_regularword = RegularWord("sed", meaning="but")
+        return RegularWord.create_components_instance(
+            placeholder_regularword, key
+        )
 
     def __repr__(self) -> str:
         return f"RegularWord({self.word}, meaning={self.meaning})"

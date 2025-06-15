@@ -18,7 +18,9 @@ def test_reader():
     assert l == VocabList(
         [
             Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-            Verb("capio", "capere", "cepi", meaning="take"),
+            Verb("capio", "capere", "cepi", "captus", meaning="take"),
+            Verb("potior", "potiri", "potitus sum", meaning="master"),
+            Verb("queror", "queri", "questus sum", meaning="complain"),
             Verb("inquam", meaning="say"),
             Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
             Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
@@ -38,7 +40,9 @@ def test_reader():
         ],
         """@ Verb
 hear: audio, audire, audivi, auditus
-take: capio, capere, cepi
+take: capio, capere, cepi, captus
+master: potior, potiri, potitus sum
+complain: queror, queri, questus sum
 say: inquam
 
 @ Noun
@@ -81,7 +85,7 @@ def test_reader_with_s():
     assert l == VocabList(
         [
             Verb("audio", "audire", "audivi", "auditus", meaning="hear"),
-            Verb("capio", "capere", "cepi", meaning="take"),
+            Verb("capio", "capere", "cepi", "captus", meaning="take"),
             Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl"),
             Noun("agricola", "agricolae", gender=Gender.MASCULINE, meaning="farmer"),
             Noun("puer", "pueri", gender=Gender.MASCULINE, meaning="boy"),
@@ -97,7 +101,7 @@ def test_reader_with_s():
         ],
         """@Verbs
 hear: audio, audire, audivi, auditus
-take: capio, capere, cepi
+take: capio, capere, cepi, captus
 
 @Nouns
 girl: puella, puellae, (f)
