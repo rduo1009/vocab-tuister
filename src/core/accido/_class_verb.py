@@ -12,6 +12,7 @@ from warnings import deprecated
 from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
 from .edge_cases import (
+    ACTIVE_ONLY_VERBS,
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
     MISSING_FAP_VERBS,
@@ -86,6 +87,7 @@ class Verb(_Word):
         "_per_stem",
         "_ppp_stem",
         "_preptc_stem",
+        "active_only",
         "conjugation",
         "deponent",
         "fap_fourthpp",
@@ -168,6 +170,7 @@ class Verb(_Word):
         self.no_perfect: bool = False
         self.no_future: bool = False
         self.no_fap: bool = False
+        self.active_only: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -306,7 +309,6 @@ class Verb(_Word):
             if not self.ppp:
                 self.ppp = self.perfect
                 del self.perfect
-
             elif self.perfect is not None:
                 raise InvalidInputError(
                     f"Verb '{self.present}' has no perfect, but perfect provided."
@@ -360,6 +362,7 @@ class Verb(_Word):
 
         self.no_gerund = self.present in MISSING_GERUND_VERBS
         self.no_fap = self.present in MISSING_FAP_VERBS
+        self.active_only = self.present in ACTIVE_ONLY_VERBS
 
         # FIXME: this only applies to 'soleo' and derivatives, which are semideponent
         # need to move to semideponent branch when its implemented
@@ -437,6 +440,13 @@ class Verb(_Word):
                     else (self.present, self.infinitive, self.perfect)
                 ),
             )
+
+        if self.active_only:
+            self.endings = {
+                key: value
+                for key, value in self.endings.items()
+                if key[4:7] != Voice.PASSIVE.shorthand
+            }
 
         # FIXME: similar to above as well
         if self.no_future:
