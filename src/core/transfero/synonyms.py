@@ -73,7 +73,12 @@ POS_TABLE: Final[dict[type[_Word], str | None]] = {
 }
 
 
-def find_synonyms(word: str, *, pos: type[_Word] | None = None) -> set[str]:
+def find_synonyms(
+    word: str,
+    *,
+    pos: type[_Word] | None = None,
+    include_similar_words: bool = False,
+) -> set[str]:
     """Find synonyms of a word.
 
     Parameters
@@ -83,17 +88,23 @@ def find_synonyms(word: str, *, pos: type[_Word] | None = None) -> set[str]:
     pos : type[_Word] | None
         The part of speech of the word. If ``None``, then the synonyms
         of all parts of speech are returned.
+    include_similar_words : bool, optional
+        Whether to include similar words in the search, by default False.
+        This leverages WordNet's 'similar to' relationships, often useful
+        for adjectives (e.g., finding 'massive' as similar to 'big') or
+        other related terms that aren't strict synonyms.
 
     Returns
     -------
     set[str]
         The synonyms of the word.
     """
-    logger.debug("find_synonyms(%s)", word)
+    logger.debug("find_synonyms(word=%r, pos=%s, include_similar_words=%s)", word, pos, include_similar_words)
 
     synonyms: set[str] = set()
 
     for synset in wordnet.synsets(word, pos=POS_TABLE[pos] if pos else None):
+        # Add lemmas from the synset itself
         synonyms.update(
             lemma.name()
             .lower()  # some words are capitalised
@@ -101,6 +112,17 @@ def find_synonyms(word: str, *, pos: type[_Word] | None = None) -> set[str]:
             for lemma in synset.lemmas()
             if lemma.name().lower() != word
         )
+
+        # Add lemmas from similar_tos synsets if requested
+        if include_similar_words:
+            for similar_synset in synset.similar_tos():
+                synonyms.update(
+                    lemma.name()
+                    .lower()
+                    .replace("_", " ")
+                    for lemma in similar_synset.lemmas()
+                    if lemma.name().lower() != word
+                )
 
     logger.debug("Synonyms: %s", synonyms)
 
