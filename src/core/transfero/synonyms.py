@@ -8,10 +8,16 @@ import logging
 import sys as _sys
 import warnings
 from pathlib import Path
+from typing import TYPE_CHECKING, Final
 
 from nltk import download
 from nltk.corpus import wordnet
 from nltk.data import find, path
+
+from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+
+if TYPE_CHECKING:
+    from ..accido.endings import _Word
 
 logger = logging.getLogger(__name__)
 
@@ -58,14 +64,25 @@ except LookupError:
 
 del find, download, path
 
+POS_TABLE: Final[dict[type[_Word], str | None]] = {
+    Noun: wordnet.NOUN,
+    Pronoun: wordnet.NOUN,
+    Verb: wordnet.VERB,
+    Adjective: wordnet.ADJ,
+    RegularWord: None,
+}
 
-def find_synonyms(word: str) -> set[str]:
+
+def find_synonyms(word: str, *, pos: type[_Word] | None = None) -> set[str]:
     """Find synonyms of a word.
 
     Parameters
     ----------
     word : str
         The word to find synonyms of.
+    pos : type[_Word] | None
+        The part of speech of the word. If ``None``, then the synonyms
+        of all parts of speech are returned.
 
     Returns
     -------
@@ -76,11 +93,13 @@ def find_synonyms(word: str) -> set[str]:
 
     synonyms: set[str] = set()
 
-    for synset in wordnet.synsets(word):
+    for synset in wordnet.synsets(word, pos=POS_TABLE[pos] if pos else None):
         synonyms.update(
             lemma.name()
+            .lower()  # some words are capitalised
+            .replace("_", " ")
             for lemma in synset.lemmas()
-            if lemma.name() != word and "_" not in lemma.name()
+            if lemma.name().lower() != word
         )
 
     logger.debug("Synonyms: %s", synonyms)

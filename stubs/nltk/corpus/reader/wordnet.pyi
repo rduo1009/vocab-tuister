@@ -18,6 +18,11 @@ class Synset:
     def lemmas(self, lang: str = ...) -> list[Lemma]: ...
 
 class WordNetCorpusReader:
+    ADJ: str
+    ADJ_SAT: str
+    ADV: str
+    NOUN: str
+    VERB: str
     def __init__(
         self, root: ZipFilePathPointer, omw_reader: LazyCorpusLoader
     ) -> None: ...
@@ -30,7 +35,7 @@ class WordNetCorpusReader:
     def synsets(
         self,
         lemma: str,
-        pos: None = ...,
+        pos: str | None = ...,
         lang: str = ...,
         check_exceptions: bool = ...,
     ) -> list[Synset]: ...

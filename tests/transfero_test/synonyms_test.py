@@ -8,7 +8,7 @@ from src.core.transfero.synonyms import find_synonyms
 
 
 @pytest.mark.manual
-def test_synonyms():
+def test_synonyms_no_pos():
     words = ["house", "car", "happy", "sad", "disgust", "fortune"]
     for word in words:
         synonyms = find_synonyms(word)
