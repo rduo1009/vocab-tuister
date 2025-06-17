@@ -99,7 +99,12 @@ def find_synonyms(
     set[str]
         The synonyms of the word.
     """
-    logger.debug("find_synonyms(word=%r, pos=%s, include_similar_words=%s)", word, pos, include_similar_words)
+    logger.debug(
+        "find_synonyms(word=%r, pos=%s, include_similar_words=%s)",
+        word,
+        pos,
+        include_similar_words,
+    )
 
     synonyms: set[str] = set()
 
@@ -117,9 +122,7 @@ def find_synonyms(
         if include_similar_words:
             for similar_synset in synset.similar_tos():
                 synonyms.update(
-                    lemma.name()
-                    .lower()
-                    .replace("_", " ")
+                    lemma.name().lower().replace("_", " ")
                     for lemma in similar_synset.lemmas()
                     if lemma.name().lower() != word
                 )
