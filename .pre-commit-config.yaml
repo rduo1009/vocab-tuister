@@ -1,41 +1,20 @@
 exclude: "src/_vendor/.*"
 
 ci:
-  skip: [poetry-lock, poetry-export, golangci-lint]
+  skip: [poetry-lock, golangci-lint]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
 repos:
   # Check project deps
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.1.1
+    rev: 2.1.3
     hooks:
       - id: poetry-lock
 
-  - repo: https://github.com/python-poetry/poetry-plugin-export
-    rev: 1.9.0
-    hooks:
-      - id: poetry-export
-        args:
-          [
-            "--format=requirements.txt",
-            "--output=requirements.txt",
-            "--without-hashes",
-            "--without-urls",
-          ]
-      - id: poetry-export
-        args:
-          [
-            "--format=requirements.txt",
-            "--output=requirements-dev.txt",
-            "--without-hashes",
-            "--without-urls",
-            "--with=dev,types",
-          ]
-
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.0
+    rev: v0.11.13
     hooks:
       - id: ruff
         args: [--fix]
@@ -44,7 +23,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.64.7
+    rev: v2.1.6
     hooks:
       - id: golangci-lint
         args: [--fix]
@@ -57,7 +36,7 @@ repos:
         args: [-w, "79"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.5.1"
+    rev: "v2.6.0"
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]

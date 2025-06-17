@@ -1,65 +1,199 @@
-[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
-Question 1/6
+[?25l[?2004h]2;Vocab Tester Session[1;4;4mVocab[0m[4m [0m[1;4;4mTester[0m[4m [0m[1;4;4mSession[0m[K
+Question 1/6[K
+[K
+[1mTranslate[0m to English: [3mbar[0m[K
+[38;2;255;51;153m[ ] foo[0m[K
+[ ] bar[K
+[ ] baz[K
+[K
+[K
+[K
+Score: 0/0 (0%)[K
+[38;2;97;97;97mtab[0m [38;2;73;73;73mnext option[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⏎[0m [38;2;73;73;73msubmit answer[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+h[0m [38;2;73;73;73mtoggle additional help[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[11A
 
-Translate to English: bar
-[ ] foo
-[ ] bar
-[ ] baz
+
+
+[1;38;2;77;255;77m[x] foo[0m[K
 
 
 
-Score: 0/0 (0%)
-tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit[x] foo
-Answer is correct!
-Score: 1/1 (100%)
-Question 2/6
-[ ] foo
+Answer is correct![K
 
-[ ] foo
-[ ] bar
-[x] bar
-Answer is incorrect!
-Score: 1/2 (50%)
-Question 3/6
-Translate to English: foo
-[ ] baz
-[ ] bar
-[ ] qux
+Score: 1/1 (100%)[K
+[300D[11A
+Question 2/6[K
 
-[ ] baz
-[ ] bar
-[x] bar
-Answer is correct!
-Score: 2/3 (67%)
-Question 4/6
-[ ] baz
-[ ] bar
 
-[ ] baz
-[ ] bar
-[ ] bar
-[ ] qux
-[x] qux
-Answer is incorrect!
-Score: 2/4 (50%)
-Question 5/6
-Translate to English: baz
-[ ] bar
-[ ] foo
-[ ] qux
+[38;2;255;51;153m[ ] foo[0m[K
 
-[ ] bar
-[ ] foo
-[ ] foo
-[ ] qux
-[x] qux
-Answer is correct!
-Score: 3/5 (60%)
-Question 6/6
-[ ] bar
-[ ] qux
 
-[x] bar
-Answer is incorrect!
-Score: 3/6 (50%)
-[?2004l[?25h
+
+[K
+
+
+[300D[11A
+
+
+
+[ ] foo[K
+[38;2;255;51;153m[ ] bar[0m[K
+
+
+
+
+
+[300D[11A
+
+
+
+
+[1;38;2;255;77;77m[x] bar[0m[K
+
+
+Answer is incorrect![K
+
+Score: 1/2 (50%)[K
+[300D[11A
+Question 3/6[K
+
+[1mTranslate[0m to English: [3mfoo[0m[K
+[38;2;255;51;153m[ ] baz[0m[K
+[ ] bar[K
+[ ] qux[K
+
+[K
+
+
+[300D[11A
+
+
+
+[ ] baz[K
+[38;2;255;51;153m[ ] bar[0m[K
+
+
+
+
+
+[300D[11A
+
+
+
+
+[1;38;2;77;255;77m[x] bar[0m[K
+
+
+Answer is correct![K
+
+Score: 2/3 (67%)[K
+[300D[11A
+Question 4/6[K
+
+
+[38;2;255;51;153m[ ] baz[0m[K
+[ ] bar[K
+
+
+[K
+
+
+[300D[11A
+
+
+
+[ ] baz[K
+[38;2;255;51;153m[ ] bar[0m[K
+
+
+
+
+
+[300D[11A
+
+
+
+
+[ ] bar[K
+[38;2;255;51;153m[ ] qux[0m[K
+
+
+
+
+[300D[11A
+
+
+
+
+
+[1;38;2;255;77;77m[x] qux[0m[K
+
+Answer is incorrect![K
+
+Score: 2/4 (50%)[K
+[300D[11A
+Question 5/6[K
+
+[1mTranslate[0m to English: [3mbaz[0m[K
+[38;2;255;51;153m[ ] bar[0m[K
+[ ] foo[K
+[ ] qux[K
+
+[K
+
+
+[300D[11A
+
+
+
+[ ] bar[K
+[38;2;255;51;153m[ ] foo[0m[K
+
+
+
+
+
+[300D[11A
+
+
+
+
+[ ] foo[K
+[38;2;255;51;153m[ ] qux[0m[K
+
+
+
+
+[300D[11A
+
+
+
+
+
+[1;38;2;77;255;77m[x] qux[0m[K
+
+Answer is correct![K
+
+Score: 3/5 (60%)[K
+[300D[11A
+Question 6/6[K
+
+
+[38;2;255;51;153m[ ] bar[0m[K
+
+[ ] qux[K
+
+[K
+
+
+[300D[11A
+
+
+
+[1;38;2;255;77;77m[x] bar[0m[K
+
+
+
+Answer is incorrect![K
+
+Score: 3/6 (50%)[K
+[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

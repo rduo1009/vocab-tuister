@@ -69,7 +69,7 @@ class Tense(
     FUTURE = "future", "fut"
     PERFECT = "perfect", "per"
     PLUPERFECT = "pluperfect", "plp"
-    # FUTURE_PERFECT = "future perfect", "fpr"
+    FUTURE_PERFECT = "future perfect", "fpr"
 
 
 class Voice(

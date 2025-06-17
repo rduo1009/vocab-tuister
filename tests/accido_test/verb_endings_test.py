@@ -21,6 +21,12 @@ VERB_COMBINATIONS = (
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
     (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
     (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
     (Tense.PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
@@ -33,6 +39,12 @@ VERB_COMBINATIONS = (
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
     (Tense.PLUPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
     (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
@@ -55,8 +67,10 @@ class TestVerbConjugation:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "celo", "celas", "celat", "celamus", "celatis", "celant",
         "celabam", "celabas", "celabat", "celabamus", "celabatis", "celabant",
+        "celabo", "celabis", "celabit", "celabimus", "celabitis", "celabunt",
         "celavi", "celavisti", "celavit", "celavimus", "celavistis", "celaverunt",
         "celaveram", "celaveras", "celaverat", "celaveramus", "celaveratis", "celaverant",
+        "celavero", "celaveris", "celaverit", "celaverimus", "celaveritis", "celaverint",
 
         "celare",
         "cela", "celate",
@@ -71,8 +85,10 @@ class TestVerbConjugation:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "pareo", "pares", "paret", "paremus", "paretis", "parent",
         "parebam", "parebas", "parebat", "parebamus", "parebatis", "parebant",
+        "parebo", "parebis", "parebit", "parebimus", "parebitis", "parebunt",
         "parui", "paruisti", "paruit", "paruimus", "paruistis", "paruerunt",
         "parueram", "parueras", "paruerat", "parueramus", "parueratis", "paruerant",
+        "paruero", "parueris", "paruerit", "paruerimus", "parueritis", "paruerint",
 
         "parere",
         "pare", "parete",
@@ -81,14 +97,16 @@ class TestVerbConjugation:
         "paruissem", "paruisses", "paruisset", "paruissemus", "paruissetis", "paruissent",
     ])])  # fmt: skip
     def test_secondconjugation(self, tense, voice, mood, person, number, expected):
-        word = Verb("pareo", "parere", "parui", meaning="hide")
+        word = Verb("pareo", "parere", "parui", "paritus", meaning="appear")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "desero", "deseris", "deserit", "deserimus", "deseritis", "deserunt",
         "deserebam", "deserebas", "deserebat", "deserebamus", "deserebatis", "deserebant",
+        "deseram", "deseres", "deseret", "deseremus", "deseretis", "deserent",
         "deserui", "deseruisti", "deseruit", "deseruimus", "deseruistis", "deseruerunt",
         "deserueram", "deserueras", "deseruerat", "deserueramus", "deserueratis", "deseruerant",
+        "deseruero", "deserueris", "deseruerit", "deseruerimus", "deserueritis", "deseruerint",
 
         "deserere",
         "desere", "deserite",
@@ -101,26 +119,30 @@ class TestVerbConjugation:
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "facio", "facis", "facit", "facimus", "facitis", "faciunt",
-        "faciebam", "faciebas", "faciebat", "faciebamus", "faciebatis", "faciebant",
-        "feci", "fecisti", "fecit", "fecimus", "fecistis", "fecerunt",
-        "feceram", "feceras", "fecerat", "feceramus", "feceratis", "fecerant",
+        "capio", "capis", "capit", "capimus", "capitis", "capiunt",
+        "capiebam", "capiebas", "capiebat", "capiebamus", "capiebatis", "capiebant",
+        "capiam", "capies", "capiet", "capiemus", "capietis", "capient",
+        "cepi", "cepisti", "cepit", "cepimus", "cepistis", "ceperunt",
+        "ceperam", "ceperas", "ceperat", "ceperamus", "ceperatis", "ceperant",
+        "cepero", "ceperis", "ceperit", "ceperimus", "ceperitis", "ceperint",
 
-        "facere",
-        "face", "facite",
+        "capere",
+        "cape", "capite",
             
-        "facerem", "faceres", "faceret", "faceremus", "faceretis", "facerent",
-        "fecissem", "fecisses", "fecisset", "fecissemus", "fecissetis", "fecissent",
+        "caperem", "caperes", "caperet", "caperemus", "caperetis", "caperent",
+        "cepissem", "cepisses", "cepisset", "cepissemus", "cepissetis", "cepissent",
     ])])  # fmt: skip
     def test_thirdioconjugation(self, tense, voice, mood, person, number, expected):
-        word = Verb("facio", "facere", "feci", "factus", meaning="make")
+        word = Verb("capio", "capere", "cepi", "captus", meaning="take")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "aperio", "aperis", "aperit", "aperimus", "aperitis", "aperiunt",
         "aperiebam", "aperiebas", "aperiebat", "aperiebamus", "aperiebatis", "aperiebant",
+        "aperiam", "aperies", "aperiet", "aperiemus", "aperietis", "aperient",
         "aperui", "aperuisti", "aperuit", "aperuimus", "aperuistis", "aperuerunt",
         "aperueram", "aperueras", "aperuerat", "aperueramus", "aperueratis", "aperuerant",
+        "aperuero", "aperueris", "aperuerit", "aperuerimus", "aperueritis", "aperuerint",
             
         "aperire",
         "aperi", "aperite",
@@ -135,8 +157,10 @@ class TestVerbConjugation:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "abeo", "abis", "abit", "abimus", "abitis", "abeunt",
         "abibam", "abibas", "abibat", "abibamus", "abibatis", "abibant",
+        "abibo", "abibis", "abibit", "abibimus", "abibitis", "abibunt",
         "abii", "abisti", "abiit", "abiimus", "abistis", "abierunt",
         "abieram", "abieras", "abierat", "abieramus", "abieratis", "abierant",
+        "abiero", "abieris", "abierit", "abierimus", "abieritis", "abierint",
 
         "abire",
         "abi", "abite",
@@ -153,12 +177,15 @@ class TestVerbConjugation:
         assert Verb(word, meaning="placeholder").endings == IRREGULAR_VERBS[word]
 
 
+# TODO: Rework this to be more like pronouns
 class TestIrregularVerbInflection:
     @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "sum", "es", "est", "sumus", "estis", "sunt",
         "eram", "eras", "erat", "eramus", "eratis", "erant",
+        "ero", "eris", "erit", "erimus", "eritis", "erunt",
         "fui", "fuisti", "fuit", "fuimus", "fuistis", "fuerunt",
         "fueram", "fueras", "fuerat", "fueramus", "fueratis", "fuerant",
+        "fuero", "fueris", "fuerit", "fuerimus", "fueritis", "fuerint",
 
         "esse",
         "es", "este",
@@ -170,21 +197,22 @@ class TestIrregularVerbInflection:
         word = Verb("sum", "esse", "fui", meaning="be")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "adeo", "adis", "adit", "adimus", "aditis", "adeunt",
-        "adibam", "adibas", "adibat", "adibamus", "adibatis", "adibant",
-        "adii", "adisti", "adiit", "adiimus", "adistis", "adierunt",
-        "adieram", "adieras", "adierat", "adieramus", "adieratis", "adierant",
+    # NOTE: Already covered!
+    # @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+    #     "adeo", "adis", "adit", "adimus", "aditis", "adeunt",
+    #     "adibam", "adibas", "adibat", "adibamus", "adibatis", "adibant",
+    #     "adii", "adisti", "adiit", "adiimus", "adistis", "adierunt",
+    #     "adieram", "adieras", "adierat", "adieramus", "adieratis", "adierant",
 
-        "adire",
-        "adi", "adite",
+    #     "adire",
+    #     "adi", "adite",
 
-        "adirem", "adires", "adiret", "adiremus", "adiretis", "adirent",
-        "adissem", "adisses", "adisset", "adissemus", "adissetis", "adissent",
-    ])])  # fmt: skip
-    def test_irregular_verb_derived(self, tense, voice, mood, person, number, expected):
-        word = Verb("adeo", "adire", "adii", "aditus", meaning="go to")
-        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+    #     "adirem", "adires", "adiret", "adiremus", "adiretis", "adirent",
+    #     "adissem", "adisses", "adisset", "adissemus", "adissetis", "adissent",
+    # ])])
+    # def test_irregular_verb_derived(self, tense, voice, mood, person, number, expected):
+    #     word = Verb("adeo", "adire", "adii", "aditus", meaning="go to")
+    #     assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
 
 PARTICIPLE_COMBINATIONS = (

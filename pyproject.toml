@@ -16,49 +16,48 @@ classifiers = [
 dynamic = [ "version" ]
 
 dependencies = [
-  "aenum==3.1.15",
+  "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==3.9.0",
-  "dill==0.3.9",
-  "dunamai==1.23.0",
-  "flask==3.1.0",
+  "cyclopts==3.18.0",
+  "dill==0.4.0",
+  "dunamai==1.24.1",
+  "flask==3.1.1",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "nltk==3.9.1",
-  "pyinstaller==6.12.0",
+  "pyinstaller==6.14.1",
   "waitress==3.0.2",
 ]
 
 [tool.poetry]
-version = "0.0.0"                         # placeholder
 requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
 exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
+version = "0.0.0"                         # placeholder
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.5"
-syrupy = "4.8.1"
+pytest = "8.4.0"
+syrupy = "4.9.1"
 pytest-sugar = "1.0.0"
-pytest-xdist = "3.6.1"
-coverage = "7.6.12"
+pytest-xdist = "3.7.0"
+coverage = "7.9.1"
 pytest-env = "1.1.5"
 icecream = "2.1.4"
-ruff = "0.9.9"
-doc8 = "1.1.2"
+ruff = "0.11.13"
+doc8 = "2.0.0"
 rstfmt = "0.0.14"
-mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
-monkeytype = "23.3.0"
+mypy = { version = "1.16.0", extras = [ "faster-cache" ] }
 interrogate = "1.7.0"
-pydoclint = "0.6.2"
+griffe = "1.7.3"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2024.11.6.20250305"
+types-regex = "2024.11.6.20250403"
 types-waitress = "3.0.1.20241117"
-optype = "0.9.1"
+optype = "0.10.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true

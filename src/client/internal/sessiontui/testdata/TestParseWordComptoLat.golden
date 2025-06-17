@@ -1,67 +1,329 @@
-[?25l[?2004h]2;Vocab Tester SessionVocab Tester Session
-Question 1/6
+[?25l[?2004h]2;Vocab Tester Session[1;4;4mVocab[0m[4m [0m[1;4;4mTester[0m[4m [0m[1;4;4mSession[0m[K
+Question 1/6[K
+[K
+What is [3mbar[0m in the quz?[K
+> [7mW[0m[K
+[K
+[K
+Score: 0/0 (0%)[K
+[38;2;97;97;97mtab[0m [38;2;73;73;73mnext option[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⏎[0m [38;2;73;73;73msubmit answer[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+h[0m [38;2;73;73;73mtoggle additional help[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[8A
 
-What is bar in the quz?
-> Write answer here...
 
 
-Score: 0/0 (0%)
-tab next option • ⏎ submit answer • ctrl+h toggle additional help • ctrl+q quit> f 
-> fo 
-> foo 
-> foo 
-Answer is correct!
-Score: 1/1 (100%)
-Question 2/6
-> Write answer here...
+> f[7m [0m[K
 
-> f 
-> fo 
-> foo 
-> foof 
-> foofo 
-> foofoo 
-> foofoo 
-Answer is correct!
-Score: 2/2 (100%)
-Question 3/6
-> Write answer here...
 
-> b 
-> ba 
-> bar 
-> bar  ✕ foo
-Answer is incorrect!
-Score: 2/3 (67%)
-Question 4/6
-What is foo in the quux?
-> Write answer here...
 
-> b 
-> ba 
-> bar 
-> bar 
-Answer is correct!
-Score: 3/4 (75%)
-Question 5/6
-> Write answer here...
+[300D[8A
 
-> b 
-> ba 
-> bar 
-> barb 
-> barba 
-> barbar 
-> barbar 
-Answer is correct!
-Score: 4/5 (80%)
-Question 6/6
-> Write answer here...
 
-> b 
-> ba 
-> baz 
-> baz  ✕ bar
-Answer is incorrect!
-Score: 4/6 (67%)
-[?2004l[?25h
+
+> fo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mfoo[0m [K
+Answer is correct![K
+
+Score: 1/1 (100%)[K
+[300D[8A
+Question 2/6[K
+
+
+> [7mW[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mW[0m[K
+
+
+
+[300D[8A
+
+
+
+> f[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> fo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foof[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foofo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> foofoo[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mfoofoo[0m [K
+Answer is correct![K
+
+Score: 2/2 (100%)[K
+[300D[8A
+Question 3/6[K
+
+
+> [7mW[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mW[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar [1;38;2;255;77;77m ✕ foo[0m[K
+Answer is incorrect![K
+
+Score: 2/3 (67%)[K
+[300D[8A
+Question 4/6[K
+
+What is [3mfoo[0m in the quux?[K
+> [7mW[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mW[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mbar[0m [K
+Answer is correct![K
+
+Score: 3/4 (75%)[K
+[300D[8A
+Question 5/6[K
+
+
+> [7mW[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mW[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> bar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barb[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> barbar[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> [1;38;2;77;255;77mbarbar[0m [K
+Answer is correct![K
+
+Score: 4/5 (80%)[K
+[300D[8A
+Question 6/6[K
+
+
+> [7mW[0m[K
+[K
+
+
+[300D[8A
+
+
+
+> [38;5;240mW[0m[K
+
+
+
+[300D[8A
+
+
+
+> b[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> ba[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> baz[7m [0m[K
+
+
+
+[300D[8A
+
+
+
+> baz [1;38;2;255;77;77m ✕ bar[0m[K
+Answer is incorrect![K
+
+Score: 4/6 (67%)[K
+[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

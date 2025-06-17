@@ -1,6 +1,6 @@
 package sessiontui
 
-import "github.com/charmbracelet/bubbles/v2/key"
+import "github.com/charmbracelet/bubbles/key"
 
 type KeyMap struct {
 	NextOption key.Binding

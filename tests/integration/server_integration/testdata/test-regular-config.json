@@ -67,6 +67,8 @@
     "exclude-verb-3rd-person": false,
     "exclude-verb-first-conjugation": false,
     "exclude-verb-fourth-conjugation": false,
+    "exclude-verb-future-active-indicative": false,
+    "exclude-verb-future-perfect-active-indicative": false,
     "exclude-verb-imperfect-active-indicative": false,
     "exclude-verb-imperfect-active-subjunctive": false,
     "exclude-verb-irregular-conjugation": false,

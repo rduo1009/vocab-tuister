@@ -1,8 +1,8 @@
 package configtui
 
 import (
-	"github.com/charmbracelet/bubbles/v2/help"
-	"github.com/charmbracelet/bubbles/v2/textinput"
+	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/textinput"
 )
 
 type Setting struct {
@@ -167,7 +167,7 @@ var wizard = SettingsWizard{
 
 func InitialModel(filePath string) Model {
 	ti := textinput.New()
-	ti.SetWidth(20)
+	ti.Width = 20
 	ti.Placeholder = "Must be a positive integer"
 	ti.CharLimit = 3
 	ti.Focus()

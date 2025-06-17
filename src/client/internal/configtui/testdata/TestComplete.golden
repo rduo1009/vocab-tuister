@@ -1,146 +1,393 @@
-[?25l[?2004h]2;Create Session ConfigVerb exclusions
-[x] All of them
-[x] First conjugation verbs
-[ ] Second conjugation verbs
-[ ] Third conjugation verbs
-[ ] Fourth conjugation verbs
-[ ] Mixed conjugation verbs
-[ ] Irregular verbs
-[ ] Present active indicative
-[ ] Imperfect active indicative
-[ ] Perfect active indicative
-[ ] Pluperfect active indicative
-[ ] Present active infinitive
-[ ] Present active imperative
-[ ] Imperative active subjunctive
-[ ] Pluperfect active subjunctive
-[ ] Singular number
-[ ] Plural number
-[ ] 1st person
-[ ] 2nd person
-[ ] 3rd person
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[ ] All of them
-[ ] All of them
-[x] First conjugation verbs
-[x] First conjugation verbs
-[ ] Second conjugation verbs
-[x] Second conjugation verbs
-Participle exclusions
-[x] All of them
-[ ] Present active
-[ ] Perfect passive
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[ ] All of them
-[ ] All of them
-[ ] Present active
-[ ] Present active
-[ ] Perfect passive
-[x] Perfect passive
-Noun exclusions
-[ ] All of them
-[ ] First declension nouns
-[ ] Second declension nouns
-[ ] Third declension nouns
-[ ] Fourth declension nouns
-[ ] Fifth declension nouns
-[ ] Irregular nouns
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[x] All of them
-[ ] First declension nouns
-[ ] First declension nouns
-[ ] Second declension nouns
-[x] Second declension nouns
-Adjective exclusions
-[ ] All of them
-[ ] First and second declension adjectives
-[ ] Third declension adjectives
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-[ ] Positive degree
-[ ] Comparative degree
-[ ] Superlative degree
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[x] All of them
-[ ] First and second declension adjectives
-[ ] First and second declension adjectives
-[ ] Third declension adjectives
-[x] Third declension adjectives
-Adverb exclusions
-[ ] All of them
-[ ] Positive degree
-[ ] Comparative degree
-[ ] Superlative degree
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[x] All of them
-[ ] Positive degree
-[ ] Positive degree
-[ ] Comparative degree
-[x] Comparative degree
-Pronoun exclusions
-[ ] All of them
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[x] All of them
-[ ] Masculine gender
-[ ] Masculine gender
-[ ] Feminine gender
-[x] Feminine gender
-Regular word exclusions
-[ ] All of them
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[x] All of them
-[ ] All of them
-Question types
-[x] Type-in English to Latin questions
-[x] Type-in Latin to English questions
-[x] Parsing questions
-[x] Inflecting questions
-[x] Principal parts questions
-[x] Multiple choice English to Latin questions
-[x] Multiple choice Latin to English questions
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[ ] Type-in English to Latin questions
-[ ] Type-in English to Latin questions
-[x] Type-in Latin to English questions
-[x] Type-in Latin to English questions
-[x] Parsing questions
-[ ] Parsing questions
-Input the number of options wanted for multiple-choice questions.
-> Must be a positive integer                                                                                                                                                                                                                                                                                
-(press right to save and quit)> 3                                                                                                                                                                                                                                                                                                         
-[?2004l[?25h
+[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[1m[x] First conjugation verbs[0m[K
+[ ] Second conjugation verbs[K
+[ ] Third conjugation verbs[K
+[ ] Fourth conjugation verbs[K
+[ ] Mixed conjugation verbs[K
+[ ] Irregular verbs[K
+[ ] Present active indicative[K
+[ ] Imperfect active indicative[K
+[ ] Perfect active indicative[K
+[ ] Pluperfect active indicative[K
+[ ] Present active infinitive[K
+[ ] Present active imperative[K
+[ ] Imperative active subjunctive[K
+[ ] Pluperfect active subjunctive[K
+[ ] Singular number[K
+[ ] Plural number[K
+[ ] 1st person[K
+[ ] 2nd person[K
+[ ] 3rd person[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[21A
+[ ] All of them[K
+[1;38;2;225;123;52m[x] First conjugation verbs[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[21A
+
+[1m[x] First conjugation verbs[0m[K
+[38;2;225;123;52m[ ] Second conjugation verbs[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[21A
+
+
+[1;38;2;225;123;52m[x] Second conjugation verbs[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] Present active[K
+[ ] Perfect passive[K
+[ ] Masculine gender[K
+[ ] Feminine gender[K
+[ ] Neuter gender[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[15A
+[ ] All of them[K
+[38;2;225;123;52m[ ] Present active[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[15A
+
+[ ] Present active[K
+[38;2;225;123;52m[ ] Perfect passive[0m[K
+
+
+
+
+
+
+
+
+
+
+
+[300D[15A
+
+
+[1;38;2;225;123;52m[x] Perfect passive[0m[K
+
+
+
+
+
+
+
+
+
+
+
+[300D[15A[1;4;4mNoun[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] First declension nouns[K
+[ ] Second declension nouns[K
+[ ] Third declension nouns[K
+[ ] Fourth declension nouns[K
+[ ] Fifth declension nouns[K
+[ ] Irregular nouns[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[16A
+[ ] All of them[K
+[38;2;225;123;52m[ ] First declension nouns[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[16A
+
+[ ] First declension nouns[K
+[38;2;225;123;52m[ ] Second declension nouns[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[16A
+
+
+[1;38;2;225;123;52m[x] Second declension nouns[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[16A[1;4;4mAdjective[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] First and second declension adjectives[K
+[ ] Third declension adjectives[K
+[ ] Masculine gender[K
+[ ] Feminine gender[K
+[ ] Neuter gender[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[ ] Positive degree[K
+[ ] Comparative degree[K
+[ ] Superlative degree[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[18A
+[ ] All of them[K
+[38;2;225;123;52m[ ] First and second declension adjectives[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[18A
+
+[ ] First and second declension adjectives[K
+[38;2;225;123;52m[ ] Third declension adjectives[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[18A
+
+
+[1;38;2;225;123;52m[x] Third declension adjectives[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[18A[1;4;4mAdverb[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] Positive degree[K
+[ ] Comparative degree[K
+[ ] Superlative degree[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[5A
+[ ] All of them[K
+[38;2;225;123;52m[ ] Positive degree[0m[K
+
+
+[300D[5A
+
+[ ] Positive degree[K
+[38;2;225;123;52m[ ] Comparative degree[0m[K
+
+[300D[5A
+
+
+[1;38;2;225;123;52m[x] Comparative degree[0m[K
+
+[300D[5A[1;4;4mPronoun[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] Masculine gender[K
+[ ] Feminine gender[K
+[ ] Neuter gender[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[13A
+[ ] All of them[K
+[38;2;225;123;52m[ ] Masculine gender[0m[K
+
+
+
+
+
+
+
+
+
+
+[300D[13A
+
+[ ] Masculine gender[K
+[38;2;225;123;52m[ ] Feminine gender[0m[K
+
+
+
+
+
+
+
+
+
+[300D[13A
+
+
+[1;38;2;225;123;52m[x] Feminine gender[0m[K
+
+
+
+
+
+
+
+
+
+[300D[13A[1;4;4mRegular[0m[4m [0m[1;4;4mword[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[2A
+[1;38;2;225;123;52m[x] All of them[0m[K
+[300D[2A[1;4;4mQuestion[0m[4m [0m[1;4;4mtypes[0m[K
+[1;38;2;225;123;52m[x] Type-in English to Latin questions[0m[K
+[1m[x] Type-in Latin to English questions[0m[K
+[1m[x] Parsing questions[0m[K
+[1m[x] Inflecting questions[0m[K
+[1m[x] Principal parts questions[0m[K
+[1m[x] Multiple choice English to Latin questions[0m[K
+[1m[x] Multiple choice Latin to English questions[0m[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[8A
+[1m[x] Type-in English to Latin questions[0m[K
+[1;38;2;225;123;52m[x] Type-in Latin to English questions[0m[K
+
+
+
+
+
+[300D[8A
+
+[1m[x] Type-in Latin to English questions[0m[K
+[1;38;2;225;123;52m[x] Parsing questions[0m[K
+
+
+
+
+[300D[8A
+
+
+[38;2;225;123;52m[ ] Parsing questions[0m[K
+
+
+
+
+[300D[8AInput the number of options wanted for multiple-choice questions.[K
+> [7mM[0m[38;5;240must be a positive integer                                                                                                                                                                                                                                                                                [0m
+[2m(press right to save and quit)[0m[K[J[300D[2A
+> 3[7m [0m                                                                                                                                                                                                                                                                                                        
+[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

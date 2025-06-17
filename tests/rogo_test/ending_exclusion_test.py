@@ -21,8 +21,10 @@ if TYPE_CHECKING:
 default_settings: Settings = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
+    "exclude-verb-future-active-indicative": False,
     "exclude-verb-perfect-active-indicative": False,
     "exclude-verb-pluperfect-active-indicative": False,
+    "exclude-verb-future-perfect-active-indicative": False,
     "exclude-verb-present-active-infinitive": False,
     "exclude-verb-present-active-imperative": False,
     "exclude-verb-imperfect-active-subjunctive": False,

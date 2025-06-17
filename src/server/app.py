@@ -1,31 +1,29 @@
 """The Flask API that sends questions to the client."""
 
-# ruff: noqa: D103, TRY400
+# ruff: noqa: D103
 
 from __future__ import annotations
 
 import json
 import logging
+import traceback
 from io import StringIO
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, Response, render_template, request
 from waitress import serve
 from werkzeug.exceptions import BadRequest
 
-from .._vendor.typeddict_validator import (
-    DictMissingKeyException,
-    DictValueTypeMismatchException,
-    validate_typeddict,
-)
-from ..core.lego.exceptions import (
-    InvalidVocabDumpError,
-    InvalidVocabFileFormatError,
-)
 from ..core.lego.misc import VocabList
 from ..core.lego.reader import _read_vocab_file_internal
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
+from ..utils.typeddict_validator import (
+    DictExtraKeyError,
+    DictIncorrectTypeError,
+    DictMissingKeyError,
+    validate_typeddict,
+)
 from .json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
@@ -39,8 +37,11 @@ vocab_list: VocabList | None = None
 
 @app.errorhandler(BadRequest)
 def handle_bad_request(e):
-    logger.error(e.description)
-
+    logger.error(
+        "%s\n%s",
+        e.description,
+        "\n".join(traceback.format_tb(e.__traceback__)),
+    )
     return f"Bad request: {e}", 400
 
 
@@ -66,12 +67,10 @@ def send_vocab():
             _read_vocab_file_internal(vocab_list_text),
             vocab_list_text.getvalue(),
         )
-    except (
-        InvalidVocabDumpError,
-        InvalidVocabFileFormatError,
-        FileNotFoundError,
-    ) as e:
-        raise BadRequest(f"{e} ({type(e).__name__})") from e
+    except Exception as e:
+        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
+            e.__traceback__
+        ) from e
 
     return "Vocab list received."
 
@@ -109,25 +108,74 @@ def create_session():
         raise BadRequest("Vocab list has not been provided.")
 
     logger.info("Validating settings.")
-    settings = request.get_json()
+    settings: dict[str, Any] = request.get_json()
     try:
-        question_amount = settings["number-of-questions"]
-        del settings["number-of-questions"]
-        validate_typeddict(settings, Settings)
-    except (
-        DictMissingKeyException,
-        DictValueTypeMismatchException,
-        KeyError,
-    ) as e:
+        question_amount = settings.pop("number-of-questions")
+    except KeyError as e:
         raise BadRequest(
-            f"The settings provided are not valid: {e} (InvalidSettingsError)"
+            "Required settings are missing: 'number-of-questions'. "
+            "(InvalidSettingsError)"
         ) from e
 
+    if not isinstance(question_amount, int):
+        raise BadRequest(
+            "Invalid settings: 'number-of-questions' must be an integer (got "
+            f"type {type(question_amount).__name__}). (InvalidSettingsError)"
+        )
+
+    try:
+        validate_typeddict(settings, Settings)
+    except* DictMissingKeyError as eg:
+        missingkey_error = cast("DictMissingKeyError", eg.exceptions[0])
+        keys_str = ", ".join(
+            f"'{k}'" for k in sorted(missingkey_error.missing_keys)
+        )
+        raise BadRequest(
+            f"Required settings are missing: {keys_str}. (InvalidSettingsError)"
+        ) from eg
+
+    except* DictExtraKeyError as eg:
+        extrakey_error = cast("DictExtraKeyError", eg.exceptions[0])
+        keys_str = ", ".join(
+            f"'{k}'" for k in sorted(extrakey_error.extra_keys)
+        )
+        raise BadRequest(
+            f"Unrecognised settings were provided: {keys_str}. "
+            "(InvalidSettingsError)"
+        ) from eg
+
+    except* DictIncorrectTypeError as eg:
+        incorrecttype_error = cast("DictIncorrectTypeError", eg.exceptions[0])
+        type_error_details = []
+        for field, detail in sorted(
+            incorrecttype_error.incorrect_types.items()
+        ):
+            expected_type_str = str(detail.expected)
+            actual_type_str = (
+                detail.actual.__name__
+                if hasattr(detail.actual, "__name__")
+                else str(detail.actual)
+            )
+            type_error_details.append(
+                f"Expected type {expected_type_str} for '{field}', but received"
+                f" type {actual_type_str}"
+            )
+        raise BadRequest(
+            f"{'; '.join(type_error_details)}. (InvalidSettingsError)"
+        ) from eg
+
     logger.info("Returning %d questions.", question_amount)
-    return Response(
-        _generate_questions_json(vocab_list, question_amount, settings),
-        mimetype="application/json",
-    )
+    try:
+        return Response(
+            _generate_questions_json(
+                vocab_list, question_amount, cast("Settings", settings)
+            ),
+            mimetype="application/json",
+        )
+    except Exception as e:
+        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
+            e.__traceback__
+        ) from e
 
 
 def main_dev(port, *, debug=False):

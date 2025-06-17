@@ -1,36 +1,37 @@
-[?25l[?2004h]2;Create Session ConfigVerb exclusions
-[ ] All of them
-[ ] First conjugation verbs
-[ ] Second conjugation verbs
-[ ] Third conjugation verbs
-[ ] Fourth conjugation verbs
-[ ] Mixed conjugation verbs
-[ ] Irregular verbs
-[ ] Present active indicative
-[ ] Imperfect active indicative
-[ ] Perfect active indicative
-[ ] Pluperfect active indicative
-[ ] Present active infinitive
-[ ] Present active imperative
-[ ] Imperative active subjunctive
-[ ] Pluperfect active subjunctive
-[ ] Singular number
-[ ] Plural number
-[ ] 1st person
-[ ] 2nd person
-[ ] 3rd person
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quitParticiple exclusions
-[ ] Present active
-[ ] Perfect passive
-[ ] Masculine gender
-[ ] Feminine gender
-[ ] Neuter gender
-[ ] Nominative case
-[ ] Vocative case
-[ ] Accusative case
-[ ] Genitive case
-[ ] Dative case
-[ ] Ablative case
-[ ] Singular number
-[ ] Plural number
-↑ move up • ↓ move down • ← previous page • → next page • ⎵ check or uncheck option • ctrl+q quit[?2004l[?25h
+[?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] All of them[0m[K
+[ ] First conjugation verbs[K
+[ ] Second conjugation verbs[K
+[ ] Third conjugation verbs[K
+[ ] Fourth conjugation verbs[K
+[ ] Mixed conjugation verbs[K
+[ ] Irregular verbs[K
+[ ] Present active indicative[K
+[ ] Imperfect active indicative[K
+[ ] Perfect active indicative[K
+[ ] Pluperfect active indicative[K
+[ ] Present active infinitive[K
+[ ] Present active imperative[K
+[ ] Imperative active subjunctive[K
+[ ] Pluperfect active subjunctive[K
+[ ] Singular number[K
+[ ] Plural number[K
+[ ] 1st person[K
+[ ] 2nd person[K
+[ ] 3rd person[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[K
+
+[ ] Present active[K
+[ ] Perfect passive[K
+[ ] Masculine gender[K
+[ ] Feminine gender[K
+[ ] Neuter gender[K
+[ ] Nominative case[K
+[ ] Vocative case[K
+[ ] Accusative case[K
+[ ] Genitive case[K
+[ ] Dative case[K
+[ ] Ablative case[K
+[ ] Singular number[K
+[ ] Plural number[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[2K[?2004l[?25h[?1002l[?1003l[?1006l

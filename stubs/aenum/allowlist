@@ -78,6 +78,7 @@ aenum._common.pyver
 aenum._common.raise_from_none
 aenum._common.raise_with_traceback
 aenum._common.skip
+aenum._common.undefined
 aenum._common.unicode
 aenum._enum.AddValue
 aenum._enum.AddValueEnum
@@ -142,6 +143,7 @@ aenum.raise_with_traceback
 aenum.remove_stdlib_integration
 aenum.skip
 aenum.test
+aenum.test_stdlib_tests
 aenum.test_v3
 aenum.test_v37
 aenum.unique

@@ -16,6 +16,7 @@
 
   "exclude-verb-present-active-indicative": false,
   "exclude-verb-imperfect-active-indicative": false,
+  "exclude-verb-future-active-indicative": false,
   "exclude-verb-perfect-active-indicative": false,
   "exclude-verb-pluperfect-active-indicative": false,
   "exclude-verb-present-active-infinitive": false,
@@ -77,7 +78,6 @@
   "exclude-adjective-positive": false,
   "exclude-adjective-comparative": false,
   "exclude-adjective-superlative": false,
-
 
   "exclude-adverb-positive": false,
   "exclude-adverb-comparative": false,
