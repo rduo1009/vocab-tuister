@@ -7,14 +7,6 @@ jobs:
   coverage:
     name: Test docstring coverage
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        py:
-          - "3.13.1"
-        os:
-          - ubuntu-latest
-
     permissions:
       contents: write
 
@@ -24,10 +16,10 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Setup python for test ${{ matrix.py }}
+      - name: Setup python
         uses: actions/setup-python@v5.6.0
         with:
-          python-version: ${{ matrix.py }}
+          python-version-file: '.python-version'
 
       - name: Run interrogate
         uses: rduo1009/python-interrogate-check@main
