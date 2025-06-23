@@ -353,10 +353,10 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'capiendi',
+          'capientia',
         ]),
-        'components': 'gerundive masculine genitive singular',
-        'main_answer': 'capiendi',
+        'components': 'present active participle neuter nominative plural',
+        'main_answer': 'capientia',
         'prompt': 'take: capio, capere, cepi, captus',
       }),
       'question_type': 'ParseWordCompToLatQuestion',

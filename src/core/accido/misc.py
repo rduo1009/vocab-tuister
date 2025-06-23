@@ -441,6 +441,9 @@ class EndingComponents:
                 assert self_value is not None
                 assert other_value is not None
 
+                if attr == "person":
+                    return self_value > other_value
+
                 enum_class = self_value.__class__
                 enum_members = list(enum_class)
                 self_index = enum_members.index(self_value)

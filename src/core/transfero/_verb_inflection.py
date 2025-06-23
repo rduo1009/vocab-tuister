@@ -169,7 +169,10 @@ def _find_lemma(  # noqa: PLR0917
 
     match to_match:
         case (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE):
-            return _find_preipe_inflections(lemma)
+            return _find_preactipe_inflections(lemma)
+
+        case (Tense.PRESENT, Voice.PASSIVE, Mood.IMPERATIVE):
+            return _find_prepasipe_inflections(lemma)
 
         case (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE):
             return _find_preactinf_inflections(lemma)
@@ -243,6 +246,12 @@ def _find_lemma(  # noqa: PLR0917
 
         case (Tense.PLUPERFECT, Voice.PASSIVE, Mood.SUBJUNCTIVE):
             return _find_plppassbj_inflections(lemma, number, person)
+
+        case (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE):
+            return _find_futactipe_inflections(lemma, number, person)
+
+        case (Tense.FUTURE, Voice.PASSIVE, Mood.IMPERATIVE):
+            return _find_futpasipe_inflections(lemma, number, person)
 
         case _:
             pass
@@ -971,8 +980,82 @@ def _find_fprpasind_inflections(
             )
 
 
-def _find_preipe_inflections(lemma: str) -> tuple[str, set[str]]:
+def _find_preactipe_inflections(lemma: str) -> tuple[str, set[str]]:
     return (lemma, {lemma})
+
+
+def _find_prepasipe_inflections(lemma: str) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    return (f"be {past_participle}", {f"be {past_participle}"})
+
+
+def _find_futactipe_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    match (number, person):
+        case (Number.SINGULAR, 2):
+            return (
+                f"you shall {lemma}",
+                {f"you shall {lemma}", f"you will {lemma}"},
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"let him {lemma}",
+                {f"let him {lemma}", f"let her {lemma}", f"let it {lemma}"},
+            )
+
+        case (Number.PLURAL, 2):
+            return (
+                f"you shall {lemma}",
+                {f"you shall {lemma}", f"you will {lemma}"},
+            )
+
+        case (Number.PLURAL, 3):
+            return (f"let them {lemma}", {f"let them {lemma}"})
+
+        case _:
+            raise ValueError(
+                f"Invalid number or person (given {number} {person})"
+            )
+
+
+def _find_futpasipe_inflections(
+    lemma: str, number: Number, person: Person
+) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    match (number, person):
+        case (Number.SINGULAR, 2):
+            return (
+                f"you shall be {past_participle}",
+                {
+                    f"you shall be {past_participle}",
+                    f"you will be {past_participle}",
+                },
+            )
+
+        case (Number.SINGULAR, 3):
+            return (
+                f"let him be {past_participle}",
+                {
+                    f"let him be {past_participle}",
+                    f"let her be {past_participle}",
+                    f"let it be {past_participle}",
+                },
+            )
+
+        case (Number.PLURAL, 3):
+            return (
+                f"let them be {past_participle}",
+                {f"let them be {past_participle}"},
+            )
+
+        case _:
+            raise ValueError(
+                f"Invalid number or person (given {number} {person})"
+            )
 
 
 def _find_preactinf_inflections(lemma: str) -> tuple[str, set[str]]:

@@ -72,12 +72,15 @@ type SessionConfig struct {
 	ExcludePronounVocative                    bool `json:"exclude-pronoun-vocative"`
 	ExcludePronouns                           bool `json:"exclude-pronouns"`
 	ExcludeRegulars                           bool `json:"exclude-regulars"`
+	ExcludeSupines                            bool `json:"exclude-supines"`
 	ExcludeVerb1stPerson                      bool `json:"exclude-verb-1st-person"`
 	ExcludeVerb2ndPerson                      bool `json:"exclude-verb-2nd-person"`
 	ExcludeVerb3rdPerson                      bool `json:"exclude-verb-3rd-person"`
 	ExcludeVerbFirstConjugation               bool `json:"exclude-verb-first-conjugation"`
 	ExcludeVerbFourthConjugation              bool `json:"exclude-verb-fourth-conjugation"`
+	ExcludeVerbFutureActiveImperative         bool `json:"exclude-verb-future-active-imperative"`
 	ExcludeVerbFutureActiveIndicative         bool `json:"exclude-verb-future-active-indicative"`
+	ExcludeVerbFuturePassiveImperative        bool `json:"exclude-verb-future-passive-imperative"`
 	ExcludeVerbFuturePassiveIndicative        bool `json:"exclude-verb-future-passive-indicative"`
 	ExcludeVerbFuturePerfectActiveIndicative  bool `json:"exclude-verb-future-perfect-active-indicative"`
 	ExcludeVerbFuturePerfectPassiveIndicative bool `json:"exclude-verb-future-perfect-passive-indicative"`
@@ -97,6 +100,7 @@ type SessionConfig struct {
 	ExcludeVerbPresentActiveIndicative        bool `json:"exclude-verb-present-active-indicative"`
 	ExcludeVerbPresentActiveInfinitive        bool `json:"exclude-verb-present-active-infinitive"`
 	ExcludeVerbPresentActiveSubjunctive       bool `json:"exclude-verb-present-active-subjunctive"`
+	ExcludeVerbPresentPassiveImperative       bool `json:"exclude-verb-present-passive-imperative"`
 	ExcludeVerbPresentPassiveIndicative       bool `json:"exclude-verb-present-passive-indicative"`
 	ExcludeVerbPresentPassiveInfinitive       bool `json:"exclude-verb-present-passive-infinitive"`
 	ExcludeVerbSecondConjugation              bool `json:"exclude-verb-second-conjugation"`

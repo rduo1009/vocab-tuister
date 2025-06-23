@@ -33,6 +33,9 @@
     "exclude-verb-perfect-active-subjunctive": false,
     "exclude-verb-pluperfect-active-subjunctive": false,
     "exclude-verb-present-active-imperative": false,
+"exclude-verb-future-active-imperative": false,
+"exclude-verb-present-passive-imperative": false,
+"exclude-verb-future-passive-imperative": false,
     "exclude-verb-present-active-infinitive": false,
     "exclude-verb-present-passive-infinitive": false,
 

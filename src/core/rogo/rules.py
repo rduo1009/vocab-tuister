@@ -32,6 +32,9 @@ RULE_REGEX: Final[SettingsRules] = {
     "exclude-verb-perfect-active-subjunctive": r"^Vperactsbj[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-subjunctive": r"^Vplpactsbj[a-z][a-z]\d$",
     "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude-verb-present-passive-imperative": r"^Vprepasipe[a-z][a-z]\d$",
+    "exclude-verb-future-active-imperative": r"^Vfutactipe[a-z][a-z]\d$",
+    "exclude-verb-future-passive-imperative": r"^Vfutpasipe[a-z][a-z]\d$",
     "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
     "exclude-verb-present-passive-infinitive": r"^Vprepasinf   $",
 

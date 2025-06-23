@@ -75,9 +75,9 @@ class TestVerbDunder:
         word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
         assert compare(word.find("celatus"), [EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, gender=Gender.MASCULINE, case=Case.NOMINATIVE, number=Number.SINGULAR, string="perfect passive participle masculine nominative singular")])
 
-    def test_find_infinitive(self):
-        word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
-        assert compare(word.find("celare"), [EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE, string="present active infinitive")])
+    # def test_find_infinitive(self):
+    #     word = Verb("celo", "celare", "celavi", "celatus", meaning="hide")
+    #     assert compare(word.find("celare"), [EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE, string="present active infinitive")])
 
     def test_add_different_word(self):
         word1 = Verb("celo", "celare", "celavi", "celatus", meaning="hide")

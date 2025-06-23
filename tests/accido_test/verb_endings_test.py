@@ -13,6 +13,7 @@ IRREGULAR_VERBS = {
         "Vpreactindsg1": "sum", "Vpreactindsg2": "es", "Vpreactindsg3": "est", "Vpreactindpl1": "sumus", "Vpreactindpl2": "estis", "Vpreactindpl3": "sunt", "Vimpactindsg1": "eram", "Vimpactindsg2": "eras", "Vimpactindsg3": "erat", "Vimpactindpl1": "eramus", "Vimpactindpl2": "eratis", "Vimpactindpl3": "erant", "Vfutactindsg1": "ero", "Vfutactindsg2": "eris", "Vfutactindsg3": "erit", "Vfutactindpl1": "erimus", "Vfutactindpl2": "eritis", "Vfutactindpl3": "erunt", "Vperactindsg1": "fui", "Vperactindsg2": "fuisti", "Vperactindsg3": "fuit", "Vperactindpl1": "fuimus", "Vperactindpl2": "fuistis", "Vperactindpl3": "fuerunt", "Vplpactindsg1": "fueram", "Vplpactindsg2": "fueras", "Vplpactindsg3": "fuerat", "Vplpactindpl1": "fueramus", "Vplpactindpl2": "fueratis", "Vplpactindpl3": "fuerant", "Vfpractindsg1": "fuero", "Vfpractindsg2": "fueris", "Vfpractindsg3": "fuerit", "Vfpractindpl1": "fuerimus", "Vfpractindpl2": "fueritis", "Vfpractindpl3": "fuerint",
         "Vpreactsbjsg1": "sim", "Vpreactsbjsg2": "sis", "Vpreactsbjsg3": "sit", "Vpreactsbjpl1": "simus", "Vpreactsbjpl2": "sitis", "Vpreactsbjpl3": "sint", "Vimpactsbjsg1": "essem", "Vimpactsbjsg2": "esses", "Vimpactsbjsg3": "esset", "Vimpactsbjpl1": "essemus", "Vimpactsbjpl2": "essetis", "Vimpactsbjpl3": "essent", "Vperactsbjsg1": "fuerim", "Vperactsbjsg2": "fueris", "Vperactsbjsg3": "fuerit", "Vperactsbjpl1": "fuerimus", "Vperactsbjpl2": "fueritis", "Vperactsbjpl3": "fuerint", "Vplpactsbjsg1": "fuissem", "Vplpactsbjsg2": "fuisses", "Vplpactsbjsg3": "fuisset", "Vplpactsbjpl1": "fuissemus", "Vplpactsbjpl2": "fuissetis", "Vplpactsbjpl3": "fuissent",
         "Vpreactipesg2": "es", "Vpreactipepl2": "este",
+        "Vfutactipesg2": "esto", "Vfutactipesg3": "esto", "Vfutactipepl2": "estote", "Vfutactipepl3": "sunto",
         "Vpreactinf   ": "esse",
         "Vfutactptcfablpl": "futuris", "Vfutactptcfablsg": "futura", "Vfutactptcfaccpl": "futuras", "Vfutactptcfaccsg": "futuram", "Vfutactptcfdatpl": "futuris", "Vfutactptcfdatsg": "futurae", "Vfutactptcfgenpl": "futurarum", "Vfutactptcfgensg": "futurae", "Vfutactptcfnompl": "futurae", "Vfutactptcfnomsg": "futura", "Vfutactptcfvocpl": "futurae", "Vfutactptcfvocsg": "futura", "Vfutactptcmablpl": "futuris", "Vfutactptcmablsg": "futuro", "Vfutactptcmaccpl": "futuros", "Vfutactptcmaccsg": "futurum", "Vfutactptcmdatpl": "futuris", "Vfutactptcmdatsg": "futuro", "Vfutactptcmgenpl": "futurorum", "Vfutactptcmgensg": "futuri", "Vfutactptcmnompl": "futuri", "Vfutactptcmnomsg": "futurus", "Vfutactptcmvocpl": "futuri", "Vfutactptcmvocsg": "future", "Vfutactptcnablpl": "futuris", "Vfutactptcnablsg": "futuro", "Vfutactptcnaccpl": "futura", "Vfutactptcnaccsg": "futurum", "Vfutactptcndatpl": "futuris", "Vfutactptcndatsg": "futuro", "Vfutactptcngenpl": "futurorum", "Vfutactptcngensg": "futuri", "Vfutactptcnnompl": "futura", "Vfutactptcnnomsg": "futurum", "Vfutactptcnvocpl": "futura", "Vfutactptcnvocsg": "futurum",
     },
@@ -32,6 +33,7 @@ IRREGULAR_VERBS = {
         "Vpreactindsg1": "nolo", "Vpreactindsg2": "non vis", "Vpreactindsg3": "non vult", "Vpreactindpl1": "nolumus", "Vpreactindpl2": "non vultis", "Vpreactindpl3": "nolunt", "Vimpactindsg1": "nolebam", "Vimpactindsg2": "nolebas", "Vimpactindsg3": "nolebat", "Vimpactindpl1": "nolebamus", "Vimpactindpl2": "nolebatis", "Vimpactindpl3": "nolebant", "Vfutactindsg1": "nolam", "Vfutactindsg2": "noles", "Vfutactindsg3": "nolet", "Vfutactindpl1": "nolemus", "Vfutactindpl2": "noletis", "Vfutactindpl3": "nolent", "Vperactindsg1": "nolui", "Vperactindsg2": "noluisti", "Vperactindsg3": "noluit", "Vperactindpl1": "noluimus", "Vperactindpl2": "noluistis", "Vperactindpl3": "noluerunt", "Vplpactindsg1": "nolueram", "Vplpactindsg2": "nolueras", "Vplpactindsg3": "noluerat", "Vplpactindpl1": "nolueramus", "Vplpactindpl2": "nolueratis", "Vplpactindpl3": "noluerant", "Vfpractindsg1": "noluero", "Vfpractindsg2": "nolueris", "Vfpractindsg3": "noluerit", "Vfpractindpl1": "noluerimus", "Vfpractindpl2": "nolueritis", "Vfpractindpl3": "noluerint",
         "Vpreactsbjsg1": "nelim", "Vpreactsbjsg2": "nelis", "Vpreactsbjsg3": "nelit", "Vpreactsbjpl1": "nelimus", "Vpreactsbjpl2": "nelitis", "Vpreactsbjpl3": "nelint", "Vimpactsbjsg1": "nollem", "Vimpactsbjsg2": "nolles", "Vimpactsbjsg3": "nollet", "Vimpactsbjpl1": "nollemus", "Vimpactsbjpl2": "nolletis", "Vimpactsbjpl3": "nollent", "Vperactsbjsg1": "noluerim", "Vperactsbjsg2": "nolueris", "Vperactsbjsg3": "noluerit", "Vperactsbjpl1": "noluerimus", "Vperactsbjpl2": "nolueritis", "Vperactsbjpl3": "noluerint", "Vplpactsbjsg1": "noluissem", "Vplpactsbjsg2": "noluisses", "Vplpactsbjsg3": "noluisset", "Vplpactsbjpl1": "noluissemus", "Vplpactsbjpl2": "noluissetis", "Vplpactsbjpl3": "noluissent",
         "Vpreactipesg2": "noli", "Vpreactipepl2": "nolite",
+        "Vfutactipepl2": "nolitote", "Vfutactipepl3": "nolunto", "Vfutactipesg2": "nolito", "Vfutactipesg3": "nolito",
         "Vpreactinf   ": "nolle",
         "Vpreactptcfablpl": "nolentibus", "Vpreactptcfablsg": MultipleEndings(regular="nolenti", absolute="nolente"), "Vpreactptcfaccpl": "nolentes", "Vpreactptcfaccsg": "nolentem", "Vpreactptcfdatpl": "nolentibus", "Vpreactptcfdatsg": "nolenti", "Vpreactptcfgenpl": "nolentium", "Vpreactptcfgensg": "nolentis", "Vpreactptcfnompl": "nolentes", "Vpreactptcfnomsg": "nolens", "Vpreactptcfvocpl": "nolentes", "Vpreactptcfvocsg": "nolens", "Vpreactptcmablpl": "nolentibus", "Vpreactptcmablsg": MultipleEndings(regular="nolenti", absolute="nolente"), "Vpreactptcmaccpl": "nolentes", "Vpreactptcmaccsg": "nolentem", "Vpreactptcmdatpl": "nolentibus", "Vpreactptcmdatsg": "nolenti", "Vpreactptcmgenpl": "nolentium", "Vpreactptcmgensg": "nolentis", "Vpreactptcmnompl": "nolentes", "Vpreactptcmnomsg": "nolens", "Vpreactptcmvocpl": "nolentes", "Vpreactptcmvocsg": "nolens", "Vpreactptcnablpl": "nolentibus", "Vpreactptcnablsg": MultipleEndings(regular="nolenti", absolute="nolente"), "Vpreactptcnaccpl": "nolentia", "Vpreactptcnaccsg": "nolens", "Vpreactptcndatpl": "nolentibus", "Vpreactptcndatsg": "nolenti", "Vpreactptcngenpl": "nolentium", "Vpreactptcngensg": "nolentis", "Vpreactptcnnompl": "nolentia", "Vpreactptcnnomsg": "nolens", "Vpreactptcnvocpl": "nolentia", "Vpreactptcnvocsg": "nolens"
     },
@@ -40,7 +42,8 @@ IRREGULAR_VERBS = {
         "Vprepasindsg1": "feror", "Vprepasindsg2": "ferris", "Vprepasindsg3": "fertur", "Vprepasindpl1": "ferimur", "Vprepasindpl2": "ferimini", "Vprepasindpl3": "feruntur", "Vimppasindsg1": "ferebar", "Vimppasindsg2": "ferebaris", "Vimppasindsg3": "ferebatur", "Vimppasindpl1": "ferebamur", "Vimppasindpl2": "ferebamini", "Vimppasindpl3": "ferebantur", "Vfutpasindsg1": "ferar", "Vfutpasindsg2": "fereris", "Vfutpasindsg3": "feretur", "Vfutpasindpl1": "feremur", "Vfutpasindpl2": "feremini", "Vfutpasindpl3": "ferentur", "Vperpasindsg1": "latus sum", "Vperpasindsg2": "latus es", "Vperpasindsg3": "latus est", "Vperpasindpl1": "lati sumus", "Vperpasindpl2": "lati estis", "Vperpasindpl3": "lati sunt", "Vplppasindsg1": "latus eram", "Vplppasindsg2": "latus eras", "Vplppasindsg3": "latus erat", "Vplppasindpl1": "lati eramus", "Vplppasindpl2": "lati eratis", "Vplppasindpl3": "lati erant", "Vfprpasindsg1": "latus ero", "Vfprpasindsg2": "latus eris", "Vfprpasindsg3": "latus erit", "Vfprpasindpl1": "lati erimus", "Vfprpasindpl2": "lati eritis", "Vfprpasindpl3": "lati erunt",
         "Vpreactsbjsg1": "feram", "Vpreactsbjsg2": "feras", "Vpreactsbjsg3": "ferat", "Vpreactsbjpl1": "feramus", "Vpreactsbjpl2": "feratis", "Vpreactsbjpl3": "ferant", "Vimpactsbjsg1": "ferrem", "Vimpactsbjsg2": "ferres", "Vimpactsbjsg3": "ferret", "Vimpactsbjpl1": "ferremus", "Vimpactsbjpl2": "ferretis", "Vimpactsbjpl3": "ferrent", "Vperactsbjsg1": "tulerim", "Vperactsbjsg2": "tuleris", "Vperactsbjsg3": "tulerit", "Vperactsbjpl1": "tulerimus", "Vperactsbjpl2": "tuleritis", "Vperactsbjpl3": "tulerint", "Vplpactsbjsg1": "tulissem", "Vplpactsbjsg2": "tulisses", "Vplpactsbjsg3": "tulisset", "Vplpactsbjpl1": "tulissemus", "Vplpactsbjpl2": "tulissetis", "Vplpactsbjpl3": "tulissent",
         "Vprepassbjsg1": "ferar", "Vprepassbjsg2": "feraris", "Vprepassbjsg3": "feratur", "Vprepassbjpl1": "feramur", "Vprepassbjpl2": "feramini", "Vprepassbjpl3": "ferantur", "Vimppassbjsg1": "ferrer", "Vimppassbjsg2": "ferreris", "Vimppassbjsg3": "ferretur", "Vimppassbjpl1": "ferremur", "Vimppassbjpl2": "ferremini", "Vimppassbjpl3": "ferrentur", "Vperpassbjsg1": "latus sim", "Vperpassbjsg2": "latus sis", "Vperpassbjsg3": "latus sit", "Vperpassbjpl1": "lati simus", "Vperpassbjpl2": "lati sitis", "Vperpassbjpl3": "lati sint", "Vplppassbjsg1": "latus essem", "Vplppassbjsg2": "latus esses", "Vplppassbjsg3": "latus esset", "Vplppassbjpl1": "lati essemus", "Vplppassbjpl2": "lati essetis", "Vplppassbjpl3": "lati essent",
-        "Vpreactipesg2": "fer", "Vpreactipepl2": "ferte",
+        "Vpreactipesg2": "fer", "Vpreactipepl2": "ferte", "Vprepasipepl2": "ferimini", "Vprepasipesg2": "ferre",
+        "Vfutactipepl2": "fertote", "Vfutactipepl3": "ferunto", "Vfutactipesg2": "ferto", "Vfutactipesg3": "ferto", "Vfutpasipepl3": "feruntor", "Vfutpasipesg2": "fertor", "Vfutpasipesg3": "fertor",
         "Vpreactinf   ": "ferre", "Vprepasinf   ": "ferri",
         "Vpreactptcfablpl": "ferentibus", "Vpreactptcfablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcfaccpl": "ferentes", "Vpreactptcfaccsg": "ferentem", "Vpreactptcfdatpl": "ferentibus", "Vpreactptcfdatsg": "ferenti", "Vpreactptcfgenpl": "ferentium", "Vpreactptcfgensg": "ferentis", "Vpreactptcfnompl": "ferentes", "Vpreactptcfnomsg": "ferens", "Vpreactptcfvocpl": "ferentes", "Vpreactptcfvocsg": "ferens", "Vpreactptcmablpl": "ferentibus", "Vpreactptcmablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcmaccpl": "ferentes", "Vpreactptcmaccsg": "ferentem", "Vpreactptcmdatpl": "ferentibus", "Vpreactptcmdatsg": "ferenti", "Vpreactptcmgenpl": "ferentium", "Vpreactptcmgensg": "ferentis", "Vpreactptcmnompl": "ferentes", "Vpreactptcmnomsg": "ferens", "Vpreactptcmvocpl": "ferentes", "Vpreactptcmvocsg": "ferens", "Vpreactptcnablpl": "ferentibus", "Vpreactptcnablsg": MultipleEndings(regular="ferenti", absolute="ferente"), "Vpreactptcnaccpl": "ferentia", "Vpreactptcnaccsg": "ferens", "Vpreactptcndatpl": "ferentibus", "Vpreactptcndatsg": "ferenti", "Vpreactptcngenpl": "ferentium", "Vpreactptcngensg": "ferentis", "Vpreactptcnnompl": "ferentia", "Vpreactptcnnomsg": "ferens", "Vpreactptcnvocpl": "ferentia", "Vpreactptcnvocsg": "ferens",
         "Vfutactptcfablpl": "laturis", "Vfutactptcfablsg": "latura", "Vfutactptcfaccpl": "laturas", "Vfutactptcfaccsg": "laturam", "Vfutactptcfdatpl": "laturis", "Vfutactptcfdatsg": "laturae", "Vfutactptcfgenpl": "laturarum", "Vfutactptcfgensg": "laturae", "Vfutactptcfnompl": "laturae", "Vfutactptcfnomsg": "latura", "Vfutactptcfvocpl": "laturae", "Vfutactptcfvocsg": "latura", "Vfutactptcmablpl": "laturis", "Vfutactptcmablsg": "laturo", "Vfutactptcmaccpl": "laturos", "Vfutactptcmaccsg": "laturum", "Vfutactptcmdatpl": "laturis", "Vfutactptcmdatsg": "laturo", "Vfutactptcmgenpl": "laturorum", "Vfutactptcmgensg": "laturi", "Vfutactptcmnompl": "laturi", "Vfutactptcmnomsg": "laturus", "Vfutactptcmvocpl": "laturi", "Vfutactptcmvocsg": "lature", "Vfutactptcnablpl": "laturis", "Vfutactptcnablsg": "laturo", "Vfutactptcnaccpl": "latura", "Vfutactptcnaccsg": "laturum", "Vfutactptcndatpl": "laturis", "Vfutactptcndatsg": "laturo", "Vfutactptcngenpl": "laturorum", "Vfutactptcngensg": "laturi", "Vfutactptcnnompl": "latura", "Vfutactptcnnomsg": "laturum", "Vfutactptcnvocpl": "latura", "Vfutactptcnvocsg": "laturum",
@@ -54,7 +57,8 @@ IRREGULAR_VERBS = {
         "Vprepasindsg1": "eor", "Vprepasindsg2": "iris", "Vprepasindsg3": "itur", "Vprepasindpl1": "imur", "Vprepasindpl2": "imini", "Vprepasindpl3": "euntur", "Vimppasindsg1": "ibar", "Vimppasindsg2": "ibaris", "Vimppasindsg3": "ibatur", "Vimppasindpl1": "ibamur", "Vimppasindpl2": "ibamini", "Vimppasindpl3": "ibantur", "Vfutpasindsg1": "ibor", "Vfutpasindsg2": "iberis", "Vfutpasindsg3": "ibitur", "Vfutpasindpl1": "ibimur", "Vfutpasindpl2": "ibimini", "Vfutpasindpl3": "ibuntur", "Vperpasindsg1": "itus sum", "Vperpasindsg2": "itus es", "Vperpasindsg3": "itus est", "Vperpasindpl1": "iti sumus", "Vperpasindpl2": "iti estis", "Vperpasindpl3": "iti sunt", "Vplppasindsg1": "itus eram", "Vplppasindsg2": "itus eras", "Vplppasindsg3": "itus erat", "Vplppasindpl1": "iti eramus", "Vplppasindpl2": "iti eratis", "Vplppasindpl3": "iti erant", "Vfprpasindsg1": "itus ero", "Vfprpasindsg2": "itus eris", "Vfprpasindsg3": "itus erit", "Vfprpasindpl1": "iti erimus", "Vfprpasindpl2": "iti eritis", "Vfprpasindpl3": "iti erunt",
         "Vpreactsbjsg1": "eam", "Vpreactsbjsg2": "eas", "Vpreactsbjsg3": "eat", "Vpreactsbjpl1": "eamus", "Vpreactsbjpl2": "eatis", "Vpreactsbjpl3": "eant", "Vimpactsbjsg1": "irem", "Vimpactsbjsg2": "ires", "Vimpactsbjsg3": "iret", "Vimpactsbjpl1": "iremus", "Vimpactsbjpl2": "iretis", "Vimpactsbjpl3": "irent", "Vperactsbjsg1": "ierim", "Vperactsbjsg2": "ieris", "Vperactsbjsg3": "ierit", "Vperactsbjpl1": "ierimus", "Vperactsbjpl2": "ieritis", "Vperactsbjpl3": "ierint", "Vplpactsbjsg1": "issem", "Vplpactsbjsg2": "isses", "Vplpactsbjsg3": "isset", "Vplpactsbjpl1": "issemus", "Vplpactsbjpl2": "issetis", "Vplpactsbjpl3": "issent",
         "Vprepassbjsg1": "ear", "Vprepassbjsg2": "earis", "Vprepassbjsg3": "eatur", "Vprepassbjpl1": "eamur", "Vprepassbjpl2": "eamini", "Vprepassbjpl3": "eantur", "Vimppassbjsg1": "irer", "Vimppassbjsg2": "ireris", "Vimppassbjsg3": "iretur", "Vimppassbjpl1": "iremur", "Vimppassbjpl2": "iremini", "Vimppassbjpl3": "irentur", "Vperpassbjsg1": "itus sim", "Vperpassbjsg2": "itus sis", "Vperpassbjsg3": "itus sit", "Vperpassbjpl1": "iti simus", "Vperpassbjpl2": "iti sitis", "Vperpassbjpl3": "iti sint", "Vplppassbjsg1": "itus essem", "Vplppassbjsg2": "itus esses", "Vplppassbjsg3": "itus esset", "Vplppassbjpl1": "iti essemus", "Vplppassbjpl2": "iti essetis", "Vplppassbjpl3": "iti essent",
-        "Vpreactipesg2": "i", "Vpreactipepl2": "ite",
+        "Vpreactipesg2": "i", "Vpreactipepl2": "ite", "Vprepasipepl2": "imini", "Vprepasipesg2": "ire",
+        "Vfutactipepl2": "itote", "Vfutactipepl3": "eunto", "Vfutactipesg2": "ito", "Vfutactipesg3": "ito", "Vfutpasipepl3": "euntor", "Vfutpasipesg2": "itor", "Vfutpasipesg3": "itor",
         "Vpreactinf   ": "ire", "Vprepasinf   ": "iri",
         "Vpreactptcfablpl": "euntibus", "Vpreactptcfablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcfaccpl": "euntes", "Vpreactptcfaccsg": "euntem", "Vpreactptcfdatpl": "euntibus", "Vpreactptcfdatsg": "eunti", "Vpreactptcfgenpl": "euntium", "Vpreactptcfgensg": "euntis", "Vpreactptcfnompl": "euntes", "Vpreactptcfnomsg": "iens", "Vpreactptcfvocpl": "euntes", "Vpreactptcfvocsg": "iens", "Vpreactptcmablpl": "euntibus", "Vpreactptcmablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcmaccpl": "euntes", "Vpreactptcmaccsg": "euntem", "Vpreactptcmdatpl": "euntibus", "Vpreactptcmdatsg": "eunti", "Vpreactptcmgenpl": "euntium", "Vpreactptcmgensg": "euntis", "Vpreactptcmnompl": "euntes", "Vpreactptcmnomsg": "iens", "Vpreactptcmvocpl": "euntes", "Vpreactptcmvocsg": "iens", "Vpreactptcnablpl": "euntibus", "Vpreactptcnablsg": MultipleEndings(regular="eunti", absolute="eunte"), "Vpreactptcnaccpl": "euntia", "Vpreactptcnaccsg": "iens", "Vpreactptcndatpl": "euntibus", "Vpreactptcndatsg": "eunti", "Vpreactptcngenpl": "euntium", "Vpreactptcngensg": "euntis", "Vpreactptcnnompl": "euntia", "Vpreactptcnnomsg": "iens", "Vpreactptcnvocpl": "euntia", "Vpreactptcnvocsg": "iens",
         "Vfutactptcfablpl": "ituris", "Vfutactptcfablsg": "itura", "Vfutactptcfaccpl": "ituras", "Vfutactptcfaccsg": "ituram", "Vfutactptcfdatpl": "ituris", "Vfutactptcfdatsg": "iturae", "Vfutactptcfgenpl": "iturarum", "Vfutactptcfgensg": "iturae", "Vfutactptcfnompl": "iturae", "Vfutactptcfnomsg": "itura", "Vfutactptcfvocpl": "iturae", "Vfutactptcfvocsg": "itura", "Vfutactptcmablpl": "ituris", "Vfutactptcmablsg": "ituro", "Vfutactptcmaccpl": "ituros", "Vfutactptcmaccsg": "iturum", "Vfutactptcmdatpl": "ituris", "Vfutactptcmdatsg": "ituro", "Vfutactptcmgenpl": "iturorum", "Vfutactptcmgensg": "ituri", "Vfutactptcmnompl": "ituri", "Vfutactptcmnomsg": "iturus", "Vfutactptcmvocpl": "ituri", "Vfutactptcmvocsg": "iture", "Vfutactptcnablpl": "ituris", "Vfutactptcnablsg": "ituro", "Vfutactptcnaccpl": "itura", "Vfutactptcnaccsg": "iturum", "Vfutactptcndatpl": "ituris", "Vfutactptcndatsg": "ituro", "Vfutactptcngenpl": "iturorum", "Vfutactptcngensg": "ituri", "Vfutactptcnnompl": "itura", "Vfutactptcnnomsg": "iturum", "Vfutactptcnvocpl": "itura", "Vfutactptcnvocsg": "iturum",
@@ -68,6 +72,7 @@ IRREGULAR_VERBS = {
         "Vpreactsbjsg1": "absim", "Vpreactsbjsg2": "absis", "Vpreactsbjsg3": "absit", "Vpreactsbjpl1": "absimus", "Vpreactsbjpl2": "absitis", "Vpreactsbjpl3": "absint", "Vimpactsbjsg1": "abessem", "Vimpactsbjsg2": "abesses", "Vimpactsbjsg3": "abesset", "Vimpactsbjpl1": "abessemus", "Vimpactsbjpl2": "abessetis", "Vimpactsbjpl3": "abessent", "Vperactsbjsg1": "afuerim", "Vperactsbjsg2": "afueris", "Vperactsbjsg3": "afuerit", "Vperactsbjpl1": "afuerimus", "Vperactsbjpl2": "afueritis", "Vperactsbjpl3": "afuerint", "Vplpactsbjsg1": "afuissem", "Vplpactsbjsg2": "afuisses", "Vplpactsbjsg3": "afuisset", "Vplpactsbjpl1": "afuissemus", "Vplpactsbjpl2": "afuissetis", "Vplpactsbjpl3": "afuissent",
         "Vpreactinf   ": "abesse",
         "Vpreactipesg2": "abes", "Vpreactipepl2": "abeste",
+        "Vfutactipesg2": "abesto", "Vfutactipesg3": "abesto", "Vfutactipepl2": "abestote", "Vfutactipepl3": "absunto",
         "Vpreactptcfablpl": "absentibus", "Vpreactptcfablsg": MultipleEndings(regular="absenti", absolute="absente"), "Vpreactptcfaccpl": "absentes", "Vpreactptcfaccsg": "absentem", "Vpreactptcfdatpl": "absentibus", "Vpreactptcfdatsg": "absenti", "Vpreactptcfgenpl": "absentium", "Vpreactptcfgensg": "absentis", "Vpreactptcfnompl": "absentes", "Vpreactptcfnomsg": "absens", "Vpreactptcfvocpl": "absentes", "Vpreactptcfvocsg": "absens", "Vpreactptcmablpl": "absentibus", "Vpreactptcmablsg": MultipleEndings(regular="absenti", absolute="absente"), "Vpreactptcmaccpl": "absentes", "Vpreactptcmaccsg": "absentem", "Vpreactptcmdatpl": "absentibus", "Vpreactptcmdatsg": "absenti", "Vpreactptcmgenpl": "absentium", "Vpreactptcmgensg": "absentis", "Vpreactptcmnompl": "absentes", "Vpreactptcmnomsg": "absens", "Vpreactptcmvocpl": "absentes", "Vpreactptcmvocsg": "absens", "Vpreactptcnablpl": "absentibus", "Vpreactptcnablsg": MultipleEndings(regular="absenti", absolute="absente"), "Vpreactptcnaccpl": "absentia", "Vpreactptcnaccsg": "absens", "Vpreactptcndatpl": "absentibus", "Vpreactptcndatsg": "absenti", "Vpreactptcngenpl": "absentium", "Vpreactptcngensg": "absentis", "Vpreactptcnnompl": "absentia", "Vpreactptcnnomsg": "absens", "Vpreactptcnvocpl": "absentia", "Vpreactptcnvocsg": "absens",
         "Vfutactptcfablpl": "afuturis", "Vfutactptcfablsg": "afutura", "Vfutactptcfaccpl": "afuturas", "Vfutactptcfaccsg": "afuturam", "Vfutactptcfdatpl": "afuturis", "Vfutactptcfdatsg": "afuturae", "Vfutactptcfgenpl": "afuturarum", "Vfutactptcfgensg": "afuturae", "Vfutactptcfnompl": "afuturae", "Vfutactptcfnomsg": "afutura", "Vfutactptcfvocpl": "afuturae", "Vfutactptcfvocsg": "afutura", "Vfutactptcmablpl": "afuturis", "Vfutactptcmablsg": "afuturo", "Vfutactptcmaccpl": "afuturos", "Vfutactptcmaccsg": "afuturum", "Vfutactptcmdatpl": "afuturis", "Vfutactptcmdatsg": "afuturo", "Vfutactptcmgenpl": "afuturorum", "Vfutactptcmgensg": "afuturi", "Vfutactptcmnompl": "afuturi", "Vfutactptcmnomsg": "afuturus", "Vfutactptcmvocpl": "afuturi", "Vfutactptcmvocsg": "afuture", "Vfutactptcnablpl": "afuturis", "Vfutactptcnablsg": "afuturo", "Vfutactptcnaccpl": "afutura", "Vfutactptcnaccsg": "afuturum", "Vfutactptcndatpl": "afuturis", "Vfutactptcndatsg": "afuturo", "Vfutactptcngenpl": "afuturorum", "Vfutactptcngensg": "afuturi", "Vfutactptcnnompl": "afutura", "Vfutactptcnnomsg": "afuturum", "Vfutactptcnvocpl": "afutura", "Vfutactptcnvocsg": "afuturum",
     },
@@ -76,6 +81,7 @@ IRREGULAR_VERBS = {
         "Vfpractindsg1": "adfuero", "Vfpractindsg2": "adfueris", "Vfpractindsg3": "adfuerit", "Vfpractindpl1": "adfuerimus", "Vfpractindpl2": "adfueritis", "Vfpractindpl3": "adfuerint", "Vpreactsbjsg1": "adsim", "Vpreactsbjsg2": "adsis", "Vpreactsbjsg3": "adsit", "Vpreactsbjpl1": "adsimus", "Vpreactsbjpl2": "adsitis", "Vpreactsbjpl3": "adsint", "Vimpactsbjsg1": "adessem", "Vimpactsbjsg2": "adesses", "Vimpactsbjsg3": "adesset", "Vimpactsbjpl1": "adessemus", "Vimpactsbjpl2": "adessetis", "Vimpactsbjpl3": "adessent", "Vperactsbjsg1": "adfuerim", "Vperactsbjsg2": "adfueris", "Vperactsbjsg3": "adfuerit", "Vperactsbjpl1": "adfuerimus", "Vperactsbjpl2": "adfueritis", "Vperactsbjpl3": "adfuerint", "Vplpactsbjsg1": "adfuissem", "Vplpactsbjsg2": "adfuisses", "Vplpactsbjsg3": "adfuisset", "Vplpactsbjpl1": "adfuissemus", "Vplpactsbjpl2": "adfuissetis", "Vplpactsbjpl3": "adfuissent",
         "Vpreactinf   ": "adesse",
         "Vpreactipesg2": "ades", "Vpreactipepl2": "adeste",
+        "Vfutactipesg2": "adesto", "Vfutactipesg3": "adesto", "Vfutactipepl2": "adestote", "Vfutactipepl3": "adsunto",
         "Vfutactptcfablpl": "adfuturis", "Vfutactptcfablsg": "adfutura", "Vfutactptcfaccpl": "adfuturas", "Vfutactptcfaccsg": "adfuturam", "Vfutactptcfdatpl": "adfuturis", "Vfutactptcfdatsg": "adfuturae", "Vfutactptcfgenpl": "adfuturarum", "Vfutactptcfgensg": "adfuturae", "Vfutactptcfnompl": "adfuturae", "Vfutactptcfnomsg": "adfutura", "Vfutactptcfvocpl": "adfuturae", "Vfutactptcfvocsg": "adfutura", "Vfutactptcmablpl": "adfuturis", "Vfutactptcmablsg": "adfuturo", "Vfutactptcmaccpl": "adfuturos", "Vfutactptcmaccsg": "adfuturum", "Vfutactptcmdatpl": "adfuturis", "Vfutactptcmdatsg": "adfuturo", "Vfutactptcmgenpl": "adfuturorum", "Vfutactptcmgensg": "adfuturi", "Vfutactptcmnompl": "adfuturi", "Vfutactptcmnomsg": "adfuturus", "Vfutactptcmvocpl": "adfuturi", "Vfutactptcmvocsg": "adfuture", "Vfutactptcnablpl": "adfuturis", "Vfutactptcnablsg": "adfuturo", "Vfutactptcnaccpl": "adfutura", "Vfutactptcnaccsg": "adfuturum", "Vfutactptcndatpl": "adfuturis", "Vfutactptcndatsg": "adfuturo", "Vfutactptcngenpl": "adfuturorum", "Vfutactptcngensg": "adfuturi", "Vfutactptcnnompl": "adfutura", "Vfutactptcnnomsg": "adfuturum", "Vfutactptcnvocpl": "adfutura", "Vfutactptcnvocsg": "adfuturum",
     },
     "inquam": {
@@ -208,6 +214,15 @@ VERB_COMBINATIONS = (
     (Tense.PLUPERFECT, Voice.PASSIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
     (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.PASSIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.IMPERATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.PASSIVE, Mood.IMPERATIVE, 3, Number.PLURAL),
     (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
     (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE, None, None),
 )
@@ -240,6 +255,9 @@ class TestVerbConjugation:
         "celatus essem", "celatus esses", "celatus esset", "celati essemus", "celati essetis", "celati essent",
 
         "cela", "celate",
+        "celato", "celato", "celatote", "celanto",
+        "celare", "celamini",
+        "celator", "celator", "celantor",
 
         "celare", "celari",
     ])])  # fmt: skip
@@ -273,6 +291,9 @@ class TestVerbConjugation:
         "mansus essem", "mansus esses", "mansus esset", "mansi essemus", "mansi essetis", "mansi essent",
 
         "mane", "manete",
+        "maneto", "maneto", "manetote", "manento",
+        "manere", "manemini", 
+        "manetor", "manetor", "manentor",
 
         "manere", "maneri",
     ])])  # fmt: skip
@@ -306,6 +327,9 @@ class TestVerbConjugation:
         "desertus essem", "desertus esses", "desertus esset", "deserti essemus", "deserti essetis", "deserti essent",
 
         "desere", "deserite",
+        "deserito", "deserito", "deseritote", "deserunto",
+        "deserere", "deserimini", 
+        "deseritor", "deseritor", "deseruntor",
 
         "deserere", "deseri",
     ])])  # fmt: skip
@@ -339,6 +363,9 @@ class TestVerbConjugation:
         "captus essem", "captus esses", "captus esset", "capti essemus", "capti essetis", "capti essent",
 
         "cape", "capite",
+        "capito", "capito", "capitote", "capiunto",
+        "capere", "capimini", 
+        "capitor", "capitor", "capiuntor",
 
         "capere", "capi",
     ])])  # fmt: skip
@@ -372,6 +399,9 @@ class TestVerbConjugation:
         "apertus essem", "apertus esses", "apertus esset", "aperti essemus", "aperti essetis", "aperti essent",
 
         "aperi", "aperite",
+        "aperito", "aperito", "aperitote", "aperiunto",
+        "aperire", "aperimini", 
+        "aperitor", "aperitor", "aperiuntor",
 
         "aperire", "aperiri",
     ])])  # fmt: skip
@@ -405,6 +435,9 @@ class TestVerbConjugation:
         "venitus essem", "venitus esses", "venitus esset", "veniti essemus", "veniti essetis", "veniti essent",
 
         "veni", "venite",
+        "venito", "venito", "venitote", "veneunto",
+        "venire", "venimini", 
+        "venitor", "venitor", "veneuntor",
 
         "venire", "veniri",
     ])])  # fmt: skip
@@ -455,6 +488,9 @@ class TestIrregularVerbConjugation:
         None, None, None, None, None, None,
 
         "elega", "elegate",
+        "elegato", "elegato", "elegatote", "eleganto",
+        "elegare", "elegamini", 
+        "elegator", "elegator", "elegantor",
 
         "elegare", "elegari",
     ])])  # fmt: skip

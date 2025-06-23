@@ -492,6 +492,11 @@ class Verb(_Word):
             "Vimppassbjpl1": f"{self.infinitive}mur",  # portaremur
             "Vimppassbjpl2": f"{self.infinitive}mini",  # portaremini
             "Vimppassbjpl3": f"{self.infinitive}ntur",  # portarentur
+            "Vprepasipesg2": f"{self._inf_stem}are",  # portare
+            "Vprepasipepl2": f"{self._inf_stem}amini",  # portamini
+            "Vfutpasipesg2": f"{self._inf_stem}ator",  # portator
+            "Vfutpasipesg3": f"{self._inf_stem}ator",  # portator
+            "Vfutpasipepl3": f"{self._inf_stem}antor",  # portantor
             "Vprepasinf   ": f"{self._inf_stem}ari",  # portari
         }
 
@@ -607,6 +612,10 @@ class Verb(_Word):
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # portarent
             "Vpreactipesg2": f"{self._inf_stem}a",  # porta
             "Vpreactipepl2": f"{self._inf_stem}ate",  # portate
+            "Vfutactipesg2": f"{self._inf_stem}ato",  # portato
+            "Vfutactipesg3": f"{self._inf_stem}ato",  # portato
+            "Vfutactipepl2": f"{self._inf_stem}atote",  # portatote
+            "Vfutactipepl3": f"{self._inf_stem}anto",  # portanto
             "Vpreactinf   ": self.infinitive,  # portare
         }
 
@@ -645,6 +654,11 @@ class Verb(_Word):
             "Vimppassbjpl1": f"{self.infinitive}mur",  # doceremur
             "Vimppassbjpl2": f"{self.infinitive}mini",  # doceremini
             "Vimppassbjpl3": f"{self.infinitive}ntur",  # docerentur
+            "Vprepasipesg2": f"{self._inf_stem}ere",  # docere
+            "Vprepasipepl2": f"{self._inf_stem}emini",  # docemini
+            "Vfutpasipesg2": f"{self._inf_stem}etor",  # docetor
+            "Vfutpasipesg3": f"{self._inf_stem}etor",  # docetor
+            "Vfutpasipepl3": f"{self._inf_stem}entor",  # docentor
             "Vprepasinf   ": f"{self._inf_stem}eri",  # doceri
         }
 
@@ -760,6 +774,10 @@ class Verb(_Word):
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # docerent
             "Vpreactipesg2": f"{self._inf_stem}e",  # doce
             "Vpreactipepl2": f"{self._inf_stem}ete",  # docete
+            "Vfutactipesg2": f"{self._inf_stem}eto",  # doceto
+            "Vfutactipesg3": f"{self._inf_stem}eto",  # doceto
+            "Vfutactipepl2": f"{self._inf_stem}etote",  # docetote
+            "Vfutactipepl3": f"{self._inf_stem}ento",  # docento
             "Vpreactinf   ": self.infinitive,  # docere
         }
 
@@ -798,6 +816,11 @@ class Verb(_Word):
             "Vimppassbjpl1": f"{self.infinitive}mur",  # traheremur
             "Vimppassbjpl2": f"{self.infinitive}mini",  # traheremini
             "Vimppassbjpl3": f"{self.infinitive}ntur",  # traherentur
+            "Vprepasipesg2": f"{self._inf_stem}ere",  # trahere
+            "Vprepasipepl2": f"{self._inf_stem}imini",  # trahimini
+            "Vfutpasipesg2": f"{self._inf_stem}itor",  # trahitor
+            "Vfutpasipesg3": f"{self._inf_stem}itor",  # trahitor
+            "Vfutpasipepl3": f"{self._inf_stem}untor",  # trahuntor
             "Vprepasinf   ": f"{self._inf_stem}i",  # trahi
         }
 
@@ -913,6 +936,10 @@ class Verb(_Word):
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # traherent
             "Vpreactipesg2": f"{self._inf_stem}e",  # trahe
             "Vpreactipepl2": f"{self._inf_stem}ite",  # trahite
+            "Vfutactipesg2": f"{self._inf_stem}ito",  # trahito
+            "Vfutactipesg3": f"{self._inf_stem}ito",  # trahito
+            "Vfutactipepl2": f"{self._inf_stem}itote",  # trahitote
+            "Vfutactipepl3": f"{self._inf_stem}unto",  # trahunto
             "Vpreactinf   ": self.infinitive,  # trahere
         }
 
@@ -951,6 +978,11 @@ class Verb(_Word):
             "Vimppassbjpl1": f"{self.infinitive}mur",  # audiremur
             "Vimppassbjpl2": f"{self.infinitive}mini",  # audiremini
             "Vimppassbjpl3": f"{self.infinitive}ntur",  # audirentur
+            "Vprepasipesg2": f"{self._inf_stem}ire",  # audire
+            "Vprepasipepl2": f"{self._inf_stem}imini",  # audimini
+            "Vfutpasipesg2": f"{self._inf_stem}itor",  # auditor
+            "Vfutpasipesg3": f"{self._inf_stem}itor",  # auditor
+            "Vfutpasipepl3": f"{self._inf_stem}iuntor",  # audiuntor
             "Vprepasinf   ": f"{self._inf_stem}iri",  # audiri
         }
 
@@ -1066,6 +1098,10 @@ class Verb(_Word):
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # audirent
             "Vpreactipesg2": f"{self._inf_stem}i",  # audi
             "Vpreactipepl2": f"{self._inf_stem}ite",  # audite
+            "Vfutactipesg2": f"{self._inf_stem}ito",  # audito
+            "Vfutactipesg3": f"{self._inf_stem}ito",  # audito
+            "Vfutactipepl2": f"{self._inf_stem}itote",  # auditote
+            "Vfutactipepl3": f"{self._inf_stem}iunto",  # audiunto
             "Vpreactinf   ": self.infinitive,  # audire
         }
 
@@ -1104,6 +1140,11 @@ class Verb(_Word):
             "Vimppassbjpl1": f"{self.infinitive}mur",  # caperemur
             "Vimppassbjpl2": f"{self.infinitive}mini",  # caperemini
             "Vimppassbjpl3": f"{self.infinitive}ntur",  # caperentur
+            "Vprepasipesg2": f"{self._inf_stem}ere",  # capere
+            "Vprepasipepl2": f"{self._inf_stem}imini",  # capimini
+            "Vfutpasipesg2": f"{self._inf_stem}itor",  # capitor
+            "Vfutpasipesg3": f"{self._inf_stem}itor",  # capitor
+            "Vfutpasipepl3": f"{self._inf_stem}iuntor",  # capiuntor
             "Vprepasinf   ": f"{self._inf_stem}i",  # capi
         }
 
@@ -1219,6 +1260,10 @@ class Verb(_Word):
             "Vimpactsbjpl3": f"{self.infinitive}nt",  # caperent
             "Vpreactipesg2": f"{self._inf_stem}e",  # cape
             "Vpreactipepl2": f"{self._inf_stem}ite",  # capite
+            "Vfutactipesg2": f"{self._inf_stem}ito",  # capito
+            "Vfutactipesg3": f"{self._inf_stem}ito",  # capito
+            "Vfutactipepl2": f"{self._inf_stem}itote",  # capitote
+            "Vfutactipepl3": f"{self._inf_stem}iunto",  # capiunto
             "Vpreactinf   ": self.infinitive,  # capere
         }
 
