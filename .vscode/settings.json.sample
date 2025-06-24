@@ -44,7 +44,8 @@
         "dist": true,
         "gocov": true,
         "reports": true,
-        "__version__.txt": true
+        "__version__.txt": true,
+        ".roorules": true
     },
     "autoDocstring.docstringFormat": "numpy",
     "ruff.nativeServer": true,
