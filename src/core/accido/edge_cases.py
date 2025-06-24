@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 # -----------------------------------------------------------------------------
-# VERBS WITH DIFFERENT PRINCIPAL PARTS
+# VERBS WITH MISSING FORMS
 
 # FIXME: These lists are incorrect in places. If a verb has multiple etymologies,
 # and one of those is defective, then the word will show up here even the other
@@ -304,6 +304,27 @@ MISSING_FUTURE_VERBS: Final[set[str]] = {"adsoleo", "assoleo", "soleo"}
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_supine_stem_with_missing_future_active_participle
 # deletions: all verbs ending in 'fio' (should be grouped with 'facio')
 MISSING_FAP_VERBS: Final[set[str]] = {"libet", "lubet", "perlibet"}
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_impersonal_verbs
+# many deletions as there are some regular verbs with impersonal meanings placed here
+IMPERSONAL_VERBS: Final[set[str]] = {
+    "advesperascit", "autumnascit", "autumnescit", "coest", "compluit", "depudet", "diluculat", "dispudet", "distaedet",
+    "grandinat", "impluit", "infit", "invesperascit", "libet", "lubet", "miseret", "ningit", "ninguit", "oportet", "perlibet",
+    "pertaedet", "piget", "pluit", "refert", "taedet", "vesperascit",
+}  # fmt: skip
+
+# Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_impersonal_passive
+# NOTE: Some verbs in here might be 'impersonal in the passive in Old Latin', not sure if that counts?
+IMPERSONAL_PASSIVE_VERBS: Final[set[str]] = {
+    "abaestuo", "abambulo", "abeo", "abequito", "abludo", "abnato", "abnocto", "aborto", "absilio", "absisto", "absono", "absto",
+    "accano", "accapito", "accessito", "accubo", "adcubo", "adfluo", "adservio", "adsto", "adsurgo", "advenio", "advivo",
+    "affluo", "antevenio", "asservio", "assurgo", "asto", "aufugio", "buccino", "bucino", "cado", "concubo", "concumbo",
+    "conferveo", "confugio", "consisto", "convivo", "curso", "decumbo", "defluo", "depoclo", "diffugio", "dissideo", "dormio",
+    "evenio", "faveo", "ferveo", "fervo", "hymnio", "inoboedio", "insanio", "insisto", "intersto", "lapso", "ningo", "obsisto",
+    "obsto", "paeniteo", "pareo", "perdoleo", "pereo", "perfluo", "perfugio", "persto", "pervenio", "poeniteo", "possum",
+    "profugio", "psallo", "redeo", "referveo", "refugio", "resilio", "resisto", "resto", "revenio", "saevio", "sedeo", "servio",
+    "sterto", "sto", "subservio", "subvenio", "supervivo", "usito", "vapulo", "venio", "victito", "vivo", "volo", "vomito",
+}  # fmt: skip
 
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS

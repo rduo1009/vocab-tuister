@@ -15,6 +15,8 @@ from .edge_cases import (
     ACTIVE_ONLY_VERBS,
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
+    IMPERSONAL_PASSIVE_VERBS,
+    IMPERSONAL_VERBS,
     MISSING_FAP_VERBS,
     MISSING_FUTURE_VERBS,
     MISSING_GERUND_VERBS,
@@ -90,6 +92,8 @@ class Verb(_Word):
         "conjugation",
         "deponent",
         "fap_fourthpp",
+        "impersonal",
+        "impersonal_passive",
         "infinitive",
         "no_fap",
         "no_future",
@@ -170,6 +174,8 @@ class Verb(_Word):
         self.no_future: bool = False
         self.no_fap: bool = False
         self.active_only: bool = False
+        self.impersonal: bool = False
+        self.impersonal_passive: bool = False
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
@@ -221,6 +227,9 @@ class Verb(_Word):
                 self.ppp = self.perfect[:-4]
                 self._ppp_stem = self.ppp[:-2]
                 self._fap_stem = self.ppp[:-1] + "r"
+
+            self.impersonal = self.present in IMPERSONAL_VERBS
+            self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
 
             # Determine stems
             self._inf_stem: str
@@ -297,6 +306,15 @@ class Verb(_Word):
                     ),
                 )
 
+            # deponents are only passive
+            if self.impersonal or self.impersonal_passive:
+                self.endings = {
+                    key: value
+                    for key, value in self.endings.items()
+                    if len(key) == 13
+                    and key[10:13] == Number.SINGULAR.shorthand + "3"
+                }
+
             return
 
         # ---------------------------------------------------------------------
@@ -362,6 +380,8 @@ class Verb(_Word):
         self.no_gerund = self.present in MISSING_GERUND_VERBS
         self.no_fap = self.present in MISSING_FAP_VERBS
         self.active_only = self.present in ACTIVE_ONLY_VERBS
+        self.impersonal = self.present in IMPERSONAL_VERBS
+        self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
 
         # FIXME: this only applies to 'soleo' and derivatives, which are semideponent
         # need to move to semideponent branch when its implemented
@@ -450,6 +470,25 @@ class Verb(_Word):
                 key: value
                 for key, value in self.endings.items()
                 if key[4:7] != Voice.PASSIVE.shorthand
+            }
+
+        if self.impersonal:
+            self.endings = {
+                key: value
+                for key, value in self.endings.items()
+                if len(key) == 13
+                and key[10:13] == Number.SINGULAR.shorthand + "3"
+            }
+
+        if self.impersonal_passive:
+            self.endings = {
+                key: value
+                for key, value in self.endings.items()
+                if len(key) == 13
+                and (
+                    key[10:13] == Number.SINGULAR.shorthand + "3"
+                    or key[4:7] != Voice.PASSIVE.shorthand
+                )
             }
 
         # FIXME: similar to above as well
