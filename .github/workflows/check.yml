@@ -10,30 +10,23 @@ jobs:
     name: test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: "recursive"
+
       - name: Verify .python-version file
         run: |
           if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
-      # - name: Cache tox folder
-      #   id: cache-tox
-      #   uses: actions/cache@v4.1.1
-      #   with:
-      #     path: ".tox"
-      #     key: ${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml','tox.ini','poetry.lock') }}
-
-      - uses: actions/setup-python@v5.6.0
+      - uses: actions/setup-python@v5
         with:
-          python-version-file: '.python-version'
+          python-version-file: ".python-version"
 
       - name: Install tox
         run: python -m pip install tox-gh>=1.2
 
       - name: Install deps
-        # if: steps.cache-tox.outputs.cache-hit != 'true'
         run: tox -vv --notest
 
       - name: Run test suite
@@ -43,17 +36,18 @@ jobs:
     name: integration test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: "recursive"
+
       - name: Verify .python-version file
         run: |
           if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
-      - uses: actions/setup-python@v5.6.0
+      - uses: actions/setup-python@v5
         with:
-          python-version-file: '.python-version'
+          python-version-file: ".python-version"
 
       - name: Install deps
         run: |
@@ -70,17 +64,18 @@ jobs:
     name: test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: "recursive"
+
       - name: Verify go.mod file
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
-      - uses: actions/setup-go@v5.5.0
+      - uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: "go.mod"
 
       - name: Install deps
         run: go mod download
@@ -96,7 +91,7 @@ jobs:
 
       - name: Upload changed files
         if: steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: changed-files
           path: |
@@ -112,17 +107,18 @@ jobs:
     name: integration test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: "recursive"
+
       - name: Verify go.mod file
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
-      - uses: actions/setup-go@v5.5.0
+      - uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: "go.mod"
 
       - name: Install deps
         run: |
@@ -137,7 +133,7 @@ jobs:
 
       - name: Upload changed files
         if: failure()
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: changed-files
           path: tests/integration/client_integration/testdata/

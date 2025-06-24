@@ -7,24 +7,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: "recursive"
+
       - name: Verify .python-version file
         run: |
           if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
+
       - name: Verify go.mod file
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
-      - uses: actions/setup-python@v5.6.0
+      - uses: actions/setup-python@v5
         with:
-          python-version-file: '.python-version'
+          python-version-file: ".python-version"
 
-      - uses: actions/setup-go@v5.5.0
+      - uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: "go.mod"
 
       - name: Install project deps
         run: |
@@ -39,7 +41,7 @@ jobs:
         run: ./scripts/coverage.sh
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5.4.3
+        uses: codecov/codecov-action@v5
         with:
           files: ./reports/coverage/pycoverage.xml,./reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}
