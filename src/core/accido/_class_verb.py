@@ -20,7 +20,6 @@ from .edge_cases import (
     MISSING_GERUND_VERBS,
     MISSING_PERFECT_VERBS,
     MISSING_PPP_VERBS,
-    check_mixed_conjugation_verb,
     find_derived_verb_changes,
     find_derived_verb_stems,
     find_irregular_verb_changes,
@@ -236,10 +235,6 @@ class Verb(_Word):
                 self._inf_stem, self._preptc_stem = find_derived_verb_stems(
                     self.present
                 )
-            elif check_mixed_conjugation_verb(self.present):
-                self.conjugation = 5
-                self._inf_stem = self.infinitive[:-1]
-                self._preptc_stem = self.infinitive + "e"
             elif self.infinitive.endswith("ari"):
                 self.conjugation = 1
                 self._inf_stem = self.infinitive[:-3]
@@ -252,6 +247,10 @@ class Verb(_Word):
                 self.conjugation = 4
                 self._inf_stem = self.infinitive[:-3]
                 self._preptc_stem = self.infinitive[:-2] + "e"
+            elif self.infinitive.endswith("i") and self.present.endswith("ior"):  # fmt: skip
+                self.conjugation = 5
+                self._inf_stem = self.infinitive[:-1]
+                self._preptc_stem = self.infinitive + "e"
             elif self.infinitive.endswith("i"):
                 self.conjugation = 3
                 self._inf_stem = self.infinitive[:-1]
@@ -384,10 +383,6 @@ class Verb(_Word):
             self._inf_stem, self._preptc_stem = find_derived_verb_stems(
                 self.present
             )
-        elif check_mixed_conjugation_verb(self.present):
-            self.conjugation = 5
-            self._inf_stem = self.infinitive[:-3]
-            self._preptc_stem = self.infinitive[:-3] + "ie"
         elif self.infinitive.endswith("are"):
             self.conjugation = 1
             self._inf_stem = self.infinitive[:-3]
@@ -397,9 +392,18 @@ class Verb(_Word):
             self._inf_stem = self.infinitive[:-3]
             self._preptc_stem = self.infinitive[:-2] + "e"
         elif self.infinitive.endswith("ere"):
-            self.conjugation = 2 if self.present.endswith("eo") else 3
-            self._inf_stem = self.infinitive[:-3]
-            self._preptc_stem = self.infinitive[:-2]
+            if self.present.endswith("eo"):
+                self.conjugation = 2
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-2]
+            elif self.present.endswith("io"):
+                self.conjugation = 5
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-3] + "ie"
+            else:
+                self.conjugation = 3
+                self._inf_stem = self.infinitive[:-3]
+                self._preptc_stem = self.infinitive[:-2]
         else:
             raise InvalidInputError(
                 f"Invalid infinitive form: '{self.infinitive}'"

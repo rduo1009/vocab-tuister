@@ -13,67 +13,6 @@ if TYPE_CHECKING:
 
     from .type_aliases import Conjugation, Ending, Endings
 
-# -----------------------------------------------------------------------------
-# MIXED CONJUGATION VERBS
-
-# TODO: Expand these
-MIXED_CONJUGATION_VERBS: Final[set[str]] = {
-    "abicio",
-    "adicio",
-    "aggredior",
-    "capio",
-    "concutio",
-    "confugio",
-    "conicio",
-    "cupio",
-    "deicio",
-    "diripio",
-    "disicio",
-    "effugio",
-    "eicio",
-    "eripio",
-    "facio",
-    "fugio",
-    "gradior",
-    "iacio",
-    "illicio",
-    "ingredior",
-    "inicio",
-    "mori",
-    "obicio",
-    "patior",
-    "percutio",
-    "perfugio",
-    "profugio",
-    "proicio",
-    "quatere",
-    "rapio",
-    "refugio",
-    "reicio",
-    "sapio",
-    "subicio",
-    "traicio",
-    "occipio",
-}
-
-
-def check_mixed_conjugation_verb(present: str) -> bool:
-    """Check if the given word is a mixed conjugation verb.
-
-    Parameters
-    ----------
-    present : str
-        The present form verb to check.
-
-    Returns
-    -------
-    bool
-        If the prefix matches a mixed conjugation verb.
-    """
-    return any(
-        present.endswith(io_verb) for io_verb in MIXED_CONJUGATION_VERBS
-    )
-
 
 # -----------------------------------------------------------------------------
 # VERBS WITH DIFFERENT PRINCIPAL PARTS
