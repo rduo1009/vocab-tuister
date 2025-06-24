@@ -311,8 +311,8 @@ class Verb(_Word):
                 self.endings = {
                     key: value
                     for key, value in self.endings.items()
-                    if len(key) == 13
-                    and key[10:13] == Number.SINGULAR.shorthand + "3"
+                    if len(key) != 13
+                    or key[10:13] == Number.SINGULAR.shorthand + "3"
                 }
 
             return
@@ -476,16 +476,16 @@ class Verb(_Word):
             self.endings = {
                 key: value
                 for key, value in self.endings.items()
-                if len(key) == 13
-                and key[10:13] == Number.SINGULAR.shorthand + "3"
+                if len(key) != 13
+                or key[10:13] == Number.SINGULAR.shorthand + "3"
             }
 
         if self.impersonal_passive:
             self.endings = {
                 key: value
                 for key, value in self.endings.items()
-                if len(key) == 13
-                and (
+                if len(key) != 13
+                or (
                     key[10:13] == Number.SINGULAR.shorthand + "3"
                     or key[4:7] != Voice.PASSIVE.shorthand
                 )
