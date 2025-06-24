@@ -8,13 +8,16 @@ jobs:
     name: Test docstring coverage
     runs-on: ubuntu-latest
     permissions:
-      contents: write # To allow python-interrogate-check to write the badge
+      contents: read # Needed for checkout; badge generation is within workspace
 
     steps:
       - uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify .python-version file
+        run: |
+          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
       - name: Setup python
         uses: actions/setup-python@v5.6.0

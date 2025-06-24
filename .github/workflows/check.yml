@@ -14,6 +14,9 @@ jobs:
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify .python-version file
+        run: |
+          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
       # - name: Cache tox folder
       #   id: cache-tox
@@ -44,6 +47,9 @@ jobs:
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify .python-version file
+        run: |
+          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
       - uses: actions/setup-python@v5.6.0
         with:
@@ -51,8 +57,8 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt update
-          sudo apt install pipx
+          sudo apt-get update -y
+          sudo apt-get install -y pipx
           pipx install poetry
           poetry install
 
@@ -68,6 +74,9 @@ jobs:
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify go.mod file
+        run: |
+          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
       - uses: actions/setup-go@v5.5.0
         with:
@@ -107,6 +116,9 @@ jobs:
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify go.mod file
+        run: |
+          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
       - uses: actions/setup-go@v5.5.0
         with:
@@ -114,8 +126,8 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt update
-          sudo apt install ffmpeg pipx
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install dunamai
           go mod download

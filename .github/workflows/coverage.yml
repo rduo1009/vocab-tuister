@@ -11,6 +11,12 @@ jobs:
         with:
           fetch-depth: 0
           submodules: "recursive"
+      - name: Verify .python-version file
+        run: |
+          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
+      - name: Verify go.mod file
+        run: |
+          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
       - uses: actions/setup-python@v5.6.0
         with:
