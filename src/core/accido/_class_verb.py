@@ -534,6 +534,8 @@ class Verb(_Word):
                 "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # portati essemus
                 "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # portati essetis
                 "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # portati essent
+                "Vfutpasinf   ": f"{self.ppp[:-2]}um iri",  # portatum iri
+                "Vperpasinf   ": f"{self.ppp[:-2]}us esse",  # portatus esse
             }
 
         if self.deponent:
@@ -576,6 +578,13 @@ class Verb(_Word):
                 "Vplpactsbjpl1": f"{self._per_stem}issemus",  # portavissemus
                 "Vplpactsbjpl2": f"{self._per_stem}issetis",  # portavissetis
                 "Vplpactsbjpl3": f"{self._per_stem}issent",  # portavissent
+                "Vperactinf   ": f"{self._per_stem}isse",  # portavisse
+            }
+
+        # Active forms that use future active participle stem
+        if ((not self.no_ppp) or self.fap_fourthpp) and (not self.no_fap):
+            endings |= {
+                "Vfutactinf   ": f"{self._fap_stem}us esse"  # portaturus esse
             }
 
         # Active forms
@@ -696,6 +705,8 @@ class Verb(_Word):
                 "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # docti essemus
                 "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # docti essetis
                 "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # docti essent
+                "Vfutpasinf   ": f"{self.ppp[:-2]}um iri",  # doctum iri
+                "Vperpasinf   ": f"{self.ppp[:-2]}us esse",  # doctus esse
             }
 
         if self.deponent:
@@ -738,6 +749,13 @@ class Verb(_Word):
                 "Vplpactsbjpl1": f"{self._per_stem}issemus",  # docuissmus
                 "Vplpactsbjpl2": f"{self._per_stem}issetis",  # docuissetis
                 "Vplpactsbjpl3": f"{self._per_stem}issent",  # docuissent
+                "Vperactinf   ": f"{self._per_stem}isse",  # docuisse
+            }
+
+        # Active forms that use future active participle stem
+        if ((not self.no_ppp) or self.fap_fourthpp) and (not self.no_fap):
+            endings |= {
+                "Vfutactinf   ": f"{self._fap_stem}us esse"  # docturus esse
             }
 
         # Active forms
@@ -858,6 +876,8 @@ class Verb(_Word):
                 "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # tracti essemus
                 "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # tracti essetis
                 "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # tracti essent
+                "Vfutpasinf   ": f"{self.ppp[:-2]}um iri",  # tractum iri
+                "Vperpasinf   ": f"{self.ppp[:-2]}us esse",  # tractus esse
             }
 
         if self.deponent:
@@ -900,6 +920,13 @@ class Verb(_Word):
                 "Vplpactsbjpl1": f"{self._per_stem}issemus",  # traxissemus
                 "Vplpactsbjpl2": f"{self._per_stem}issetis",  # traxissetis
                 "Vplpactsbjpl3": f"{self._per_stem}issent",  # traxissent
+                "Vperactinf   ": f"{self._per_stem}isse",  # traxisse
+            }
+
+        # Active forms that use future active participle stem
+        if ((not self.no_ppp) or self.fap_fourthpp) and (not self.no_fap):
+            endings |= {
+                "Vfutactinf   ": f"{self._fap_stem}us esse"  # tracturus esse
             }
 
         # Active forms
@@ -1020,6 +1047,8 @@ class Verb(_Word):
                 "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # auditi essemus
                 "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # auditi essetis
                 "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # auditi essent
+                "Vfutpasinf   ": f"{self.ppp[:-2]}um iri",  # auditum iri
+                "Vperpasinf   ": f"{self.ppp[:-2]}us esse",  # auditus esse
             }
 
         if self.deponent:
@@ -1062,6 +1091,13 @@ class Verb(_Word):
                 "Vplpactsbjpl1": f"{self._per_stem}issemus",  # audivissemus
                 "Vplpactsbjpl2": f"{self._per_stem}issetis",  # audivissetis
                 "Vplpactsbjpl3": f"{self._per_stem}issent",  # audivissent
+                "Vperactinf   ": f"{self._per_stem}isse",  # audivisse
+            }
+
+        # Active forms that use future active participle stem
+        if ((not self.no_ppp) or self.fap_fourthpp) and (not self.no_fap):
+            endings |= {
+                "Vfutactinf   ": f"{self._fap_stem}us esse"  # auditurus esse
             }
 
         # Active forms
@@ -1182,6 +1218,8 @@ class Verb(_Word):
                 "Vplppassbjpl1": f"{self.ppp[:-2]}i essemus",  # capti essemus
                 "Vplppassbjpl2": f"{self.ppp[:-2]}i essetis",  # capti essetis
                 "Vplppassbjpl3": f"{self.ppp[:-2]}i essent",  # capti essent
+                "Vfutpasinf   ": f"{self.ppp[:-2]}um iri",  # captum iri
+                "Vperpasinf   ": f"{self.ppp[:-2]}us esse",  # captus esse
             }
 
         if self.deponent:
@@ -1224,6 +1262,13 @@ class Verb(_Word):
                 "Vplpactsbjpl1": f"{self._per_stem}issemus",  # cepissemus
                 "Vplpactsbjpl2": f"{self._per_stem}issetis",  # cepissetis
                 "Vplpactsbjpl3": f"{self._per_stem}issent",  # cepissent
+                "Vperactinf   ": f"{self._per_stem}isse",  # cepisse
+            }
+
+        # Active forms that use future active participle stem
+        if ((not self.no_ppp) or self.fap_fourthpp) and (not self.no_fap):
+            endings |= {
+                "Vfutactinf   ": f"{self._fap_stem}us esse"  # capturus esse
             }
 
         # Active forms

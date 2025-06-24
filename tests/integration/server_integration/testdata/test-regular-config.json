@@ -37,7 +37,11 @@
   "exclude-verb-present-passive-imperative": false,
   "exclude-verb-future-passive-imperative": false,
   "exclude-verb-present-active-infinitive": false,
+  "exclude-verb-future-active-infinitive": false,
+  "exclude-verb-perfect-active-infinitive": false,
   "exclude-verb-present-passive-infinitive": false,
+  "exclude-verb-future-passive-infinitive": false,
+  "exclude-verb-perfect-passive-infinitive": false,
 
   "exclude-verb-singular": false,
   "exclude-verb-plural": false,

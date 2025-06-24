@@ -447,6 +447,9 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
             "Vfutactipesg3": "esto",
             "Vfutactipepl2": "estote",
             "Vfutactipepl3": "sunto",
+            "Vfutactinf   ": MultipleEndings(
+                regular="futurum esse", second="fore"
+            ),
         },
         additions={},
         # no passives, present participles
@@ -600,6 +603,7 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
             "Vprepassbjpl3": "eantur",
             "Vfutactipepl3": "eunto",
             "Vfutpasipepl3": "euntor",
+            "Vperactinf   ": "isse",
             "Vpreactptcmaccsg": "euntem",
             "Vpreactptcmgensg": "euntis",
             "Vpreactptcmdatsg": "eunti",
@@ -867,6 +871,9 @@ DERIVED_IRREGULAR_CHANGES: Final[
             "Vfutactipesg3": f"{x[0]}esto",
             "Vfutactipepl2": f"{x[0]}estote",
             "Vfutactipepl3": f"{x[0]}sunto",
+            "Vfutactinf   ": MultipleEndings(
+                regular=f"{x[3]}futurum esse", second=f"{x[3]}fore"
+            ),
         },
         additions={},
         # no passives, present participles
@@ -904,6 +911,9 @@ DERIVED_IRREGULAR_CHANGES: Final[
             "Vfutactipesg3": f"{x[0]}esto",
             "Vfutactipepl2": f"{x[0]}estote",
             "Vfutactipepl3": f"{x[0]}sunto",
+            "Vfutactinf   ": MultipleEndings(
+                regular=f"{x[3]}futurum esse", second=f"{x[3]}fore"
+            ),
         },
         additions={},
         # no passives
@@ -985,6 +995,7 @@ DERIVED_IRREGULAR_CHANGES: Final[
             "Vprepassbjpl3": f"{x[0]}eantur",
             "Vfutactipepl3": f"{x[0]}eunto",
             "Vfutpasipepl3": f"{x[0]}euntor",
+            "Vperactinf   ": f"{x[2]}isse",
             "Vpreactptcmaccsg": f"{x[0]}euntem",
             "Vpreactptcmgensg": f"{x[0]}euntis",
             "Vpreactptcmdatsg": f"{x[0]}eunti",
@@ -1189,8 +1200,7 @@ def find_derived_verb_changes(
         The endings changes.
     """
     group = _find_derived_verb_group(principal_parts[0])
-    principal_parts = principal_parts[1:]
-    derived_principal_stems = _DERIVED_PRINCIPAL_STEMS[group][1:]
+    derived_principal_stems = _DERIVED_PRINCIPAL_STEMS[group]
     return DERIVED_IRREGULAR_CHANGES[group](
         tuple(
             pp.removesuffix(derived_principal_stems[i])

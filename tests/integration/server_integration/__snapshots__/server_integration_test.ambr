@@ -3,7 +3,7 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_extra_config.1
-  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_list
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
@@ -21,13 +21,13 @@
   'Vocab list received.'
 # ---
 # name: test_cli_error_missing2_config.1
-  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type1_config
   'Vocab list received.'
 # ---
 # name: test_cli_error_type1_config.1
-  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
+  "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type2_config
   'Vocab list received.'
@@ -353,10 +353,10 @@
     dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'capientia',
+          'capiens',
         ]),
-        'components': 'present active participle neuter nominative plural',
-        'main_answer': 'capientia',
+        'components': 'present active participle neuter accusative singular',
+        'main_answer': 'capiens',
         'prompt': 'take: capio, capere, cepi, captus',
       }),
       'question_type': 'ParseWordCompToLatQuestion',

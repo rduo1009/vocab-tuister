@@ -177,8 +177,20 @@ def _find_lemma(  # noqa: PLR0917
         case (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE):
             return _find_preactinf_inflections(lemma)
 
+        case (Tense.FUTURE, Voice.ACTIVE, Mood.INFINITIVE):
+            return _find_futactinf_inflections(lemma)
+
+        case (Tense.PERFECT, Voice.ACTIVE, Mood.INFINITIVE):
+            return _find_peractinf_inflections(lemma)
+
         case (Tense.PRESENT, Voice.PASSIVE, Mood.INFINITIVE):
             return _find_prepasinf_inflections(lemma)
+
+        case (Tense.FUTURE, Voice.PASSIVE, Mood.INFINITIVE):
+            return _find_futpasinf_inflections(lemma)
+
+        case (Tense.PERFECT, Voice.PASSIVE, Mood.INFINITIVE):
+            return _find_perpasinf_inflections(lemma)
 
         case _:
             pass
@@ -1062,10 +1074,38 @@ def _find_preactinf_inflections(lemma: str) -> tuple[str, set[str]]:
     return (f"to {lemma}", {f"to {lemma}"})
 
 
+def _find_futactinf_inflections(lemma: str) -> tuple[str, set[str]]:
+    return (f"to be going to {lemma}", {f"to be going to {lemma}"})
+
+
+def _find_peractinf_inflections(lemma: str) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    return (f"to have {past_participle}", {f"to have {past_participle}"})
+
+
 def _find_prepasinf_inflections(lemma: str) -> tuple[str, set[str]]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
 
     return (f"to be {past_participle}", {f"to be {past_participle}"})
+
+
+def _find_futpasinf_inflections(lemma: str) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    return (
+        f"to be going to be {past_participle}",
+        {f"to be going to be {past_participle}"},
+    )
+
+
+def _find_perpasinf_inflections(lemma: str) -> tuple[str, set[str]]:
+    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
+    return (
+        f"to have been {past_participle}",
+        {f"to have been {past_participle}"},
+    )
 
 
 def _find_preactsbj_inflections(
