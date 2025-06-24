@@ -29,8 +29,14 @@ jobs:
 
       - name: Prepare artifact
         run: |
+          badge_path="docs/assets/interrogate_badge.svg"
+          if [ ! -f "$badge_path" ]; then
+            echo "Error: Badge file '$badge_path' not found. Interrogate might have failed to generate it."
+            exit 1
+          fi
           mkdir -p _artifact
-          cp docs/assets/interrogate_badge.svg _artifact/interrogate_badge.svg
+          cp "$badge_path" _artifact/interrogate_badge.svg
+          echo "Badge prepared for upload."
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
