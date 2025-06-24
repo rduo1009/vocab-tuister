@@ -19,9 +19,9 @@ done
 
 rm ./vocab-tuister
 
-if git status --porcelain | grep -q .; then
+if git status --porcelain tests/integration/client_integration/testdata | grep -q .; then
     echo "Some tests failed:"
-    git status
+    git status tests/integration/client_integration/testdata
     exit 1
 else
     echo "All tests passed."

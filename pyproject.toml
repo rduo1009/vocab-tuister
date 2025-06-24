@@ -18,7 +18,7 @@ dynamic = [ "version" ]
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==3.18.0",
+  "cyclopts==3.19.0",
   "dill==0.4.0",
   "dunamai==1.24.1",
   "flask==3.1.1",
@@ -40,18 +40,18 @@ version = "0.0.0"                         # placeholder
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.4.0"
+pytest = "8.4.1"
 syrupy = "4.9.1"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.7.0"
 pytest-pythonhashseed = "1.0.1"
-coverage = "7.8.2"
+coverage = "7.9.1"
 pytest-env = "1.1.5"
 icecream = "2.1.4"
-ruff = "0.11.13"
-doc8 = "1.1.2"
+ruff = "0.12.0"
+doc8 = "2.0.0"
 rstfmt = "0.0.14"
-mypy = { version = "1.16.0", extras = [ "faster-cache" ] }
+mypy = { version = "1.16.1", extras = [ "faster-cache" ] }
 basedpyright = "1.29.1"
 interrogate = "1.7.0"
 griffe = "1.7.3"

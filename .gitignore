@@ -14,8 +14,9 @@ cosmic-ray.sqlite
 monkeytype.sqlite3
 
 # Test generated files
-/tests/lego_test/testdata/test_output/
 /src/scripts/json_output/
+/tests/lego_test/testdata/test_output/*
+!/tests/lego_test/testdata/test_output/.gitkeep
 
 # Build files
 setup.py
