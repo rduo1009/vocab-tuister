@@ -252,6 +252,8 @@ class Verb(_Word):
             self.no_fap = (
                 self.present in MISSING_FAP_VERBS
             )  # audeo has FAP (ausurus)
+            if self.no_future: # If no future tense, usually no FAP or Gerundive either for semi-deponents
+                self.no_fap = True
             self.active_only = False  # Has passive forms in perfect system
 
             # Determine stems (similar to non-deponent)

@@ -1266,4 +1266,101 @@ class TestSemiDeponentConjugation:
         word = Verb("audeo", "audere", "ausus sum", meaning="dare")
         assert word.get(mood=mood, participle_case=case) == expected
 
-    # TODO: Add participle and verbal noun tests for fido, soleo
+    # Participle tests for fido
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # Present Active Participle for fido (fidens) - 3rd conjugation type
+        "fidens", "fidens", "fidentem", "fidentis", "fidenti", MultipleEndings(regular="fidenti", absolute="fidente"),
+        "fidentes", "fidentes", "fidentes", "fidentium", "fidentibus", "fidentibus",
+        "fidens", "fidens", "fidentem", "fidentis", "fidenti", MultipleEndings(regular="fidenti", absolute="fidente"),
+        "fidentes", "fidentes", "fidentes", "fidentium", "fidentibus", "fidentibus",
+        "fidens", "fidens", "fidens", "fidentis", "fidenti", MultipleEndings(regular="fidenti", absolute="fidente"),
+        "fidentia", "fidentia", "fidentia", "fidentium", "fidentibus", "fidentibus",
+        # Perfect Passive Participle for fido (fisus)
+        "fisus", "fise", "fisum", "fisi", "fiso", "fiso",
+        "fisi", "fisi", "fisos", "fisorum", "fisis", "fisis",
+        "fisa", "fisa", "fisam", "fisae", "fisae", "fisa",
+        "fisae", "fisae", "fisas", "fisarum", "fisis", "fisis",
+        "fisum", "fisum", "fisum", "fisi", "fiso", "fiso",
+        "fisa", "fisa", "fisa", "fisorum", "fisis", "fisis",
+        # Future Active Participle for fido (fisurus)
+        "fisurus", "fisure", "fisurum", "fisuri", "fisuro", "fisuro",
+        "fisuri", "fisuri", "fisuros", "fisurorum", "fisuris", "fisuris",
+        "fisura", "fisura", "fisuram", "fisurae", "fisurae", "fisura",
+        "fisurae", "fisurae", "fisuras", "fisurarum", "fisuris", "fisuris",
+        "fisurum", "fisurum", "fisurum", "fisuri", "fisuro", "fisuro",
+        "fisura", "fisura", "fisura", "fisurorum", "fisuris", "fisuris",
+        # Future Passive Participle (Gerundive) for fido (fidendus)
+        "fidendus", "fidende", "fidendum", "fidendi", "fidendo", "fidendo",
+        "fidendi", "fidendi", "fidendos", "fidendorum", "fidendis", "fidendis",
+        "fidenda", "fidenda", "fidendam", "fidendae", "fidendae", "fidenda",
+        "fidendae", "fidendae", "fidendas", "fidendarum", "fidendis", "fidendis",
+        "fidendum", "fidendum", "fidendum", "fidendi", "fidendo", "fidendo",
+        "fidenda", "fidenda", "fidenda", "fidendorum", "fidendis", "fidendis",
+    ])])  # fmt: skip
+    def test_fido_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("fido", "fidere", "fisus sum", meaning="trust")
+        if tense == Tense.PERFECT and voice == Voice.PASSIVE: pass # PPP
+        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: pass # Gerundive
+        else: assert voice == Voice.ACTIVE
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    # Verbal Noun tests for fido
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "fidendum", "fidendi", "fidendo", "fidendo", # Gerund
+        "fisum", "fisu" # Supine
+    ])])  # fmt: skip
+    def test_fido_verbal_nouns(self, mood, case, expected):
+        word = Verb("fido", "fidere", "fisus sum", meaning="trust")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    # Participle tests for soleo
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # Present Active Participle for soleo (solens)
+        "solens", "solens", "solentem", "solentis", "solenti", MultipleEndings(regular="solenti", absolute="solente"),
+        "solentes", "solentes", "solentes", "solentium", "solentibus", "solentibus",
+        "solens", "solens", "solentem", "solentis", "solenti", MultipleEndings(regular="solenti", absolute="solente"),
+        "solentes", "solentes", "solentes", "solentium", "solentibus", "solentibus",
+        "solens", "solens", "solens", "solentis", "solenti", MultipleEndings(regular="solenti", absolute="solente"),
+        "solentia", "solentia", "solentia", "solentium", "solentibus", "solentibus",
+        # Perfect Passive Participle for soleo (solitus)
+        "solitus", "solite", "solitum", "soliti", "solito", "solito",
+        "soliti", "soliti", "solitos", "solitorum", "solitis", "solitis",
+        "solita", "solita", "solitam", "solitae", "solitae", "solita",
+        "solitae", "solitae", "solitas", "solitarum", "solitis", "solitis",
+        "solitum", "solitum", "solitum", "soliti", "solito", "solito",
+        "solita", "solita", "solita", "solitorum", "solitis", "solitis",
+        # Future Active Participle for soleo (soliturus) - should be None
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        # Future Passive Participle (Gerundive) for soleo (solendus) - should be None due to no_future -> no_fap
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+        None, None, None, None, None, None,
+    ])])  # fmt: skip
+    def test_soleo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
+        if tense == Tense.PERFECT and voice == Voice.PASSIVE: pass # PPP
+        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: # Gerundive for soleo is missing
+            assert expected is None
+        elif tense == Tense.FUTURE and voice == Voice.ACTIVE: # FAP for soleo is missing
+            assert expected is None
+        else: assert voice == Voice.ACTIVE
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    # Verbal Noun tests for soleo
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "solendum", "solendi", "solendo", "solendo", # Gerund
+        "solitum", "solitu" # Supine
+    ])])  # fmt: skip
+    def test_soleo_verbal_nouns(self, mood, case, expected):
+        word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    # TODO: Add tests for 1st, 4th, mixed conjugation semi-deponents if suitable examples are found.
