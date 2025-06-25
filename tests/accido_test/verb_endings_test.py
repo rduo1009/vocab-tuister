@@ -1098,7 +1098,7 @@ SEMI_DEPONENT_COMBINATIONS = (
     # Infinitives
     (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
     (Tense.FUTURE, Voice.ACTIVE, Mood.INFINITIVE, None, None),
-    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None), # Perfect Semi-Deponent Infinitive
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),  # Perfect Semi-Deponent Infinitive
 )
 
 
@@ -1245,13 +1245,10 @@ class TestSemiDeponentConjugation:
     def test_audeo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audeo", "audere", "ausus sum", meaning="dare")
         # For Perfect Passive Participle of semi-deponent, the voice in get() should be PASSIVE, as its key is Vperpasptc...
-        effective_voice = Voice.SEMI_DEPONENT if voice == Voice.SEMI_DEPONENT else voice
-        if tense == Tense.PERFECT and voice == Voice.PASSIVE : # This is how we defined PPP in PARTICIPLE_COMBINATIONS
-             pass # Voice is already PASSIVE
-        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: # Gerundive
-             pass # Voice is already PASSIVE
-        else: # Present Active, Future Active
-             assert voice == Voice.ACTIVE
+        if (tense == Tense.PERFECT and voice == Voice.PASSIVE) or (tense == Tense.FUTURE and voice == Voice.PASSIVE):  # This is how we defined PPP in PARTICIPLE_COMBINATIONS
+            pass  # Voice is already PASSIVE
+        else:  # Present Active, Future Active
+            assert voice == Voice.ACTIVE
 
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
 
@@ -1299,9 +1296,10 @@ class TestSemiDeponentConjugation:
     ])])  # fmt: skip
     def test_fido_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("fido", "fidere", "fisus sum", meaning="trust")
-        if tense == Tense.PERFECT and voice == Voice.PASSIVE: pass # PPP
-        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: pass # Gerundive
-        else: assert voice == Voice.ACTIVE
+        if (tense == Tense.PERFECT and voice == Voice.PASSIVE) or (tense == Tense.FUTURE and voice == Voice.PASSIVE):
+            pass  # PPP
+        else:
+            assert voice == Voice.ACTIVE
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
 
     # Verbal Noun tests for fido
@@ -1346,12 +1344,12 @@ class TestSemiDeponentConjugation:
     ])])  # fmt: skip
     def test_soleo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
-        if tense == Tense.PERFECT and voice == Voice.PASSIVE: pass # PPP
-        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: # Gerundive for soleo is missing
+        if tense == Tense.PERFECT and voice == Voice.PASSIVE:
+            pass  # PPP
+        elif (tense == Tense.FUTURE and voice == Voice.PASSIVE) or (tense == Tense.FUTURE and voice == Voice.ACTIVE):  # Gerundive for soleo is missing
             assert expected is None
-        elif tense == Tense.FUTURE and voice == Voice.ACTIVE: # FAP for soleo is missing
-            assert expected is None
-        else: assert voice == Voice.ACTIVE
+        else:
+            assert voice == Voice.ACTIVE
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
 
     # Verbal Noun tests for soleo
