@@ -831,15 +831,15 @@ DERIVED_IRREGULAR_CHANGES: Final[
             "Vfutactipesg3": f"{x[0]}esto",
             "Vfutactipepl2": f"{x[0]}estote",
             "Vfutactipepl3": f"{x[0]}sunto",
-            "Vfutactinf   ": MultipleEndings(
-                regular=f"{x[3]}futurum esse", second=f"{x[3]}fore"
+                "Vfutactinf   ": MultipleEndings( # x for sum is ("", "fu", "futur")
+                    regular=f"{x[2]}um esse", second="fore" # futurum esse, fore
             ),
         },
         additions={},
         # no passives, present participles
         deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.preactptc.*$")},
     ),
-    "sum_preptc": lambda x: DictChanges(  # e.g. absum, abesse, afui, afuturus
+        "sum_preptc": lambda x: DictChanges(  # e.g. absum, abesse, afui, afuturus. x is (prefix, perfect_prefix, ppp_prefix) e.g. ("ab", "af", "afutur")
         # perfective indicative and subjunctive, imperfect subjunctive are regular
         replacements={
             "Vpreactindsg2": f"{x[0]}es",
@@ -871,8 +871,10 @@ DERIVED_IRREGULAR_CHANGES: Final[
             "Vfutactipesg3": f"{x[0]}esto",
             "Vfutactipepl2": f"{x[0]}estote",
             "Vfutactipepl3": f"{x[0]}sunto",
-            "Vfutactinf   ": MultipleEndings(
-                regular=f"{x[3]}futurum esse", second=f"{x[3]}fore"
+                "Vfutactinf   ": (
+                    MultipleEndings(regular="adfuturum esse", second="adfore") if x[0] == "ad"
+                    else MultipleEndings(regular="afuturum esse", second="afore") if x[0] == "ab"
+                    else MultipleEndings(regular=f"{x[2]}futurum esse", second=f"{x[2]}fore") # Fallback for other sum_preptc
             ),
         },
         additions={},
@@ -1161,12 +1163,15 @@ def find_derived_verb_changes(
     """
     group = _find_derived_verb_group(principal_parts[0])
     derived_principal_stems = _DERIVED_PRINCIPAL_STEMS[group]
-    return DERIVED_IRREGULAR_CHANGES[group](
-        tuple(
-            pp.removesuffix(derived_principal_stems[i])
-            for i, pp in enumerate(principal_parts)
-        )
+
+    x_tuple = tuple(
+        pp.removesuffix(derived_principal_stems[i]) if pp else "" # Ensure pp is not None
+        for i, pp in enumerate(principal_parts)
     )
+
+    changes = DERIVED_IRREGULAR_CHANGES[group](x_tuple)
+
+    return changes
 
 
 # -----------------------------------------------------------------------------

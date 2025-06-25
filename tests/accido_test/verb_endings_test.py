@@ -80,7 +80,8 @@ IRREGULAR_VERBS = {
     "adsum": {
         "Vpreactindsg1": "adsum", "Vpreactindsg2": "ades", "Vpreactindsg3": "adest", "Vpreactindpl1": "adsumus", "Vpreactindpl2": "adestis", "Vpreactindpl3": "adsunt", "Vimpactindsg1": "aderam", "Vimpactindsg2": "aderas", "Vimpactindsg3": "aderat", "Vimpactindpl1": "aderamus", "Vimpactindpl2": "aderatis", "Vimpactindpl3": "aderant", "Vfutactindsg1": "adero", "Vfutactindsg2": "aderis", "Vfutactindsg3": "aderit", "Vfutactindpl1": "aderimus", "Vfutactindpl2": "aderitis", "Vfutactindpl3": "aderunt", "Vperactindsg1": "adfui", "Vperactindsg2": "adfuisti", "Vperactindsg3": "adfuit", "Vperactindpl1": "adfuimus", "Vperactindpl2": "adfuistis", "Vperactindpl3": "adfuerunt", "Vplpactindsg1": "adfueram", "Vplpactindsg2": "adfueras", "Vplpactindsg3": "adfuerat", "Vplpactindpl1": "adfueramus", "Vplpactindpl2": "adfueratis", "Vplpactindpl3": "adfuerant",
         "Vfpractindsg1": "adfuero", "Vfpractindsg2": "adfueris", "Vfpractindsg3": "adfuerit", "Vfpractindpl1": "adfuerimus", "Vfpractindpl2": "adfueritis", "Vfpractindpl3": "adfuerint", "Vpreactsbjsg1": "adsim", "Vpreactsbjsg2": "adsis", "Vpreactsbjsg3": "adsit", "Vpreactsbjpl1": "adsimus", "Vpreactsbjpl2": "adsitis", "Vpreactsbjpl3": "adsint", "Vimpactsbjsg1": "adessem", "Vimpactsbjsg2": "adesses", "Vimpactsbjsg3": "adesset", "Vimpactsbjpl1": "adessemus", "Vimpactsbjpl2": "adessetis", "Vimpactsbjpl3": "adessent", "Vperactsbjsg1": "adfuerim", "Vperactsbjsg2": "adfueris", "Vperactsbjsg3": "adfuerit", "Vperactsbjpl1": "adfuerimus", "Vperactsbjpl2": "adfueritis", "Vperactsbjpl3": "adfuerint", "Vplpactsbjsg1": "adfuissem", "Vplpactsbjsg2": "adfuisses", "Vplpactsbjsg3": "adfuisset", "Vplpactsbjpl1": "adfuissemus", "Vplpactsbjpl2": "adfuissetis", "Vplpactsbjpl3": "adfuissent",
-        "Vpreactinf   ": "adesse", "Vfutactinf   ": MultipleEndings(regular="adfuturum esse", second="adfore"), "Vperactinf   ": "adfuisse",
+        "Vpreactinf   ": "adesse", "Vfutactinf   ": MultipleEndings(regular="adfuturum esse", second="adfore"),
+        "Vperactinf   ": "adfuisse",
         "Vpreactipesg2": "ades", "Vpreactipepl2": "adeste",
         "Vfutactipesg2": "adesto", "Vfutactipesg3": "adesto", "Vfutactipepl2": "adestote", "Vfutactipepl3": "adsunto",
         "Vfutactptcfablpl": "adfuturis", "Vfutactptcfablsg": "adfutura", "Vfutactptcfaccpl": "adfuturas", "Vfutactptcfaccsg": "adfuturam", "Vfutactptcfdatpl": "adfuturis", "Vfutactptcfdatsg": "adfuturae", "Vfutactptcfgenpl": "adfuturarum", "Vfutactptcfgensg": "adfuturae", "Vfutactptcfnompl": "adfuturae", "Vfutactptcfnomsg": "adfutura", "Vfutactptcfvocpl": "adfuturae", "Vfutactptcfvocsg": "adfutura", "Vfutactptcmablpl": "adfuturis", "Vfutactptcmablsg": "adfuturo", "Vfutactptcmaccpl": "adfuturos", "Vfutactptcmaccsg": "adfuturum", "Vfutactptcmdatpl": "adfuturis", "Vfutactptcmdatsg": "adfuturo", "Vfutactptcmgenpl": "adfuturorum", "Vfutactptcmgensg": "adfuturi", "Vfutactptcmnompl": "adfuturi", "Vfutactptcmnomsg": "adfuturus", "Vfutactptcmvocpl": "adfuturi", "Vfutactptcmvocsg": "adfuture", "Vfutactptcnablpl": "adfuturis", "Vfutactptcnablsg": "adfuturo", "Vfutactptcnaccpl": "adfutura", "Vfutactptcnaccsg": "adfuturum", "Vfutactptcndatpl": "adfuturis", "Vfutactptcndatsg": "adfuturo", "Vfutactptcngenpl": "adfuturorum", "Vfutactptcngensg": "adfuturi", "Vfutactptcnnompl": "adfutura", "Vfutactptcnnomsg": "adfuturum", "Vfutactptcnvocpl": "adfutura", "Vfutactptcnvocsg": "adfuturum",
@@ -1020,3 +1021,249 @@ class TestVerbalNounConjugation:
     def test_verbalnoun_fourthconjugation(self, mood, case, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
         assert word.get(mood=mood, participle_case=case) == expected
+
+
+SEMI_DEPONENT_COMBINATIONS = (
+    # Present System - Active Voice
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INDICATIVE, 3, Number.PLURAL),
+    # Perfect System - SEMI_DEPONENT Voice (forms are passive)
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    # Subjunctive - Present System Active
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.ACTIVE, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    # Subjunctive - Perfect System SEMI_DEPONENT
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.SUBJUNCTIVE, 3, Number.PLURAL),
+    # Imperative - Active
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.IMPERATIVE, 3, Number.PLURAL),
+    # Infinitives
+    (Tense.PRESENT, Voice.ACTIVE, Mood.INFINITIVE, None, None),
+    (Tense.FUTURE, Voice.ACTIVE, Mood.INFINITIVE, None, None),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None), # Perfect Semi-Deponent Infinitive
+)
+
+
+class TestSemiDeponentConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # audeo, audere, ausus sum (2nd Conj Semi-Deponent)
+        # Present Active Indicative
+        "audeo", "audes", "audet", "audemus", "audetis", "audent",
+        # Imperfect Active Indicative
+        "audebam", "audebas", "audebat", "audebamus", "audebatis", "audebant",
+        # Future Active Indicative
+        "audebo", "audebis", "audebit", "audebimus", "audebitis", "audebunt",
+        # Perfect Semi-Deponent Indicative (passive form)
+        "ausus sum", "ausus es", "ausus est", "ausi sumus", "ausi estis", "ausi sunt",
+        # Pluperfect Semi-Deponent Indicative (passive form)
+        "ausus eram", "ausus eras", "ausus erat", "ausi eramus", "ausi eratis", "ausi erant",
+        # Future Perfect Semi-Deponent Indicative (passive form)
+        "ausus ero", "ausus eris", "ausus erit", "ausi erimus", "ausi eritis", "ausi erunt",
+        # Present Active Subjunctive
+        "audeam", "audeas", "audeat", "audeamus", "audeatis", "audeant",
+        # Imperfect Active Subjunctive
+        "auderem", "auderes", "auderet", "auderemus", "auderetis", "auderent",
+        # Perfect Semi-Deponent Subjunctive (passive form)
+        "ausus sim", "ausus sis", "ausus sit", "ausi simus", "ausi sitis", "ausi sint",
+        # Pluperfect Semi-Deponent Subjunctive (passive form)
+        "ausus essem", "ausus esses", "ausus esset", "ausi essemus", "ausi essetis", "ausi essent",
+        # Present Active Imperative
+        "aude", "audete",
+        # Future Active Imperative
+        "audeto", "audeto", "audetote", "audento",
+        # Infinitives
+        "audere",  # Pres Act Inf
+        "ausurus esse",  # Fut Act Inf
+        "ausus esse",  # Perf Semi-Dep Inf (passive form)
+    ])])  # fmt: skip
+    def test_audeo_conjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # fido, fidere, fisus sum (3rd Conj Semi-Deponent)
+        # Present Active Indicative
+        "fido", "fidis", "fidit", "fidimus", "fiditis", "fidunt",
+        # Imperfect Active Indicative
+        "fidebam", "fidebas", "fidebat", "fidebamus", "fidebatis", "fidebant",
+        # Future Active Indicative
+        "fidam", "fides", "fidet", "fidemus", "fidetis", "fident",
+        # Perfect Semi-Deponent Indicative (passive form)
+        "fisus sum", "fisus es", "fisus est", "fisi sumus", "fisi estis", "fisi sunt",
+        # Pluperfect Semi-Deponent Indicative (passive form)
+        "fisus eram", "fisus eras", "fisus erat", "fisi eramus", "fisi eratis", "fisi erant",
+        # Future Perfect Semi-Deponent Indicative (passive form)
+        "fisus ero", "fisus eris", "fisus erit", "fisi erimus", "fisi eritis", "fisi erunt",
+        # Present Active Subjunctive
+        "fidam", "fidas", "fidat", "fidamus", "fidatis", "fidant",
+        # Imperfect Active Subjunctive
+        "fiderem", "fideres", "fideret", "fideremus", "fideretis", "fiderent",
+        # Perfect Semi-Deponent Subjunctive (passive form)
+        "fisus sim", "fisus sis", "fisus sit", "fisi simus", "fisi sitis", "fisi sint",
+        # Pluperfect Semi-Deponent Subjunctive (passive form)
+        "fisus essem", "fisus esses", "fisus esset", "fisi essemus", "fisi essetis", "fisi essent",
+        # Present Active Imperative
+        "fide", "fidite",
+        # Future Active Imperative
+        "fidito", "fidito", "fiditote", "fidunto",
+        # Infinitives
+        "fidere",      # Pres Act Inf
+        "fisurus esse", # Fut Act Inf
+        "fisus esse",  # Perf Semi-Dep Inf (passive form)
+    ])])  # fmt: skip
+    def test_fido_conjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("fido", "fidere", "fisus sum", meaning="trust")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # soleo, solere, solitus sum (2nd Conj Semi-Deponent, no future)
+        # Present Active Indicative
+        "soleo", "soles", "solet", "solemus", "soletis", "solent",
+        # Imperfect Active Indicative
+        "solebam", "solebas", "solebat", "solebamus", "solebatis", "solebant",
+        # Future Active Indicative (should be None due to no_future)
+        None, None, None, None, None, None,
+        # Perfect Semi-Deponent Indicative (passive form)
+        "solitus sum", "solitus es", "solitus est", "soliti sumus", "soliti estis", "soliti sunt",
+        # Pluperfect Semi-Deponent Indicative (passive form)
+        "solitus eram", "solitus eras", "solitus erat", "soliti eramus", "soliti eratis", "soliti erant",
+        # Future Perfect Semi-Deponent Indicative (passive form) (should be None due to no_future)
+        None, None, None, None, None, None,
+        # Present Active Subjunctive
+        "soleam", "soleas", "soleat", "soleamus", "soleatis", "soleant",
+        # Imperfect Active Subjunctive
+        "solerem", "soleres", "soleret", "soleremus", "soleretis", "solerent",
+        # Perfect Semi-Deponent Subjunctive (passive form)
+        "solitus sim", "solitus sis", "solitus sit", "soliti simus", "soliti sitis", "soliti sint",
+        # Pluperfect Semi-Deponent Subjunctive (passive form)
+        "solitus essem", "solitus esses", "solitus esset", "soliti essemus", "soliti essetis", "soliti essent",
+        # Present Active Imperative
+        "sole", "solete",
+        # Future Active Imperative (should be None due to no_future)
+        None, None, None, None,
+        # Infinitives
+        "solere",      # Pres Act Inf
+        None,          # Fut Act Inf (None due to no_future)
+        "solitus esse",# Perf Semi-Dep Inf (passive form)
+    ])])  # fmt: skip
+    def test_soleo_conjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    # Participle tests for audeo
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # Present Active Participle for audeo (audens)
+        "audens", "audens", "audentem", "audentis", "audenti", MultipleEndings(regular="audenti", absolute="audente"), # Corrected absolute form
+        "audentes", "audentes", "audentes", "audentium", "audentibus", "audentibus",
+        "audens", "audens", "audentem", "audentis", "audenti", MultipleEndings(regular="audenti", absolute="audente"), # Corrected absolute form
+        "audentes", "audentes", "audentes", "audentium", "audentibus", "audentibus",
+        "audens", "audens", "audens", "audentis", "audenti", MultipleEndings(regular="audenti", absolute="audente"), # Corrected absolute form
+        "audentia", "audentia", "audentia", "audentium", "audentibus", "audentibus",
+
+        # Perfect Passive Participle for audeo (ausus) - This is the "perfect semi-deponent participle"
+        "ausus", "ause", "ausum", "ausi", "auso", "auso",
+        "ausi", "ausi", "ausos", "ausorum", "ausis", "ausis",
+        "ausa", "ausa", "ausam", "ausae", "ausae", "ausa",
+        "ausae", "ausae", "ausas", "ausarum", "ausis", "ausis",
+        "ausum", "ausum", "ausum", "ausi", "auso", "auso",
+        "ausa", "ausa", "ausa", "ausorum", "ausis", "ausis",
+
+        # Future Active Participle for audeo (ausurus)
+        "ausurus", "ausure", "ausurum", "ausuri", "ausuro", "ausuro",
+        "ausuri", "ausuri", "ausuros", "ausurorum", "ausuris", "ausuris",
+        "ausura", "ausura", "ausuram", "ausurae", "ausurae", "ausura",
+        "ausurae", "ausurae", "ausuras", "ausurarum", "ausuris", "ausuris",
+        "ausurum", "ausurum", "ausurum", "ausuri", "ausuro", "ausuro",
+        "ausura", "ausura", "ausura", "ausurorum", "ausuris", "ausuris",
+
+        # Future Passive Participle (Gerundive) for audeo (audendus)
+        "audendus", "audende", "audendum", "audendi", "audendo", "audendo",
+        "audendi", "audendi", "audendos", "audendorum", "audendis", "audendis",
+        "audenda", "audenda", "audendam", "audendae", "audendae", "audenda",
+        "audendae", "audendae", "audendas", "audendarum", "audendis", "audendis",
+        "audendum", "audendum", "audendum", "audendi", "audendo", "audendo",
+        "audenda", "audenda", "audenda", "audendorum", "audendis", "audendis",
+    ])])  # fmt: skip
+    def test_audeo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        # For Perfect Passive Participle of semi-deponent, the voice in get() should be PASSIVE, as its key is Vperpasptc...
+        effective_voice = Voice.SEMI_DEPONENT if voice == Voice.SEMI_DEPONENT else voice
+        if tense == Tense.PERFECT and voice == Voice.PASSIVE : # This is how we defined PPP in PARTICIPLE_COMBINATIONS
+             pass # Voice is already PASSIVE
+        elif tense == Tense.FUTURE and voice == Voice.PASSIVE: # Gerundive
+             pass # Voice is already PASSIVE
+        else: # Present Active, Future Active
+             assert voice == Voice.ACTIVE
+
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    # Verbal Noun tests for audeo
+    @pytest.mark.parametrize(("mood", "case", "expected"), [VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        # Gerund for audeo (audendum, etc.)
+        "audendum", "audendi", "audendo", "audendo",
+        # Supine for audeo (ausum, ausu - from ppp 'ausus')
+        "ausum", "ausu"
+    ])])  # fmt: skip
+    def test_audeo_verbal_nouns(self, mood, case, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        assert word.get(mood=mood, participle_case=case) == expected
+
+    # TODO: Add participle and verbal noun tests for fido, soleo
