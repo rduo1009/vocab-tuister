@@ -82,6 +82,7 @@ class Voice(
     ACTIVE = "active", "act"
     PASSIVE = "passive", "pas"
     DEPONENT = "deponent", "dep"
+    SEMI_DEPONENT = "semi-deponent", "sdp"
 
 
 class Mood(
