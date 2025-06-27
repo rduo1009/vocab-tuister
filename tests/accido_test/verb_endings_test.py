@@ -1065,10 +1065,14 @@ SEMI_DEPONENT_VERB_COMBINATIONS = (
 ) # fmt: skip
 
 SEMI_DEPONENT_PARTICIPLE_COMBINATIONS = (
+    # Present Active Participle (queried as SEMI_DEPONENT)
     (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    # Perfect Participle (passive form, active meaning, queried as SEMI_DEPONENT)
     (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    # Future Active Participle (queried as SEMI_DEPONENT)
     (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
-    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR), # For Gerundive
+    # Future Passive Participle / Gerundive (queried as PASSIVE)
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
 ) # fmt: skip
 
 SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS = (

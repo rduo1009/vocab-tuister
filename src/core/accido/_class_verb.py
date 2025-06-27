@@ -450,9 +450,9 @@ class Verb(_Word):
                         sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
                     elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.ACTIVE.shorthand and not self.no_fap: # e.g. ausurus
                         sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                    # Gerundive (futpasptc) is passive in form and meaning, generally kept for semi-deponents
+                    # Gerundive (futpasptc) is passive in form and meaning, should retain PASSIVE voice key
                     elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.PASSIVE.shorthand and not self.no_fap: # e.g. audendus
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
+                        sdp_endings[key] = value # Keep original key with 'pas'
 
                 elif key[7:10] == Mood.INFINITIVE.shorthand:
                     if tense_key == Tense.PRESENT.shorthand and voice_key == Voice.ACTIVE.shorthand: # e.g. audere
