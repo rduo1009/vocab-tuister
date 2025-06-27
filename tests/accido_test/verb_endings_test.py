@@ -1139,7 +1139,10 @@ class TestSemiDeponentConjugation:
         assert word.get(tense=Tense.PERFECT, voice=Voice.SEMI_DEPONENT, mood=Mood.INDICATIVE, person=1, number=Number.SINGULAR) == "fisus sum"
         assert word.get(tense=Tense.PRESENT, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fidere"
         assert word.get(tense=Tense.PERFECT, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fisus esse"
-        # Future passive infinitive
-        assert word.get(tense=Tense.FUTURE, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE, person=None, number=None) == "fisurus esse" # Should be fisurus for fido
-        # Check a future passive infinitive (e.g. fisum iri)
-        assert word.endings.get("Vfutsdpinf   ") == "fisum iri" # Vfutpasinf becomes Vfutsdpinf
+        # Future semi-deponent infinitive (active form)
+        assert word.get(tense=Tense.FUTURE, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fisurus esse"
+        # Vfutsdpinf   should point to the active-form future infinitive after filtering.
+        # If "fisum iri" (future passive infinitive) is needed for a specific test,
+        # it would be accessed differently or via a more specific key if distinguished.
+        # For the primary Vfutsdpinf   key, "fisurus esse" is correct.
+        assert word.endings.get("Vfutsdpinf   ") == "fisurus esse"
