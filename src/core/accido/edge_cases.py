@@ -580,15 +580,19 @@ DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
 
 # TODO: Expand these
 
-type _IrregularVerb = Literal["sum", "possum", "volo", "nolo", "fero", "eo"]
+type _IrregularVerb = Literal[
+    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio"
+]
 
 IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
     "sum": 3,
     "possum": 3,
     "volo": 3,
     "nolo": 3,
+    "malo": 3,
     "fero": 3,
     "eo": 4,  # no idea if this really matters?
+    "facio": 5,
 }
 
 IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
@@ -597,8 +601,10 @@ IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
     "possum": ("", "pote"),
     "volo": ("vol", "vole"),
     "nolo": ("nol", "nole"),
+    "malo": ("mal", "male"),
     "fero": ("fer", "fere"),
     "eo": ("", "ie"),  # fourth conjugation-like?
+    "facio": ("fac", "facie"),
 }
 
 IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
@@ -664,6 +670,18 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
         additions={},
         # no passives
         deletions={re.compile(r"^.{4}pas.*$")},
+    ),
+    "malo": DictChanges(  # malo, malle, malui
+        # only present indicative and subjunctive are irregular
+        replacements={
+            "Vpreactindsg2": "mavis",   "Vpreactindsg3": "mavult",
+            "Vpreactindpl1": "malumus", "Vpreactindpl2": "mavultis", "Vpreactindpl3": "malunt",
+            "Vpreactsbjsg1": "malim",   "Vpreactsbjsg2": "malis",    "Vpreactsbjsg3": "malit",
+            "Vpreactsbjpl1": "malimus", "Vpreactsbjpl2": "malitis",  "Vpreactsbjpl3": "malint",
+        },
+        additions={},
+        # no passives, imperatives
+        deletions={re.compile(r"^.{4}pas.*$"), re.compile(r"^.{7}ipe.*$")},
     ),
     "fero": DictChanges(  # fero, ferre, tuli, latus
         # some forms are irregular
@@ -732,6 +750,28 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
             "Vfutpasptcnnompl": "eunda",    "Vfutpasptcnvocpl": "eunda",    "Vfutpasptcnaccpl": "eunda",
             "Vfutpasptcngenpl": "eundorum", "Vfutpasptcndatpl": "eundis",   "Vfutpasptcnablpl": "eundis",
             "Vgeracc"         : "eundum",   "Vgergen"         : "eundi",    "Vgerdat"         : "eundo",    "Vgerabl": "eundo",
+        },
+        additions={},
+        deletions=set(),
+    ),
+    "facio": DictChanges( # facio, facere, feci, factus
+        # suppletive with 'fieri'
+        replacements={
+            "Vprepasindsg1": "fio",      "Vprepasindsg2": "fis",      "Vprepasindsg3": "fit",
+            "Vprepasindpl1": "fimus",    "Vprepasindpl2": "fitis",    "Vprepasindpl3": "fiunt",
+            "Vimppasindsg1": "fiebam",   "Vimppasindsg2": "fiebas",   "Vimppasindsg3": "fiebat",
+            "Vimppasindpl1": "fiebamus", "Vimppasindpl2": "fiebatis", "Vimppasindpl3": "fiebant",
+            "Vfutpasindsg1": "fiam",     "Vfutpasindsg2": "fies",     "Vfutpasindsg3": "fiet",
+            "Vfutpasindpl1": "fiemus",   "Vfutpasindpl2": "fietis",   "Vfutpasindpl3": "fient",
+            "Vprepassbjsg1": "fiam",     "Vprepassbjsg2": "fias",     "Vprepassbjsg3": "fiat",
+            "Vprepassbjpl1": "fiamus",   "Vprepassbjpl2": "fiatis",   "Vprepassbjpl3": "fiant",
+            "Vimppassbjsg1": "fierem",   "Vimppassbjsg2": "fieres",   "Vimppassbjsg3": "fieret",
+            "Vimppassbjpl1": "fieremus", "Vimppassbjpl2": "fieretis", "Vimppassbjpl3": "fierent",
+            "Vpreactipesg2": MultipleEndings(regular="fac", second="face"),
+            "Vprepasipesg2": "fi",       "Vprepasipepl2": "fite",
+            "Vfutpasipesg2": "fito",     "Vfutpasipesg3": "fito",
+            "Vfutpasipepl2": "fitote",   "Vfutpasipepl3": "fiunto",
+            "Vprepasinf   ": "fieri",
         },
         additions={},
         deletions=set(),
@@ -814,12 +854,19 @@ type _DerivedVerb = Annotated[
     str, "A verb that is derived from an irregular verb."
 ]
 type _DerivedVerbGroups = Literal[
-    "sum", "sum_preptc", "fero", "eo", "eo_impersonal_passive"
+    "sum", "sum_preptc", "fero", "eo", "eo_impersonal_passive", "facio"
 ]
 
 DERIVED_IRREGULAR_VERB_CONJUGATION: Final[
     dict[_DerivedVerbGroups, Conjugation]
-] = {"sum": 3, "sum_preptc": 3, "fero": 3, "eo": 4, "eo_impersonal_passive": 4}
+] = {
+    "sum": 3,
+    "sum_preptc": 3,
+    "fero": 3,
+    "eo": 4,
+    "eo_impersonal_passive": 4,
+    "facio": 5,
+}
 
 
 DERIVED_IRREGULAR_VERB_STEMS: Final[
@@ -831,6 +878,7 @@ DERIVED_IRREGULAR_VERB_STEMS: Final[
     "fero": ("fer", "fere"),
     "eo": ("", "i"),
     "eo_impersonal_passive": ("", "i"),
+    "facio": ("fac", "face"),
 }
 
 DERIVED_IRREGULAR_VERBS: Final[dict[_DerivedVerbGroups, set[_DerivedVerb]]] = {
@@ -847,6 +895,10 @@ DERIVED_IRREGULAR_VERBS: Final[dict[_DerivedVerbGroups, set[_DerivedVerb]]] = {
         "praetereo", "prodeo", "queo", "subeo", "transabeo", "transeo", "veneo",
     },
     "eo_impersonal_passive": {"abeo", "pereo", "redeo"},
+    "facio": {
+        "arefacio", "benefacio", "calefacio", "commonefacio", "disfacio", "liquefacio", "malefacio", "mollifacio", "olfacio",
+        "patefacio", "satisfacio", "stupefacio", "tepefacio",
+    },
 }  # fmt: skip
 
 DERIVED_IRREGULAR_CHANGES: Final[
@@ -981,6 +1033,27 @@ DERIVED_IRREGULAR_CHANGES: Final[
         additions={},
         deletions=set(),
     ),
+    "facio": lambda x: DictChanges( # patefacio, patefacere, patefeci, patefactus
+        # suppletive with 'fieri'
+        replacements={
+            "Vprepasindsg1": f"{x[0]}fio",      "Vprepasindsg2": f"{x[0]}fis",      "Vprepasindsg3": f"{x[0]}fit",
+            "Vprepasindpl1": f"{x[0]}fimus",    "Vprepasindpl2": f"{x[0]}fitis",    "Vprepasindpl3": f"{x[0]}fiunt",
+            "Vimppasindsg1": f"{x[0]}fiebam",   "Vimppasindsg2": f"{x[0]}fiebas",   "Vimppasindsg3": f"{x[0]}fiebat",
+            "Vimppasindpl1": f"{x[0]}fiebamus", "Vimppasindpl2": f"{x[0]}fiebatis", "Vimppasindpl3": f"{x[0]}fiebant",
+            "Vfutpasindsg1": f"{x[0]}fiam",     "Vfutpasindsg2": f"{x[0]}fies",     "Vfutpasindsg3": f"{x[0]}fiet",
+            "Vfutpasindpl1": f"{x[0]}fiemus",   "Vfutpasindpl2": f"{x[0]}fietis",   "Vfutpasindpl3": f"{x[0]}fient",
+            "Vprepassbjsg1": f"{x[0]}fiam",     "Vprepassbjsg2": f"{x[0]}fias",     "Vprepassbjsg3": f"{x[0]}fiat",
+            "Vprepassbjpl1": f"{x[0]}fiamus",   "Vprepassbjpl2": f"{x[0]}fiatis",   "Vprepassbjpl3": f"{x[0]}fiant",
+            "Vimppassbjsg1": f"{x[0]}fierem",   "Vimppassbjsg2": f"{x[0]}fieres",   "Vimppassbjsg3": f"{x[0]}fieret",
+            "Vimppassbjpl1": f"{x[0]}fieremus", "Vimppassbjpl2": f"{x[0]}fieretis", "Vimppassbjpl3": f"{x[0]}fierent",
+            "Vprepasipesg2": f"{x[0]}fi",       "Vprepasipepl2": f"{x[0]}fite",
+            "Vfutpasipesg2": f"{x[0]}fito",     "Vfutpasipesg3": f"{x[0]}fito",
+            "Vfutpasipepl2": f"{x[0]}fitote",   "Vfutpasipepl3": f"{x[0]}fiunto",
+            "Vprepasinf   ": f"{x[0]}fieri",
+        },
+        additions={},
+        deletions=set(),
+    ),
 }  # fmt: skip
 
 _DERIVED_PRINCIPAL_STEMS: Final[
@@ -991,6 +1064,7 @@ _DERIVED_PRINCIPAL_STEMS: Final[
     "fero": ("fero", "ferre", "tuli", "latus"),
     "eo": ("eo", "ire", "ii", "itus"),
     "eo_impersonal_passive": ("eo", "ire", "ii", "itus"),
+    "facio": ("facio", "facere", "feci", "factus"),
 }
 
 
