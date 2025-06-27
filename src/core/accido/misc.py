@@ -91,9 +91,9 @@ class Mood(
     """Represents the mood of a verb."""
 
     INDICATIVE = "indicative", "ind"
-    INFINITIVE = "infinitive", "inf"
-    IMPERATIVE = "imperative", "ipe"
     SUBJUNCTIVE = "subjunctive", "sbj"
+    IMPERATIVE = "imperative", "ipe"
+    INFINITIVE = "infinitive", "inf"
     PARTICIPLE = "participle", "ptc"
     GERUND = "gerund", "ger"
     SUPINE = "supine", "sup"

@@ -73,8 +73,21 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
         return _find_verbal_noun_inflections(verb, components)[1]
 
+    # For English inflection, deponent and semi-deponent verbs are treated based on context
+    # Deponent: always active in meaning.
+    # Semi-deponent: active in present system, passive (in form and meaning) in perfect system.
     if components.voice == Voice.DEPONENT:
         components.voice = Voice.ACTIVE
+    elif components.voice == Voice.SEMI_DEPONENT:
+        if components.tense in {
+            Tense.PERFECT,
+            Tense.PLUPERFECT,
+            Tense.FUTURE_PERFECT,
+        }:
+            components.voice = Voice.PASSIVE # Perfect system is passive
+        else:
+            components.voice = Voice.ACTIVE # Present system is active
+
 
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)[1]
@@ -133,6 +146,15 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
 
     if components.voice == Voice.DEPONENT:
         components.voice = Voice.ACTIVE
+    elif components.voice == Voice.SEMI_DEPONENT:
+        if components.tense in {
+            Tense.PERFECT,
+            Tense.PLUPERFECT,
+            Tense.FUTURE_PERFECT,
+        }:
+            components.voice = Voice.PASSIVE
+        else:
+            components.voice = Voice.ACTIVE
 
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)[0]
