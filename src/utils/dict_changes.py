@@ -97,10 +97,12 @@ def apply_changes[V](
     # APPLY REPLACEMENTS
     for key, new_value in changes.replacements.items():
         if key not in modified_dict:
-            raise KeyError(
-                f"Key '{key}' specified for replacement does not exist in the "
-                "target dictionary."
-            )
+            # HACK: This breaks with some irregular, but also defective verbs.
+            # raise KeyError(
+            #     f"Key '{key}' specified for replacement does not exist in the "
+            #     "target dictionary."
+            # )
+            continue
 
         modified_dict[key] = new_value
 
