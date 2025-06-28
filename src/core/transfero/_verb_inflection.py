@@ -84,10 +84,9 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
             Tense.PLUPERFECT,
             Tense.FUTURE_PERFECT,
         }:
-            components.voice = Voice.PASSIVE # Perfect system is passive
+            components.voice = Voice.PASSIVE  # Perfect system is passive
         else:
-            components.voice = Voice.ACTIVE # Present system is active
-
+            components.voice = Voice.ACTIVE  # Present system is active
 
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)[1]

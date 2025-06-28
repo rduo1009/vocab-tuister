@@ -1062,7 +1062,7 @@ SEMI_DEPONENT_VERB_COMBINATIONS = (
     (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
     (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
     (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
-) # fmt: skip
+)  # fmt: skip
 
 SEMI_DEPONENT_PARTICIPLE_COMBINATIONS = (
     # Present Active Participle (queried as SEMI_DEPONENT)
@@ -1073,63 +1073,147 @@ SEMI_DEPONENT_PARTICIPLE_COMBINATIONS = (
     (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
     # Future Passive Participle / Gerundive (queried as PASSIVE)
     (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
-) # fmt: skip
+)  # fmt: skip
 
-SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS = (
-    (Mood.GERUND, Case.ACCUSATIVE),
-    (Mood.SUPINE, Case.ACCUSATIVE),
-)
+SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS = ((Mood.GERUND, Case.ACCUSATIVE), (Mood.SUPINE, Case.ACCUSATIVE))
 
 
 class TestSemiDeponentConjugation:
-    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "audeo", "audes", "audet", "audemus", "audetis", "audent",
-        "audebam", "audebas", "audebat", "audebamus", "audebatis", "audebant",
-        "audebo", "audebis", "audebit", "audebimus", "audebitis", "audebunt",
-        "ausus sum", "ausus es", "ausus est", "ausi sumus", "ausi estis", "ausi sunt",
-        "ausus eram", "ausus eras", "ausus erat", "ausi eramus", "ausi eratis", "ausi erant",
-        "ausus ero", "ausus eris", "ausus erit", "ausi erimus", "ausi eritis", "ausi erunt",
-        "audere", "ausus esse", "ausurus esse",
-    ])])
+    @pytest.mark.parametrize(
+        ("tense", "voice", "mood", "person", "number", "expected"),
+        [
+            SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,)
+            for i, form in enumerate([
+                "audeo",
+                "audes",
+                "audet",
+                "audemus",
+                "audetis",
+                "audent",
+                "audebam",
+                "audebas",
+                "audebat",
+                "audebamus",
+                "audebatis",
+                "audebant",
+                "audebo",
+                "audebis",
+                "audebit",
+                "audebimus",
+                "audebitis",
+                "audebunt",
+                "ausus sum",
+                "ausus es",
+                "ausus est",
+                "ausi sumus",
+                "ausi estis",
+                "ausi sunt",
+                "ausus eram",
+                "ausus eras",
+                "ausus erat",
+                "ausi eramus",
+                "ausi eratis",
+                "ausi erant",
+                "ausus ero",
+                "ausus eris",
+                "ausus erit",
+                "ausi erimus",
+                "ausi eritis",
+                "ausi erunt",
+                "audere",
+                "ausus esse",
+                "ausurus esse",
+            ])
+        ],
+    )
     def test_audeo_conjugation(self, tense, voice, mood, person, number, expected):
         word = Verb("audeo", "audere", "ausus sum", meaning="dare")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
-    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [SEMI_DEPONENT_PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "audens", # Present Active Participle
-        "ausus",  # Perfect "Passive" Participle (form)
-        "ausurus",# Future Active Participle
-        "audendus",# Future Passive Participle (Gerundive)
-    ])])
+    @pytest.mark.parametrize(
+        ("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"),
+        [
+            SEMI_DEPONENT_PARTICIPLE_COMBINATIONS[i] + (form,)
+            for i, form in enumerate([
+                "audens",  # Present Active Participle
+                "ausus",  # Perfect "Passive" Participle (form)
+                "ausurus",  # Future Active Participle
+                "audendus",  # Future Passive Participle (Gerundive)
+            ])
+        ],
+    )
     def test_audeo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
         word = Verb("audeo", "audere", "ausus sum", meaning="dare")
         assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
 
-    @pytest.mark.parametrize(("mood", "case", "expected"), [SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "audendum", # Gerund
-        "ausum",   # Supine (accusative)
-    ])])
+    @pytest.mark.parametrize(
+        ("mood", "case", "expected"),
+        [
+            SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS[i] + (form,)
+            for i, form in enumerate([
+                "audendum",  # Gerund
+                "ausum",  # Supine (accusative)
+            ])
+        ],
+    )
     def test_audeo_verbal_nouns(self, mood, case, expected):
         word = Verb("audeo", "audere", "ausus sum", meaning="dare")
-        supine_abl_key = "VsupAabl" # Construct the specific key for ablative supine if needed
-        if mood == Mood.SUPINE and case == Case.ABLATIVE: # Example for testing specific supine case
-             assert word.endings.get(supine_abl_key) == expected # or word.get(...)
+        supine_abl_key = "VsupAabl"  # Construct the specific key for ablative supine if needed
+        if mood == Mood.SUPINE and case == Case.ABLATIVE:  # Example for testing specific supine case
+            assert word.endings.get(supine_abl_key) == expected  # or word.get(...)
         else:
             assert word.get(mood=mood, participle_case=case) == expected
 
-
-    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
-        "soleo", "soles", "solet", "solemus", "soletis", "solent",
-        "solebam", "solebas", "solebat", "solebamus", "solebatis", "solebant",
-        None, None, None, None, None, None, # Future active indicative
-        "solitus sum", "solitus es", "solitus est", "soliti sumus", "soliti estis", "soliti sunt",
-        "solitus eram", "solitus eras", "solitus erat", "soliti eramus", "soliti eratis", "soliti erant",
-        None, None, None, None, None, None, # Future perfect "passive" indicative
-        "solere", "solitus esse", None, # Future active infinitive (soliturus esse) is expected if not no_fap
-    ])])
+    @pytest.mark.parametrize(
+        ("tense", "voice", "mood", "person", "number", "expected"),
+        [
+            SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,)
+            for i, form in enumerate([
+                "soleo",
+                "soles",
+                "solet",
+                "solemus",
+                "soletis",
+                "solent",
+                "solebam",
+                "solebas",
+                "solebat",
+                "solebamus",
+                "solebatis",
+                "solebant",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,  # Future active indicative
+                "solitus sum",
+                "solitus es",
+                "solitus est",
+                "soliti sumus",
+                "soliti estis",
+                "soliti sunt",
+                "solitus eram",
+                "solitus eras",
+                "solitus erat",
+                "soliti eramus",
+                "soliti eratis",
+                "soliti erant",
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,  # Future perfect "passive" indicative
+                "solere",
+                "solitus esse",
+                None,  # Future active infinitive (soliturus esse) is expected if not no_fap
+            ])
+        ],
+    )
     def test_soleo_conjugation_no_future(self, tense, voice, mood, person, number, expected):
         word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
-        if expected == "soliturus esse" and word.no_fap : # Adjust if soleo is marked as no_fap
+        if expected == "soliturus esse" and word.no_fap:  # Adjust if soleo is marked as no_fap
             assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) is None
         else:
             assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
