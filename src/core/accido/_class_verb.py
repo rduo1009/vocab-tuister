@@ -238,10 +238,10 @@ class Verb(_Word):
             self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
 
             # Determine stems
-            # self._inf_stem: str # No longer needed here due to earlier initialization
+            self._inf_stem: str
+            self._preptc_stem: str
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
-                # self._preptc_stem: str # No longer needed here
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
@@ -350,10 +350,10 @@ class Verb(_Word):
             self.no_future = self.present in MISSING_FUTURE_VERBS # for soleo
 
             # Determine stems (present system is active, perfect system is passive)
-            # self._inf_stem: str # Redundant, initialized above
+            self._inf_stem: str
+            self._preptc_stem: str
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
-                # self._preptc_stem: str # Redundant, initialized above
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
