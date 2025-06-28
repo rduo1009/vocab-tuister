@@ -1,9 +1,5 @@
-from typing import Any
-
-from _typeshed import Incomplete
-
 from nltk.corpus.util import LazyCorpusLoader
-from nltk.data import SeekableUnicodeStreamReader, ZipFilePathPointer
+from nltk.data import ZipFilePathPointer
 
 class Lemma:
     def __init__(
@@ -20,20 +16,17 @@ class Lemma:
 class Synset:
     def __init__(self, wordnet_corpus_reader: WordNetCorpusReader) -> None: ...
     def lemmas(self, lang: str = ...) -> list[Lemma]: ...
+    def similar_tos(self) -> list[Synset]: ...
 
 class WordNetCorpusReader:
+    ADJ: str
+    ADJ_SAT: str
+    ADV: str
+    NOUN: str
+    VERB: str
     def __init__(
         self, root: ZipFilePathPointer, omw_reader: LazyCorpusLoader
     ) -> None: ...
-    def _data_file(self, pos: str) -> SeekableUnicodeStreamReader: ...
-    def _load_exception_map(self) -> Incomplete: ...
-    def _load_lemma_pos_offset_map(self) -> Incomplete: ...
-    def _morphy(
-        self, form: str, pos: str, check_exceptions: bool = ...
-    ) -> list[str | Any]: ...
-    def _synset_from_pos_and_line(
-        self, pos: str, data_file_line: str
-    ) -> Synset: ...
     def get_version(self) -> str: ...
     def index_sense(self, version: str | None = ...) -> dict[str, str]: ...
     def map_to_many(self, version: str = ...) -> dict[str, list[str]]: ...
@@ -43,7 +36,7 @@ class WordNetCorpusReader:
     def synsets(
         self,
         lemma: str,
-        pos: None = ...,
+        pos: str | None = ...,
         lang: str = ...,
         check_exceptions: bool = ...,
     ) -> list[Synset]: ...

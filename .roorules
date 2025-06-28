@@ -1,12 +1,1 @@
-## Additional Rules
-Write unit tests for all new functions. Unit tests should be extensive, especially if the function is complicated.
-Use pytest for Python tests, and testify for Go tests.
-Python and Go test files should be named in the format "thing being tested"_test.py or "thing being tested"_test.go respectively
-
-Focus on code readability and maintainability. Variable names should not be too long, but should be clear anyway.
-A comment explaining a variable is better than a long variable name.
-
-For Python code, always provide docstrings in the Numpy style.
-For Go code, always provide doccomments in the style used in idiomatic Go. Follow the style of the standard library doccomments.
-Write comments liberally inside the code as well. A viewer should be able to understand what the code does without understanding
-or reading the code itself.
+AGENTS.md

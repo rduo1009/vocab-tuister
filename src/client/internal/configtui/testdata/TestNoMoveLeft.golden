@@ -1,5 +1,6 @@
 [?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
 [38;2;225;123;52m[ ] All of them[0m[K
+[ ] Deponent verbs[K
 [ ] First conjugation verbs[K
 [ ] Second conjugation verbs[K
 [ ] Third conjugation verbs[K
@@ -8,12 +9,30 @@
 [ ] Irregular verbs[K
 [ ] Present active indicative[K
 [ ] Imperfect active indicative[K
+[ ] Future active indicative[K
 [ ] Perfect active indicative[K
 [ ] Pluperfect active indicative[K
-[ ] Present active infinitive[K
-[ ] Present active imperative[K
-[ ] Imperative active subjunctive[K
+[ ] Future perfect active indicative[K
+[ ] Present passive indicative[K
+[ ] Imperfect passive indicative[K
+[ ] Future passive indicative[K
+[ ] Perfect passive indicative[K
+[ ] Pluperfect passive indicative[K
+[ ] Future perfect passive indicative[K
+[ ] Present active subjunctive[K
+[ ] Imperfect active subjunctive[K
+[ ] Perfect active subjunctive[K
 [ ] Pluperfect active subjunctive[K
+[ ] Present active imperative[K
+[ ] Future active imperative[K
+[ ] Present passive imperative[K
+[ ] Future passive imperative[K
+[ ] Present active infinitive[K
+[ ] Future active infinitive[K
+[ ] Perfect active infinitive[K
+[ ] Present passive infinitive[K
+[ ] Future passive infinitive[K
+[ ] Perfect passive infinitive[K
 [ ] Singular number[K
 [ ] Plural number[K
 [ ] 1st person[K

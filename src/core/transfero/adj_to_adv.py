@@ -11,14 +11,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Final
+from typing import Final, cast
 
 from .exceptions import InvalidWordError
 
 with (Path(__file__).parent.absolute() / "adj_to_adv.json").open(
     encoding="utf-8"
 ) as file:
-    ADJECTIVE_TO_ADVERB: Final[dict[str, str]] = json.load(file)
+    ADJECTIVE_TO_ADVERB: Final[dict[str, str]] = cast(
+        "dict[str, str]", json.load(file)
+    )
 
 
 def adj_to_adv(adjective: str) -> str:

@@ -24,9 +24,25 @@ settings: Settings = {
     "exclude-verb-pluperfect-active-indicative": False,
     "exclude-verb-future-perfect-active-indicative": False,
     "exclude-verb-present-active-infinitive": False,
+    "exclude-verb-future-active-infinitive": False,
+    "exclude-verb-perfect-active-infinitive": False,
+    "exclude-verb-present-passive-infinitive": False,
+    "exclude-verb-future-passive-infinitive": False,
+    "exclude-verb-perfect-passive-infinitive": False,
     "exclude-verb-present-active-imperative": False,
+    "exclude-verb-future-active-imperative": False,
+    "exclude-verb-present-passive-imperative": False,
+    "exclude-verb-future-passive-imperative": False,
+    "exclude-verb-present-active-subjunctive": False,
     "exclude-verb-imperfect-active-subjunctive": False,
+    "exclude-verb-perfect-active-subjunctive": False,
     "exclude-verb-pluperfect-active-subjunctive": False,
+    "exclude-verb-present-passive-indicative": False,
+    "exclude-verb-imperfect-passive-indicative": False,
+    "exclude-verb-future-passive-indicative": False,
+    "exclude-verb-perfect-passive-indicative": False,
+    "exclude-verb-pluperfect-passive-indicative": False,
+    "exclude-verb-future-perfect-passive-indicative": False,
     "exclude-verb-singular": False,
     "exclude-verb-plural": False,
     "exclude-verb-1st-person": False,
@@ -35,6 +51,8 @@ settings: Settings = {
     "exclude-participles": False,
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
+    "exclude-participle-future-active": False,
+    "exclude-gerundives": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,
@@ -46,6 +64,8 @@ settings: Settings = {
     "exclude-participle-ablative": False,
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
+    "exclude-gerunds": False,
+    "exclude-supines": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,
@@ -85,6 +105,7 @@ settings: Settings = {
     "exclude-pronoun-plural": False,
     "exclude-nouns": False,
     "exclude-verbs": False,
+    "exclude-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,
@@ -102,6 +123,8 @@ settings: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
+    "english-verbal-nouns": True,
     "include-typein-engtolat": True,
     "include-typein-lattoeng": False,
     "include-parse": False,
@@ -120,7 +143,7 @@ def test_typein_engtolat():
     for output in ask_question_without_sr(vocab_list, amount, settings):
         assert type(output) is TypeInEngToLatQuestion
 
-        ic(output)  # type: ignore[name-defined] # noqa: F821
+        ic(output)  # noqa: F821
 
 
 def test_typein_engtolat_check():

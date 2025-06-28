@@ -43,7 +43,7 @@ class VocabList:
         self.vocab = compact(self.vocab)
 
         # Set the version using the package version.
-        self.version = src.__version__
+        self.version: str = src.__version__  # pyright: ignore[reportUninitializedInstanceVariable]
 
     def __repr__(self) -> str:
         object_reprs = ", ".join(repr(word) for word in self.vocab)

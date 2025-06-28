@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
+from warnings import deprecated
 
 from ._class_word import _Word
 from .edge_cases import PRONOUNS
@@ -12,6 +13,8 @@ from .exceptions import InvalidInputError
 from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
 
 if TYPE_CHECKING:
+    from src.core.accido.type_aliases import Endings
+
     from .type_aliases import Ending, Meaning
 
 logger = logging.getLogger(__name__)
@@ -36,7 +39,7 @@ class Pronoun(_Word):
     Note that the arguments of ``Pronoun`` are keyword-only.
     """
 
-    __slots__ = ("femnom", "mascnom", "neutnom", "pronoun")
+    __slots__: tuple[str, ...] = ("femnom", "mascnom", "neutnom", "pronoun")
 
     def __init__(self, pronoun: str, *, meaning: Meaning) -> None:
         """Initialise ``Pronoun`` and determine the endings.
@@ -62,24 +65,24 @@ class Pronoun(_Word):
         super().__init__()
 
         try:
-            self.endings = PRONOUNS[pronoun]
+            self.endings: Endings = PRONOUNS[pronoun]
         except KeyError as e:
             raise InvalidInputError(
                 f"Pronoun '{pronoun}' not recognised."
             ) from e
 
-        self.pronoun = pronoun
-        self._first = self.pronoun
-        self.meaning = meaning
+        self.pronoun: str = pronoun
+        self._first: str = self.pronoun
+        self.meaning: Meaning = meaning
 
         # HACK: hopefully this is the case!
         assert isinstance(self.endings["Pmnomsg"], str)
         assert isinstance(self.endings["Pfnomsg"], str)
         assert isinstance(self.endings["Pnnomsg"], str)
 
-        self.mascnom = self.endings["Pmnomsg"]
-        self.femnom = self.endings["Pfnomsg"]
-        self.neutnom = self.endings["Pnnomsg"]
+        self.mascnom: str = self.endings["Pmnomsg"]
+        self.femnom: str = self.endings["Pfnomsg"]
+        self.neutnom: str = self.endings["Pnnomsg"]
 
     def get(
         self, *, case: Case, number: Number, gender: Gender
@@ -121,8 +124,7 @@ class Pronoun(_Word):
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
+    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -156,6 +158,34 @@ class Pronoun(_Word):
             f"{output.gender.regular}"
         )
         return output
+
+    @deprecated(
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
+    )
+    @staticmethod
+    def create_components(key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        Deprecated in favour of ``create_components_instance``.
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        placeholder_pronoun = Pronoun("hic", meaning="this")
+        return Pronoun.create_components_instance(placeholder_pronoun, key)
 
     def __repr__(self) -> str:
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"

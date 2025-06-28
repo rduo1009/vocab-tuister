@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, Final, cast
 
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
@@ -11,9 +11,9 @@ from .question_classes import QuestionClasses
 if TYPE_CHECKING:
     from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
-    from .type_aliases import Settings, Vocab
+    from .type_aliases import Settings, SettingsRules, Vocab
 
-RULE_REGEX: Final[dict[str, str]] = {
+RULE_REGEX: Final[SettingsRules] = {
     # Verb tense/voice/mood
     "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-indicative": r"^Vimpactind[a-z][a-z]\d$",
@@ -21,10 +21,26 @@ RULE_REGEX: Final[dict[str, str]] = {
     "exclude-verb-future-perfect-active-indicative": r"^Vfpractind[a-z][a-z]\d$",
     "exclude-verb-perfect-active-indicative": r"^Vperactind[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-indicative": r"^Vplpactind[a-z][a-z]\d$",
-    "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
-    "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude-verb-present-passive-indicative": r"^Vprepasind[a-z][a-z]\d$",
+    "exclude-verb-imperfect-passive-indicative": r"^Vimppasind[a-z][a-z]\d$",
+    "exclude-verb-future-passive-indicative": r"^Vfutpasind[a-z][a-z]\d$",
+    "exclude-verb-future-perfect-passive-indicative": r"^Vfprpasind[a-z][a-z]\d$",
+    "exclude-verb-perfect-passive-indicative": r"^Vperpasind[a-z][a-z]\d$",
+    "exclude-verb-pluperfect-passive-indicative": r"^Vplppasind[a-z][a-z]\d$",
+    "exclude-verb-present-active-subjunctive": r"^Vpreactsbj[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-subjunctive": r"^Vimpactsbj[a-z][a-z]\d$",
+    "exclude-verb-perfect-active-subjunctive": r"^Vperactsbj[a-z][a-z]\d$",
     "exclude-verb-pluperfect-active-subjunctive": r"^Vplpactsbj[a-z][a-z]\d$",
+    "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude-verb-future-active-imperative": r"^Vfutactipe[a-z][a-z]\d$",
+    "exclude-verb-present-passive-imperative": r"^Vprepasipe[a-z][a-z]\d$",
+    "exclude-verb-future-passive-imperative": r"^Vfutpasipe[a-z][a-z]\d$",
+    "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
+    "exclude-verb-future-active-infinitive": r"^Vfutactinf   $",
+    "exclude-verb-perfect-active-infinitive": r"^Vperactinf   $",
+    "exclude-verb-present-passive-infinitive": r"^Vprepasinf   $",
+    "exclude-verb-future-passive-infinitive": r"^Vfutpasinf   $",
+    "exclude-verb-perfect-passive-infinitive": r"^Vperpasinf   $",
 
     # Verb number
     "exclude-verb-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg\d$",
@@ -41,6 +57,8 @@ RULE_REGEX: Final[dict[str, str]] = {
     # Participle tense/voice
     "exclude-participle-present-active": r"^Vpreactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
     "exclude-participle-perfect-passive": r"^Vperpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude-participle-future-active": r"^Vfutactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude-gerundives": r"^Vfutpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle gender
     "exclude-participle-masculine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcm[a-z][a-z][a-z][a-z][a-z]$",
@@ -58,6 +76,10 @@ RULE_REGEX: Final[dict[str, str]] = {
     # Participle number
     "exclude-participle-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]sg$",
     "exclude-participle-plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]pl$",
+
+    # Verbal nouns
+    "exclude-gerunds": r"^Vger[a-z][a-z][a-z]$",
+    "exclude-supines": r"^Vsup[a-z][a-z][a-z]$",
 
     # Noun case
     "exclude-noun-nominative": r"^Nnom[a-z][a-z]$",
@@ -200,6 +222,9 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                 if conjugation_excluded:
                     vocab.remove(item)
 
+                if settings["exclude-deponents"] and item.deponent:
+                    vocab.remove(item)
+
             case Noun():
                 current_declension = item.declension
                 declension_excluded = (
@@ -241,6 +266,10 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                     and current_adj_declension == "3"
                 ):
                     vocab.remove(item)
+
+            case _:
+                pass
+
     return vocab
 
 
@@ -262,7 +291,7 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
     filtered_endings = endings
     for setting, value in settings.items():
         if value and (setting in RULE_REGEX):
-            regex_pattern = RULE_REGEX[setting]
+            regex_pattern = cast("str", RULE_REGEX[setting])
             filtered_endings = {
                 key: ending
                 for key, ending in filtered_endings.items()
@@ -285,8 +314,4 @@ def filter_questions(settings: Settings) -> set[QuestionClasses]:
     set[QuestionClasses]
         The filtered classes.
     """
-    return {
-        value
-        for key, value in CLASS_RULES.items()
-        if settings[key]  # type: ignore[literal-required]
-    }
+    return {value for key, value in CLASS_RULES.items() if settings[key]}

@@ -57,8 +57,26 @@ jobs:
           poetry install
 
       - name: Run integration tests
+        id: run-tests
         run: |
           poetry run pytest -m 'integration' -n0
+        continue-on-error: true
+
+      - name: Update test data
+        if: steps.run-tests.outcome == 'failure'
+        run: poetry run pytest --pythonhashseed 1 --snapshot-update -m 'integration' -n0
+
+      - name: Upload changed files
+        if: steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: changed-files
+          path: |
+            tests/integration/server_integration/__snapshots__/server_integration_test.ambr
+
+      - name: Fail workflow if applicable
+        if: steps.run-tests.outcome == 'failure'
+        run: exit 1
 
   test-golang:
     name: test with golang
