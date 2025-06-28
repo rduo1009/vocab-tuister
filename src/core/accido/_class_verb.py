@@ -91,7 +91,6 @@ class Verb(_Word):
         "active_only",
         "conjugation",
         "deponent",
-        "semi_deponent",
         "fap_fourthpp",
         "impersonal",
         "impersonal_passive",
@@ -105,6 +104,7 @@ class Verb(_Word):
         "perfect",
         "ppp",
         "present",
+        "semi_deponent",
     )
 
     # fmt: off
@@ -330,28 +330,27 @@ class Verb(_Word):
             self.semi_deponent = True
 
             # Verifying all arguments provided
-            if self.ppp is not None: # ppp is derived from perfect
+            if self.ppp is not None:  # ppp is derived from perfect
                 raise InvalidInputError(
                     f"Verb '{self.present}' is semi-deponent, but ppp provided."
                 )
 
             # Handle defective verbs
-            if self.present in MISSING_PPP_VERBS: # e.g. audeo, audere, ausus sum
+            if (
+                self.present in MISSING_PPP_VERBS
+            ):  # e.g. audeo, audere, ausus sum
                 self.no_ppp = True
                 self.no_supine = True
             else:
-                self.ppp = self.perfect[:-4] # remove " sum"
+                self.ppp = self.perfect[:-4]  # remove " sum"
                 self._ppp_stem = self.ppp[:-2]
                 self._fap_stem = self.ppp[:-1] + "r"
 
-
             self.impersonal = self.present in IMPERSONAL_VERBS
             self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
-            self.no_future = self.present in MISSING_FUTURE_VERBS # for soleo
+            self.no_future = self.present in MISSING_FUTURE_VERBS  # for soleo
 
             # Determine stems (present system is active, perfect system is passive)
-            self._inf_stem: str
-            self._preptc_stem: str
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
@@ -372,15 +371,16 @@ class Verb(_Word):
                 self._inf_stem = self.infinitive[:-3]
                 self._preptc_stem = self.infinitive[:-2] + "e"
             elif self.infinitive.endswith("ere"):
-                if self.present.endswith("eo"): # e.g. audeo, audere
+                if self.present.endswith("eo"):  # e.g. audeo, audere
                     self.conjugation = 2
                     self._inf_stem = self.infinitive[:-3]
                     self._preptc_stem = self.infinitive[:-2]
-                elif self.present.endswith("io"): # Should not happen for semi-deponents based on common examples
+                # Should not happen for semi-deponents based on common examples
+                elif self.present.endswith("io"):
                     self.conjugation = 5
                     self._inf_stem = self.infinitive[:-3]
                     self._preptc_stem = self.infinitive[:-3] + "ie"
-                else: # e.g. fido, fidere
+                else:  # e.g. fido, fidere
                     self.conjugation = 3
                     self._inf_stem = self.infinitive[:-3]
                     self._preptc_stem = self.infinitive[:-2]
@@ -391,10 +391,11 @@ class Verb(_Word):
 
             # Perfect stem is derived from the PPP (which comes from perfect "xxx sum")
             if not self.no_ppp:
-                 # For semi-deponents, perfect stem is effectively the PPP stem for perfect passive forms
-                self._per_stem = self._ppp_stem # This will be used by _conjugation methods for perfect passive forms
+                # For semi-deponents, perfect stem is effectively the PPP stem for perfect passive forms
+                # This will be used by _conjugation methods for perfect passive forms
+                self._per_stem = self._ppp_stem
             else:
-                self._per_stem = None # No perfect passive forms if no PPP
+                self._per_stem = None  # No perfect passive forms if no PPP
 
             # Determine endings
             match self.conjugation:
@@ -406,7 +407,7 @@ class Verb(_Word):
                     self.endings = self._third_conjugation()
                 case 4:
                     self.endings = self._fourth_conjugation()
-                case _: # 5
+                case _:  # 5
                     self.endings = self._mixed_conjugation()
 
             self.endings |= self._participles()
@@ -422,7 +423,7 @@ class Verb(_Word):
                     self.endings,
                     find_derived_verb_changes(
                         (self.present, self.infinitive, self.perfect, self.ppp)
-                        if self.ppp # Should always be true unless MISSING_PPP_VERBS
+                        if self.ppp  # Should always be true unless MISSING_PPP_VERBS
                         else (self.present, self.infinitive, self.perfect)
                     ),
                 )
@@ -448,43 +449,111 @@ class Verb(_Word):
 
                 # Participles, Infinitives, Verbal Nouns need special handling
                 if key[7:10] == Mood.PARTICIPLE.shorthand:
-                    if tense_key == Tense.PRESENT.shorthand and voice_key == Voice.ACTIVE.shorthand: # e.g. audens
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                    elif tense_key == Tense.PERFECT.shorthand and voice_key == Voice.PASSIVE.shorthand and not self.no_ppp: # e.g. ausus
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                    elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.ACTIVE.shorthand and not self.no_fap: # e.g. ausurus
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
+                    if (
+                        tense_key == Tense.PRESENT.shorthand
+                        and voice_key == Voice.ACTIVE.shorthand
+                    ):  # e.g. audens
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
+                    elif (
+                        tense_key == Tense.PERFECT.shorthand
+                        and voice_key == Voice.PASSIVE.shorthand
+                        and not self.no_ppp
+                    ):  # e.g. ausus
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
+                    elif (
+                        tense_key == Tense.FUTURE.shorthand
+                        and voice_key == Voice.ACTIVE.shorthand
+                        and not self.no_fap
+                    ):  # e.g. ausurus
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
                     # Gerundive (futpasptc) is passive in form and meaning, should retain PASSIVE voice key
-                    elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.PASSIVE.shorthand and not self.no_fap: # e.g. audendus
-                        sdp_endings[key] = value # Keep original key with 'pas'
+                    elif (
+                        tense_key == Tense.FUTURE.shorthand
+                        and voice_key == Voice.PASSIVE.shorthand
+                        and not self.no_fap
+                    ):  # e.g. audendus
+                        sdp_endings[key] = (
+                            value  # Keep original key with 'pas'
+                        )
 
                 elif key[7:10] == Mood.INFINITIVE.shorthand:
-                    if tense_key == Tense.PRESENT.shorthand and voice_key == Voice.ACTIVE.shorthand: # e.g. audere
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                    elif tense_key == Tense.PERFECT.shorthand and voice_key == Voice.PASSIVE.shorthand and not self.no_ppp : # e.g. ausus esse
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                    elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.ACTIVE.shorthand and not self.no_fap: # e.g. ausurus esse
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
+                    if (
+                        tense_key == Tense.PRESENT.shorthand
+                        and voice_key == Voice.ACTIVE.shorthand
+                    ):  # e.g. audere
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
+                    elif (
+                        tense_key == Tense.PERFECT.shorthand
+                        and voice_key == Voice.PASSIVE.shorthand
+                        and not self.no_ppp
+                    ):  # e.g. ausus esse
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
+                    elif (
+                        tense_key == Tense.FUTURE.shorthand
+                        and voice_key == Voice.ACTIVE.shorthand
+                        and not self.no_fap
+                    ):  # e.g. ausurus esse
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
                     # Future passive infinitive (e.g. ausum iri)
-                    elif tense_key == Tense.FUTURE.shorthand and voice_key == Voice.PASSIVE.shorthand and not self.no_ppp and not self.no_fap: # Requires PPP for form "ausum iri"
-                        sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
+                    elif (
+                        tense_key == Tense.FUTURE.shorthand
+                        and voice_key == Voice.PASSIVE.shorthand
+                        and not self.no_ppp
+                        and not self.no_fap
+                    ):  # Requires PPP for form "ausum iri"
+                        sdp_endings[
+                            key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                        ] = value
 
-
-                elif key[1:4] in {Mood.GERUND.shorthand, Mood.SUPINE.shorthand}: # Gerunds and Supines are active in form and retain original keys
-                    if not self.no_gerund and key[1:4] == Mood.GERUND.shorthand:
-                         sdp_endings[key] = value # Keep original key e.g. Vgeracc
-                    elif not self.no_supine and key[1:4] == Mood.SUPINE.shorthand and not self.no_ppp : # Supine uses PPP stem
-                         sdp_endings[key] = value # Keep original key e.g. Vsupacc
+                elif (
+                    key[1:4] in {Mood.GERUND.shorthand, Mood.SUPINE.shorthand}
+                ):  # Gerunds and Supines are active in form and retain original keys
+                    if (
+                        not self.no_gerund
+                        and key[1:4] == Mood.GERUND.shorthand
+                    ):
+                        sdp_endings[key] = (
+                            value  # Keep original key e.g. Vgeracc
+                        )
+                    elif (
+                        not self.no_supine
+                        and key[1:4] == Mood.SUPINE.shorthand
+                        and not self.no_ppp
+                    ):  # Supine uses PPP stem
+                        sdp_endings[key] = (
+                            value  # Keep original key e.g. Vsupacc
+                        )
 
                 # Finite verb forms
-                elif tense_key in present_system_tenses and voice_key == Voice.ACTIVE.shorthand:
-                    sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
-                elif tense_key in perfect_system_tenses and voice_key == Voice.PASSIVE.shorthand and not self.no_ppp:
-                    sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
+                elif (
+                    tense_key in present_system_tenses
+                    and voice_key == Voice.ACTIVE.shorthand
+                ) or (
+                    tense_key in perfect_system_tenses
+                    and voice_key == Voice.PASSIVE.shorthand
+                    and not self.no_ppp
+                ):
+                    sdp_endings[
+                        key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]
+                    ] = value
 
             self.endings = sdp_endings
 
-            if self.impersonal or self.impersonal_passive: # Should apply similarly
+            if (
+                self.impersonal or self.impersonal_passive
+            ):  # Should apply similarly
                 self.endings = {
                     key: value
                     for key, value in self.endings.items()
@@ -492,13 +561,17 @@ class Verb(_Word):
                     or key[10:13] == Number.SINGULAR.shorthand + "3"
                 }
 
-            if self.no_future: # Apply future tense filtering if needed
-                 self.endings = {
+            if self.no_future:  # Apply future tense filtering if needed
+                self.endings = {
                     key: value
                     for key, value in self.endings.items()
                     if key[1:4]
-                    not in {Tense.FUTURE.shorthand, Tense.FUTURE_PERFECT.shorthand}
+                    not in {
+                        Tense.FUTURE.shorthand,
+                        Tense.FUTURE_PERFECT.shorthand,
+                    }
                 }
+
             return
 
         # ---------------------------------------------------------------------
@@ -566,7 +639,6 @@ class Verb(_Word):
         self.active_only = self.present in ACTIVE_ONLY_VERBS
         self.impersonal = self.present in IMPERSONAL_VERBS
         self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
-        # self.no_future = self.present in MISSING_FUTURE_VERBS # Removed: only for soleo, handled in semi-deponent
 
         if not self.present.endswith("o") and not irregular_flag:
             raise InvalidInputError(
@@ -671,14 +743,6 @@ class Verb(_Word):
                     or key[4:7] != Voice.PASSIVE.shorthand
                 )
             }
-
-        # if self.no_future and not self.semi_deponent: # Removed: only for soleo, handled in semi-deponent
-        #     self.endings = {
-        #         key: value
-        #         for key, value in self.endings.items()
-        #         if key[1:4]
-        #         not in {Tense.FUTURE.shorthand, Tense.FUTURE_PERFECT.shorthand}
-        #     }
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
@@ -2074,7 +2138,9 @@ class Verb(_Word):
                 self.present,
                 self.infinitive,
                 self.perfect,
-                self.ppp if not (self.deponent or self.semi_deponent) else None,
+                self.ppp
+                if not (self.deponent or self.semi_deponent)
+                else None,
                 meaning=self.meaning,
             )
 
