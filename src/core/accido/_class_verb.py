@@ -466,11 +466,11 @@ class Verb(_Word):
                         sdp_endings[key[:4] + Voice.SEMI_DEPONENT.shorthand + key[7:]] = value
 
 
-                elif key[1:4] in {Mood.GERUND.shorthand, Mood.SUPINE.shorthand}: # Gerunds and Supines are active in form
+                elif key[1:4] in {Mood.GERUND.shorthand, Mood.SUPINE.shorthand}: # Gerunds and Supines are active in form and retain original keys
                     if not self.no_gerund and key[1:4] == Mood.GERUND.shorthand:
-                         sdp_endings[key[0] + key[1:4] + Voice.SEMI_DEPONENT.shorthand[0] + key[4:]] = value # Vgersacc -> VgerAacc
+                         sdp_endings[key] = value # Keep original key e.g. Vgeracc
                     elif not self.no_supine and key[1:4] == Mood.SUPINE.shorthand and not self.no_ppp : # Supine uses PPP stem
-                         sdp_endings[key[0] + key[1:4] + Voice.SEMI_DEPONENT.shorthand[0] + key[4:]] = value # Vsupsacc -> VsupAacc
+                         sdp_endings[key] = value # Keep original key e.g. Vsupacc
 
                 # Finite verb forms
                 elif tense_key in present_system_tenses and voice_key == Voice.ACTIVE.shorthand:
