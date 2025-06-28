@@ -29,7 +29,7 @@ NOT_COMPARABLE_ADJECTIVES: Final[set[str]] = {
     "female", "masculine", "feminine", "human", "animal", "vegetable", "mineral", "liquid", "solid", "gaseous", "frozen",
     "melted", "boiled", "cooked", "raw", "fresh", "stale", "rotten", "spoiled", "edible", "inedible", "toxic", "harmless",
     "dangerous", "safe", "risky", "secure", "vulnerable", "exposed", "hidden", "visible", "invisible", "transparent", "opaque",
-    "clear", "cloudy", "bright", "dark", "light", "heavy", "empty", "full", "vacant", "occupied", "available", "unavailable",
+    "clear", "cloudy", "bright", "dark", "heavy", "empty", "full", "vacant", "occupied", "available", "unavailable",
     "accessible", "inaccessible", "open", "closed", "locked", "unlocked", "sealed", "unsealed", "connected", "disconnected",
     "attached", "detached", "joined", "separated", "united", "divided", "whole", "broken", "intact", "damaged", "repaired",
     "fixed", "mobile", "stationary", "moving", "still", "active", "inactive", "passive", "aggressive", "peaceful", "violent",
