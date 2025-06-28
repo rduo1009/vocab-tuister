@@ -181,6 +181,10 @@ class Verb(_Word):
 
         self._ppp_stem: str | None = None
         self._fap_stem: str | None = None
+        # _inf_stem, _preptc_stem, _per_stem are in __slots__; no need for None initialization here
+        # if they are always assigned before use or if their methods handle None.
+        # However, for explicit state before conditional assignment, they could be set to None.
+        # For now, removing to strictly follow the "undo" and rely on __slots__ + assignments.
 
         # ---------------------------------------------------------------------
         # IRREGULAR VERBS
@@ -234,10 +238,10 @@ class Verb(_Word):
             self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
 
             # Determine stems
-            self._inf_stem: str
+            # self._inf_stem: str # No longer needed here due to earlier initialization
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
-                self._preptc_stem: str
+                # self._preptc_stem: str # No longer needed here
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
@@ -346,10 +350,10 @@ class Verb(_Word):
             self.no_future = self.present in MISSING_FUTURE_VERBS # for soleo
 
             # Determine stems (present system is active, perfect system is passive)
-            self._inf_stem: str
+            # self._inf_stem: str # Redundant, initialized above
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
-                self._preptc_stem: str
+                # self._preptc_stem: str # Redundant, initialized above
                 self._inf_stem, self._preptc_stem = find_irregular_verb_stems(
                     self.present
                 )
