@@ -578,8 +578,6 @@ DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
 # -----------------------------------------------------------------------------
 # IRREGULAR VERBS
 
-# TODO: Expand these
-
 type _IrregularVerb = Literal[
     "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio"
 ]
