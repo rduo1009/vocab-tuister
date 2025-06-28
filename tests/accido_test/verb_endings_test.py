@@ -1020,3 +1020,129 @@ class TestVerbalNounConjugation:
     def test_verbalnoun_fourthconjugation(self, mood, case, expected):
         word = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
         assert word.get(mood=mood, participle_case=case) == expected
+
+
+SEMI_DEPONENT_VERB_COMBINATIONS = (
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.IMPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.PLUPERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.PLURAL),
+    (Tense.FUTURE_PERFECT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.PLURAL),
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.INFINITIVE, None, None),
+)  # fmt: skip
+
+SEMI_DEPONENT_PARTICIPLE_COMBINATIONS = (
+    # Present Active Participle (queried as SEMI_DEPONENT)
+    (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    # Perfect Participle (passive form, active meaning, queried as SEMI_DEPONENT)
+    (Tense.PERFECT, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    # Future Active Participle (queried as SEMI_DEPONENT)
+    (Tense.FUTURE, Voice.SEMI_DEPONENT, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+    # Future Passive Participle / Gerundive (queried as PASSIVE)
+    (Tense.FUTURE, Voice.PASSIVE, Mood.PARTICIPLE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR),
+)  # fmt: skip
+
+SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS = ((Mood.GERUND, Case.ACCUSATIVE), (Mood.SUPINE, Case.ACCUSATIVE))
+
+
+class TestSemiDeponentConjugation:
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "audeo", "audes", "audet", "audemus", "audetis", "audent",
+        "audebam", "audebas", "audebat", "audebamus", "audebatis", "audebant",
+        "audebo", "audebis", "audebit", "audebimus", "audebitis", "audebunt",
+        "ausus sum", "ausus es", "ausus est", "ausi sumus", "ausi estis", "ausi sunt",
+        "ausus eram", "ausus eras", "ausus erat", "ausi eramus", "ausi eratis", "ausi erant",
+        "ausus ero", "ausus eris", "ausus erit", "ausi erimus", "ausi eritis", "ausi erunt",
+        "audere", "ausus esse", "ausurus esse",
+    ])])  # fmt: skip
+    def test_audeo_conjugation(self, tense, voice, mood, person, number, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "participle_gender", "participle_case", "number", "expected"), [SEMI_DEPONENT_PARTICIPLE_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "audens",  # Present Active Participle
+        "ausus",  # Perfect "Passive" Participle (form)
+        "ausurus",  # Future Active Participle
+        "audendus",  # Future Passive Participle (Gerundive)
+    ])])  # fmt: skip
+    def test_audeo_participles(self, tense, voice, mood, participle_gender, participle_case, number, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        assert word.get(tense=tense, voice=voice, mood=mood, participle_gender=participle_gender, participle_case=participle_case, number=number) == expected
+
+    @pytest.mark.parametrize(("mood", "case", "expected"), [SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "audendum", # Gerund
+        "ausum",  # Supine (accusative)
+    ])])  # fmt: skip
+    def test_audeo_verbal_nouns(self, mood, case, expected):
+        word = Verb("audeo", "audere", "ausus sum", meaning="dare")
+        supine_abl_key = "VsupAabl"  # Construct the specific key for ablative supine if needed
+        if mood == Mood.SUPINE and case == Case.ABLATIVE:  # Example for testing specific supine case
+            assert word.endings.get(supine_abl_key) == expected  # or word.get(...)
+        else:
+            assert word.get(mood=mood, participle_case=case) == expected
+
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "soleo", "soles", "solet", "solemus", "soletis", "solent",
+        "solebam", "solebas", "solebat", "solebamus", "solebatis", "solebant",
+        None, None, None, None, None, None,  # Future active indicative
+        "solitus sum", "solitus es", "solitus est", "soliti sumus", "soliti estis", "soliti sunt",
+        "solitus eram", "solitus eras", "solitus erat", "soliti eramus", "soliti eratis", "soliti erant",
+        None, None, None, None, None, None,  # Future perfect "passive" indicative
+        "solere", "solitus esse", None,  # Future active infinitive (soliturus esse) is expected if not no_fap
+    ])])  # fmt: skip
+    def test_soleo_conjugation_no_future(self, tense, voice, mood, person, number, expected):
+        word = Verb("soleo", "solere", "solitus sum", meaning="be accustomed")
+        if expected == "soliturus esse" and word.no_fap:  # Adjust if soleo is marked as no_fap
+            assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) is None
+        else:
+            assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
+
+    # Minimal test for fido (3rd conj) to ensure basic mechanism works
+    def test_fido_third_conjugation_smoke(self):
+        word = Verb("fido", "fidere", "fisus sum", meaning="trust")
+        assert word.semi_deponent is True
+        assert word.conjugation == 3
+        assert word.get(tense=Tense.PRESENT, voice=Voice.SEMI_DEPONENT, mood=Mood.INDICATIVE, person=1, number=Number.SINGULAR) == "fido"
+        assert word.get(tense=Tense.PERFECT, voice=Voice.SEMI_DEPONENT, mood=Mood.INDICATIVE, person=1, number=Number.SINGULAR) == "fisus sum"
+        assert word.get(tense=Tense.PRESENT, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fidere"
+        assert word.get(tense=Tense.PERFECT, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fisus esse"
+        # Future semi-deponent infinitive (active form)
+        assert word.get(tense=Tense.FUTURE, voice=Voice.SEMI_DEPONENT, mood=Mood.INFINITIVE) == "fisurus esse"
+        # Vfutsdpinf   should point to the active-form future infinitive after filtering.
+        # If "fisum iri" (future passive infinitive) is needed for a specific test,
+        # it would be accessed differently or via a more specific key if distinguished.
+        # For the primary Vfutsdpinf   key, "fisurus esse" is correct.
+        assert word.endings.get("Vfutsdpinf   ") == "fisurus esse"
