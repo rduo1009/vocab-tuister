@@ -21,7 +21,7 @@ class DictChanges[V](NamedTuple):
     additions : dict[str, V]
         A dictionary of key-value pairs to add to the target dictionary.
     deletions : set[str]
-        A set of keys to be deleted from the target dictionary.
+        A set of keys or regex patterns to be deleted from the target dictionary.
     """
 
     replacements: dict[str, V]
