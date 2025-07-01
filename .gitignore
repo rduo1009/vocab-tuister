@@ -30,3 +30,4 @@ __version__.txt
 TODO.md
 /.vscode/settings.json
 /.vscode/tests.code-snippets
+.devcontainer/
