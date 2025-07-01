@@ -1,0 +1,58 @@
+{
+  "name": "Vocab Tuister Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff",
+        "rodolphebarbanneau.python-docstring-highlighter",
+        "golang.go",
+        "usernamehw.errorlens",
+        "tamasfe.even-better-toml",
+        "wayou.vscode-todo-highlight",
+        "redhat.vscode-yaml",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/vocab-tuister/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.formatting.provider": "none",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.gopath": "/go",
+        "go.goroot": "/usr/local/go"
+      }
+    }
+  },
+
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.24"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  "forwardPorts": [5000, 8080],
+
+  "postCreateCommand": ".devcontainer/setup.sh",
+
+  "containerEnv": {
+    "POETRY_VENV_IN_PROJECT": "true",
+    "POETRY_CACHE_DIR": "/workspaces/vocab-tuister/.poetry-cache"
+  },
+
+  "mounts": [
+    "source=vocab-tuister-poetry-cache,target=/workspaces/vocab-tuister/.poetry-cache,type=volume"
+  ]
+}

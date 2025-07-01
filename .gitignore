@@ -13,6 +13,9 @@ __pycache__/
 cosmic-ray.sqlite
 monkeytype.sqlite3
 
+# Poetry cache (for devcontainer)
+.poetry-cache/
+
 # Test generated files
 /src/scripts/json_output/
 /tests/lego_test/testdata/test_output/*
