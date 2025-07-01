@@ -21,7 +21,7 @@ updates:
     commit-message:
       prefix: "🤖 ci(github-actions):"
 
-  - package-ecosystem: "docker"
+  - package-ecosystem: "devcontainers"
     directory: "/.devcontainer"
     schedule:
       interval: "weekly"
