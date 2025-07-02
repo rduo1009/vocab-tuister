@@ -142,8 +142,6 @@ default_settings: Settings = {
 def test_word_exclusion_adjective():
     words: list[Adjective] = [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"), Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
     vocab_list = VocabList(words, "")
-    vocab_list = VocabList(words, "")
-
     settings = default_settings.copy()
 
     settings["exclude-adjective-212-declension"] = True
