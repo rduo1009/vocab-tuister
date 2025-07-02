@@ -1,3 +1,5 @@
+# pyright: reportTypedDictNotRequiredAccess=false
+
 from __future__ import annotations
 
 import os
@@ -26,9 +28,25 @@ default_settings: Settings = {
     "exclude-verb-pluperfect-active-indicative": False,
     "exclude-verb-future-perfect-active-indicative": False,
     "exclude-verb-present-active-infinitive": False,
+    "exclude-verb-future-active-infinitive": False,
+    "exclude-verb-perfect-active-infinitive": False,
+    "exclude-verb-present-passive-infinitive": False,
+    "exclude-verb-future-passive-infinitive": False,
+    "exclude-verb-perfect-passive-infinitive": False,
     "exclude-verb-present-active-imperative": False,
+    "exclude-verb-future-active-imperative": False,
+    "exclude-verb-present-passive-imperative": False,
+    "exclude-verb-future-passive-imperative": False,
+    "exclude-verb-present-active-subjunctive": False,
     "exclude-verb-imperfect-active-subjunctive": False,
+    "exclude-verb-perfect-active-subjunctive": False,
     "exclude-verb-pluperfect-active-subjunctive": False,
+    "exclude-verb-present-passive-indicative": False,
+    "exclude-verb-imperfect-passive-indicative": False,
+    "exclude-verb-future-passive-indicative": False,
+    "exclude-verb-perfect-passive-indicative": False,
+    "exclude-verb-pluperfect-passive-indicative": False,
+    "exclude-verb-future-perfect-passive-indicative": False,
     "exclude-verb-singular": False,
     "exclude-verb-plural": False,
     "exclude-verb-1st-person": False,
@@ -37,6 +55,8 @@ default_settings: Settings = {
     "exclude-participles": False,
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
+    "exclude-participle-future-active": False,
+    "exclude-gerundives": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,
@@ -48,6 +68,8 @@ default_settings: Settings = {
     "exclude-participle-ablative": False,
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
+    "exclude-gerunds": False,
+    "exclude-supines": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,
@@ -87,6 +109,7 @@ default_settings: Settings = {
     "exclude-pronoun-plural": False,
     "exclude-nouns": False,
     "exclude-verbs": False,
+    "exclude-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,
@@ -104,6 +127,8 @@ default_settings: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
+    "english-verbal-nouns": True,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
     "include-parse": False,
@@ -114,6 +139,7 @@ default_settings: Settings = {
     "number-multiplechoice-options": 3,
 }
 
+# NOTE: These are incomplete but should be enough to test the functionality.
 exclude_components_adjective = {
     "exclude-adjective-masculine": lambda components: components.gender == Gender.MASCULINE,
     "exclude-adjective-feminine": lambda components: components.gender == Gender.FEMININE,
@@ -161,10 +187,10 @@ exclude_components_verb = {
     "exclude-verb-imperfect-active-indicative": lambda components: components.tense == Tense.IMPERFECT and components.voice == Voice.ACTIVE and components.mood == Mood.INDICATIVE,
     "exclude-verb-perfect-active-indicative": lambda components: components.tense == Tense.PERFECT and components.voice == Voice.ACTIVE and components.mood == Mood.INDICATIVE,
     "exclude-verb-pluperfect-active-indicative": lambda components: components.tense == Tense.PLUPERFECT and components.voice == Voice.ACTIVE and components.mood == Mood.INDICATIVE,
-    "exclude-verb-present-active-infinitive": lambda components: components.tense == Tense.PRESENT and components.voice == Voice.ACTIVE and components.mood == Mood.INFINITIVE,
-    "exclude-verb-present-active-imperative": lambda components: components.tense == Tense.PRESENT and components.voice == Voice.ACTIVE and components.mood == Mood.IMPERATIVE,
     "exclude-verb-imperfect-active-subjunctive": lambda components: components.tense == Tense.IMPERFECT and components.voice == Voice.ACTIVE and components.mood == Mood.SUBJUNCTIVE,
     "exclude-verb-pluperfect-active-subjunctive": lambda components: components.tense == Tense.PLUPERFECT and components.voice == Voice.ACTIVE and components.mood == Mood.SUBJUNCTIVE,
+    "exclude-verb-present-active-imperative": lambda components: components.tense == Tense.PRESENT and components.voice == Voice.ACTIVE and components.mood == Mood.IMPERATIVE,
+    "exclude-verb-present-active-infinitive": lambda components: components.tense == Tense.PRESENT and components.voice == Voice.ACTIVE and components.mood == Mood.INFINITIVE,
     "exclude-verb-singular": lambda components: components.number == Number.SINGULAR,
     "exclude-verb-plural": lambda components: components.number == Number.PLURAL,
     "exclude-verb-1st-person": lambda components: components.person == 1,
@@ -184,8 +210,8 @@ def test_ending_exclusion_adjective():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
-        settings["exclude-adverbs"] = True  # type: ignore[typeddict-readonly-mutated]
+            settings[key] = True
+        settings["exclude-adverbs"] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -208,7 +234,7 @@ def test_ending_exclusion_noun():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -231,7 +257,7 @@ def test_ending_exclusion_pronoun():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -254,8 +280,8 @@ def test_ending_exclusion_verb():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
-        settings["exclude-participles"] = True  # type: ignore[typeddict-readonly-mutated]
+            settings[key] = True
+        settings["exclude-participles"] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):
@@ -279,7 +305,7 @@ def test_ending_exclusion_regularword():
         settings = default_settings.copy()
 
         for key in key_combination:
-            settings[key] = True  # type: ignore[literal-required]
+            settings[key] = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, settings):

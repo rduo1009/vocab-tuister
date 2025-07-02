@@ -40,5 +40,5 @@ if __name__ == "__main__":
     d: Settings = _create_default_typed_dict(Settings)
     with output_path.open("w", encoding="utf-8") as output_file:
         output_file.write(json.dumps(d) + "\n")
-        d["number-of-questions"] = 0  # type: ignore[typeddict-unknown-key]
+        d["number-of-questions"] = 0  # pyright: ignore[reportGeneralTypeIssues]
         output_file.write(json.dumps(d) + "\n")

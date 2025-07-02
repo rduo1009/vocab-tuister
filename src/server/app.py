@@ -2,8 +2,6 @@
 
 # ruff: noqa: D103
 
-from __future__ import annotations
-
 import json
 import logging
 import traceback
@@ -36,7 +34,7 @@ vocab_list: VocabList | None = None
 
 
 @app.errorhandler(BadRequest)
-def handle_bad_request(e):
+def handle_bad_request(e: BadRequest) -> tuple[str, int]:
     logger.error(
         "%s\n%s",
         e.description,
@@ -77,7 +75,7 @@ def send_vocab():
 
 def generate_questions_sample_json(
     vocab_list: VocabList, question_amount: int, settings: Settings
-) -> Generator[str]:
+) -> "Generator[str]":
     return (
         json.dumps(question, cls=QuestionClassEncoder)
         for question in ask_question_without_sr(
@@ -124,32 +122,23 @@ def create_session():
         )
 
     try:
-        validate_typeddict(settings, Settings)
-    except* DictMissingKeyError as eg:
-        missingkey_error = cast("DictMissingKeyError", eg.exceptions[0])
-        keys_str = ", ".join(
-            f"'{k}'" for k in sorted(missingkey_error.missing_keys)
-        )
+        _ = validate_typeddict(settings, Settings)
+    except DictMissingKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
         raise BadRequest(
             f"Required settings are missing: {keys_str}. (InvalidSettingsError)"
-        ) from eg
+        ) from e
 
-    except* DictExtraKeyError as eg:
-        extrakey_error = cast("DictExtraKeyError", eg.exceptions[0])
-        keys_str = ", ".join(
-            f"'{k}'" for k in sorted(extrakey_error.extra_keys)
-        )
+    except DictExtraKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
         raise BadRequest(
             f"Unrecognised settings were provided: {keys_str}. "
             "(InvalidSettingsError)"
-        ) from eg
+        ) from e
 
-    except* DictIncorrectTypeError as eg:
-        incorrecttype_error = cast("DictIncorrectTypeError", eg.exceptions[0])
-        type_error_details = []
-        for field, detail in sorted(
-            incorrecttype_error.incorrect_types.items()
-        ):
+    except DictIncorrectTypeError as e:
+        type_error_details: list[str] = []
+        for field, detail in sorted(e.incorrect_types.items()):
             expected_type_str = str(detail.expected)
             actual_type_str = (
                 detail.actual.__name__
@@ -162,13 +151,15 @@ def create_session():
             )
         raise BadRequest(
             f"{'; '.join(type_error_details)}. (InvalidSettingsError)"
-        ) from eg
+        ) from e
 
     logger.info("Returning %d questions.", question_amount)
     try:
         return Response(
             _generate_questions_json(
-                vocab_list, question_amount, cast("Settings", settings)
+                vocab_list,
+                question_amount,
+                cast("Settings", settings),  # pyright: ignore[reportInvalidCast]
             ),
             mimetype="application/json",
         )
@@ -178,9 +169,9 @@ def create_session():
         ) from e
 
 
-def main_dev(port, *, debug=False):
+def main_dev(port: int, *, debug: bool = False):
     app.run(host="127.0.0.1", port=port, debug=debug)
 
 
-def main(port):
+def main(port: int):
     serve(app, host="127.0.0.1", port=port)

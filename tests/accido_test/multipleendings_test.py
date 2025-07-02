@@ -1,3 +1,5 @@
+# pyright: basic
+
 import os
 import sys
 

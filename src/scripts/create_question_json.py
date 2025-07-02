@@ -49,9 +49,25 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-verb-perfect-active-indicative": False,
     "exclude-verb-pluperfect-active-indicative": False,
     "exclude-verb-future-perfect-active-indicative": False,
+    "exclude-verb-present-passive-indicative": False,
+    "exclude-verb-imperfect-passive-indicative": False,
+    "exclude-verb-future-passive-indicative": False,
+    "exclude-verb-perfect-passive-indicative": False,
+    "exclude-verb-pluperfect-passive-indicative": False,
+    "exclude-verb-future-perfect-passive-indicative": False,
     "exclude-verb-present-active-infinitive": False,
+    "exclude-verb-future-active-infinitive": False,
+    "exclude-verb-perfect-active-infinitive": False,
+    "exclude-verb-present-passive-infinitive": False,
+    "exclude-verb-future-passive-infinitive": False,
+    "exclude-verb-perfect-passive-infinitive": False,
     "exclude-verb-present-active-imperative": False,
+    "exclude-verb-future-active-imperative": False,
+    "exclude-verb-present-passive-imperative": False,
+    "exclude-verb-future-passive-imperative": False,
+    "exclude-verb-present-active-subjunctive": False,
     "exclude-verb-imperfect-active-subjunctive": False,
+    "exclude-verb-perfect-active-subjunctive": False,
     "exclude-verb-pluperfect-active-subjunctive": False,
     "exclude-verb-singular": False,
     "exclude-verb-plural": False,
@@ -61,6 +77,8 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-participles": False,
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
+    "exclude-participle-future-active": False,
+    "exclude-gerundives": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,
@@ -72,6 +90,8 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-participle-ablative": False,
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
+    "exclude-gerunds": False,
+    "exclude-supines": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,
@@ -111,6 +131,7 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-pronoun-plural": False,
     "exclude-nouns": False,
     "exclude-verbs": False,
+    "exclude-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,
@@ -128,6 +149,8 @@ DEFAULT_SETTINGS: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
+    "english-verbal-nouns": True,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
     "include-parse": False,
@@ -173,7 +196,7 @@ if __name__ == "__main__":
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:
-        DEFAULT_SETTINGS[setting] = True  # type: ignore[literal-required]
+        DEFAULT_SETTINGS[setting] = True
 
         data_generator: Generator[str] = _generate_questions_wrap(
             vocab_list=vocab,
@@ -190,4 +213,4 @@ if __name__ == "__main__":
             for data_str in data_generator:
                 output_file.write(data_str + "\n")
 
-        DEFAULT_SETTINGS[setting] = False  # type: ignore[literal-required]
+        DEFAULT_SETTINGS[setting] = False

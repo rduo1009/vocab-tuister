@@ -1,6 +1,7 @@
 [?25l[?2004h]2;Create Session Config[1;4;4mVerb[0m[4m [0m[1;4;4mexclusions[0m[K
 [38;2;225;123;52m[ ] All of them[0m[K
-[1m[x] First conjugation verbs[0m[K
+[1m[x] Deponent verbs[0m[K
+[ ] First conjugation verbs[K
 [ ] Second conjugation verbs[K
 [ ] Third conjugation verbs[K
 [ ] Fourth conjugation verbs[K
@@ -8,19 +9,118 @@
 [ ] Irregular verbs[K
 [ ] Present active indicative[K
 [ ] Imperfect active indicative[K
+[ ] Future active indicative[K
 [ ] Perfect active indicative[K
 [ ] Pluperfect active indicative[K
-[ ] Present active infinitive[K
-[ ] Present active imperative[K
-[ ] Imperative active subjunctive[K
+[ ] Future perfect active indicative[K
+[ ] Present passive indicative[K
+[ ] Imperfect passive indicative[K
+[ ] Future passive indicative[K
+[ ] Perfect passive indicative[K
+[ ] Pluperfect passive indicative[K
+[ ] Future perfect passive indicative[K
+[ ] Present active subjunctive[K
+[ ] Imperfect active subjunctive[K
+[ ] Perfect active subjunctive[K
 [ ] Pluperfect active subjunctive[K
+[ ] Present active imperative[K
+[ ] Future active imperative[K
+[ ] Present passive imperative[K
+[ ] Future passive imperative[K
+[ ] Present active infinitive[K
+[ ] Future active infinitive[K
+[ ] Perfect active infinitive[K
+[ ] Present passive infinitive[K
+[ ] Future passive infinitive[K
+[ ] Perfect passive infinitive[K
 [ ] Singular number[K
 [ ] Plural number[K
 [ ] 1st person[K
 [ ] 2nd person[K
 [ ] 3rd person[K
-[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[21A
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[40A
 [ ] All of them[K
+[1;38;2;225;123;52m[x] Deponent verbs[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[40A
+
+[1m[x] Deponent verbs[0m[K
+[38;2;225;123;52m[ ] First conjugation verbs[0m[K
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[300D[40A
+
+
 [1;38;2;225;123;52m[x] First conjugation verbs[0m[K
 
 
@@ -40,10 +140,6 @@
 
 
 
-[300D[21A
-
-[1m[x] First conjugation verbs[0m[K
-[38;2;225;123;52m[ ] Second conjugation verbs[0m[K
 
 
 
@@ -61,31 +157,12 @@
 
 
 
-[300D[21A
 
-
-[1;38;2;225;123;52m[x] Second conjugation verbs[0m[K
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[300D[21A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[K
+[300D[40A[1;4;4mParticiple[0m[4m [0m[1;4;4mexclusions[0m[K
 [38;2;225;123;52m[ ] All of them[0m[K
 [ ] Present active[K
 [ ] Perfect passive[K
+[ ] Future active[K
 [ ] Masculine gender[K
 [ ] Feminine gender[K
 [ ] Neuter gender[K
@@ -97,7 +174,7 @@
 [ ] Ablative case[K
 [ ] Singular number[K
 [ ] Plural number[K
-[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[15A
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[16A
 [ ] All of them[K
 [38;2;225;123;52m[ ] Present active[0m[K
 
@@ -112,7 +189,8 @@
 
 
 
-[300D[15A
+
+[300D[16A
 
 [ ] Present active[K
 [38;2;225;123;52m[ ] Perfect passive[0m[K
@@ -127,7 +205,8 @@
 
 
 
-[300D[15A
+
+[300D[16A
 
 
 [1;38;2;225;123;52m[x] Perfect passive[0m[K
@@ -142,7 +221,24 @@
 
 
 
-[300D[15A[1;4;4mNoun[0m[4m [0m[1;4;4mexclusions[0m[K
+
+[300D[16A[1;4;4mOther[0m[4m [0m[1;4;4mverb[0m[4m [0m[1;4;4mexclusions[0m[K
+[38;2;225;123;52m[ ] Gerundives[0m[K
+[ ] Gerunds[K
+[ ] Supines[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[4A
+[ ] Gerundives[K
+[38;2;225;123;52m[ ] Gerunds[0m[K
+
+[300D[4A
+
+[ ] Gerunds[K
+[38;2;225;123;52m[ ] Supines[0m[K
+[300D[4A
+
+
+[1;38;2;225;123;52m[x] Supines[0m[K
+[300D[4A[1;4;4mNoun[0m[4m [0m[1;4;4mexclusions[0m[K
 [38;2;225;123;52m[ ] All of them[0m[K
 [ ] First declension nouns[K
 [ ] Second declension nouns[K
@@ -354,7 +450,16 @@
 [38;2;225;123;52m[ ] All of them[0m[K
 [38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[J[300D[2A
 [1;38;2;225;123;52m[x] All of them[0m[K
-[300D[2A[1;4;4mQuestion[0m[4m [0m[1;4;4mtypes[0m[K
+[300D[2A[1;4;4mMiscellaneous[0m[4m [0m[1;4;4msettings[0m[K
+[38;2;225;123;52m[ ] English translations of subjunctive verbs[0m[K
+[ ] English translations of verbal nouns (gerunds/supines)[K
+[38;2;97;97;97m↑[0m [38;2;73;73;73mmove up[0m[38;2;60;60;60m • [0m[38;2;97;97;97m↓[0m [38;2;73;73;73mmove down[0m[38;2;60;60;60m • [0m[38;2;97;97;97m←[0m [38;2;73;73;73mprevious page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m→[0m [38;2;73;73;73mnext page[0m[38;2;60;60;60m • [0m[38;2;97;97;97m⎵[0m [38;2;73;73;73mcheck or uncheck option[0m[38;2;60;60;60m • [0m[38;2;97;97;97mctrl+q[0m [38;2;73;73;73mquit[0m[K[300D[3A
+[ ] English translations of subjunctive verbs[K
+[38;2;225;123;52m[ ] English translations of verbal nouns (gerunds/supines)[0m[K
+[300D[3A
+
+[1;38;2;225;123;52m[x] English translations of verbal nouns (gerunds/supines)[0m[K
+[300D[3A[1;4;4mQuestion[0m[4m [0m[1;4;4mtypes[0m[K
 [1;38;2;225;123;52m[x] Type-in English to Latin questions[0m[K
 [1m[x] Type-in Latin to English questions[0m[K
 [1m[x] Parsing questions[0m[K

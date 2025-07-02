@@ -1,5 +1,7 @@
 """Contains miscellaneous functions, classes and constants used by ``accido``."""
 
+# pyright: reportUninitializedInstanceVariable=false, reportAny=false
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -79,6 +81,8 @@ class Voice(
 
     ACTIVE = "active", "act"
     PASSIVE = "passive", "pas"
+    DEPONENT = "deponent", "dep"
+    SEMI_DEPONENT = "semi-deponent", "sdp"
 
 
 class Mood(
@@ -87,10 +91,12 @@ class Mood(
     """Represents the mood of a verb."""
 
     INDICATIVE = "indicative", "ind"
-    INFINITIVE = "infinitive", "inf"
-    IMPERATIVE = "imperative", "ipe"
     SUBJUNCTIVE = "subjunctive", "sbj"
+    IMPERATIVE = "imperative", "ipe"
+    INFINITIVE = "infinitive", "inf"
     PARTICIPLE = "participle", "ptc"
+    GERUND = "gerund", "ger"
+    SUPINE = "supine", "sup"
 
 
 class Case(
@@ -150,6 +156,7 @@ class ComponentsSubtype(StrEnum):
 
     INFINITIVE = auto()
     PARTICIPLE = auto()
+    VERBAL_NOUN = auto()
     ADVERB = auto()
     PRONOUN = auto()
 
@@ -259,6 +266,8 @@ class EndingComponents:
     @overload
     def __init__(self, *, tense: Tense, voice: Voice, mood: Mood, string: str = "") -> None: ...
     @overload
+    def __init__(self, *, mood: Mood, case: Case, string: str = "") -> None: ...
+    @overload
     def __init__(self, *, string: str = "") -> None: ...  
     # fmt: on
 
@@ -302,23 +311,25 @@ class EndingComponents:
             Defaults to "".
         """
         if case:
-            self.case = case
+            self.case: Case = case
         if number:
-            self.number = number
+            self.number: Number = number
         if gender:
-            self.gender = gender
+            self.gender: Gender = gender
         if tense:
-            self.tense = tense
+            self.tense: Tense = tense
         if voice:
-            self.voice = voice
+            self.voice: Voice = voice
         if mood:
-            self.mood = mood
+            self.mood: Mood = mood
         if degree:
-            self.degree = degree
+            self.degree: Degree = degree
         if person:
-            self.person = person
-        self.string = string
+            self.person: Person = person
+        self.string: str = string
 
+        self.type: ComponentsType
+        self.subtype: ComponentsSubtype | None
         self.type, self.subtype = self._determine_type()
 
     def _get_non_null_attributes(self) -> list[str]:
@@ -348,6 +359,9 @@ class EndingComponents:
             "case",
         }:
             return (ComponentsType.VERB, ComponentsSubtype.PARTICIPLE)
+
+        if set(attributes) == {"mood", "case"}:
+            return (ComponentsType.VERB, ComponentsSubtype.VERBAL_NOUN)
 
         if set(attributes) == {"degree"}:
             return (ComponentsType.ADJECTIVE, ComponentsSubtype.ADVERB)
@@ -383,6 +397,7 @@ class EndingComponents:
             None: 3,
             ComponentsSubtype.INFINITIVE: 2,
             ComponentsSubtype.PARTICIPLE: 1,
+            ComponentsSubtype.VERBAL_NOUN: 0,
         })[subtype]
 
     def __lt__(self, other: object) -> bool:
@@ -397,7 +412,7 @@ class EndingComponents:
                 # must be None, because self.subtype != other.subtype
                 return self.subtype is not None
 
-            # normal verb > infinitive > participle
+            # normal verb > infinitive > participle > verbal noun
             if (self.type, other.type) == (ComponentsType.VERB,) * 2:
                 return self.subtype != max(
                     self.subtype, other.subtype, key=self._int_verb_subtypes
@@ -426,6 +441,9 @@ class EndingComponents:
             if self_value != other_value:
                 assert self_value is not None
                 assert other_value is not None
+
+                if attr == "person":
+                    return self_value > other_value
 
                 enum_class = self_value.__class__
                 enum_members = list(enum_class)

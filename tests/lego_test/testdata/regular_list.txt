@@ -1,6 +1,8 @@
 @ Verb
 hear: audio, audire, audivi, auditus
-take: capio, capere, cepi
+take: capio, capere, cepi, captus
+master: potior, potiri, potitus sum
+complain: queror, queri, questus sum
 say: inquam
 
 @ Noun

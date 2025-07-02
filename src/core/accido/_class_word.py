@@ -1,10 +1,13 @@
 """Representation of a Latin word."""
 
+# pyright: reportImplicitOverride=false, reportExplicitAny=false, reportAny=false
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from functools import total_ordering
 from typing import TYPE_CHECKING, Any
+from warnings import deprecated
 
 from .misc import MultipleEndings
 
@@ -30,7 +33,7 @@ class _Word(ABC):  # noqa: PLW1641
         The meaning of the word.
     """
 
-    __slots__ = ("_first", "endings", "meaning")
+    __slots__: tuple[str, ...] = ("_first", "endings", "meaning")
 
     endings: Endings
     _first: str
@@ -64,7 +67,7 @@ class _Word(ABC):  # noqa: PLW1641
             components that match `form`.
         """
         return [
-            self.create_components(key)
+            self.create_components_instance(key)
             for key, value in self.endings.items()
             if (isinstance(value, MultipleEndings) and form in value.get_all())
             or (not isinstance(value, MultipleEndings) and value == form)
@@ -77,6 +80,12 @@ class _Word(ABC):  # noqa: PLW1641
     ) -> Ending | None:  # sourcery skip: docstrings-for-functions
         ...
 
+    @abstractmethod
+    def create_components_instance(self, key: str) -> EndingComponents: ...
+
+    @deprecated(
+        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
+    )
     @staticmethod
     @abstractmethod
     def create_components(key: str) -> EndingComponents: ...

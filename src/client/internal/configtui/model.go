@@ -43,6 +43,7 @@ var wizard = SettingsWizard{
 		{
 			Title: "Verb exclusions", Settings: []Setting{
 				{InternalName: "exclude-verbs", DisplayName: "All of them", Checked: false},
+				{InternalName: "exclude-deponents", DisplayName: "Deponent verbs", Checked: false},
 				{InternalName: "exclude-verb-first-conjugation", DisplayName: "First conjugation verbs", Checked: false},
 				{InternalName: "exclude-verb-second-conjugation", DisplayName: "Second conjugation verbs", Checked: false},
 				{InternalName: "exclude-verb-third-conjugation", DisplayName: "Third conjugation verbs", Checked: false},
@@ -51,12 +52,30 @@ var wizard = SettingsWizard{
 				{InternalName: "exclude-verb-irregular-conjugation", DisplayName: "Irregular verbs", Checked: false},
 				{InternalName: "exclude-verb-present-active-indicative", DisplayName: "Present active indicative", Checked: false},
 				{InternalName: "exclude-verb-imperfect-active-indicative", DisplayName: "Imperfect active indicative", Checked: false},
+				{InternalName: "exclude-verb-future-active-indicative", DisplayName: "Future active indicative", Checked: false},
 				{InternalName: "exclude-verb-perfect-active-indicative", DisplayName: "Perfect active indicative", Checked: false},
 				{InternalName: "exclude-verb-pluperfect-active-indicative", DisplayName: "Pluperfect active indicative", Checked: false},
-				{InternalName: "exclude-verb-present-active-infinitive", DisplayName: "Present active infinitive", Checked: false},
-				{InternalName: "exclude-verb-present-active-imperative", DisplayName: "Present active imperative", Checked: false},
-				{InternalName: "exclude-verb-imperfect-active-subjunctive", DisplayName: "Imperative active subjunctive", Checked: false},
+				{InternalName: "exclude-verb-future-perfect-active-indicative", DisplayName: "Future perfect active indicative", Checked: false},
+				{InternalName: "exclude-verb-present-passive-indicative", DisplayName: "Present passive indicative", Checked: false},
+				{InternalName: "exclude-verb-imperfect-passive-indicative", DisplayName: "Imperfect passive indicative", Checked: false},
+				{InternalName: "exclude-verb-future-passive-indicative", DisplayName: "Future passive indicative", Checked: false},
+				{InternalName: "exclude-verb-perfect-passive-indicative", DisplayName: "Perfect passive indicative", Checked: false},
+				{InternalName: "exclude-verb-pluperfect-passive-indicative", DisplayName: "Pluperfect passive indicative", Checked: false},
+				{InternalName: "exclude-verb-future-perfect-passive-indicative", DisplayName: "Future perfect passive indicative", Checked: false},
+				{InternalName: "exclude-verb-present-active-subjunctive", DisplayName: "Present active subjunctive", Checked: false},
+				{InternalName: "exclude-verb-imperfect-active-subjunctive", DisplayName: "Imperfect active subjunctive", Checked: false},
+				{InternalName: "exclude-verb-perfect-active-subjunctive", DisplayName: "Perfect active subjunctive", Checked: false},
 				{InternalName: "exclude-verb-pluperfect-active-subjunctive", DisplayName: "Pluperfect active subjunctive", Checked: false},
+				{InternalName: "exclude-verb-present-active-imperative", DisplayName: "Present active imperative", Checked: false},
+				{InternalName: "exclude-verb-future-active-imperative", DisplayName: "Future active imperative", Checked: false},
+				{InternalName: "exclude-verb-present-passive-imperative", DisplayName: "Present passive imperative", Checked: false},
+				{InternalName: "exclude-verb-future-passive-imperative", DisplayName: "Future passive imperative", Checked: false},
+				{InternalName: "exclude-verb-present-active-infinitive", DisplayName: "Present active infinitive", Checked: false},
+				{InternalName: "exclude-verb-future-active-infinitive", DisplayName: "Future active infinitive", Checked: false},
+				{InternalName: "exclude-verb-perfect-active-infinitive", DisplayName: "Perfect active infinitive", Checked: false},
+				{InternalName: "exclude-verb-present-passive-infinitive", DisplayName: "Present passive infinitive", Checked: false},
+				{InternalName: "exclude-verb-future-passive-infinitive", DisplayName: "Future passive infinitive", Checked: false},
+				{InternalName: "exclude-verb-perfect-passive-infinitive", DisplayName: "Perfect passive infinitive", Checked: false},
 				{InternalName: "exclude-verb-singular", DisplayName: "Singular number", Checked: false},
 				{InternalName: "exclude-verb-plural", DisplayName: "Plural number", Checked: false},
 				{InternalName: "exclude-verb-1st-person", DisplayName: "1st person", Checked: false},
@@ -69,6 +88,7 @@ var wizard = SettingsWizard{
 				{InternalName: "exclude-participles", DisplayName: "All of them", Checked: false},
 				{InternalName: "exclude-participle-present-active", DisplayName: "Present active", Checked: false},
 				{InternalName: "exclude-participle-perfect-passive", DisplayName: "Perfect passive", Checked: false},
+				{InternalName: "exclude-participle-future-active", DisplayName: "Future active", Checked: false},
 				{InternalName: "exclude-participle-masculine", DisplayName: "Masculine gender", Checked: false},
 				{InternalName: "exclude-participle-feminine", DisplayName: "Feminine gender", Checked: false},
 				{InternalName: "exclude-participle-neuter", DisplayName: "Neuter gender", Checked: false},
@@ -80,6 +100,13 @@ var wizard = SettingsWizard{
 				{InternalName: "exclude-participle-ablative", DisplayName: "Ablative case", Checked: false},
 				{InternalName: "exclude-participle-singular", DisplayName: "Singular number", Checked: false},
 				{InternalName: "exclude-participle-plural", DisplayName: "Plural number", Checked: false},
+			},
+		},
+		{
+			Title: "Other verb exclusions", Settings: []Setting{
+				{InternalName: "exclude-gerundives", DisplayName: "Gerundives", Checked: false},
+				{InternalName: "exclude-gerunds", DisplayName: "Gerunds", Checked: false},
+				{InternalName: "exclude-supines", DisplayName: "Supines", Checked: false},
 			},
 		},
 		{
@@ -149,6 +176,12 @@ var wizard = SettingsWizard{
 		{
 			Title: "Regular word exclusions", Settings: []Setting{
 				{InternalName: "exclude-regulars", DisplayName: "All of them", Checked: false},
+			},
+		},
+		{
+			Title: "Miscellaneous settings", Settings: []Setting{
+				{InternalName: "english-subjunctives", DisplayName: "English translations of subjunctive verbs", Checked: false},
+				{InternalName: "english-verbal-nouns", DisplayName: "English translations of verbal nouns (gerunds/supines)", Checked: false},
 			},
 		},
 		{

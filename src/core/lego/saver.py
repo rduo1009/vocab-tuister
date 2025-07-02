@@ -1,5 +1,7 @@
 """Contains a function for saving vocabulary files."""
 
+# pyright: reportUnusedCallResult=false
+
 from __future__ import annotations
 
 import gzip

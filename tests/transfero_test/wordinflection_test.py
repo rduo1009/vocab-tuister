@@ -21,7 +21,7 @@ def test_wordinflection_noun():
 
 
 def test_wordinflection_verb():
-    assert find_inflection("teach", accido.misc.EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were teaching"}
+    assert find_inflection("teach", accido.misc.EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were teaching", "we used to teach", "we began to teach", "we kept teaching"}
 
 
 def test_wordinflection_pronoun():
