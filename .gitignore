@@ -12,6 +12,7 @@ __pycache__/
 .testmondata
 cosmic-ray.sqlite
 monkeytype.sqlite3
+.poetry-cache/
 
 # Test generated files
 /src/scripts/json_output/
