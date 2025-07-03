@@ -41,11 +41,6 @@ repos:
       - id: pyproject-fmt
         args: [--keep-full-version]
 
-  - repo: https://github.com/tox-dev/tox-ini-fmt
-    rev: "1.5.0"
-    hooks:
-      - id: tox-ini-fmt
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
