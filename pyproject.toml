@@ -101,58 +101,67 @@ exclude_also = [
 ]
 
 [tool.tox]
-requires = ["tox>=4.2"]
-env_list = ["py313", "doctest", "type"]
+requires = [ "tox>=4.2" ]
+env_list = [ "py313", "doctest", "type" ]
 skip_missing_interpreters = true
 
 [tool.tox.env_run_base]
 description = "run tests using pytest"
 deps = [
-    "icecream",
-    "pytest",
-    "pytest-xdist", 
-    "requests",
-    "syrupy",
+  "icecream",
+  "pytest",
+  "pytest-xdist",
+  "requests",
+  "syrupy",
 ]
 commands = [
-    ["pytest", "-m", "not manual and not integration"],
+  [ "pytest", "-m", "not manual and not integration" ],
 ]
 
 [tool.tox.env.doctest]
 description = "run doctests"
 deps = [
-    "icecream",
-    "pytest",
-    "pytest-xdist",
-    "requests", 
-    "syrupy",
+  "icecream",
+  "pytest",
+  "pytest-xdist",
+  "requests",
+  "syrupy",
 ]
 commands = [
-    ["pytest", "--doctest-ignore-import-errors", "--doctest-modules", "--doctest-glob=*.rst", "-m", "not manual and not integration", "src/", "docs/"],
+  [
+    "pytest",
+    "--doctest-ignore-import-errors",
+    "--doctest-modules",
+    "--doctest-glob=*.rst",
+    "-m",
+    "not manual and not integration",
+    "src/",
+    "docs/",
+  ],
 ]
 
 [tool.tox.env.type]
 description = "run type checks and check stubs"
 deps = [
-    "basedpyright",
-    "icecream",
-    "mypy",
-    "optype",
-    "pytest",
-    "requests",
+  "basedpyright",
+  "icecream",
+  "mypy",
+  "optype",
+  "pytest",
+  "requests",
 ]
 set_env = { MYPYPATH = "stubs" }
 commands = [
-    ["basedpyright"],
-    ["stubtest", "dill", "--allowlist", "stubs/dill/allowlist", "--ignore-unused-allowlist"],
-    ["stubtest", "lemminflect", "--allowlist", "stubs/lemminflect/allowlist", "--ignore-unused-allowlist"],
-    ["stubtest", "nltk", "--allowlist", "stubs/nltk/allowlist", "--ignore-unused-allowlist"],
-    ["stubtest", "colors", "--allowlist", "stubs/colors/allowlist", "--ignore-unused-allowlist"],
-    ["stubtest", "aenum", "--allowlist", "stubs/aenum/allowlist", "--ignore-unused-allowlist"],
+  [ "basedpyright" ],
+  [ "stubtest", "dill", "--allowlist", "stubs/dill/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "lemminflect", "--allowlist", "stubs/lemminflect/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "nltk", "--allowlist", "stubs/nltk/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "colors", "--allowlist", "stubs/colors/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "aenum", "--allowlist", "stubs/aenum/allowlist", "--ignore-unused-allowlist" ],
 ]
 
 [tool.tox.gh]
-python = { "3.13" = ["py313", "type", "doctest"] }
+python = { "3.13" = [ "py313", "type", "doctest" ] }
 
 [tool.mypy]
 mypy_path = "stubs"
