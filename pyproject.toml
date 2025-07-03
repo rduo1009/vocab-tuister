@@ -64,104 +64,41 @@ optype = "0.10.0"
 [tool.poetry-dynamic-versioning]
 enable = true
 
-[tool.basedpyright]
-include = ["src", "tests", "stubs"]
-exclude = ["src/_build", "src/_vendor", "tests/conftest.py"]
-stubPath = "stubs"
-
-reportImportCycles = "information"
-reportPossiblyUnboundVariable = "warning"
-
-reportImplicitStringConcatenation = false
-reportImplicitOverride = false
-reportUnusedImport = false
-reportPrivateUsage = false
-reportPrivateImportUsage = false
-reportPrivateLocalImportUsage = false
-
-[[tool.basedpyright.executionEnvironments]]
-root = "./src/server"
-extraPaths = ["./src"]
-reportAny = false
-reportExplicitAny = false
-
-[[tool.basedpyright.executionEnvironments]]
-root = "./src/scripts"
-extraPaths = ["./src"]
-reportAny = false
-reportExplicitAny = false
-reportUnusedCallResult = false
-
-[[tool.basedpyright.executionEnvironments]]
-root = "./tests"
-extraPaths = ["./src"]
-reportUnknownParameterType = false
-reportUnknownArgumentType = false
-reportUnknownMemberType = false
-reportUnknownVariableType = false
-reportUnknownLambdaType = false
-reportMissingParameterType = false
-reportUndefinedVariable = false
-reportUnusedCallResult = false
-reportUnusedExpression = false
-
-[[tool.basedpyright.executionEnvironments]]
-root = "./stubs"
-extraPaths = ["./src"]
-reportUnannotatedClassAttribute = false
-
 [tool.pytest.ini_options]
 addopts = [
-    "--strict-markers",
-    "--ignore=src/_vendor",
-    "--ignore=src/_build",
-    "-n4",
+  "--strict-markers",
+  "--ignore=src/_vendor",
+  "--ignore=src/_build",
+  "-n4",
 ]
 markers = [
-    "manual: manually checked tests",
-    "integration: integration tests",
+  "manual: manually checked tests",
+  "integration: integration tests",
 ]
 env = [
-    "VOCAB_TUISTER_RANDOM_SEED=10",
+  "VOCAB_TUISTER_RANDOM_SEED=10",
 ]
 
 [tool.coverage.run]
 branch = true
 parallel = true
 omit = [
-    "tests/*",
-    "src/_vendor/*",
-    "src/scripts/*",
+  "tests/*",
+  "src/_vendor/*",
+  "src/scripts/*",
 ]
 
 [tool.coverage.report]
 exclude_also = [
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "return NotImplemented",
-    "if __name__ == .__main__.:",
-    "@(abc\\.)?abstractmethod",
-    "@overload",
-    "if TYPE_CHECKING:",
-    "if _seed is not None",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "return NotImplemented",
+  "if __name__ == .__main__.:",
+  "@(abc\\.)?abstractmethod",
+  "@overload",
+  "if TYPE_CHECKING:",
+  "if _seed is not None",
 ]
-
-[tool.interrogate]
-ignore-init-method = false
-ignore-magic = true
-ignore-semiprivate = true
-ignore-private = true
-ignore-nested-functions = true
-ignore-nested-classes = true
-ignore-overloaded-functions = true
-exclude = ["setup.py", "docs", "build", "src/_vendor"]
-
-[tool.mypy]
-mypy_path = "stubs"
-python_version = "3.13"
-warn_return_any = true
-warn_unused_configs = true
-check_untyped_defs = true
 
 [tool.tox]
 legacy_tox_ini = """
@@ -223,3 +160,66 @@ commands =
 python =
     3.13 = py313, type, doctest
 """
+
+[tool.mypy]
+mypy_path = "stubs"
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+
+[tool.basedpyright]
+include = [ "src", "tests", "stubs" ]
+exclude = [ "src/_build", "src/_vendor", "tests/conftest.py" ]
+stubPath = "stubs"
+
+reportImportCycles = "information"
+reportPossiblyUnboundVariable = "warning"
+
+reportImplicitStringConcatenation = false
+reportImplicitOverride = false
+reportUnusedImport = false
+reportPrivateUsage = false
+reportPrivateImportUsage = false
+reportPrivateLocalImportUsage = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./src/server"
+extraPaths = [ "./src" ]
+reportAny = false
+reportExplicitAny = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./src/scripts"
+extraPaths = [ "./src" ]
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./tests"
+extraPaths = [ "./src" ]
+reportUnknownParameterType = false
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownLambdaType = false
+reportMissingParameterType = false
+reportUndefinedVariable = false
+reportUnusedCallResult = false
+reportUnusedExpression = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./stubs"
+extraPaths = [ "./src" ]
+reportUnannotatedClassAttribute = false
+
+[tool.interrogate]
+ignore-init-method = false
+ignore-magic = true
+ignore-semiprivate = true
+ignore-private = true
+ignore-nested-functions = true
+ignore-nested-classes = true
+ignore-overloaded-functions = true
+exclude = [ "setup.py", "docs", "build", "src/_vendor" ]
