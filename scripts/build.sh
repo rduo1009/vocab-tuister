@@ -24,15 +24,15 @@ fi
 poetry run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- --debug
+        poetry run pyinstaller vocab-tuister-server.spec -- -- --debug
     else
         poetry run pyinstaller vocab-tuister-server.spec
     fi
 else
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- --debug --target-arch "$target_arch"
+        poetry run pyinstaller vocab-tuister-server.spec -- -- --debug --target-arch "$target_arch"
     else
-        poetry run pyinstaller vocab-tuister-server.spec -- --target-arch "$target_arch"
+        poetry run pyinstaller vocab-tuister-server.spec -- -- --target-arch "$target_arch"
     fi
 fi
 
