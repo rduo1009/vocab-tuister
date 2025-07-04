@@ -20,7 +20,7 @@ jobs:
             ubuntu-22.04-arm,
             macos-13,
             macos-14,
-            windows-2019,
+            windows-2022,
             windows-11-arm,
           ]
       fail-fast: false
@@ -75,7 +75,7 @@ jobs:
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Setup project
-        if: ${{ matrix.os == 'windows-2019' }}
+        if: ${{ matrix.os == 'windows-2022' }}
         run: |
           poetry config virtualenvs.in-project true
           poetry env use "C:\hostedtoolcache\windows\Python\3.13.1\x64\python.exe"
