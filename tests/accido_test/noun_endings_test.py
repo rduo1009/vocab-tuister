@@ -1,10 +1,12 @@
+# pyright: reportAny=false
+
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
-from src.core.accido.edge_cases import IRREGULAR_NOUNS
+from src.core.accido.edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from src.core.accido.endings import Noun
 from src.core.accido.misc import Case, Gender, Number
 
@@ -154,8 +156,12 @@ class TestNounDeclension:
         assert noun_fifthdeclension.get(case=case, number=number) == expected
 
     @pytest.mark.parametrize(("word"), IRREGULAR_NOUNS.keys())
-    def test_irregularverb(self, word):
+    def test_irregularnoun(self, word):
         assert Noun(word, meaning="placeholder").endings == IRREGULAR_NOUNS[word]
+
+    @pytest.mark.parametrize(("nominative", "genitive"), ((key, (val["Ngensg"] if isinstance(val["Ngensg"], str) else val["Ngensg"].regular)) for key, val in IRREGULAR_DECLINED_NOUNS.items()))  # fmt: skip
+    def test_irregularnoun_regularconjugation(self, nominative, genitive):
+        assert Noun(nominative, genitive, gender=Gender.MASCULINE, meaning="placeholder").endings == IRREGULAR_DECLINED_NOUNS[nominative]
 
 
 class TestNounNeuter:

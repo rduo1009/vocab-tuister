@@ -1,3 +1,5 @@
+# pyright: reportTypedDictNotRequiredAccess=false, reportArgumentType=false, reportAttributeAccessIssue=false
+
 from __future__ import annotations
 
 import os
@@ -25,9 +27,25 @@ default_settings: Settings = {
     "exclude-verb-pluperfect-active-indicative": False,
     "exclude-verb-future-perfect-active-indicative": False,
     "exclude-verb-present-active-infinitive": False,
+    "exclude-verb-future-active-infinitive": False,
+    "exclude-verb-perfect-active-infinitive": False,
+    "exclude-verb-present-passive-infinitive": False,
+    "exclude-verb-future-passive-infinitive": False,
+    "exclude-verb-perfect-passive-infinitive": False,
     "exclude-verb-present-active-imperative": False,
+    "exclude-verb-future-active-imperative": False,
+    "exclude-verb-present-passive-imperative": False,
+    "exclude-verb-future-passive-imperative": False,
+    "exclude-verb-present-active-subjunctive": False,
     "exclude-verb-imperfect-active-subjunctive": False,
+    "exclude-verb-perfect-active-subjunctive": False,
     "exclude-verb-pluperfect-active-subjunctive": False,
+    "exclude-verb-present-passive-indicative": False,
+    "exclude-verb-imperfect-passive-indicative": False,
+    "exclude-verb-future-passive-indicative": False,
+    "exclude-verb-perfect-passive-indicative": False,
+    "exclude-verb-pluperfect-passive-indicative": False,
+    "exclude-verb-future-perfect-passive-indicative": False,
     "exclude-verb-singular": False,
     "exclude-verb-plural": False,
     "exclude-verb-1st-person": False,
@@ -36,6 +54,8 @@ default_settings: Settings = {
     "exclude-participles": False,
     "exclude-participle-present-active": False,
     "exclude-participle-perfect-passive": False,
+    "exclude-participle-future-active": False,
+    "exclude-gerundives": False,
     "exclude-participle-masculine": False,
     "exclude-participle-feminine": False,
     "exclude-participle-neuter": False,
@@ -47,6 +67,8 @@ default_settings: Settings = {
     "exclude-participle-ablative": False,
     "exclude-participle-singular": False,
     "exclude-participle-plural": False,
+    "exclude-gerunds": False,
+    "exclude-supines": False,
     "exclude-noun-nominative": False,
     "exclude-noun-vocative": False,
     "exclude-noun-accusative": False,
@@ -86,6 +108,7 @@ default_settings: Settings = {
     "exclude-pronoun-plural": False,
     "exclude-nouns": False,
     "exclude-verbs": False,
+    "exclude-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,
@@ -103,6 +126,8 @@ default_settings: Settings = {
     "exclude-noun-irregular-declension": False,
     "exclude-adjective-212-declension": False,
     "exclude-adjective-third-declension": False,
+    "english-subjunctives": True,
+    "english-verbal-nouns": True,
     "include-typein-engtolat": False,
     "include-typein-lattoeng": False,
     "include-parse": False,
@@ -116,21 +141,24 @@ default_settings: Settings = {
 
 def test_word_exclusion_adjective():
     words: list[Adjective] = [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"), Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
-    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
-
+    vocab_list = VocabList(words, "")
     settings = default_settings.copy()
 
-    settings["exclude-adjective-212-declension"] = True  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-adjective-212-declension"] = True
+    settings["exclude-adjective-212-declension"] = True
     assert filter_words(vocab_list, settings) == [Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
-    settings["exclude-adjective-212-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-adjective-212-declension"] = False
+    settings["exclude-adjective-212-declension"] = False
 
-    settings["exclude-adjective-third-declension"] = True  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-adjective-third-declension"] = True
+    settings["exclude-adjective-third-declension"] = True
     assert filter_words(vocab_list, settings) == [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")]
-    settings["exclude-adjective-third-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-adjective-third-declension"] = False
+    settings["exclude-adjective-third-declension"] = False
 
 
 def test_word_exclusion_noun():
-    words: Sequence[Noun] = [
+    words: list[Noun] = [
         Noun("ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl"),
         Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave"),
         Noun("carcer", "carceris", gender=Gender.MASCULINE, meaning="prison"),
@@ -138,68 +166,103 @@ def test_word_exclusion_noun():
         Noun("res", "rei", gender=Gender.FEMININE, meaning="thing"),
         Noun("ego", meaning="I"),
     ]
-    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
+    vocab_list = VocabList(words, "")
+    vocab_list = VocabList(words, "")
 
     settings = default_settings.copy()
 
-    settings["exclude-noun-first-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 1 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-first-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-first-declension"] = True
+    assert any(word.declension != 1 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-first-declension"] = False
+    settings["exclude-noun-first-declension"] = True
+    assert any(word.declension != 1 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-first-declension"] = False
 
-    settings["exclude-noun-second-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 2 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-second-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-second-declension"] = True
+    assert any(word.declension != 2 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-second-declension"] = False
+    settings["exclude-noun-second-declension"] = True
+    assert any(word.declension != 2 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-second-declension"] = False
 
-    settings["exclude-noun-third-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 3 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-third-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-third-declension"] = True
+    assert any(word.declension != 3 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-third-declension"] = False
+    settings["exclude-noun-third-declension"] = True
+    assert any(word.declension != 3 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-third-declension"] = False
 
-    settings["exclude-noun-fourth-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 4 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-fourth-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-fourth-declension"] = True
+    assert any(word.declension != 4 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-fourth-declension"] = False
+    settings["exclude-noun-fourth-declension"] = True
+    assert any(word.declension != 4 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-fourth-declension"] = False
 
-    settings["exclude-noun-fifth-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 5 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-fifth-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-fifth-declension"] = True
+    assert any(word.declension != 5 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-fifth-declension"] = False
+    settings["exclude-noun-fifth-declension"] = True
+    assert any(word.declension != 5 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-fifth-declension"] = False
 
-    settings["exclude-noun-irregular-declension"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.declension != 0 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-noun-irregular-declension"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-noun-irregular-declension"] = True
+    assert any(word.declension != 0 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-irregular-declension"] = False
+    settings["exclude-noun-irregular-declension"] = True
+    assert any(word.declension != 0 for word in filter_words(vocab_list, settings))
+    settings["exclude-noun-irregular-declension"] = False
 
 
 def test_word_exclusion_verb():
     words: Sequence[Verb] = [
         Verb("celo", "celare", "celavi", "celatus", meaning="hide"),
-        Verb("pareo", "parere", "parui", meaning="hide"),
+        Verb("pareo", "parere", "parui", "paritum", meaning="hide"),
         Verb("desero", "deserere", "deserui", "desertus", meaning="desert"),
         Verb("patefacio", "patefacere", "patefeci", "patefactus", meaning="reveal"),
         Verb("aperio", "aperire", "aperui", "apertus", meaning="open"),
         Verb("abeo", "abire", "abii", "abitum", meaning="depart"),
     ]
-    vocab_list = VocabList(words, "")  # type: ignore[arg-type]
+    vocab_list = VocabList(words, "")
+    vocab_list = VocabList(words, "")
 
     settings = default_settings.copy()
 
-    settings["exclude-verb-first-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-first-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-first-conjugation"] = True
+    assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-first-conjugation"] = False
+    settings["exclude-verb-first-conjugation"] = True
+    assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-first-conjugation"] = False
 
-    settings["exclude-verb-second-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 2 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-second-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-second-conjugation"] = True
+    assert any(word.conjugation != 2 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-second-conjugation"] = False
+    settings["exclude-verb-second-conjugation"] = True
+    assert any(word.conjugation != 2 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-second-conjugation"] = False
 
-    settings["exclude-verb-third-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 3 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-third-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-third-conjugation"] = True
+    assert any(word.conjugation != 3 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-third-conjugation"] = False
+    settings["exclude-verb-third-conjugation"] = True
+    assert any(word.conjugation != 3 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-third-conjugation"] = False
 
-    settings["exclude-verb-fourth-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-fourth-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-fourth-conjugation"] = True
+    assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-fourth-conjugation"] = False
+    settings["exclude-verb-fourth-conjugation"] = True
+    assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-fourth-conjugation"] = False
 
-    settings["exclude-verb-mixed-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-mixed-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-mixed-conjugation"] = True
+    assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-mixed-conjugation"] = False
+    settings["exclude-verb-mixed-conjugation"] = True
+    assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-mixed-conjugation"] = False
 
-    settings["exclude-verb-irregular-conjugation"] = True  # type: ignore[typeddict-readonly-mutated]
-    assert any(word.conjugation != 0 for word in filter_words(vocab_list, settings))  # type: ignore[attr-defined]
-    settings["exclude-verb-irregular-conjugation"] = False  # type: ignore[typeddict-readonly-mutated]
+    settings["exclude-verb-irregular-conjugation"] = True
+    assert any(word.conjugation != 0 for word in filter_words(vocab_list, settings))
+    settings["exclude-verb-irregular-conjugation"] = False

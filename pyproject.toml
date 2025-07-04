@@ -16,48 +16,212 @@ classifiers = [
 dynamic = [ "version" ]
 
 dependencies = [
-  "aenum==3.1.15",
+  "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==3.9.0",
-  "dill==0.3.9",
-  "dunamai==1.23.0",
-  "flask==3.1.0",
+  "cyclopts==3.19.0",
+  "dill==0.4.0",
+  "dunamai==1.24.1",
+  "flask==3.1.1",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "nltk==3.9.1",
-  "pyinstaller==6.12.0",
+  "pyinstaller==6.14.1",
   "waitress==3.0.2",
 ]
 
 [tool.poetry]
-version = "0.0.0"                         # placeholder
 requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
 exclude = [ "**/*.go", "src/scripts/**" ]
 include = [ "nltk_data/**/*.zip" ]
+version = "0.0.0"                         # placeholder
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.5"
-syrupy = "4.8.1"
+pytest = "8.4.1"
+syrupy = "4.9.1"
 pytest-sugar = "1.0.0"
-pytest-xdist = "3.6.1"
-coverage = "7.6.12"
+pytest-xdist = "3.8.0"
+pytest-pythonhashseed = "1.0.1"
+coverage = "7.9.1"
 pytest-env = "1.1.5"
-icecream = "2.1.4"
-ruff = "0.9.9"
-doc8 = "1.1.2"
+icecream = "2.1.5"
+ruff = "0.12.1"
+doc8 = "2.0.0"
 rstfmt = "0.0.14"
-mypy = { version = "1.15.0", extras = [ "faster-cache" ] }
+mypy = { version = "1.16.1", extras = [ "faster-cache" ] }
+basedpyright = "1.29.1"
 interrogate = "1.7.0"
-griffe = "1.7.2"
+griffe = "1.7.3"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2024.11.6.20250305"
+types-regex = "2024.11.6.20250403"
 types-waitress = "3.0.1.20241117"
-optype = "0.9.1"
+optype = "0.10.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true
+
+[tool.pytest.ini_options]
+addopts = [
+  "--strict-markers",
+  "--ignore=src/_vendor",
+  "--ignore=src/_build",
+  "-n4",
+]
+markers = [
+  "manual: manually checked tests",
+  "integration: integration tests",
+]
+env = [
+  "VOCAB_TUISTER_RANDOM_SEED=10",
+]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "tests/*",
+  "src/_vendor/*",
+  "src/scripts/*",
+]
+
+[tool.coverage.report]
+exclude_also = [
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "return NotImplemented",
+  "if __name__ == .__main__.:",
+  "@(abc\\.)?abstractmethod",
+  "@overload",
+  "if TYPE_CHECKING:",
+  "if _seed is not None",
+]
+
+[tool.tox]
+requires = [ "tox>=4.2" ]
+env_list = [ "py313", "doctest", "type" ]
+skip_missing_interpreters = true
+
+[tool.tox.env_run_base]
+description = "run tests using pytest"
+deps = [
+  "icecream",
+  "pytest",
+  "pytest-xdist",
+  "requests",
+  "syrupy",
+]
+commands = [
+  [ "pytest", "-m", "not manual and not integration" ],
+]
+
+[tool.tox.env.doctest]
+description = "run doctests"
+deps = [
+  "icecream",
+  "pytest",
+  "pytest-xdist",
+  "requests",
+  "syrupy",
+]
+commands = [
+  [
+    "pytest",
+    "--doctest-ignore-import-errors",
+    "--doctest-modules",
+    "--doctest-glob=*.rst",
+    "-m",
+    "not manual and not integration",
+    "src/",
+    "docs/",
+  ],
+]
+
+[tool.tox.env.type]
+description = "run type checks and check stubs"
+deps = [
+  "basedpyright",
+  "icecream",
+  "mypy",
+  "optype",
+  "pytest",
+  "requests",
+]
+set_env = { MYPYPATH = "stubs" }
+commands = [
+  [ "basedpyright" ],
+  [ "stubtest", "dill", "--allowlist", "stubs/dill/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "lemminflect", "--allowlist", "stubs/lemminflect/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "nltk", "--allowlist", "stubs/nltk/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "colors", "--allowlist", "stubs/colors/allowlist", "--ignore-unused-allowlist" ],
+  [ "stubtest", "aenum", "--allowlist", "stubs/aenum/allowlist", "--ignore-unused-allowlist" ],
+]
+
+[tool.tox.gh]
+python = { "3.13" = [ "py313", "type", "doctest" ] }
+
+[tool.mypy]
+mypy_path = "stubs"
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+
+[tool.basedpyright]
+include = [ "src", "tests", "stubs" ]
+exclude = [ "src/_build", "src/_vendor", "tests/conftest.py" ]
+stubPath = "stubs"
+
+reportImportCycles = "information"
+reportPossiblyUnboundVariable = "warning"
+
+reportImplicitStringConcatenation = false
+reportImplicitOverride = false
+reportUnusedImport = false
+reportPrivateUsage = false
+reportPrivateImportUsage = false
+reportPrivateLocalImportUsage = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./src/server"
+extraPaths = [ "./src" ]
+reportAny = false
+reportExplicitAny = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./src/scripts"
+extraPaths = [ "./src" ]
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./tests"
+extraPaths = [ "./src" ]
+reportUnknownParameterType = false
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownLambdaType = false
+reportMissingParameterType = false
+reportUndefinedVariable = false
+reportUnusedCallResult = false
+reportUnusedExpression = false
+
+[[tool.basedpyright.executionEnvironments]]
+root = "./stubs"
+extraPaths = [ "./src" ]
+reportUnannotatedClassAttribute = false
+
+[tool.interrogate]
+ignore-init-method = false
+ignore-magic = true
+ignore-semiprivate = true
+ignore-private = true
+ignore-nested-functions = true
+ignore-nested-classes = true
+ignore-overloaded-functions = true
+exclude = [ "setup.py", "docs", "build", "src/_vendor" ]

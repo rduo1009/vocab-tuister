@@ -7,6 +7,8 @@
   "exclude-pronouns": false,
   "exclude-regulars": false,
 
+  "exclude-deponents": false,
+
   "exclude-verb-first-conjugation": false,
   "exclude-verb-second-conjugation": false,
   "exclude-verb-third-conjugation": false,
@@ -19,10 +21,23 @@
   "exclude-verb-future-active-indicative": false,
   "exclude-verb-perfect-active-indicative": false,
   "exclude-verb-pluperfect-active-indicative": false,
-  "exclude-verb-present-active-infinitive": false,
-  "exclude-verb-present-active-imperative": false,
+  "exclude-verb-future-perfect-active-indicative": false,
+  "exclude-verb-present-passive-indicative": false,
+  "exclude-verb-imperfect-passive-indicative": false,
+  "exclude-verb-future-passive-indicative": false,
+  "exclude-verb-perfect-passive-indicative": false,
+  "exclude-verb-pluperfect-passive-indicative": false,
+  "exclude-verb-future-perfect-passive-indicative": false,
+  "exclude-verb-present-active-subjunctive": false,
   "exclude-verb-imperfect-active-subjunctive": false,
+  "exclude-verb-perfect-active-subjunctive": false,
   "exclude-verb-pluperfect-active-subjunctive": false,
+  "exclude-verb-present-active-imperative": false,
+  "exclude-verb-future-active-imperative": false,
+  "exclude-verb-present-passive-imperative": false,
+  "exclude-verb-future-passive-imperative": false,
+  "exclude-verb-present-active-infinitive": false,
+  "exclude-verb-present-passive-infinitive": false,
 
   "exclude-verb-singular": false,
   "exclude-verb-plural": false,
@@ -33,6 +48,8 @@
 
   "exclude-participle-present-active": false,
   "exclude-participle-perfect-passive": false,
+  "exclude-participle-future-active": false,
+  "exclude-gerundives": false,
   "exclude-participle-masculine": false,
   "exclude-participle-feminine": false,
   "exclude-participle-neuter": false,
@@ -44,6 +61,9 @@
   "exclude-participle-ablative": false,
   "exclude-participle-singular": false,
   "exclude-participle-plural": false,
+
+  "exclude-gerunds": false,
+  "exclude-supines": false,
 
   "exclude-noun-first-declension": false,
   "exclude-noun-second-declension": false,
@@ -79,7 +99,6 @@
   "exclude-adjective-comparative": false,
   "exclude-adjective-superlative": false,
 
-
   "exclude-adverb-positive": false,
   "exclude-adverb-comparative": false,
   "exclude-adverb-superlative": false,
@@ -94,6 +113,9 @@
   "exclude-pronoun-ablative": false,
   "exclude-pronoun-singular": false,
   "exclude-pronoun-plural": false,
+
+  "english-subjunctives": false,
+  "english-verbal-nouns": false,
 
   "include-typein-engtolat": true,
   "include-typein-lattoeng": true,

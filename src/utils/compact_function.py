@@ -23,7 +23,7 @@ def compact[T](sequence: list[T]) -> list[T]:
     for element in sequence[1:]:
         for i in range(len(add_groups)):
             try:
-                add_groups[i] += element  # type: ignore[operator]
+                add_groups[i] += element  # pyright: ignore[reportOperatorIssue]
             except TypeError:
                 continue
             else:

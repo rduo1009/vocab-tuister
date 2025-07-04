@@ -23,7 +23,7 @@ func QuestionShape() shape.Shape {
 	return &shape.UnionLike{
 		Name: "Question",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Variant: []shape.Shape{
 			MultipleChoiceEngToLatQuestionShape(),
 			MultipleChoiceLatToEngQuestionShape(),
@@ -40,7 +40,7 @@ func MultipleChoiceEngToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "MultipleChoiceEngToLatQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answer",
@@ -84,7 +84,7 @@ func MultipleChoiceLatToEngQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "MultipleChoiceLatToEngQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answer",
@@ -128,7 +128,7 @@ func ParseWordCompToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "ParseWordCompToLatQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answers",
@@ -181,7 +181,7 @@ func ParseWordLatToCompQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "ParseWordLatToCompQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answers",
@@ -234,7 +234,7 @@ func PrincipalPartsQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "PrincipalPartsQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "PrincipalParts",
@@ -269,7 +269,7 @@ func TypeInEngToLatQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "TypeInEngToLatQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answers",
@@ -313,7 +313,7 @@ func TypeInLatToEngQuestionShape() shape.Shape {
 	return &shape.StructLike{
 		Name: "TypeInLatToEngQuestion",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Fields: []*shape.FieldLike{
 			{
 				Name: "Answers",
@@ -357,12 +357,12 @@ func QuestionsShape() shape.Shape {
 	return &shape.AliasLike{
 		Name: "Questions",
 		PkgName: "questions",
-		PkgImportName: "",
+		PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 		Type: &shape.ListLike{
 			Element: &shape.RefName{
 				Name: "Question",
 				PkgName: "questions",
-				PkgImportName: "",
+				PkgImportName: "github.com/rduo1009/vocab-tuister/src/client/pkg/questions",
 			},
 		},
 	}

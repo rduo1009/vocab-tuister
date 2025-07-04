@@ -1,5 +1,7 @@
 """Contains a function for saving vocabulary files."""
 
+# pyright: reportUnusedCallResult=false
+
 from __future__ import annotations
 
 import gzip
@@ -29,7 +31,7 @@ def save_vocab_dump(
 
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with.
-    The files can also be compressed using LZ4 compression. If this is
+    The files can also be compressed using gzip. If this is
     the case, the files will be saved with the `.gzip` extension, unless
     the user has put the `.gzip` extension in the file path already.
 
@@ -77,7 +79,6 @@ def save_vocab_dump(
     signature = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
 
     if compress:
-        # Add lz4 extension if it is not already there
         if file_path.suffix != ".gzip":
             warnings.warn(
                 f"The file '{file_path}' is being compressed, "

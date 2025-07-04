@@ -1,5 +1,7 @@
 """Contains representations of questions about Latin vocabulary."""
 
+# pyright: reportAny=false, reportExplicitAny=false
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -35,6 +37,7 @@ class Question(Protocol):
 
     def check(self, response: Any) -> bool:
         """Check if the response is correct."""
+        ...
 
 
 @dataclass

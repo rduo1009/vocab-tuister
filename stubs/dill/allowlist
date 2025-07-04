@@ -8,6 +8,8 @@ dill._dill.PickleWarning
 dill._dill.Pickler
 dill._dill.PicklingError
 dill._dill.PicklingWarning
+dill._dill.Unpickler.find_class
+dill._dill.Unpickler.settings
 dill._dill.UnpicklingError
 dill._dill.UnpicklingWarning
 dill._dill.__all__

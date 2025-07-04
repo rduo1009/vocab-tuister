@@ -24,21 +24,26 @@ fi
 poetry run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug
+        poetry run pyinstaller vocab-tuister-server.spec -- --debug
     else
-        poetry run pyinstaller vocab-tuister-server.spec -- --clean
+        poetry run pyinstaller vocab-tuister-server.spec
     fi
 else
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --debug --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --debug --target-arch "$target_arch"
     else
-        poetry run pyinstaller vocab-tuister-server.spec -- --clean -- --target-arch $target_arch
+        poetry run pyinstaller vocab-tuister-server.spec -- --target-arch "$target_arch"
     fi
 fi
 
 # Determine client binary name
 if [[ -n "$target_arch" ]]; then
-    clientbin_name="darwin-$target_arch"
+    if [[ "$target_arch" == "universal2" ]]; then
+        clientbin_name="darwin-universal2"
+        build_universal2=true
+    else
+        clientbin_name="darwin-$target_arch"
+    fi
 else
     case "$(uname -s)" in
         Darwin)
@@ -82,10 +87,30 @@ fi
 # Build go client
 go mod tidy
 go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
-go build \
-    -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$(poetry run dunamai from any)" \
-    -o "$output_file" \
-    ./src/main.go
+
+version=$(poetry run dunamai from any)
+if [[ "$build_universal2" == "true" ]]; then
+    tmpdir=$(mktemp -d)
+
+    GOOS=darwin GOARCH=arm64 go build \
+        -o "$tmpdir/arm64" \
+        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
+        ./src/main.go
+
+    GOOS=darwin GOARCH=amd64 go build \
+        -o "$tmpdir/amd64" \
+        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
+        ./src/main.go
+
+    lipo -create "$tmpdir/arm64" "$tmpdir/amd64" -o "./dist/vocab-tuister-$clientbin_name"
+
+    rm -r "$tmpdir"
+else
+    go build \
+        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
+        -o "./dist/vocab-tuister-$clientbin_name" \
+        ./src/main.go
+fi
 
 # echo -n "Do you want to reinstall all deps? (Y/n) "
 # read -r response

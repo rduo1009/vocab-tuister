@@ -44,7 +44,8 @@
         "dist": true,
         "gocov": true,
         "reports": true,
-        "__version__.txt": true
+        "__version__.txt": true,
+        ".roorules": true
     },
     "autoDocstring.docstringFormat": "numpy",
     "ruff.nativeServer": true,
@@ -64,7 +65,8 @@
         "settings.json.sample": "jsonc",
         ".coveragerc": "ini",
         "*.spec": "python",
-        "go.work.sum": "go.sum"
+        "go.work.sum": "go.sum",
+        "allowlist": "plaintext"
     },
     "catppuccin-icons.associations.folders": { // or whatever icon extension you use
         "stubs": "folder_types",
@@ -72,7 +74,6 @@
         "static": "folder_styles"
     },
     "catppuccin-icons.associations.files": { // or whatever icon extension you use
-        "requirements-dev.txt": "python-config",
         "settings.json.sample": "json",
         ".coveragerc": "ini",
         "vocab-tuister-server.spec": "python-config"

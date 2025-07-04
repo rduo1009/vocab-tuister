@@ -1,15 +1,23 @@
 """Contains a function that finds synonyms of English words."""
 
+# pyright: reportUnusedCallResult=false
+
 from __future__ import annotations
 
 import logging
 import sys as _sys
 import warnings
 from pathlib import Path
+from typing import TYPE_CHECKING, Final
 
 from nltk import download
 from nltk.corpus import wordnet
 from nltk.data import find, path
+
+from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
+
+if TYPE_CHECKING:
+    from ..accido.endings import _Word
 
 logger = logging.getLogger(__name__)
 
@@ -56,30 +64,68 @@ except LookupError:
 
 del find, download, path
 
+POS_TABLE: Final[dict[type[_Word], str | None]] = {
+    Noun: wordnet.NOUN,
+    Pronoun: wordnet.NOUN,
+    Verb: wordnet.VERB,
+    Adjective: wordnet.ADJ,
+    RegularWord: None,
+}
 
-def find_synonyms(word: str) -> set[str]:
+
+def find_synonyms(
+    word: str,
+    *,
+    pos: type[_Word] | None = None,
+    include_similar_words: bool = False,
+) -> set[str]:
     """Find synonyms of a word.
 
     Parameters
     ----------
     word : str
         The word to find synonyms of.
+    pos : type[_Word] | None
+        The part of speech of the word. If ``None``, then the synonyms
+        of all parts of speech are returned.
+    include_similar_words : bool, optional
+        Whether to include similar words in the search, by default False.
+        This leverages WordNet's 'similar to' relationships, often useful
+        for adjectives (e.g., finding 'massive' as similar to 'big') or
+        other related terms that aren't strict synonyms.
 
     Returns
     -------
     set[str]
         The synonyms of the word.
     """
-    logger.debug("find_synonyms(%s)", word)
+    logger.debug(
+        "find_synonyms(word=%r, pos=%s, include_similar_words=%s)",
+        word,
+        pos,
+        include_similar_words,
+    )
 
     synonyms: set[str] = set()
 
-    for synset in wordnet.synsets(word):
+    for synset in wordnet.synsets(word, pos=POS_TABLE[pos] if pos else None):
+        # Add lemmas from the synset itself
         synonyms.update(
             lemma.name()
+            .lower()  # some words are capitalised
+            .replace("_", " ")
             for lemma in synset.lemmas()
-            if lemma.name() != word and "_" not in lemma.name()
+            if lemma.name().lower() != word
         )
+
+        # Add lemmas from similar_tos synsets if requested
+        if include_similar_words:
+            for similar_synset in synset.similar_tos():
+                synonyms.update(
+                    lemma.name().lower().replace("_", " ")
+                    for lemma in similar_synset.lemmas()
+                    if lemma.name().lower() != word
+                )
 
     logger.debug("Synonyms: %s", synonyms)
 
