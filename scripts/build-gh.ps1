@@ -2,8 +2,7 @@
 # Stop on first error
 $ErrorActionPreference = "Stop"
 
-# HACK: For some reason poetry installed on a github actions runner (using pipx) doesn't work.
-# Using full path in this script to fix this.
+# HACK: Using full paths to avoid issues (likely not needed on someone's own machine)
 
 if ($env:debug -eq "True") {
     Write-Host "====== DEBUG MODE ======"
@@ -36,7 +35,7 @@ else {
 # Build go client
 $version = (& "C:\Program Files (x86)\pipx_bin\poetry.exe" run dunamai from any)
 go mod tidy
-go generate -x ./...; if (-not (git diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
+go generate -x ./...; if (-not ("C:\Program Files\Git\bin\git.exe" diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
     -o ".\dist\vocab-tuister-$clientbin_name.exe" `
