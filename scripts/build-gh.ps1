@@ -10,17 +10,17 @@ if ($env:debug -eq "True") {
 }
 
 # Only install necessary deps to speed up build
-& "$env:APPDATA\pypoetry\venv\Scripts\poetry" sync --only main # slower but works better?
-# & "$env:APPDATA\pypoetry\venv\Scripts\poetry" env remove --all
-# & "$env:APPDATA\pypoetry\venv\Scripts\poetry" install --only main
+poetry sync --only main # slower but works better?
+# poetry env remove --all
+# poetry install --only main
 
 # Build python server
-& "$env:APPDATA\pypoetry\venv\Scripts\poetry" run dunamai from any | Set-Content -Path "__version__.txt"
+poetry run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    & "$env:APPDATA\pypoetry\venv\Scripts\poetry" run pyinstaller vocab-tuister-server.spec -- --clean
+    poetry run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    & "$env:APPDATA\pypoetry\venv\Scripts\poetry" run pyinstaller vocab-tuister-server.spec
+    poetry run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -34,7 +34,7 @@ else {
 }
 
 # Build go client
-$version = (& "$env:APPDATA\pypoetry\venv\Scripts\poetry" run dunamai from any)
+$version = (poetry run dunamai from any)
 go mod tidy
 # HACK: go generate is not working properly; but problems will be caught by other runs
 # go generate -x ./...; if (-not (& "C:\Program Files\Git\bin\git.exe" diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
@@ -48,8 +48,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     & "$env:APPDATA\pypoetry\venv\Scripts\poetry" install --sync
+#     poetry install --sync
 # }
 # else {
-#     & "$env:APPDATA\pypoetry\venv\Scripts\poetry" install --only main --sync
+#     poetry install --only main --sync
 # }
