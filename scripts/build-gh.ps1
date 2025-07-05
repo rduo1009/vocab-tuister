@@ -10,17 +10,17 @@ if ($env:debug -eq "True") {
 }
 
 # Only install necessary deps to speed up build
-& "C:\Program Files (x86)\pipx_bin\poetry.exe" sync --only main # slower but works better?
-# & "C:\Program Files (x86)\pipx_bin\poetry.exe" env remove --all
-# & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --only main
+& "%APPDATA%\pypoetry\venv\Scripts\poetry" sync --only main # slower but works better?
+# & "%APPDATA%\pypoetry\venv\Scripts\poetry" env remove --all
+# & "%APPDATA%\pypoetry\venv\Scripts\poetry" install --only main
 
 # Build python server
-& "C:\Program Files (x86)\pipx_bin\poetry.exe" run dunamai from any | Set-Content -Path "__version__.txt"
+& "%APPDATA%\pypoetry\venv\Scripts\poetry" run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    & "C:\Program Files (x86)\pipx_bin\poetry.exe" run pyinstaller vocab-tuister-server.spec -- --clean
+    & "%APPDATA%\pypoetry\venv\Scripts\poetry" run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    & "C:\Program Files (x86)\pipx_bin\poetry.exe" run pyinstaller vocab-tuister-server.spec
+    & "%APPDATA%\pypoetry\venv\Scripts\poetry" run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -34,7 +34,7 @@ else {
 }
 
 # Build go client
-$version = (& "C:\Program Files (x86)\pipx_bin\poetry.exe" run dunamai from any)
+$version = (& "%APPDATA%\pypoetry\venv\Scripts\poetry" run dunamai from any)
 go mod tidy
 # HACK: go generate is not working properly; but problems will be caught by other runs
 # go generate -x ./...; if (-not (& "C:\Program Files\Git\bin\git.exe" diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
@@ -48,8 +48,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --sync
+#     & "%APPDATA%\pypoetry\venv\Scripts\poetry" install --sync
 # }
 # else {
-#     & "C:\Program Files (x86)\pipx_bin\poetry.exe" install --only main --sync
+#     & "%APPDATA%\pypoetry\venv\Scripts\poetry" install --only main --sync
 # }

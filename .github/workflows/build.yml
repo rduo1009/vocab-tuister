@@ -47,22 +47,18 @@ jobs:
           go-version-file: "go.mod"
 
       - name: Install deps
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          python --version
-          which python
           python -m pip install --user pipx
-          which pipx
           pipx ensurepath
           pipx install poetry poethepoet
           pipx inject poetry "poetry-dynamic-versioning[plugin]"
-          which poetry
 
-      - name: Add pipx poetry to PATH for PowerShell
+      - name: Install deps
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
-          $pipxBin = "$env:USERPROFILE\.local\Scripts"
-          echo "##[debug]Adding $pipxBin to PATH"
-          echo "$pipxBin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+          (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+          & "%APPDATA%\pypoetry\venv\Scripts\poetry" self add "poetry-dynamic-versioning[plugin]"
         shell: pwsh
 
       - name: Setup project
@@ -76,8 +72,9 @@ jobs:
       - name: Setup project
         if: ${{ matrix.os == 'windows-2022' }}
         run: |
-          poetry config virtualenvs.in-project true
-          poetry env use "C:\hostedtoolcache\windows\Python\3.13.5\x64\python.exe"
+          python --version
+          "%APPDATA%\pypoetry\venv\Scripts\poetry" config virtualenvs.in-project true
+          "%APPDATA%\pypoetry\venv\Scripts\poetry" env use "C:\hostedtoolcache\windows\Python\3.13.5\x64\python.exe"
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
@@ -85,8 +82,8 @@ jobs:
       - name: Setup project
         if: ${{ matrix.os == 'windows-11-arm'}}
         run: |
-          poetry config virtualenvs.in-project true
-          poetry env use "C:\hostedtoolcache\windows\Python\3.13.5\arm64\python.exe"
+          "%APPDATA%\pypoetry\venv\Scripts\poetry" config virtualenvs.in-project true
+          "%APPDATA%\pypoetry\venv\Scripts\poetry" env use "C:\hostedtoolcache\windows\Python\3.13.5\arm64\python.exe"
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
