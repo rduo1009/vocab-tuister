@@ -68,64 +68,52 @@ enable = true
 target-version = "py313"
 line-length = 79
 exclude = [ "src/_vendor/**" ]
-
 unsafe-fixes = true
+
 format.preview = true
 format.indent-style = "space"
 format.quote-style = "double"
 format.skip-magic-trailing-comma = true
 format.docstring-code-line-length = 72
 format.docstring-code-format = true
+
 lint.select = [ "ALL" ]
 lint.extend-select = [ "W505" ] # doc line too long
 lint.ignore = [
-  "ANN401", # `Any` in function arguments
-  "C901",   # mccabe complexity
-  "COM812", # trailing commas
-
-  "CPY001", # no copyright
-  "D105",   # magic method docstrings
-  # Documentation
-  "DOC502", # extraneous docstring exceptions
-  # Managed by formatters
+  "ANN401",  # `Any` in function arguments
+  "C901",    # mccabe complexity
+  "COM812",  # trailing commas
+  "CPY001",  # no copyright
+  "D105",    # magic method docstrings
+  "DOC502",  # extraneous docstring exceptions 
   "E",
-  "EM101", # raw string in exception
-  # Too strict
-  "EM102", # fstring in exception
-  # Formatting
-  "ERA001", # commented out code
-  "FIX001", # fixme comments
-  "FIX002", # todo comments
-  "FIX004", # hack comments
+  "EM101",   # raw string in exception 
+  "EM102",   # fstring in exception
+  "ERA001",  # commented out code
+  "FIX001",  # fixme comments
+  "FIX002",  # todo comments
+  "FIX004",  # hack comments
   "I",
-
-  "PLC0414", # 'useless' import aliases
-
-  # Complexity
+  "PLC0414", # 'useless' import aliases 
   "PLR0911", # too many `return`s
   "PLR0912", # too many branches
   "PLR0913", # too many arguments
   "PLW1514", # encoding in `open()`
-
-  # Actual uses
-  "S101",  # assertions
-  "S301",  # using `pickle`
-  "S311",  # using `random`
-  "S403",  # importing `pickle`
-  "TD001", # banning `fixme`
-  "TD002", # missing author in todo
-  "TD003", # missing issue link in todo
-
-  "TID252", # relative imports
-  "TRY003", # use args in exceptions
+  "S101",    # assertions
+  "S301",    # using `pickle`
+  "S311",    # using `random`
+  "S403",    # importing `pickle`
+  "TD001",   # banning `fixme`
+  "TD002",   # missing author in todo
+  "TD003",   # missing issue link in todo
+  "TID252",  # relative imports
+  "TRY003",  # use args in exceptions
   "W",
 ]
-# Magic value comparisons
 lint.per-file-ignores."src/core/accido/_class_*.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/lego/reader.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/rogo/asker.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/rogo/rules.py" = [ "PLR2004" ]
-# Function annotations
 lint.per-file-ignores."src/server/app.py" = [ "ANN" ]
 lint.flake8-type-checking.quote-annotations = true
 lint.flake8-type-checking.strict = true
