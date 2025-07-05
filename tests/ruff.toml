@@ -1,10 +1,12 @@
-extend = "../ruff.toml"
+# Configuration for tests directory
+# Note: Main ruff configuration is now in ../pyproject.toml
 
 # Override settings
 line-length = 320
 
 [lint]
 ignore = [
+    "E721",
     "E741",
     "D",
     "PTH",

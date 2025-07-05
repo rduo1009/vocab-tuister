@@ -1,4 +1,5 @@
-extend = "../ruff.toml"
+# Configuration for stubs directory
+# Note: Main ruff configuration is now in ../pyproject.toml
 
 # Override settings
 [lint]
