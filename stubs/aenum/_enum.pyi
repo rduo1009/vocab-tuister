@@ -45,10 +45,7 @@ class EnumType(type):
     def __call__(
         cls: EnumType,
         value: Any = no_arg,
-        names: str
-        | Sequence[str | tuple[str, Any]]
-        | Mapping[str, Any]
-        | None = None,
+        names: str | Sequence[str | tuple[str, Any]] | Mapping[str, Any] | None = None,
         module: str | None = None,
         qualname: str | None = None,
         type: type | None = None,
