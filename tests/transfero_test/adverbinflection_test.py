@@ -6,7 +6,14 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
-from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
+from src.core.accido.misc import (
+    Case,
+    ComponentsSubtype,
+    Degree,
+    EndingComponents,
+    Gender,
+    Number,
+)
 from src.core.transfero.exceptions import InvalidComponentsError
 from src.core.transfero.words import find_inflection
 
@@ -23,12 +30,12 @@ def test_invalid_type():
 
 def test_invalid_subtype():
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert str(error.value) == "Invalid subtype: 'None'"
+        find_inflection("happy", EndingComponents(degree=Degree.POSITIVE))
+    assert str(error.value) == "Invalid subtype: 'adverb'"
 
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE), main=True)
-    assert str(error.value) == "Invalid subtype: 'None'"
+        find_inflection("happy", EndingComponents(degree=Degree.POSITIVE), main=True)
+    assert str(error.value) == "Invalid subtype: 'adverb'"
 
 
 ADVERB_COMBINATIONS = (Degree.POSITIVE, Degree.COMPARATIVE, Degree.SUPERLATIVE)

@@ -10,6 +10,7 @@ from ._adjective_inflection import (
     find_adjective_inflections,
     find_main_adjective_inflection,
 )
+from .exceptions import InvalidComponentsError
 from ._adverb_inflection import (
     find_adverb_inflections,
     find_main_adverb_inflection,
@@ -66,6 +67,8 @@ def find_inflection(
                     if main
                     else find_adverb_inflections(adj_to_adv(word), components)
                 )
+            if components.subtype is not None:
+                raise InvalidComponentsError(f"Invalid subtype: '{components.subtype}'")
             return (
                 find_main_adjective_inflection(word, components)
                 if main
@@ -79,6 +82,8 @@ def find_inflection(
                     if main
                     else find_pronoun_inflections(word, components)
                 )
+            if components.subtype is not None:
+                raise InvalidComponentsError(f"Invalid subtype: '{components.subtype}'")
             return (
                 find_main_noun_inflection(word, components)
                 if main
@@ -86,6 +91,13 @@ def find_inflection(
             )
 
         case ComponentsType.VERB:
+            if components.subtype not in {
+                ComponentsSubtype.INFINITIVE,
+                ComponentsSubtype.PARTICIPLE,
+                    ComponentsSubtype.VERBAL_NOUN,
+                None,
+            }:
+                raise InvalidComponentsError(f"Invalid subtype: '{components.subtype}'")
             return (
                 find_main_verb_inflection(word, components)
                 if main
@@ -93,6 +105,8 @@ def find_inflection(
             )
 
         case ComponentsType.PRONOUN:
+            if components.subtype is not None:
+                raise InvalidComponentsError(f"Invalid subtype: '{components.subtype}'")
             return (
                 find_main_pronoun_inflection(word, components)
                 if main
