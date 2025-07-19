@@ -7,27 +7,27 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
-from src.core.transfero._adverb_inflection import find_adverb_inflections, find_main_adverb_inflection
 from src.core.transfero.exceptions import InvalidComponentsError
+from src.core.transfero.words import find_inflection
 
 
 def test_invalid_type():
-    with pytest.raises(InvalidComponentsError) as error:
-        find_adverb_inflections("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert str(error.value) == "Invalid type: 'pronoun'"
+    with pytest.raises(NotImplementedError) as error:
+        find_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
+    assert str(error.value) == "Word happily has not been implemented as a pronoun."
 
-    with pytest.raises(InvalidComponentsError) as error:
-        find_main_adverb_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert str(error.value) == "Invalid type: 'pronoun'"
+    with pytest.raises(NotImplementedError) as error:
+        find_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER), main=True)
+    assert str(error.value) == "Word happily has not been implemented as a pronoun."
 
 
 def test_invalid_subtype():
     with pytest.raises(InvalidComponentsError) as error:
-        find_adverb_inflections("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
+        find_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
     assert str(error.value) == "Invalid subtype: 'None'"
 
     with pytest.raises(InvalidComponentsError) as error:
-        find_main_adverb_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
+        find_inflection("happy", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE), main=True)
     assert str(error.value) == "Invalid subtype: 'None'"
 
 
@@ -41,12 +41,16 @@ class TestAdverbInflection:
         {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily"},
     ])])  # fmt: skip
     def test_adverb_inflection(self, degree, expected):
-        word = "happily"
-        assert find_adverb_inflections(word, EndingComponents(degree=degree)) == expected
+        word = "happy"
+        components = EndingComponents(degree=degree)
+        components.subtype = ComponentsSubtype.ADVERB
+        assert find_inflection(word, components) == expected
 
     @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
         "happily", "more happily", "most happily",
     ])])  # fmt: skip
     def test_adverb_main_inflection(self, degree, expected):
-        word = "happily"
-        assert find_main_adverb_inflection(word, EndingComponents(degree=degree)) == expected
+        word = "happy"
+        components = EndingComponents(degree=degree)
+        components.subtype = ComponentsSubtype.ADVERB
+        assert find_inflection(word, components, main=True) == expected
