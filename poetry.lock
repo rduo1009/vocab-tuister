@@ -1032,14 +1032,14 @@ files = [
 
 [[package]]
 name = "optype"
-version = "0.12.0"
+version = "0.12.2"
 description = "Building blocks for precise & flexible type hints"
 optional = false
 python-versions = ">=3.11"
 groups = ["types"]
 files = [
-    {file = "optype-0.12.0-py3-none-any.whl", hash = "sha256:245163b14cb78a83f4bf862d2278a5f9aef001242ac8ce577d1891dd1e0b104f"},
-    {file = "optype-0.12.0.tar.gz", hash = "sha256:d1314f486028bc8d53b8c3e6b65f493d999d983df11978272ff67c1876f8ce53"},
+    {file = "optype-0.12.2-py3-none-any.whl", hash = "sha256:e38966fcd5ae9dec1c1bdecccdd8fdc7cfb8f21686f45ce3669a3a566c7cc110"},
+    {file = "optype-0.12.2.tar.gz", hash = "sha256:3f53a89f56f0ea23be4d212611dce0f3a2a8946543a9a72783e349c49b232934"},
 ]
 
 [package.extras]
@@ -1998,4 +1998,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "0f0c0dbc8c8555802c879240cf209fc5278da070c1ce3218992edbb021085a14"
+content-hash = "52cd379a66b3d550f950107b968f4fa539c92c47fe4eb8d2b2eaf302e372d587"
