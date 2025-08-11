@@ -59,7 +59,7 @@ griffe = "1.7.3"
 [tool.poetry.group.types.dependencies]
 types-regex = "2024.11.6.20250403"
 types-waitress = "3.0.1.20241117"
-optype = "0.12.0"
+optype = "0.13.1"
 
 [tool.poetry-dynamic-versioning]
 enable = true
