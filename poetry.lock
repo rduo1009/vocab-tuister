@@ -545,14 +545,14 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 name = "griffe"
-version = "1.7.3"
+version = "1.11.0"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "griffe-1.7.3-py3-none-any.whl", hash = "sha256:c6b3ee30c2f0f17f30bcdef5068d6ab7a2a4f1b8bf1a3e74b56fffd21e1c5f75"},
-    {file = "griffe-1.7.3.tar.gz", hash = "sha256:52ee893c6a3a968b639ace8015bec9d36594961e156e23315c8e8e51401fa50b"},
+    {file = "griffe-1.11.0-py3-none-any.whl", hash = "sha256:dc56cc6af8d322807ecdb484b39838c7a51ca750cf21ccccf890500c4d6389d8"},
+    {file = "griffe-1.11.0.tar.gz", hash = "sha256:c153b5bc63ca521f059e9451533a67e44a9d06cf9bf1756e4298bda5bd3262e8"},
 ]
 
 [package.dependencies]
@@ -2004,4 +2004,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "b294e47873e65cf8cd3b52ce43a2ee7b9f3d1ed8830ec2d5542f5da00610a5a1"
+content-hash = "8f970537b8ec3a506d99f6ecfb865bb1093c22a64538baac84b5bdc607187c29"
