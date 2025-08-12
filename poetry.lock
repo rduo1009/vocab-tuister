@@ -1948,14 +1948,14 @@ files = [
 
 [[package]]
 name = "types-waitress"
-version = "3.0.1.20241117"
+version = "3.0.1.20250801"
 description = "Typing stubs for waitress"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["types"]
 files = [
-    {file = "types-waitress-3.0.1.20241117.tar.gz", hash = "sha256:1df08f8de36cc30ddade179e1cb28c59776e89a1a2874893b59fe2ea00a823a0"},
-    {file = "types_waitress-3.0.1.20241117-py3-none-any.whl", hash = "sha256:4700d2f22bacab5f817692faf25f9b7d43810b72ab7434a628a5a4cd1f5766fd"},
+    {file = "types_waitress-3.0.1.20250801-py3-none-any.whl", hash = "sha256:17830a3bf096a967368cfc4dfaf19e2ab6cde8ac880747ebb47c01ca85704d9f"},
+    {file = "types_waitress-3.0.1.20250801.tar.gz", hash = "sha256:f919fda09e44798771d8ac54bb8573c165f1a1bc1aa9bfbf4296603db59455be"},
 ]
 
 [[package]]
@@ -2025,4 +2025,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "3e1a1bf4b659ac82ddfbaa3d8f756253db8e21f60517f63fdaf0c2d3946fdc69"
+content-hash = "a30a2114a479d5b367d0ed3b5bf11797923f6fa1ecb07b68f0c285b851d9e1e2"
