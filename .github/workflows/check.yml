@@ -10,7 +10,7 @@ jobs:
     name: test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -36,7 +36,7 @@ jobs:
     name: integration test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -49,17 +49,43 @@ jobs:
         with:
           python-version-file: ".python-version"
 
-      - name: Install deps
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.local # Poetry installs here on Ubuntu
+          key: poetry-${{ runner.os }}-1
+
+      - name: Install Poetry
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Configure Poetry if cached
+        if: steps.cached-poetry.outputs.cache-hit == 'true'
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y pipx
-          pipx install poetry
-          poetry install
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+          poetry config installer.parallel true
+
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            venv-${{ runner.os }}-
+
+      - name: Install deps
+        run: poetry install --no-interaction --no-root
 
       - name: Run integration tests
         id: run-tests
-        run: |
-          poetry run pytest -m 'integration' -n0
+        run: poetry run pytest -m 'integration' -n0
         continue-on-error: true
 
       - name: Update test data
@@ -68,7 +94,7 @@ jobs:
 
       - name: Upload changed files
         if: steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: changed-files
           path: |
@@ -82,7 +108,7 @@ jobs:
     name: test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -125,7 +151,7 @@ jobs:
     name: integration test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: "recursive"
