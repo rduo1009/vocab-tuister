@@ -6,36 +6,36 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 import pytest
 from src.core.accido.misc import Case, EndingComponents, Gender, Mood, Number, Tense, Voice
 from src.core.transfero.exceptions import InvalidComponentsError
-from src.core.transfero.words import find_inflection
+from src.core.transfero.words import find_inflection, find_verb_inflections
 
 
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("teach", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
+        find_verb_inflections("teach", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
     assert str(error.value) == "Invalid type: 'pronoun'"
 
 
 def test_invalid_type_participle():
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("teach", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE))
+        find_verb_inflections("teach", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE))
     assert str(error.value) == "Invalid subtype: 'infinitive'"
 
 
 def test_invalid_type_infinitive():
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("teach", EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE))
+        find_verb_inflections("teach", EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE))
     assert str(error.value) == "Invalid subtype: 'participle'"
 
 
 def test_verb_error_not_implemented():
     with pytest.raises(NotImplementedError) as error:
-        find_inflection("attack", EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1))
+        find_verb_inflections("attack", EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1))
     assert str(error.value) == "The future passive subjunctive has not been implemented."  # it doesn't exist
 
 
 def test_participle_error_not_implemented():
     with pytest.raises(NotImplementedError) as error:
-        find_inflection("attack", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, case=Case.NOMINATIVE, gender=Gender.MASCULINE, number=Number.SINGULAR))
+        find_verb_inflections("attack", EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, case=Case.NOMINATIVE, gender=Gender.MASCULINE, number=Number.SINGULAR))
     assert str(error.value) == "The present passive participle has not been implemented."
 
 

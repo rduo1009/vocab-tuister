@@ -8,16 +8,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
 from src.core.transfero.exceptions import InvalidComponentsError
-from src.core.transfero.words import find_inflection
+from src.core.transfero.words import find_inflection, find_pronoun_inflections
 
 
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert str(error.value) == "Invalid type: 'adjective'"
-
-    with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE), main=True)
+        find_pronoun_inflections("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
     assert str(error.value) == "Invalid type: 'adjective'"
 
 
@@ -140,23 +136,23 @@ class TestNounlikePronounInflection:
     def test_pronoun_inflections_3(self):
         word = "oneself"
 
-        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR)) == {"oneself"}
-        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR)) == {"of the oneself", "oneself's"}
-        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR)) == {"to oneself", "for oneself"}
-        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR)) == {"by oneself", "with oneself", "from oneself", "in oneself", "on oneself"}
-        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL)) == {"themselves"}
-        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL)) == {"of the themselves", "themselves'"}
-        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL)) == {"to themselves", "for themselves"}
-        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL)) == {"by themselves", "with themselves", "from themselves", "in themselves", "on themselves"}
+        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"oneself", "himself", "itself"}
+        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"of oneself", "of himself", "of itself"}
+        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"to oneself", "for oneself", "to himself", "for himself", "to itself", "for itself"}
+        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE)) == {"by means of oneself", "oneself", "with itself", "himself", "with himself", "by means of himself", "by itself", "itself", "by himself", "by means of itself", "with oneself", "by oneself"}
+        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"themselves"}
+        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"of themselves"}
+        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"to themselves", "for themselves"}
+        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE)) == {"by themselves", "by means of themselves", "with themselves", "themselves"}
 
     def test_main_pronoun_inflections_3(self):
         word = "oneself"
 
-        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR), main=True) == "oneself"
-        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR), main=True) == "of the oneself"
-        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR), main=True) == "to oneself"
-        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR), main=True) == "by oneself"
-        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL), main=True) == "themselves"
-        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL), main=True) == "of the themselves"
-        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL), main=True) == "to themselves"
-        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL), main=True) == "by themselves"
+        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE), main=True) == "himself"
+        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.SINGULAR, gender=Gender.MASCULINE), main=True) == "of himself"
+        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE), main=True) == "for himself"
+        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE), main=True) == "by himself"
+        assert find_inflection(word, EndingComponents(case=Case.ACCUSATIVE, number=Number.PLURAL, gender=Gender.MASCULINE), main=True) == "themselves"
+        assert find_inflection(word, EndingComponents(case=Case.GENITIVE, number=Number.PLURAL, gender=Gender.MASCULINE), main=True) == "of themselves"
+        assert find_inflection(word, EndingComponents(case=Case.DATIVE, number=Number.PLURAL, gender=Gender.MASCULINE), main=True) == "for themselves"
+        assert find_inflection(word, EndingComponents(case=Case.ABLATIVE, number=Number.PLURAL, gender=Gender.MASCULINE), main=True) == "by themselves"

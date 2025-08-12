@@ -6,36 +6,24 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
-from src.core.accido.misc import (
-    Case,
-    ComponentsSubtype,
-    Degree,
-    EndingComponents,
-    Gender,
-    Number,
-)
+from src.core.accido.misc import Case, ComponentsSubtype, Degree, EndingComponents, Gender, Number
 from src.core.transfero.exceptions import InvalidComponentsError
-from src.core.transfero.words import find_inflection
+from src.core.transfero.words import find_adverb_inflections, find_inflection
 
 
 def test_invalid_type():
-    with pytest.raises(NotImplementedError) as error:
-        find_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
-    assert str(error.value) == "Word happily has not been implemented as a pronoun."
-
-    with pytest.raises(NotImplementedError) as error:
-        find_inflection("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER), main=True)
-    assert str(error.value) == "Word happily has not been implemented as a pronoun."
+    with pytest.raises(InvalidComponentsError) as error:
+        find_adverb_inflections("happily", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER))
+    assert str(error.value) == "Invalid type: 'pronoun'"
 
 
 def test_invalid_subtype():
-    with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("happy", EndingComponents(degree=Degree.POSITIVE))
-    assert str(error.value) == "Invalid subtype: 'adverb'"
+    a = EndingComponents(degree=Degree.POSITIVE)
+    a.subtype = ComponentsSubtype.INFINITIVE
 
     with pytest.raises(InvalidComponentsError) as error:
-        find_inflection("happy", EndingComponents(degree=Degree.POSITIVE), main=True)
-    assert str(error.value) == "Invalid subtype: 'adverb'"
+        find_adverb_inflections("happy", a)
+    assert str(error.value) == "Invalid subtype: 'infinitive'"
 
 
 ADVERB_COMBINATIONS = (Degree.POSITIVE, Degree.COMPARATIVE, Degree.SUPERLATIVE)
