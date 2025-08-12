@@ -14,7 +14,7 @@ from ..accido.misc import (
     Tense,
     Voice,
 )
-from .edge_cases import STATIVE_VERBS
+from ._edge_cases import STATIVE_VERBS
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:

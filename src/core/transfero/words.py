@@ -6,6 +6,7 @@ import logging
 from typing import TYPE_CHECKING, Literal, overload
 
 from ..accido.misc import ComponentsSubtype, ComponentsType
+from ._adj_to_adv import adj_to_adv
 from ._adjective_inflection import (
     find_adjective_inflections,
     find_main_adjective_inflection,
@@ -20,7 +21,6 @@ from ._pronoun_inflection import (
     find_pronoun_inflections,
 )
 from ._verb_inflection import find_main_verb_inflection, find_verb_inflections
-from .adj_to_adv import adj_to_adv
 
 if TYPE_CHECKING:
     from ..accido.misc import EndingComponents
