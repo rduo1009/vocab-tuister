@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import PRONOUNS
+from ._edge_cases import PRONOUNS
 from .exceptions import InvalidInputError
 from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
 

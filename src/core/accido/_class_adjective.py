@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal, overload
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import (
+from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
     NO_ADVERB_ADJECTIVES,

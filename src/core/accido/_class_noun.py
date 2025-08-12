@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Final, overload
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from .exceptions import InvalidInputError
 from .misc import (
     Case,
