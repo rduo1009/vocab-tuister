@@ -66,6 +66,7 @@ def find_inflection(
                     if main
                     else find_adverb_inflections(adj_to_adv(word), components)
                 )
+
             return (
                 find_main_adjective_inflection(word, components)
                 if main
@@ -79,6 +80,7 @@ def find_inflection(
                     if main
                     else find_pronoun_inflections(word, components)
                 )
+
             return (
                 find_main_noun_inflection(word, components)
                 if main
