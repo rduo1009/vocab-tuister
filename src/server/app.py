@@ -22,7 +22,7 @@ from ..utils.typeddict_validator import (
     DictMissingKeyError,
     validate_typeddict,
 )
-from .json_encode import QuestionClassEncoder
+from ._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
     from collections.abc import Generator

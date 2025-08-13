@@ -8,7 +8,8 @@ from typing import TYPE_CHECKING, Final, overload
 from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from ._syllables import count_syllables
 from .exceptions import InvalidInputError
 from .misc import (
     Case,
@@ -18,7 +19,6 @@ from .misc import (
     MultipleMeanings,
     Number,
 )
-from .syllables import count_syllables
 
 if TYPE_CHECKING:
     from .type_aliases import Ending, Endings, Meaning, NounDeclension

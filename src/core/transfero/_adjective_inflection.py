@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 import lemminflect
 
 from ..accido.misc import ComponentsType, Degree
-from .edge_cases import NOT_COMPARABLE_ADJECTIVES
+from ._edge_cases import NOT_COMPARABLE_ADJECTIVES
 from .exceptions import InvalidComponentsError, InvalidWordError
 
 if TYPE_CHECKING:

@@ -11,7 +11,7 @@ from warnings import deprecated
 
 from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
-from .edge_cases import (
+from ._edge_cases import (
     ACTIVE_ONLY_VERBS,
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
