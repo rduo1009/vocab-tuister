@@ -128,22 +128,13 @@ addopts = [
   "--ignore=src/_build",
   "-n4",
 ]
-markers = [
-  "manual: manually checked tests",
-  "integration: integration tests",
-]
-env = [
-  "VOCAB_TUISTER_RANDOM_SEED=10",
-]
+markers = [ "manual: manually checked tests", "integration: integration tests" ]
+env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
 [tool.coverage.run]
 branch = true
 parallel = true
-omit = [
-  "tests/*",
-  "src/_vendor/*",
-  "src/scripts/*",
-]
+omit = [ "tests/*", "src/_vendor/*", "src/scripts/*" ]
 
 [tool.coverage.report]
 exclude_also = [
@@ -164,26 +155,12 @@ skip_missing_interpreters = true
 
 [tool.tox.env_run_base]
 description = "run tests using pytest"
-deps = [
-  "icecream",
-  "pytest",
-  "pytest-xdist",
-  "requests",
-  "syrupy",
-]
-commands = [
-  [ "pytest", "-m", "not manual and not integration" ],
-]
+deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
+commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
 
 [tool.tox.env.doctest]
 description = "run doctests"
-deps = [
-  "icecream",
-  "pytest",
-  "pytest-xdist",
-  "requests",
-  "syrupy",
-]
+deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
 commands = [
   [
     "pytest",
@@ -199,22 +176,47 @@ commands = [
 
 [tool.tox.env.type]
 description = "run type checks and check stubs"
-deps = [
-  "basedpyright",
-  "icecream",
-  "mypy",
-  "optype",
-  "pytest",
-  "requests",
-]
+deps = [ "basedpyright", "icecream", "mypy", "optype", "pytest", "requests" ]
 set_env = { MYPYPATH = "stubs" }
 commands = [
-  [ "basedpyright" ],
-  [ "stubtest", "dill", "--allowlist", "stubs/dill/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "lemminflect", "--allowlist", "stubs/lemminflect/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "nltk", "--allowlist", "stubs/nltk/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "colors", "--allowlist", "stubs/colors/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "aenum", "--allowlist", "stubs/aenum/allowlist", "--ignore-unused-allowlist" ],
+  [
+    "basedpyright",
+  ],
+  [
+    "stubtest",
+    "dill",
+    "--allowlist",
+    "stubs/dill/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "lemminflect",
+    "--allowlist",
+    "stubs/lemminflect/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "nltk",
+    "--allowlist",
+    "stubs/nltk/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "colors",
+    "--allowlist",
+    "stubs/colors/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "aenum",
+    "--allowlist",
+    "stubs/aenum/allowlist",
+    "--ignore-unused-allowlist",
+  ],
 ]
 
 [tool.tox.gh]

@@ -7,17 +7,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 
 import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
-from src.core.transfero._noun_inflection import find_main_noun_inflection, find_noun_inflections
+from src.core.transfero._noun_inflection import find_noun_inflections
 from src.core.transfero.exceptions import InvalidComponentsError
+from src.core.transfero.words import find_inflection
 
 
 def test_invalid_type():
     with pytest.raises(InvalidComponentsError) as error:
         find_noun_inflections("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
-    assert str(error.value) == "Invalid type: 'adjective'"
-
-    with pytest.raises(InvalidComponentsError) as error:
-        find_main_noun_inflection("house", EndingComponents(case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER, degree=Degree.POSITIVE))
     assert str(error.value) == "Invalid type: 'adjective'"
 
 
@@ -54,7 +51,7 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_noun_inflections_1(self, case, number, expected):
         word = "house"
-        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number)) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         {"cactus"},
@@ -72,7 +69,7 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_noun_inflections_2(self, case, number, expected):
         word = "cactus"
-        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number)) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         {"apple"},
@@ -90,7 +87,7 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_noun_inflections_3(self, case, number, expected):
         word = "apple"
-        assert find_noun_inflections(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number)) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "house", "house", "house", "of the house", "for the house", "by the house",
@@ -98,7 +95,7 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_main_noun_inflections_1(self, case, number, expected):
         word = "house"
-        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number), main=True) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "cactus", "cactus", "cactus", "of the cactus", "for the cactus", "by the cactus",
@@ -106,7 +103,7 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_main_noun_inflections_2(self, case, number, expected):
         word = "cactus"
-        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number), main=True) == expected
 
     @pytest.mark.parametrize(("case", "number", "expected"), [NOUN_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "apple", "apple", "apple", "of the apple", "for the apple", "by the apple",
@@ -114,4 +111,4 @@ class TestNounInflection:
     ])])  # fmt: skip
     def test_main_noun_inflections_3(self, case, number, expected):
         word = "apple"
-        assert find_main_noun_inflection(word, EndingComponents(case=case, number=number)) == expected
+        assert find_inflection(word, EndingComponents(case=case, number=number), main=True) == expected
