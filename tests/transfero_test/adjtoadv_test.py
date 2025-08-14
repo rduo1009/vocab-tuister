@@ -6,8 +6,8 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import pytest
-from src.core.transfero._adj_to_adv import adj_to_adv
 from src.core.transfero.exceptions import InvalidWordError
+from src.core.transfero.words import adj_to_adv
 
 
 def test_adjtoadv():

@@ -7,20 +7,11 @@ from typing import TYPE_CHECKING, Literal, overload
 
 from ..accido.misc import ComponentsSubtype, ComponentsType
 from ._adj_to_adv import adj_to_adv
-from ._adjective_inflection import (
-    find_adjective_inflections,
-    find_main_adjective_inflection,
-)
-from ._adverb_inflection import (
-    find_adverb_inflections,
-    find_main_adverb_inflection,
-)
-from ._noun_inflection import find_main_noun_inflection, find_noun_inflections
-from ._pronoun_inflection import (
-    find_main_pronoun_inflection,
-    find_pronoun_inflections,
-)
-from ._verb_inflection import find_main_verb_inflection, find_verb_inflections
+from ._adjective_inflection import find_adjective_inflections
+from ._adverb_inflection import find_adverb_inflections
+from ._noun_inflection import find_noun_inflections
+from ._pronoun_inflection import find_pronoun_inflections
+from ._verb_inflection import find_verb_inflections
 
 if TYPE_CHECKING:
     from ..accido.misc import EndingComponents
@@ -56,48 +47,34 @@ def find_inflection(
     set[str] | str
         The main inflection of the word or the inflections of the word.
     """
+
+    def pick(result: tuple[str, ...]) -> str | set[str]:
+        # If main requested, return the first element (or empty string if none)
+        if main:
+            return result[0] if result else ""
+        # Otherwise return a deduplicated set of all inflections
+        return set(result)
+
     logger.debug("find_inflection(%s, %s, main=%s)", word, components, main)
 
     match components.type:
         case ComponentsType.ADJECTIVE:
             if components.subtype == ComponentsSubtype.ADVERB:
-                return (
-                    find_main_adverb_inflection(adj_to_adv(word), components)
-                    if main
-                    else find_adverb_inflections(adj_to_adv(word), components)
+                return pick(
+                    find_adverb_inflections(adj_to_adv(word), components)
                 )
-            return (
-                find_main_adjective_inflection(word, components)
-                if main
-                else find_adjective_inflections(word, components)
-            )
+            return pick(find_adjective_inflections(word, components))
 
         case ComponentsType.NOUN:
             if components.subtype == ComponentsSubtype.PRONOUN:
-                return (
-                    find_main_pronoun_inflection(word, components)
-                    if main
-                    else find_pronoun_inflections(word, components)
-                )
-            return (
-                find_main_noun_inflection(word, components)
-                if main
-                else find_noun_inflections(word, components)
-            )
+                return pick(find_pronoun_inflections(word, components))
+            return pick(find_noun_inflections(word, components))
 
         case ComponentsType.VERB:
-            return (
-                find_main_verb_inflection(word, components)
-                if main
-                else find_verb_inflections(word, components)
-            )
+            return pick(find_verb_inflections(word, components))
 
         case ComponentsType.PRONOUN:
-            return (
-                find_main_pronoun_inflection(word, components)
-                if main
-                else find_pronoun_inflections(word, components)
-            )
+            return pick(find_pronoun_inflections(word, components))
 
         case _:
             return word if main else {word}
