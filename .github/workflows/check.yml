@@ -23,11 +23,19 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: Cache tox
+        uses: actions/cache@v4
+        with:
+          path: .tox
+          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'poetry.lock') }}
+          restore-keys: |
+            tox-${{ hashFiles('.python-version') }}-
+
       - name: Install tox
         run: python -m pip install tox-gh>=1.2
 
       - name: Install deps
-        run: tox -vv --notest
+        run: tox --notest
 
       - name: Run test suite
         run: tox --skip-pkg-install
