@@ -1063,7 +1063,7 @@ def _find_plppassbj_inflections(
 def _find_participle_inflections(
     verb: str, components: EndingComponents
 ) -> tuple[str, ...]:
-    lemma = lemminflect.getLemma(verb, "NOUN")[0]
+    lemma = lemminflect.getLemma(verb, "VERB")[0]
 
     match (components.tense, components.voice):
         case (Tense.PRESENT, Voice.ACTIVE):
