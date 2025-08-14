@@ -877,19 +877,19 @@ def _find_preactsbj_inflections(
 ) -> tuple[str, ...]:
     match (number, person):
         case (Number.SINGULAR, 1):
-            return (f"I may {lemma}", f"I may {lemma}")
+            return (f"I may {lemma}",)
 
         case (Number.PLURAL, 1):
-            return (f"we may {lemma}", f"we may {lemma}")
+            return (f"we may {lemma}",)
 
         case (Number.SINGULAR, 2) | (Number.PLURAL, 2):
-            return (f"you may {lemma}", f"you may {lemma}")
+            return (f"you may {lemma}",)
 
         case (Number.SINGULAR, 3):
             return (f"he may {lemma}", f"she may {lemma}", f"it may {lemma}")
 
         case _:
-            return (f"they may {lemma}", f"they may {lemma}")
+            return (f"they may {lemma}",)
 
 
 def _find_impactsbj_inflections(
