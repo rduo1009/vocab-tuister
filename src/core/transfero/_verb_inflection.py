@@ -100,7 +100,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     if hasattr(components, "number") and hasattr(components, "person"):
         for lemma in lemmas:
             inflections.update(
-                _find_lemma(
+                _inflect_lemma(
                     lemma,
                     components.tense,
                     components.voice,
@@ -112,7 +112,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     else:
         for lemma in lemmas:
             inflections.update(
-                _find_lemma(
+                _inflect_lemma(
                     lemma, components.tense, components.voice, components.mood
                 )
             )
@@ -168,7 +168,7 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
     if hasattr(components, "number") and hasattr(components, "person"):
-        return _find_lemma(
+        return _inflect_lemma(
             lemma,
             components.tense,
             components.voice,
@@ -177,12 +177,12 @@ def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
             components.person,
         )[0]
 
-    return _find_lemma(
+    return _inflect_lemma(
         lemma, components.tense, components.voice, components.mood
     )[0]
 
 
-def _find_lemma(  # noqa: PLR0917
+def _inflect_lemma(  # noqa: PLR0917
     lemma: str,
     tense: Tense,
     voice: Voice,
