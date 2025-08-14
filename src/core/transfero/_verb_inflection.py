@@ -603,6 +603,7 @@ def _find_peractind_inflections(
 ) -> tuple[str, ...]:
     past = lemminflect.getInflection(lemma, "VBD")[0]
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I {past}", f"I have {past_participle}", f"I did {lemma}")
@@ -646,6 +647,7 @@ def _find_perpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (
@@ -686,6 +688,7 @@ def _find_plpactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I had {past_participle}",)
@@ -711,6 +714,7 @@ def _find_plppasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I had been {past_participle}",)
@@ -736,6 +740,7 @@ def _find_fpractind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I will have {past_participle}",)
@@ -761,6 +766,7 @@ def _find_fprpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I will have been {past_participle}",)
@@ -914,6 +920,7 @@ def _find_peractsbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I may have {past_participle}",)
@@ -939,6 +946,7 @@ def _find_plpactsbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I might have {past_participle}",)
@@ -964,6 +972,7 @@ def _find_prepassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I may be {past_participle}",)
@@ -989,6 +998,7 @@ def _find_imppassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I might be {past_participle}",)
@@ -1014,6 +1024,7 @@ def _find_perpassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I may have been {past_participle}",)
@@ -1039,6 +1050,7 @@ def _find_plppassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (f"I might have been {past_participle}",)
@@ -1099,6 +1111,7 @@ def _find_verbal_noun_inflections(
     verb: str, components: EndingComponents
 ) -> tuple[str, ...]:
     lemma = lemminflect.getLemma(verb, "VERB")[0]
+
     match components.mood:
         case Mood.GERUND:
             return (lemminflect.getInflection(lemma, "VBG")[0],)
