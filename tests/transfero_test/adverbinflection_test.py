@@ -9,6 +9,7 @@ import pytest
 from src.core.accido.misc import Case, Degree, EndingComponents, Gender, Number
 from src.core.transfero._adverb_inflection import find_adverb_inflections, find_main_adverb_inflection
 from src.core.transfero.exceptions import InvalidComponentsError
+from src.core.transfero.words import find_inflection
 
 
 def test_invalid_type():
@@ -41,12 +42,12 @@ class TestAdverbInflection:
         {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily"},
     ])])  # fmt: skip
     def test_adverb_inflection(self, degree, expected):
-        word = "happily"
-        assert find_adverb_inflections(word, EndingComponents(degree=degree)) == expected
+        word = "happy"
+        assert find_inflection(word, EndingComponents(degree=degree)) == expected
 
     @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
         "happily", "more happily", "most happily",
     ])])  # fmt: skip
     def test_adverb_main_inflection(self, degree, expected):
-        word = "happily"
-        assert find_main_adverb_inflection(word, EndingComponents(degree=degree)) == expected
+        word = "happy"
+        assert find_inflection(word, EndingComponents(degree=degree), main=True) == expected
