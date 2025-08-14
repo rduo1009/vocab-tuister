@@ -23,11 +23,19 @@ jobs:
         with:
           python-version-file: ".python-version"
 
+      - name: Cache tox
+        uses: actions/cache@v4
+        with:
+          path: .tox
+          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'poetry.lock') }}
+          restore-keys: |
+            tox-${{ hashFiles('.python-version') }}-
+
       - name: Install tox
         run: python -m pip install tox-gh>=1.2
 
       - name: Install deps
-        run: tox -vv --notest
+        run: tox --notest
 
       - name: Run test suite
         run: tox --skip-pkg-install
@@ -164,10 +172,14 @@ jobs:
         with:
           go-version-file: "go.mod"
 
-      - name: Install deps
+      - name: Install and cache apt deps
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: ffmpeg pipx
+          version: 1.0
+
+      - name: Install other deps
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install dunamai
           go mod download
