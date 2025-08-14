@@ -28,10 +28,14 @@ jobs:
         with:
           go-version-file: "go.mod"
 
-      - name: Install project deps
+      - name: Install and cache apt deps
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: ffmpeg pipx
+          version: 1.0
+
+      - name: Install other deps
         run: |
-          sudo apt update
-          sudo apt install ffmpeg pipx
           sudo snap install ttyd --classic
           pipx install poetry dunamai
           poetry install
