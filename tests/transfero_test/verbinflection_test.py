@@ -203,10 +203,10 @@ class TestVerbInflection:
         word = "attack"
 
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == {"to attack"}
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == {"to be going to attack"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == {"to be about to attack"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == {"to have attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == {"to be attacked"}
-        assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == {"to be going to be attacked"}
+        assert find_verb_inflections(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == {"to be about to be attacked"}
         assert find_verb_inflections(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == {"to have been attacked"}
 
     def test_verb_present_imperative(self):
@@ -400,10 +400,10 @@ class TestMainVerbInflection:
         word = "attack"
 
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == "to attack"
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == "to be going to attack"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == "to be about to attack"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE)) == "to have attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == "to be attacked"
-        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == "to be going to be attacked"
+        assert find_main_verb_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == "to be about to be attacked"
         assert find_main_verb_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE)) == "to have been attacked"
 
     def test_main_verb_present_imperative(self):

@@ -55,7 +55,7 @@ def find_adjective_inflections(
 
     inflections: set[str] = set()
     for lemma in lemmas:
-        inflections |= _inflect_lemma(lemma, components.degree)[1]
+        inflections.update(_inflect_lemma(lemma, components.degree))
 
     return inflections
 
@@ -102,31 +102,31 @@ def find_main_adjective_inflection(
     return _inflect_lemma(lemma, components.degree)[0]
 
 
-def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, set[str]]:
+def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:
     not_comparable = lemma in NOT_COMPARABLE_ADJECTIVES
 
     match degree:
         case Degree.POSITIVE:
-            return (lemma, {lemma})
+            return (lemma,)
 
         case Degree.COMPARATIVE:
             comparatives = lemminflect.getInflection(lemma, "RBR")
-            return (
-                f"more {lemma}" if not_comparable else comparatives[0],
-                {*comparatives, f"more {lemma}"},
-            )
+            main = f"more {lemma}" if not_comparable else comparatives[0]
+            all_forms = {*comparatives, f"more {lemma}"}
+            # The main form must be first.
+            return (main, *sorted(all_forms - {main}))
 
         case _:
             superlatives = lemminflect.getInflection(lemma, "RBS")
-            return (
-                f"most {lemma}" if not_comparable else superlatives[0],
-                {
-                    *superlatives,
-                    f"most {lemma}",
-                    f"very {lemma}",
-                    f"extremely {lemma}",
-                    f"rather {lemma}",
-                    f"too {lemma}",
-                    f"quite {lemma}",
-                },
-            )
+            main = f"most {lemma}" if not_comparable else superlatives[0]
+            all_forms = {
+                *superlatives,
+                f"most {lemma}",
+                f"very {lemma}",
+                f"extremely {lemma}",
+                f"rather {lemma}",
+                f"too {lemma}",
+                f"quite {lemma}",
+            }
+            # The main form must be first.
+            return (main, *sorted(all_forms - {main}))
