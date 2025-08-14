@@ -48,7 +48,9 @@ def _get_possessive(noun: str) -> str:
     return f"{noun}'" if noun.endswith("s") else f"{noun}'s"
 
 
-def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
+def find_noun_inflections(
+    noun: str, components: EndingComponents
+) -> tuple[str, ...]:
     """Inflect English nouns using the case and number.
 
     This function can also be used to inflect pronouns that are treated
@@ -64,8 +66,8 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
 
     Returns
     -------
-    set[str]
-        The possible forms of the noun.
+    tuple[str, ...]
+        The possible forms of the noun (main form first).
 
     Raises
     ------
@@ -82,46 +84,14 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
     except KeyError as e:
         raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
-    inflections: set[str] = set()
+    inflections_list: list[str] = []
     for lemma in lemmas:
-        inflections.update(
+        inflections_list.extend(
             _inflect_lemma(lemma, components.case, components.number)
         )
 
-    return inflections
-
-
-def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
-    """Find the main inflection of an English noun.
-
-    Parameters
-    ----------
-    noun : str
-        The noun to inflect.
-    components : EndingComponents
-        The components of the ending.
-
-    Returns
-    -------
-    str
-        The main inflection of the noun.
-
-    Raises
-    ------
-    InvalidWordError
-        If `noun` is not a valid English noun.
-    InvalidComponentsError
-        If `components` is invalid.
-    """
-    if components.type != ComponentsType.NOUN:
-        raise InvalidComponentsError(f"Invalid type: '{components.type}'")
-
-    try:
-        lemma = lemminflect.getLemma(noun, "NOUN")[0]
-    except KeyError as e:
-        raise InvalidWordError(f"Word {noun} is not a noun.") from e
-
-    return _inflect_lemma(lemma, components.case, components.number)[0]
+    # dict.fromkeys() removes duplicates but keeps order
+    return tuple(dict.fromkeys(inflections_list))
 
 
 def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:

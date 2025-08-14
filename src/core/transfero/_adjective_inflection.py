@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 def find_adjective_inflections(
     adjective: str, components: EndingComponents
-) -> set[str]:
+) -> tuple[str, ...]:
     """Inflect English adjectives using the degree.
 
     Parameters
@@ -28,8 +28,8 @@ def find_adjective_inflections(
 
     Returns
     -------
-    set[str]
-        The possible forms of the adjective.
+    tuple[str, ...]
+        The possible forms of the adjective (main form first).
 
     Raises
     ------
@@ -53,53 +53,12 @@ def find_adjective_inflections(
             f"Word '{adjective}' is not an adjective."
         ) from e
 
-    inflections: set[str] = set()
+    inflections_list: list[str] = []
     for lemma in lemmas:
-        inflections.update(_inflect_lemma(lemma, components.degree))
+        inflections_list.extend(_inflect_lemma(lemma, components.degree))
 
-    return inflections
-
-
-def find_main_adjective_inflection(
-    adjective: str, components: EndingComponents
-) -> str:
-    """Find the main inflection of an English adjective.
-
-    Parameters
-    ----------
-    adjective : str
-        The adjective to inflect.
-    components : EndingComponents
-        The components of the ending.
-
-    Returns
-    -------
-    str
-        The main inflection of the adjective.
-
-    Raises
-    ------
-    InvalidWordError
-        If `adjective` is not a valid English adjective.
-    InvalidComponentsError
-        If `components` is invalid.
-    """
-    if components.type != ComponentsType.ADJECTIVE:
-        raise InvalidComponentsError(f"Invalid type: '{components.type}'")
-
-    if components.subtype is not None:
-        raise InvalidComponentsError(
-            f"Invalid subtype: '{components.subtype}'"
-        )
-
-    try:
-        lemma = lemminflect.getLemma(adjective, "ADJ")[0]
-    except KeyError as e:
-        raise InvalidWordError(
-            f"Word '{adjective}' is not an adjective."
-        ) from e
-
-    return _inflect_lemma(lemma, components.degree)[0]
+    # dict.fromkeys() removes duplicates but keeps order
+    return tuple(dict.fromkeys(inflections_list))
 
 
 def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:

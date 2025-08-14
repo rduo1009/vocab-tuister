@@ -43,7 +43,9 @@ def _verify_verb_inflections(components: EndingComponents) -> None:
         )
 
 
-def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
+def find_verb_inflections(
+    verb: str, components: EndingComponents
+) -> tuple[str, ...]:
     """Inflect English verbs using the ending components.
 
     If a participle is queried, ``find_participle_inflections`` is ran
@@ -58,8 +60,8 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
 
     Returns
     -------
-    set[str]
-        The possible forms of the verb.
+    tuple[str, ...]
+        The possible forms of the verb (main form first).
 
     Raises
     ------
@@ -71,7 +73,7 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
     _verify_verb_inflections(components)
 
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
-        return set(_find_verbal_noun_inflections(verb, components))
+        return _find_verbal_noun_inflections(verb, components)
 
     # For English inflection, deponent and semi-deponent verbs are treated based on context
     # Deponent: always active in meaning.
@@ -89,17 +91,17 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
             components.voice = Voice.ACTIVE  # Present system is active
 
     if components.mood == Mood.PARTICIPLE:
-        return set(_find_participle_inflections(verb, components))
+        return _find_participle_inflections(verb, components)
 
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
-    inflections: set[str] = set()
+    inflections: list[str] = []
     if hasattr(components, "number") and hasattr(components, "person"):
         for lemma in lemmas:
-            inflections.update(
+            inflections.extend(
                 _inflect_lemma(
                     lemma,
                     components.tense,
@@ -111,75 +113,14 @@ def find_verb_inflections(verb: str, components: EndingComponents) -> set[str]:
             )
     else:
         for lemma in lemmas:
-            inflections.update(
+            inflections.extend(
                 _inflect_lemma(
                     lemma, components.tense, components.voice, components.mood
                 )
             )
 
-    return inflections
-
-
-def find_main_verb_inflection(verb: str, components: EndingComponents) -> str:
-    """Find the main inflection of an English verb.
-
-    Parameters
-    ----------
-    verb : str
-        The verb to inflect.
-    components : EndingComponents
-        The components of the ending.
-
-    Returns
-    -------
-    str
-        The main inflection of the verb.
-
-    Raises
-    ------
-    InvalidWordError
-        If `verb` is not a valid English verb.
-    InvalidComponentsError
-        If `components` is invalid.
-    """
-    _verify_verb_inflections(components)
-
-    if components.subtype == ComponentsSubtype.VERBAL_NOUN:
-        return _find_verbal_noun_inflections(verb, components)[0]
-
-    if components.voice == Voice.DEPONENT:
-        components.voice = Voice.ACTIVE
-    elif components.voice == Voice.SEMI_DEPONENT:
-        if components.tense in {
-            Tense.PERFECT,
-            Tense.PLUPERFECT,
-            Tense.FUTURE_PERFECT,
-        }:
-            components.voice = Voice.PASSIVE
-        else:
-            components.voice = Voice.ACTIVE
-
-    if components.mood == Mood.PARTICIPLE:
-        return _find_participle_inflections(verb, components)[0]
-
-    try:
-        lemma = lemminflect.getLemma(verb, "VERB")[0]
-    except KeyError as e:
-        raise InvalidWordError(f"Word {verb} is not a verb.") from e
-
-    if hasattr(components, "number") and hasattr(components, "person"):
-        return _inflect_lemma(
-            lemma,
-            components.tense,
-            components.voice,
-            components.mood,
-            components.number,
-            components.person,
-        )[0]
-
-    return _inflect_lemma(
-        lemma, components.tense, components.voice, components.mood
-    )[0]
+    # dict.fromkeys() removes duplicates but keeps order
+    return tuple(dict.fromkeys(inflections))
 
 
 def _inflect_lemma(  # noqa: PLR0917
