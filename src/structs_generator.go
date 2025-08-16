@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	outputFilepath = "client/pkg/questions/questions.go"
-	jsonDir        = "scripts/json_output/questions"
+	outputFilepath = "questions.go"
+	jsonDir        = "../../../scripts/json_output/questions"
 )
 
 func removeStartLines(s string, n int) string {
@@ -39,11 +39,6 @@ func deriveQuestionType(filename string) string {
 }
 
 func main() {
-	cmd1 := exec.Command("python3", "scripts/create_question_json.py")
-	if err := cmd1.Run(); err != nil {
-		log.Fatalf("Error running create_question_json.py: %v", err)
-	}
-
 	output_file, err := os.Create(outputFilepath)
 	if err != nil {
 		log.Fatalf("Error creating output file: %v", err)
