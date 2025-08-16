@@ -29,8 +29,8 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 }
 
 
-class QuestionClassEncoder(JSONEncoder):  # noqa: D101
-    def default(self, o: object) -> dict[str, Any]:  # noqa: D102
+class QuestionClassEncoder(JSONEncoder):
+    def default(self, o: object) -> dict[str, Any]:
         match o:
             # NOTE: The tester tui currently uses the component string representation
             # case EndingComponents():
