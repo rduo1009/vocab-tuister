@@ -18,14 +18,14 @@ dynamic = [ "version" ]
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==3.19.0",
+  "cyclopts==3.22.5",
   "dill==0.4.0",
-  "dunamai==1.24.1",
+  "dunamai==1.25.0",
   "flask==3.1.1",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "nltk==3.9.1",
-  "pyinstaller==6.14.1",
+  "pyinstaller==6.15.0",
   "waitress==3.0.2",
 ]
 
@@ -45,24 +45,81 @@ syrupy = "4.9.1"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.8.0"
 pytest-pythonhashseed = "1.0.1"
-coverage = "7.9.1"
+coverage = "7.10.3"
 pytest-env = "1.1.5"
 icecream = "2.1.5"
-ruff = "0.12.1"
+ruff = "0.12.8"
 doc8 = "2.0.0"
 rstfmt = "0.0.14"
-mypy = { version = "1.16.1", extras = [ "faster-cache" ] }
-basedpyright = "1.29.1"
+mypy = { version = "1.17.1", extras = [ "faster-cache" ] }
+basedpyright = "1.31.1"
 interrogate = "1.7.0"
-griffe = "1.7.3"
+griffe = "1.11.1"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2024.11.6.20250403"
-types-waitress = "3.0.1.20241117"
-optype = "0.10.0"
+types-regex = "2025.7.34.20250809"
+types-waitress = "3.0.1.20250801"
+optype = "0.13.1"
 
 [tool.poetry-dynamic-versioning]
 enable = true
+
+[tool.ruff]
+target-version = "py313"
+line-length = 79
+exclude = [ "src/_vendor/**" ]
+unsafe-fixes = true
+
+format.preview = true
+format.indent-style = "space"
+format.quote-style = "double"
+format.skip-magic-trailing-comma = true
+format.docstring-code-line-length = 72
+format.docstring-code-format = true
+
+lint.select = [ "ALL" ]
+lint.extend-select = [ "W505" ] # doc line too long
+lint.ignore = [
+  "ANN401",  # `Any` in function arguments
+  "C901",    # mccabe complexity
+  "COM812",  # trailing commas
+  "CPY001",  # no copyright
+  "D105",    # magic method docstrings
+  "DOC502",  # extraneous docstring exceptions 
+  "E",
+  "EM101",   # raw string in exception 
+  "EM102",   # fstring in exception
+  "ERA001",  # commented out code
+  "FIX001",  # fixme comments
+  "FIX002",  # todo comments
+  "FIX004",  # hack comments
+  "I",
+  "PLC0414", # 'useless' import aliases 
+  "PLR0911", # too many `return`s
+  "PLR0912", # too many branches
+  "PLR0913", # too many arguments
+  "PLW1514", # encoding in `open()`
+  "S101",    # assertions
+  "S301",    # using `pickle`
+  "S311",    # using `random`
+  "S403",    # importing `pickle`
+  "TD001",   # banning `fixme`
+  "TD002",   # missing author in todo
+  "TD003",   # missing issue link in todo
+  "TID252",  # relative imports
+  "TRY003",  # use args in exceptions
+  "W",
+]
+lint.per-file-ignores."src/core/accido/_class_*.py" = [ "PLR2004" ]
+lint.per-file-ignores."src/core/lego/reader.py" = [ "PLR2004" ]
+lint.per-file-ignores."src/core/rogo/asker.py" = [ "PLR2004" ]
+lint.per-file-ignores."src/core/rogo/rules.py" = [ "PLR2004" ]
+lint.per-file-ignores."src/server/app.py" = [ "ANN" ]
+lint.flake8-type-checking.quote-annotations = true
+lint.flake8-type-checking.strict = true
+lint.isort.combine-as-imports = true
+lint.pydocstyle.convention = "numpy"
+lint.preview = true
 
 [tool.pytest.ini_options]
 addopts = [
@@ -71,22 +128,13 @@ addopts = [
   "--ignore=src/_build",
   "-n4",
 ]
-markers = [
-  "manual: manually checked tests",
-  "integration: integration tests",
-]
-env = [
-  "VOCAB_TUISTER_RANDOM_SEED=10",
-]
+markers = [ "manual: manually checked tests", "integration: integration tests" ]
+env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
 [tool.coverage.run]
 branch = true
 parallel = true
-omit = [
-  "tests/*",
-  "src/_vendor/*",
-  "src/scripts/*",
-]
+omit = [ "tests/*", "src/_vendor/*", "src/scripts/*" ]
 
 [tool.coverage.report]
 exclude_also = [
@@ -107,26 +155,12 @@ skip_missing_interpreters = true
 
 [tool.tox.env_run_base]
 description = "run tests using pytest"
-deps = [
-  "icecream",
-  "pytest",
-  "pytest-xdist",
-  "requests",
-  "syrupy",
-]
-commands = [
-  [ "pytest", "-m", "not manual and not integration" ],
-]
+deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
+commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
 
 [tool.tox.env.doctest]
 description = "run doctests"
-deps = [
-  "icecream",
-  "pytest",
-  "pytest-xdist",
-  "requests",
-  "syrupy",
-]
+deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
 commands = [
   [
     "pytest",
@@ -142,22 +176,47 @@ commands = [
 
 [tool.tox.env.type]
 description = "run type checks and check stubs"
-deps = [
-  "basedpyright",
-  "icecream",
-  "mypy",
-  "optype",
-  "pytest",
-  "requests",
-]
+deps = [ "basedpyright", "icecream", "mypy", "optype", "pytest", "requests" ]
 set_env = { MYPYPATH = "stubs" }
 commands = [
-  [ "basedpyright" ],
-  [ "stubtest", "dill", "--allowlist", "stubs/dill/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "lemminflect", "--allowlist", "stubs/lemminflect/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "nltk", "--allowlist", "stubs/nltk/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "colors", "--allowlist", "stubs/colors/allowlist", "--ignore-unused-allowlist" ],
-  [ "stubtest", "aenum", "--allowlist", "stubs/aenum/allowlist", "--ignore-unused-allowlist" ],
+  [
+    "basedpyright",
+  ],
+  [
+    "stubtest",
+    "dill",
+    "--allowlist",
+    "stubs/dill/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "lemminflect",
+    "--allowlist",
+    "stubs/lemminflect/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "nltk",
+    "--allowlist",
+    "stubs/nltk/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "colors",
+    "--allowlist",
+    "stubs/colors/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "aenum",
+    "--allowlist",
+    "stubs/aenum/allowlist",
+    "--ignore-unused-allowlist",
+  ],
 ]
 
 [tool.tox.gh]
@@ -225,3 +284,23 @@ ignore-nested-functions = true
 ignore-nested-classes = true
 ignore-overloaded-functions = true
 exclude = [ "setup.py", "docs", "build", "src/_vendor" ]
+
+[tool.poe.tasks.coverage]
+shell = "./scripts/coverage.sh"
+help = "Run coverage on the project."
+
+[tool.poe.tasks.build]
+cmd = "./scripts/build.sh"
+help = "Build the project."
+args = [
+  { name = "debug", default = false, type = "boolean", help = "Build the project into a folder instead of a single file." },
+  { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
+]
+
+[tool.poe.tasks.test]
+cmd = "tox --parallel"
+help = "Run tests on the project."
+
+[tool.poe.tasks.badges]
+cmd = "./scripts/badges.sh"
+help = "Generate badges for the project."

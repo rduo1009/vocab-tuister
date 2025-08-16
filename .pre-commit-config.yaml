@@ -14,7 +14,7 @@ repos:
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.1
+    rev: v0.12.8
     hooks:
       - id: ruff
         args: [--fix]
@@ -23,7 +23,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v2.2.1
+    rev: v2.3.1
     hooks:
       - id: golangci-lint
         args: [--fix, --fast-only]
@@ -42,7 +42,7 @@ repos:
         args: [--keep-full-version]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
