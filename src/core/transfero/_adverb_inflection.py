@@ -67,12 +67,11 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:
             return (f"more {lemma}",)
 
         case _:
-            all_forms = {
+            return (
                 f"most {lemma}",
                 f"very {lemma}",
                 f"extremely {lemma}",
                 f"rather {lemma}",
                 f"too {lemma}",
                 f"quite {lemma}",
-            }
-            return (f"most {lemma}", *sorted(all_forms - {f"most {lemma}"}))
+            )
