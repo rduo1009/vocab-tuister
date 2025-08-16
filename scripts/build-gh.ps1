@@ -3,24 +3,23 @@
 $ErrorActionPreference = "Stop"
 
 # HACK: Using full paths to avoid issues (likely not needed on someone's own machine)
-# TODO: Check if just putting `&` in front of the command would solve this problem
 
 if ($env:debug -eq "True") {
     Write-Host "====== DEBUG MODE ======"
 }
 
 # Only install necessary deps to speed up build
-poetry sync --only main # slower but works better?
-# poetry env remove --all
-# poetry install --only main
+& "C:\Users\runneradmin\.local\bin\poetry" sync --only main # slower but works better?
+# & "C:\Users\runneradmin\.local\bin\poetry" env remove --all
+# & "C:\Users\runneradmin\.local\bin\poetry" install --only main
 
 # Build python server
-poetry run dunamai from any | Set-Content -Path "__version__.txt"
+& "C:\Users\runneradmin\.local\bin\poetry" run dunamai from any | Set-Content -Path "__version__.txt"
 if ($env:debug -eq "True") {
-    poetry run pyinstaller vocab-tuister-server.spec -- --clean
+    & "C:\Users\runneradmin\.local\bin\poetry" run pyinstaller vocab-tuister-server.spec -- --clean
 }
 else {
-    poetry run pyinstaller vocab-tuister-server.spec
+    & "C:\Users\runneradmin\.local\bin\poetry" run pyinstaller vocab-tuister-server.spec
 }
 
 # Determine client binary name
@@ -34,7 +33,7 @@ else {
 }
 
 # Build go client
-$version = (poetry run dunamai from any)
+$version = (& "C:\Users\runneradmin\.local\bin\poetry" run dunamai from any)
 go mod tidy
 # HACK: go generate is not working properly; but problems will be caught by other runs
 # go generate -x ./...; if (-not (& "C:\Program Files\Git\bin\git.exe" diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
@@ -48,8 +47,8 @@ go build `
 # Write-Host ""
 # if ([string]::IsNullOrEmpty($response)) { $response = "Y" }
 # if ($response -eq "y" -or $response -eq "Y") {
-#     poetry install --sync
+#     & "C:\Users\runneradmin\.local\bin\poetry" install --sync
 # }
 # else {
-#     poetry install --only main --sync
+#     & "C:\Users\runneradmin\.local\bin\poetry" install --only main --sync
 # }
