@@ -63,26 +63,7 @@ jobs:
           pipx install poethepoet
 
       - name: Setup project
-        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          go install ./src/_vendor/mkunion/cmd/mkunion
-          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          echo PATH=$PATH >> $GITHUB_ENV
-
-      - name: Setup project
-        if: ${{ matrix.os == 'windows-2022' }}
-        run: |
-          poetry env info
-          poetry env use "C:\hostedtoolcache\windows\Python\3.13.5\x64\python.exe"
-          go install ./src/_vendor/mkunion/cmd/mkunion
-          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          echo PATH=$PATH >> $GITHUB_ENV
-
-      - name: Setup project
-        if: ${{ matrix.os == 'windows-11-arm'}}
-        run: |
-          poetry env info
-          poetry env use "C:\hostedtoolcache\windows\Python\3.13.5\arm64\python.exe"
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
