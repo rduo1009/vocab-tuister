@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 @total_ordering
-class _Word(ABC):  # noqa: PLW1641
+class _Word(ABC):
     """Representation of an Latin word.
 
     This class is not intended to be used by the user. Rather, all of the
@@ -38,11 +38,6 @@ class _Word(ABC):  # noqa: PLW1641
     endings: Endings
     _first: str
     meaning: Meaning
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, _Word):
-            return NotImplemented
-        return self.endings == other.endings and self.meaning == other.meaning
 
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, _Word):
