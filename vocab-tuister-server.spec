@@ -17,6 +17,18 @@ if options.target_arch and sys.platform != "darwin":
 
 target_arch = None
 
+
+def normalised_machine(machine: str) -> str:
+    machine = machine.lower()
+    match machine:
+        case "amd64" | "x86_64" | "x64":
+            return "x86_64"
+        case "arm64" | "aarch64":
+            return "arm64"
+        case _:
+            raise ValueError(f"Unsupported machine architecture: {machine}")
+
+
 if sys.platform == "darwin":
     target_arch = options.target_arch
     if target_arch not in {"x86_64", "arm64", "universal2"}:
@@ -31,7 +43,7 @@ if sys.platform == "darwin":
         # fmt: on
 
         def replace_binaries(dep_list):
-            def _replace_binary(location, file_path):
+            def replace_binary(location, file_path):
                 for i, (name, _, binary_type) in enumerate(dep_list):
                     if name == location:
                         dep_list[i] = (name, file_path, binary_type)
@@ -40,24 +52,28 @@ if sys.platform == "darwin":
                 # else:
                 #     print("not used:", location)
 
-            def _add_binary(location, file_path):
+            def add_binary(location, file_path):
                 dep_list.append((location, file_path, "BINARY"))
 
             for extension in replaced_stdlib_extensions:
-                _replace_binary(
+                replace_binary(
                     f"lib-dynload/{extension}.cpython-313-darwin.so",
                     f"src/_build/macos/stdlib/{extension}.cpython-313-darwin.so",
                 )
 
             for dylib in replaced_dylibs:
-                _replace_binary(
+                replace_binary(
                     f"{dylib}.dylib", f"src/_build/macos/dylib/{dylib}.dylib"
                 )
 
     name = f"vocab-tuister-server-darwin-{target_arch}"
 
 elif sys.platform == "linux":
-    name = f"vocab-tuister-server-linux-{platform.machine()}"
+    name = (
+        f"vocab-tuister-server-linux-{normalised_machine(platform.machine())}"
+    )
+elif sys.platform == "win32":
+    name = f"vocab-tuister-server-windows-{normalised_machine(platform.machine())}"
 else:
     raise ValueError(f"Unsupported platform {sys.platform}")
 

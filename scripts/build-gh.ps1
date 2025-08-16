@@ -3,7 +3,6 @@
 $ErrorActionPreference = "Stop"
 
 # HACK: Using full paths to avoid issues (likely not needed on someone's own machine)
-# TODO: Check if just putting `&` in front of the command would solve this problem
 
 if ($env:debug -eq "True") {
     Write-Host "====== DEBUG MODE ======"
@@ -26,7 +25,12 @@ else {
 # Determine client binary name
 $clientbin_name = ""
 if ($IsWindows) {
-    $clientbin_name = "windows"
+    $arch = (Get-CimInstance Win32_Processor).Architecture
+    switch ($arch) {
+        9 { $clientbin_name = "windows-x86_64" }  
+        12 { $clientbin_name = "windows-arm64" }  
+        default { throw "Unsupported architecture: $arch" }
+    }
 }
 else {
     Write-Host "Unknown OS"
@@ -34,7 +38,7 @@ else {
 }
 
 # Build go client
-$version = (poetry run dunamai from any)
+$version = Get-Content "__version__.txt"
 go mod tidy
 # HACK: go generate is not working properly; but problems will be caught by other runs
 # go generate -x ./...; if (-not (& "C:\Program Files\Git\bin\git.exe" diff --quiet)) { Write-Error "Error: Code changes after go generate."; exit 1 }
