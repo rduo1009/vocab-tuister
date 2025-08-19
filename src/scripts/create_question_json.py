@@ -33,13 +33,13 @@ name: nomen, nominis, (n)
 large: ingens, ingentis, (3-1)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regular
-into: in
-from: e
-
 @ Pronoun
 this: hic, haec, hoc
 that: ille
+
+@ Regular
+into: in
+from: e
 """)
 
 DEFAULT_SETTINGS: Settings = {

@@ -109,13 +109,13 @@ keen: acer, acris, acre, (3-3)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regular
-into: in
-from: e
-
 @ Pronoun
 this: hic, haec, hoc
-that: ille`
+that: ille
+
+@ Regular
+into: in
+from: e`
 
 	// Type out test input
 	for line := range strings.SplitSeq(listToInput, "\n") {

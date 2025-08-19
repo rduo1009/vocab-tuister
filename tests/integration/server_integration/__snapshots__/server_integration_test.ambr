@@ -42,13 +42,13 @@
   list([
     dict({
       'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'hic',
+        'answer': 'in',
         'choices': list([
           'acer',
-          'hic',
+          'in',
           'laetus',
         ]),
-        'prompt': 'this',
+        'prompt': 'into',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
@@ -78,58 +78,86 @@
       'question_type': 'TypeInEngToLatQuestion',
     }),
     dict({
-      'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'ego',
-        'choices': list([
-          'levis',
-          'puer',
-          'ego',
-        ]),
-        'prompt': 'I',
-      }),
-      'question_type': 'MultipleChoiceEngToLatQuestion',
-    }),
-    dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'comparative ablative singular feminine',
-          'comparative ablative singular masculine',
-          'comparative ablative singular neuter',
+          'accusative plural neuter',
+          'nominative plural neuter',
+          'nominative singular feminine',
         ]),
-        'dictionary_entry': 'large: ingens, ingentis, (3-1)',
-        'main_answer': 'comparative ablative singular masculine',
-        'prompt': 'ingentiore',
+        'dictionary_entry': 'this: hic, haec, hoc',
+        'main_answer': 'nominative singular feminine',
+        'prompt': 'haec',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
     dict({
-      'TypeInLatToEngQuestion': dict({
-        'answers': list([
-          'by means of the names',
-          'by the names',
-          'for names',
-          'for the names',
-          'names',
-          'to names',
-          'to the names',
-          'with the names',
-        ]),
-        'main_answer': 'for the names',
-        'prompt': 'nominibus',
-      }),
-      'question_type': 'TypeInLatToEngQuestion',
-    }),
-    dict({
       'MultipleChoiceLatToEngQuestion': dict({
-        'answer': 'good',
+        'answer': 'try',
         'choices': list([
-          'say',
           'good',
-          'large',
+          'take',
+          'try',
         ]),
-        'prompt': 'bonus',
+        'prompt': 'conor',
       }),
       'question_type': 'MultipleChoiceLatToEngQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'comparative nominative singular feminine',
+          'comparative nominative singular masculine',
+          'comparative vocative singular feminine',
+          'comparative vocative singular masculine',
+        ]),
+        'dictionary_entry': 'light: levis, leve, (3-2)',
+        'main_answer': 'comparative nominative singular masculine',
+        'prompt': 'levior',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'accusative singular',
+        ]),
+        'dictionary_entry': 'dog: canis, canis, (m)',
+        'main_answer': 'accusative singular',
+        'prompt': 'canem',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'nomine',
+        ]),
+        'main_answer': 'nomine',
+        'prompt': 'by means of a name',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'best',
+          'extremely good',
+          'extremely well',
+          'most good',
+          'most well',
+          'quite good',
+          'quite well',
+          'rather good',
+          'rather well',
+          'too good',
+          'too well',
+          'very good',
+          'very well',
+        ]),
+        'main_answer': 'best',
+        'prompt': 'optime',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
     }),
     dict({
       'PrincipalPartsQuestion': dict({
@@ -146,7 +174,7 @@
       'MultipleChoiceEngToLatQuestion': dict({
         'answer': 'levis',
         'choices': list([
-          'ille',
+          'e',
           'audio',
           'levis',
         ]),
@@ -178,73 +206,73 @@
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'positive accusative plural feminine',
-          'positive accusative plural masculine',
-          'positive nominative plural feminine',
-          'positive nominative plural masculine',
-          'positive vocative plural feminine',
-          'positive vocative plural masculine',
+          'dative singular feminine',
+          'dative singular masculine',
+          'dative singular neuter',
+          'nominative plural masculine',
         ]),
-        'dictionary_entry': 'keen: acer, acris, acre, (3-3)',
-        'main_answer': 'positive nominative plural masculine',
-        'prompt': 'acres',
+        'dictionary_entry': 'that: ille, illa, illud',
+        'main_answer': 'nominative plural masculine',
+        'prompt': 'illi',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
     dict({
-      'ParseWordCompToLatQuestion': dict({
-        'answers': list([
-          'horum',
-        ]),
-        'components': 'genitive plural neuter',
-        'main_answer': 'horum',
-        'prompt': 'this: hic, haec, hoc',
-      }),
-      'question_type': 'ParseWordCompToLatQuestion',
-    }),
-    dict({
-      'MultipleChoiceLatToEngQuestion': dict({
-        'answer': 'into',
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'laetus',
         'choices': list([
-          'keen',
-          'boy',
-          'into',
+          'e',
+          'laetus',
+          'ego',
         ]),
-        'prompt': 'in',
+        'prompt': 'happy',
       }),
-      'question_type': 'MultipleChoiceLatToEngQuestion',
-    }),
-    dict({
-      'ParseWordCompToLatQuestion': dict({
-        'answers': list([
-          'laetissima',
-        ]),
-        'components': 'superlative accusative plural neuter',
-        'main_answer': 'laetissima',
-        'prompt': 'happy: laetus, laeta, laetum, (2-1-2)',
-      }),
-      'question_type': 'ParseWordCompToLatQuestion',
-    }),
-    dict({
-      'TypeInEngToLatQuestion': dict({
-        'answers': list([
-          'illius',
-        ]),
-        'main_answer': 'illius',
-        'prompt': 'of that',
-      }),
-      'question_type': 'TypeInEngToLatQuestion',
+      'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
     dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'perfect active indicative singular 1st person',
+          'genitive singular',
+          'nominative plural',
+          'vocative plural',
         ]),
-        'dictionary_entry': 'say: inquam',
-        'main_answer': 'perfect active indicative singular 1st person',
-        'prompt': 'inquii',
+        'dictionary_entry': 'boy: puer, pueri, (m)',
+        'main_answer': 'nominative plural',
+        'prompt': 'pueri',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'capio',
+        'choices': list([
+          'hic',
+          'capio',
+          'ego',
+        ]),
+        'prompt': 'take',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'of that',
+        ]),
+        'main_answer': 'of that',
+        'prompt': 'illius',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'levis',
+          'leve',
+        ]),
+        'prompt': 'levis',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
     }),
     dict({
       'PrincipalPartsQuestion': dict({
@@ -286,7 +314,7 @@
         'answer': 'good',
         'choices': list([
           'say',
-          'from',
+          'that',
           'good',
         ]),
         'prompt': 'bonus',
@@ -385,115 +413,108 @@
       'question_type': 'TypeInLatToEngQuestion',
     }),
     dict({
-      'ParseWordLatToCompQuestion': dict({
-        'answers': list([
-          'genitive singular feminine',
-          'genitive singular masculine',
-          'genitive singular neuter',
-        ]),
-        'dictionary_entry': 'that: ille, illa, illud',
-        'main_answer': 'genitive singular masculine',
-        'prompt': 'illius',
-      }),
-      'question_type': 'ParseWordLatToCompQuestion',
-    }),
-    dict({
-      'ParseWordLatToCompQuestion': dict({
-        'answers': list([
-          'ablative plural',
-          'dative plural',
-        ]),
-        'dictionary_entry': 'girl: puella, puellae, (f)',
-        'main_answer': 'dative plural',
-        'prompt': 'puellis',
-      }),
-      'question_type': 'ParseWordLatToCompQuestion',
-    }),
-    dict({
-      'ParseWordLatToCompQuestion': dict({
-        'answers': list([
-          'positive ablative singular feminine',
-          'positive accusative plural neuter',
-          'positive nominative plural neuter',
-          'positive nominative singular feminine',
-          'positive vocative plural neuter',
-          'positive vocative singular feminine',
-        ]),
-        'dictionary_entry': 'good: bonus, bona, bonum, (2-1-2)',
-        'main_answer': 'positive nominative singular feminine',
-        'prompt': 'bona',
-      }),
-      'question_type': 'ParseWordLatToCompQuestion',
-    }),
-    dict({
-      'PrincipalPartsQuestion': dict({
-        'principal_parts': list([
-          'acer',
-          'acris',
-          'acre',
-        ]),
-        'prompt': 'acer',
-      }),
-      'question_type': 'PrincipalPartsQuestion',
-    }),
-    dict({
       'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'harum',
+          'has',
         ]),
-        'components': 'genitive plural feminine',
-        'main_answer': 'harum',
+        'components': 'accusative plural feminine',
+        'main_answer': 'has',
         'prompt': 'this: hic, haec, hoc',
       }),
       'question_type': 'ParseWordCompToLatQuestion',
     }),
     dict({
-      'ParseWordLatToCompQuestion': dict({
-        'answers': list([
-          'superlative ablative singular feminine',
-          'superlative accusative plural neuter',
-          'superlative nominative plural neuter',
-          'superlative nominative singular feminine',
-          'superlative vocative plural neuter',
-          'superlative vocative singular feminine',
-        ]),
-        'dictionary_entry': 'light: levis, leve, (3-2)',
-        'main_answer': 'superlative nominative singular feminine',
-        'prompt': 'levissima',
-      }),
-      'question_type': 'ParseWordLatToCompQuestion',
-    }),
-    dict({
       'PrincipalPartsQuestion': dict({
         'principal_parts': list([
-          'puella',
-          'puellae',
+          'laetus',
+          'laeta',
+          'laetum',
         ]),
-        'prompt': 'puella',
+        'prompt': 'laetus',
       }),
       'question_type': 'PrincipalPartsQuestion',
     }),
     dict({
       'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'bonus',
+        'answer': 'laetus',
         'choices': list([
-          'capio',
-          'acer',
-          'bonus',
+          'laetus',
+          'puella',
+          'hic',
         ]),
-        'prompt': 'good',
+        'prompt': 'happy',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
     dict({
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'light',
+        'choices': list([
+          'light',
+          'into',
+          'large',
+        ]),
+        'prompt': 'levis',
+      }),
+      'question_type': 'MultipleChoiceLatToEngQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'laeta',
+          'laetae',
+          'laetam',
+          'laetarum',
+          'laetas',
+          'laete',
+          'laeti',
+          'laetis',
+          'laeto',
+          'laetorum',
+          'laetos',
+          'laetum',
+          'laetus',
+        ]),
+        'main_answer': 'laetus',
+        'prompt': 'happy',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
+    }),
+    dict({
+      'ParseWordLatToCompQuestion': dict({
+        'answers': list([
+          'gerund accusative',
+          'gerundive masculine accusative singular',
+          'gerundive neuter accusative singular',
+          'gerundive neuter nominative singular',
+          'gerundive neuter vocative singular',
+        ]),
+        'dictionary_entry': 'enter: ingredior, ingredi, ingressus sum',
+        'main_answer': 'gerundive neuter nominative singular',
+        'prompt': 'ingrediendum',
+      }),
+      'question_type': 'ParseWordLatToCompQuestion',
+    }),
+    dict({
+      'TypeInLatToEngQuestion': dict({
+        'answers': list([
+          'you are being taken',
+          'you are taken',
+        ]),
+        'main_answer': 'you are taken',
+        'prompt': 'caperis',
+      }),
+      'question_type': 'TypeInLatToEngQuestion',
+    }),
+    dict({
       'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'e',
+        'answer': 'ille',
         'choices': list([
           'capio',
           'ingens',
-          'e',
+          'ille',
         ]),
-        'prompt': 'from',
+        'prompt': 'that',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
@@ -569,6 +590,17 @@
       'question_type': 'ParseWordCompToLatQuestion',
     }),
     dict({
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'hic',
+          'haec',
+          'hoc',
+        ]),
+        'prompt': 'hic',
+      }),
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
       'TypeInEngToLatQuestion': dict({
         'answers': list([
           'inquimus',
@@ -580,13 +612,13 @@
     }),
     dict({
       'MultipleChoiceEngToLatQuestion': dict({
-        'answer': 'ille',
+        'answer': 'e',
         'choices': list([
           'agricola',
           'laetus',
-          'ille',
+          'e',
         ]),
-        'prompt': 'that',
+        'prompt': 'from',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
@@ -605,34 +637,13 @@
       'MultipleChoiceEngToLatQuestion': dict({
         'answer': 'nomen',
         'choices': list([
-          'hic',
+          'in',
           'capio',
           'nomen',
         ]),
         'prompt': 'name',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
-    }),
-    dict({
-      'TypeInEngToLatQuestion': dict({
-        'answers': list([
-          'puellae',
-          'puellas',
-        ]),
-        'main_answer': 'puellae',
-        'prompt': 'girls',
-      }),
-      'question_type': 'TypeInEngToLatQuestion',
-    }),
-    dict({
-      'PrincipalPartsQuestion': dict({
-        'principal_parts': list([
-          'ingens',
-          'ingentis',
-        ]),
-        'prompt': 'ingens',
-      }),
-      'question_type': 'PrincipalPartsQuestion',
     }),
   ])
 # ---

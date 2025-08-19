@@ -35,11 +35,11 @@ temple: templum, templi, (n)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-from: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+from: e""",
     )
 
     list_2 = VocabList(
@@ -59,11 +59,11 @@ shrine: templum, templi, (n)
 @ Adjectives
 joyful: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-out: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+out: e""",
     )  # fmt: skip
 
     assert list_1 + list_2 == VocabList(
@@ -85,11 +85,12 @@ temple: templum, templi, (n)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
+@ Pronouns
+that: ille
+
 @ Regulars
 from: e
 
-@ Pronouns
-that: ille
 @ Verbs
 listen: audio, audire, audivi, auditus
 
@@ -99,9 +100,9 @@ shrine: templum, templi, (n)
 @ Adjectives
 joyful: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-out: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+out: e""",
     )
