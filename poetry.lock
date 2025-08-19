@@ -1071,18 +1071,18 @@ files = [
 
 [[package]]
 name = "optype"
-version = "0.13.1"
-description = "Building blocks for precise & flexible type hints"
+version = "0.13.3"
+description = "Building Blocks for Precise & Flexible Type Hints"
 optional = false
 python-versions = ">=3.11"
 groups = ["types"]
 files = [
-    {file = "optype-0.13.1-py3-none-any.whl", hash = "sha256:811c6b4c3d40e10b6602e33a546b30b5e595e9ec7c59e050b5e328332ed2659c"},
-    {file = "optype-0.13.1.tar.gz", hash = "sha256:9b1d590597b0c093faf5253e38238c5a5e1a1f9afb04530836c38ac94fdd5cf6"},
+    {file = "optype-0.13.3-py3-none-any.whl", hash = "sha256:0fce3ef95da9f5eefc01b7f06fae363cfe1939027934e108f95fefd169019363"},
+    {file = "optype-0.13.3.tar.gz", hash = "sha256:4cf46601223e7c977e8bc22f4472a59a773877c3ee0b3407d66073cd67326572"},
 ]
 
 [package.extras]
-numpy = ["numpy (>=1.25)", "numpy-typing-compat (>=1.25.20250730)"]
+numpy = ["numpy-typing-compat (>=1.25.20250814,<3)"]
 
 [[package]]
 name = "orjson"
@@ -2040,4 +2040,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "e75b198e1dabf7ac833ac3d880128632c2e22f110ce91428dfde537f2dcb59c6"
+content-hash = "ec2b889186eb9331ef243a53d1e734026285e56d79948adeffbc1f4381afd78f"
