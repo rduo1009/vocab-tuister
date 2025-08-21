@@ -1,10 +1,5 @@
 # pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import pytest
 from src.core.accido.misc import Case, ComponentsSubtype, Degree, EndingComponents, Gender, Number
 from src.core.transfero.exceptions import InvalidComponentsError

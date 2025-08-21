@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import src
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Gender, MultipleMeanings

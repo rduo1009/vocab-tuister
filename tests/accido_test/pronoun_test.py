@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import pytest
 from src.core.accido._edge_cases import PRONOUNS
 from src.core.accido.endings import Noun, Pronoun
