@@ -39,7 +39,7 @@ def _sha256sum(filename: Path) -> str:
 
 
 def cache_vocab_file(
-    cache_folder: Path, vocab_file_path: Path
+    vocab_file_path: Path, cache_folder: Path
 ) -> tuple[VocabList, bool]:
     """Read a vocab file and save the vocab dump inside a cache folder.
 
@@ -49,10 +49,10 @@ def cache_vocab_file(
 
     Parameters
     ----------
-    cache_folder : Path
-        The path to the cache folder.
     vocab_file_path : Path
         The path to the vocab file that is to be read.
+    cache_folder : Path
+        The path to the cache folder.
 
     Returns
     -------
