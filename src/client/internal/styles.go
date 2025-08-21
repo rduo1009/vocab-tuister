@@ -25,19 +25,21 @@ const (
 )
 
 var (
-	NoStyle          = lipgloss.NewStyle()
-	TitleStyle       = lipgloss.NewStyle().Width(physicalWidth).Align(lipgloss.Center).Bold(true).Underline(true)
-	LesserTitleStyle = lipgloss.NewStyle().Bold(true).Underline(true)
-	FaintStyle       = lipgloss.NewStyle().Faint(true)
-	ItalicStyle      = lipgloss.NewStyle().Italic(true)
-	BoldStyle        = lipgloss.NewStyle().Bold(true)
+	NoStyle     = lipgloss.NewStyle()
+	FaintStyle  = lipgloss.NewStyle().Faint(true)
+	ItalicStyle = lipgloss.NewStyle().Italic(true)
+	BoldStyle   = lipgloss.NewStyle().Bold(true)
 
-	SelectedStyle        = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkOrange, Dark: lightOrange})
-	CheckedStyle         = lipgloss.NewStyle().Bold(true)
+	TitleStyle       = lipgloss.NewStyle().Bold(true).Underline(true).Width(physicalWidth).Align(lipgloss.Center)
+	LesserTitleStyle = BoldStyle.Underline(true)
+
+	SelectedStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.AdaptiveColor{Light: darkOrange, Dark: lightOrange})
+	CheckedStyle         = BoldStyle
 	SelectedCheckedStyle = lipgloss.NewStyle().Inherit(SelectedStyle).Inherit(CheckedStyle)
 
 	TextinputFocusedStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkPink, Dark: lightPink})
 	ChoiceSelectedStyle   = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: darkPink, Dark: lightPink})
-	CorrectStyle          = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: darkGreen, Dark: lightGreen})
-	IncorrectStyle        = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.AdaptiveColor{Light: darkRed, Dark: lightRed})
+	CorrectStyle          = BoldStyle.Foreground(lipgloss.AdaptiveColor{Light: darkGreen, Dark: lightGreen})
+	IncorrectStyle        = BoldStyle.Foreground(lipgloss.AdaptiveColor{Light: darkRed, Dark: lightRed})
 )
