@@ -22,8 +22,8 @@ def test_vocablist_add():
             Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple"),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
-            RegularWord("e", meaning="from"),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning="from"),
         ],
         """@ Verbs
 hear: audio, audire, audivi, auditus
@@ -46,9 +46,9 @@ from: e""",
         [
             Verb("audio", "audire", "audivi", "auditus", meaning="listen"), 
             Noun("templum", "templi", gender=Gender.NEUTER, meaning="shrine"), 
-            Adjective("laetus", "laeta", "laetum", declension="212", meaning="joyful"), 
-            RegularWord("e", meaning="out"),
+            Adjective("laetus", "laeta", "laetum", declension="212", meaning="joyful"),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning="out"),
         ], 
         """@ Verbs
 listen: audio, audire, audivi, auditus
@@ -72,8 +72,8 @@ out: e""",
             Noun("templum", "templi", gender=Gender.NEUTER, meaning=MultipleMeanings(("temple", "shrine"))),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning=MultipleMeanings(("happy", "joyful"))),
-            RegularWord("e", meaning=MultipleMeanings(("from", "out"))),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning=MultipleMeanings(("from", "out"))),
         ],
         """@ Verbs
 hear: audio, audire, audivi, auditus
@@ -90,7 +90,6 @@ that: ille
 
 @ Regulars
 from: e
-
 @ Verbs
 listen: audio, audire, audivi, auditus
 

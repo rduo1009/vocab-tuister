@@ -33,10 +33,10 @@ def test_reader():
             Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
-            RegularWord("in", meaning="into"),
-            RegularWord("e", meaning="from"),
             Pronoun("hic", meaning="this"),
             Pronoun("ille", meaning="that"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
         ],
         """@ Verb
 hear: audio, audire, audivi, auditus
@@ -94,10 +94,10 @@ def test_reader_with_s():
             Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
             Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
             Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
-            RegularWord("in", meaning="into"),
-            RegularWord("e", meaning="from"),
             Pronoun("hic", meaning="this"),
             Pronoun("ille", meaning="that"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
         ],
         """@Verbs
 hear: audio, audire, audivi, auditus
