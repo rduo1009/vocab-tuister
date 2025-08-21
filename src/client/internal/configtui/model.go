@@ -6,8 +6,8 @@ import (
 )
 
 type Setting struct {
-	DisplayName  string
 	InternalName string
+	DisplayName  string
 	Checked      bool
 }
 
