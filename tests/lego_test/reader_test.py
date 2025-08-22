@@ -5,7 +5,7 @@ from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Gender, MultipleMeanings
 from src.core.lego.exceptions import InvalidVocabFileFormatError
 from src.core.lego.misc import VocabList
-from src.core.lego.reader import _regenerate_vocab_list, read_vocab_file
+from src.core.lego.reader import read_vocab_file
 
 
 def test_reader():
@@ -68,11 +68,6 @@ from: e
 #
 # asnfdbjx""",
     )
-
-
-def test_regenerate():
-    l = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    assert l == _regenerate_vocab_list(l)
 
 
 def test_reader_with_s():

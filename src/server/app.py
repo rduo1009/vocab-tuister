@@ -2,6 +2,8 @@
 
 # ruff: noqa: D103
 
+from __future__ import annotations
+
 import json
 import logging
 import traceback
@@ -12,8 +14,7 @@ from flask import Flask, Response, render_template, request
 from waitress import serve
 from werkzeug.exceptions import BadRequest
 
-from ..core.lego.misc import VocabList
-from ..core.lego.reader import _read_vocab_file_internal
+from ..core.lego.reader import read_vocab_file
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
 from ..utils.typeddict_validator import (
@@ -25,7 +26,7 @@ from ..utils.typeddict_validator import (
 from ._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
+    from ..core.lego.misc import VocabList
 
 logger = logging.getLogger(__name__)
 
@@ -61,27 +62,13 @@ def send_vocab():
     try:
         logger.info("Reading vocab list.")
         vocab_list_text = StringIO(request.get_data().decode("utf-8"))
-        vocab_list = VocabList(
-            _read_vocab_file_internal(vocab_list_text),
-            vocab_list_text.getvalue(),
-        )
+        vocab_list = read_vocab_file(vocab_list_text)
     except Exception as e:
         raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
             e.__traceback__
         ) from e
 
     return "Vocab list received."
-
-
-def generate_questions_sample_json(
-    vocab_list: VocabList, question_amount: int, settings: Settings
-) -> "Generator[str]":
-    return (
-        json.dumps(question, cls=QuestionClassEncoder)
-        for question in ask_question_without_sr(
-            vocab_list, question_amount, settings
-        )
-    )
 
 
 def _generate_questions_json(

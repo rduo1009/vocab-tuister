@@ -8,6 +8,7 @@ import hmac
 import logging
 import warnings
 from io import StringIO
+from pathlib import Path
 from re import match
 from typing import TYPE_CHECKING, Literal, cast
 
@@ -22,20 +23,12 @@ from .exceptions import InvalidVocabDumpError, InvalidVocabFileFormatError
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
-    from pathlib import Path
-    from typing import TextIO
+    from optype.io import CanRead
 
     from ..accido.endings import _Word
     from ..accido.type_aliases import Meaning
 
 logger = logging.getLogger(__name__)
-
-
-def _regenerate_vocab_list(vocab_list: VocabList) -> VocabList:
-    return VocabList(
-        _read_vocab_file_internal(StringIO(vocab_list.vocab_list_text)),
-        vocab_list.vocab_list_text,
-    )
 
 
 def read_vocab_dump(filename: Path) -> VocabList:
@@ -96,15 +89,9 @@ def read_vocab_dump(filename: Path) -> VocabList:
             "Vocab dump is from a different version of vocab-tester.",
             stacklevel=2,
         )
-        return _regenerate_vocab_list(raw_data)
+        return read_vocab_file(StringIO(raw_data.vocab_list_text))
 
     raise InvalidVocabDumpError("Vocab dump is not valid.")
-
-
-def _generate_meaning(meaning: str) -> Meaning:
-    if "/" in meaning:
-        return MultipleMeanings(tuple(x.strip() for x in meaning.split("/")))
-    return meaning
 
 
 type _PartOfSpeech = Literal[  # pragma: no mutate
@@ -116,13 +103,20 @@ def _is_typeofspeech(x: str) -> bool:
     return x in {"Verb", "Adjective", "Noun", "Regular", "Pronoun"}
 
 
-def read_vocab_file(file_path: Path) -> VocabList:
+def _generate_meaning(meaning: str) -> Meaning:
+    if "/" in meaning:
+        return MultipleMeanings(tuple(x.strip() for x in meaning.split("/")))
+    return meaning
+
+
+def read_vocab_file(source: str | Path | CanRead[str]) -> VocabList:
     """Read a vocabulary file and return a ``VocabList`` object.
 
     Parameters
     ----------
-    file_path : Path
-        The path to the vocabulary file.
+    source : str | Path | CanRead[str]
+        The path to the vocabulary file, or any readable object (e.g. an opened
+        file).
 
     Returns
     -------
@@ -143,21 +137,18 @@ def read_vocab_file(file_path: Path) -> VocabList:
     --------
     >>> read_vocab_file(Path("path_to_file.txt"))  # doctest: +SKIP
     """
-    with file_path.open("r") as file:
-        contents = file.read()
+    if isinstance(source, (str, Path)):
+        with Path(source).open("r", encoding="utf-8") as f:
+            contents = f.read()
+    else:
+        contents = source.read()
 
-    return VocabList(
-        _read_vocab_file_internal(StringIO(contents)), str(contents)
-    )
-
-
-def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
     vocab: list[_Word] = []
     current: _PartOfSpeech | Literal[""] = ""
 
     for line in (
         raw_line.strip()  # remove whitespace
-        for raw_line in file.read().split("\n")  # for line in file
+        for raw_line in contents.split("\n")  # for line in file
         if raw_line.strip()  # but skip if the line is blank
     ):
         logger.debug("Reading line '%s'", line)
@@ -188,7 +179,7 @@ def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
                         )
 
             case _:
-                parts = line.strip().split(":")
+                parts = line.split(":")
                 if len(parts) != 2:
                     raise InvalidVocabFileFormatError(
                         f"Invalid line format: '{line}'"
@@ -206,7 +197,7 @@ def _read_vocab_file_internal(file: TextIO) -> list[_Word]:
 
                 vocab.append(_parse_line(current, latin_parts, meaning, line))
 
-    return vocab
+    return VocabList(vocab, str(contents))
 
 
 def _parse_line(
