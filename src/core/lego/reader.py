@@ -1,4 +1,4 @@
-"""Contains functions for reading vocabulary files."""
+"""Contains functions for reading vocab files."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def read_vocab_dump(filename: Path) -> VocabList:
-    """Read a vocabulary dump file and return a ``VocabList`` object.
+    """Read a vocab dump file and return a ``VocabList`` object.
 
     The pickle files are signed with a HMAC signature to ensure the data
     has not been tampered with. If the data is invalid, an exception is
@@ -42,17 +42,17 @@ def read_vocab_dump(filename: Path) -> VocabList:
     Parameters
     ----------
     filename : Path
-        The path to the vocabulary dump file.
+        The path to the vocab dump.
 
     Returns
     -------
     VocabList
-        The vocabulary from the file.
+        The vocab list generated from the vocab dump.
 
     Raises
     ------
     InvalidVocabDumpError
-        If the file is not a valid vocabulary dump, or if the data has been
+        If the file is not a valid vocab dump, or if the data has been
         tampered with.
     FileNotFoundError
         If the file does not exist.
@@ -110,24 +110,24 @@ def _generate_meaning(meaning: str) -> Meaning:
 
 
 def read_vocab_file(source: str | Path | CanRead[str]) -> VocabList:
-    """Read a vocabulary file and return a ``VocabList`` object.
+    """Read a vocab file and return a ``VocabList`` object.
 
     Parameters
     ----------
     source : str | Path | CanRead[str]
-        The path to the vocabulary file, or any readable object (e.g. an opened
+        The path to the vocab file, or any readable object (e.g. an opened
         file).
 
     Returns
     -------
     VocabList
-        The vocabulary from the file.
+        The vocab list generated from the file.
 
     Raises
     ------
     InvalidVocabFileFormatError
-        If the file is not a valid vocabulary file, or if the formatting
-        is incorrect.
+        If the file is not a valid vocab file, or if the formatting is
+        incorrect.
     FileNotFoundError
         If the file does not exist.
     InvalidVocabListError
@@ -203,14 +203,14 @@ def read_vocab_file(source: str | Path | CanRead[str]) -> VocabList:
 def _parse_line(
     current: _PartOfSpeech, latin_parts: list[str], meaning: Meaning, line: str
 ) -> _Word:
-    """Create a word object from a line of a vocab list and the pos.
+    """Create a word object from a line of a vocab file and the pos.
 
     Parameters
     ----------
     current : _PartOfSpeech
         The part of speech of the word object.
     latin_parts : list[str]
-        The split parts of the word definition in the vocab list.
+        The split parts of the word definition in the vocab file.
     meaning : Meaning
         The meaning of the word.
     line : str
@@ -224,7 +224,7 @@ def _parse_line(
     Raises
     ------
     InvalidVocabFileFormatError
-        If the vocab list is formatted incorrectly.
+        If the vocab file is formatted incorrectly.
     """
     if current == "Verb":
         if len(latin_parts) not in {1, 3, 4}:

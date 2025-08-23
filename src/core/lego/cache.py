@@ -43,9 +43,8 @@ def cache_vocab_file(
 ) -> tuple[VocabList, bool]:
     """Read a vocab file and save the vocab dump inside a cache folder.
 
-    The name of the vocabulary dump file is decided by hashing the
-    vocab file given. Note that if the cache folder does not exist,
-    it is created.
+    The name of the vocab dump is decided by hashing the vocab file given. Note
+    that if the cache folder does not exist, it is created.
 
     Parameters
     ----------
@@ -59,13 +58,13 @@ def cache_vocab_file(
     VocabList
         The vocab list.
     bool
-        Whether the vocab list was generated from cache or not.
+        Whether the vocab list was created from cache or not.
 
     Warnings
     --------
     UserWarning
         If the cache folder did not exist and had to be created, or if the
-        vocab dump file already exists and has been overwritten.
+        vocab dump already exists and has been overwritten.
     MisleadingFilenameWarning
         If the file path does not end in `.gzip` and the file is being
         compressed, or if the file path ends in `.gzip` and the file is
@@ -74,11 +73,11 @@ def cache_vocab_file(
     Raises
     ------
     InvalidVocabFileFormatError
-        If the file provided is not a valid vocabulary file, or if the
-        formatting is incorrect.
+        If the file provided is not a valid vocab file, or if the formatting is
+        incorrect.
     InvalidVocabDumpError
-        If the file in the cache is not a valid vocabulary dump, or if
-        the data has been tampered with.
+        If the file in the cache is not a valid vocab dump, or if the data has
+        been tampered with.
     FileNotFoundError
         If the vocab file or dump does not exist.
     """

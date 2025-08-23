@@ -58,7 +58,7 @@ def ask_question_without_sr(
     Parameters
     ----------
     vocab_list : VocabList
-        The vocabulary list to use.
+        The vocab list to use.
     amount : int
         The number of questions to ask.
     settings : Settings
@@ -89,7 +89,7 @@ def ask_question_without_sr(
 
     if not filtered_vocab:
         raise InvalidSettingsError(
-            "No words in the vocabulary list after filtering."
+            "No words in the vocab list after filtering."
         )
 
     for _ in range(amount):

@@ -60,7 +60,7 @@ def send_vocab():
     global vocab_list  # noqa: PLW0603
 
     try:
-        logger.info("Reading vocab list.")
+        logger.info("Reading vocab file.")
         vocab_list_text = StringIO(request.get_data().decode("utf-8"))
         vocab_list = read_vocab_file(vocab_list_text)
     except Exception as e:
@@ -68,7 +68,7 @@ def send_vocab():
             e.__traceback__
         ) from e
 
-    return "Vocab list received."
+    return "Vocab file received."
 
 
 def _generate_questions_json(
@@ -90,7 +90,7 @@ def _generate_questions_json(
 @app.route("/session", methods=["POST"])
 def create_session():
     if not vocab_list:
-        raise BadRequest("Vocab list has not been provided.")
+        raise BadRequest("Vocab file has not been provided.")
 
     logger.info("Validating settings.")
     settings: dict[str, Any] = request.get_json()

@@ -1,6 +1,6 @@
 # serializer version: 1
 # name: test_cli_error_extra_config
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_error_extra_config.1
   "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
@@ -9,34 +9,34 @@
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
 # ---
 # name: test_cli_error_list.1
-  'Bad request: 400 Bad Request: Vocab list has not been provided.'
+  'Bad request: 400 Bad Request: Vocab file has not been provided.'
 # ---
 # name: test_cli_error_missing1_config
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_error_missing1_config.1
   "Bad request: 400 Bad Request: Required settings are missing: 'number-of-questions'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_missing2_config
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_error_missing2_config.1
   "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type1_config
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_error_type1_config.1
   "Bad request: 400 Bad Request: Required settings are missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSettingsError)"
 # ---
 # name: test_cli_error_type2_config
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_error_type2_config.1
   "Bad request: 400 Bad Request: Invalid settings: 'number-of-questions' must be an integer (got type str). (InvalidSettingsError)"
 # ---
 # name: test_cli_normal
-  'Vocab list received.'
+  'Vocab file received.'
 # ---
 # name: test_cli_normal.1
   list([

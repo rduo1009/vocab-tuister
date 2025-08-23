@@ -132,7 +132,7 @@ from: e`
 	out := readBts(t, tm.FinalOutput(t))
 	teatest.RequireEqualOutput(t, out)
 
-	// Test vocab list output
+	// Test vocab file output
 	rawGot, err := os.ReadFile(filePath)
 	if err != nil {
 		t.Fatalf("error opening file %s: %s", filePath, err)
