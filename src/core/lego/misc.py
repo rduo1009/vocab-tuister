@@ -15,10 +15,9 @@ if TYPE_CHECKING:
 
 @dataclass
 class VocabList:
-    """Represents a list of Latin vocabulary.
+    """Represents a list of Latin vocab.
 
-    Each piece of vocabulary is represented by the classes in the accido
-    package.
+    Each word is represented by the classes in the accido package.
 
     Attributes
     ----------
@@ -26,7 +25,7 @@ class VocabList:
         The vocabulary in the list.
     version : str
         The version of the package. Used to regenerate the endings if the
-        version of the package is different (e.g. if the package is updated).
+        version of ``vocab-tester`` is different (e.g. if the package is updated).
 
     Examples
     --------
@@ -59,5 +58,4 @@ class VocabList:
         )
 
 
-"""The key used to sign vocabulary pickle files."""
 KEY: Final[bytes] = b"vocab-tester-key"

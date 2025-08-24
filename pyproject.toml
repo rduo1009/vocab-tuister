@@ -233,6 +233,7 @@ check_untyped_defs = true
 include = [ "src", "tests", "stubs" ]
 exclude = [ "src/_build", "src/_vendor", "tests/conftest.py" ]
 stubPath = "stubs"
+extraPaths = [ "./src" ]
 
 reportImportCycles = "information"
 reportPossiblyUnboundVariable = "warning"
@@ -246,20 +247,17 @@ reportPrivateLocalImportUsage = false
 
 [[tool.basedpyright.executionEnvironments]]
 root = "./src/server"
-extraPaths = [ "./src" ]
 reportAny = false
 reportExplicitAny = false
 
 [[tool.basedpyright.executionEnvironments]]
 root = "./src/scripts"
-extraPaths = [ "./src" ]
 reportAny = false
 reportExplicitAny = false
 reportUnusedCallResult = false
 
 [[tool.basedpyright.executionEnvironments]]
 root = "./tests"
-extraPaths = [ "./src" ]
 reportUnknownParameterType = false
 reportUnknownArgumentType = false
 reportUnknownMemberType = false
@@ -272,7 +270,6 @@ reportUnusedExpression = false
 
 [[tool.basedpyright.executionEnvironments]]
 root = "./stubs"
-extraPaths = [ "./src" ]
 reportUnannotatedClassAttribute = false
 
 [tool.interrogate]

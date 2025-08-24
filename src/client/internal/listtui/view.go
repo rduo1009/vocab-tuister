@@ -21,7 +21,7 @@ func (m Model) View() string {
 		m.textarea.SetHeight(m.height - 3)
 	}
 
-	b.WriteString(internal.TitleStyle.Render("Vocab List Creator\n"))
+	b.WriteString(internal.TitleStyle.Render("Vocab File Creator\n"))
 	b.WriteString("\n" + m.textarea.View() + "\n")
 	b.WriteString(m.help.View(m.keys))
 
