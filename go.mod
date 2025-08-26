@@ -107,7 +107,7 @@ require (
 require (
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250317102001-c803e5cafd0b // test
 	github.com/muesli/termenv v0.16.0 // test
-	github.com/stretchr/testify v1.10.0 // test
+	github.com/stretchr/testify v1.11.0 // test
 )
 
 replace github.com/widmogrod/mkunion => ./src/_vendor/mkunion
