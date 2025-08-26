@@ -48,7 +48,7 @@ pytest-pythonhashseed = "1.0.1"
 coverage = "7.10.4"
 pytest-env = "1.1.5"
 icecream = "2.1.7"
-ruff = "0.12.9"
+ruff = "0.12.10"
 doc8 = "2.0.0"
 rstfmt = "0.0.14"
 mypy = { version = "1.17.1", extras = [ "faster-cache" ] }
