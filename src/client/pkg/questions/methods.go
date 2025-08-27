@@ -19,6 +19,12 @@ var containsStr = slices.Contains[[]string, string]
 // 	return false
 // }
 
+//go:generate poetry run python3 ../../../scripts/create_question_json.py
+//go:generate go run ../../../structs_generator.go
+//go:generate mkunion watch -g questions.go
+//go:generate mkunion
+//go:generate patch types_reg_gen.go types_reg_gen_fix.diff
+
 func Check(q Question, response any) bool {
 	return MatchQuestionR1(
 		q,

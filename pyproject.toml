@@ -21,7 +21,7 @@ dependencies = [
   "cyclopts==3.22.5",
   "dill==0.4.0",
   "dunamai==1.25.0",
-  "flask==3.1.1",
+  "flask==3.1.2",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "nltk==3.9.1",
@@ -42,24 +42,24 @@ poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] 
 [tool.poetry.group.dev.dependencies]
 pytest = "8.4.1"
 syrupy = "4.9.1"
-pytest-sugar = "1.0.0"
+pytest-sugar = "1.1.1"
 pytest-xdist = "3.8.0"
 pytest-pythonhashseed = "1.0.1"
-coverage = "7.10.3"
+coverage = "7.10.5"
 pytest-env = "1.1.5"
-icecream = "2.1.5"
-ruff = "0.12.8"
+icecream = "2.1.7"
+ruff = "0.12.10"
 doc8 = "2.0.0"
 rstfmt = "0.0.14"
 mypy = { version = "1.17.1", extras = [ "faster-cache" ] }
-basedpyright = "1.31.1"
+basedpyright = "1.31.3"
 interrogate = "1.7.0"
-griffe = "1.11.1"
+griffe = "1.12.1"
 
 [tool.poetry.group.types.dependencies]
 types-regex = "2025.7.34.20250809"
 types-waitress = "3.0.1.20250801"
-optype = "0.13.1"
+optype = "0.13.4"
 
 [tool.poetry-dynamic-versioning]
 enable = true
