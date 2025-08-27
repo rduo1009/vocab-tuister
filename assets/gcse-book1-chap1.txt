@@ -9,7 +9,7 @@ prepare: paro, parare, paravi, paratus
 carry: porto, portare, portavi, portatus
 fight: pugno, pugnare, pugnavi, pugnatus
 greet: saluto, salutare, salutavi, salutatum
-be: sum, esse, fui
+be: sum, esse, fui, futurus
 call: voco, vocare, vocavi, vocatus
 
 @ Nouns
