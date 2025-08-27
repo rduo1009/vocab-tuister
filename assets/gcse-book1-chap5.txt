@@ -1,0 +1,61 @@
+@ Verbs
+climb: ascendo, ascendere, ascendi, ascensus
+believe/trust: credo, credere, credidi, creditus
+defend: defendo, defendere, defendi, defensus
+place/put/set up: pono, ponere, posui, positus
+rule: rego, regere, rexi, rectus
+ask/ask for: rogo, rogare, rogavi, rogatus
+overcome/beat: supero, superare, superavi, superatus
+be silent/be quiet: taceo, tacere, tacui, tacitus
+hold: teneo, tenere, tenui, tentus
+hand over/hand down: trado, tradere, tradidi, traditus
+conquer/win/be victorious: vinco, vincere, vici, victus
+
+@ Nouns
+# NOTE: Can be feminine but omitted for simplicity
+citizen: civis, civis, (m)
+daughter: fila, filae, (f)
+son: filius, filii, (m)
+# NOTE: Can be masculine but plural is neuter
+place: locus, loci, (n)
+mountain: mons, montis, (m)
+death: mors, mortis, (f)
+we: nos
+peace: pax, pacis, (f)
+oneself: se
+wood: silva, silvae, (f)
+you all/you: vos
+
+@ Adjectives
+quick/fast: celer, celeris, celere, (3-3)
+difficult: difficilis, difficile, (3-2)
+easy: facilis, facile, (3-2)
+fierce/ferocious: ferox, ferocis, (3-1)
+brave: fortis, forte, (3-2)
+heavy/serious: gravis, grave, (3-2)
+huge: ingens, ingentis, (3-1)
+our/ours: noster, nostra, nostrum, (212)
+all/every: omnis, omne, (3-2)
+savage/cruel: saevus, saeva, saevum, (212)
+his/her/its: suus, sua, suum, (212)
+sad: tristis, triste, (3-2)
+your/yours: vester, vestra, vestrum, (212)
+
+@ Pronouns
+he/she/it: is, ea, id
+
+@ Regulars
+well: bene
+tomorrow: cras
+look: ecce
+for: enim
+by chance: forte
+yesterday: heri
+today: hodie
+therefore/and so: igitur
+soon: mox
+never: numquam
+once/some time ago: olim
+often: saepe
+however: tamen
+then: tum

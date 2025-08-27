@@ -1,0 +1,53 @@
+@ Verbs
+arrive: advenio, advenire, adveni, adventum
+build: aedifico, aedificare, aedificavi, aedificatus
+fall: cado, cadere, cecidi, casum
+eat: consumo, consumere, consumpsi, consumptus
+run: curro, currere, cucurri, cursus
+ought/should/must/owe: debeo, debere, debui, debitus
+destroy: deleo, delere, delevi, deletus
+depart/leave: discedo, discedere, discessi, discessus
+hurry: festino, festinare, festinavi, festinatus
+live/dwell: habito, habitare, habitavi, habitatus
+invite: invito, invitare, invitavi, invitatus
+weep/cry: lacrimo, lacrimare, lacrimavi, lacrimatus
+remain/stay: maneo, manere, mansi, mansus
+attack: oppugno, oppugnare, oppugnavi, oppugnatus
+# FIXME: Why does 'can' not work with certain lemminflect inflections?
+can/be able: possum, posse, potui
+search for/look for/ask: quaero, quaerere, quaesivi, quaesitus
+
+@ Nouns
+dinner/meal: cena, cenae, (f)
+plan/idea/advice: consilium, consilii, (n)
+mistress: domina, dominae, (f)
+forum/marketplace: forum, fori, (n)
+freedman/ex-slave: libertus, liberti, (m)
+sailor: nauta, nautae, (m)
+country/homeland: patria, patriae, (f)
+gate: porta, portae, (f)
+earth/ground/land/country: terra, terrae, (f)
+road/street/way: via, viae, (f)
+
+@ Adjectives
+good: bonus, bona, bonum, (212)
+angry: iratus, irata, iratum, (212)
+happy: laetus, laeta, laetum, (212)
+big/large/great: magnus, magna, magnum, (212)
+bad/evil: malus, mala, malum, (212)
+miserable/wretched/sad: miser, misera, miserum, (212)
+much: multus, multa, multum, (212)
+new: novus, nova, novum, (212)
+small: parvus, parva, parvum, (212)
+beautiful/handsome: pulcher, pulchra, pulchrum, (212)
+Roman: Romanus, Romana, Romanum, (212)
+stupid/foolish: stultus, stulta, stultum, (212)
+
+@ Regulars
+then/next: deinde
+for a long time: diu
+among/between: inter
+and: -que
+at once/immediately: statim
+suddenly: subito
+at last/finally: tandem

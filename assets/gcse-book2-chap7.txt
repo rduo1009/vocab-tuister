@@ -1,0 +1,55 @@
+@ Verbs
+hide: celo, celare, celavi, celatus
+wage: gero, gerere, gessi, gestus
+burn/set on fire: incendo, incendere, incendi, incensus
+praise: laudo, laudare, laudavi, laudatus
+move: moveo, movere, movi, motus
+tell/relate: narro, narrare, narravi, narratus
+resist: resisto, resistere, restiti
+stand: sto, stare, steti, statum
+
+@ Nouns
+mind/spirit/soul: animus, animi, (m)
+captive/prisoner: captivus, captivi, (m)
+camp: castra, castrorum, (n)
+# NOTE: Can be feminine but omitted for simplicity
+companion/comrade: comes, comitis, (m)
+consul: consul, consulis, (m)
+body: corpus, corporis, (n)
+# NOTE: Same here
+guard: custos, custodis, (m)
+river: flumen, fluminis, (n)
+general/leader/emperor: imperator, imperatoris, (m)
+manner/way/kind: modus, modi, (m)
+part: pars, partis, (f)
+blood: sanguis, sanguinis, (m)
+courage/virtue: virtus, virtutis, (f)
+
+@ Adjectives
+bold/daring: audax, audacis, (3-1)
+famous/clear: clarus, clara, clarum, (212)
+cruel: crudelis, crudele, (3-2)
+alone/lonely/only: solus, sola, solum, (212)
+
+@ Pronouns
+this: hic, haec, hoc
+that: ille, illa, illud
+# FIXME: haven't implemented this one!
+few/a few: pauci, paucae, pauca
+
+@ Regulars
+from/away from/by/by means of/with: a/ab
+now/already: iam
+there: ibi
+no: minime
+# HACK: Technically an indeclinable noun/pronoun
+nothing: nihil
+at first: primo
+than/how: quam
+as quickly as possible: quam celerrime
+thus/in this way: sic
+without: sine
+
+# Omitted:
+# 'et ... et' ('both ... and') as it is a grammar pattern
+# 'maior', 'maximus', etc. as they are comparative and superlative forms
