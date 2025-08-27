@@ -3,7 +3,8 @@ package sessiontui
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -25,7 +26,7 @@ const (
 )
 
 func extractJSONObjects(jsonList []byte) ([][]byte, error) {
-	var rawSlice []json.RawMessage
+	var rawSlice []jsontext.Value
 	if err := json.Unmarshal(jsonList, &rawSlice); err != nil {
 		return nil, err
 	}

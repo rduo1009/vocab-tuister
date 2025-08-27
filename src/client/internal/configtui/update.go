@@ -1,7 +1,8 @@
 package configtui
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -36,7 +37,7 @@ func saveConfig(filePath string, config configMap) tea.Cmd {
 			return errMsg{err}
 		}
 
-		data, err := json.MarshalIndent(config, "", "  ")
+		data, err := json.Marshal(config, jsontext.WithIndent("  "))
 		if err != nil {
 			return errMsg{err}
 		}
