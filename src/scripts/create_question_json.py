@@ -2,20 +2,15 @@
 
 from __future__ import annotations
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))  # fmt: skip  # noqa: PTH100, PTH118, PTH120
-
 import json
 from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
-from core.rogo.asker import ask_question_without_sr
-from server._json_encode import QuestionClassEncoder  # noqa: PLC2701
 from src.core.lego.reader import read_vocab_file
+from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.rules import CLASS_RULES
+from src.server._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
     from collections.abc import Generator
