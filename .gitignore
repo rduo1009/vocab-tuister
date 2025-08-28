@@ -30,4 +30,4 @@ __version__.txt
 # Local project files
 TODO.md
 /.vscode/settings.json
-/.vscode/tests.code-snippetsmain
+/.vscode/tests.code-snippets
