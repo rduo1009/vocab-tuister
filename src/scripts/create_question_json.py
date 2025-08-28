@@ -7,10 +7,10 @@ from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
-from core.rogo.asker import ask_question_without_sr
-from server._json_encode import QuestionClassEncoder  # noqa: PLC2701
 from src.core.lego.reader import read_vocab_file
+from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.rules import CLASS_RULES
+from src.server._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
     from collections.abc import Generator
