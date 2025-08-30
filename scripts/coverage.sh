@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+export GOEXPERIMENT=jsonv2
 mkdir -p reports/coverage
 
 echo -n "Running Python tests with coverage... "

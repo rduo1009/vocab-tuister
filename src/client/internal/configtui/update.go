@@ -1,7 +1,8 @@
 package configtui
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -36,10 +37,22 @@ func saveConfig(filePath string, config configMap) tea.Cmd {
 			return errMsg{err}
 		}
 
-		data, err := json.MarshalIndent(config, "", "  ")
+		data, err := json.Marshal(config)
 		if err != nil {
 			return errMsg{err}
 		}
+
+		// Convert to Value and canonicalize to maintain alphabetical key ordering
+		var value jsontext.Value = data
+		err = value.Canonicalize(
+			jsontext.WithIndent("  "),
+			jsontext.SpaceAfterColon(true),
+			jsontext.SpaceAfterComma(false),
+		)
+		if err != nil {
+			return errMsg{err}
+		}
+		data = []byte(value)
 
 		if err = os.WriteFile(absPath, data, 0o644); err != nil {
 			return errMsg{err}

@@ -131,15 +131,21 @@ jobs:
 
       - name: Install deps
         run: go mod download
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Run test suite
         id: run-tests
         run: go test ./src/...
         continue-on-error: true
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Update test data
         if: steps.run-tests.outcome == 'failure'
         run: go test ./src/client/internal/... -update
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Upload changed files
         if: steps.run-tests.outcome == 'failure'
@@ -183,9 +189,13 @@ jobs:
           sudo snap install ttyd --classic
           pipx install dunamai
           go mod download
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Run integration tests
         run: ./tests/integration/client_integration/client-integration-tests.sh
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Upload changed files
         if: failure()
