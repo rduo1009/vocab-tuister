@@ -49,6 +49,8 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: "go.mod"
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -72,6 +74,8 @@ jobs:
           go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Ensure Poetry is on PATH
         if: ${{ startsWith(matrix.os, 'windows') }}
@@ -91,16 +95,22 @@ jobs:
         run: |
           scripts/build-gh.ps1
         shell: pwsh
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Build project
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: |
           poe build
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Build project
         if: ${{ startsWith(matrix.os, 'macos') }}
         run: |
           poe build --target-arch universal2
+        env:
+          GOEXPERIMENT: jsonv2
 
       - name: Release
         uses: softprops/action-gh-release@v2
