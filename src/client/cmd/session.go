@@ -22,7 +22,7 @@ var sessionCmd = &cobra.Command{
 	Use:     "session",
 	Short:   "Starts a testing session.",
 	Long: `Starts a testing session.
-This is based on the vocab list and the session config file provided.`,
+This is based on the vocab file and the session config file provided.`,
 
 	PreRunE: func(cmd *cobra.Command, args []string) error { //nolint:revive
 		if numberOfQuestions <= 0 {
@@ -61,7 +61,7 @@ func init() {
 	sessionCmd.Flags().
 		StringVarP(&sessionConfigPath, "session-config", "c", "", "Path to the session config .json file")
 	sessionCmd.Flags().
-		StringVarP(&vocabListPath, "vocab-list", "l", "", "Path to the vocab list .txt file")
+		StringVarP(&vocabListPath, "vocab-list", "l", "", "Path to the .txt vocab file")
 	sessionCmd.Flags().
 		IntVarP(&numberOfQuestions, "number", "n", 0, "Number of questions for the session")
 	sessionCmd.Flags().

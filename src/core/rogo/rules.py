@@ -153,19 +153,19 @@ CLASS_RULES: Final[dict[str, QuestionClasses]] = {
 
 
 def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
-    """Filter the vocabulary list based on the settings given.
+    """Filter the vocab list based on the settings given.
 
     Parameters
     ----------
     vocab_list : VocabList
-        The vocabulary list to filter.
+        The vocab list to filter.
     settings : Settings
         The settings to use for filtering.
 
     Returns
     -------
     Vocab
-        The filtered vocabulary list.
+        The filtered vocab (as just a list of the objects).
     """
 
     def _filter_classes(vocab_list: Vocab, classes: tuple[type, ...]) -> Vocab:

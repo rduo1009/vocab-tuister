@@ -37,7 +37,6 @@ if _seed is not None:
 
     _sys.modules["random"] = _custom_random
 
-
 import dunamai as _dunamai
 
 from . import core, server

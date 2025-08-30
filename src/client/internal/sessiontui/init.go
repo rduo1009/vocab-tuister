@@ -3,7 +3,8 @@ package sessiontui
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -25,7 +26,7 @@ const (
 )
 
 func extractJSONObjects(jsonList []byte) ([][]byte, error) {
-	var rawSlice []json.RawMessage
+	var rawSlice []jsontext.Value
 	if err := json.Unmarshal(jsonList, &rawSlice); err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func (m Model) Init() tea.Cmd {
 		textinput.Blink,
 		tea.SetWindowTitle("Vocab Tester Session"),
 		func() tea.Msg {
-			// Read vocab list and session config files
+			// Read vocab and session config files
 			vocabListData, err := os.ReadFile(m.vocabListPath)
 			if err != nil {
 				return errMsg{err}
@@ -78,7 +79,7 @@ func (m Model) Init() tea.Cmd {
 
 			client := &http.Client{}
 
-			// Send vocab list to server
+			// Send vocab file text to server
 			vocabListURL := fmt.Sprintf(
 				"http://localhost:%d/%s",
 				m.serverPort,
@@ -106,7 +107,7 @@ func (m Model) Init() tea.Cmd {
 			if resp1.StatusCode != http.StatusOK {
 				return errMsg{
 					fmt.Errorf(
-						"failed to post vocab list, status code: %d",
+						"failed to post vocab file, status code: %d",
 						resp1.StatusCode,
 					),
 				}

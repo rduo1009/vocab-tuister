@@ -18,7 +18,7 @@ type Model struct {
 func InitialModel(filePath string) Model {
 	ti := textarea.New()
 	ti.CharLimit = -1
-	ti.Placeholder = "Write vocab list here..."
+	ti.Placeholder = "Write your vocab here..."
 	ti.Focus()
 
 	return Model{

@@ -7,11 +7,10 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
-from warnings import deprecated
 
 from ...utils.dict_changes import apply_changes
 from ._class_word import _Word
-from .edge_cases import (
+from ._edge_cases import (
     ACTIVE_ONLY_VERBS,
     DEFECTIVE_VERBS,
     FUTURE_ACTIVE_PARTICIPLE_VERBS,
@@ -2046,36 +2045,6 @@ class Verb(_Word):
             return output
 
         raise InvalidInputError(f"Key '{key}' is invalid.")
-
-    @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
-    )
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
-        """Generate an ``EndingComponents`` object based on endings keys.
-
-        Deprecated in favour of ``create_components_instance`` instead.
-        This function should not usually be used by the user.
-
-        Parameters
-        ----------
-        key : str
-            The endings key.
-
-        Returns
-        -------
-        EndingComponents
-            The ``EndingComponents`` object created.
-
-        Raises
-        ------
-        InvalidInputError
-            If `key` is not a valid key for the word.
-        """
-        placeholder_verb = Verb(
-            "celo", "celare", "celavi", "celatus", meaning="hide"
-        )
-        return Verb.create_components_instance(placeholder_verb, key)
 
     def __repr__(self) -> str:
         if self.conjugation == 0:

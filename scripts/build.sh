@@ -2,6 +2,9 @@
 
 set -e
 
+# Set GOEXPERIMENT for encoding/json/v2
+export GOEXPERIMENT=jsonv2
+
 if [[ $debug == "True" ]]; then
     echo "====== DEBUG MODE ======"
 fi

@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 from src.core import accido
 from src.core.accido.misc import Case, ComponentsSubtype, Degree, Gender, Mood, Number, Tense, Voice
 from src.core.transfero.words import find_inflection

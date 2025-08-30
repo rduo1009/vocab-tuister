@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 from pathlib import Path
 
 import pytest
@@ -10,7 +5,7 @@ from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Gender, MultipleMeanings
 from src.core.lego.exceptions import InvalidVocabFileFormatError
 from src.core.lego.misc import VocabList
-from src.core.lego.reader import _regenerate_vocab_list, read_vocab_file
+from src.core.lego.reader import read_vocab_file
 
 
 def test_reader():
@@ -33,10 +28,10 @@ def test_reader():
             Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
-            RegularWord("in", meaning="into"),
-            RegularWord("e", meaning="from"),
             Pronoun("hic", meaning="this"),
             Pronoun("ille", meaning="that"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
         ],
         """@ Verb
 hear: audio, audire, audivi, auditus
@@ -60,24 +55,19 @@ keen: acer, acris, acre, (3-3)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regular
-into: in
-from: e
-
 @ Pronoun
 this: hic, haec, hoc
 that: ille
+
+@ Regular
+into: in
+from: e
 
 # testing comments
 # 
 #
 # asnfdbjx""",
     )
-
-
-def test_regenerate():
-    l = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
-    assert l == _regenerate_vocab_list(l)
 
 
 def test_reader_with_s():
@@ -94,10 +84,10 @@ def test_reader_with_s():
             Adjective("ingens", "ingentis", termination=1, declension="3", meaning="large"),
             Adjective("levis", "leve", termination=2, declension="3", meaning="light"),
             Adjective("acer", "acris", "acre", termination=3, declension="3", meaning="keen"),
-            RegularWord("in", meaning="into"),
-            RegularWord("e", meaning="from"),
             Pronoun("hic", meaning="this"),
             Pronoun("ille", meaning="that"),
+            RegularWord("in", meaning="into"),
+            RegularWord("e", meaning="from"),
         ],
         """@Verbs
 hear: audio, audire, audivi, auditus
@@ -115,13 +105,13 @@ large: ingens, ingentis, (3-1)
 light: levis, leve, (3-2)
 keen: acer, acris, acre, (3-3)
 
-@Regulars
-into: in
-from: e
-
 @Pronouns
 this: hic, haec, hoc
-that: ille""",
+that: ille
+
+@Regulars
+into: in
+from: e""",
     )
 
 
