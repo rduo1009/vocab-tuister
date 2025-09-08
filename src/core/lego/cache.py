@@ -5,8 +5,9 @@ from __future__ import annotations
 import hashlib
 import logging
 import warnings
+from io import StringIO
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TextIO
 
 from .reader import read_vocab_dump, read_vocab_file
 from .saver import save_vocab_dump
@@ -39,7 +40,7 @@ def _sha256sum(filename: Path) -> str:
 
 
 def cache_vocab_file(
-    vocab_file_path: Path, cache_folder: Path
+    source: str | Path | TextIO, cache_folder: str | Path
 ) -> tuple[VocabList, bool]:
     """Read a vocab file and save the vocab dump inside a cache folder.
 
@@ -48,9 +49,9 @@ def cache_vocab_file(
 
     Parameters
     ----------
-    vocab_file_path : Path
-        The path to the vocab file that is to be read.
-    cache_folder : Path
+    source : str | Path | TextIO
+        The path to the vocab file that is to be read, or a text stream.
+    cache_folder : str | Path
         The path to the cache folder.
 
     Returns
@@ -81,6 +82,7 @@ def cache_vocab_file(
     FileNotFoundError
         If the vocab file or dump does not exist.
     """
+    cache_folder = Path(cache_folder)
     if not cache_folder.exists():
         cache_folder.mkdir(parents=True, exist_ok=True)
         warnings.warn(
@@ -88,18 +90,33 @@ def cache_vocab_file(
             stacklevel=2,
         )
 
+    if not isinstance(source, (str, Path)):
+        # Handle stream source
+        content = source.read()
+        hasher = hashlib.sha256()
+        hasher.update(content.encode("utf-8"))
+        cache_file_name = hasher.hexdigest()
+        cache_path = cache_folder / cache_file_name
+
+        if cache_path.exists():
+            logger.info("Cache found for hash %s.", cache_file_name)
+            return (read_vocab_dump(cache_path), True)
+
+        logger.info("No cache found for hash %s.", cache_file_name)
+        vocab_list = read_vocab_file(StringIO(content))
+        save_vocab_dump(cache_path, vocab_list)
+        return (vocab_list, False)
+
+    # Handle file path source
+    vocab_file_path = Path(source)
     cache_file_name = _sha256sum(vocab_file_path)
-    cache_path = Path(cache_folder / cache_file_name)
+    cache_path = cache_folder / cache_file_name
 
     if cache_path.exists():
         logger.info("Cache found for hash %s.", cache_file_name)
-
         return (read_vocab_dump(cache_path), True)
 
     logger.info("No cache found for hash %s.", cache_file_name)
-
-    vocab_list = read_vocab_file(
-        vocab_file_path
-    )  # sourcery skip: name-type-suffix
+    vocab_list = read_vocab_file(vocab_file_path)
     save_vocab_dump(cache_path, vocab_list)
     return (vocab_list, False)

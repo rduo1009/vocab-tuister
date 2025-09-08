@@ -9,7 +9,8 @@ import hashlib
 import hmac
 import logging
 import warnings
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import TYPE_CHECKING, BinaryIO
 
 import dill as pickle
 
@@ -17,15 +18,16 @@ from .exceptions import MisleadingFilenameWarning
 from .misc import KEY
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from .misc import VocabList
 
 logger = logging.getLogger(__name__)
 
 
 def save_vocab_dump(
-    file_path: Path, vocab_list: VocabList, *, compress: bool = False
+    destination: str | Path | BinaryIO,
+    vocab_list: VocabList,
+    *,
+    compress: bool = False,
 ) -> None:
     """Save a vocab dump file.
 
@@ -37,8 +39,8 @@ def save_vocab_dump(
 
     Parameters
     ----------
-    file_path : Path
-        The path to the vocab dump file.
+    destination : str | Path | BinaryIO
+        The path to the vocab dump file, or a binary writable object.
     vocab_list : VocabList
         The vocab list to save.
     compress : bool
@@ -64,6 +66,23 @@ def save_vocab_dump(
     ...     Path("path_to_file.pickle"), VocabList()
     ... )  # doctest: +SKIP
     """
+    pickled_data = pickle.dumps(vocab_list)
+    signature = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
+
+    if not isinstance(destination, (str, Path)):
+        if compress:
+            logger.info("Saving vocab dump with compression to stream.")
+            with gzip.GzipFile(fileobj=destination, mode="wb") as file:
+                file.write(pickled_data)
+                file.write(signature.encode())
+        else:
+            logger.info("Saving vocab dump to stream.")
+            destination.write(pickled_data)
+            destination.write(signature.encode())
+
+        return
+
+    file_path = Path(destination)
     if not file_path.parent.exists():
         raise FileNotFoundError(
             f"The directory '{file_path.parent}' does not exist."
@@ -74,9 +93,6 @@ def save_vocab_dump(
             f"The file '{file_path}' already exists and has been overwritten.",
             stacklevel=2,
         )
-
-    pickled_data = pickle.dumps(vocab_list)
-    signature = hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest()
 
     if compress:
         if file_path.suffix != ".gzip":

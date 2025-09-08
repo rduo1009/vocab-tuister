@@ -10,7 +10,7 @@ import warnings
 from io import StringIO
 from pathlib import Path
 from re import match
-from typing import TYPE_CHECKING, Literal, cast
+from typing import TYPE_CHECKING, BinaryIO, Literal, TextIO, cast
 
 import dill as pickle
 
@@ -23,15 +23,13 @@ from .exceptions import InvalidVocabDumpError, InvalidVocabFileFormatError
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
-    from optype.io import CanRead
-
     from ..accido.endings import _Word
     from ..accido.type_aliases import Meaning
 
 logger = logging.getLogger(__name__)
 
 
-def read_vocab_dump(filename: Path) -> VocabList:
+def read_vocab_dump(source: str | Path | BinaryIO) -> VocabList:
     """Read a vocab dump file and return a ``VocabList`` object.
 
     The pickle files are signed with a HMAC signature to ensure the data
@@ -41,8 +39,8 @@ def read_vocab_dump(filename: Path) -> VocabList:
 
     Parameters
     ----------
-    filename : Path
-        The path to the vocab dump.
+    source : str | Path | BinaryIO
+        The path to the vocab dump, or a binary readable object.
 
     Returns
     -------
@@ -61,19 +59,22 @@ def read_vocab_dump(filename: Path) -> VocabList:
     --------
     >>> read_vocab_dump(Path("path_to_file.pickle"))  # doctest: +SKIP
     """
-    if filename.suffix == ".gzip":
-        logger.info("File %s is being decompressed and read.", filename)
+    if isinstance(source, (str, Path)):
+        filename = Path(source)
+        if filename.suffix == ".gzip":
+            logger.info("File %s is being decompressed and read.", filename)
 
-        with gzip.open(filename, "rb") as file:
-            content = file.read()
-            pickled_data = content[:-64]
-            signature = content[-64:].decode()
+            with gzip.open(filename, "rb") as file:
+                content = file.read()
+        else:
+            logger.info("File %s being read.", filename)
+
+            content = filename.read_bytes()
     else:
-        logger.info("File %s being read.", filename)
+        content = source.read()
 
-        content = filename.read_bytes()
-        pickled_data = content[:-64]
-        signature = content[-64:].decode()
+    pickled_data = content[:-64]
+    signature = content[-64:].decode()
 
     if hmac.new(KEY, pickled_data, hashlib.sha256).hexdigest() != signature:
         raise InvalidVocabDumpError(
@@ -109,12 +110,12 @@ def _generate_meaning(meaning: str) -> Meaning:
     return meaning
 
 
-def read_vocab_file(source: str | Path | CanRead[str]) -> VocabList:
+def read_vocab_file(source: str | Path | TextIO) -> VocabList:
     """Read a vocab file and return a ``VocabList`` object.
 
     Parameters
     ----------
-    source : str | Path | CanRead[str]
+    source : str | Path | TextIO
         The path to the vocab file, or any readable object (e.g. an opened
         file).
 
