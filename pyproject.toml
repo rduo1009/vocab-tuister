@@ -54,7 +54,7 @@ rstfmt = "0.0.14"
 mypy = { version = "1.17.1", extras = [ "faster-cache" ] }
 basedpyright = "1.31.4"
 interrogate = "1.7.0"
-griffe = "1.12.1"
+griffe = "1.14.0"
 
 [tool.poetry.group.types.dependencies]
 types-regex = "2025.7.34.20250809"
