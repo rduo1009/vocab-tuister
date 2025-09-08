@@ -4,7 +4,7 @@ go 1.25
 
 require (
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.6
+	github.com/charmbracelet/bubbletea v1.3.8
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/spf13/cobra v1.10.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
@@ -30,7 +30,7 @@ require (
 	github.com/charmbracelet/ssh v0.0.0-20241211182756-4fe22b0f1b7c // indirect
 	github.com/charmbracelet/vhs v0.9.0 // indirect
 	github.com/charmbracelet/wish v1.4.4 // indirect
-	github.com/charmbracelet/x/ansi v0.9.3 // indirect
+	github.com/charmbracelet/x/ansi v0.10.1 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/conpty v0.1.0 // indirect
 	github.com/charmbracelet/x/errors v0.0.0-20240904165849-e8e43e13f84b // indirect
