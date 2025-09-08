@@ -40,7 +40,10 @@ def _sha256sum(filename: Path) -> str:
 
 
 def cache_vocab_file(
-    source: str | Path | TextIO, cache_folder: str | Path
+    source: str | Path | TextIO,
+    cache_folder: str | Path,
+    *,
+    compress: bool = False,
 ) -> tuple[VocabList, bool]:
     """Read a vocab file and save the vocab dump inside a cache folder.
 
@@ -53,6 +56,8 @@ def cache_vocab_file(
         The path to the vocab file that is to be read, or a text stream.
     cache_folder : str | Path
         The path to the cache folder.
+    compress : bool
+        Whether to compress the cache file. The default is False.
 
     Returns
     -------
@@ -95,28 +100,30 @@ def cache_vocab_file(
         content = source.read()
         hasher = hashlib.sha256()
         hasher.update(content.encode("utf-8"))
-        cache_file_name = hasher.hexdigest()
+        cache_hash = hasher.hexdigest()
+        cache_file_name = cache_hash + (".gzip" if compress else "")
         cache_path = cache_folder / cache_file_name
 
         if cache_path.exists():
-            logger.info("Cache found for hash %s.", cache_file_name)
+            logger.info("Cache found for hash %s.", cache_hash)
             return (read_vocab_dump(cache_path), True)
 
-        logger.info("No cache found for hash %s.", cache_file_name)
+        logger.info("No cache found for hash %s.", cache_hash)
         vocab_list = read_vocab_file(StringIO(content))
-        save_vocab_dump(cache_path, vocab_list)
+        save_vocab_dump(cache_path, vocab_list, compress=compress)
         return (vocab_list, False)
 
     # Handle file path source
     vocab_file_path = Path(source)
-    cache_file_name = _sha256sum(vocab_file_path)
+    cache_hash = _sha256sum(vocab_file_path)
+    cache_file_name = cache_hash + (".gzip" if compress else "")
     cache_path = cache_folder / cache_file_name
 
     if cache_path.exists():
-        logger.info("Cache found for hash %s.", cache_file_name)
+        logger.info("Cache found for hash %s.", cache_hash)
         return (read_vocab_dump(cache_path), True)
 
-    logger.info("No cache found for hash %s.", cache_file_name)
+    logger.info("No cache found for hash %s.", cache_hash)
     vocab_list = read_vocab_file(vocab_file_path)
-    save_vocab_dump(cache_path, vocab_list)
+    save_vocab_dump(cache_path, vocab_list, compress=compress)
     return (vocab_list, False)

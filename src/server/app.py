@@ -11,10 +11,11 @@ from io import StringIO
 from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, Response, render_template, request
+from platformdirs import PlatformDirs
 from waitress import serve
 from werkzeug.exceptions import BadRequest
 
-from ..core.lego.reader import read_vocab_file
+from ..core.lego.cache import cache_vocab_file
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import Settings
 from ..utils.typeddict_validator import (
@@ -30,6 +31,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+dirs = PlatformDirs("vocab-tuister", "rduo1009")
 app = Flask(__name__)
 vocab_list: VocabList | None = None
 
@@ -57,12 +59,15 @@ def info():
 
 @app.route("/send-vocab", methods=["POST"])
 def send_vocab():
-    global vocab_list  # noqa: PLW0603
+    global vocab_list
 
     try:
         logger.info("Reading vocab file.")
         vocab_list_text = StringIO(request.get_data().decode("utf-8"))
-        vocab_list = read_vocab_file(vocab_list_text)
+        # TODO: Allow user to customise whether to compress in settings
+        vocab_list, _ = cache_vocab_file(
+            vocab_list_text, dirs.user_cache_dir, compress=True
+        )
     except Exception as e:
         raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
             e.__traceback__
