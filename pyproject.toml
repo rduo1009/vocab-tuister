@@ -18,7 +18,7 @@ dynamic = [ "version" ]
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==3.22.5",
+  "cyclopts==3.24.0",
   "dill==0.4.0",
   "dunamai==1.25.0",
   "flask==3.1.2",
@@ -57,7 +57,7 @@ interrogate = "1.7.0"
 griffe = "1.14.0"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2025.7.34.20250809"
+types-regex = "2025.9.1.20250903"
 types-waitress = "3.0.1.20250801"
 optype = "0.13.4"
 
