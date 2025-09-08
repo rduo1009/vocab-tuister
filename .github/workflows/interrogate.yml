@@ -21,7 +21,7 @@ jobs:
           if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
       - name: Setup python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version-file: ".python-version"
 
