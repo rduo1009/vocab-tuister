@@ -4,11 +4,11 @@ go 1.25
 
 require (
 	github.com/charmbracelet/bubbles v0.21.0
-	github.com/charmbracelet/bubbletea v1.3.6
+	github.com/charmbracelet/bubbletea v1.3.8
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.1
 	github.com/widmogrod/mkunion v0.0.0-20220926122055-0884a4bef836
-	golang.org/x/term v0.34.0
+	golang.org/x/term v0.35.0
 )
 
 require (
@@ -30,7 +30,7 @@ require (
 	github.com/charmbracelet/ssh v0.0.0-20241211182756-4fe22b0f1b7c // indirect
 	github.com/charmbracelet/vhs v0.9.0 // indirect
 	github.com/charmbracelet/wish v1.4.4 // indirect
-	github.com/charmbracelet/x/ansi v0.9.3 // indirect
+	github.com/charmbracelet/x/ansi v0.10.1 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/conpty v0.1.0 // indirect
 	github.com/charmbracelet/x/errors v0.0.0-20240904165849-e8e43e13f84b // indirect
@@ -76,7 +76,7 @@ require (
 	github.com/sashabaranov/go-openai v1.26.3 // indirect
 	github.com/segmentio/golines v0.12.2 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/wadey/gocovmerge v0.0.0-20160331181800-b5bfa59ec0ad // indirect
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
@@ -92,7 +92,7 @@ require (
 	golang.org/x/mod v0.23.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.15.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
@@ -107,7 +107,7 @@ require (
 require (
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20250317102001-c803e5cafd0b // test
 	github.com/muesli/termenv v0.16.0 // test
-	github.com/stretchr/testify v1.11.0 // test
+	github.com/stretchr/testify v1.11.1 // test
 )
 
 replace github.com/widmogrod/mkunion => ./src/_vendor/mkunion
