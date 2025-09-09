@@ -75,8 +75,14 @@ class QuestionClassEncoder(JSONEncoder):
                     "question_type": "ParseWordLatToCompQuestion",
                     "prompt": o.prompt,
                     "dictionary_entry": o.dictionary_entry,
-                    "main_answer": o.main_answer.string,
-                    "answers": sorted([answer.string for answer in o.answers]),
+                    # NOTE: to allow just e.g. 'positive' to a question involving adverbs
+                    "main_answer": o.main_answer.string.removesuffix(
+                        " (adverb)"
+                    ),
+                    "answers": sorted([
+                        answer.string.removesuffix(" (adverb)")
+                        for answer in o.answers
+                    ]),
                     # "main_answer": self.default(obj.main_answer),
                     # "answers": [self.default(answer) for answer in obj.answers],
                 }

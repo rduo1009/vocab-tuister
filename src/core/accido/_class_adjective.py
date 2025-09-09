@@ -919,7 +919,7 @@ class Adjective(_Word):
 
         else:
             output = EndingComponents(degree=Degree(key[1:4]))
-            output.string = output.degree.regular
+            output.string = f"{output.degree.regular} (adverb)"
 
         return output
 

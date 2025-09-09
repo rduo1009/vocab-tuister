@@ -62,7 +62,7 @@ class TestAdjectiveDunder:
             ],
         )
 
-        assert compare(word.find("laete"), [EndingComponents(degree=Degree.POSITIVE, gender=Gender.MASCULINE, case=Case.VOCATIVE, number=Number.SINGULAR, string="positive vocative singular masculine"), EndingComponents(degree=Degree.POSITIVE, string="positive")])
+        assert compare(word.find("laete"), [EndingComponents(degree=Degree.POSITIVE, gender=Gender.MASCULINE, case=Case.VOCATIVE, number=Number.SINGULAR, string="positive vocative singular masculine"), EndingComponents(degree=Degree.POSITIVE, string="positive (adverb)")])
 
     def test_str_212(self):
         word = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
