@@ -49,10 +49,8 @@ def find_inflection(
     """
 
     def pick(result: tuple[str, ...]) -> str | set[str]:
-        # If main requested, return the first element (or empty string if none)
         if main:
-            return result[0] if result else ""
-        # Otherwise return a deduplicated set of all inflections
+            return result[0]
         return set(result)
 
     logger.debug("find_inflection(%s, %s, main=%s)", word, components, main)
