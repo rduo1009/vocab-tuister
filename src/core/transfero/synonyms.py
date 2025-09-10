@@ -78,6 +78,7 @@ def find_synonyms(
     *,
     pos: type[_Word] | None = None,
     include_similar_words: bool = False,
+    known_synonyms: tuple[str, ...] = (),
 ) -> set[str]:
     """Find synonyms of a word.
 
@@ -93,6 +94,12 @@ def find_synonyms(
         This leverages WordNet's 'similar to' relationships, often useful
         for adjectives (e.g., finding 'massive' as similar to 'big') or
         other related terms that aren't strict synonyms.
+    known_synonyms : tuple[str, ...], optional
+        Additional known synonyms of the word to help disambiguate its sense.
+        If provided, only synsets that contain at least one of these as a lemma
+        will be used to find synonyms. If no such synset is found, falls back
+        to all synsets.
+        Defaults to ().
 
     Returns
     -------
@@ -100,15 +107,32 @@ def find_synonyms(
         The synonyms of the word.
     """
     logger.debug(
-        "find_synonyms(word=%r, pos=%s, include_similar_words=%s)",
+        "find_synonyms(word=%r, pos=%s, include_similar_words=%s, known_synonyms=%s)",
         word,
         pos,
         include_similar_words,
+        known_synonyms,
     )
 
     synonyms: set[str] = set()
 
-    for synset in wordnet.synsets(word, pos=POS_TABLE[pos] if pos else None):
+    # Get all synsets for the word with the given POS tag
+    synsets = wordnet.synsets(word, pos=POS_TABLE[pos] if pos else None)
+
+    # Filter synsets based on known_synonyms if provided
+    if known_synonyms:
+        filtered_synsets = [
+            synset
+            for synset in synsets
+            if any(
+                lemma.name().lower().replace("_", " ") in known_synonyms
+                for lemma in synset.lemmas()
+            )
+        ]
+        if filtered_synsets:
+            synsets = filtered_synsets
+
+    for synset in synsets:
         # Add lemmas from the synset itself
         synonyms.update(
             lemma.name()
