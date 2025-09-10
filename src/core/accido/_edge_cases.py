@@ -1172,9 +1172,19 @@ IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
         "Ngenpl": MultipleEndings(regular="nostri", partitive="nostrum"),
         "Ndatpl": "nobis", "Nablpl": "nobis",
     },
+    "nos": { # Plurals as sometimes they are included in vocab lists alone
+        "Nnompl": "nos", "Nvocpl": "nos",   "Naccpl": "nos",
+        "Ngenpl": MultipleEndings(regular="nostri", partitive="nostrum"),
+        "Ndatpl": "nobis", "Nablpl": "nobis",
+    },
     "tu": {
         "Nnomsg": "tu", "Nvocsg": "tu",    "Naccsg": "te",
         "Ngensg": "tui", "Ndatsg": "tibi",  "Nablsg": "te",
+        "Nnompl": "vos", "Nvocpl": "vos",   "Naccpl": "vos",
+        "Ngenpl": MultipleEndings(regular="vestri", partitive="vestrum"),
+        "Ndatpl": "vobis", "Nablpl": "vobis",
+    },
+    "vos": {
         "Nnompl": "vos", "Nvocpl": "vos",   "Naccpl": "vos",
         "Ngenpl": MultipleEndings(regular="vestri", partitive="vestrum"),
         "Ndatpl": "vobis", "Nablpl": "vobis",
