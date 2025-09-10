@@ -1,8 +1,3 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import src
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Gender, MultipleMeanings
@@ -22,8 +17,8 @@ def test_vocablist_add():
             Noun("templum", "templi", gender=Gender.NEUTER, meaning="temple"),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"),
-            RegularWord("e", meaning="from"),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning="from"),
         ],
         """@ Verbs
 hear: audio, audire, audivi, auditus
@@ -35,20 +30,20 @@ temple: templum, templi, (n)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-from: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+from: e""",
     )
 
     list_2 = VocabList(
         [
             Verb("audio", "audire", "audivi", "auditus", meaning="listen"), 
             Noun("templum", "templi", gender=Gender.NEUTER, meaning="shrine"), 
-            Adjective("laetus", "laeta", "laetum", declension="212", meaning="joyful"), 
-            RegularWord("e", meaning="out"),
+            Adjective("laetus", "laeta", "laetum", declension="212", meaning="joyful"),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning="out"),
         ], 
         """@ Verbs
 listen: audio, audire, audivi, auditus
@@ -59,11 +54,11 @@ shrine: templum, templi, (n)
 @ Adjectives
 joyful: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-out: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+out: e""",
     )  # fmt: skip
 
     assert list_1 + list_2 == VocabList(
@@ -72,8 +67,8 @@ that: ille""",
             Noun("templum", "templi", gender=Gender.NEUTER, meaning=MultipleMeanings(("temple", "shrine"))),
             Adjective("bonus", "bona", "bonum", declension="212", meaning="good"),
             Adjective("laetus", "laeta", "laetum", declension="212", meaning=MultipleMeanings(("happy", "joyful"))),
-            RegularWord("e", meaning=MultipleMeanings(("from", "out"))),
             Pronoun("ille", meaning="that"),
+            RegularWord("e", meaning=MultipleMeanings(("from", "out"))),
         ],
         """@ Verbs
 hear: audio, audire, audivi, auditus
@@ -85,11 +80,11 @@ temple: templum, templi, (n)
 good: bonus, bona, bonum, (212)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-from: e
-
 @ Pronouns
 that: ille
+
+@ Regulars
+from: e
 @ Verbs
 listen: audio, audire, audivi, auditus
 
@@ -99,9 +94,9 @@ shrine: templum, templi, (n)
 @ Adjectives
 joyful: laetus, laeta, laetum, (2-1-2)
 
-@ Regulars
-out: e
-
 @ Pronouns
-that: ille""",
+that: ille
+
+@ Regulars
+out: e""",
     )

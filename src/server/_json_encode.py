@@ -29,8 +29,8 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 }
 
 
-class QuestionClassEncoder(JSONEncoder):  # noqa: D101
-    def default(self, o: object) -> dict[str, Any]:  # noqa: D102
+class QuestionClassEncoder(JSONEncoder):
+    def default(self, o: object) -> dict[str, Any]:
         match o:
             # NOTE: The tester tui currently uses the component string representation
             # case EndingComponents():
@@ -75,8 +75,14 @@ class QuestionClassEncoder(JSONEncoder):  # noqa: D101
                     "question_type": "ParseWordLatToCompQuestion",
                     "prompt": o.prompt,
                     "dictionary_entry": o.dictionary_entry,
-                    "main_answer": o.main_answer.string,
-                    "answers": sorted([answer.string for answer in o.answers]),
+                    # NOTE: to allow just e.g. 'positive' to a question involving adverbs
+                    "main_answer": o.main_answer.string.removesuffix(
+                        " (adverb)"
+                    ),
+                    "answers": sorted([
+                        answer.string.removesuffix(" (adverb)")
+                        for answer in o.answers
+                    ]),
                     # "main_answer": self.default(obj.main_answer),
                     # "answers": [self.default(answer) for answer in obj.answers],
                 }

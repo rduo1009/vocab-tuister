@@ -1,10 +1,5 @@
 from __future__ import annotations
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -272,4 +267,4 @@ def test_ask_questions_empty_vocab_raises():
         for _ in ask_question_without_sr(VocabList(vocab=[], vocab_list_text=""), 1, settings_no_words):
             ...
 
-    assert "No words in the vocabulary list after filtering." in str(exc.value)
+    assert "No words in the vocab list after filtering." in str(exc.value)

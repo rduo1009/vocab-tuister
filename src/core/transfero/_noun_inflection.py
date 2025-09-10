@@ -48,7 +48,9 @@ def _get_possessive(noun: str) -> str:
     return f"{noun}'" if noun.endswith("s") else f"{noun}'s"
 
 
-def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
+def find_noun_inflections(
+    noun: str, components: EndingComponents
+) -> tuple[str, ...]:
     """Inflect English nouns using the case and number.
 
     This function can also be used to inflect pronouns that are treated
@@ -64,8 +66,8 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
 
     Returns
     -------
-    set[str]
-        The possible forms of the noun.
+    tuple[str, ...]
+        The possible forms of the noun (main form first).
 
     Raises
     ------
@@ -82,51 +84,17 @@ def find_noun_inflections(noun: str, components: EndingComponents) -> set[str]:
     except KeyError as e:
         raise InvalidWordError(f"Word {noun} is not a noun.") from e
 
-    inflections: set[str] = set()
+    inflections_list: list[str] = []
     for lemma in lemmas:
-        inflections |= _inflect_lemma(
-            lemma, components.case, components.number
-        )[1]
+        inflections_list.extend(
+            _inflect_lemma(lemma, components.case, components.number)
+        )
 
-    return inflections
-
-
-def find_main_noun_inflection(noun: str, components: EndingComponents) -> str:
-    """Find the main inflection of an English noun.
-
-    Parameters
-    ----------
-    noun : str
-        The noun to inflect.
-    components : EndingComponents
-        The components of the ending.
-
-    Returns
-    -------
-    str
-        The main inflection of the noun.
-
-    Raises
-    ------
-    InvalidWordError
-        If `noun` is not a valid English noun.
-    InvalidComponentsError
-        If `components` is invalid.
-    """
-    if components.type != ComponentsType.NOUN:
-        raise InvalidComponentsError(f"Invalid type: '{components.type}'")
-
-    try:
-        lemma = lemminflect.getLemma(noun, "NOUN")[0]
-    except KeyError as e:
-        raise InvalidWordError(f"Word {noun} is not a noun.") from e
-
-    return _inflect_lemma(lemma, components.case, components.number)[0]
+    # dict.fromkeys() removes duplicates but keeps order
+    return tuple(dict.fromkeys(inflections_list))
 
 
-def _inflect_lemma(
-    lemma: str, case: Case, number: Number
-) -> tuple[str, set[str]]:
+def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
     base_forms: set[str] = set()
 
     if number == Number.SINGULAR:
@@ -146,96 +114,86 @@ def _inflect_lemma(
 
     match case:
         case Case.NOMINATIVE | Case.VOCATIVE | Case.ACCUSATIVE:
-            return (best_form, base_forms)
+            return (best_form, *sorted(base_forms - {best_form}))
 
         case Case.GENITIVE:
             possessive_genitive = {
                 _get_possessive(base_form) for base_form in base_forms
             }
             if number == Number.SINGULAR:
-                return (
-                    f"of the {best_form}",
-                    (
-                        possessive_genitive
-                        | {f"of the {base_form}" for base_form in base_forms}
-                        | {
-                            pluralinflect.inflect(f"of a('{base_form}')")
-                            for base_form in base_forms
-                        }
-                    ),
+                main = f"of the {best_form}"
+                all_forms = (
+                    possessive_genitive
+                    | {f"of the {base_form}" for base_form in base_forms}
+                    | {
+                        pluralinflect.inflect(f"of a('{base_form}')")
+                        for base_form in base_forms
+                    }
                 )
-            return (
-                f"of the {best_form}",
-                possessive_genitive
-                | {f"of the {base_form}" for base_form in base_forms},
-            )
+                return (main, *sorted(all_forms - {main}))
+            main = f"of the {best_form}"
+            all_forms = possessive_genitive | {
+                f"of the {base_form}" for base_form in base_forms
+            }
+            return (main, *sorted(all_forms - {main}))
 
         case Case.DATIVE:
             if number == Number.SINGULAR:
-                return (
-                    f"for the {best_form}",
-                    (
-                        {f"for the {base_form}" for base_form in base_forms}
-                        | {
-                            pluralinflect.inflect(f"for a('{base_form}')")
-                            for base_form in base_forms
-                        }
-                        | {f"to the {base_form}" for base_form in base_forms}
-                        | {
-                            pluralinflect.inflect(f"to a('{base_form}')")
-                            for base_form in base_forms
-                        }
-                    ),
-                )
-
-            return (
-                f"for the {best_form}",
-                (
+                main = f"for the {best_form}"
+                all_forms = (
                     {f"for the {base_form}" for base_form in base_forms}
-                    | {f"for {base_form}" for base_form in base_forms}
+                    | {
+                        pluralinflect.inflect(f"for a('{base_form}')")
+                        for base_form in base_forms
+                    }
                     | {f"to the {base_form}" for base_form in base_forms}
-                    | {f"to {base_form}" for base_form in base_forms}
-                ),
+                    | {
+                        pluralinflect.inflect(f"to a('{base_form}')")
+                        for base_form in base_forms
+                    }
+                )
+                return (main, *sorted(all_forms - {main}))
+
+            main = f"for the {best_form}"
+            all_forms = (
+                {f"for the {base_form}" for base_form in base_forms}
+                | {f"for {base_form}" for base_form in base_forms}
+                | {f"to the {base_form}" for base_form in base_forms}
+                | {f"to {base_form}" for base_form in base_forms}
             )
+            return (main, *sorted(all_forms - {main}))
 
         case _:
             if number == Number.SINGULAR:
-                return (
-                    f"by the {best_form}",
-                    (
-                        base_forms
-                        | {f"with the {base_form}" for base_form in base_forms}
-                        | {
-                            pluralinflect.inflect(f"with a('{base_form}')")
-                            for base_form in base_forms
-                        }
-                        | {f"by the {base_form}" for base_form in base_forms}
-                        | {
-                            pluralinflect.inflect(f"by a('{base_form}')")
-                            for base_form in base_forms
-                        }
-                        | {
-                            f"by means of the {base_form}"
-                            for base_form in base_forms
-                        }
-                        | {
-                            pluralinflect.inflect(
-                                f"by means of a('{base_form}')"
-                            )
-                            for base_form in base_forms
-                        }
-                    ),
-                )
-
-            return (
-                f"by the {best_form}",
-                (
+                main = f"by the {best_form}"
+                all_forms = (
                     base_forms
                     | {f"with the {base_form}" for base_form in base_forms}
+                    | {
+                        pluralinflect.inflect(f"with a('{base_form}')")
+                        for base_form in base_forms
+                    }
                     | {f"by the {base_form}" for base_form in base_forms}
+                    | {
+                        pluralinflect.inflect(f"by a('{base_form}')")
+                        for base_form in base_forms
+                    }
                     | {
                         f"by means of the {base_form}"
                         for base_form in base_forms
                     }
-                ),
+                    | {
+                        pluralinflect.inflect(f"by means of a('{base_form}')")
+                        for base_form in base_forms
+                    }
+                )
+                return (main, *sorted(all_forms - {main}))
+
+            main = f"by the {best_form}"
+            all_forms = (
+                base_forms
+                | {f"with the {base_form}" for base_form in base_forms}
+                | {f"by the {base_form}" for base_form in base_forms}
+                | {f"by means of the {base_form}" for base_form in base_forms}
             )
+            return (main, *sorted(all_forms - {main}))

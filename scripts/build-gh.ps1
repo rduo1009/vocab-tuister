@@ -1,6 +1,9 @@
 #Requires -Version 5.1
 $ErrorActionPreference = 'Stop'
 
+# Set GOEXPERIMENT for encoding/json/v2
+$env:GOEXPERIMENT = 'jsonv2'
+
 if ($env:debug -eq 'True') {
     Write-Host '====== DEBUG MODE ======'
 }

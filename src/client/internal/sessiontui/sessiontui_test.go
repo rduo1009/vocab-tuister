@@ -46,7 +46,12 @@ func readBts(tb testing.TB, r io.Reader) []byte {
 func setUpTUI(t *testing.T, port int) *teatest.TestModel {
 	t.Helper()
 
-	m := sessiontui.InitialModel(filepath.Join("testdata", dummyConfigFilename), filepath.Join("testdata", dummyListFilename), numberOfQuestions, port)
+	m := sessiontui.InitialModel(
+		filepath.Join("testdata", dummyConfigFilename),
+		filepath.Join("testdata", dummyListFilename),
+		numberOfQuestions,
+		port,
+	)
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(300, 100))
 	t.Cleanup(func() {
 		if err := tm.Quit(); err != nil {
@@ -66,7 +71,7 @@ func setUpMockServer(t *testing.T, sessionResponse string) (*httptest.Server, in
 		case "/send-vocab":
 			w.Header()
 			w.WriteHeader(http.StatusOK)
-			if _, err := w.Write([]byte("Vocab list received.")); err != nil {
+			if _, err := w.Write([]byte("Vocab file received.")); err != nil {
 				t.Fatalf("failed to write to send-vocab output: %v", err)
 			}
 		case "/session":

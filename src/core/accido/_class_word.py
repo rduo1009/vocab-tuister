@@ -7,7 +7,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from functools import total_ordering
 from typing import TYPE_CHECKING, Any
-from warnings import deprecated
 
 from .misc import MultipleEndings
 
@@ -82,10 +81,3 @@ class _Word(ABC):  # noqa: PLW1641
 
     @abstractmethod
     def create_components_instance(self, key: str) -> EndingComponents: ...
-
-    @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
-    )
-    @staticmethod
-    @abstractmethod
-    def create_components(key: str) -> EndingComponents: ...

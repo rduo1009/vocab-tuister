@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final, cast
+from typing import TYPE_CHECKING, Final
 
 from ..accido.misc import Case, ComponentsType, Gender, Number
 from .exceptions import InvalidComponentsError
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 def find_pronoun_inflections(
     pronoun: str, components: EndingComponents
-) -> set[str]:
+) -> tuple[str, ...]:
     """Inflect English pronouns using the case and number.
 
     Pronouns in Latin also have a gender, but this is not used in English.
@@ -27,8 +27,8 @@ def find_pronoun_inflections(
 
     Returns
     -------
-    set[str]
-        The possible forms of the pronoun.
+    tuple[str, ...]
+        The possible forms of the pronoun (main form first).
 
     Raises
     ------
@@ -41,70 +41,24 @@ def find_pronoun_inflections(
     if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
         raise InvalidComponentsError(f"Invalid type: '{components.type}'")
 
-    return set(
-        _inflect_lemma(
-            pronoun,
-            components.case,
-            components.number,
-            cast("Gender | None", getattr(components, "gender", None)),
-        )
-    )
-
-
-def find_main_pronoun_inflection(
-    pronoun: str, components: EndingComponents
-) -> str:
-    """Find the main inflection of an English pronoun.
-
-    Pronouns in Latin also have a gender, but this is not used in English.
-
-    Parameters
-    ----------
-    pronoun : str
-        The pronoun to inflect.
-    components : EndingComponents
-        The components of the ending.
-
-    Returns
-    -------
-    str
-        The main inflection of the pronoun.
-
-    Raises
-    ------
-    NotImplementedError
-        If `pronoun` is not a pronoun supported by ``transfero`` (or not
-        a pronoun at all).
-    InvalidComponentsError
-        If `components` is invalid.
-    """
-    if components.type not in {ComponentsType.NOUN, ComponentsType.PRONOUN}:
-        raise InvalidComponentsError(f"Invalid type: '{components.type}'")
-
-    return _inflect_lemma(
-        pronoun,
-        components.case,
-        components.number,
-        cast("Gender | None", getattr(components, "gender", None)),
-    )[0]
-
-
-def _inflect_lemma(
-    lemma: str, case: Case, number: Number, gender: Gender | None
-) -> tuple[str, ...]:
-    if lemma in GENDERED_PRONOUNS:
+    gender = getattr(components, "gender", None)
+    if pronoun in GENDERED_PRONOUNS:
         if gender is None:
             raise InvalidComponentsError(
-                f"Pronoun '{lemma}' is gendered but gender was not provided."
+                f"Pronoun '{pronoun}' is gendered but gender was not provided."
             )
 
-        return GENDERED_PRONOUNS[lemma][case, number, gender]
+        return GENDERED_PRONOUNS[pronoun][
+            components.case, components.number, gender
+        ]
 
     try:
-        return NON_GENDERED_PRONOUNS[lemma][case, number]
+        return NON_GENDERED_PRONOUNS[pronoun][
+            components.case, components.number
+        ]
     except KeyError as e:
         raise NotImplementedError(
-            f"Word {lemma} has not been implemented as a pronoun."
+            f"Word {pronoun} has not been implemented as a pronoun."
         ) from e
 
 

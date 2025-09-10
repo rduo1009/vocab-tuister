@@ -2,24 +2,20 @@
 
 from __future__ import annotations
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))  # fmt: skip  # noqa: PTH100, PTH118, PTH120
-
 import json
 from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
-from src.core.lego.misc import VocabList
-from src.core.lego.reader import _read_vocab_file_internal
+from src.core.lego.reader import read_vocab_file
+from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.rules import CLASS_RULES
-from src.server.app import generate_questions_sample_json
+from src.server._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
     from collections.abc import Generator
 
+    from src.core.lego.misc import VocabList
     from src.core.rogo.type_aliases import Settings
 
 QUESTION_TYPE_SETTINGS: Final[tuple[str, ...]] = tuple(CLASS_RULES.keys())
@@ -38,13 +34,13 @@ name: nomen, nominis, (n)
 large: ingens, ingentis, (3-1)
 happy: laetus, laeta, laetum, (2-1-2)
 
-@ Regular
-into: in
-from: e
-
 @ Pronoun
 this: hic, haec, hoc
 that: ille
+
+@ Regular
+into: in
+from: e
 """)
 
 DEFAULT_SETTINGS: Settings = {
@@ -169,18 +165,17 @@ DEFAULT_SETTINGS: Settings = {
 QUESTION_AMOUNT: Final[int] = 2000  # seems reasonable
 
 
-def _generate_questions_wrap(
+def _generate_questions_sample_json(
     vocab_list: VocabList, question_amount: int, settings: Settings
 ) -> Generator[str]:
-    for question in generate_questions_sample_json(
-        vocab_list=vocab_list,
-        question_amount=question_amount,
-        settings=settings,
+    for question in ask_question_without_sr(
+        vocab_list, question_amount, settings
     ):
-        question_dict = json.loads(question)
-        del question_dict["question_type"]
-        question_updated = json.dumps(question_dict)
-        yield question_updated
+        question_dict = json.loads(
+            json.dumps(question, cls=QuestionClassEncoder)
+        )
+        question_dict.pop("question_type", None)
+        yield json.dumps(question_dict)
 
 
 if __name__ == "__main__":
@@ -195,21 +190,19 @@ if __name__ == "__main__":
         output_dir.mkdir(parents=True, exist_ok=True)
 
     # Create sample vocab list
-    vocab: VocabList = VocabList(
-        _read_vocab_file_internal(DEFAULT_VOCAB_LIST), ""
-    )
+    vocab = read_vocab_file(DEFAULT_VOCAB_LIST)
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:
         DEFAULT_SETTINGS[setting] = True
 
-        data_generator: Generator[str] = _generate_questions_wrap(
+        data_generator = _generate_questions_sample_json(
             vocab_list=vocab,
             question_amount=QUESTION_AMOUNT,
             settings=DEFAULT_SETTINGS,
         )
-        filename: str = f"{CLASS_RULES[setting].value}_sample.json"
-        output_path: Path = Path(
+        filename = f"{CLASS_RULES[setting].value}_sample.json"
+        output_path = Path(
             Path(__file__).parent / "json_output" / "questions" / filename
         )
         output_path.parent.mkdir(parents=True, exist_ok=True)  # needed?

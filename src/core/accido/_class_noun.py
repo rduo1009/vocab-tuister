@@ -5,10 +5,10 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Final, overload
-from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from ._syllables import count_syllables
 from .exceptions import InvalidInputError
 from .misc import (
     Case,
@@ -18,7 +18,6 @@ from .misc import (
     MultipleMeanings,
     Number,
 )
-from .syllables import count_syllables
 
 if TYPE_CHECKING:
     from .type_aliases import Ending, Endings, Meaning, NounDeclension
@@ -420,37 +419,6 @@ class Noun(_Word):
         if self.declension == 0:
             output.subtype = ComponentsSubtype.PRONOUN
         return output
-
-    @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
-    )
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
-        """Generate an ``EndingComponents`` object based on endings keys.
-
-        Deprecated in favour of ``create_components_instance``.
-        This function should not usually be used by the user.
-
-        Parameters
-        ----------
-        key : str
-            The endings key.
-
-        Returns
-        -------
-        EndingComponents
-            The ``EndingComponents`` object created.
-
-        Raises
-        ------
-        InvalidInputError
-            If `key` is not a valid key for the word.
-        """
-        # NOTE: This does not work always, but it will most likely work
-        placeholder_noun = Noun(
-            "ancilla", "ancillae", gender=Gender.FEMININE, meaning="slavegirl"
-        )
-        return Noun.create_components_instance(placeholder_noun, key)
 
     def __repr__(self) -> str:
         if self.declension == 0:

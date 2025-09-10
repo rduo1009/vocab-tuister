@@ -1,10 +1,5 @@
 # pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import pytest
 from src.core.accido.misc import Case, ComponentsSubtype, Degree, EndingComponents, Gender, Number
 from src.core.transfero.exceptions import InvalidComponentsError
@@ -37,15 +32,11 @@ class TestAdverbInflection:
     ])])  # fmt: skip
     def test_adverb_inflection(self, degree, expected):
         word = "happy"
-        components = EndingComponents(degree=degree)
-        components.subtype = ComponentsSubtype.ADVERB
-        assert find_inflection(word, components) == expected
+        assert find_inflection(word, EndingComponents(degree=degree)) == expected
 
     @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
         "happily", "more happily", "most happily",
     ])])  # fmt: skip
     def test_adverb_main_inflection(self, degree, expected):
         word = "happy"
-        components = EndingComponents(degree=degree)
-        components.subtype = ComponentsSubtype.ADVERB
-        assert find_inflection(word, components, main=True) == expected
+        assert find_inflection(word, EndingComponents(degree=degree), main=True) == expected

@@ -5,10 +5,9 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
-from warnings import deprecated
 
 from ._class_word import _Word
-from .edge_cases import (
+from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
     NO_ADVERB_ADJECTIVES,
@@ -920,39 +919,9 @@ class Adjective(_Word):
 
         else:
             output = EndingComponents(degree=Degree(key[1:4]))
-            output.string = output.degree.regular
+            output.string = f"{output.degree.regular} (adverb)"
 
         return output
-
-    @deprecated(
-        "A regular method was favoured over a staticmethod. Use `create_components_instance` instead."
-    )
-    @staticmethod
-    def create_components(key: str) -> EndingComponents:
-        """Generate an ``EndingComponents`` object based on endings keys.
-
-        Deprecated in favour of ``create_components_instance``.
-        This function should not usually be used by the user.
-
-        Parameters
-        ----------
-        key : str
-            The endings key.
-
-        Returns
-        -------
-        EndingComponents
-            The ``EndingComponents`` object created.
-
-        Raises
-        ------
-        InvalidInputError
-            If `key` is not a valid key for the word.
-        """
-        placeholder_adjective = Adjective(
-            "laetus", "laeta", "laetum", declension="212", meaning="happy"
-        )
-        return Adjective.create_components_instance(placeholder_adjective, key)
 
     def __str__(self) -> str:
         if self.declension == "3":

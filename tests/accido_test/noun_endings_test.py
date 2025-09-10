@@ -1,12 +1,7 @@
 # pyright: reportAny=false
 
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import pytest
-from src.core.accido.edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
+from src.core.accido._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from src.core.accido.endings import Noun
 from src.core.accido.misc import Case, Gender, Number
 
