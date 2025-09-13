@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import gzip
 import hashlib
 import hmac
 import logging
 import warnings
+import zlib
 from io import StringIO
 from pathlib import Path
 from re import match
@@ -64,8 +64,9 @@ def read_vocab_dump(source: str | Path | BinaryIO) -> VocabList:
         if filename.suffix == ".gzip":
             logger.info("File %s is being decompressed and read.", filename)
 
-            with gzip.open(filename, "rb") as file:
-                content = file.read()
+            with Path(filename).open("rb") as file:
+                compressed_content = file.read()
+                content = zlib.decompress(compressed_content)
         else:
             logger.info("File %s being read.", filename)
 
