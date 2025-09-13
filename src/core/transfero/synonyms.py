@@ -5,10 +5,13 @@
 from __future__ import annotations
 
 import logging
+import lzma
 import sys as _sys
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, cast
+from shutil import copyfileobj
+from tempfile import TemporaryDirectory
+from typing import TYPE_CHECKING, Any, Final, cast
 
 import wn
 from wn.constants import ADJECTIVE, NOUN, VERB
@@ -24,8 +27,13 @@ _LEXICON: Final[str] = "oewn:2024"
 
 
 def _wn_is_installed(name: str) -> bool:
-    return name in [f"{lex.id}:{lex.version}" for lex in wn.lexicons()]
+    try:
+        return bool(wn.lexicons(lexicon=name))
+    except wn.DatabaseError:
+        return False
 
+
+trimmed_wn = False
 
 # Frozen with PyInstaller
 if getattr(_sys, "frozen", False) and hasattr(
@@ -33,23 +41,59 @@ if getattr(_sys, "frozen", False) and hasattr(
 ):  # pragma: no cover
     # NOTE: Should work, but type narrowing not implemented
     # See https://github.com/DetachHead/basedpyright/issues/1224
-    _wn_data_path = Path(cast("str", _sys._MEIPASS)) / "wn_data"  # noqa: SLF001  # pyright: ignore[reportAttributeAccessIssue]
-    wn.config.data_directory = str(_wn_data_path)
-    if not _wn_data_path.exists() or not _wn_is_installed(_LEXICON):
+    wn_data_path = (
+        Path(cast("str", _sys._MEIPASS)) / "src/core/transfero/wn_data"  # noqa: SLF001  # pyright: ignore[reportAttributeAccessIssue]
+    )
+    wn.config.data_directory = str(wn_data_path)
+
+    if (compressed_db_path := wn_data_path / "wn.db.xz").exists():
+        with (
+            lzma.open(compressed_db_path, "rb") as f_in,
+            (wn_data_path / "wn.db").open("wb") as f_out,
+        ):
+            copyfileobj(f_in, f_out)
+
+    if not wn_data_path.exists():
         raise LookupError(
             "The wordnet dataset was not found in the package data."
         )
 
+    # The database will always be trimmed in frozen builds
+    trimmed_wn = True
+
 # Regular usage
 else:
-    _wn_data_path = Path(__file__).parent / "wn_data"
-    _wn_data_path.mkdir(parents=True, exist_ok=True)
-    wn.config.data_directory = str(_wn_data_path)
-    if not _wn_is_installed(_LEXICON):
+    # This is the primary, persistent data directory in your project
+    wn_data_path = Path(__file__).parent / "wn_data"
+    wn_data_path.mkdir(parents=True, exist_ok=True)
+
+    # 1. Check if the compressed database exists.
+    if (compressed_db_path := wn_data_path / "wn.db.xz").exists():
+        # Decompress into a temporary directory.
+        tmp_dir_obj = TemporaryDirectory()
+        wn_data_path = Path(tmp_dir_obj.name)
+
+        with (
+            lzma.open(compressed_db_path, "rb") as f_in,
+            (wn_data_path / "wn.db").open("wb") as f_out,
+        ):
+            copyfileobj(f_in, f_out)
+
+        wn.config.data_directory = str(wn_data_path)
+
+    # 2. If not, check for an existing uncompressed database.
+    elif (uncompressed_db_path := wn_data_path / "wn.db").exists():
+        # Use the existing persistent directory directly.
+        wn.config.data_directory = str(wn_data_path)
+
+    # 3. If neither exists, download a fresh copy.
+    else:
+        # Download will go into the persistent directory.
+        wn.config.data_directory = str(wn_data_path)
         try:
             wn.download(_LEXICON)
             warnings.warn(
-                f"The wordnet lexicon '{_LEXICON}' was not found in {_wn_data_path} "
+                f"The wordnet lexicon '{_LEXICON}' was not found in {wn_data_path} "
                 "and has been downloaded.",
                 stacklevel=2,
             )
@@ -58,6 +102,20 @@ else:
                 "Could not download or load the wordnet lexicon."
             ) from e
 
+    # Now, regardless of the path taken, check if the loaded DB is trimmed.
+    if not _wn_is_installed(_LEXICON):
+        trimmed_wn = True
+
+if trimmed_wn:
+    from wn import _db  # noqa: PLC2701
+
+    def _do_nothing( 
+        *args: Any, **kwargs: Any,  # noqa: ARG001 # pyright: ignore[reportExplicitAny, reportAny, reportUnusedParameter]
+    ) -> None:  # fmt: skip
+        return
+
+    # Monkeypatch wordnet validation, as the hash will be different
+    _db._check_schema_compatibility = _do_nothing  # noqa: SLF001
 
 # Mapping from word classes to WordNet POS tags.
 # Adjectives use both 'a' (adjective) and 's' (satellite adjective) for comprehensive search.
