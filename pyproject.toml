@@ -147,6 +147,7 @@ exclude_also = [
   "@overload",
   "if TYPE_CHECKING:",
   "if _seed is not None",
+  'if getattr\(_sys, "frozen", False\) and hasattr\(_sys, "_MEIPASS"\):',
 ]
 
 [tool.tox]

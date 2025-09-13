@@ -36,9 +36,7 @@ def _wn_is_installed(name: str) -> bool:
 trimmed_wn = False
 
 # Frozen with PyInstaller
-if getattr(_sys, "frozen", False) and hasattr(
-    _sys, "_MEIPASS"
-):  # pragma: no cover
+if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
     # NOTE: Should work, but type narrowing not implemented
     # See https://github.com/DetachHead/basedpyright/issues/1224
     wn_data_path = (
