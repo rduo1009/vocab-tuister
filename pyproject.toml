@@ -24,18 +24,18 @@ dependencies = [
   "flask==3.1.2",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "nltk==3.9.1",
   "platformdirs==4.4.0",
   "pyinstaller==6.15.0",
   "waitress==3.0.2",
+  "wn==0.13.0",
 ]
 
 [tool.poetry]
 requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
 exclude = [ "**/*.go", "src/scripts/**" ]
-include = [ "nltk_data/**/*.zip" ]
-version = "0.0.0"                         # placeholder
+include = [ "src/core/transfero/wn_data/**" ]
+version = "0.0.0"                             # placeholder
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
@@ -195,13 +195,6 @@ commands = [
     "lemminflect",
     "--allowlist",
     "stubs/lemminflect/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "nltk",
-    "--allowlist",
-    "stubs/nltk/allowlist",
     "--ignore-unused-allowlist",
   ],
   [

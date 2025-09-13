@@ -78,7 +78,7 @@ else:
     raise ValueError(f"Unsupported platform {sys.platform}")
 
 data_files = [
-    ("nltk_data", "src/core/transfero/nltk_data"),
+    ("src/core/transfero/wn_data", "src/core/transfero/wn_data"),
     ("src/core/transfero/adj_to_adv.json", "src/core/transfero"),
     ("src/server/templates", "src/server/templates"),
     ("src/server/static", "src/server/static"),
