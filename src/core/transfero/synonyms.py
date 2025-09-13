@@ -25,6 +25,9 @@ logger = logging.getLogger(__name__)
 
 _LEXICON: Final[str] = "oewn:2024"
 
+# TODO: This module won't be used if the user settings don't enable them.
+# So put this import inside a if block to speed up import time
+
 
 def _wn_is_installed(name: str) -> bool:
     try:
@@ -127,57 +130,6 @@ POS_TABLE: Final[dict[type[_Word], tuple[str, ...] | None]] = {
 }
 
 
-def _get_synsets(
-    ewn: wn.Wordnet, word: str, pos: type[_Word] | None = None
-) -> list[wn.Synset]:
-    # Check if a part of speech (POS) is provided.
-    if pos:
-        # Retrieve the corresponding WordNet POS tags from the POS_TABLE mapping.
-        pos_tags = POS_TABLE[pos]
-        # If there are specific POS tags for the given word type...
-        if pos_tags:
-            # ...return a list of synsets by searching for the word with each of the specified POS tags.
-            # This handles cases like adjectives which can be 'a' or 's'.
-            return [
-                ss
-                for pos_tag in pos_tags
-                for ss in ewn.synsets(word, pos=pos_tag)
-            ]
-
-        # If pos_tags is None (e.g., for RegularWord), it means we should search across all parts of speech.
-        # Fallthrough to search all POS.
-        return ewn.synsets(word)
-    # If no POS is specified at all, search for the word across all parts of speech.
-    return ewn.synsets(word)
-
-
-def _filter_synsets_by_known(
-    synsets: list[wn.Synset], known_synonyms: tuple[str, ...]
-) -> list[wn.Synset]:
-    # If no known synonyms are provided for disambiguation, return the original list of synsets.
-    if not known_synonyms:
-        return synsets
-
-    # Helper function to check if a lemma from a synset matches any of the known synonyms.
-    def _lemma_matches(lemma: str) -> bool:
-        # Normalize the lemma by converting to lowercase and replacing underscores with spaces for comparison.
-        normalized = lemma.lower().replace("_", " ")
-        # Check if the normalized lemma is present in the list of known synonyms.
-        return normalized in known_synonyms
-
-    # Filter the list of synsets. A synset is kept if it contains at least one lemma
-    # that matches any of the provided known synonyms.
-    filtered = [
-        synset
-        for synset in synsets
-        if any(_lemma_matches(lemma) for lemma in synset.lemmas())
-    ]
-    # If the filtering results in an empty list (no matches found),
-    # return the original unfiltered list of synsets as a fallback.
-    # This ensures that we still get some results even if the known synonyms don't match perfectly.
-    return filtered or synsets
-
-
 def _add_lemmas_to_set(
     synset: wn.Synset, synonyms_set: set[str], exclude_word: str
 ) -> None:
@@ -232,11 +184,51 @@ def find_synonyms(
 
     # Initialize the WordNet instance using the pre-configured lexicon.
     ewn = wn.Wordnet(_LEXICON)
+
     # Retrieve the initial list of synsets for the given word and part of speech.
-    synsets = _get_synsets(ewn, word, pos)
+    # Check if a part of speech (POS) is provided.
+    if pos:
+        # Retrieve the corresponding WordNet POS tags from the POS_TABLE mapping.
+        pos_tags = POS_TABLE[pos]
+        # If there are specific POS tags for the given word type...
+        if pos_tags:
+            # ...return a list of synsets by searching for the word with each of the specified POS tags.
+            # This handles cases like adjectives which can be 'a' or 's'.
+            synsets = [
+                ss
+                for pos_tag in pos_tags
+                for ss in ewn.synsets(word, pos=pos_tag)
+            ]
+        else:
+            # If pos_tags is None (e.g., for RegularWord), it means we should search across all parts of speech.
+            # Fallthrough to search all POS.
+            synsets = ewn.synsets(word)
+    # If no POS is specified at all, search for the word across all parts of speech.
+    else:
+        synsets = ewn.synsets(word)
+
     # If known synonyms are provided, filter the synsets to only include those
     # that are relevant to the given sense of the word.
-    synsets = _filter_synsets_by_known(synsets, known_synonyms)
+    # If no known synonyms are provided for disambiguation, return the original list of synsets.
+    if known_synonyms:
+        # Helper function to check if a lemma from a synset matches any of the known synonyms.
+        def _lemma_matches(lemma: str) -> bool:
+            # Normalize the lemma by converting to lowercase and replacing underscores with spaces for comparison.
+            normalized = lemma.lower().replace("_", " ")
+            # Check if the normalized lemma is present in the list of known synonyms.
+            return normalized in known_synonyms
+
+        # Filter the list of synsets. A synset is kept if it contains at least one lemma
+        # that matches any of the provided known synonyms.
+        filtered = [
+            synset
+            for synset in synsets
+            if any(_lemma_matches(lemma) for lemma in synset.lemmas())
+        ]
+        # If the filtering results in an empty list (no matches found),
+        # return the original unfiltered list of synsets as a fallback.
+        # This ensures that we still get some results even if the known synonyms don't match perfectly.
+        synsets = filtered or synsets
 
     # Create an empty set to store the collected synonyms.
     synonyms: set[str] = set()
