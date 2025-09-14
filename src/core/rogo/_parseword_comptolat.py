@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import random
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, cast
 
 from ..accido.endings import RegularWord
-from ..accido.misc import MultipleEndings
 from ._base import MultiAnswerQuestion
-from ._utils import pick_ending
+from ._utils import normalise_to_multipleendings, pick_ending
 
 if TYPE_CHECKING:
     from ..accido.endings import Word
@@ -56,17 +54,11 @@ def generate_inflect(
         ending_components_key
     )
 
-    # Convert `chosen_ending` to string if necessary
-    if isinstance(chosen_ending, MultipleEndings):
-        # If the `MutipleEndings` has a `regular` attribute then use that
-        if hasattr(chosen_ending, "regular"):
-            main_answer = cast("str", chosen_ending.regular)
-        else:
-            main_answer = random.choice(chosen_ending.get_all())
-        answers = set(chosen_ending.get_all())
-    else:
-        main_answer = chosen_ending
-        answers = {chosen_ending}
+    # Determine answers
+    chosen_ending = normalise_to_multipleendings(chosen_ending)
+    assert hasattr(chosen_ending, "regular")  # `regular` attribute must exist
+    main_answer = cast("str", chosen_ending.regular)
+    answers = set(chosen_ending.get_all())
 
     return ParseWordCompToLatQuestion(
         prompt=str(chosen_word),  # __str__ returns dictionary entry

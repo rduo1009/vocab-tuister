@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from ..accido.endings import Verb
-from ..accido.misc import MultipleMeanings
 from ..transfero.words import find_inflection
 from ._base import MultipleChoiceQuestion
+from ._utils import pick_meaning_from_multiplemeanings
 
 if TYPE_CHECKING:
     from ..accido.endings import Word
@@ -38,10 +38,8 @@ def generate_multiplechoice_engtolat(
     vocab_list = vocab_list.copy()  # sourcery skip: name-type-suffix
     vocab_list.remove(chosen_word)
 
-    # Get a single meaning if it is `MultipleMeanings`
-    meaning = chosen_word.meaning
-    if isinstance(meaning, MultipleMeanings):
-        meaning = random.choice(meaning.meanings)
+    # Pick meaning
+    meaning = pick_meaning_from_multiplemeanings(chosen_word.meaning)
 
     # Find answer and other choices
     answer = chosen_word._first

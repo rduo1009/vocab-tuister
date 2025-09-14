@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
 
+# TODO: Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Noun(Word):
     """Representation of a Latin noun with endings.
@@ -421,6 +422,8 @@ class Noun(Word):
         return output
 
     def __repr__(self) -> str:
+        # TODO: after `principal_parts` is created, clean up this
+
         if self.declension == 0:
             return f"Noun({self.nominative}, meaning={self.meaning})"
 
@@ -432,6 +435,8 @@ class Noun(Word):
         )
 
     def __str__(self) -> str:
+        # TODO: after `principal_parts` is created, clean up this
+
         if self.declension == 0:
             return f"{self.meaning}: {self.nominative}, (irregular)"
 

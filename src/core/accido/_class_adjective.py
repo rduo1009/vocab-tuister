@@ -77,7 +77,6 @@ class Adjective(Word):
         "_irregular_posadv",
         "_irregular_spradv",
         "_pos_stem",
-        "_principal_parts",
         "_spr_stem",
         "adverb_flag",
         "declension",
@@ -86,6 +85,7 @@ class Adjective(Word):
         "mascgen",
         "mascnom",
         "neutnom",
+        "principal_parts",
         "termination",
     )
 
@@ -127,10 +127,10 @@ class Adjective(Word):
 
         super().__init__()
 
-        self._principal_parts: tuple[str, ...] = principal_parts
-        self.mascnom: str = self._principal_parts[0]
+        self.principal_parts: tuple[str, ...] = principal_parts
+        self.mascnom: str = self.principal_parts[0]
 
-        self._first: str = self._principal_parts[0]
+        self._first: str = self.principal_parts[0]
         self.meaning: Meaning = meaning
         self.declension: AdjectiveDeclension = declension
         self.termination: Termination | None = termination
@@ -178,14 +178,14 @@ class Adjective(Word):
                 self.endings = self._33_endings()
 
     def _212_endings(self) -> Endings:
-        if len(self._principal_parts) != 3:
+        if len(self.principal_parts) != 3:
             raise InvalidInputError(
                 "2-1-2 adjectives must have 3 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
-        self.femnom = self._principal_parts[1]
-        self.neutnom = self._principal_parts[2]
+        self.femnom = self.principal_parts[1]
+        self.neutnom = self.principal_parts[2]
 
         self._pos_stem = self.femnom[:-1]  # cara -> car-
 
@@ -333,13 +333,13 @@ class Adjective(Word):
         return endings
 
     def _31_endings(self) -> Endings:
-        if len(self._principal_parts) != 2:
+        if len(self.principal_parts) != 2:
             raise InvalidInputError(
                 "First-termination adjectives must have 2 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
-        self.mascgen = self._principal_parts[1]
+        self.mascgen = self.principal_parts[1]
 
         if not self.mascgen.endswith("is"):
             raise InvalidInputError(
@@ -492,13 +492,13 @@ class Adjective(Word):
         return endings
 
     def _32_endings(self) -> Endings:
-        if len(self._principal_parts) != 2:
+        if len(self.principal_parts) != 2:
             raise InvalidInputError(
                 "Second-termination adjectives must have 2 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
-        self.neutnom = self._principal_parts[1]
+        self.neutnom = self.principal_parts[1]
 
         self._pos_stem = self.mascnom[:-2]  # fortis -> fort-
         if not self.irregular_flag:
@@ -645,15 +645,15 @@ class Adjective(Word):
         return endings
 
     def _33_endings(self) -> Endings:
-        if len(self._principal_parts) != 3:
+        if len(self.principal_parts) != 3:
             raise InvalidInputError(
                 "Third-termination adjectives must have 3 principal parts. "
                 f"(adjective '{self._first}' given)"
             )
 
-        self.mascnom = self._principal_parts[0]
-        self.femnom = self._principal_parts[1]
-        self.neutnom = self._principal_parts[2]
+        self.mascnom = self.principal_parts[0]
+        self.femnom = self.principal_parts[1]
+        self.neutnom = self.principal_parts[2]
 
         self._pos_stem = self.femnom[:-2]  # acris -> acr-
         if not self.irregular_flag:
@@ -926,15 +926,15 @@ class Adjective(Word):
     def __str__(self) -> str:
         if self.declension == "3":
             return (
-                f"{self.meaning}: {', '.join(self._principal_parts)}, "
+                f"{self.meaning}: {', '.join(self.principal_parts)}, "
                 f"({self.declension}-{self.termination})"
             )
 
-        return f"{self.meaning}: {', '.join(self._principal_parts)}, (2-1-2)"
+        return f"{self.meaning}: {', '.join(self.principal_parts)}, (2-1-2)"
 
     def __repr__(self) -> str:
         return (
-            f"Adjective({', '.join(self._principal_parts)}, "
+            f"Adjective({', '.join(self.principal_parts)}, "
             f"termination={self.termination}, "
             f"declension={self.declension}, meaning={self.meaning})"
         )
@@ -965,13 +965,13 @@ class Adjective(Word):
             and self.termination == other.termination
             and self.irregular_flag == other.irregular_flag
             and self.declension == other.declension
-            and self._principal_parts == other._principal_parts
+            and self.principal_parts == other.principal_parts
         ):
             return NotImplemented
 
         if self.meaning == other.meaning:
             return _create_adjective(
-                self._principal_parts,
+                self.principal_parts,
                 self.declension,
                 self.termination,
                 self.meaning,
@@ -985,7 +985,7 @@ class Adjective(Word):
             new_meaning = MultipleMeanings((self.meaning, other.meaning))
 
         return _create_adjective(
-            self._principal_parts,
+            self.principal_parts,
             self.declension,
             self.termination,
             new_meaning,

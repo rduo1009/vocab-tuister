@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING
 
 from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, Verb
@@ -17,11 +17,15 @@ from ..accido.misc import (
 )
 from ..transfero.words import find_inflection
 from ._base import MultiAnswerQuestion
-from ._utils import pick_ending, pick_ending_from_multipleendings
+from ._utils import (
+    normalise_to_multipleendings,
+    pick_ending,
+    pick_ending_from_multipleendings,
+)
 
 if TYPE_CHECKING:
     from ..accido.endings import Word
-    from ..accido.type_aliases import Ending, Endings
+    from ..accido.type_aliases import Endings
 
 
 @dataclass
@@ -43,7 +47,7 @@ class TypeInEngToLatQuestion(MultiAnswerQuestion[str]):
     prompt: str
 
 
-def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
+def generate_typein_engtolat(  # noqa: PLR0914
     chosen_word: Word,
     filtered_endings: Endings,
     *,
@@ -59,7 +63,9 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
         ending_components_key
     )
 
-    # Unsupported endings
+    # -------------------------------------------------------------------------
+    # UNSUPPORTED ENDINGS
+
     # Subjunctives cannot be translated to English if the setting is not selected
     verb_subjunctive = (
         isinstance(chosen_word, Verb)
@@ -85,7 +91,9 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
     if verb_subjunctive or verb_gerundive_flag or verb_verbal_noun_flag:
         return None
 
-    # Double-up endings
+    # -------------------------------------------------------------------------
+    # DOUBLE-UP ENDINGS
+
     noun_nom_acc_voc = isinstance(
         chosen_word, Noun
     ) and ending_components.case in {
@@ -135,12 +143,11 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
                 case=Case.VOCATIVE, number=ending_components.number
             ),
         )
-        for ending in filter(None, endings_to_add):
-            if isinstance(ending, str):
-                answers.add(ending)
-            else:
-                assert isinstance(ending, MultipleEndings)
-                answers.update(ending.get_all())
+        answers.update(
+            e
+            for ending in filter(None, endings_to_add)
+            for e in normalise_to_multipleendings(ending).get_all()
+        )
 
     # Adjectives all translate the same if they have the same degree
     elif adjective_not_adverb_flag:
@@ -151,11 +158,7 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             for key, value in chosen_word.endings.items()
             if key.startswith("A")
             and key[1:4] == ending_components.degree.shorthand  # same degree
-            for item in (  # unpack `MultipleEndings`
-                value.get_all()
-                if isinstance(value, MultipleEndings)
-                else [value]
-            )
+            for item in normalise_to_multipleendings(value).get_all()
         }
 
         chosen_ending = str(  # __str__ returns main ending
@@ -175,11 +178,7 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
             item
             for key, value in chosen_word.endings.items()
             if key[7:10] == Mood.PARTICIPLE.shorthand
-            for item in (  # unpack `MultipleEndings`
-                value.get_all()
-                if isinstance(value, MultipleEndings)
-                else [value]
-            )
+            for item in normalise_to_multipleendings(value).get_all()
         }
 
         chosen_ending = str(  # __str__ returns main ending
@@ -194,6 +193,7 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
         )
 
     # English doesn't have 2nd person plural, so it's the same as singular
+    # TODO: Get rid of this when 'you all' is added!
     elif verb_second_person_flag:
         assert isinstance(chosen_word, Verb)
 
@@ -222,33 +222,18 @@ def generate_typein_engtolat(  # noqa: PLR0914, PLR0915
     elif pronoun_flag:
         assert isinstance(chosen_word, Pronoun)
 
-        @overload
-        def _convert_to_tuple(ending: Ending) -> tuple[str, ...]: ...
-        @overload
-        def _convert_to_tuple(ending: None) -> tuple[None]: ...
-
-        def _convert_to_tuple(
-            ending: Ending | None,
-        ) -> tuple[str, ...] | tuple[None]:
-            if ending is None:
-                return ()
-
-            if isinstance(ending, MultipleEndings):
-                return tuple(ending.get_all())
-
-            return (ending,)
-
         answers = {
             answer
             for gender in (Gender.MASCULINE, Gender.FEMININE, Gender.NEUTER)
-            for answer in _convert_to_tuple(
+            for ending in [
                 chosen_word.get(
                     case=ending_components.case,
                     number=ending_components.number,
                     gender=gender,
                 )
-            )
-            if answer is not None
+            ]
+            if ending is not None
+            for answer in normalise_to_multipleendings(ending).get_all()
         }
 
         chosen_ending = str(

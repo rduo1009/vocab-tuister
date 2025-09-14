@@ -79,5 +79,6 @@ class Word(ABC):  # noqa: PLW1641
     ) -> Ending | None:  # sourcery skip: docstrings-for-functions
         ...
 
+    # TODO: Rename to create_components, deprecate this one
     @abstractmethod
     def create_components_instance(self, key: str) -> EndingComponents: ...

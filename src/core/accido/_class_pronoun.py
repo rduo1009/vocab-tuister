@@ -19,6 +19,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+# TODO: Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Pronoun(Word):
     """Representation of a Latin pronoun with endings.
@@ -162,6 +163,7 @@ class Pronoun(Word):
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"
 
     def __str__(self) -> str:
+        # TODO: after `principal_parts` is created, clean up this
         return f"{self.meaning}: {self.mascnom}, {self.femnom}, {self.neutnom}"
 
     def __add__(self, other: object) -> Pronoun:

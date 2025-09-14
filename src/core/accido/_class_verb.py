@@ -51,6 +51,10 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+# TODO: Clean this up a bit:
+# - Jules messed up quite a bit of this. Some unnecessary comments in places.
+# - Perhaps redo semi-deponents as the current implementation is a bit messy.
+# - Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Verb(Word):
     """Representation of a Latin verb with endings.
@@ -2047,6 +2051,8 @@ class Verb(Word):
         raise InvalidInputError(f"Key '{key}' is invalid.")
 
     def __repr__(self) -> str:
+        # TODO: after `principal_parts` is created, clean up this
+
         if self.conjugation == 0:
             return f"Verb({self.present}, meaning={self.meaning})"
 
@@ -2062,6 +2068,8 @@ class Verb(Word):
         )
 
     def __str__(self) -> str:
+        # TODO: after `principal_parts` is created, clean up this
+
         if self.conjugation == 0:
             return f"{self.meaning}: {self.present}"
 

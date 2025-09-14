@@ -42,6 +42,7 @@ class PrincipalPartsQuestion:
 
 
 # FIXME: Rename function
+# TODO: Once `principal_parts` added for all word classes, simplify this
 def generate_principal_parts_question(
     chosen_word: Word,
 ) -> PrincipalPartsQuestion | None:
@@ -84,35 +85,7 @@ def generate_principal_parts_question(
             principal_parts = (chosen_word.nominative, chosen_word.genitive)
 
         case Adjective():
-            match chosen_word.declension:
-                case "212":
-                    principal_parts = (
-                        chosen_word.mascnom,
-                        chosen_word.femnom,
-                        chosen_word.neutnom,
-                    )
-                case "3":
-                    match chosen_word.termination:
-                        case 1:
-                            principal_parts = (
-                                chosen_word.mascnom,
-                                chosen_word.mascgen,
-                            )
-                        case 2:
-                            principal_parts = (
-                                chosen_word.mascnom,
-                                chosen_word.neutnom,
-                            )
-                        case 3:
-                            principal_parts = (
-                                chosen_word.mascnom,
-                                chosen_word.femnom,
-                                chosen_word.neutnom,
-                            )
-                        case _:
-                            raise ValueError(
-                                f"Termination '{chosen_word.termination}' not recognised."
-                            )
+            principal_parts = chosen_word.principal_parts
 
         case Pronoun():
             principal_parts = (

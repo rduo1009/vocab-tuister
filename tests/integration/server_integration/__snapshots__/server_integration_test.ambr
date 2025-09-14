@@ -94,9 +94,9 @@
       'MultipleChoiceLatToEngQuestion': dict({
         'answer': 'I try',
         'choices': list([
-          'good',
           'I take',
           'I try',
+          'light',
         ]),
         'prompt': 'conor',
       }),
@@ -313,47 +313,36 @@
       'MultipleChoiceLatToEngQuestion': dict({
         'answer': 'good',
         'choices': list([
-          'I say',
-          'that',
+          'dog',
           'good',
+          'I say',
         ]),
         'prompt': 'bonus',
       }),
       'question_type': 'MultipleChoiceLatToEngQuestion',
     }),
     dict({
-      'ParseWordLatToCompQuestion': dict({
+      'ParseWordCompToLatQuestion': dict({
         'answers': list([
-          'dative singular',
+          'ingredienda',
         ]),
-        'dictionary_entry': 'dog: canis, canis, (m)',
-        'main_answer': 'dative singular',
-        'prompt': 'cani',
+        'components': 'gerundive feminine nominative singular',
+        'main_answer': 'ingredienda',
+        'prompt': 'enter: ingredior, ingredi, ingressus sum',
       }),
-      'question_type': 'ParseWordLatToCompQuestion',
+      'question_type': 'ParseWordCompToLatQuestion',
     }),
     dict({
-      'TypeInEngToLatQuestion': dict({
-        'answers': list([
-          'puellis',
+      'MultipleChoiceLatToEngQuestion': dict({
+        'answer': 'name',
+        'choices': list([
+          'name',
+          'from',
+          'girl',
         ]),
-        'main_answer': 'puellis',
-        'prompt': 'for the girls',
+        'prompt': 'nomen',
       }),
-      'question_type': 'TypeInEngToLatQuestion',
-    }),
-    dict({
-      'ParseWordLatToCompQuestion': dict({
-        'answers': list([
-          'ablative singular',
-          'nominative singular',
-          'vocative singular',
-        ]),
-        'dictionary_entry': 'girl: puella, puellae, (f)',
-        'main_answer': 'nominative singular',
-        'prompt': 'puella',
-      }),
-      'question_type': 'ParseWordLatToCompQuestion',
+      'question_type': 'MultipleChoiceLatToEngQuestion',
     }),
     dict({
       'ParseWordLatToCompQuestion': dict({
@@ -451,60 +440,45 @@
         'answer': 'light',
         'choices': list([
           'light',
+          'good',
           'into',
-          'large',
         ]),
         'prompt': 'levis',
       }),
       'question_type': 'MultipleChoiceLatToEngQuestion',
     }),
     dict({
-      'TypeInEngToLatQuestion': dict({
-        'answers': list([
-          'laeta',
-          'laetae',
-          'laetam',
-          'laetarum',
-          'laetas',
-          'laete',
-          'laeti',
-          'laetis',
-          'laeto',
-          'laetorum',
-          'laetos',
-          'laetum',
-          'laetus',
-        ]),
-        'main_answer': 'laetus',
-        'prompt': 'happy',
-      }),
-      'question_type': 'TypeInEngToLatQuestion',
-    }),
-    dict({
       'ParseWordLatToCompQuestion': dict({
         'answers': list([
-          'gerund accusative',
-          'gerundive masculine accusative singular',
-          'gerundive neuter accusative singular',
-          'gerundive neuter nominative singular',
-          'gerundive neuter vocative singular',
+          'nominative plural feminine',
         ]),
-        'dictionary_entry': 'enter: ingredior, ingredi, ingressus sum',
-        'main_answer': 'gerundive neuter nominative singular',
-        'prompt': 'ingrediendum',
+        'dictionary_entry': 'that: ille, illa, illud',
+        'main_answer': 'nominative plural feminine',
+        'prompt': 'illae',
       }),
       'question_type': 'ParseWordLatToCompQuestion',
     }),
     dict({
-      'TypeInLatToEngQuestion': dict({
-        'answers': list([
-          'you are being taken',
-          'you are taken',
+      'PrincipalPartsQuestion': dict({
+        'principal_parts': list([
+          'puella',
+          'puellae',
         ]),
-        'main_answer': 'you are taken',
-        'prompt': 'caperis',
+        'prompt': 'puella',
       }),
-      'question_type': 'TypeInLatToEngQuestion',
+      'question_type': 'PrincipalPartsQuestion',
+    }),
+    dict({
+      'MultipleChoiceEngToLatQuestion': dict({
+        'answer': 'bonus',
+        'choices': list([
+          'capio',
+          'acer',
+          'bonus',
+        ]),
+        'prompt': 'good',
+      }),
+      'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
     dict({
       'MultipleChoiceEngToLatQuestion': dict({
@@ -644,6 +618,17 @@
         'prompt': 'name',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
+    }),
+    dict({
+      'TypeInEngToLatQuestion': dict({
+        'answers': list([
+          'puellae',
+          'puellas',
+        ]),
+        'main_answer': 'puellae',
+        'prompt': 'girls',
+      }),
+      'question_type': 'TypeInEngToLatQuestion',
     }),
   ])
 # ---
