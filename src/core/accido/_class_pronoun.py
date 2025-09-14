@@ -5,8 +5,9 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
+from warnings import deprecated
 
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import PRONOUNS
 from .exceptions import InvalidInputError
 from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class Pronoun(_Word):
+class Pronoun(Word):
     """Representation of a Latin pronoun with endings.
 
     Attributes
@@ -38,7 +39,13 @@ class Pronoun(_Word):
     Note that the arguments of ``Pronoun`` are keyword-only.
     """
 
-    __slots__: tuple[str, ...] = ("femnom", "mascnom", "neutnom", "pronoun")
+    __slots__: tuple[str, ...] = (
+        "femnom",
+        "mascnom",
+        "neutnom",
+        "principal_parts",
+        "pronoun",
+    )
 
     def __init__(self, pronoun: str, *, meaning: Meaning) -> None:
         """Initialise ``Pronoun`` and determine the endings.
@@ -83,6 +90,12 @@ class Pronoun(_Word):
         self.femnom: str = self.endings["Pfnomsg"]
         self.neutnom: str = self.endings["Pnnomsg"]
 
+        self.principal_parts: tuple[str, ...] = (
+            self.mascnom,
+            self.femnom,
+            self.neutnom,
+        )
+
     def get(
         self, *, case: Case, number: Number, gender: Gender
     ) -> Ending | None:
@@ -123,7 +136,7 @@ class Pronoun(_Word):
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
-    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -158,11 +171,34 @@ class Pronoun(_Word):
         )
         return output
 
+    @deprecated("Use create_components instead")
+    def create_components_instance(self, key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        return self.create_components(key)
+
     def __repr__(self) -> str:
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"
 
     def __str__(self) -> str:
-        return f"{self.meaning}: {self.mascnom}, {self.femnom}, {self.neutnom}"
+        return f"{self.meaning}: {', '.join(self.principal_parts)}"
 
     def __add__(self, other: object) -> Pronoun:
         if not isinstance(other, Pronoun) or self.endings != other.endings:

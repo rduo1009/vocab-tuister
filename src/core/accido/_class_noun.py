@@ -5,8 +5,9 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Final, overload
+from warnings import deprecated
 
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from ._syllables import count_syllables
 from .exceptions import InvalidInputError
@@ -28,7 +29,7 @@ CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
 
 @total_ordering
-class Noun(_Word):
+class Noun(Word):
     """Representation of a Latin noun with endings.
 
     Attributes
@@ -74,6 +75,7 @@ class Noun(_Word):
         "i_stem",
         "nominative",
         "plurale_tantum",
+        "principal_parts",
     )
 
     # fmt: off
@@ -122,6 +124,12 @@ class Noun(_Word):
         self.gender: Gender | None = gender
         self.meaning: Meaning = meaning
         self.plurale_tantum: bool = False
+
+        self.principal_parts: tuple[str, ...] = (
+            (self.nominative,)
+            if self.genitive is None
+            else (self.nominative, self.genitive)
+        )
 
         self._first: str = self.nominative
         self.declension: NounDeclension
@@ -388,7 +396,7 @@ class Noun(_Word):
 
         return self.endings.get(f"N{short_case}{short_number}")
 
-    def create_components_instance(self, key: str) -> EndingComponents:
+    def create_components(self, key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -420,6 +428,29 @@ class Noun(_Word):
             output.subtype = ComponentsSubtype.PRONOUN
         return output
 
+    @deprecated("Use create_components instead")
+    def create_components_instance(self, key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        return self.create_components(key)
+
     def __repr__(self) -> str:
         if self.declension == 0:
             return f"Noun({self.nominative}, meaning={self.meaning})"
@@ -427,7 +458,7 @@ class Noun(_Word):
         assert self.gender is not None
 
         return (
-            f"Noun({self.nominative}, {self.genitive}, "
+            f"Noun({', '.join(self.principal_parts)}, "
             f"gender={self.gender.regular}, meaning={self.meaning})"
         )
 
@@ -438,8 +469,8 @@ class Noun(_Word):
         assert self.gender is not None
 
         return (
-            f"{self.meaning}: {self.nominative}, "
-            f"{self.genitive}, ({self.gender.shorthand})"
+            f"{self.meaning}: {', '.join(self.principal_parts)}, "
+            f"({self.gender.shorthand})"
         )
 
     def __add__(self, other: object) -> Noun:

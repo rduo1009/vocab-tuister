@@ -10,7 +10,7 @@ import src
 from ...utils import compact
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
 
 
 @dataclass
@@ -35,7 +35,7 @@ class VocabList:
     This will create a ``VocabList`` with a single ``Noun`` object in it.
     """
 
-    vocab: list[_Word]
+    vocab: list[Word]
     vocab_list_text: str
 
     def __post_init__(self) -> None:

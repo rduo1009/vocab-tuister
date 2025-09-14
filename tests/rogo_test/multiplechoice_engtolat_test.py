@@ -220,7 +220,7 @@ def test_multiplechoice_engtolat_verb():
         assert output.answer in output.choices
         assert len(output.choices) == 3
         assert set(output.choices) == {"doceo", "traho", "audio"}
-        assert (output.prompt, output.answer) in {("teach", "doceo"), ("drag", "traho"), ("hear", "audio")}
+        assert (output.prompt, output.answer) in {("I teach", "doceo"), ("I drag", "traho"), ("I hear", "audio")}
 
 
 def test_multiplechoice_engtolat_regularword():

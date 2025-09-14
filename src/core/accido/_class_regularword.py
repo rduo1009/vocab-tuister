@@ -5,8 +5,9 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
+from warnings import deprecated
 
-from ._class_word import _Word
+from ._class_word import Word
 from .misc import EndingComponents, MultipleMeanings
 
 if TYPE_CHECKING:
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class RegularWord(_Word):
+class RegularWord(Word):
     """Representation of a Latin word that is undeclinable.
 
     Attributes
@@ -72,7 +73,7 @@ class RegularWord(_Word):
 
         return self.word
 
-    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         In the case of a regular word, the returned ``EndingComponents`` object
@@ -92,6 +93,26 @@ class RegularWord(_Word):
         del key
 
         return EndingComponents(string="")
+
+    @deprecated("Use create_components instead")
+    def create_components_instance(self, key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        In the case of a regular word, the returned ``EndingComponents`` object
+        will be empty.
+        Note that this function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+        """
+        return self.create_components(key)
 
     def __repr__(self) -> str:
         return f"RegularWord({self.word}, meaning={self.meaning})"
