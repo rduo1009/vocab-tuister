@@ -74,14 +74,34 @@ class TestVerbInflection:
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)) == {"you were attacking", "you used to attack", "you began to attack", "you kept attacking"}
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == {"he was attacking", "he used to attack", "he began to attack", "he kept attacking", "she was attacking", "she used to attack", "she began to attack", "she kept attacking", "it was attacking", "it used to attack", "it began to attack", "it kept attacking"}  # fmt: skip
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were attacking", "we used to attack", "we began to attack", "we kept attacking"}
-        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you all were attacking", "you all used to attack", "you all began to attack", "you all kept attacking", "you were attacking", "you used to attack", "you began to attack", "you kept attacking"}
+        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {
+            "you all were attacking",
+            "you all used to attack",
+            "you all began to attack",
+            "you all kept attacking",
+            "you were attacking",
+            "you used to attack",
+            "you began to attack",
+            "you kept attacking",
+        }
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were attacking", "they used to attack", "they began to attack", "they kept attacking"}
 
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1)) == {"I was being attacked", "I was attacked", "I used to be attacked", "I began to be attacked", "I kept being attacked"}
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)) == {"you were being attacked", "you were attacked", "you used to be attacked", "you began to be attacked", "you kept being attacked"}
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == {"he was being attacked", "he was attacked", "he used to be attacked", "he began to be attacked", "he kept being attacked", "she was being attacked", "she was attacked", "she used to be attacked", "she began to be attacked", "she kept being attacked", "it was being attacked", "it was attacked", "it used to be attacked", "it began to be attacked", "it kept being attacked"}  # fmt: skip
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were being attacked", "we were attacked", "we used to be attacked", "we began to be attacked", "we kept being attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you all were being attacked", "you all were attacked", "you all used to be attacked", "you all began to be attacked", "you all kept being attacked", "you were being attacked", "you were attacked", "you used to be attacked", "you began to be attacked", "you kept being attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {
+            "you all were being attacked",
+            "you all were attacked",
+            "you all used to be attacked",
+            "you all began to be attacked",
+            "you all kept being attacked",
+            "you were being attacked",
+            "you were attacked",
+            "you used to be attacked",
+            "you began to be attacked",
+            "you kept being attacked",
+        }
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were being attacked", "they were attacked", "they used to be attacked", "they began to be attacked", "they kept being attacked"}
 
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1)) == {"I might attack"}
@@ -105,14 +125,32 @@ class TestVerbInflection:
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)) == {"you will attack", "you will be attacking", "you shall attack", "you shall be attacking"}
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == {"he will attack", "he will be attacking", "he shall attack", "he shall be attacking", "she will attack", "she will be attacking", "she shall attack", "she shall be attacking", "it will attack", "it will be attacking", "it shall attack", "it shall be attacking"}  # fmt: skip
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we will attack", "we will be attacking", "we shall attack", "we shall be attacking"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you all will attack", "you all will be attacking", "you all shall attack", "you all shall be attacking", "you will attack", "you will be attacking", "you shall attack", "you shall be attacking"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {
+            "you all will attack",
+            "you all will be attacking",
+            "you all shall attack",
+            "you all shall be attacking",
+            "you will attack",
+            "you will be attacking",
+            "you shall attack",
+            "you shall be attacking",
+        }
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they will attack", "they will be attacking", "they shall attack", "they shall be attacking"}
 
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1)) == {"I will be attacked", "I shall be attacked", "I will be being attacked", "I shall be being attacked"}
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)) == {"you will be attacked", "you shall be attacked", "you will be being attacked", "you shall be being attacked"}
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == {"he will be attacked", "he shall be attacked", "he will be being attacked", "he shall be being attacked", "she will be attacked", "she shall be attacked", "she will be being attacked", "she shall be being attacked", "it will be attacked", "it shall be attacked", "it will be being attacked", "it shall be being attacked"}  # fmt: skip
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we will be attacked", "we shall be attacked", "we will be being attacked", "we shall be being attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you all will be attacked", "you all will be being attacked", "you all shall be attacked", "you all shall be being attacked", "you will be attacked", "you will be being attacked", "you shall be attacked", "you shall be being attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {
+            "you all will be attacked",
+            "you all will be being attacked",
+            "you all shall be attacked",
+            "you all shall be being attacked",
+            "you will be attacked",
+            "you will be being attacked",
+            "you shall be attacked",
+            "you shall be being attacked",
+        }
         assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they will be attacked", "they shall be attacked", "they will be being attacked", "they shall be being attacked"}
 
     def test_verb_perfect(self):
@@ -231,7 +269,18 @@ class TestVerbInflection:
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)) == {"you had", "you were having", "you used to have", "you began to have", "you kept having"}
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)) == {"he was having", "he had", "he used to have", "he began to have", "he kept having", "she was having", "she had", "she used to have", "she began to have", "she kept having", "it was having", "it had", "it used to have", "it began to have", "it kept having"}  # fmt: skip
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)) == {"we were having", "we had", "we used to have", "we began to have", "we kept having"}
-        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {"you all were having", "you all had", "you all used to have", "you all began to have", "you all kept having", "you were having", "you had", "you used to have", "you began to have", "you kept having"}
+        assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)) == {
+            "you all were having",
+            "you all had",
+            "you all used to have",
+            "you all began to have",
+            "you all kept having",
+            "you were having",
+            "you had",
+            "you used to have",
+            "you began to have",
+            "you kept having",
+        }
         assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they were having", "they had", "they used to have", "they began to have", "they kept having"}
 
 

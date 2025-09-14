@@ -258,7 +258,12 @@ def _find_preactind_inflections(
             return (f"you {present_nonthird}", f"you are {present_participle}")
 
         case (Number.PLURAL, 2):
-            return (f"you all {present_nonthird}", f"you all are {present_participle}", f"you {present_nonthird}", f"you are {present_participle}")
+            return (
+                f"you all {present_nonthird}",
+                f"you all are {present_participle}",
+                f"you {present_nonthird}",
+                f"you are {present_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -793,7 +798,10 @@ def _find_plpactind_inflections(
             return (f"you had {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all had {past_participle}", f"you had {past_participle}")
+            return (
+                f"you all had {past_participle}",
+                f"you had {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -822,7 +830,10 @@ def _find_plppasind_inflections(
             return (f"you had been {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all had been {past_participle}", f"you had been {past_participle}")
+            return (
+                f"you all had been {past_participle}",
+                f"you had been {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -851,7 +862,10 @@ def _find_fpractind_inflections(
             return (f"you will have {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all will have {past_participle}", f"you will have {past_participle}")
+            return (
+                f"you all will have {past_participle}",
+                f"you will have {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -880,7 +894,10 @@ def _find_fprpasind_inflections(
             return (f"you will have been {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all will have been {past_participle}", f"you will have been {past_participle}")
+            return (
+                f"you all will have been {past_participle}",
+                f"you will have been {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -912,7 +929,12 @@ def _find_futactipe_inflections(
             return (f"let him {lemma}", f"let her {lemma}", f"let it {lemma}")
 
         case (Number.PLURAL, 2):
-            return (f"you all shall {lemma}", f"you all will {lemma}", f"you shall {lemma}", f"you will {lemma}")
+            return (
+                f"you all shall {lemma}",
+                f"you all will {lemma}",
+                f"you shall {lemma}",
+                f"you will {lemma}",
+            )
 
         case (Number.PLURAL, 3):
             return (f"let them {lemma}",)
@@ -1051,7 +1073,10 @@ def _find_peractsbj_inflections(
             return (f"you may have {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all may have {past_participle}", f"you may have {past_participle}")
+            return (
+                f"you all may have {past_participle}",
+                f"you may have {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -1080,7 +1105,10 @@ def _find_plpactsbj_inflections(
             return (f"you might have {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all might have {past_participle}", f"you might have {past_participle}")
+            return (
+                f"you all might have {past_participle}",
+                f"you might have {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -1109,7 +1137,10 @@ def _find_prepassbj_inflections(
             return (f"you may be {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all may be {past_participle}", f"you may be {past_participle}")
+            return (
+                f"you all may be {past_participle}",
+                f"you may be {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -1138,7 +1169,10 @@ def _find_imppassbj_inflections(
             return (f"you might be {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all might be {past_participle}", f"you might be {past_participle}")
+            return (
+                f"you all might be {past_participle}",
+                f"you might be {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -1167,7 +1201,10 @@ def _find_perpassbj_inflections(
             return (f"you may have been {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all may have been {past_participle}", f"you may have been {past_participle}")
+            return (
+                f"you all may have been {past_participle}",
+                f"you may have been {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
@@ -1196,7 +1233,10 @@ def _find_plppassbj_inflections(
             return (f"you might have been {past_participle}",)
 
         case (Number.PLURAL, 2):
-            return (f"you all might have been {past_participle}", f"you might have been {past_participle}")
+            return (
+                f"you all might have been {past_participle}",
+                f"you might have been {past_participle}",
+            )
 
         case (Number.SINGULAR, 3):
             return (
