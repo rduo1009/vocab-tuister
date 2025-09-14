@@ -19,7 +19,6 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-# TODO: Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Pronoun(Word):
     """Representation of a Latin pronoun with endings.
@@ -39,7 +38,13 @@ class Pronoun(Word):
     Note that the arguments of ``Pronoun`` are keyword-only.
     """
 
-    __slots__: tuple[str, ...] = ("femnom", "mascnom", "neutnom", "pronoun")
+    __slots__: tuple[str, ...] = (
+        "femnom",
+        "mascnom",
+        "neutnom",
+        "principal_parts",
+        "pronoun",
+    )
 
     def __init__(self, pronoun: str, *, meaning: Meaning) -> None:
         """Initialise ``Pronoun`` and determine the endings.
@@ -83,6 +88,12 @@ class Pronoun(Word):
         self.mascnom: str = self.endings["Pmnomsg"]
         self.femnom: str = self.endings["Pfnomsg"]
         self.neutnom: str = self.endings["Pnnomsg"]
+
+        self.principal_parts: tuple[str, ...] = (
+            self.mascnom,
+            self.femnom,
+            self.neutnom,
+        )
 
     def get(
         self, *, case: Case, number: Number, gender: Gender
@@ -163,8 +174,7 @@ class Pronoun(Word):
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"
 
     def __str__(self) -> str:
-        # TODO: after `principal_parts` is created, clean up this
-        return f"{self.meaning}: {self.mascnom}, {self.femnom}, {self.neutnom}"
+        return f"{self.meaning}: {', '.join(self.principal_parts)}"
 
     def __add__(self, other: object) -> Pronoun:
         if not isinstance(other, Pronoun) or self.endings != other.endings:

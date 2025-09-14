@@ -42,61 +42,23 @@ class PrincipalPartsQuestion:
 
 
 # FIXME: Rename function
-# TODO: Once `principal_parts` added for all word classes, simplify this
 def generate_principal_parts_question(
     chosen_word: Word,
 ) -> PrincipalPartsQuestion | None:
-    # `RegularWord` is not supported (not principal parts)
+    # `RegularWord` is not supported (no principal parts)
     if isinstance(chosen_word, RegularWord):
         return None
 
+    # Irregular words are not supported
+    if (isinstance(chosen_word, Verb) and chosen_word.conjugation == 0) or (
+        isinstance(chosen_word, Noun) and chosen_word.declension == 0
+    ):
+        return None
+
     # Get principal parts
-    principal_parts: tuple[str, ...]
-    match chosen_word:
-        case Verb():
-            if chosen_word.conjugation == 0:  # irregular verb
-                return None
-
-            assert chosen_word.infinitive is not None
-            assert chosen_word.perfect is not None
-
-            if chosen_word.ppp:
-                assert chosen_word.ppp is not None
-
-                principal_parts = (
-                    chosen_word.present,
-                    chosen_word.infinitive,
-                    chosen_word.perfect,
-                    chosen_word.ppp,
-                )
-            else:
-                principal_parts = (
-                    chosen_word.present,
-                    chosen_word.infinitive,
-                    chosen_word.perfect,
-                )
-
-        case Noun():
-            if chosen_word.declension == 0:  # irregular noun
-                return None
-
-            assert chosen_word.genitive is not None
-
-            principal_parts = (chosen_word.nominative, chosen_word.genitive)
-
-        case Adjective():
-            principal_parts = chosen_word.principal_parts
-
-        case Pronoun():
-            principal_parts = (
-                chosen_word.mascnom,
-                chosen_word.femnom,
-                chosen_word.neutnom,
-            )
-
-        case _:
-            raise TypeError(f"Invalid type: {type(chosen_word)}")
+    assert isinstance(chosen_word, (Noun, Verb, Adjective, Pronoun))
+    principal_parts = chosen_word.principal_parts
 
     return PrincipalPartsQuestion(
-        prompt=principal_parts[0], principal_parts=principal_parts
+        prompt=principal_parts[0], principal_parts=chosen_word.principal_parts
     )

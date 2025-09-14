@@ -51,10 +51,6 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-# TODO: Clean this up a bit:
-# - Jules messed up quite a bit of this. Some unnecessary comments in places.
-# - Perhaps redo semi-deponents as the current implementation is a bit messy.
-# - Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Verb(Word):
     """Representation of a Latin verb with endings.
@@ -107,6 +103,7 @@ class Verb(Word):
         "perfect",
         "ppp",
         "present",
+        "principal_parts",
         "semi_deponent",
     )
 
@@ -191,6 +188,21 @@ class Verb(Word):
         if irregular_endings := DEFECTIVE_VERBS.get(self.present):
             self.endings: Endings = irregular_endings
             self.conjugation: Conjugation = 0
+
+            # HACK: Just letting `principal_parts` be the non-None forms
+            # This is repeated later on in the function
+            # Hopefully any issues are caught by the validation
+            self.principal_parts: tuple[str, ...] = tuple(
+                x
+                for x in (
+                    self.present,
+                    self.infinitive,
+                    self.perfect,
+                    self.ppp,
+                )
+                if x is not None
+            )
+
             return
 
         if self.infinitive is None:
@@ -320,6 +332,12 @@ class Verb(Word):
                     or key[10:13] == Number.SINGULAR.shorthand + "3"
                 }
 
+            self.principal_parts = (
+                self.present,
+                self.infinitive,
+                self.perfect,
+            )
+
             return
 
         # ---------------------------------------------------------------------
@@ -435,6 +453,12 @@ class Verb(Word):
                         Tense.FUTURE_PERFECT.shorthand,
                     }
                 }
+
+            self.principal_parts = (
+                self.present,
+                self.infinitive,
+                self.perfect,
+            )
 
             return
 
@@ -607,6 +631,12 @@ class Verb(Word):
                     or key[4:7] != Voice.PASSIVE.shorthand
                 )
             }
+
+        self.principal_parts = tuple(
+            x
+            for x in (self.present, self.infinitive, self.perfect, self.ppp)
+            if x is not None
+        )
 
     def _first_conjugation(self) -> Endings:
         assert self.infinitive is not None
@@ -1972,38 +2002,12 @@ class Verb(Word):
         raise InvalidInputError(f"Key '{key}' is invalid.")
 
     def __repr__(self) -> str:
-        # TODO: after `principal_parts` is created, clean up this
-
-        if self.conjugation == 0:
-            return f"Verb({self.present}, meaning={self.meaning})"
-
-        if self.deponent or self.semi_deponent:
-            return (
-                f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
-                f"meaning={self.meaning})"
-            )
-
         return (
-            f"Verb({self.present}, {self.infinitive}, {self.perfect}, "
-            f"{self.ppp}, meaning={self.meaning})"
+            f"Verb({', '.join(self.principal_parts)}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:
-        # TODO: after `principal_parts` is created, clean up this
-
-        if self.conjugation == 0:
-            return f"{self.meaning}: {self.present}"
-
-        if self.deponent or self.semi_deponent:
-            return (
-                f"{self.meaning}: {self.present}, "
-                f"{self.infinitive}, {self.perfect}"
-            )
-
-        return (
-            f"{self.meaning}: {self.present}, {self.infinitive}, "
-            f"{self.perfect}, {self.ppp}"
-        )
+        return f"{self.meaning}: {', '.join(self.principal_parts)}"
 
     def __add__(self, other: object) -> Verb:
         def _create_verb(

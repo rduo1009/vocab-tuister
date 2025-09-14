@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
 
-# TODO: Create a `principal_parts` attribute to clean up its question implementation.
 @total_ordering
 class Noun(Word):
     """Representation of a Latin noun with endings.
@@ -75,6 +74,7 @@ class Noun(Word):
         "i_stem",
         "nominative",
         "plurale_tantum",
+        "principal_parts",
     )
 
     # fmt: off
@@ -123,6 +123,12 @@ class Noun(Word):
         self.gender: Gender | None = gender
         self.meaning: Meaning = meaning
         self.plurale_tantum: bool = False
+
+        self.principal_parts: tuple[str, ...] = (
+            (self.nominative,)
+            if self.genitive is None
+            else (self.nominative, self.genitive)
+        )
 
         self._first: str = self.nominative
         self.declension: NounDeclension
@@ -422,29 +428,25 @@ class Noun(Word):
         return output
 
     def __repr__(self) -> str:
-        # TODO: after `principal_parts` is created, clean up this
-
         if self.declension == 0:
             return f"Noun({self.nominative}, meaning={self.meaning})"
 
         assert self.gender is not None
 
         return (
-            f"Noun({self.nominative}, {self.genitive}, "
+            f"Noun({', '.join(self.principal_parts)}, "
             f"gender={self.gender.regular}, meaning={self.meaning})"
         )
 
     def __str__(self) -> str:
-        # TODO: after `principal_parts` is created, clean up this
-
         if self.declension == 0:
             return f"{self.meaning}: {self.nominative}, (irregular)"
 
         assert self.gender is not None
 
         return (
-            f"{self.meaning}: {self.nominative}, "
-            f"{self.genitive}, ({self.gender.shorthand})"
+            f"{self.meaning}: {', '.join(self.principal_parts)}, "
+            f"({self.gender.shorthand})"
         )
 
     def __add__(self, other: object) -> Noun:
