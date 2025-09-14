@@ -36,65 +36,65 @@ def _wn_is_installed(name: str) -> bool:
         return False
 
 
-trimmed_wn = False
+_trimmed_wn = False
 
 # Frozen with PyInstaller
 if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
     # NOTE: Should work, but type narrowing not implemented
     # See https://github.com/DetachHead/basedpyright/issues/1224
-    wn_data_path = (
+    _wn_data_path = (
         Path(cast("str", _sys._MEIPASS)) / "src/core/transfero/wn_data"  # noqa: SLF001  # pyright: ignore[reportAttributeAccessIssue]
     )
-    wn.config.data_directory = str(wn_data_path)
+    wn.config.data_directory = str(_wn_data_path)
 
-    if (compressed_db_path := wn_data_path / "wn.db.xz").exists():
+    if (compressed_db_path := _wn_data_path / "wn.db.xz").exists():
         with (
             lzma.open(compressed_db_path, "rb") as f_in,
-            (wn_data_path / "wn.db").open("wb") as f_out,
+            (_wn_data_path / "wn.db").open("wb") as f_out,
         ):
             copyfileobj(f_in, f_out)
 
-    if not wn_data_path.exists():
+    if not _wn_data_path.exists():
         raise LookupError(
             "The wordnet dataset was not found in the package data."
         )
 
     # The database will always be trimmed in frozen builds
-    trimmed_wn = True
+    _trimmed_wn = True
 
 # Regular usage
 else:
     # This is the primary, persistent data directory in your project
-    wn_data_path = Path(__file__).parent / "wn_data"
-    wn_data_path.mkdir(parents=True, exist_ok=True)
+    _wn_data_path = Path(__file__).parent / "wn_data"
+    _wn_data_path.mkdir(parents=True, exist_ok=True)
 
     # 1. Check if the compressed database exists.
-    if (compressed_db_path := wn_data_path / "wn.db.xz").exists():
+    if (compressed_db_path := _wn_data_path / "wn.db.xz").exists():
         # Decompress into a temporary directory.
-        tmp_dir_obj = TemporaryDirectory()
-        wn_data_path = Path(tmp_dir_obj.name)
+        _tmp_dir_obj = TemporaryDirectory()
+        _wn_data_path = Path(_tmp_dir_obj.name)
 
         with (
             lzma.open(compressed_db_path, "rb") as f_in,
-            (wn_data_path / "wn.db").open("wb") as f_out,
+            (_wn_data_path / "wn.db").open("wb") as f_out,
         ):
             copyfileobj(f_in, f_out)
 
-        wn.config.data_directory = str(wn_data_path)
+        wn.config.data_directory = str(_wn_data_path)
 
     # 2. If not, check for an existing uncompressed database.
-    elif (uncompressed_db_path := wn_data_path / "wn.db").exists():
+    elif (uncompressed_db_path := _wn_data_path / "wn.db").exists():
         # Use the existing persistent directory directly.
-        wn.config.data_directory = str(wn_data_path)
+        wn.config.data_directory = str(_wn_data_path)
 
     # 3. If neither exists, download a fresh copy.
     else:
         # Download will go into the persistent directory.
-        wn.config.data_directory = str(wn_data_path)
+        wn.config.data_directory = str(_wn_data_path)
         try:
             wn.download(_LEXICON)
             warnings.warn(
-                f"The wordnet lexicon '{_LEXICON}' was not found in {wn_data_path} "
+                f"The wordnet lexicon '{_LEXICON}' was not found in {_wn_data_path} "
                 "and has been downloaded.",
                 stacklevel=2,
             )
@@ -105,9 +105,9 @@ else:
 
     # Now, regardless of the path taken, check if the loaded DB is trimmed.
     if not _wn_is_installed(_LEXICON):
-        trimmed_wn = True
+        _trimmed_wn = True
 
-if trimmed_wn:
+if _trimmed_wn:
     from wn import _db  # noqa: PLC2701
 
     def _do_nothing( 
