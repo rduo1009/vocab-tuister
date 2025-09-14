@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-import gzip
 import hashlib
 import hmac
 import logging
 import warnings
+import zlib
 from pathlib import Path
 from typing import TYPE_CHECKING, BinaryIO
 
@@ -72,9 +72,7 @@ def save_vocab_dump(
     if not isinstance(destination, (str, Path)):
         if compress:
             logger.info("Saving vocab dump with compression to stream.")
-            with gzip.GzipFile(fileobj=destination, mode="wb") as file:
-                file.write(pickled_data)
-                file.write(signature.encode())
+            destination.write(zlib.compress(pickled_data + signature.encode()))
         else:
             logger.info("Saving vocab dump to stream.")
             destination.write(pickled_data)
@@ -106,9 +104,8 @@ def save_vocab_dump(
 
         logger.info("Saving vocab dump with compression to %s.", file_path)
 
-        with gzip.open(file_path, "wb") as file:
-            file.write(pickled_data)
-            file.write(signature.encode())
+        with Path(file_path).open("wb") as file:
+            file.write(zlib.compress(pickled_data + signature.encode()))
         return
 
     if file_path.suffix == ".gzip":

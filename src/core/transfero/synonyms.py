@@ -19,7 +19,7 @@ from wn.constants import ADJECTIVE, NOUN, VERB
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
 
 logger = logging.getLogger(__name__)
 
@@ -121,7 +121,7 @@ if _trimmed_wn:
 # Mapping from word classes to WordNet POS tags.
 # Adjectives use both 'a' (adjective) and 's' (satellite adjective) for comprehensive search.
 # RegularWord has no specific POS, so searches all.
-POS_TABLE: Final[dict[type[_Word], tuple[str, ...] | None]] = {
+POS_TABLE: Final[dict[type[Word], tuple[str, ...] | None]] = {
     Noun: (NOUN,),
     Pronoun: (NOUN,),
     Verb: (VERB,),
@@ -146,7 +146,7 @@ def _add_lemmas_to_set(
 def find_synonyms(
     word: str,
     *,
-    pos: type[_Word] | None = None,
+    pos: type[Word] | None = None,
     include_similar_words: bool = False,
     known_synonyms: tuple[str, ...] = (),
 ) -> set[str]:
@@ -156,7 +156,7 @@ def find_synonyms(
     ----------
     word : str
         The word to find synonyms of.
-    pos : type[_Word] | None
+    pos : type[Word] | None
         The part of speech of the word. If ``None``, then the synonyms
         of all parts of speech are returned.
     include_similar_words : bool, optional

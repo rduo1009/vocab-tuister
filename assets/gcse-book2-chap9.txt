@@ -1,0 +1,62 @@
+@ Verbs
+happen: accido, accidere, accidi
+do/act/drive: ago, agere, egi, actus
+dare: audeo, audere, ausus sum
+get to know/find out: cognosco, cognoscere, cognovi, cognitus
+try: conor, conari, conatus sum
+go out: egredior, egredi, egressus sum
+rejoice/be pleased: gaudeo, gaudere, gavisus sum
+encourage/urge: hortor, hortari, hortatus sum
+enter: ingredior, ingredi, ingressus sum
+speak: loquor, loqui, locutus sum
+wonder at/admire: miror, mirari, miratus sum
+die: morior, mori, mortuus sum
+crush/overwhelm: opprimo, opprimere, oppressi, oppressus
+suffer/endure: patior, pati, passus sum
+set out: proficiscor, proficisci, profectus sum
+advance: progredior, progredi, progressus sum
+think: puto, putare, putavi, putatus
+give back/restore: reddo, reddere, reddidi, redditus
+go back/return: regredior, regredi, regressus sum
+know: scio, scire, scivi, scitus
+feel/notice: sentio, sentire, sensi, sensus
+follow: sequor, sequi, secutus sum
+be accustomed: soleo, solere, solitus sum
+hope/expect: spero, sperare, speravi, speratus
+live/be alive: vivo, vivere, vixi, victum
+wound/injure: vulnero, vulnerare, vulneravi, vulneratus
+
+@ Nouns
+force/troops: copiae, copiarum, (f)
+family/tribe/race/people: gens, gentis, (f)
+children: liberi, liberorum, (m)
+storm: tempestas, tempestatis, (f)
+victory: victoria, victoriae, (f)
+life: vita, vitae, (f)
+wound: vulnus, vulneris, (n)
+
+@ Adjectives
+other/another/else: alius, alia, aliud, (212)
+other/another/one/second: alter, altera, alterum, (212)
+faithful/loyal: fidelis, fidele, (3-2)
+slow: lentus, lenta, lentum, (212)
+next/next to: proximus, proxima, proximum, (212)
+
+@ Pronouns
+# FIXME: haven't implemented this one!
+some/several: nonnulli, nonnullae, nonnulla
+certain/one/some: quidam, quaedam, quoddam
+
+@ Regulars
+and: ac/atque
+before/previously: antea
+even/also: etiam
+meanwhile: interea
+again: iterum
+willingly/gladly: libenter
+no-one/nobody: nemo/nullius
+in front of/for/in return for: pro
+on account of/because of: propter
+
+# Omitted:
+# 'alter ... alter' ('one ... the other') as it is a grammar pattern

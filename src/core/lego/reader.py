@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import gzip
 import hashlib
 import hmac
 import logging
 import warnings
+import zlib
 from io import StringIO
 from pathlib import Path
 from re import match
@@ -23,7 +23,7 @@ from .exceptions import InvalidVocabDumpError, InvalidVocabFileFormatError
 from .misc import KEY, VocabList
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
     from ..accido.type_aliases import Meaning
 
 logger = logging.getLogger(__name__)
@@ -64,8 +64,9 @@ def read_vocab_dump(source: str | Path | BinaryIO) -> VocabList:
         if filename.suffix == ".gzip":
             logger.info("File %s is being decompressed and read.", filename)
 
-            with gzip.open(filename, "rb") as file:
-                content = file.read()
+            with Path(filename).open("rb") as file:
+                compressed_content = file.read()
+                content = zlib.decompress(compressed_content)
         else:
             logger.info("File %s being read.", filename)
 
@@ -144,7 +145,7 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
     else:
         contents = source.read()
 
-    vocab: list[_Word] = []
+    vocab: list[Word] = []
     current: _PartOfSpeech | Literal[""] = ""
 
     for line in (
@@ -203,7 +204,7 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
 
 def _parse_line(
     current: _PartOfSpeech, latin_parts: list[str], meaning: Meaning, line: str
-) -> _Word:
+) -> Word:
     """Create a word object from a line of a vocab file and the pos.
 
     Parameters

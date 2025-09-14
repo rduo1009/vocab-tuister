@@ -109,13 +109,14 @@ ACTIVE_ONLY_VERBS: Final[set[str]] = {
     "vesperascit", "veterasco", "veteresco", "vigeo", "vigesco", "vireo", "viresco", "viridesco", "volito", "volo",
 }  # fmt: skip
 
+# FIXME: Handling 'accido' with multiple meanings is broken
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem
-# additions: possum (defective), nolo (defective)
-# deletions: accido (two meanings), incumbo (probably mistake)
+# additions: possum (defective), nolo (defective), malo (defective)
+# deletions: incumbo (probably mistake)
 MISSING_PPP_VERBS: Final[set[str]] = {
     "abaeto", "abago", "abarceo", "abbaeto", "abbatizo", "abbito", "abequito", "aberceo", "abhorresco", "abito", "abiturio",
     "abnato", "abnumero", "abnuto", "abolesco", "aboriscor", "aborto", "abrenuntio", "absilio", "absisto", "absono", "absto",
-    "abstulo", "accano", "accersio", "accessito", "accieo", "accipitro", "accubo", "aceo", "acesco", "acetasco",
+    "abstulo", "accano", "accersio", "accessito", "accido", "accieo", "accipitro", "accubo", "aceo", "acesco", "acetasco",
     "acontizo", "adaestuo", "adambulo", "adaugesco", "adbello", "adbito", "adcubo", "addecet", "addenseo", "addisco", "addormio",
     "addormisco", "aderro", "adesurio", "adfleo", "adformido", "adfremo", "adfrio", "adfulgeo", "adgemo", "adgravesco", "adiaceo",
     "adincresco", "adjaceo", "adlubesco", "adluceo", "adludio", "adluo", "admeo", "admigro", "admugio", "adnicto", "adnubilo",
@@ -218,7 +219,7 @@ MISSING_PPP_VERBS: Final[set[str]] = {
     "urgueo", "urvo", "vacefio", "vado", "vagio", "vago", "valesco", "vanesco", "vanno", "vegeo", "vento", "verecundor", "vergo",
     "vervago", "vesanio", "vescor", "vesico", "vesperascit", "veterasco", "veteresco", "vibrisso", "vigeo", "vigesco", "vilesco",
     "vireo", "viresco", "viridesco", "vissio", "vitulor", "vivesco",
-    "possum", "nolo",
+    "possum", "nolo", "malo",
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem_except_in_the_future_active_participle
