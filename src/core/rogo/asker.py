@@ -649,6 +649,12 @@ def _generate_multiplechoice_engtolat(
         )
     )
 
+    # If the word is a verb, inflect the meaning using priority components
+    if isinstance(chosen_word, Verb):
+        meaning = find_inflection(
+            meaning, max(chosen_word.find(answer)), main=True
+        )
+
     # Put together choices
     choices = [answer, *other_choices]
     random.shuffle(choices)
@@ -669,12 +675,35 @@ def _generate_multiplechoice_lattoeng(
     else:
         chosen_word_meanings = (chosen_word.meaning,)
 
+    # If the word is a verb, inflect the possible correct choices using priority components
+    if isinstance(chosen_word, Verb):
+        chosen_word_meanings = tuple(
+            find_inflection(meaning, max(chosen_word.find(prompt)), main=True)
+            for meaning in chosen_word_meanings
+        )
+
     answer = random.choice(chosen_word_meanings)
 
     # Pick other possible choices
     possible_choices: list[str] = []
     for vocab in vocab_list:
-        current_meaning = vocab.meaning
+        if isinstance(vocab, Verb):  # inflect other choices if verb as well
+            if isinstance(vocab.meaning, str):
+                current_meaning = find_inflection(
+                    vocab.meaning, max(vocab.find(vocab._first)), main=True
+                )
+            else:
+                current_meaning = MultipleMeanings(
+                    tuple(
+                        find_inflection(
+                            meaning, max(vocab.find(vocab._first)), main=True
+                        )
+                        for meaning in vocab.meaning.meanings
+                    )
+                )
+        else:
+            current_meaning = vocab.meaning
+
         if isinstance(current_meaning, str):
             if current_meaning in chosen_word_meanings:
                 continue

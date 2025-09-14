@@ -218,8 +218,8 @@ def test_multiplechoice_lattoeng_verb():
         assert not contains_duplicates(output.choices)
         assert output.answer in output.choices
         assert len(output.choices) == 3
-        assert set(output.choices) == {"teach", "drag", "hear"}
-        assert (output.prompt, output.answer) in {("doceo", "teach"), ("traho", "drag"), ("audio", "hear")}
+        assert set(output.choices) == {"I teach", "I drag", "I hear"}
+        assert (output.prompt, output.answer) in {("doceo", "I teach"), ("traho", "I drag"), ("audio", "I hear")}
 
 
 def test_multiplechoice_lattoeng_regularword():

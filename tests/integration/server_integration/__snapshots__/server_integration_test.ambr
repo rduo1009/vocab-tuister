@@ -92,11 +92,11 @@
     }),
     dict({
       'MultipleChoiceLatToEngQuestion': dict({
-        'answer': 'try',
+        'answer': 'I try',
         'choices': list([
           'good',
-          'take',
-          'try',
+          'I take',
+          'I try',
         ]),
         'prompt': 'conor',
       }),
@@ -250,7 +250,7 @@
           'capio',
           'ego',
         ]),
-        'prompt': 'take',
+        'prompt': 'I take',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
@@ -292,7 +292,7 @@
           'laetus',
           'inquam',
         ]),
-        'prompt': 'say',
+        'prompt': 'I say',
       }),
       'question_type': 'MultipleChoiceEngToLatQuestion',
     }),
@@ -313,7 +313,7 @@
       'MultipleChoiceLatToEngQuestion': dict({
         'answer': 'good',
         'choices': list([
-          'say',
+          'I say',
           'that',
           'good',
         ]),
