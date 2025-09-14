@@ -150,7 +150,7 @@ def test_multiplechoice_lattoeng():
         ic(output)  # noqa: F821
 
 
-def test_multiplechoice_engtolat_adjective():
+def test_multiplechoice_lattoeng_adjective():
     word1 = Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")
     word2 = Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")
     word3 = Adjective("fortis", "forte", declension="3", termination=2, meaning="strong")
@@ -168,7 +168,7 @@ def test_multiplechoice_engtolat_adjective():
         assert (output.prompt, output.answer) in {("laetus", "happy"), ("ingens", "large"), ("fortis", "strong")}
 
 
-def test_multiplechoice_engtolat_noun():
+def test_multiplechoice_lattoeng_noun():
     word1 = Noun("puella", "puellae", gender=Gender.FEMININE, meaning="girl")
     word2 = Noun("servus", "servi", gender=Gender.MASCULINE, meaning="slave")
     word3 = Noun("canis", "canis", gender=Gender.MASCULINE, meaning="dog")
@@ -186,7 +186,7 @@ def test_multiplechoice_engtolat_noun():
         assert (output.prompt, output.answer) in {("puella", "girl"), ("servus", "slave"), ("canis", "dog")}
 
 
-def test_multiplechoice_engtolat_pronoun():
+def test_multiplechoice_lattoeng_pronoun():
     word1 = Pronoun("hic", meaning="this")
     word2 = Pronoun("ille", meaning="that")
     word3 = Pronoun("qui", meaning="who")
@@ -204,7 +204,7 @@ def test_multiplechoice_engtolat_pronoun():
         assert (output.prompt, output.answer) in {("hic", "this"), ("ille", "that"), ("qui", "who")}
 
 
-def test_multiplechoice_engtolat_verb():
+def test_multiplechoice_lattoeng_verb():
     word1 = Verb("doceo", "docere", "docui", "doctus", meaning="teach")
     word2 = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
     word3 = Verb("audio", "audire", "audivi", "auditus", meaning="hear")
@@ -222,7 +222,7 @@ def test_multiplechoice_engtolat_verb():
         assert (output.prompt, output.answer) in {("doceo", "teach"), ("traho", "drag"), ("audio", "hear")}
 
 
-def test_multiplechoice_engtolat_regularword():
+def test_multiplechoice_lattoeng_regularword():
     word1 = RegularWord("in", meaning="in")
     word2 = RegularWord("e", meaning="out of")
     word3 = RegularWord("post", meaning="after")
