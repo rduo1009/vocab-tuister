@@ -6,7 +6,8 @@ requires = [ "poetry-core>=2.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
 name = "vocab-tester"
 description = "An application that tests Latin vocabulary and grammar."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = [ "LICENSE" ]
 authors = [ { name = "rduo1009", email = "robertduong09alt@gmail.com" } ]
 requires-python = ">=3.13,<3.14"
 classifiers = [
@@ -27,7 +28,7 @@ dependencies = [
   "platformdirs==4.4.0",
   "pyinstaller==6.15.0",
   "waitress==3.0.2",
-  "wn==0.13.0",
+  "wn @ git+https://github.com/goodmami/wn.git",
 ]
 
 [tool.poetry]
