@@ -38,8 +38,7 @@ class ParseWordCompToLatQuestion(MultiAnswerQuestion[str]):
     components: EndingComponents
 
 
-# FIXME: Rename function
-def generate_inflect(
+def generate_parseword_comptolat(
     chosen_word: Word, filtered_endings: Endings
 ) -> ParseWordCompToLatQuestion | None:
     # `RegularWord` is not supported (cannot be declined)

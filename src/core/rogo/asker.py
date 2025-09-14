@@ -11,9 +11,9 @@ from typing import TYPE_CHECKING, Final
 from ...utils import set_choice
 from ._multiplechoice_engtolat import generate_multiplechoice_engtolat
 from ._multiplechoice_lattoeng import generate_multiplechoice_lattoeng
-from ._parseword_comptolat import generate_inflect
-from ._parseword_lattocomp import generate_parse
-from ._principal_parts import generate_principal_parts_question
+from ._parseword_comptolat import generate_parseword_comptolat
+from ._parseword_lattocomp import generate_parseword_lattocomp
+from ._principal_parts import generate_principal_parts
 from ._typein_engtolat import generate_typein_engtolat
 from ._typein_lattoeng import generate_typein_lattoeng
 from .exceptions import InvalidSettingsError
@@ -110,13 +110,17 @@ def ask_question_without_sr(
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
-                    output = generate_parse(chosen_word, filtered_endings)
+                    output = generate_parseword_lattocomp(
+                        chosen_word, filtered_endings
+                    )
 
                 case QuestionClasses.PARSEWORD_COMPTOLAT:
-                    output = generate_inflect(chosen_word, filtered_endings)
+                    output = generate_parseword_comptolat(
+                        chosen_word, filtered_endings
+                    )
 
                 case QuestionClasses.PRINCIPAL_PARTS:
-                    output = generate_principal_parts_question(chosen_word)
+                    output = generate_principal_parts(chosen_word)
 
                 case QuestionClasses.MULTIPLECHOICE_ENGTOLAT:
                     output = generate_multiplechoice_engtolat(

@@ -41,8 +41,7 @@ class PrincipalPartsQuestion:
         return response == self.principal_parts
 
 
-# FIXME: Rename function
-def generate_principal_parts_question(
+def generate_principal_parts(
     chosen_word: Word,
 ) -> PrincipalPartsQuestion | None:
     # `RegularWord` is not supported (no principal parts)

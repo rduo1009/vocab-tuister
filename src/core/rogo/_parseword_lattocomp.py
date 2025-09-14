@@ -38,8 +38,7 @@ class ParseWordLatToCompQuestion(MultiAnswerQuestion[EndingComponents]):
     dictionary_entry: str
 
 
-# FIXME: Rename function
-def generate_parse(
+def generate_parseword_lattocomp(
     chosen_word: Word, filtered_endings: Endings
 ) -> ParseWordLatToCompQuestion | None:
     # `RegularWord` is not supported (cannot be declined)
