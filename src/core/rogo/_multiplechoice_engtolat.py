@@ -12,7 +12,7 @@ from ..transfero.words import find_inflection
 from ._base import MultipleChoiceQuestion
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
     from ..rogo.type_aliases import Vocab
 
 
@@ -32,7 +32,7 @@ class MultipleChoiceEngToLatQuestion(MultipleChoiceQuestion):
 
 
 def generate_multiplechoice_engtolat(
-    vocab_list: Vocab, chosen_word: _Word, number_multiplechoice_options: int
+    vocab_list: Vocab, chosen_word: Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
     # Remove `chosen_word` from copy of `vocab_list`
     vocab_list = vocab_list.copy()  # sourcery skip: name-type-suffix

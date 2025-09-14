@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class Adjective(_Word):
+class Adjective(Word):
     """Representation of a Latin adjective with endings.
 
     Attributes

@@ -11,7 +11,7 @@ from ._base import MultiAnswerQuestion
 from ._utils import pick_ending, pick_ending_from_multipleendings
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
     from ..accido.type_aliases import Endings
 
 
@@ -35,7 +35,7 @@ class TypeInLatToEngQuestion(MultiAnswerQuestion[str]):
 
 
 def generate_typein_lattoeng(
-    chosen_word: _Word,
+    chosen_word: Word,
     filtered_endings: Endings,
     *,
     english_subjunctives: bool = False,

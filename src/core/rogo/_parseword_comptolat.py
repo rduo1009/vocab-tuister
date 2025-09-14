@@ -10,7 +10,7 @@ from ._base import MultiAnswerQuestion
 from ._utils import pick_ending
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
     from ..accido.misc import EndingComponents
     from ..accido.type_aliases import Endings
 
@@ -42,7 +42,7 @@ class ParseWordCompToLatQuestion(MultiAnswerQuestion[str]):
 
 # FIXME: Rename function
 def generate_inflect(
-    chosen_word: _Word, filtered_endings: Endings
+    chosen_word: Word, filtered_endings: Endings
 ) -> ParseWordCompToLatQuestion | None:
     # `RegularWord` is not supported (cannot be declined)
     if isinstance(chosen_word, RegularWord):

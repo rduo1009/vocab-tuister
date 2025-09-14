@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
 
-from ._class_word import _Word
+from ._class_word import Word
 from .misc import EndingComponents, MultipleMeanings
 
 if TYPE_CHECKING:
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class RegularWord(_Word):
+class RegularWord(Word):
     """Representation of a Latin word that is undeclinable.
 
     Attributes

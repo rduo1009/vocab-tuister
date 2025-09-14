@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
 
 
 @dataclass
@@ -43,7 +43,7 @@ class PrincipalPartsQuestion:
 
 # FIXME: Rename function
 def generate_principal_parts_question(
-    chosen_word: _Word,
+    chosen_word: Word,
 ) -> PrincipalPartsQuestion | None:
     # `RegularWord` is not supported (not principal parts)
     if isinstance(chosen_word, RegularWord):

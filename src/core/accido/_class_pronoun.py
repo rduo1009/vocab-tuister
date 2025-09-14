@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
 
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import PRONOUNS
 from .exceptions import InvalidInputError
 from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class Pronoun(_Word):
+class Pronoun(Word):
     """Representation of a Latin pronoun with endings.
 
     Attributes

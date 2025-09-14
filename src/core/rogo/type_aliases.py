@@ -2,9 +2,9 @@
 
 from typing import ReadOnly, TypedDict
 
-from src.core.accido.endings import _Word
+from src.core.accido.endings import Word
 
-type Vocab = list[_Word]
+type Vocab = list[Word]
 
 Settings = TypedDict(
     "Settings",

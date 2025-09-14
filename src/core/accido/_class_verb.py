@@ -9,7 +9,7 @@ from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
 
 from ...utils.dict_changes import apply_changes
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import (
     ACTIVE_ONLY_VERBS,
     DEFECTIVE_VERBS,
@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
 
 
 @total_ordering
-class Verb(_Word):
+class Verb(Word):
     """Representation of a Latin verb with endings.
 
     Attributes

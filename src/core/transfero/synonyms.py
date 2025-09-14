@@ -17,7 +17,7 @@ from nltk.data import find, path
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 
 if TYPE_CHECKING:
-    from ..accido.endings import _Word
+    from ..accido.endings import Word
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ except LookupError:
 
 del find, download, path
 
-POS_TABLE: Final[dict[type[_Word], str | None]] = {
+POS_TABLE: Final[dict[type[Word], str | None]] = {
     Noun: wordnet.NOUN,
     Pronoun: wordnet.NOUN,
     Verb: wordnet.VERB,
@@ -76,7 +76,7 @@ POS_TABLE: Final[dict[type[_Word], str | None]] = {
 def find_synonyms(
     word: str,
     *,
-    pos: type[_Word] | None = None,
+    pos: type[Word] | None = None,
     include_similar_words: bool = False,
 ) -> set[str]:
     """Find synonyms of a word.

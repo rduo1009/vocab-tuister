@@ -6,7 +6,7 @@ import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Final, overload
 
-from ._class_word import _Word
+from ._class_word import Word
 from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
 from ._syllables import count_syllables
 from .exceptions import InvalidInputError
@@ -28,7 +28,7 @@ CONSONANTS: Final[set[str]] = set("bcdfghjklmnpqrstvwxyz")
 
 
 @total_ordering
-class Noun(_Word):
+class Noun(Word):
     """Representation of a Latin noun with endings.
 
     Attributes
