@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import logging
+import warnings
 from functools import total_ordering
-from typing import TYPE_CHECKING, Literal, overload
+from typing import TYPE_CHECKING, Any, Literal, overload
 
 from ._class_word import Word
 from ._edge_cases import (
@@ -77,6 +78,7 @@ class Adjective(Word):
         "_irregular_posadv",
         "_irregular_spradv",
         "_pos_stem",
+        "_principal_parts",
         "_spr_stem",
         "adverb_flag",
         "declension",
@@ -128,6 +130,7 @@ class Adjective(Word):
         super().__init__()
 
         self.principal_parts: tuple[str, ...] = principal_parts
+        self._principal_parts: tuple[str, ...] = self.principal_parts
         self.mascnom: str = self.principal_parts[0]
 
         self._first: str = self.principal_parts[0]
@@ -990,3 +993,23 @@ class Adjective(Word):
             self.termination,
             new_meaning,
         )
+
+    def __getattribute__(self, name: str) -> Any:  # pyright: ignore[reportExplicitAny, reportAny]
+        if name == "_principal_parts":
+            warnings.warn(
+                "_principal_parts is deprecated, use principal_parts instead",
+                category=DeprecationWarning,
+                stacklevel=2,
+            )
+        return super().__getattribute__(name)  # pyright: ignore[reportAny]
+
+    def __setattr__(self, name: str, value: Any) -> None:  # pyright: ignore[reportExplicitAny, reportAny]
+        if name == "_principal_parts":
+            warnings.warn(
+                "_principal_parts is deprecated, use principal_parts instead",
+                category=DeprecationWarning,
+                stacklevel=2,
+            )
+            # keep in sync with principal_parts
+            super().__setattr__("principal_parts", value)
+        super().__setattr__(name, value)
