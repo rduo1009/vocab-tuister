@@ -1017,7 +1017,7 @@ class TestVerbalNounConjugation:
         assert word.get(mood=mood, participle_case=case) == expected
 
 
-SEMI_DEPONENT_VERB_COMBINATIONS = (
+SEMI_DEPONENT_COMBINATIONS = (
     (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 1, Number.SINGULAR),
     (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 2, Number.SINGULAR),
     (Tense.PRESENT, Voice.SEMI_DEPONENT, Mood.INDICATIVE, 3, Number.SINGULAR),
@@ -1074,7 +1074,7 @@ SEMI_DEPONENT_VERBAL_NOUN_COMBINATIONS = ((Mood.GERUND, Case.ACCUSATIVE), (Mood.
 
 
 class TestSemiDeponentConjugation:
-    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "audeo", "audes", "audet", "audemus", "audetis", "audent",
         "audebam", "audebas", "audebat", "audebamus", "audebatis", "audebant",
         "audebo", "audebis", "audebit", "audebimus", "audebitis", "audebunt",
@@ -1109,7 +1109,7 @@ class TestSemiDeponentConjugation:
         else:
             assert word.get(mood=mood, participle_case=case) == expected
 
-    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_VERB_COMBINATIONS[i] + (form,) for i, form in enumerate([
+    @pytest.mark.parametrize(("tense", "voice", "mood", "person", "number", "expected"), [SEMI_DEPONENT_COMBINATIONS[i] + (form,) for i, form in enumerate([
         "soleo", "soles", "solet", "solemus", "soletis", "solent",
         "solebam", "solebas", "solebat", "solebamus", "solebatis", "solebant",
         None, None, None, None, None, None,  # Future active indicative
