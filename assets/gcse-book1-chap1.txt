@@ -24,8 +24,7 @@ horse: equus, equi, (m)
 woman: femina, feminae, (f)
 sword: gladius, gladii, (m)
 garden: hortus, horti, (m)
-# NOTE: change to 'apartment block' later and remove 'insula'
-island/insula/block: insula, insulae, (f)
+island/block/apartment block: insula, insulae, (f)
 messenger: nuntius, nuntii, (m)
 money: pecunia, pecuniae, (f)
 girl: puella, puellae, (f)
@@ -41,7 +40,7 @@ in/into/on/onto: in
 not: non
 now: nunc
 through/along: per
-# NOTE: Workaround for location names
+# HACK: Workaround for location names
 Rome: Roma
 but: sed
 always: semper
