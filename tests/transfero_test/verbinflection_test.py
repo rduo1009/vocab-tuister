@@ -292,20 +292,20 @@ class TestMainVerbInflection:
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he attacks"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all all attack"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they attack"
 
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I am attacked"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you are attacked"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he is attacked"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we are attacked"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all all are attacked"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all are attacked"
 
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all all may attack"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may attack"
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may attack"
 
         assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may be attacked"
