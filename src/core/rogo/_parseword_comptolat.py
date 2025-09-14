@@ -50,9 +50,7 @@ def generate_inflect(
     ending_components_key, chosen_ending = pick_ending(filtered_endings)
 
     # Find `EndingComponents` from dict key
-    ending_components = chosen_word.create_components_instance(
-        ending_components_key
-    )
+    ending_components = chosen_word.create_components(ending_components_key)
 
     # Determine answers
     chosen_ending = normalise_to_multipleendings(chosen_ending)

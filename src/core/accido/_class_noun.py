@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Final, overload
+from warnings import deprecated
 
 from ._class_word import Word
 from ._edge_cases import IRREGULAR_DECLINED_NOUNS, IRREGULAR_NOUNS
@@ -395,7 +396,7 @@ class Noun(Word):
 
         return self.endings.get(f"N{short_case}{short_number}")
 
-    def create_components_instance(self, key: str) -> EndingComponents:
+    def create_components(self, key: str) -> EndingComponents:
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -426,6 +427,29 @@ class Noun(Word):
         if self.declension == 0:
             output.subtype = ComponentsSubtype.PRONOUN
         return output
+
+    @deprecated("Use create_components instead")
+    def create_components_instance(self, key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        return self.create_components(key)
 
     def __repr__(self) -> str:
         if self.declension == 0:

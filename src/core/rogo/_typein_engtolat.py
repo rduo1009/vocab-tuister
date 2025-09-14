@@ -59,9 +59,7 @@ def generate_typein_engtolat(  # noqa: PLR0914
     chosen_ending = pick_ending_from_multipleendings(chosen_ending)
 
     # Using the dict key, create an `EndingComponents`
-    ending_components = chosen_word.create_components_instance(
-        ending_components_key
-    )
+    ending_components = chosen_word.create_components(ending_components_key)
 
     # -------------------------------------------------------------------------
     # UNSUPPORTED ENDINGS

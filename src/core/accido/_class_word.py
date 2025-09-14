@@ -7,6 +7,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from functools import total_ordering
 from typing import TYPE_CHECKING, Any
+from warnings import deprecated
 
 from .misc import MultipleEndings
 
@@ -66,7 +67,7 @@ class Word(ABC):  # noqa: PLW1641
             components that match `form`.
         """
         return [
-            self.create_components_instance(key)
+            self.create_components(key)
             for key, value in self.endings.items()
             if (isinstance(value, MultipleEndings) and form in value.get_all())
             or (not isinstance(value, MultipleEndings) and value == form)
@@ -79,6 +80,10 @@ class Word(ABC):  # noqa: PLW1641
     ) -> Ending | None:  # sourcery skip: docstrings-for-functions
         ...
 
-    # TODO: Rename to create_components, deprecate this one
+    @deprecated("Use create_components instead")
     @abstractmethod
+    @deprecated("Use create_components instead")
     def create_components_instance(self, key: str) -> EndingComponents: ...
+
+    @abstractmethod
+    def create_components(self, key: str) -> EndingComponents: ...

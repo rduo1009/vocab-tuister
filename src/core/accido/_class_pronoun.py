@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING
+from warnings import deprecated
 
 from ._class_word import Word
 from ._edge_cases import PRONOUNS
@@ -135,7 +136,7 @@ class Pronoun(Word):
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
-    def create_components_instance(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.
@@ -169,6 +170,29 @@ class Pronoun(Word):
             f"{output.gender.regular}"
         )
         return output
+
+    @deprecated("Use create_components instead")
+    def create_components_instance(self, key: str) -> EndingComponents:
+        """Generate an ``EndingComponents`` object based on endings keys.
+
+        This function should not usually be used by the user.
+
+        Parameters
+        ----------
+        key : str
+            The endings key.
+
+        Returns
+        -------
+        EndingComponents
+            The ``EndingComponents`` object created.
+
+        Raises
+        ------
+        InvalidInputError
+            If `key` is not a valid key for the word.
+        """
+        return self.create_components(key)
 
     def __repr__(self) -> str:
         return f"Pronoun({self.pronoun}, meaning={self.meaning})"
