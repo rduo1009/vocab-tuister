@@ -52,7 +52,7 @@ icecream = "2.1.8"
 ruff = "0.12.12"
 doc8 = "2.0.0"
 rstfmt = "0.0.14"
-mypy = { version = "1.17.1", extras = [ "faster-cache" ] }
+mypy = { version = "1.18.1", extras = [ "faster-cache" ] }
 basedpyright = "1.31.4"
 interrogate = "1.7.0"
 griffe = "1.14.0"
