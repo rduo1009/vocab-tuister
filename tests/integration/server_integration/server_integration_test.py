@@ -18,7 +18,11 @@ def run_cli(port):
 
 
 def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
+    def _default_settings():
+        return {"include-synonyms": True, "include-similar-words": True}
+
     monkeypatch.setattr("src.server.app.vocab_list", None)
+    monkeypatch.setattr("src.server.app._get_settings", _default_settings)
 
     server_url = f"http://127.0.0.1:{port}"
 

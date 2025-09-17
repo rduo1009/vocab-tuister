@@ -1,5 +1,8 @@
 """Contains a function that finds synonyms of English words."""
 
+# TODO: This module won't be used if the user settings don't enable them.
+# So put this import inside a if block to speed up import time
+
 # pyright: reportUnusedCallResult=false
 
 from __future__ import annotations
@@ -23,11 +26,6 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-_LEXICON: Final[str] = "oewn:2024"
-
-# TODO: This module won't be used if the user settings don't enable them.
-# So put this import inside a if block to speed up import time
-
 
 def _wn_is_installed(name: str) -> bool:
     try:
@@ -35,6 +33,9 @@ def _wn_is_installed(name: str) -> bool:
     except wn.DatabaseError:
         return False
 
+
+wn.config.allow_multithreading = True
+_LEXICON: Final[str] = "oewn:2024"
 
 _trimmed_wn = False
 
@@ -147,8 +148,8 @@ def find_synonyms(
     word: str,
     *,
     pos: type[Word] | None = None,
-    include_similar_words: bool = False,
     known_synonyms: tuple[str, ...] = (),
+    include_similar_words: bool = False,
 ) -> set[str]:
     """Find synonyms and optionally related words of a word.
 
@@ -159,14 +160,14 @@ def find_synonyms(
     pos : type[Word] | None
         The part of speech of the word. If ``None``, then the synonyms
         of all parts of speech are returned.
-    include_similar_words : bool, optional
-        Whether to include related words in the search (similar, hypernyms,
-        hyponyms). Defaults to False.
     known_synonyms : tuple[str, ...], optional
         Additional known synonyms of the word to help disambiguate its sense.
         If provided, only synsets that contain at least one of these as a lemma
         will be used to find synonyms. If no such synset is found, falls back
         to all synsets.
+    include_similar_words : bool, optional
+        Whether to include related words in the search (similar, hypernyms,
+        hyponyms). Defaults to False.
 
     Returns
     -------
@@ -175,11 +176,11 @@ def find_synonyms(
     """
     # Log the function call with its arguments for debugging purposes.
     logger.debug(
-        "find_synonyms(word=%r, pos=%s, include_similar_words=%s, known_synonyms=%s)",
+        "find_synonyms(word=%r, pos=%s, known_synonyms=%s, include_similar_words=%s)",
         word,
         pos,
-        include_similar_words,
         known_synonyms,
+        include_similar_words,
     )
 
     # Initialize the WordNet instance using the pre-configured lexicon.

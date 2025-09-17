@@ -151,6 +151,7 @@ def _unwrap_notrequired(type_hint: Any) -> Any:
     return type_hint
 
 
+# FIXME: Should this really raise errors? We need a typeis after all
 def validate_typeddict[T: _TypedDictMeta](  # noqa: PLR0914, PLR0915
     d: dict[str, Any], td_type: type[T]
 ) -> TypeIs[T]:

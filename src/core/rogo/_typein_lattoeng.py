@@ -4,8 +4,11 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from ...utils import set_choice
+from ..accido._class_pronoun import Pronoun
 from ..accido.endings import Verb
 from ..accido.misc import ComponentsSubtype, Mood
+from ..transfero.exceptions import InvalidWordError
+from ..transfero.synonyms import find_synonyms
 from ..transfero.words import find_inflection
 from ._base import MultiAnswerQuestion
 from ._utils import (
@@ -44,6 +47,8 @@ def generate_typein_lattoeng(
     *,
     english_subjunctives: bool = False,
     english_verbal_nouns: bool = False,
+    synonyms: bool = False,
+    similar_words: bool = False,
 ) -> TypeInLatToEngQuestion | None:
     # Pick ending
     _, chosen_ending = pick_ending(filtered_endings)
@@ -78,6 +83,30 @@ def generate_typein_lattoeng(
             inflected_meanings.update(
                 find_inflection(meaning, components=ending_components)
             )
+
+        # Add synonyms if requested
+        if synonyms and not (
+            isinstance(chosen_word, Pronoun)
+            or ending_components.subtype == ComponentsSubtype.PRONOUN
+        ):
+            for meaning in find_synonyms(
+                str(meanings),
+                pos=type(chosen_word),
+                known_synonyms=meanings.meanings[1:],
+                include_similar_words=similar_words,
+            ):
+                # HACK: `find_inflection` currently doesn't support inflecting multi-word phrases
+                # TODO: deal with this later
+                if " " in meaning:
+                    continue
+
+                # Skip errors to make this part more resilient
+                try:
+                    inflected_meanings.update(
+                        find_inflection(meaning, components=ending_components)
+                    )
+                except (IndexError, InvalidWordError):
+                    continue
 
         # Inflect the main meaning (__str__ returns the main meaning)
         possible_main_answers.add(

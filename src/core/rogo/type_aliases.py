@@ -9,6 +9,14 @@ type Vocab = list[Word]
 Settings = TypedDict(
     "Settings",
     {
+        "include-synonyms": ReadOnly[bool],
+        "include-similar-words": ReadOnly[bool],
+    },
+)
+
+SessionConfig = TypedDict(
+    "SessionConfig",
+    {
         "exclude-adjectives": ReadOnly[bool],
         "exclude-adjective-212-declension": ReadOnly[bool],
         "exclude-adjective-third-declension": ReadOnly[bool],
@@ -138,8 +146,8 @@ Settings = TypedDict(
 )  # fmt: skip
 
 
-SettingsRules = TypedDict(
-    "SettingsRules",
+SessionConfigRules = TypedDict(
+    "SessionConfigRules",
     {
         "exclude-adjective-masculine": ReadOnly[str],
         "exclude-adjective-feminine": ReadOnly[str],
