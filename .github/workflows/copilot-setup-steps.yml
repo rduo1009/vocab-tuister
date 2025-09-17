@@ -22,12 +22,6 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
-      - name: Install and cache apt deps
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: pipx golangci-lint
-          version: 1.0
-
       # -----------------------------------------------------------------------
       # PYTHON
 
@@ -69,6 +63,12 @@ jobs:
       - name: Install project deps
         run: poetry install --no-interaction --no-root
 
+      - name: Install and cache pipx
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: pipx
+          version: 1.0
+
       - name: Install dev deps using pipx
         run: |
           pipx install dunamai poethepoet
@@ -84,3 +84,7 @@ jobs:
         run: go mod download
         env:
           GOEXPERIMENT: jsonv2
+
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s v2.4.0
