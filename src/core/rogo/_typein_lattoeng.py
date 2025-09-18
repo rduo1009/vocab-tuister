@@ -90,7 +90,7 @@ def generate_typein_lattoeng(
             or ending_components.subtype == ComponentsSubtype.PRONOUN
         ):
             for meaning in find_synonyms(
-                str(meanings),
+                str(meanings),  # __str__ returns the main meaning
                 pos=type(chosen_word),
                 known_synonyms=meanings.meanings[1:],
                 include_similar_words=similar_words,
