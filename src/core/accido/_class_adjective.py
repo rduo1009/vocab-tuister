@@ -12,7 +12,7 @@ from ._class_word import Word
 from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
-    NO_ADVERB_ADJECTIVES,
+    REAL_ADVERB_ADJECTIVES,
 )
 from .exceptions import InvalidInputError
 from .misc import (
@@ -139,7 +139,7 @@ class Adjective(Word):
         self.declension: AdjectiveDeclension = declension
         self.termination: Termination | None = termination
         self.irregular_flag: bool = False
-        self.adverb_flag: bool = True
+        self.adverb_flag: bool = self.mascnom in REAL_ADVERB_ADJECTIVES
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
             self.irregular_flag = True
@@ -158,9 +158,6 @@ class Adjective(Word):
                 self._irregular_spradv: str = irregular_data[4]
             else:
                 self.adverb_flag = False
-
-        if self.mascnom in NO_ADVERB_ADJECTIVES:
-            self.adverb_flag = False
 
         if self.declension == "212":
             self.endings: Endings = self._212_endings()

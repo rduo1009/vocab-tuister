@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from .type_aliases import Conjugation, Ending, Endings
 
 
+# TODO: Change formatting to make it clear that lines be longer here to 130 e.g. with below horizontal line
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS
 
@@ -1280,8 +1281,70 @@ IRREGULAR_ADJECTIVES: Final[
     "dexter": ("dexterior", "dextim", None, None, None),
 }  # fmt: skip
 
-# TODO: Add to this
-NO_ADVERB_ADJECTIVES = {"ingens"}
+# Created from pipx run src/scripts/create_adjective_no_adverb.py, then copying and word wrapping result
+REAL_ADVERB_ADJECTIVES = {
+    "irremediabilis", "decorus", "muscosus", "sextuplex", "suavis", "activus", "palaestricus", "perfidelis", "sanus", "praecipuus", 
+    "collaudabilis", "celer", "vivax", "syndesmoticus", "iocularis", "apprimus", "frequens", "superus", "purus", 
+    "plenus", "respectivus", "nasutus", "inaequalis", "Celticus", "culpabilis", "atrox", "impar", "nuncupativus", "hilaris", 
+    "unanimus", "condicionalis", "communis", "infidelis", "evidens", "acer", "fabrilis", "iudicialis", "lepidus", "ocularis", 
+    "idoneus", "gratus", "iactans", "orthogonalis", "gentilis", "pugnax", "quincuplex", "imperitus", "germanus", "opiparus", 
+    "fatalis", "sollers", "sortitus", "irregularis", "verus", "impatiens", "atticus", "poenalis", "invisibilis", "continens", 
+    "dulcis", "superfluus", "patronymicus", "cognoscibilis", "tyrannicus", "extemporalis", "frugalis", "densus", "inenodabilis", 
+    "egregius", "invidiosus", "realis", "brevis", "blandus", "amatorius", "impiger", "exilis", "foelix", "quinquiplex", 
+    "infirmus", "clarus", "eximius", "bellus", "verax", "procax", "unanimis", "fanaticus", "largus", "studiosus", "creber", 
+    "putidus", "accommodatus", "contemptus", "lenis", "Latinus", "formosus", "fortis", "contemplabilis", "pertinax", "improsper", 
+    "rabiosus", "muliebris", "tumidus", "verticalis", "absconditus", "dissimilis", "fallax", "pompalis", "imperativus", "uber", 
+    "placidus", "magistralis", "avidus", "inhospitalis", "divinus", "immortalis", "centralis", "tardus", "indefessus", "civilis", 
+    "Numidus", "passivus", "benevolus", "mendax", "luculentus", "maestus", "iocundus", "imprudens", "peritus", "inanis", 
+    "infelix", "conubialis", "magnificus", "ducalis", "acerbus", "servilis", "peramans", "cordialis", "superbus", "malus", 
+    "acharis", "aequus", "declamatorius", "inutilis", "significatorius", "inclemens", "insipiens", "serus", "multus", 
+    "patheticus", "consuetudinarius", "promiscuus", "sedulus", "Ibericus", "vermiculatus", "regularis", "inreprehensibilis", 
+    "admirabilis", "officialis", "solidus", "haereticus", "venustus", "petulans", "contentus", "improbus", "inurbanus", 
+    "aliquantus", "castus", "actuosus", "generalis", "concinnus", "argutus", "aeternus", "hiulcus", "adverbialis", "indisertus", 
+    "semicircularis", "insignis", "innumerabilis", "vafer", "pudens", "iracundus", "perfacilis", "senilis", "adulatorius", 
+    "linearis", "subitus", "grandis", "medicabilis", "sublimis", "dolosus", "abundus", "Cimbricus", "independens", "similis", 
+    "tranquillus", "perpendicularis", "adsiduus", "socors", "militarius", "primus", "philosophicus", "amarus", "impunis", 
+    "citus", "laudabilis", "cautus", "iucundus", "peculiaris", "cruentus", "lacrimosus", "simplex", "formalis", "benignus", 
+    "causarius", "cordatus", "lugubris", "irremissibilis", "identicus", "universalis", "praecellens", "patricus", "pronus", 
+    "politicus", "jactans", "contumax", "tripertitus", "attentus", "imperiosus", "vulgaris", "sophisticus", "inpunis", 
+    "immodestus", "litteratus", "fraudulentus", "virilis", "litteralis", "bipartitus", "coniecturalis", "astutus", 
+    "consentaneus", "duplex", "quadruplex", "consimilis", "idealis", "persapiens", "foedus", "lubens", "palliolatus", "copiosus", 
+    "flagitiosus", "irreprehensibilis", "fartus", "impudens", "romanicus", "personalis", "pacificus", "gravis", "sententialis", 
+    "incurabilis", "Numidicus", "stultus", "femininus", "sensibilis", "naturalis", "puerilis", "effrenatus", "licens", "quies", 
+    "accusatorius", "eminens", "amoenus", "constans", "salsus", "aegyptiacus", "hostilis", "futtilis", "inseparabilis", 
+    "honorificus", "militaris", "indebitus", "somniculosus", "longinquus", "indefensus", "ingeniosus", "memor", "rapidus", 
+    "crudelis", "frugi", "libens", "insalubris", "perspicax", "lacrimabilis", "symbolicus", "obscurus", "querulus", "Megaricus", 
+    "excellens", "tentativus", "vacivus", "periculosus", "tolerabilis", "inhumanus", "infirmis", "virulentus", "fidelis", 
+    "saluber", "originalis", "saepis", "trux", "uniformis", "mollis", "tenuis", "infrequens", "aequabilis", "sollemnis", 
+    "aliqualis", "incredibilis", "laboriosus", "elegans", "longulus", "romanus", "fortuitus", "properus", "anilis", "humilis", 
+    "modestus", "affabilis", "favorabilis", "precativus", "gulosus", "sagax", "pellax", "obnoxius", "manifestus", "callidus", 
+    "Hibericus", "insatiabilis", "indissolubilis", "popularis", "contrarius", "hospitalis", "unianimis", "firmus", "durabilis", 
+    "velox", "perpetualis", "sacrilegus", "internus", "relativus", "ferinus", "prudens", "ridiculus", "gelidus", "sensualis", 
+    "inculpatus", "laetus", "septemplex", "incruentus", "latinus", "rationalis", "inelegans", "necessus", "oscitans", 
+    "perbrevis", "insuperabilis", "generosus", "immisericors", "loquax", "subtilis", "mobilis", "avarus", "violentus", "invisus", 
+    "liberalis", "talis", "pravus", "visibilis", "perfectus", "legitimus", "sincerus", "improprius", "regalis", "gracilis", 
+    "rarus", "durus", "indubius", "criticus", "megaricus", "perrarus", "facilis", "credibilis", "quintuplex", "magnus", 
+    "ambiguus", "firmis", "minutus", "anniversarius", "turpis", "aequalis", "latus", "ulter", "tractabilis", "necessarius", 
+    "commodus", "dierectus", "habitualis", "conformis", "amicus", "ferox", "patrius", "certus", "paulus", "beatus", "papillaris", 
+    "perennis", "minax", "praeproperus", "arctus", "supernus", "utilis", "serenus", "sententiosus", "longiusculus", "frigidus", 
+    "difficilis", "perridiculus", "probus", "fugax", "altus", "miser", "hilarus", "adclivis", "ignorabilis", "consularis", 
+    "incontinens", "novemplex", "torvus", "indispositus", "inferus", "longanimis", "impius", "vigilans", "mundus", 
+    "incompositus", "spiritalis", "auspicatus", "inpudens", "indiscretus", "iugis", "meliusculus", "asper", "interrogativus", 
+    "liber", "consolatorius", "inconstans", "bonus", "danicus", "mirabilis", "gloriosus", "clemens", "numerosus", "septuplex", 
+    "pretiosus", "providus", "notabilis", "Libycus", "securus", "scholasticus", "singularis", "vitiosus", "inoffensus", "pius", 
+    "participialis", "tutus", "humanus", "potissimus", "barbarus", "vocalis", "imperatorius", "stomachosus", "usualis", "unicus", 
+    "mutuus", "agilis", "diversus", "felix", "fortunatus", "longus", "insolens", "pernix", "impurus", "impotens", "decemplex", 
+    "Atticus", "enervis", "romanticus", "trinalis", "verisimilis", "mediocris", "lentus", "irrisibilis", "praeclarus", "moralis", 
+    "probabilis", "Occitanus", "indifferens", "pudicus", "reflexivus", "par", "tristis", "assiduus", "festivus", "gratuitus", 
+    "conducibilis", "intemperatus", "saevus", "candidulus", "cothurnatus", "intemperans", "specialis", "familiaris", "continuus", 
+    "supplex", "localis", "jocundus", "aeger", "fraternus", "instrenuus", "circularis", "indigestus", "multiplex", "essentialis", 
+    "triplex", "complusculi", "prolixus", "sonorus", "efficax", "excusabilis", "jucundus", "opportunus", "genialis", "laxus", 
+    "corporalis", "discordiosus", "horribilis", "pulcher", "consideratus", "strenuus", "terribilis", "absurdus", "repens", 
+    "ferax", "normalis", "planus", "matronalis", "philosophus", "perpetuus", "gallicus", "novus", "pollucibilis", "illecebrosus", 
+    "amplus", "audax", "navus", "tener", "pulcer", "animosus", "vicinus", "acutulus", "furialis", "futilis", "indiligens", 
+    "comis", "segnis", "universus", "centumplex", "levis", "violens", "sensatus", "lividus", "amabilis", "vehemens"
+}  # fmt: skip
+
 
 # -----------------------------------------------------------------------------
 # PRONOUNS
