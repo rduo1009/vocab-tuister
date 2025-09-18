@@ -13,6 +13,7 @@ from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
     LIS_ADJECTIVES,
     REAL_ADVERB_ADJECTIVES,
+    UNCOMPARABLE_ADVERBS,
 )
 from .exceptions import InvalidInputError
 from .misc import (
@@ -318,18 +319,22 @@ class Adjective(Word):
                     self._irregular_posadv
                     if self.irregular_flag
                     else f"{self._pos_stem}e"
-                ),  # laete
-                "Dcmp": (
-                    self._irregular_cmpadv
-                    if self.irregular_flag
-                    else f"{self._pos_stem}ius"
-                ),  # laetius
-                "Dspr": (
-                    self._irregular_spradv
-                    if self.irregular_flag
-                    else f"{self._spr_stem}e"
-                ),  # laetissime
+                )  # laete
             }
+
+            if endings["Dpos"] not in UNCOMPARABLE_ADVERBS:
+                endings |= {
+                    "Dcmp": (
+                        self._irregular_cmpadv
+                        if self.irregular_flag
+                        else f"{self._pos_stem}ius"
+                    ),  # laetius
+                    "Dspr": (
+                        self._irregular_spradv
+                        if self.irregular_flag
+                        else f"{self._spr_stem}e"
+                    ),  # laetissime
+                }
 
         return endings
 
@@ -477,18 +482,22 @@ class Adjective(Word):
                     self._irregular_posadv
                     if self.irregular_flag
                     else f"{self._pos_stem}er"
-                ),  # atrociter
-                "Dcmp": (
-                    self._irregular_cmpadv
-                    if self.irregular_flag
-                    else f"{self._pos_stem}ius"
-                ),  # atrocius
-                "Dspr": (
-                    self._irregular_spradv
-                    if self.irregular_flag
-                    else f"{self._spr_stem}e"
-                ),  # atrocissime
+                )  # atrociter
             }
+
+            if endings["Dpos"] not in UNCOMPARABLE_ADVERBS:
+                endings |= {
+                    "Dcmp": (
+                        self._irregular_cmpadv
+                        if self.irregular_flag
+                        else f"{self._pos_stem}ius"
+                    ),  # atrocius
+                    "Dspr": (
+                        self._irregular_spradv
+                        if self.irregular_flag
+                        else f"{self._spr_stem}e"
+                    ),  # atrocissime
+                }
 
         return endings
 
@@ -630,18 +639,22 @@ class Adjective(Word):
                     self._irregular_posadv
                     if self.irregular_flag
                     else f"{self._pos_stem}iter"
-                ),  # fortiter
-                "Dcmp": (
-                    self._irregular_cmpadv
-                    if self.irregular_flag
-                    else f"{self._pos_stem}ius"
-                ),  # fortius
-                "Dspr": (
-                    self._irregular_spradv
-                    if self.irregular_flag
-                    else f"{self._spr_stem}e"
-                ),  # fortissime
+                )  # fortiter
             }
+
+            if endings["Dpos"] not in UNCOMPARABLE_ADVERBS:
+                endings |= {
+                    "Dcmp": (
+                        self._irregular_cmpadv
+                        if self.irregular_flag
+                        else f"{self._pos_stem}ius"
+                    ),  # fortius
+                    "Dspr": (
+                        self._irregular_spradv
+                        if self.irregular_flag
+                        else f"{self._spr_stem}e"
+                    ),  # fortissime
+                }
 
         return endings
 
@@ -783,18 +796,22 @@ class Adjective(Word):
                     self._irregular_posadv
                     if self.irregular_flag
                     else f"{self._pos_stem}iter"
-                ),  # acriter
-                "Dcmp": (
-                    self._irregular_cmpadv
-                    if self.irregular_flag
-                    else f"{self._pos_stem}ius"
-                ),  # acrius
-                "Dspr": (
-                    self._irregular_spradv
-                    if self.irregular_flag
-                    else f"{self._spr_stem}e"
-                ),  # acerrime
+                )  # acriter
             }
+
+            if endings["Dpos"] not in UNCOMPARABLE_ADVERBS:
+                endings |= {
+                    "Dcmp": (
+                        self._irregular_cmpadv
+                        if self.irregular_flag
+                        else f"{self._pos_stem}ius"
+                    ),  # acrius
+                    "Dspr": (
+                        self._irregular_spradv
+                        if self.irregular_flag
+                        else f"{self._spr_stem}e"
+                    ),  # acerrime
+                }
 
         return endings
 
