@@ -30,6 +30,31 @@ dependencies = [
   "waitress==3.0.2",
 ]
 
+[dependency-groups]
+dev = [
+  "basedpyright==1.31.4",
+  "coverage==7.10.6",
+  "doc8==2.0.0",
+  "griffe==1.14.0",
+  "icecream==2.1.8",
+  "interrogate==1.7.0",
+  "mypy[faster-cache]==1.18.1",
+  "pytest==8.4.2",
+  "pytest-env==1.1.5",
+  "pytest-pythonhashseed==1.0.1",
+  "pytest-sugar==1.1.1",
+  "pytest-xdist==3.8.0",
+  "rstfmt==0.0.14",
+  "ruff==0.13.0",
+  "syrupy==4.9.1",
+]
+
+types = [
+  "optype==0.13.4",
+  "types-regex==2025.9.1.20250903",
+  "types-waitress==3.0.1.20250801",
+]
+
 [tool.poetry]
 requires-poetry = ">=2.0"
 packages = [ { include = "src" } ]
@@ -39,28 +64,6 @@ version = "0.0.0"                         # placeholder
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
-
-[tool.poetry.group.dev.dependencies]
-pytest = "8.4.2"
-syrupy = "4.9.1"
-pytest-sugar = "1.1.1"
-pytest-xdist = "3.8.0"
-pytest-pythonhashseed = "1.0.1"
-coverage = "7.10.6"
-pytest-env = "1.1.5"
-icecream = "2.1.8"
-ruff = "0.13.0"
-doc8 = "2.0.0"
-rstfmt = "0.0.14"
-mypy = { version = "1.18.1", extras = [ "faster-cache" ] }
-basedpyright = "1.31.4"
-interrogate = "1.7.0"
-griffe = "1.14.0"
-
-[tool.poetry.group.types.dependencies]
-types-regex = "2025.9.1.20250903"
-types-waitress = "3.0.1.20250801"
-optype = "0.13.4"
 
 [tool.poetry-dynamic-versioning]
 enable = true
