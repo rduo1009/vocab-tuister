@@ -3,7 +3,7 @@
   'Vocab file received.'
 # ---
 # name: test_cli_error_extra_config.1
-  "Bad request: 400 Bad Request: Required config is missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSessionConfigError)"
+  "Bad request: 400 Bad Request: Unrecognised config was provided: 'cause-an-error'. (InvalidSessionConfigError)"
 # ---
 # name: test_cli_error_list
   "Bad request: 400 Bad Request: InvalidVocabFileFormatError: Invalid part of speech: 'Cause an error'"
@@ -15,19 +15,19 @@
   'Vocab file received.'
 # ---
 # name: test_cli_error_missing1_config.1
-  "Bad request: 400 Bad Request: Required config is missing: 'number-of-questions'. (InvalidSessionConfigError)"
+  "Bad request: 400 Bad Request: Required config is missing: 'english-verbal-nouns'. (InvalidSessionConfigError)"
 # ---
 # name: test_cli_error_missing2_config
   'Vocab file received.'
 # ---
 # name: test_cli_error_missing2_config.1
-  "Bad request: 400 Bad Request: Required config is missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive', 'number-multiplechoice-options'. (InvalidSessionConfigError)"
+  "Bad request: 400 Bad Request: Required config is missing: 'number-multiplechoice-options'. (InvalidSessionConfigError)"
 # ---
 # name: test_cli_error_type1_config
   'Vocab file received.'
 # ---
 # name: test_cli_error_type1_config.1
-  "Bad request: 400 Bad Request: Required config is missing: 'exclude-deponents', 'exclude-participle-future-active', 'exclude-verb-future-active-infinitive', 'exclude-verb-future-passive-indicative', 'exclude-verb-future-passive-infinitive', 'exclude-verb-future-perfect-passive-indicative', 'exclude-verb-imperfect-passive-indicative', 'exclude-verb-perfect-active-infinitive', 'exclude-verb-perfect-active-subjunctive', 'exclude-verb-perfect-passive-indicative', 'exclude-verb-perfect-passive-infinitive', 'exclude-verb-pluperfect-passive-indicative', 'exclude-verb-present-active-subjunctive', 'exclude-verb-present-passive-indicative', 'exclude-verb-present-passive-infinitive'. (InvalidSessionConfigError)"
+  "Bad request: 400 Bad Request: Expected type typing.ReadOnly[int] for 'number-multiplechoice-options', but received type str. (InvalidSessionConfigError)"
 # ---
 # name: test_cli_error_type2_config
   'Vocab file received.'
