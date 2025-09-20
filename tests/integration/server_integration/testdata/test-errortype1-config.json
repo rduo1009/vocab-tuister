@@ -127,7 +127,7 @@
   "include-multiplechoice-lattoeng": true,
 
   "english-subjunctives": true,
-  "english-verbal-nouns": 3,
+  "english-verbal-nouns": true,
 
   "number-multiplechoice-options": "error",
   "number-of-questions": 50
