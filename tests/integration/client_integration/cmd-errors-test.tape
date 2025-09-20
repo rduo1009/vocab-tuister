@@ -33,7 +33,7 @@ Wait+Screen /bash-5.2/
 Sleep 1
 
 # Invalid number of questions
-Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number -1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number -1 --session-config tests/examples/example-session-config.json --vocab-list tests/examples/example-list.txt"
 Enter
 Wait+Screen /bash-5.2/
 Sleep 1
@@ -47,7 +47,7 @@ Wait+Screen /bash-5.2/
 Sleep 1
 
 # Invalid port
-Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number 1 --session-config tests/examples/example-config.json --vocab-list tests/examples/example-list.txt --server-port -1"
+Type "GOCOVERDIR=reports/coverage/go-integration vocab-tuister session --number 1 --session-config tests/examples/example-session-config.json --vocab-list tests/examples/example-list.txt --server-port -1"
 Enter
 Wait+Screen /bash-5.2/
 Sleep 1

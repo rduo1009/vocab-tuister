@@ -1,6 +1,6 @@
 """The Flask API that sends questions to the client."""
 
-# ruff: noqa: D103
+# ruff: noqa: D103, PLW0603
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import json
 import logging
 import traceback
 from io import StringIO
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
 from flask import Flask, Response, render_template, request
@@ -17,7 +18,7 @@ from werkzeug.exceptions import BadRequest
 
 from ..core.lego.cache import cache_vocab_file
 from ..core.rogo.asker import ask_question_without_sr
-from ..core.rogo.type_aliases import Settings
+from ..core.rogo.type_aliases import SessionConfig, Settings
 from ..utils.typeddict_validator import (
     DictExtraKeyError,
     DictIncorrectTypeError,
@@ -25,6 +26,7 @@ from ..utils.typeddict_validator import (
     validate_typeddict,
 )
 from ._json_encode import QuestionClassEncoder
+from .exceptions import InvalidSettingsError
 
 if TYPE_CHECKING:
     from ..core.lego.misc import VocabList
@@ -34,6 +36,7 @@ logger = logging.getLogger(__name__)
 dirs = PlatformDirs("vocab-tuister", "rduo1009")
 app = Flask(__name__)
 vocab_list: VocabList | None = None
+settings: Settings | None = None
 
 
 @app.errorhandler(BadRequest)
@@ -44,6 +47,50 @@ def handle_bad_request(e: BadRequest) -> tuple[str, int]:
         "\n".join(traceback.format_tb(e.__traceback__)),
     )
     return f"Bad request: {e}", 400
+
+
+def _get_settings() -> Settings:
+    settings_file = Path(dirs.user_config_path) / "settings.json"
+
+    try:
+        with settings_file.open("r", encoding="utf-8") as f:
+            raw_settings = json.load(f)
+    except FileNotFoundError as e:
+        raise InvalidSettingsError(
+            f"Settings file not found at {settings_file}."
+        ) from e
+
+    try:
+        _ = validate_typeddict(raw_settings, Settings)
+
+    except DictMissingKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
+        raise InvalidSettingsError(
+            f"Required settings are missing: {keys_str}."
+        ) from e
+
+    except DictExtraKeyError as e:
+        keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
+        raise InvalidSettingsError(
+            f"Unrecognised settings were provided: {keys_str}."
+        ) from e
+
+    except DictIncorrectTypeError as e:
+        type_error_details: list[str] = []
+        for field, detail in sorted(e.incorrect_types.items()):
+            expected_type_str = str(detail.expected)
+            actual_type_str = (
+                detail.actual.__name__
+                if hasattr(detail.actual, "__name__")
+                else str(detail.actual)
+            )
+            type_error_details.append(
+                f"Expected type {expected_type_str} for '{field}', but received"
+                f" type {actual_type_str}"
+            )
+        raise InvalidSettingsError(f"{'; '.join(type_error_details)}.") from e
+
+    return raw_settings
 
 
 @app.route("/")
@@ -66,7 +113,7 @@ def send_vocab():
         vocab_list_text = StringIO(request.get_data().decode("utf-8"))
         # TODO: Allow user to customise whether to compress in settings
         vocab_list, _ = cache_vocab_file(
-            vocab_list_text, dirs.user_cache_dir, compress=True
+            vocab_list_text, dirs.user_cache_path, compress=True
         )
     except Exception as e:
         raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
@@ -77,16 +124,17 @@ def send_vocab():
 
 
 def _generate_questions_json(
-    vocab_list: VocabList, question_amount: int, settings: Settings
+    vocab_list: VocabList, question_amount: int, session_config: SessionConfig
 ) -> str:
     def _rearrange[T](d: dict[str, T]) -> dict[str, str | dict[str, T]]:
         question_type = cast("str", d.pop("question_type"))
         return {"question_type": question_type, question_type: d}
 
+    assert settings is not None
     json_list = [
         _rearrange(json.loads(json.dumps(question, cls=QuestionClassEncoder)))
         for question in ask_question_without_sr(
-            vocab_list, question_amount, settings
+            vocab_list, question_amount, session_config, settings
         )
     ]
     return json.dumps(json_list)
@@ -98,34 +146,35 @@ def create_session():
         raise BadRequest("Vocab file has not been provided.")
 
     logger.info("Validating settings.")
-    settings: dict[str, Any] = request.get_json()
+    session_config: dict[str, Any] = request.get_json()
     try:
-        question_amount = settings.pop("number-of-questions")
+        question_amount = session_config.pop("number-of-questions")
     except KeyError as e:
         raise BadRequest(
-            "Required settings are missing: 'number-of-questions'. "
-            "(InvalidSettingsError)"
+            "Required config is missing: 'number-of-questions'. "
+            "(InvalidSessionConfigError)"
         ) from e
 
     if not isinstance(question_amount, int):
         raise BadRequest(
-            "Invalid settings: 'number-of-questions' must be an integer (got "
-            f"type {type(question_amount).__name__}). (InvalidSettingsError)"
+            "Invalid session config: 'number-of-questions' must be "
+            f"an integer (got type {type(question_amount).__name__}). "
+            "(InvalidSessionConfigError)"
         )
 
     try:
-        _ = validate_typeddict(settings, Settings)
+        _ = validate_typeddict(session_config, SessionConfig)
     except DictMissingKeyError as e:
         keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
         raise BadRequest(
-            f"Required settings are missing: {keys_str}. (InvalidSettingsError)"
+            f"Required config is missing: {keys_str}. (InvalidSessionConfigError)"
         ) from e
 
     except DictExtraKeyError as e:
         keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
         raise BadRequest(
-            f"Unrecognised settings were provided: {keys_str}. "
-            "(InvalidSettingsError)"
+            f"Unrecognised config was provided: {keys_str}. "
+            "(InvalidSessionConfigError)"
         ) from e
 
     except DictIncorrectTypeError as e:
@@ -142,7 +191,7 @@ def create_session():
                 f" type {actual_type_str}"
             )
         raise BadRequest(
-            f"{'; '.join(type_error_details)}. (InvalidSettingsError)"
+            f"{'; '.join(type_error_details)}. (InvalidSessionConfigError)"
         ) from e
 
     logger.info("Returning %d questions.", question_amount)
@@ -151,7 +200,7 @@ def create_session():
             _generate_questions_json(
                 vocab_list,
                 question_amount,
-                cast("Settings", settings),  # pyright: ignore[reportInvalidCast]
+                cast("SessionConfig", session_config),  # pyright: ignore[reportInvalidCast]
             ),
             mimetype="application/json",
         )
@@ -162,8 +211,12 @@ def create_session():
 
 
 def main_dev(port: int, *, debug: bool = False):
+    global settings
+    settings = _get_settings()
     app.run(host="127.0.0.1", port=port, debug=debug)
 
 
 def main(port: int):
+    global settings
+    settings = _get_settings()
     serve(app, host="127.0.0.1", port=port)

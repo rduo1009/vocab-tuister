@@ -6,10 +6,12 @@ import json
 from pathlib import Path
 from typing import Any, get_type_hints
 
-from src.core.rogo.type_aliases import Settings
+from src.core.rogo.type_aliases import SessionConfig
 
 
-def _create_default_typed_dict(typed_dict_class: type[Settings]) -> Settings:
+def _create_default_typed_dict(
+    typed_dict_class: type[SessionConfig],
+) -> SessionConfig:
     defaults: dict[str, Any] = {}
     type_hints = get_type_hints(typed_dict_class)
 
@@ -37,7 +39,7 @@ if __name__ == "__main__":
     output_path: Path = Path(Path(__file__).parent / "json_output" / filename)
     output_path.parent.mkdir(parents=True, exist_ok=True)  # needed?
 
-    d: Settings = _create_default_typed_dict(Settings)
+    d: SessionConfig = _create_default_typed_dict(SessionConfig)
     with output_path.open("w", encoding="utf-8") as output_file:
         output_file.write(json.dumps(d) + "\n")
         d["number-of-questions"] = 0  # pyright: ignore[reportGeneralTypeIssues]

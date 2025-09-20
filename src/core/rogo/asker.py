@@ -16,7 +16,7 @@ from ._parseword_lattocomp import generate_parseword_lattocomp
 from ._principal_parts import generate_principal_parts
 from ._typein_engtolat import generate_typein_engtolat
 from ._typein_lattoeng import generate_typein_lattoeng
-from .exceptions import InvalidSettingsError
+from .exceptions import InvalidSessionConfigError
 from .question_classes import QuestionClasses
 from .rules import filter_endings, filter_questions, filter_words
 
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
     from ..lego.misc import VocabList
     from .question_classes import Question
-    from .type_aliases import Settings
+    from .type_aliases import SessionConfig, Settings
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,10 @@ MAX_RETRIES: Final[int] = 1000
 
 
 def ask_question_without_sr(
-    vocab_list: VocabList, amount: int, settings: Settings
+    vocab_list: VocabList,
+    amount: int,
+    session_config: SessionConfig,
+    settings: Settings,
 ) -> Iterable[Question]:
     """Ask a question about Latin vocabulary.
 
@@ -43,6 +46,8 @@ def ask_question_without_sr(
         The vocab list to use.
     amount : int
         The number of questions to ask.
+    session_config : SessionConfig
+        The session config to use.
     settings : Settings
         The settings to use.
 
@@ -56,21 +61,21 @@ def ask_question_without_sr(
     RuntimeError
         If a question cannot be created with the current vocab list and
         settings.
-    InvalidSettingsError
-        If the settings in `settings` are invalid.
+    InvalidSessionConfigError
+        If the session config in `session_config` is invalid.
     """
-    filtered_vocab = filter_words(vocab_list, settings)
-    filtered_questions = filter_questions(settings)
+    filtered_vocab = filter_words(vocab_list, session_config)
+    filtered_questions = filter_questions(session_config)
 
-    if len(filtered_vocab) < settings["number-multiplechoice-options"]:
+    if len(filtered_vocab) < session_config["number-multiplechoice-options"]:
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_ENGTOLAT)
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_LATTOENG)
 
     if not filtered_questions:
-        raise InvalidSettingsError("No question type has been enabled.")
+        raise InvalidSessionConfigError("No question type has been enabled.")
 
     if not filtered_vocab:
-        raise InvalidSettingsError(
+        raise InvalidSessionConfigError(
             "No words in the vocab list after filtering."
         )
 
@@ -78,7 +83,9 @@ def ask_question_without_sr(
         retries = 0
         while retries < MAX_RETRIES:
             chosen_word = random.choice(filtered_vocab)
-            filtered_endings = filter_endings(chosen_word.endings, settings)
+            filtered_endings = filter_endings(
+                chosen_word.endings, session_config
+            )
             if not filtered_endings:
                 retries += 1
                 continue
@@ -91,22 +98,31 @@ def ask_question_without_sr(
                 chosen_word,
             )
 
-            output: Question | None
             match question_type:
                 case QuestionClasses.TYPEIN_ENGTOLAT:
                     output = generate_typein_engtolat(
                         chosen_word,
                         filtered_endings,
-                        english_subjunctives=settings["english-subjunctives"],
-                        english_verbal_nouns=settings["english-verbal-nouns"],
+                        english_subjunctives=session_config[
+                            "english-subjunctives"
+                        ],
+                        english_verbal_nouns=session_config[
+                            "english-verbal-nouns"
+                        ],
                     )
 
                 case QuestionClasses.TYPEIN_LATTOENG:
                     output = generate_typein_lattoeng(
                         chosen_word,
                         filtered_endings,
-                        english_subjunctives=settings["english-subjunctives"],
-                        english_verbal_nouns=settings["english-verbal-nouns"],
+                        english_subjunctives=session_config[
+                            "english-subjunctives"
+                        ],
+                        english_verbal_nouns=session_config[
+                            "english-verbal-nouns"
+                        ],
+                        synonyms=settings["include-synonyms"],
+                        similar_words=settings["include-similar-words"],
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
@@ -126,14 +142,14 @@ def ask_question_without_sr(
                     output = generate_multiplechoice_engtolat(
                         filtered_vocab,
                         chosen_word,
-                        settings["number-multiplechoice-options"],
+                        session_config["number-multiplechoice-options"],
                     )
 
                 case QuestionClasses.MULTIPLECHOICE_LATTOENG:
                     output = generate_multiplechoice_lattoeng(
                         filtered_vocab,
                         chosen_word,
-                        settings["number-multiplechoice-options"],
+                        session_config["number-multiplechoice-options"],
                     )
 
             if output is not None:

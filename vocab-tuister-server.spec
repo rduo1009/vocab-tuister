@@ -6,6 +6,7 @@ import platform
 import sys
 
 import lemminflect
+import wn
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--debug", action="store_true")
@@ -30,6 +31,8 @@ def normalised_machine(machine: str) -> str:
 
 
 if sys.platform == "darwin":
+    # FIXME: This should also just accept no target arch, using platform.machine()
+    # TODO: Check if target_arch is compatible (i.e. intel macos cannot build for universal2 or arm64, apple silicon x86_64)
     target_arch = options.target_arch
     if target_arch not in {"x86_64", "arm64", "universal2"}:
         raise ValueError(
@@ -78,7 +81,7 @@ else:
     raise ValueError(f"Unsupported platform {sys.platform}")
 
 data_files = [
-    ("nltk_data", "src/core/transfero/nltk_data"),
+    ("src/core/transfero/wn_data/wn.db.xz", "src/core/transfero/wn_data"),
     ("src/core/transfero/adj_to_adv.json", "src/core/transfero"),
     ("src/server/templates", "src/server/templates"),
     ("src/server/static", "src/server/static"),
@@ -90,12 +93,29 @@ lemminflect_data_files = [
     (os.path.join(lemminflect_dir, "resources"), "lemminflect/resources")
 ]
 
+wn_dir = os.path.dirname(wn.__file__)
+wn_data_files = [
+    (os.path.join(wn_dir, "index.toml"), "wn"),
+    (os.path.join(wn_dir, "schema.sql"), "wn"),
+]
+
+hiddenimports = [
+    # Numpy
+    "numpy.core.multiarray",
+
+    # Tomli
+    # *collect_submodules("tomli"),
+    "ddc459050edb75a05942__mypyc",  # MacOS
+    "5bae8a57b5ef85818b48__mypyc",  # Linux (both arm and amd64)
+    "3c22db458360489351e4__mypyc",  # Windows
+]  # fmt: skip
+
 a = Analysis(
     ["src/__main__.py"],
     pathex=[],
     binaries=[],
-    datas=data_files + lemminflect_data_files,
-    hiddenimports=["numpy.core.multiarray"],
+    datas=data_files + lemminflect_data_files + wn_data_files,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

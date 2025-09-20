@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
     from src.core.lego.misc import VocabList
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig, Settings
 
 QUESTION_TYPE_SETTINGS: Final[tuple[str, ...]] = tuple(CLASS_RULES.keys())
 
@@ -44,6 +44,11 @@ from: e
 """)
 
 DEFAULT_SETTINGS: Settings = {
+    "include-synonyms": False,
+    "include-similar-words": False,
+}  # they're not needed
+
+DEFAULT_SESSION_CONFIG: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -166,10 +171,10 @@ QUESTION_AMOUNT: Final[int] = 2000  # seems reasonable
 
 
 def _generate_questions_sample_json(
-    vocab_list: VocabList, question_amount: int, settings: Settings
+    vocab_list: VocabList, question_amount: int, session_config: SessionConfig
 ) -> Generator[str]:
     for question in ask_question_without_sr(
-        vocab_list, question_amount, settings
+        vocab_list, question_amount, session_config, DEFAULT_SETTINGS
     ):
         question_dict = json.loads(
             json.dumps(question, cls=QuestionClassEncoder)
@@ -194,12 +199,12 @@ if __name__ == "__main__":
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:
-        DEFAULT_SETTINGS[setting] = True
+        DEFAULT_SESSION_CONFIG[setting] = True
 
         data_generator = _generate_questions_sample_json(
             vocab_list=vocab,
             question_amount=QUESTION_AMOUNT,
-            settings=DEFAULT_SETTINGS,
+            session_config=DEFAULT_SESSION_CONFIG,
         )
         filename = f"{CLASS_RULES[setting].value}_sample.json"
         output_path = Path(
@@ -211,4 +216,4 @@ if __name__ == "__main__":
             for data_str in data_generator:
                 output_file.write(data_str + "\n")
 
-        DEFAULT_SETTINGS[setting] = False
+        DEFAULT_SESSION_CONFIG[setting] = False

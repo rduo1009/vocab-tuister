@@ -9,9 +9,10 @@ from src.core.lego.reader import read_vocab_file
 from src.core.rogo.rules import filter_words
 
 if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig
 
-default_settings: Settings = {
+
+default_session_config: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -139,11 +140,11 @@ def test_class_exclusion():
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
 
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
+            session_config[key] = True
 
-        vocab = filter_words(vocab_list, settings)
+        vocab = filter_words(vocab_list, session_config)
         for word in vocab:
             assert not any(isinstance(word, exclude_classes[key]) for key in key_combination)

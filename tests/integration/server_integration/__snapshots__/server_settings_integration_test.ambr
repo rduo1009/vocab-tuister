@@ -1,0 +1,10 @@
+# serializer version: 1
+# name: test_cli_error_extra_settings
+  "Unrecognised settings were provided: 'cause-error'."
+# ---
+# name: test_cli_error_missing_settings
+  "Required settings are missing: 'include-similar-words'."
+# ---
+# name: test_cli_error_type_settings
+  "Expected type typing.ReadOnly[bool] for 'include-similar-words', but received type int."
+# ---

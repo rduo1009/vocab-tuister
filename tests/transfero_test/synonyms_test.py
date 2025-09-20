@@ -128,3 +128,31 @@ def test_find_synonyms_adjective_excludes_other_pos():
     # Noun senses: "benefit", "commodity", "moral good"
     assert "benefit" not in results
     assert "commodity" not in results
+
+
+def test_find_synonyms_with_known_synonyms():
+    """Test find_synonyms with known_synonyms."""
+    word = "bank"
+    known_synonyms = ("financial institution",)
+    synonyms = find_synonyms(word, known_synonyms=known_synonyms)
+    # Check for related terms that are likely to be present
+    assert any("bank" in s for s in synonyms), "Expected synonyms related to 'bank'"
+    assert not all(s in {"riverbank", "banking"} for s in synonyms), "Expected more financial-related terms"
+
+
+def test_find_synonyms_with_known_synonyms_no_match():
+    """Test find_synonyms with known_synonyms that don't match any synset."""
+    word = "bank"
+    known_synonyms = ("nonexistent_synonym",)
+    synonyms = find_synonyms(word, known_synonyms=known_synonyms)
+    # Should fall back to all synsets if no match
+    assert len(synonyms) > 0
+
+
+def test_find_synonyms_with_known_synonyms_empty_tuple():
+    """Test find_synonyms with an empty tuple for known_synonyms."""
+    word = "bank"
+    known_synonyms = ()
+    synonyms = find_synonyms(word, known_synonyms=known_synonyms)
+    # Should behave as if known_synonyms was not provided
+    assert len(synonyms) > 0

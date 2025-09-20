@@ -126,7 +126,7 @@ def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
                     possessive_genitive
                     | {f"of the {base_form}" for base_form in base_forms}
                     | {
-                        pluralinflect.inflect(f"of a('{base_form}')")
+                        pluralinflect.inflect(f'of a("{base_form}")')
                         for base_form in base_forms
                     }
                 )
@@ -143,12 +143,12 @@ def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
                 all_forms = (
                     {f"for the {base_form}" for base_form in base_forms}
                     | {
-                        pluralinflect.inflect(f"for a('{base_form}')")
+                        pluralinflect.inflect(f'for a("{base_form}")')
                         for base_form in base_forms
                     }
                     | {f"to the {base_form}" for base_form in base_forms}
                     | {
-                        pluralinflect.inflect(f"to a('{base_form}')")
+                        pluralinflect.inflect(f'to a("{base_form}")')
                         for base_form in base_forms
                     }
                 )
@@ -170,12 +170,12 @@ def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
                     base_forms
                     | {f"with the {base_form}" for base_form in base_forms}
                     | {
-                        pluralinflect.inflect(f"with a('{base_form}')")
+                        pluralinflect.inflect(f'with a("{base_form}")')
                         for base_form in base_forms
                     }
                     | {f"by the {base_form}" for base_form in base_forms}
                     | {
-                        pluralinflect.inflect(f"by a('{base_form}')")
+                        pluralinflect.inflect(f'by a("{base_form}")')
                         for base_form in base_forms
                     }
                     | {
@@ -183,7 +183,7 @@ def _inflect_lemma(lemma: str, case: Case, number: Number) -> tuple[str, ...]:
                         for base_form in base_forms
                     }
                     | {
-                        pluralinflect.inflect(f"by means of a('{base_form}')")
+                        pluralinflect.inflect(f'by means of a("{base_form}")')
                         for base_form in base_forms
                     }
                 )

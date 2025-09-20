@@ -1,5 +1,5 @@
 """Contains the server for vocab-tester."""
 
-from . import app
+from . import app, exceptions
 
-__all__ = ["app"]
+__all__ = ["app", "exceptions"]

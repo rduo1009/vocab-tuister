@@ -11,9 +11,9 @@ from .question_classes import QuestionClasses
 if TYPE_CHECKING:
     from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
-    from .type_aliases import Settings, SettingsRules, Vocab
+    from .type_aliases import SessionConfig, SessionConfigRules, Vocab
 
-RULE_REGEX: Final[SettingsRules] = {
+RULE_REGEX: Final[SessionConfigRules] = {
     # Verb tense/voice/mood
     "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
     "exclude-verb-imperfect-active-indicative": r"^Vimpactind[a-z][a-z]\d$",
@@ -152,15 +152,17 @@ CLASS_RULES: Final[dict[str, QuestionClasses]] = {
 }
 
 
-def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
-    """Filter the vocab list based on the settings given.
+def filter_words(
+    vocab_list: VocabList, session_config: SessionConfig
+) -> Vocab:
+    """Filter the vocab list based on the session config given.
 
     Parameters
     ----------
     vocab_list : VocabList
         The vocab list to filter.
-    settings : Settings
-        The settings to use for filtering.
+    session_config : SessionConfig
+        The session config to use for filtering.
 
     Returns
     -------
@@ -174,15 +176,15 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     vocab = vocab_list.vocab.copy()
     to_exclude: list[type] = []
 
-    if settings["exclude-nouns"]:
+    if session_config["exclude-nouns"]:
         to_exclude.append(Noun)
-    if settings["exclude-verbs"]:
+    if session_config["exclude-verbs"]:
         to_exclude.append(Verb)
-    if settings["exclude-adjectives"]:
+    if session_config["exclude-adjectives"]:
         to_exclude.append(Adjective)
-    if settings["exclude-pronouns"]:
+    if session_config["exclude-pronouns"]:
         to_exclude.append(Pronoun)
-    if settings["exclude-regulars"]:
+    if session_config["exclude-regulars"]:
         to_exclude.append(RegularWord)
 
     if to_exclude:
@@ -195,61 +197,61 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
                 current_conjugation = item.conjugation
                 conjugation_excluded = (
                     (
-                        settings["exclude-verb-first-conjugation"]
+                        session_config["exclude-verb-first-conjugation"]
                         and current_conjugation == 1
                     )
                     or (
-                        settings["exclude-verb-second-conjugation"]
+                        session_config["exclude-verb-second-conjugation"]
                         and current_conjugation == 2
                     )
                     or (
-                        settings["exclude-verb-third-conjugation"]
+                        session_config["exclude-verb-third-conjugation"]
                         and current_conjugation == 3
                     )
                     or (
-                        settings["exclude-verb-fourth-conjugation"]
+                        session_config["exclude-verb-fourth-conjugation"]
                         and current_conjugation == 4
                     )
                     or (
-                        settings["exclude-verb-mixed-conjugation"]
+                        session_config["exclude-verb-mixed-conjugation"]
                         and current_conjugation == 5
                     )
                     or (
-                        settings["exclude-verb-irregular-conjugation"]
+                        session_config["exclude-verb-irregular-conjugation"]
                         and current_conjugation == 0
                     )
                 )
                 if conjugation_excluded:
                     vocab.remove(item)
 
-                if settings["exclude-deponents"] and item.deponent:
+                if session_config["exclude-deponents"] and item.deponent:
                     vocab.remove(item)
 
             case Noun():
                 current_declension = item.declension
                 declension_excluded = (
                     (
-                        settings["exclude-noun-first-declension"]
+                        session_config["exclude-noun-first-declension"]
                         and current_declension == 1
                     )
                     or (
-                        settings["exclude-noun-second-declension"]
+                        session_config["exclude-noun-second-declension"]
                         and current_declension == 2
                     )
                     or (
-                        settings["exclude-noun-third-declension"]
+                        session_config["exclude-noun-third-declension"]
                         and current_declension == 3
                     )
                     or (
-                        settings["exclude-noun-fourth-declension"]
+                        session_config["exclude-noun-fourth-declension"]
                         and current_declension == 4
                     )
                     or (
-                        settings["exclude-noun-fifth-declension"]
+                        session_config["exclude-noun-fifth-declension"]
                         and current_declension == 5
                     )
                     or (
-                        settings["exclude-noun-irregular-declension"]
+                        session_config["exclude-noun-irregular-declension"]
                         and current_declension == 0
                     )
                 )
@@ -259,10 +261,10 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
             case Adjective():
                 current_adj_declension = item.declension
                 if (
-                    settings["exclude-adjective-212-declension"]
+                    session_config["exclude-adjective-212-declension"]
                     and current_adj_declension == "212"
                 ) or (
-                    settings["exclude-adjective-third-declension"]
+                    session_config["exclude-adjective-third-declension"]
                     and current_adj_declension == "3"
                 ):
                     vocab.remove(item)
@@ -273,15 +275,15 @@ def filter_words(vocab_list: VocabList, settings: Settings) -> Vocab:
     return vocab
 
 
-def filter_endings(endings: Endings, settings: Settings) -> Endings:
-    """Filter the endings to exclude any endings specified in the settings.
+def filter_endings(endings: Endings, session_config: SessionConfig) -> Endings:
+    """Filter the endings to exclude any endings specified in the session config.
 
     Parameters
     ----------
     endings : Endings
         The endings to filter.
-    settings : Settings
-        The settings to use for filtering.
+    session_config : SessionConfig
+        The session config to use for filtering.
 
     Returns
     -------
@@ -289,7 +291,7 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
         The filtered endings.
     """
     filtered_endings = endings
-    for setting, value in settings.items():
+    for setting, value in session_config.items():
         if value and (setting in RULE_REGEX):
             regex_pattern = cast("str", RULE_REGEX[setting])
             filtered_endings = {
@@ -301,17 +303,17 @@ def filter_endings(endings: Endings, settings: Settings) -> Endings:
     return filtered_endings
 
 
-def filter_questions(settings: Settings) -> set[QuestionClasses]:
-    """Filter the question types using the settings.
+def filter_questions(session_config: SessionConfig) -> set[QuestionClasses]:
+    """Filter the question types using the session config.
 
     Parameters
     ----------
-    settings : Settings
-        The settings to use for filtering.
+    session_config : SessionConfig
+        The session config to use for filtering.
 
     Returns
     -------
     set[QuestionClasses]
         The filtered classes.
     """
-    return {value for key, value in CLASS_RULES.items() if settings[key]}
+    return {value for key, value in CLASS_RULES.items() if session_config[key]}
