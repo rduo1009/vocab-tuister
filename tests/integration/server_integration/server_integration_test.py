@@ -18,11 +18,12 @@ def run_cli(port):
 
 
 def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
-    def _default_settings():
-        return {"include-synonyms": True, "include-similar-words": True}
+    class _Dirs:
+        user_config_path = Path(__file__).parent / "testdata"
+        user_cache_path = Path(__file__).parent / "testdata" / "cache"
 
     monkeypatch.setattr("src.server.app.vocab_list", None)
-    monkeypatch.setattr("src.server.app._get_settings", _default_settings)
+    monkeypatch.setattr("src.server.app.dirs", _Dirs)
 
     server_url = f"http://127.0.0.1:{port}"
 
