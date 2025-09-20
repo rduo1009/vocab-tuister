@@ -26,6 +26,7 @@ from ..utils.typeddict_validator import (
     validate_typeddict,
 )
 from ._json_encode import QuestionClassEncoder
+from .exceptions import InvalidSettingsError
 
 if TYPE_CHECKING:
     from ..core.lego.misc import VocabList
@@ -55,8 +56,8 @@ def _get_settings() -> Settings:
         with settings_file.open("r", encoding="utf-8") as f:
             raw_settings = json.load(f)
     except FileNotFoundError as e:
-        raise BadRequest(
-            f"Settings file not found at {settings_file}. (InvalidSettingsError)"
+        raise InvalidSettingsError(
+            f"Settings file not found at {settings_file}."
         ) from e
 
     try:
@@ -64,15 +65,30 @@ def _get_settings() -> Settings:
 
     except DictMissingKeyError as e:
         keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
-        raise BadRequest(
-            f"Required settings are missing: {keys_str}. (InvalidSessionConfigError)"
+        raise InvalidSettingsError(
+            f"Required settings are missing: {keys_str}."
         ) from e
 
     except DictExtraKeyError as e:
         keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
-        raise BadRequest(
-            f"Unrecognised settings were provided: {keys_str}. (InvalidSessionConfigError)"
+        raise InvalidSettingsError(
+            f"Unrecognised settings were provided: {keys_str}."
         ) from e
+
+    except DictIncorrectTypeError as e:
+        type_error_details: list[str] = []
+        for field, detail in sorted(e.incorrect_types.items()):
+            expected_type_str = str(detail.expected)
+            actual_type_str = (
+                detail.actual.__name__
+                if hasattr(detail.actual, "__name__")
+                else str(detail.actual)
+            )
+            type_error_details.append(
+                f"Expected type {expected_type_str} for '{field}', but received"
+                f" type {actual_type_str}"
+            )
+        raise InvalidSettingsError(f"{'; '.join(type_error_details)}.") from e
 
     return raw_settings
 
