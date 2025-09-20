@@ -8,13 +8,13 @@ ci:
 repos:
   # Check project deps
   - repo: https://github.com/python-poetry/poetry
-    rev: 2.1.3
+    rev: 2.2.0
     hooks:
       - id: poetry-lock
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.12
+    rev: v0.13.0
     hooks:
       - id: ruff
         args: [--fix]
