@@ -14,9 +14,11 @@ from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
 
 if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings: Settings = {
+settings: Settings = {"include-synonyms": False, "include-similar-words": False}  # they're not needed
+
+session_config: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -140,7 +142,7 @@ settings: Settings = {
 def test_inflect_question():
     vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     amount = 50
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is ParseWordCompToLatQuestion
 
         assert output.check(output.main_answer)
@@ -152,7 +154,7 @@ def test_inflect_question_adjective():
     vocab_list = VocabList([word], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is ParseWordCompToLatQuestion
         assert output.check(output.main_answer)
 
@@ -171,7 +173,7 @@ def test_inflect_question_noun():
     vocab_list = VocabList([word], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is ParseWordCompToLatQuestion
         assert output.check(output.main_answer)
 
@@ -190,7 +192,7 @@ def test_inflect_question_pronoun():
     vocab_list = VocabList([word], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is ParseWordCompToLatQuestion
         assert output.check(output.main_answer)
 
@@ -209,7 +211,7 @@ def test_inflect_question_verb():
     vocab_list = VocabList([word], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is ParseWordCompToLatQuestion
         assert output.check(output.main_answer)
 
