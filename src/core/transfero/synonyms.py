@@ -11,6 +11,7 @@ import logging
 import lzma
 import sys as _sys
 import warnings
+from functools import cache
 from pathlib import Path
 from shutil import copyfileobj
 from tempfile import TemporaryDirectory
@@ -144,6 +145,7 @@ def _add_lemmas_to_set(
             synonyms_set.add(normalized)
 
 
+@cache
 def find_synonyms(
     word: str,
     *,
