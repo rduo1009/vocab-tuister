@@ -1,0 +1,34 @@
+@ Verbs
+lose: amitto, amittere, amisi, amissus
+fill: compleo, complere, complevi, completus
+guard: custodio, custodire, custodivi, custoditus
+run away/flee: fugio, fugere, fugi, fugitus
+lie: iaceo, iacere, iacui, iacitum
+send: mitto, mittere, misi, missus
+feel: sentio, sentire, sensi, sensus
+be afraid/fear: timeo, timere, timui
+
+@ Nouns
+letter: epistula, epistulae, (f)
+flame: flamma, flammae, (f)
+farm: fundus, fundi, (m)
+mountain: mons, montis, (m)
+temple: templum, templi, (n)
+ground/land: terra, terrae, (f)
+
+@ Adjectives
+strange/extraordinary: mirabilis, mirabile, (3-2)
+one: unus, una, unum, (212)
+
+@ Regulars
+# NOTE: Comes from adjective, but adjective not in list
+bravely: fortiter
+in vain: frustra
+now: iam
+therefore: igitur
+very well: optime
+nearly/almost: paene
+at last: tandem
+# HACK: Some of these can be declined but it's too complicated
+two: duo/duae
+three: tres/tria

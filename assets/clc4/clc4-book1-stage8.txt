@@ -1,0 +1,31 @@
+@ Verbs
+do: ago, agere, egi, actus
+eat: consumo, consumere, consumpsi, consumptus
+lead/take: duco, ducere, duxi, ductus
+demand: postulo, postulare, postulavi, postulatus
+fight: pugno, pugnare, pugnavi, pugnatus
+
+@ Nouns
+sword: gladius, gladii, (m)
+messenger: nuntius, nuntii, (m)
+foot: pes, pedis, (m)
+gate: porta, portae, (f)
+boy: puer, pueri, (m)
+blood: sanguis, sanguinis, (m)
+wood: silva, silvae, (f)
+show/spectacle: spectaculum, spectaculi, (n)
+
+@ Adjectives
+fierce: ferox, ferocis, (3-1)
+cowardly: ignavus, ignava, ignavum, (212)
+whole: totus, tota, totum, (212)
+
+@ Pronouns
+he/she/it: is, ea, id
+this: hic, haec, hoc
+
+@ Regulars
+# NOTE: Comes from adjective, but adjective not in list
+easily: facile
+often: saepe
+at once: statim
