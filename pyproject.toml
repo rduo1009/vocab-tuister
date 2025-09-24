@@ -50,7 +50,7 @@ pytest-pythonhashseed = "1.0.1"
 coverage = "7.10.6"
 pytest-env = "1.1.5"
 icecream = "2.1.8"
-ruff = "0.13.0"
+ruff = "0.13.1"
 doc8 = "2.0.0"
 rstfmt = "0.0.14"
 mypy = { version = "1.18.2", extras = [ "faster-cache" ] }
