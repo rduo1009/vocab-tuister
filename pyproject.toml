@@ -59,7 +59,7 @@ interrogate = "1.7.0"
 griffe = "1.14.0"
 
 [tool.poetry.group.types.dependencies]
-types-regex = "2025.9.1.20250903"
+types-regex = "2025.9.18.20250921"
 types-waitress = "3.0.1.20250801"
 optype = "0.13.4"
 
