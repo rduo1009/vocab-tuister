@@ -1,0 +1,44 @@
+@ Verbs
+go up to/approach: adeo, adire, adii, aditus
+summon/send for: arcesso, arcessere, arcessivi, arcessitus
+despair: despero, desperare, desperavi, desperatus
+bring in/bring on: infero, inferre, intuli, illatus
+free/set free: libero, liberare, liberavi, liberatus
+persuade: persuadeo, persuadere, persuasi, persuasus
+leave: relinquo, relinquere, reliqui, relictus
+try: tempto, temptare, temptavi, temptatus
+
+@ Nouns
+art: ars, artis, (f)
+home: domus, domus, (f)
+moon: luna, lunae, (f)
+death: mors, mortis, (f)
+eye: oculus, oculi, (m)
+wound: vulnus, vulneris, (n)
+
+@ Adjectives
+cruel: crudelis, crudele, (3-2)
+learned/clever: doctus, docta, doctum, (212)
+very bad/worst: pessimus, pessima, pessimum, (212)
+
+@ Pronouns
+one: unus, una, unum, (212)
+
+@ Regulars
+at last/finally: denique
+like: sicut
+so: tam
+# HACK: Some of these can be declined but it's too complicated
+two: duo/duae
+three: tres/tria
+four: quattuor
+five: quinque
+six: sex
+seven: septem
+eight: octo
+nine: novem
+ten: decem
+twenty: viginti
+thirty: triginta
+forty: quadraginta
+fifty: quinquaginta

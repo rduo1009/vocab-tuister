@@ -1,0 +1,35 @@
+@ Verbs
+destroy: deleo, delere, delevi, deletus
+
+@ Nouns
+palace: aula, aulae, (f)
+god: deus, dei, (m)
+mistress: domina, dominae, (f)
+present/gift: donum, doni, (n)
+husband: maritus, mariti, (m)
+king: rex, regis, (m)
+
+@ Adjectives
+astonished: attonitus, attonita, attonitum, (212)
+right/proper: decorus, decora, decorum, (212)
+difficult: difficilis, difficile, (3-2)
+faithful/loyal: fidelis, fidele, (3-2)
+
+@ Pronouns
+# FIXME: haven't implemented this one!
+someone: aliquid, aliqua, aliquid
+oneself: ipse, ipsa, ipsum
+# FIXME: haven't implemented this one!
+that: iste, ista, istud
+
+@ Regulars
+among/at the house of: apud
+every day: cotidie
+# NOTE: Comes from adjective, but adjective not in list
+carefully: diligenter
+necessary: necesse
+surely not: num
+how: quam
+although: quamquam
+and: -que
+when: ubi
