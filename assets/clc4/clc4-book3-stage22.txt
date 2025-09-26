@@ -1,5 +1,5 @@
 @ Verbs
-# NOTE: Full deponents instead of just ppp
+# NOTE: Full deponents instead of just ppp (this continues through book 3 and 4)
 arrive/obtain: adpiscor, adipisci, adeptus sum
 deceive/fool: decipio, decipere, decepi, deceptus
 choose: eligo, eligere, elegi, electus

@@ -27,4 +27,4 @@ meanwhile: interea
 very greatly/most of all: maxime
 
 # Omitted:
-# 'neque ... neque' ('neither ... nor') likewise
+# 'neque ... neque' ('neither ... nor') as it is a grammar pattern

@@ -1,0 +1,38 @@
+@ Verbs
+accuse: accuso, accusare, accusavi, accusatus
+break: frango, frangere, fregi, fractus
+obtain: adpiscor, adipisci, adeptus sum
+accompany: comitor, comitari, comitatus sum
+try: conor, conari, conatus sum
+catch sight of: conspicor, conspicari, conspicatus sum
+go out: egredior, egredi, egressus sum
+encourage/urge: hortor, hortari, hortatus sum
+enter: ingredior, ingredi, ingressus sum
+speak: loquor, loqui, locutus sum
+die: morior, mori, mortuus sum
+be born: nascor, nasci, natus sum
+suffer: patior, pati, passus sum
+pray/pray to: precor, precari, precatus sum
+set out: proficiscor, proficisci, profectus sum
+advance: progredior, progredi, progressus sum
+go back/return: regredior, regredi, regressus sum
+follow: sequor, sequi, secutus sum
+suspect: suspicor, suspicari, suspicatus sum
+
+@ Nouns
+# NOTE: Can be feminine but omitted for simplicity
+creator/originator/person responsible: auctor, auctoris, (m)
+joy: gaudium, gaudii, (n)
+sound: sonitus, sonitus, (m)
+clothes: vestimenta, vestimentorum, (n)
+
+@ Regulars
+at my suggestion: me auctore
+while/until: dum
+not: haud
+just: modo
+before/until: priusquam
+far off: procul
+as if: quasi
+without: sine
+or: vel

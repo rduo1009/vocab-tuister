@@ -1,0 +1,32 @@
+@ Verbs
+put together/arrange/settle: compono, componere, composui, compositus
+try: conor, conari, conatus sum
+turn: converto, convertere, converti, conversus
+pour out: effundo, effundere, effudi, effusus
+forgive: ignosco, ignoscere, ignovi, ignotus
+crush: opprimo, opprimere, oppressi, oppressus
+set out: proficiscor, proficisci, profectus sum
+follow: sequor, sequi, secutus sum
+help/come to help: subvenio, subvenire, subveni, subventum
+
+@ Nouns
+work/labour: labor, laboris, (m)
+freedom: libertas, libertatis, (f)
+table: mensa, mensae, (f)
+
+@ Adjectives
+hostile/unfavourable: adversus, adversa, adversum, (212)
+fair/calm: aequus, aequa, aequum, (212)
+idle/on holiday: otiosus, otiosa, otiosum, (212)
+poor: pauper, pauperis, (3-1)
+
+@ Pronouns
+certain/one/some: quidam, quaedam, quoddam
+
+@ Regulars
+misfortune: res adversae
+and not/nor: nec/neque
+
+# Omitted:
+# 'ne ... quidem' ('not even') as it is a grammar pattern
+# 'nec ... nec' ('neither ... nor') likewise
