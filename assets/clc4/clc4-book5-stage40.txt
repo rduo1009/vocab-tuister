@@ -1,0 +1,29 @@
+@ Verbs
+declare: affirmo, affirmare, affirmavi, affirmatus
+increase: augeo, augere, auxi, auctus
+think/consider: existimo, existimare, existimavi, existimatus
+threaten: minor, minari, minatus sum
+change: muto, mutare, mutavi, mutatus
+present/put in the way of/expose to: obicio, obicere, obieci, obiectus
+prove: probo, probare, probavi, probatus
+betray: prodo, prodere, prodidi, proditus
+advise/suggest: suadeo, suadere, suasi, suasus
+use: utor, uti, usus sum
+seem: videor, videri, visus sum
+
+@ Nouns
+friendship: amicitia, amicitiae, (f)
+consul: consul, consulis, (m)
+charge: crimen, criminis, (n)
+senate-house: curia, curiae, (f)
+jealously/envy/unpopularity: invidia, invidiae, (f)
+companion/partner: socius, socii, (m)
+
+@ Adjectives
+empty/meaningless: inanis, inane, (3-2)
+light/slight/trivial: levis, leve, (3-2)
+similar: similis, simile, (3-2)
+
+@ Regulars
+at last: demum
+then at last/only then: tum demum
