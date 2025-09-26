@@ -36,6 +36,8 @@ wife: uxor, uxoris, (f)
 terrified: perterritus, perterrita, perterritum, (212)
 # FIXME: haven't implemented this one!
 one: unus, una, unum, (212)
+two: duo, duae, duo, (212)
+three: tres, tria, (3-2)
 
 @ Pronouns
 who/which: qui, quae, quod
@@ -49,9 +51,6 @@ what: quid
 because: quod
 across: trans
 when/where: ubi
-# HACK: Some of these can be declined but it's too complicated
-two: duo/duae
-three: tres/tria
 four: quattuor
 five: quinque
 six: sex

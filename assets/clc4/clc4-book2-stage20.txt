@@ -23,14 +23,13 @@ very bad/worst: pessimus, pessima, pessimum, (212)
 
 @ Pronouns
 one: unus, una, unum, (212)
+two: duo, duae, duo, (212)
+three: tres, tria, (3-2)
 
 @ Regulars
 at last/finally: denique
 like: sicut
 so: tam
-# HACK: Some of these can be declined but it's too complicated
-two: duo/duae
-three: tres/tria
 four: quattuor
 five: quinque
 six: sex

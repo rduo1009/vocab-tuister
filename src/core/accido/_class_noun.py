@@ -424,7 +424,7 @@ class Noun(Word):
             raise InvalidInputError(f"Key '{key}' is invalid.") from e
 
         output.string = f"{output.case.regular} {output.number.regular}"
-        if self.declension == 0:
+        if self.declension == 0:  # FIXME: This is not always true
             output.subtype = ComponentsSubtype.PRONOUN
         return output
 

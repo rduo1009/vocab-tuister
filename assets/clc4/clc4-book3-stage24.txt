@@ -1,0 +1,30 @@
+@ Verbs
+arrest/seize: comprehendo, comprehendere, comprehendi, comprehensus
+desert: desero, deserere, deserui, desertus
+go out: egredior, egredi, egressus sum
+attack: oppugno, oppugnare, oppugnavi, oppugnatus
+suffer: patior, pati, passus sum
+reveal: patefacio, patefacere, patefeci, patefactus
+cross: transeo, transire, transii, transitus
+
+@ Nouns
+authority: auctoritas, auctoritatis, (f)
+prison: carcer, carceris, (m)
+horseman: eques, equitis, (m)
+river: flumen, fluminis, (n)
+bridge: pons, pontis, (m)
+truth: verum, veri, (n) 
+
+@ Adjectives
+bold/daring: audax, audacis, (3-1)
+sad: tristis, triste, (3-2)
+
+@ Regulars
+when: cum
+on the ground: humi
+meanwhile: interea
+# NOTE: Comes from adjective, but adjective not in list
+very greatly/most of all: maxime
+
+# Omitted:
+# 'neque ... neque' ('neither ... nor') likewise

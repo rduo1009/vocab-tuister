@@ -1,0 +1,27 @@
+@ Verbs
+take away/steal: aufero, auferre, abstuli, ablatus
+teach: doceo, docere, docui, doctus
+draw up: instruo, instruere, instruxi, instructus
+offer/provide: praebeo, praebere, praebui, praebitus
+bring back/carry: refero, referre, rettuli, relatus
+
+@ Nouns
+war: bellum, belli, (n)
+loyalty/trustworthiness: fides, fidei, (f)
+commander: legatus, legati, (m)
+legion: legio, legionis, (f)
+kingdom: regnum, regni, (n)
+
+@ Adjectives
+moved/excited/upset: commotus, commota, commotum, (212)
+false/dishonest: falsus, falsa, falsum, (212)
+known/well-known/famous: notus, nota, notum, (212)
+savage/cruel: saevus, saeva, saevum, (212)
+furthest: ultimus, ultima, ultimum, (212)
+
+@ Regulars
+wage war/campaign: bellum gerere
+whether: num
+how many: quot
+if: si
+that/in order that: ut

@@ -17,7 +17,7 @@ faithful/loyal: fidelis, fidele, (3-2)
 
 @ Pronouns
 # FIXME: haven't implemented this one!
-someone: aliquid, aliqua, aliquid
+someone: aliquis, aliqua, aliquid
 oneself: ipse, ipsa, ipsum
 # FIXME: haven't implemented this one!
 that: iste, ista, istud

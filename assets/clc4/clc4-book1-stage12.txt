@@ -19,6 +19,8 @@ ground/land: terra, terrae, (f)
 @ Adjectives
 strange/extraordinary: mirabilis, mirabile, (3-2)
 one: unus, una, unum, (212)
+two: duo, duae, duo, (212)
+three: tres, tria, (3-2)
 
 @ Regulars
 # NOTE: Comes from adjective, but adjective not in list
@@ -29,6 +31,3 @@ therefore: igitur
 very well: optime
 nearly/almost: paene
 at last: tandem
-# HACK: Some of these can be declined but it's too complicated
-two: duo/duae
-three: tres/tria
