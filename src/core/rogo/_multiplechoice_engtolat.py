@@ -34,23 +34,18 @@ class MultipleChoiceEngToLatQuestion(MultipleChoiceQuestion):
 def generate_multiplechoice_engtolat(
     vocab_list: Vocab, chosen_word: Word, number_multiplechoice_options: int
 ) -> MultipleChoiceEngToLatQuestion:
-    # Remove `chosen_word` from copy of `vocab_list`
-    vocab_list = vocab_list.copy()  # sourcery skip: name-type-suffix
-    vocab_list.remove(chosen_word)
-
     # Pick meaning
     meaning = pick_meaning_from_multiplemeanings(chosen_word.meaning)
 
     # Find answer and other choices
     answer = chosen_word._first
-    other_choices = (
-        vocab._first
-        for vocab in random.sample(
-            vocab_list,
-            # minus one as the chosen word is already in the question
-            number_multiplechoice_options - 1,
+    other_choices = [
+        w._first
+        for w in random.sample(
+            [w for w in vocab_list if w is not chosen_word],
+            k=number_multiplechoice_options - 1,
         )
-    )
+    ]
 
     # If the word is a verb, inflect the meaning using priority components
     if isinstance(chosen_word, Verb):
