@@ -1,0 +1,33 @@
+@ Verbs
+shut/block: claudo, claudere, clausi, clausus
+owe/ought: debeo, debere, debui, debitus
+delay/hinder: impedio, impedire, impedivi, impeditus
+return/go back: redeo, redire, redii, reditus
+hold: teneo, tenere, tenui, tentus
+win: vinco, vincere, vici, victus
+
+@ Nouns
+column/column of men/procession: agmen, agminis, (n)
+water: aqua, aquae, (f)
+horse: equus, equi, (m)
+couch: lectus, lecti, (m)
+sea-shore: litus, litoris, (n)
+sea: mare, maris, (n)
+sailor: nauta, nautae, (m)
+chief/chieftain: princeps, principis, (m)
+# NOTE: Can be feminine but omitted for simplicity
+priest: sacerdos, sacerdotis, (m)
+wave: unda, undae, (f)
+
+@ Adjectives
+other/another: alius, alia, aliud, (212)
+convenient: commodus, commoda, commodum, (212)
+miserable/wretched: miser, misera, miserum, (212)
+
+@ Pronouns
+who: qui, quae, quod
+
+@ Regulars
+even: etiam
+# NOTE: Comes from adjective, but adjective not in list
+slowly: lente

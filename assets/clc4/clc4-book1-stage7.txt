@@ -1,0 +1,26 @@
+@ Verbs
+dine: ceno, cenare, cenavi, cenatus
+catch sight of: conspicio, conspicere, conspexi, conspectus
+make/do: facio, facere, feci, factus
+understand: intellego, intellegere, intellexi, intellectus
+weep/cry: lacrimo, lacrimare, lacrimavi, lacrimatus
+tell/relate: narro, narrare, narravi, narratus
+kill: neco, necare, necavi, necatus
+prepare: paro, parare, paravi, paratus
+ask: rogo, rogare, rogavi, rogatus
+frighten: terreo, terrere, terrui, territus
+
+@ Adjectives
+huge: ingens, ingentis, (3-1)
+dead: mortuus, mortua, mortuum, (212)
+all: omnis, omne, (3-2)
+
+@ Regulars
+with: cum
+yesterday: heri
+nothing: nihil
+near: prope
+# NOTE: Comes from adjective, but adjective not in list
+quietly: tacite
+however: tamen
+very much: valde

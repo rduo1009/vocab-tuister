@@ -1,0 +1,29 @@
+@ Verbs
+drink: bibo, bibere, bibi, bibitus
+look around: circumspecto, circumspectare, circumspectavi, circumspectatus
+shout: clamo, clamare, clamavi, clamatus
+go out: exeo, exire, exii, exitus
+wait for: exspecto, exspectare, exspectavi, exspectatus
+carry: porto, portare, portavi, portatus
+reply: respondeo, respondere, respondi, responsus
+laugh/smile: rideo, ridere, risi, risus
+get up/stand up: surgo, surgere, surrexi, surrectum
+see: video, videre, vidi, visus
+
+@ Nouns
+door: ianua, ianuae, (f)
+lion: leo, leonis, (m)
+ship: navis, navis, (f)
+shop/inn: taberna, tabernae, (f)
+wine: vinum, vini, (n)
+
+@ Adjectives
+angry: iratus, irata, iratum, (212)
+big: magnus, magna, magnum, (212)
+
+@ Regulars
+to: ad
+look: ecce
+and: et
+not: non
+hello: salve

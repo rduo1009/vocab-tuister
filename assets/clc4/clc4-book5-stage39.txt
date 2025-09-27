@@ -1,0 +1,26 @@
+@ Verbs
+fall: cado, cadere, cecidi, casum
+deceive/escape notice of/slip by: fallo, fallere, fefelli, falsus
+help/assist: iuvo, iuvare, iuvi, iutus
+pretend: simulo, simulare, simulavi, simulatus
+
+@ Nouns
+tree: arbor, arboris, (f)
+camp: campus, campi, (m)
+hair: capilli, capillorum, (m)
+dividing line/crisis: discrimen, discriminis, (n)
+crash: fragor, fragoris, (m)
+race: genus, generis, (n)
+letter/letter of the alphabet: littera, litterae, (f)
+letter/letters/literature: litterae, litterarum, (f)
+month: mensis, mensis, (m)
+pen: stilus, stili, (m)
+enthusiasm/study: studium, studii, (n)
+
+@ Adjectives
+any: ullus, ulla, ullum, (212)
+
+@ Regulars
+or: aut
+therefore: ergo
+from here/then/next: hinc

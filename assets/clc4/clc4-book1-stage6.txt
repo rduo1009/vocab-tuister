@@ -1,0 +1,32 @@
+@ Verbs
+be out/be absent: absum, abesse, afui, afuturus
+buy: emo, emere, emi, emptus
+hurry: festino, festinare, festinavi, festinatus
+hit/thump: pulso, pulsare, pulsavi, pulsatus
+write: scribo, scribere, scripsi, scriptus
+overcome/overpower: supero, superare, superavi, superatus
+sell: vendo, vendere, vendidi, venditus
+blame/curse: vitupero, vituperare, vituperavi, vituperatus
+
+@ Nouns
+bedroom: cubiculum, cubiculi, (n)
+# NOTE: Can be feminine but omitted for simplicity
+thief: fur, furis, (m)
+freedman/ex-slave: libertus, liberti, (m)
+thing: res, rei, (f)
+
+@ Adjectives
+brave: fortis, forte, (3-2)
+small: parvus, parva, parvum, (212)
+your: tuus, tua, tuum, (212)
+
+@ Regulars
+# NOTE: Below come from adjectives, but adjectives not in list
+fiercely: ferociter
+intently/carefully: intente
+once/some time ago: olim
+through: per
+after: postquam
+because: quod
+suddenly: subito
+then: tum

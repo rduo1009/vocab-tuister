@@ -1,0 +1,28 @@
+@ Verbs
+dare: audeo, audere, ausus sum
+began: coepi
+get to know/find out: cognosco, cognoscere, cognovi, cognitus
+point out/show: demonstro, demonstrare, demonstravi, demonstratus
+depart/leave: discedo, discedere, discessi, discessus
+obstruct/block the way: obsto, obstare, obstiti, obstaturus
+beg for/ask for: peto, petere, petivi, petitus
+refuse: recuso, recusare, recusavi, recusatus
+be accustomed: soleo, solere, solitus sum
+
+@ Nouns
+head: caput, capitis, (n)
+goddess: dea, deae, (f)
+hand: manus, manus, (f)
+soldier: miles, militis, (m)
+part: pars, partis, (f)
+
+@ Regulars
+perhaps: fortasse
+there: ibi
+# NOTE: Comes from adjective, but adjective not in list
+gladly: libenter
+for: nam
+no one: nemo
+afterwards: postea
+in front of: pro
+where/where to: quo

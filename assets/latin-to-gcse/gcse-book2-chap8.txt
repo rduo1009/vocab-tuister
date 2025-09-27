@@ -33,6 +33,7 @@ high/deep: altus, alta, altum, (212)
 # HACK: Plural adjective are not supported, providing 'the rest' meaning below
 the other: ceterus, cetera, ceterum, (212)
 none/not any: nullus, nulla, nullum, (212)
+what sort of: qualis, quale, (3-2)
 sacred: sacer, sacra, sacrum, (212)
 wicked: scelestus, scelesta, scelestum, (212)
 highest/greatest/top of: summus, summa, summum, (212)
@@ -52,7 +53,6 @@ if not/unless/except: nisi
 # NOTE: Should be nolo, nolle, nolui but imperative emphasised in this chapter
 don't: noli/nolite
 afterwards: postea
-what sort of: qualis/quale
 how big/how much: quantus/quanta/quantum
 how/in what way: quomodo
 also: quoque

@@ -1,0 +1,32 @@
+@ Verbs
+climb/rise: ascendo, ascendere, ascendi, ascensus
+surround: circumvenio, circumvenire, circumveni, circumventus
+defend: defendo, defendere, defendi, defensus
+march/stride: incedo, incedere, incessi, incessus
+prefer: malo, malle, malui
+# FIXME: English inflection would be messed up here
+hate: odi, odisse, osus sum
+finish: perficio, perficere, perfeci, perfectus
+despise/reject: sperno, spernere, sprevi, spretus
+
+@ Nouns
+boldness/audacity: audacia, audaciae, (f)
+prisoner/captive: captivus, captivi, (m)
+grief/pain: dolor, doloris, (m)
+children: liberi, liberorum, (m)
+light/daylight: lux, lucis, (f)
+people: populus, populi, (m)
+safety/health: salus, salutis, (f)
+crime: scelus, sceleris, (n)
+
+@ Adjectives
+dreadful: dirus, dira, dirum, (212)
+your: vester, vestra, vestrum, (212)
+alive/living: vivus, viva, vivum, (212)
+
+@ Regulars
+earlier: prius
+everywhere: ubique
+
+# Omitted:
+# 'alii ... alii' ('some ... others') as it is a grammar pattern

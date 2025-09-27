@@ -1,0 +1,32 @@
+@ Verbs
+build: aedifico, aedificare, aedificavi, aedificatus
+agree: consentio, consentire, consensi, consensus
+delight: delecto, delectare, delectavi, delectatus
+escape: effugio, effugere, effugi, effugitus
+sail: navigo, navigare, navigavi, navigatus
+die/perish: pereo, perire, perii, peritus
+place/put: pono, ponere, posui, positus
+punish: punio, punire, punivi, punitus
+raise/lift up: tollo, tollere, sustuli, sublatus
+turn: verto, vertere, verti, versus
+
+@ Nouns
+help: auxilium, auxilii, (n)
+plan/idea: consilium, consilii, (n)
+flower: flos, floris, (m)
+emperor: imperator, imperatoris, (m)
+
+@ Adjectives
+good: bonus, bona, bonum, (212)
+highest/greatest/top: summus, summa, summum, (212)
+
+@ Regulars
+then: deinde
+among: inter
+in this way: ita
+surely: nonne
+on the next day: postridie
+as soon as: simulac/simulatque
+
+# Omitted:
+# 'melior' as it is included in 'bonus'

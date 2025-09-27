@@ -1,0 +1,31 @@
+@ Verbs
+go away: abeo, abire, abii, abitus
+accept: accipio, accipere, accepi, acceptus
+exclaim: exclamo, exclamare, exclamavi, exclamatus
+live: habito, habitare, habitavi, habitatus
+find: invenio, invenire, inveni, inventus
+announce: nuntio, nuntiare, nuntiavi, nuntiatus
+save/look after: servo, servare, servavi, servatus
+be silent/be quiet: taceo, tacere, tacui, tacitus
+
+@ Nouns
+brother: frater, fratris, (m)
+empire: imperium, imperii, (n)
+book: liber, libri, (m)
+we: nos
+peace: pax, pacis, (f)
+harbour: portus, portus, (m)
+wife: uxor, uxoris, (f)
+you all/you: vos
+
+@ Adjectives
+clever/cunning: callidus, callida, callidum, (212)
+satisfied: contentus, contenta, contentum, (212)
+alone: solus, sola, solum, (212)
+his/her/its: suus, sua, suum, (212)
+
+@ Regulars
+than: quam
+always: semper
+# NOTE: Comes from adjective, but adjective not in list
+violently/loudly: vehementer

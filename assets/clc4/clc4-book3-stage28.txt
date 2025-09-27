@@ -1,0 +1,50 @@
+@ Verbs
+decide: constituo, constituere, constitui, constitutus
+hurt/be in pain: doleo, dolere, dolui, dolitum
+entrust/hand over: mando, mandare, mandavi, mandatus
+kill: occido, occidere, occidi, occisus
+suspect: suspicor, suspicari, suspicatus sum
+
+@ Nouns
+body: corpus, corporis, (n)
+groan: gemitus, gemitus, (m)
+anger: ira, irae, (f)
+fear: metus, metus, (m)
+money/wealth: opes, opum, (f)
+hope: spes, spei, (f)
+wind: ventus, venti, (m)
+# FIXME: haven't implemented this one!
+# HACK: Can be represented as an irregular noun
+thousand: mille
+
+@ Adjectives
+evil/bad: malus, mala, malum, (212)
+one: unus, una, unum, (212)
+two: duo, duae, duo, (212)
+three: tres, tria, (3-2)
+
+@ Pronouns
+# FIXME: haven't implemented this one!
+anyone: quisquam, quisquam, quidquam/quicquam
+
+@ Regulars
+and: ac
+and: atque
+thus/in this way: sic
+as: ut
+four: quattuor
+five: quinque
+six: sex
+seven: septem
+eight: octo
+nine: novem
+ten: decem
+twenty: viginti
+thirty: triginta
+forty: quadraginta
+fifty: quinquaginta
+sixty: sexaginta
+seventy: septuaginta
+eight: octoginta
+ninety: nonaginta
+a hundred: centum

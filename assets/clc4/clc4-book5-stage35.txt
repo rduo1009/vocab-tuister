@@ -1,0 +1,25 @@
+@ Verbs
+beware: caveo, cavere, cavi, cautus
+blame: culpo, culpare, culpavi, culpatus
+delay: moror, morari, moratus sum
+
+@ Nouns
+field: ager, agri, (m)
+song: carmen, carminis, (n)
+country/countryside: rus, ruris, (n)
+
+@ Regulars
+or: an
+then: inde
+more: magis
+# NOTE: Comes from adjective, but adjective not in list
+badly/unfavourably: male
+much: multo
+nowhere: nusquam
+when: quando
+indeed: quidem
+whenever: quotiens
+at the same time: simul
+
+# Omitted:
+# 'utram ... an' ('whether ... or') as it is a grammar pattern

@@ -3,7 +3,8 @@ think/consider: cogito, cogitare, cogitavi, cogitatus
 favour/support: faveo, favere, favi, fautus
 lie: iaceo, iacere, iacui, iacitum
 order/command: impero, imperare, imperavi, imperatus
-do not know: nescio, nescire, nescivi, nescitum
+# FIXME: English inflection would be messed up here
+not know: nescio, nescire, nescivi, nescitum
 kill: occido, occidere, occidi, occisus
 beg: oro, orare, oravi, oratus
 drive: pello, pellere, pepuli, pulsus
@@ -49,6 +50,7 @@ and so/therefore: itaque
 that/lest: ne
 whether: num
 paene: almost
+I pay the penalty/I am punished: poenas do
 on the next day: postridie
 to where: quo
 at the same time: simul
@@ -63,4 +65,3 @@ violently/loudly: vehementer
 # Omitted:
 # 'alter ... alter' ('one ... the other') as it is a grammar pattern
 # more uses of 'ne' as some are grammar patterns/would overcomplicate things
-# 'poenas do' is just two separate words
