@@ -7,12 +7,14 @@ import pytest
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
-from src.core.rogo.exceptions import InvalidSettingsError
+from src.core.rogo.exceptions import InvalidSessionConfigError
 
 if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings_no_question_type: Settings = {
+settings: Settings = {"include-synonyms": True, "include-similar-words": True}  # they're not needed
+
+session_config_no_question_type: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -135,14 +137,14 @@ settings_no_question_type: Settings = {
 def test_no_question_type():
     vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
 
-    with pytest.raises(InvalidSettingsError) as error:
-        for _ in ask_question_without_sr(vocab_list, 1, settings_no_question_type):
+    with pytest.raises(InvalidSessionConfigError) as error:
+        for _ in ask_question_without_sr(vocab_list, 1, session_config_no_question_type, settings):
             ...
 
     assert str(error.value) == "No question type has been enabled."
 
 
-settings_no_words: Settings = {
+session_config_no_words: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -263,8 +265,8 @@ settings_no_words: Settings = {
 
 
 def test_ask_questions_empty_vocab_raises():
-    with pytest.raises(InvalidSettingsError) as exc:
-        for _ in ask_question_without_sr(VocabList(vocab=[], vocab_list_text=""), 1, settings_no_words):
+    with pytest.raises(InvalidSessionConfigError) as exc:
+        for _ in ask_question_without_sr(VocabList(vocab=[], vocab_list_text=""), 1, session_config_no_words, settings):
             ...
 
     assert "No words in the vocab list after filtering." in str(exc.value)

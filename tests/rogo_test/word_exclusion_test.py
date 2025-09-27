@@ -12,9 +12,10 @@ from src.core.rogo.rules import filter_words
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig
 
-default_settings: Settings = {
+
+default_session_config: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -137,7 +138,7 @@ default_settings: Settings = {
 def test_word_exclusion_adjective():
     words: list[Adjective] = [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"), Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
     vocab_list = VocabList(words, "")
-    settings = default_settings.copy()
+    settings = default_session_config.copy()
 
     settings["exclude-adjective-212-declension"] = True
     settings["exclude-adjective-212-declension"] = True
@@ -164,7 +165,7 @@ def test_word_exclusion_noun():
     vocab_list = VocabList(words, "")
     vocab_list = VocabList(words, "")
 
-    settings = default_settings.copy()
+    settings = default_session_config.copy()
 
     settings["exclude-noun-first-declension"] = True
     assert any(word.declension != 1 for word in filter_words(vocab_list, settings))
@@ -221,7 +222,7 @@ def test_word_exclusion_verb():
     vocab_list = VocabList(words, "")
     vocab_list = VocabList(words, "")
 
-    settings = default_settings.copy()
+    settings = default_session_config.copy()
 
     settings["exclude-verb-first-conjugation"] = True
     assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))

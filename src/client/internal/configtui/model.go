@@ -187,7 +187,7 @@ var wizard = SettingsWizard{
 			},
 		},
 		{
-			Title: "Miscellaneous settings", Settings: []Setting{
+			Title: "Miscellaneous", Settings: []Setting{
 				{"english-subjunctives", "English translations of subjunctive verbs", false},
 				{
 					"english-verbal-nouns",
