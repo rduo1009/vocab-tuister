@@ -1346,4 +1346,28 @@ PRONOUNS: Final[dict[str, Endings]] = {
         "Pnnomsg": "quoddam", "Pnaccsg": "quoddam", "Pngensg": "cuiusdam",  "Pndatsg": "cuidam",    "Pnablsg": "quodam",
         "Pnnompl": "quaedam", "Pnaccpl": "quaedam", "Pngenpl": "quorundam", "Pndatpl": "quibusdam", "Pnablpl": "quibusdam",
     },
+    "aliquis": {
+        "Pmnomsg": "aliquis",  "Pmaccsg": "aliquem", "Pmgensg": "alicuius",  "Pmdatsg": "alicui",    "Pmablsg": "aliquo",
+        "Pmnompl": "aliqui",   "Pmaccpl": "aliquos", "Pmgenpl": "aliquorum", "Pmdatpl": "aliquibus", "Pmablpl": "aliquibus",
+        "Pfnomsg": "aliqua",   "Pfaccsg": "aliquam", "Pfgensg": "alicuius",  "Pfdatsg": "alicui",    "Pfablsg": "aliqua",
+        "Pfnompl": "aliquae",  "Pfaccpl": "aliquas", "Pfgenpl": "aliquarum", "Pfdatpl": "aliquibus", "Pfablpl": "aliquibus",
+        "Pnnomsg": "aliquid",  "Pnaccsg": "aliquid", "Pngensg": "alicuius",  "Pndatsg": "alicui",    "Pnablsg": "aliquo",
+        "Pnnompl": "aliqua",   "Pnaccpl": "aliqua",  "Pngenpl": "aliquorum", "Pndatpl": "aliquibus", "Pnablpl": "aliquibus",
+    },
+    "iste": {
+        "Pmnomsg": "iste",  "Pmaccsg": "istum", "Pmgensg": "istius",  "Pmdatsg": "isti",  "Pmablsg": "isto",
+        "Pmnompl": "isti",  "Pmaccpl": "istos", "Pmgenpl": "istorum", "Pmdatpl": "istis", "Pmablpl": "istis",
+        "Pfnomsg": "ista",  "Pfaccsg": "istam", "Pfgensg": "istius",  "Pfdatsg": "isti",  "Pfablsg": "ista",
+        "Pfnompl": "istae", "Pfaccpl": "istas", "Pfgenpl": "istarum", "Pfdatpl": "istis", "Pfablpl": "istis",
+        "Pnnomsg": "istud", "Pnaccsg": "istud", "Pngensg": "istius",  "Pndatsg": "isti",  "Pnablsg": "isto",
+        "Pnnompl": "ista",  "Pnaccpl": "ista",  "Pngenpl": "istorum", "Pndatpl": "istis", "Pnablpl": "istis",
+    },
+    "quisquam": {
+        "Pmnomsg": "quisquam",  "Pmaccsg": "quemquam", "Pmgensg": "cuiusquam",  "Pmdatsg": "cuiquam",    "Pmablsg": "quoquam",
+        "Pmnompl": "quiquam",   "Pmaccpl": "quosquam", "Pmgenpl": "quorumquam", "Pmdatpl": "quibusquam", "Pmablpl": "quibusquam",
+        "Pfnomsg": "quisquam",  "Pfaccsg": "quamquam", "Pfgensg": "cuiusquam",  "Pfdatsg": "cuiquam",    "Pfablsg": "quisquam",
+        "Pfnompl": "quaequam",  "Pfaccpl": "quasquam", "Pfgenpl": "quarumquam", "Pfdatpl": "quibusquam", "Pfablpl": "quibusquam",
+        "Pnnomsg": "quidquam", "Pnaccsg": MultipleEndings(quidquam="quidquam", quicquam="quicquam"), "Pngensg": "cuiusquam", "Pndatsg": "cuiquam", "Pnablsg": "quoquam",
+        "Pnnompl": "quaequam",  "Pnaccpl": "quaequam", "Pngenpl": "quorumquam", "Pndatpl": "quibusquam", "Pnablpl": "quibusquam",
+    },
 }  # fmt: skip
