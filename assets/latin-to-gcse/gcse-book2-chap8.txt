@@ -40,7 +40,6 @@ highest/greatest/top of: summus, summa, summum, (212)
 whole: totus, tota, totum, (212)
 
 @ Pronouns
-# FIXME: haven't implemented this one!
 same: idem, eadem, idem
 oneself: ipse, ipsa, ipsum
 

@@ -20,8 +20,6 @@ wound: vulnus, vulneris, (n)
 cruel: crudelis, crudele, (3-2)
 learned/clever: doctus, docta, doctum, (212)
 very bad/worst: pessimus, pessima, pessimum, (212)
-
-@ Pronouns
 one: unus, una, unum, (212)
 two: duo, duae, duo, (212)
 three: tres, tria, (3-2)
