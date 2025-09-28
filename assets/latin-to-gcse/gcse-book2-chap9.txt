@@ -40,11 +40,11 @@ other/another/else: alius, alia, aliud, (212)
 other/another/one/second: alter, altera, alterum, (212)
 faithful/loyal: fidelis, fidele, (3-2)
 slow: lentus, lenta, lentum, (212)
+# FIXME: haven't implemented this adjective!
+some/several: nonnulli, nonnullae, nonnulla, (212)
 next/next to: proximus, proxima, proximum, (212)
 
 @ Pronouns
-# FIXME: haven't implemented this one!
-some/several: nonnulli, nonnullae, nonnulla
 certain/one/some: quidam, quaedam, quoddam
 
 @ Regulars
