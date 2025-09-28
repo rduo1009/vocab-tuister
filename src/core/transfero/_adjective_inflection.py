@@ -69,14 +69,14 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:
             return (lemma,)
 
         case Degree.COMPARATIVE:
-            comparatives = lemminflect.getInflection(lemma, "RBR")
+            comparatives = lemminflect.getInflection(lemma, "JJR")
             main = f"more {lemma}" if not_comparable else comparatives[0]
             all_forms = {*comparatives, f"more {lemma}"}
             # The main form must be first.
             return (main, *sorted(all_forms - {main}))
 
         case _:
-            superlatives = lemminflect.getInflection(lemma, "RBS")
+            superlatives = lemminflect.getInflection(lemma, "JJS")
             main = f"most {lemma}" if not_comparable else superlatives[0]
             all_forms = {
                 *superlatives,
