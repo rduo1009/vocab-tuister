@@ -258,12 +258,29 @@ def _find_preactind_inflections(
             return (f"I {present_nonthird}", f"I am {present_participle}")
 
         case (Number.PLURAL, 1):
+            # NOTE: These overrides are only present in branches where the main
+            # inflection would be completely wrong. There may still be incorrect
+            # other inflections elsewhere
+            if lemma == "be":
+                return ("we are", "we are being")
+
             return (f"we {present_nonthird}", f"we are {present_participle}")
 
         case (Number.SINGULAR, 2):
+            if lemma == "be":
+                return ("you are", "you are being")
+
             return (f"you {present_nonthird}", f"you are {present_participle}")
 
         case (Number.PLURAL, 2):
+            if lemma == "be":
+                return (
+                    "you all are",
+                    "you all are being",
+                    "you are",
+                    "you are being",
+                )
+
             return (
                 f"you all {present_nonthird}",
                 f"you all are {present_participle}",
@@ -282,6 +299,9 @@ def _find_preactind_inflections(
             )
 
         case _:
+            if lemma == "be":
+                return ("they are", "they are being")
+
             return (
                 f"they {present_nonthird}",
                 f"they are {present_participle}",
@@ -695,6 +715,9 @@ def _find_peractind_inflections(
             return (f"I {past}", f"I have {past_participle}", f"I did {lemma}")
 
         case (Number.PLURAL, 1):
+            if lemma == "be":
+                return ("we were", "we have been", "we did be")
+
             return (
                 f"we {past}",
                 f"we have {past_participle}",
@@ -702,6 +725,9 @@ def _find_peractind_inflections(
             )
 
         case (Number.SINGULAR, 2):
+            if lemma == "be":
+                return ("you were", "you have been", "you did be")
+
             return (
                 f"you {past}",
                 f"you have {past_participle}",
@@ -709,6 +735,16 @@ def _find_peractind_inflections(
             )
 
         case (Number.PLURAL, 2):
+            if lemma == "be":
+                return (
+                    "you all were",
+                    "you all have been",
+                    "you all did be",
+                    "you were",
+                    "you have been",
+                    "you did be",
+                )
+
             return (
                 f"you all {past}",
                 f"you all have {past_participle}",
@@ -732,6 +768,9 @@ def _find_peractind_inflections(
             )
 
         case _:
+            if lemma == "be":
+                return ("they were", "they have been", "they did be")
+
             return (
                 f"they {past}",
                 f"they have {past_participle}",
