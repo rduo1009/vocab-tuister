@@ -27,8 +27,8 @@ ADVERB_COMBINATIONS = (Degree.POSITIVE, Degree.COMPARATIVE, Degree.SUPERLATIVE)
 class TestAdverbInflection:
     @pytest.mark.parametrize(("degree", "expected"), [(ADVERB_COMBINATIONS[i], form) for i, form in enumerate([
         {"happily"},
-        {"more happily"},
-        {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily"},
+        {"more happily", "happilier"},
+        {"most happily", "very happily", "extremely happily", "rather happily", "too happily", "quite happily", "happiliest"},
     ])])  # fmt: skip
     def test_adverb_inflection(self, degree, expected):
         word = "happy"
