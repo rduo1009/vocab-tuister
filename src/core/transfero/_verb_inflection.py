@@ -117,6 +117,7 @@ def find_verb_inflections(
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)
 
+    # XXX: Is this nature of using all lemmas continued throughout transfero?
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
     except KeyError as e:
@@ -1385,6 +1386,8 @@ def _find_participle_inflections(
 def _find_verbal_noun_inflections(
     verb: str, components: EndingComponents
 ) -> tuple[str, ...]:
+    # XXX: Why is lemma repeated from find_verb_inflections?
+
     lemma = lemminflect.getLemma(verb, "VERB")[0]
 
     match components.mood:

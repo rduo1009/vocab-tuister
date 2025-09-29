@@ -1,4 +1,5 @@
 {
+  // TODO: Only truly necessary/useful things here
   "recommendations": [
     "usernamehw.errorlens",
     "tamasfe.even-better-toml",
