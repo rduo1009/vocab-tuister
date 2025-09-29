@@ -956,11 +956,15 @@ def _find_fprpasind_inflections(
 
 
 def _find_preactipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (_get_first_inflection(lemma, "VB"),)
+    return (
+        f"{_get_first_inflection(lemma, 'VB')}!",
+        _get_first_inflection(lemma, "VB"),
+    )
 
 
 def _find_prepasipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (f"be {_get_first_inflection(lemma, 'VBN')}",)
+    past_participle = _get_first_inflection(lemma, "VBN")
+    return (f"be {past_participle}!", f"be {past_participle}")
 
 
 def _find_futactipe_inflections(
@@ -968,13 +972,29 @@ def _find_futactipe_inflections(
 ) -> tuple[str, ...]:
     match (number, person):
         case (Number.SINGULAR, 2):
-            return (f"you shall {lemma}", f"you will {lemma}")
+            return (
+                f"you shall {lemma}!",
+                f"you will {lemma}!",
+                f"you shall {lemma}",
+                f"you will {lemma}",
+            )
 
         case (Number.SINGULAR, 3):
-            return (f"let him {lemma}", f"let her {lemma}", f"let it {lemma}")
+            return (
+                f"let him {lemma}!",
+                f"let her {lemma}!",
+                f"let it {lemma}!",
+                f"let him {lemma}",
+                f"let her {lemma}",
+                f"let it {lemma}",
+            )
 
         case (Number.PLURAL, 2):
             return (
+                f"you all shall {lemma}!",
+                f"you all will {lemma}!",
+                f"you shall {lemma}!",
+                f"you will {lemma}!",
                 f"you all shall {lemma}",
                 f"you all will {lemma}",
                 f"you shall {lemma}",
@@ -982,7 +1002,7 @@ def _find_futactipe_inflections(
             )
 
         case (Number.PLURAL, 3):
-            return (f"let them {lemma}",)
+            return (f"let them {lemma}!", f"let them {lemma}")
 
         case _:
             raise ValueError(
@@ -998,12 +1018,17 @@ def _find_futpasipe_inflections(
     match (number, person):
         case (Number.SINGULAR, 2):
             return (
+                f"you shall be {past_participle}!",
+                f"you will be {past_participle}!",
                 f"you shall be {past_participle}",
                 f"you will be {past_participle}",
             )
 
         case (Number.SINGULAR, 3):
             return (
+                f"let him be {past_participle}!",
+                f"let her be {past_participle}!",
+                f"let it be {past_participle}!",
                 f"let him be {past_participle}",
                 f"let her be {past_participle}",
                 f"let it be {past_participle}",
@@ -1011,6 +1036,10 @@ def _find_futpasipe_inflections(
 
         case (Number.PLURAL, 2):
             return (
+                f"you all shall be {past_participle}!",
+                f"you all will be {past_participle}!",
+                f"you shall be {past_participle}!",
+                f"you will be {past_participle}!",
                 f"you all shall be {past_participle}",
                 f"you all will be {past_participle}",
                 f"you shall be {past_participle}",
@@ -1018,7 +1047,10 @@ def _find_futpasipe_inflections(
             )
 
         case (Number.PLURAL, 3):
-            return (f"let them be {past_participle}",)
+            return (
+                f"let them be {past_participle}!",
+                f"let them be {past_participle}",
+            )
 
         case _:
             raise ValueError(

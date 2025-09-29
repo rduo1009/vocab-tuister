@@ -207,22 +207,40 @@ class TestVerbInflection:
     def test_verb_present_imperative(self):
         word = "attack"
 
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"be attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"be attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"attack!", "attack"}
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"attack!", "attack"}
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"be attacked!", "be attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"be attacked!", "be attacked"}
 
     def test_verb_future_imperative(self):
         word = "attack"
 
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"you shall attack", "you will attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3)) == {"let him attack", "let her attack", "let it attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"you all shall attack", "you all will attack", "you shall attack", "you will attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3)) == {"let them attack"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"you shall be attacked", "you will be attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3)) == {"let him be attacked", "let her be attacked", "let it be attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {"you all shall be attacked", "you all will be attacked", "you shall be attacked", "you will be attacked"}
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3)) == {"let them be attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"you shall attack!", "you will attack!", "you shall attack", "you will attack"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3)) == {"let him attack!", "let her attack!", "let it attack!", "let him attack", "let her attack", "let it attack"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {
+            "you all shall attack!",
+            "you all will attack!",
+            "you shall attack!",
+            "you will attack!",
+            "you all shall attack",
+            "you all will attack",
+            "you shall attack",
+            "you will attack",
+        }
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3)) == {"let them attack!", "let them attack"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2)) == {"you shall be attacked!", "you will be attacked!", "you shall be attacked", "you will be attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3)) == {"let him be attacked!", "let her be attacked!", "let it be attacked!", "let him be attacked", "let her be attacked", "let it be attacked"}
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2)) == {
+            "you all shall be attacked!",
+            "you all will be attacked!",
+            "you shall be attacked!",
+            "you will be attacked!",
+            "you all shall be attacked",
+            "you all will be attacked",
+            "you shall be attacked",
+            "you will be attacked",
+        }
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3)) == {"let them be attacked!", "let them be attacked"}
 
     def test_verb_imperfect_stative(self):
         word = "have"
@@ -405,21 +423,21 @@ class TestMainVerbInflection:
     def test_main_verb_present_imperative(self):
         word = "attack"
 
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "be attacked"
-        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "be attacked"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "be attacked!"
+        assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "be attacked!"
 
     def test_main_verb_future_imperative(self):
         word = "attack"
 
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "you shall attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3), main=True) == "let him attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "you all shall attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3), main=True) == "let them attack"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "you shall be attacked"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3), main=True) == "let him be attacked"
-        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3), main=True) == "let them be attacked"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "you shall attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3), main=True) == "let him attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "you all shall attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3), main=True) == "let them attack!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=2), main=True) == "you shall be attacked!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.SINGULAR, person=3), main=True) == "let him be attacked!"
+        assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=3), main=True) == "let them be attacked!"
 
     def test_main_verb_imperfect_stative(self):
         word = "have"
