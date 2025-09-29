@@ -1,8 +1,5 @@
 """Contains a function that finds synonyms of English words."""
 
-# TODO: This module won't be used if the user settings don't enable them.
-# So put this import inside a if block to speed up import time
-
 # pyright: reportUnusedCallResult=false
 
 from __future__ import annotations
