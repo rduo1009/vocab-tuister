@@ -89,6 +89,16 @@ def find_verb_inflections(
     """
     _verify_verb_inflections(components)
 
+    # Handle phrasal definitions
+    # NOTE: This assumes that the first word in the phrase is the verb.
+    # I believe this is always true.
+    if len(parts := verb.split(maxsplit=1)) > 1:
+        verb, rest = parts  # 'run away' -> 'run', 'away'
+        bases = find_verb_inflections(verb, components)  # 'run' -> 'I run'
+        return tuple(  # 'I run' -> 'I run away'
+            f"{base} {rest}" for base in bases
+        )
+
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
         return _find_verbal_noun_inflections(verb, components)
 
