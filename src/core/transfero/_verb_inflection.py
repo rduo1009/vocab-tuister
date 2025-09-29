@@ -36,6 +36,22 @@ def _get_first_inflection(lemma: str, tag: str) -> str:
             case _:  # everything else is correct
                 pass
 
+    # Handle phrasal definitions starting with 'not'
+    if lemma.startswith("not "):
+        bare = lemma[4:]  # strip "not "
+
+        match tag:
+            case "VB":  # imperative (i.e. only imperative uses "VB")
+                return f"do not {bare}"
+            case "VBP":  # present non-third
+                return f"do not {bare}"
+            case "VBZ":  # present third singular
+                return f"does not {bare}"
+            case "VBD":  # past
+                return f"did not {bare}"
+            case _:  # everything else is correct
+                pass
+
     return lemminflect.getInflection(lemma, tag)[0]
 
 
@@ -92,7 +108,7 @@ def find_verb_inflections(
     # Handle phrasal definitions
     # NOTE: This assumes that the first word in the phrase is the verb.
     # I believe this is always true.
-    if len(parts := verb.split(maxsplit=1)) > 1:
+    if len(parts := verb.split(maxsplit=1)) > 1 and not verb.startswith("not "):  # fmt: skip
         verb, rest = parts  # 'run away' -> 'run', 'away'
         bases = find_verb_inflections(verb, components)  # 'run' -> 'I run'
         return tuple(  # 'I run' -> 'I run away'

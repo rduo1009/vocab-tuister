@@ -4,7 +4,7 @@ sing: canto, cantare, cantavi, cantatus
 say: dico, dicere, dixi, dictus
 arouse: excito, excitare, excitavi, excitatus
 kill: interficio, interficere, interfeci, interfectus
-do not want: nolo, nolle, nolui
+not want: nolo, nolle, nolui
 can/be able: possum, posse, potui
 rush: ruo, ruere, rui, rutus
 drag: traho, trahere, traxi, tractus
