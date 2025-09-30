@@ -19,6 +19,7 @@ from werkzeug.exceptions import BadRequest
 from ..core.lego.cache import cache_vocab_file
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import SessionConfig, Settings
+from ..core.transfero.synonyms import setup_wn
 from ..utils.typeddict_validator import (
     DictExtraKeyError,
     DictIncorrectTypeError,
@@ -213,10 +214,14 @@ def create_session():
 def main_dev(port: int, *, debug: bool = False):
     global settings
     settings = _get_settings()
+    if settings["include-synonyms"]:
+        setup_wn()
     app.run(host="127.0.0.1", port=port, debug=debug)
 
 
 def main(port: int):
     global settings
     settings = _get_settings()
+    if settings["include-synonyms"]:
+        setup_wn()
     serve(app, host="127.0.0.1", port=port)
