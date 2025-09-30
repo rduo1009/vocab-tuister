@@ -13,9 +13,11 @@ from src.core.rogo.question_classes import MultipleChoiceEngToLatQuestion
 from src.utils import contains_duplicates
 
 if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings: Settings = {
+settings: Settings = {"include-synonyms": False, "include-similar-words": False}  # they're not needed
+
+session_config: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -140,7 +142,7 @@ def test_multiplechoice_engtolat():
     vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     amount = 50
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 
@@ -158,7 +160,7 @@ def test_multiplechoice_engtolat_adjective():
     vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 
@@ -176,7 +178,7 @@ def test_multiplechoice_engtolat_noun():
     vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 
@@ -194,7 +196,7 @@ def test_multiplechoice_engtolat_pronoun():
     vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 
@@ -212,7 +214,7 @@ def test_multiplechoice_engtolat_verb():
     vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 
@@ -230,7 +232,7 @@ def test_multiplechoice_engtolat_regularword():
     vocab_list = VocabList([word1, word2, word3], "")
     amount = 500
 
-    for output in ask_question_without_sr(vocab_list, amount, settings):
+    for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
         assert type(output) is MultipleChoiceEngToLatQuestion
         assert output.check(output.answer)
 

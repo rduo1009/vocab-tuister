@@ -10,7 +10,6 @@ from ..accido.misc import (
     ComponentsSubtype,
     Gender,
     Mood,
-    MultipleEndings,
     Number,
     Tense,
     Voice,
@@ -47,7 +46,7 @@ class TypeInEngToLatQuestion(MultiAnswerQuestion[str]):
     prompt: str
 
 
-def generate_typein_engtolat(  # noqa: PLR0914
+def generate_typein_engtolat(
     chosen_word: Word,
     filtered_endings: Endings,
     *,
@@ -108,17 +107,6 @@ def generate_typein_engtolat(  # noqa: PLR0914
     participle_flag = (
         isinstance(chosen_word, Verb)
         and ending_components.subtype == ComponentsSubtype.PARTICIPLE
-    )
-
-    verb_second_person_flag = (
-        isinstance(chosen_word, Verb)
-        and ending_components.subtype
-        not in {
-            ComponentsSubtype.INFINITIVE,
-            ComponentsSubtype.PARTICIPLE,
-            ComponentsSubtype.VERBAL_NOUN,
-        }
-        and ending_components.person == 2  # noqa: PLR2004
     )
 
     pronoun_flag = isinstance(chosen_word, Pronoun)
@@ -189,32 +177,6 @@ def generate_typein_engtolat(  # noqa: PLR0914
                 participle_gender=Gender.MASCULINE,
             )
         )
-
-    # English doesn't have 2nd person plural, so it's the same as singular
-    # TODO: Get rid of this when 'you all' is added!
-    elif verb_second_person_flag:
-        assert isinstance(chosen_word, Verb)
-
-        if second_person_plural := chosen_word.get(
-            tense=ending_components.tense,
-            voice=ending_components.voice,
-            mood=ending_components.mood,
-            number=Number.PLURAL,
-            person=2,
-        ):
-            if isinstance(second_person_plural, MultipleEndings):
-                temp_second_person_plural = tuple(
-                    second_person_plural.get_all()
-                )
-            else:
-                temp_second_person_plural = (second_person_plural,)
-
-            answers = {
-                chosen_ending,  # second person singular
-                *temp_second_person_plural,
-            }
-        else:
-            answers = {chosen_ending}
 
     # All pronouns translate the same way if same case and number
     elif pronoun_flag:

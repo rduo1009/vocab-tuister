@@ -1,0 +1,27 @@
+@ Verbs
+appear: appareo, apparere, apparui, apparitus
+burn/be on fire: ardeo, ardere, arsi, arsus
+be pleased/rejoice: gaudeo, gaudere, gavisus sum
+order/command: impero, imperare, imperavi, imperatus
+burn/set on fire: incendo, incendere, incendi, incensus
+hurt/harm: noceo, nocere, nocui, nocitus
+
+@ Nouns
+comrade/companion: comes, comitis, (m)
+trap/ambush: insidiae, insidiarum, (f)
+instruction/order: iussum, iussi, (n)
+hand: manus, manus, (f)
+prize/reward/profit: praemium, praemii, (n)
+
+@ Adjectives
+not knowing/unaware: ignarus, ignara, ignarum, (212)
+headlong: praeceps, praecipitis, (3-1)
+nearest: proximus, proxima, proximum, (212)
+what sort of: qualis, quale, (3-2)
+silent/quiet: tacitus, tacita, tacitum, (212)
+so great/such a great: tantus, tanta, tantum, (212)
+
+@ Regulars
+so much/so greatly: adeo
+before: antea
+under/beneath: sub

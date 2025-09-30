@@ -605,13 +605,13 @@ class TestDeponentConjugation:
         "orior", "oriris", "oritur", "orimur", "orimini", "oriuntur",
         "oriebar", "oriebaris", "oriebatur", "oriebamur", "oriebamini", "oriebantur",
         "oriar", "orieris", "orietur", "oriemur", "oriemini", "orientur",
-        "orsus sum", "orsus es", "orsus est", "orsi sumus", "orsi estis", "orsi sunt",
-        "orsus eram", "orsus eras", "orsus erat", "orsi eramus", "orsi eratis", "orsi erant",
-        "orsus ero", "orsus eris", "orsus erit", "orsi erimus", "orsi eritis", "orsi erunt",
+        "ortus sum", "ortus es", "ortus est", "orti sumus", "orti estis", "orti sunt",
+        "ortus eram", "ortus eras", "ortus erat", "orti eramus", "orti eratis", "orti erant",
+        "ortus ero", "ortus eris", "ortus erit", "orti erimus", "orti eritis", "orti erunt",
         "oriri",
     ])])  # fmt: skip
     def test_fourthconjugation(self, tense, voice, mood, person, number, expected):
-        word = Verb("orior", "oriri", "orsus sum", meaning="rise")
+        word = Verb("orior", "oriri", "ortus sum", meaning="rise")
         assert word.get(tense=tense, voice=voice, mood=mood, person=person, number=number) == expected
 
 

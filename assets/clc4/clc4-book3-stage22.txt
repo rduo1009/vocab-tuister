@@ -1,0 +1,31 @@
+@ Verbs
+# NOTE: Full deponents instead of just ppp (this continues through book 3 and 4)
+arrive/obtain: adpiscor, adipisci, adeptus sum
+deceive/fool: decipio, decipere, decepi, deceptus
+choose: eligo, eligere, elegi, electus
+pour: fundo, fundere, fudi, fusus
+throw: iacto, iactare, iactavi, iactatus
+begin: incipio, incipere, incepi, inceptus
+enter: ingredior, ingredi, ingressus sum
+warn/advise: moneo, monere, monui, monitus
+spare: parco, parcere, perperci, parsus
+pray/pray to: precor, precari, precatus sum
+avoid: vito, vitare, vitavi, vitatus
+
+@ Nouns
+love: amor, amoris, (m)
+sky: caelum, caeli, (n)
+# NOTE: Can be feminine but omitted for simplicity
+enemy: hostis, hostis, (m)
+tear: lacrima, lacrimae, (f)
+night: nox, noctis, (f)
+word: verbum, verbi, (n)
+virtue: virtus, virtutis, (f)
+
+@ Adjectives
+very little/least: minimus, minima, minimum, (212)
+how big: quantus, quanta, quantum, (212)
+safe: tutus, tuta, tutum, (212)
+
+@ Regulars
+how/in what way: quo modo

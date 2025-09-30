@@ -13,9 +13,11 @@ from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
 
 if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import Settings
+    from src.core.rogo.type_aliases import SessionConfig, Settings
 
-default_settings: Settings = {
+settings: Settings = {"include-synonyms": False, "include-similar-words": False}  # they're not needed
+
+default_session_config: SessionConfig = {
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -202,14 +204,14 @@ def test_ending_exclusion_adjective():
     keys = tuple(exclude_components_adjective.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
-        settings["exclude-adverbs"] = True
+            session_config[key] = True
+        session_config["exclude-adverbs"] = True
 
         try:
-            for output in ask_question_without_sr(vocab_list, amount, settings):
+            for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
                     with contextlib.suppress(AttributeError):
@@ -226,13 +228,13 @@ def test_ending_exclusion_noun():
     keys = tuple(exclude_components_noun.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
+            session_config[key] = True
 
         try:
-            for output in ask_question_without_sr(vocab_list, amount, settings):
+            for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
                     with contextlib.suppress(AttributeError):
@@ -249,13 +251,13 @@ def test_ending_exclusion_pronoun():
     keys = tuple(exclude_components_pronoun.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
+            session_config[key] = True
 
         try:
-            for output in ask_question_without_sr(vocab_list, amount, settings):
+            for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
                     with contextlib.suppress(AttributeError):
@@ -272,14 +274,14 @@ def test_ending_exclusion_verb():
     keys = tuple(exclude_components_verb.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
-        settings["exclude-participles"] = True
+            session_config[key] = True
+        session_config["exclude-participles"] = True
 
         try:
-            for output in ask_question_without_sr(vocab_list, amount, settings):
+            for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
                     with contextlib.suppress(AttributeError):
@@ -297,13 +299,13 @@ def test_ending_exclusion_regularword():
     keys = tuple(exclude_components_verb.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        settings = default_settings.copy()
+        session_config = default_session_config.copy()
 
         for key in key_combination:
-            settings[key] = True
+            session_config[key] = True
 
         try:
-            for output in ask_question_without_sr(vocab_list, amount, settings):
+            for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
                 assert type(output) is ParseWordCompToLatQuestion
                 for key in key_combination:
                     with contextlib.suppress(AttributeError):

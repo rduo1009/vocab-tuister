@@ -150,7 +150,7 @@ class Verb(Word):
             or `ppp` values).
         """
         logger.debug(
-            "RegularWord(%s, %s, %s, %s, meaning=%s)",
+            "Verb(%s, %s, %s, %s, meaning=%s)",
             present,
             infinitive,
             perfect,
@@ -266,7 +266,7 @@ class Verb(Word):
                 self.conjugation = 1
                 self._inf_stem = self.infinitive[:-3]
                 self._preptc_stem = self.infinitive[:-2]
-            elif self.infinitive.endswith("eri"):
+            elif self.infinitive.endswith("eri") and self.present.endswith("eor"):  # fmt: skip
                 self.conjugation = 2
                 self._inf_stem = self.infinitive[:-3]
                 self._preptc_stem = self.infinitive[:-2]

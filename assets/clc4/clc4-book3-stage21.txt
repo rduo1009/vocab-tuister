@@ -1,0 +1,31 @@
+@ Verbs
+help: adiuvo, adiuvare, adiuvi, adiutus
+hide: celo, celare, celavi, celatus
+carry out/accomplish: efficio, efficere, effeci, effectus
+order: iubeo, iubere, iussi, iussus
+
+@ Nouns
+year: annus, anni, (m)
+fountain/spring: fons, fontis, (m)
+hour: hora, horae, (f)
+illness: morbus, morbi, (m)
+town: oppidum, oppidi, (n)
+price: pretium, pretii, (n)
+
+@ Adjectives
+harsh/hard: durus, dura, durum, (212)
+heavy/serious: gravis, grave, (3-2)
+unlucky: infelix, infelicis, (3-1)
+full: plenus, plena, plenum, (212)
+more: plus, pluris, (3-1)
+sacred: sacer, sacra, sacrum, (212)
+wise: sapiens, sapientis, (3-1)
+
+@ Pronouns
+some/several: nonnulli, nonnullae, nonnulla
+
+@ Regulars
+from/by: a/ab
+around: circum
+recently: nuper
+from where: unde

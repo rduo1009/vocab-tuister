@@ -1,0 +1,67 @@
+@ Verbs
+think/consider: cogito, cogitare, cogitavi, cogitatus
+favour/support: faveo, favere, favi, fautus
+lie: iaceo, iacere, iacui, iacitum
+order/command: impero, imperare, imperavi, imperatus
+# FIXME: English inflection would be messed up here
+not know: nescio, nescire, nescivi, nescitum
+kill: occido, occidere, occidi, occisus
+beg: oro, orare, oravi, oratus
+drive: pello, pellere, pepuli, pulsus
+advance/proceed: procedo, procedere, processi, processus
+turn: verto, vertere, verti, versus
+
+@ Nouns
+care/worry: cura, curae, (f)
+day: dies, diei, (m)
+house/home: domus, domus, (f)
+army: exercitus, exercitus, (m)
+joy/pleasure: gaudium, gaudii, (n)
+door: ianua, ianuae, (f)
+legion: legio, legionis, (f)
+light: lux, lucis, (f)
+hand/group of people: manus, manus, (f)
+foot: pes, pedis, (m)
+punishment: poena, poenae, (f)
+chief/emperor: princeps, principis, (m)
+thing/matter/event: res, rei, (f)
+hope: spes, spei, (f)
+time: tempus, temporis, (n)
+
+@ Adjectives
+short/brief: brevis, breve, (3-2)
+careful: diligens, diligentis, (3-1)
+dreadful: dirus, dira, dirum, (212)
+fortunate/happy: felix, felicis, (3-1)
+unlucky/unhappy: infelix, infelicis, (3-1)
+such/of such a kind: talis, tale, (3-2)
+so great/such a great: tantus, tanta, tantum, (212)
+strong: validus, valida, validum, (212)
+
+@ Regulars
+so much/so greatly/to such an extent: adeo
+when/since: cum
+# NOTE: Accusative and ablative of 'domus' is emphasised in this chapter
+to home/towards home/homewards: domum
+at home: domi
+while/until: dum
+so/in this way/in such a way/to such an extent: ita
+and so/therefore: itaque
+that/lest: ne
+whether: num
+paene: almost
+I pay the penalty/I am punished: poenas do
+on the next day: postridie
+to where: quo
+at the same time: simul
+as soon as: simulac/simulatque
+so: tam
+so many: tot
+ever: umquam
+from where: unde
+that/so that/in order to/as/when: ut
+violently/loudly: vehementer
+
+# Omitted:
+# 'alter ... alter' ('one ... the other') as it is a grammar pattern
+# more uses of 'ne' as some are grammar patterns/would overcomplicate things

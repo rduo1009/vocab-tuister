@@ -1,0 +1,29 @@
+@ Verbs
+do: ago, agere, egi, actus
+cook: coquo, coquere, coxi, coctus
+have: habeo, habere, habui, habitus
+say: inquam
+look for/search for: quaero, quaerere, quaesivi, quaesitus
+give back: reddo, reddere, reddidi, redditus
+call: voco, vocare, vocavi, vocatus
+
+@ Nouns
+ring: anulus, anuli, (m)
+I: ego
+judge: iudex, iudicis, (m)
+liar: mendax, mendacis, (m)
+money: pecunia, pecuniae, (f)
+poet: poeta, poetae, (m)
+sign/seal: signum, signi, (n)
+you: tu
+
+@ Adjectives
+terrified: perterritus, perterrita, perterritum, (212)
+
+@ Regulars
+why: cur
+from/out of: e
+oh dear/oh no: eheu
+who: quis
+enough: satis
+but: sed

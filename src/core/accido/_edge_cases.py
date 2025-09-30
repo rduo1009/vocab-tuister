@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 # etymologies are not defective.
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_active-only_verbs
+# deletions: cedo (multiple etymologies)
 ACTIVE_ONLY_VERBS: Final[set[str]] = {
     "abaeto", "abbaeto", "abbatizo", "abbito", "abito", "abluo", "abnumero", "abnuto", "abolesco", "abrenuntio", "absum",
     "abundo", "accedo", "accersio", "accieo", "accino", "accipitro", "accresco", "aceo", "acesco", "acontizo", "acquiesco",
@@ -39,7 +40,7 @@ ACTIVE_ONLY_VERBS: Final[set[str]] = {
     "autumnescit", "autumno", "auxilio", "aveo", "babello", "baeto", "balbutio", "balo", "barbio", "barrio", "baulo", "bebo",
     "bello", "beneplaceo", "beto", "blatero", "bombio", "bombizo", "bubo", "bubulcito", "bullesco", "cacaturio", "calefacto",
     "caleo", "calesco", "calleo", "calveo", "cambio", "candeo", "candesco", "caneo", "canesco", "casso", "catulio", "caurio",
-    "caverno", "cedo", "celebresco", "cenaturio", "ceveo", "cineresco", "circo", "circumcurso", "circumdoleo", "circumerro",
+    "caverno", "celebresco", "cenaturio", "ceveo", "cineresco", "circo", "circumcurso", "circumdoleo", "circumerro",
     "circumfulgeo", "circumgesto", "circumiaceo", "circumluceo", "circumluo", "circumpendeo", "circumsideo", "circumsido",
     "circumsilio", "circumstupeo", "circumvestio", "claresco", "clocito", "clueo", "cluo", "coacesco", "coalesco", "coest",
     "cohaereo", "cohaeresco", "cohereo", "colliquesco", "colluceo", "colludo", "commadeo", "commaneo", "commarceo", "commeto",
@@ -113,7 +114,7 @@ ACTIVE_ONLY_VERBS: Final[set[str]] = {
 # FIXME: Handling 'accido' with multiple meanings is broken
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem
 # additions: possum (defective), nolo (defective), malo (defective)
-# deletions: incumbo (probably mistake)
+# deletions: incumbo (probably mistake), ruo (multiple etymologies), cedo (multiple etymologies)
 MISSING_PPP_VERBS: Final[set[str]] = {
     "abaeto", "abago", "abarceo", "abbaeto", "abbatizo", "abbito", "abequito", "aberceo", "abhorresco", "abito", "abiturio",
     "abnato", "abnumero", "abnuto", "abolesco", "aboriscor", "aborto", "abrenuntio", "absilio", "absisto", "absono", "absto",
@@ -133,7 +134,7 @@ MISSING_PPP_VERBS: Final[set[str]] = {
     "auresco", "auroresco", "auroro", "aurugino", "autumnascit", "autumnescit", "autumno", "aveo", "baeto", "balbutio", "barbio",
     "batto", "battuo", "batuo", "baulo", "bebo", "bellor", "beto", "blatio", "bombio", "bovinor", "bubo", "bubulcito", "bullesco",
     "cacaturio", "calefacto", "calesco", "calleo", "calveo", "calvor", "cambio", "candeo", "candesco", "candico", "candifico",
-    "caneo", "canesco", "carro", "casso", "catulio", "caumo", "caurio", "caverno", "cedo", "celebresco", "cenaturio", "ceveo",
+    "caneo", "canesco", "carro", "casso", "catulio", "caumo", "caurio", "caverno", "celebresco", "cenaturio", "ceveo",
     "cineresco", "cio", "circito", "circumcurro", "circumcurso", "circumdoleo", "circumerro", "circumfulgeo", "circumgesto",
     "circumiaceo", "circumluceo", "circumluo", "circumpendeo", "circumsido", "circumsilio", "circumsisto", "circumsto",
     "circumstupeo", "circumtergeo", "circumtono", "circumtorqueo", "circumtueor", "circumvado", "circumverto", "circumvestio",
@@ -203,7 +204,7 @@ MISSING_PPP_VERBS: Final[set[str]] = {
     "refingo", "refloreo", "refrigesco", "refugio", "refulgeo", "relanguesco", "reluceo", "rememini", "reminisco", "reminiscor",
     "remollesco", "remugio", "reneo", "renideo", "reniteo", "rennuo", "renuo", "reporrigo", "reposco", "resipisco", "resisto",
     "resplendeo", "resto", "reticeo", "retono", "revindico", "reviresco", "revivesco", "revivisco", "revivo", "ricio", "ricto",
-    "rigeo", "rigesco", "rubeo", "rubesco", "rufesco", "rugio", "ruo", "sacio", "sagio", "salveo", "sanesco", "sanguino", "sapio",
+    "rigeo", "rigesco", "rubeo", "rubesco", "rufesco", "rugio", "sacio", "sagio", "salveo", "sanesco", "sanguino", "sapio",
     "sardo", "satago", "scabo", "scateo", "scato", "scaturio", "scaturrio", "scopo", "scripturio", "seneo", "senesco", "sentisco",
     "seresco", "sevio", "siccesco", "sicilio", "sido", "sileo", "silesco", "singultio", "soccito", "sordeo", "sordesco",
     "sospito", "splendeo", "splendesco", "spumesco", "squaleo", "stabulo", "sternuo", "sterto", "stinguo", "stipendio",
@@ -231,13 +232,15 @@ FUTURE_ACTIVE_PARTICIPLE_VERBS: Final[set[str]] = {
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_gerund
+# deletions: cedo (multiple etymologies)
 MISSING_GERUND_VERBS: Final[set[str]] = {
-    "absum", "adsum", "aiio", "aio", "assum", "cedo", "coepi", "coest", "commemini", "desum", "inquam", "insum", "intersum",
+    "absum", "adsum", "aiio", "aio", "assum", "coepi", "coest", "commemini", "desum", "inquam", "insum", "intersum",
     "libet", "lubet", "malo", "memini", "nolo", "obsum", "odi", "perlibet", "pervolo", "possum", "praesum", "prosum", "recoepi",
     "rememini", "subsum", "sum", "supersum", "volo",
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_perfect_stem
+# deletions: ruo (multiple etymologies), claudo (multiple etymologies), cedo (multiple etymologies)
 MISSING_PERFECT_VERBS: Final[set[str]] = {
     "abaeto", "abago", "abarceo", "abbaeto", "abbito", "aberceo", "abhorresco", "abiturio", "abnato", "abnumero", "absono",
     "absto", "accessito", "accieo", "accipitro", "accubo", "acontizo", "adaugesco", "adbello", "adbito", "adcubo", "addenseo",
@@ -251,9 +254,9 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
     "astrifico", "attolero", "attollo", "attorqueo", "attorreo", "auctifico", "augesco", "augifico", "auresco", "auroresco",
     "auroro", "aurugino", "autumnascit", "auxilio", "aveo", "baeto", "barbio", "bebo", "beto", "blandio", "blatio", "bombio",
     "bubo", "bubulcito", "bullesco", "cacaturio", "calefacto", "calesco", "calo", "calveo", "candico", "candifico", "carnifico", 
-    "carro", "catulio", "caurio", "cedo", "celebresco", "cenaturio", "cineresco", "cio", "circito", "circumcurro", "circumdoleo",
+    "carro", "catulio", "caurio", "celebresco", "cenaturio", "cineresco", "cio", "circito", "circumcurro", "circumdoleo",
     "circumgesto", "circumluo", "circumpendeo", "circumsido", "circumstupeo", "circumtergeo", "circumtorqueo", "circumverto",
-    "circumvestio", "circumvorto", "clareo", "clarigo", "claudeo", "claudo", "clocito", "clueo", "cluo", "collineo", "commeto",
+    "circumvestio", "circumvorto", "clareo", "clarigo", "claudeo", "clocito", "clueo", "cluo", "collineo", "commeto",
     "commiseresco", "commitigo", "compalpo", "compasco", "compendo", "concavo", "concupio", "condenseo", "condormio", "confarreo",
     "conresurgo", "conrideo", "consarrio", "consimilo", "consipio", "consuadeo", "contenebresco", "contigno", "contollo",
     "contumulo", "convaleo", "convecto", "convergo", "converro", "conviso", "convomo", "convorro", "cornesco", "corresurgo",
@@ -287,7 +290,7 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
     "procello", "procido", "propalo", "prurio", "pulpo", "purgito", "purpurasco", "puteo", "quadripartio", "quadruplo", "quatio",
     "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco", "ravio", "recommoneo", "redintegrasco", "redormio",
     "reducto", "refingo", "reminisco", "remollesco", "remollio", "remugio", "reneo", "reporrigo", "reposco", "retono",
-    "revindico", "revivo", "ricio", "ricto", "rigeo", "rufesco", "ruo", "sacio", "sagio", "salivo", "sallo", "salveo", "sanesco",
+    "revindico", "revivo", "ricio", "ricto", "rigeo", "rufesco", "sacio", "sagio", "salivo", "sallo", "salveo", "sanesco",
     "sanguino", "sardo", "satago", "scopo", "scripturio", "seneo", "sentisco", "seresco", "sevio", "siccesco", "sicilio",
     "silesco", "singultio", "soccito", "sospito", "spumesco", "stabulo", "stinguo", "stritto", "subdoceo", "subinvideo",
     "subservio", "subsono", "subterfluo", "suburgeo", "subvolo", "subvolvo", "succino", "succubo", "suffringo", "sugglutio",
@@ -300,7 +303,7 @@ MISSING_PERFECT_VERBS: Final[set[str]] = {
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_future
-# deletions: cedo (two meanings), apage (not really a verb)
+# deletions: cedo (multiple etymologies), apage (not really a verb)
 MISSING_FUTURE_VERBS: Final[set[str]] = {"adsoleo", "assoleo", "soleo"}
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_supine_stem_with_missing_future_active_participle

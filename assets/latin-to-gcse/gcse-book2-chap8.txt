@@ -1,0 +1,65 @@
+@ Verbs
+take away/carry off/steal: aufero, auferre, abstuli, ablatus
+began: coepi
+force/compel: cogo, cogere, coegi, coactus
+finish/wear out: conficio, conficere, confeci, confectus
+teach: doceo, docere, docui, doctus
+bring/carry/bear: fero, ferre, tuli, latus
+prefer: malo, malle, malui
+do not want/refuse: nolo, nolle, nolui
+offer: offero, offerre, obtuli, oblatus
+show: ostendo, ostendere, ostendi, ostentus
+promise: promitto, promittere, promisi, promissus
+seize/grab: rapio, rapere, rapui, raptus
+bring back/carry back/report/tell: refero, referre, rettuli, relatus
+get up/stand up/rise: surgo, surgere, surrexi, surrectum
+raise/lift up/hold up: tollo, tollere, sustuli, sublatus
+seem/appear: videor, videri, visus sum
+want/wish: volo, velle, volui, voliturus
+
+@ Nouns
+art/skill: ars, artis, (f)
+man/human being: homo, hominis, (m)
+empire/power/command: imperium, imperii, (n)
+enemy: inimicus, inimici, (m)
+work/toil: labor, laboris, (m)
+prize/reward/profit: praemium, praemii, (n)
+battle: proelium, proelii, (n)
+crime: scelus, sceleris, (n)
+voice/shout: vox, vocis, (f)
+
+@ Adjectives
+high/deep: altus, alta, altum, (212)
+# HACK: Plural adjective are not supported, providing 'the rest' meaning below
+the other: ceterus, cetera, ceterum, (212)
+none/not any: nullus, nulla, nullum, (212)
+what sort of: qualis, quale, (3-2)
+sacred: sacer, sacra, sacrum, (212)
+wicked: scelestus, scelesta, scelestum, (212)
+highest/greatest/top of: summus, summa, summum, (212)
+whole: totus, tota, totum, (212)
+
+@ Pronouns
+# FIXME: haven't implemented this one!
+same: idem, eadem, idem
+oneself: ipse, ipsa, ipsum
+
+@ Regulars
+the rest/the others: ceteri/ceterae/cetera
+in vain: frustra
+for: nam
+and not/not/neither: nec/neque
+if not/unless/except: nisi
+# NOTE: Should be nolo, nolle, nolui but imperative emphasised in this chapter
+don't: noli/nolite
+afterwards: postea
+how big/how much: quantus/quanta/quantum
+how/in what way: quomodo
+also: quoque
+how many: quot
+if: sic
+under/beneath: sub
+
+# Omitted:
+# 'alii ... alii' ('some ... others') as it is a grammar pattern
+# 'neque ... neque' ('neither ... nor') likewise

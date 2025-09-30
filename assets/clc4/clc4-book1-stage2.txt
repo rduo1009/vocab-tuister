@@ -1,0 +1,19 @@
+@ Verbs
+sleep: dormio, dormire, dormivi, dormitum
+enter: intro, intrare, intravi, intratus
+praise: laudo, laudare, laudavi, laudatus
+greet: saluto, salutare, salutavi, salutatus
+
+@ Nouns
+friend: amicus, amici, (m)
+slave-girl/maid: ancilla, ancillae, (f)
+dinner: cena, cenae, (f)
+food: cibus, cibi, (m)
+master: dominus, domini, (m)
+merchant: mercator, mercatoris, (m)
+
+@ Adjectives
+happy: laetus, laeta, laetum, (212)
+
+@ Regulars
+also: quoque

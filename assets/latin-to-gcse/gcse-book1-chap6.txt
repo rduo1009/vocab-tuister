@@ -1,0 +1,65 @@
+@ Verbs
+be absent/be away/be distant from: absum, abesse, afui, afuturus
+accept/take in/receive: accipio, accipere, accepi, acceptus
+be here/be present: adsum, adesse, adfui, adfuturus
+approach/come near to: appropinquo, appropinquare, appropinquavi, appropinquatus
+catch sight of/notice: conspicio, conspicere, conspexi, conspectus
+decide: constituo, constituere, constitui, constitutus
+come together/gather/meet: convenio, convenire, conveni, conventus
+want/desire: cupio, cupere, cupivi, cupitus
+go down/come down: descendo, descendere, descendi, descensus
+say/speak/tell: dico, dicere, dixi, dictus
+escape: effugio, effugere, effugi, effugitus
+buy: emo, emere, emi, emptus
+go: eo, ire, ii/ivi, itus
+wait for/expect: exspecto, exspectare, exspectavi, exspectatus
+throw: iacio, iacere, ieci, iactus
+understand/realise: intellego, intellegere, intellexi, intellectus
+kill: interficio, interficere, interfeci, interfectus
+enter: intro, intrare, intravi, intratus
+set free: libero, liberare, liberavi, liberatus
+announce/report: nuntio, nuntiare, nuntiavi, nuntiatus
+die/perish: pereo, perire, perii, peritus
+persuade: persuadeo, persuadere, persuasi, persuasus
+go back/come back/return: redeo, redire, redii, reditus
+reply: respondeo, respondere, respondi, responsus
+save/protect/keep: servo, servare, servavi, servatus
+sell: vendo, vendere, vendidi, venditus
+
+@ Nouns
+enemy: hostis, hostis, (m)
+anger: ira, irae, (f)
+senator: senator, senatoris, (m)
+wife: uxor, uxoris, (f)
+
+@ Adjectives
+terrified: perterritus, perterrita, perterritum, (212)
+# FIXME: haven't implemented this one!
+one: unus, una, unum, (212)
+two: duo, duae, duo, (212)
+three: tres, tria, (3-2)
+
+@ Pronouns
+who/which: qui, quae, quod
+
+@ Regulars
+after/when: postquam
+near: prope
+although: quamquam
+who: quis
+what: quid
+because: quod
+across: trans
+when/where: ubi
+four: quattuor
+five: quinque
+six: sex
+seven: septem
+eight: octo
+nine: novem
+ten: decem
+hundred: centum
+thousand: mille/milia
+
+# Omitted:
+# 're-' ('... back') as it is a verb prefix
