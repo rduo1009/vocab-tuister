@@ -1,0 +1,18 @@
+@ Verbs
+be: sum, esse, fui, futurus
+work: laboro, laborare, laboravi, laboratus
+sit: sedeo, sedere, sedi, sessum
+
+@ Nouns
+# NOTE: Can be feminine but omitted for simplicity
+dog: canis, canis, (m)
+cook: coquus, coqui, (m)
+son: filius, filii, (m)
+garden: hortus, horti, (m)
+mother: mater, matris, (f)
+father: pater, patris, (m)
+slave: servus, servi, (m)
+street: via, viae, (f)
+
+@ Regulars
+in: in

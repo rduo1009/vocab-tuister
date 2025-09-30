@@ -39,7 +39,7 @@ all/every: omnis, omne, (3-2)
 savage/cruel: saevus, saeva, saevum, (212)
 his/her/its: suus, sua, suum, (212)
 sad: tristis, triste, (3-2)
-your/yours: vester, vestra, vestrum, (212)
+your: vester, vestra, vestrum, (212)
 
 @ Pronouns
 he/she/it: is, ea, id

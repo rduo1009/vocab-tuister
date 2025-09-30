@@ -1,0 +1,31 @@
+@ Verbs
+be here: adeo, adire, adii, aditus
+walk: ambulo, ambulare, ambulavi, ambulatus
+hear: audio, audire, audivi, auditus
+hurry: contendo, contendere, contendi, contentus
+run: curro, currere, cucurri, cursus
+make for/attack: peto, petere, petivi, petitus
+applaud: plaudo, plaudere, plausi, plausus
+look at/watch: specto, spectare, spectavi, spectatus
+stand: sto, stare, steti, statum
+come: venio, venire, veni, ventus
+
+@ Nouns
+farmer: agricola, agricolae, (m)
+shout/uproar: clamor, clamoris, (m)
+play/story: fabula, fabulae, (f)
+woman: femina, feminae, (f)
+young man: iuvenis, iuvenis, (m)
+girl: puella, puellae, (f)
+old man: senex, senis, (m)
+crowd: turba, turbae, (f)
+city: urbs, urbis, (f)
+
+@ Adjectives
+my: meus, mea, meum, (212)
+much: multus, multa, multum, (212)
+very good/excellent: optimus, optima, optimum, (212)
+
+@ Regulars
+today: hodie
+where: ubi

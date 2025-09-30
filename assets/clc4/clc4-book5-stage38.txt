@@ -1,0 +1,29 @@
+@ Verbs
+rescue/snatch away: eripio, eripere, eripui, ereptus
+# FIXME: English inflection would be messed up here
+not know of: ignoro, ignorare, ignoravi, ignoratus
+join: iungo, iungere, iunxi, iunctus
+marry: nubo, nubere, nupsi, nuptus
+rise/arise: orior, oriri, ortus sum
+promise: polliceor, polliceri, pollicitus sum
+prevent: prohibeo, prohibere, prohibui, prohibitus
+lament/complain about: queror, queri, questus sum
+rule: rego, regere, rexi, rectus
+be afraid/fear: vereor, vereri, veritus sum
+
+@ Nouns
+forces: copiae, copiarum, (f)
+right hand: dextra, dextrae, (f)
+household: familia, familiae, (f)
+law: lex, legis, (f)
+threshold/doorway: limen, liminis, (n)
+virgin: virgo, virginis, (f)
+
+@ Adjectives
+certain/infallible: certus, certa, certum, (212)
+acceptable/pleasing: gratus, grata, gratum, (212)
+
+@ Regulars
+know for certain: pro certo habere
+secretly/in private: clam
+indeed: vero

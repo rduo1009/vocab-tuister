@@ -1,0 +1,28 @@
+@ Verbs
+learn: disco, discere, didici, discitus
+hesitate/doubt: dubito, dubitare, dubitavi, dubitatus
+# FIXME: haven't implemented this one!
+become/be made: fio, fieri, factus sum
+forget: obliviscor, oblivisci, oblitus sum
+alarm/disturb: perturbo, perturbare, perturbavi, perturbatus
+think: puto, putare, putavi, putatus
+recall/call back: revoco, revocare, revocavi, revocatus
+
+@ Nouns
+god: divus, divi, (m)
+army: exercitus, exercitus, (m)
+hatred: odium, odii, (n)
+country/homeland: patria, patriae, (f)
+battle: proelium, proelii, (n)
+storm: tempestas, tempestatis, (f)
+
+@ Adjectives
+# FIXME: Implement plural only adjectives (only a couple in wiktionary category)
+several: complures, complura, (3-2)
+worthy/appropriate: dignus, digna, dignum, (212)
+without a care: securus, secura, securum, (212)
+strong: validus, valida, validum, (212)
+
+@ Regulars
+a little: paulo
+across: trans

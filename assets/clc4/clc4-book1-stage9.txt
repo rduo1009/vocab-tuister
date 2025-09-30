@@ -1,0 +1,33 @@
+@ Verbs
+recognise: agnosco, agnoscere, agnovi, agnitus
+want: cupio, cupere, cupivi, cupitus
+give: do, dare, dedi, datus
+throw/send out: emitto, emittere, emisi, emissus
+bring/carry: fero, ferre, tuli, latus
+look at/examine: inspicio, inspicere, inspexi, inspectus
+remain/stay: maneo, manere, mansi, mansus
+offer: offero, offerre, obtuli, oblatus
+show: ostendo, ostendere, ostendi, ostentus
+proceed/advance: procedo, procedere, processi, processus
+come back/return: revenio, revenire, reveni, reventum
+hand over: trado, tradere, tradidi, traditus
+
+@ Nouns
+day: dies, diei, (m)
+human being/man: homo, hominis, (m)
+# NOTE: Can be feminine but omitted for simplicity
+guest: hospes, hospitis, (m)
+
+@ Adjectives
+middle: medius, media, medium, (212)
+beautiful: pulcher, pulchra, pulchrum, (212)
+
+@ Pronouns
+that: ille, illa, illud
+
+@ Regulars
+# NOTE: Comes from adjective, but adjective not in list
+quickly: celeriter
+again: iterum
+soon: mox
+after: post

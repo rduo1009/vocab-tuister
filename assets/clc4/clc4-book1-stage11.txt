@@ -1,0 +1,32 @@
+@ Verbs
+take: capio, capere, cepi, captus
+gather/meet: convenio, convenire, conveni, conventus
+trust/believe: credo, credere, credidi, creditus
+support: faveo, favere, favi, fautus
+invite: invito, invitare, invitavi, invitatus
+go: eo, ire, ii/ivi, itus
+read: lego, legere, legi, lectus
+# FIXME: Semi-deponent??
+please: placeo, placere, placui, placitus
+promise: promitto, promittere, promisi, promissus
+strike/beat: verbero, verberare, verberavi, verberatus
+
+@ Nouns
+citizen: civis, civis, (m)
+wall: murus, muri, (m)
+fight: pugna, pugnae, (f)
+senator: senator, senatoris, (m)
+man: vir, viri, (m)
+
+@ Adjectives
+generous: liberalis, liberale, (3-2)
+our/ours: noster, nostra, nostrum, (212)
+first: primus, prima, primum, (212)
+worried/anxious: sollicitus, sollicita, sollicitum, (212)
+stupid: stultus, stulta, stultum, (212)
+
+@ Regulars
+about: de
+no: minime
+now: nunc
+goodbye: vale

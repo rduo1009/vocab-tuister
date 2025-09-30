@@ -38,7 +38,7 @@ long: longus, longa, longum, (212)
 middle/middle of: medius, media, medium, (212)
 my: meus, mea, meum, (212)
 first: primus, prima, primum, (212)
-your/yours: tuus, tua, tuum, (212)
+your: tuus, tua, tuum, (212)
 
 @ Regulars
 why: cur

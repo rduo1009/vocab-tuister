@@ -1,0 +1,29 @@
+@ Verbs
+affect: afficio, afficere, affeci, affectus
+consult: consulo, consulere, consului, consultus
+let down/lower: demitto, demittere, demisi, demissus
+cut: seco, secare, secui, sectus
+
+@ Nouns
+riches: divitae, divitarum, (f)
+family/tribe: gens, gentis, (f)
+injustice/injury: iniuria, iniuriae, (f)
+work/construction: opus, operis, (n)
+rock: saxum, saxi, (n)
+sun: sol, solis, (m)
+sister: soror, sororis, (f)
+fear: timor, timoris, (m)
+
+@ Adjectives
+affected/overcome: affectus, affecta, affectum, (212)
+both: ambo, ambae, ambo, (212)
+rich: dives, divitis, (3-1)
+born: natus, nata, natum, (212)
+noble/of noble birth: nobilis, nobile, (3-2)
+
+@ Regulars
+up till now: adhuc
+greatly: magnopere
+too: nimis
+completely: omnino
+why: quare

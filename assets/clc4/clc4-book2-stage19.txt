@@ -1,0 +1,32 @@
+@ Verbs
+love/like: amo, amare, amavi, amatus
+think/consider: cogito, cogitare, cogitavi, cogitatus
+obtain: comparo, comparare, comparavi, comparatus
+finish: conficio, conficere, confeci, confectus
+look after: curo, curare, curavi, curatus
+flow: fluo, fluere, fluxi, fluxum
+demand/ask for: posco, poscere, poposci
+annoy: vexo, vexare, vexavi, vexatus
+live: vivo, vivere, vixi, victum
+
+@ Nouns
+daughter: filia, filiae, (f)
+spear: hasta, hastae, (f)
+journey: iter, itineris, (n)
+place: locus, loci, (m)
+danger: periculum, periculi, (n)
+voice: vox, vocis, (f)
+
+@ Adjectives
+dear: carus, cara, carum, (212)
+very many: plurimus, plurima, plurimum, (212)
+
+@ Regulars
+by chance: forte
+I thank/I give thanks: gratias ago
+there/to that place: illuc
+in the morning: mane
+# NOTE: 'nosco' exists but it has a different meaning
+I know: novi
+so many: tot
+hardly/scarcely: vix

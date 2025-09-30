@@ -1,0 +1,30 @@
+@ Verbs
+happen: accido, accidere, accidi
+open: aperio, aperire, aperui, apertus
+force/compel: cogo, cogere, coegi, coactus
+trust: confido, confidere, confisus sum
+explain: explico, explicare, explicavi, explicatus
+lie hidden: lateo, latere, latui
+not know: nescio, nescire, nescivi, nescitum
+
+@ Nouns
+camp: castra, castrorum, (n)
+importance/prestige: dignitas, dignitatis, (f)
+name: nomen, nominis, (n)
+punishment: poena, poenae, (f)
+# NOTE: Can be feminine but omitted for simplicity
+witness: testis, testis, (m)
+
+@ Adjectives
+skilful: peritus, perita, peritum, (212)
+wicked: scelestus, scelesta, scelestum, (212)
+sweet: suavis, suave, (3-2)
+
+@ Pronouns
+someone: aliquis, aliqua, aliquid
+
+@ Regulars
+but: autem
+outside: extra
+pay the penalty/be punished: poenas dare
+again: rursus

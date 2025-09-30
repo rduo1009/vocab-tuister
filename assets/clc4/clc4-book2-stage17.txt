@@ -1,0 +1,33 @@
+@ Verbs
+approach/come near to: appropinquo, appropinquare, appropinquavi, appropinquatus
+reach/arrive at: pervenio, pervenire, perveni, perventum
+recover/take back: recipio, recipere, recepi, receptus
+resist: resisto, resistere, restiti
+
+@ Nouns
+spirit/soul/mind: animus, animi, (m)
+altar: ara, arae, (f)
+craftsman: faber, fabri, (m)
+island: insula, insulae, (f)
+business: negotium, negotii, (n)
+
+@ Adjectives
+kind: benignus, benigna, benignum, (212)
+easy: facilis, facile, (3-2)
+unwilling: invitus, invita, invitum, (212)
+very big: maximus, maxima, maximum, (212)
+
+@ Pronouns
+# FIXME: haven't implemented this one!
+few/a few: pauci, paucae, pauca
+
+@ Regulars
+from: a/ab
+# NOTE: Below come from adjectives, but adjectives not in list
+well: bene
+for a long time: diu
+seriously: graviter
+here/to this place: huc
+and so: itaque
+never: numquam
+one day/once: quondam

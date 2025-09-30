@@ -1,0 +1,23 @@
+@ Verbs
+notice/take notice of: animadverto, animadvertere, animadverti, animadversus
+give: dono, donare, donavi, donatus
+admire/wonder at: miror, mirari, miratus sum
+recite/read out: recito, recitare, recitavi, recitatus
+touch: tango, tangere, tetigi, tactus
+
+@ Nouns
+weapons: arma, armorum, (n)
+reason/cause: causa, causae, (f)
+pupil/student: discipulus, discipuli, (m)
+# NOTE: Can be feminine but omitted for simplicity
+end: finis, finis, (m)
+
+@ Adjectives
+furthest: extremus, extrema, extremum, (212)
+black: niger, nigra, nigrum, (212)
+old: vetus, veteris, (3-1)
+
+@ Regulars
+that not/in order that not: ne
+especially: praesertim
+except: praeter

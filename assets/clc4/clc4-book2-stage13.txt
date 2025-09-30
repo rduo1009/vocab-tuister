@@ -1,0 +1,29 @@
+@ Verbs
+arrive: advenio, advenire, adveni, adventum
+sing: canto, cantare, cantavi, cantatus
+say: dico, dicere, dixi, dictus
+arouse: excito, excitare, excitavi, excitatus
+kill: interficio, interficere, interfeci, interfectus
+do not want: nolo, nolle, nolui
+can/be able: possum, posse, potui
+rush: ruo, ruere, rui, rutus
+drag: traho, trahere, traxi, tractus
+want: volo, velle, volui, voliturus
+wound: vulnero, vulnerare, vulneravi, vulneratus
+
+@ Nouns
+building: aedificium, aedificii, (n)
+guard: custos, custodis, (m)
+himself: se
+life: vita, vitae, (f)
+
+@ Adjectives
+sick/ill: aeger, aegra, aegrum, (212)
+other/second: alter, altera, alterum, (212)
+tired: fessus, fessa, fessum, (212)
+new: novus, nova, novum, (212)
+not any/no: nullus, nulla, nullum, (212)
+
+@ Regulars
+the others/the rest: ceteri/ceterae/cetera
+yes: ita vero

@@ -1,0 +1,30 @@
+@ Verbs
+halt/stand one's ground: consisto, consistere, constiti, constitum
+neglect/ignore/disregard: neglego, neglegere, neglexi, neglectus
+beg: oro, orare, oravi, oratus
+advance: progredior, progredi, progressus sum
+seize/grab: rapio, rapere, rapui, raptus
+tear/tear up: scindo, scindere, scidi, scissus
+hope/expect: spero, sperare, speravi, speratus
+carry: veho, vehere, vexi, vectus
+bind/tie up: vincio, vincire, vinxi, vinctus
+turn/roll: volvo, volvere, volvi, volutus
+
+@ Nouns
+# NOTE: Can be feminine but omitted for simplicity
+leader: dux, ducis, (m)
+grain: frumentum, frumenti, (n)
+time: tempus, temporis, (n)
+expression/face: vultus, vultus, (m)
+
+@ Adjectives
+high/deep: altus, alta, altum, (212)
+arrogant/proud: superbus, superba, superbum, (212)
+
+@ Regulars
+before/in front of: ante
+not at all: haudquaquam
+same: idem, eadem, idem
+repeatedly: identidem
+that not/so that not: ne
+on all sides/from all sides: undique

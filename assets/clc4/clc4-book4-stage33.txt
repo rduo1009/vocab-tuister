@@ -1,0 +1,33 @@
+@ Verbs
+call/call out to: appello, appellare, appellavi, appellatus
+hurl/throw: conicio, conicere, conieci, coniectus
+fall down: decido, decidere, decidi
+come down/go down: descendo, descendere, descendi, descensus
+throw out: eicio, eicere, eieci, eiectus
+receive: excipio, excipere, excepi, exceptus
+move: moveo, movere, movi, motus
+repair: reficio, reficere, refeci, refectus
+
+@ Nouns
+escape: fuga, fugae, (f)
+game: ludus, ludi, (m)
+number: numerus, numeri, (m)
+power: potestas, potestatis, (f)
+queen: regina, reginae, (f)
+
+@ Adjectives
+short/brief: brevis, breve, (3-2)
+true/real: verus, vera, verum, (212)
+
+@ Regulars
+but: at
+against/on the other hand: contra
+tomorrow: cras
+here: hic
+except/unless: nisi
+because: quia
+whether: utrum
+in fact/truly/really: re vera
+
+# Omitted:
+# 'et ... et' ('both ... and') as it is a grammar pattern

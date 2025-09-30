@@ -1,0 +1,27 @@
+@ Verbs
+give in/give way: cedo, cedere, cessi, cessus
+catch sight of: conspicor, conspicari, conspicatus sum
+wear: gero, gerere, gessi, gestus
+throw: iacio, iacere, ieci, iactus
+speak: loquor, loqui, locutus sum
+decorate: orno, ornare, ornavi, ornatus
+obey: pareo, parere, parui, paritum
+return: regredior, regredi, regressus sum
+know: scio, scire, scivi, scitus
+
+@ Nouns
+care: cura, curae, (f)
+honour/public position: honor, honoris, (m)
+instruction/order: mandatum, mandati, (n)
+manner/way/kind: modus, modi, (m)
+poison: venenum, veneni, (n)
+
+@ Adjectives
+famous/distinguished: clarus, clara, clarum, (212)
+still/motionless: immotus, immota, immotum, (212)
+such: talis, tale, (3-2)
+
+@ Regulars
+for: enim
+too much: nimium
+umquam: ever

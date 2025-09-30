@@ -150,7 +150,7 @@ class Verb(Word):
             or `ppp` values).
         """
         logger.debug(
-            "RegularWord(%s, %s, %s, %s, meaning=%s)",
+            "Verb(%s, %s, %s, %s, meaning=%s)",
             present,
             infinitive,
             perfect,
