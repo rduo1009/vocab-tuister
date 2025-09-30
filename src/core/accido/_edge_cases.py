@@ -1401,7 +1401,7 @@ UNCOMPARABLE_ADVERBS: Final[set[str]] = {
     "ubiubi",
 }  # fmt: skip
 
-# Created from pipx run src/scripts/create_adjective_no_adverb.py, then copying and word wrapping result
+# Created from pipx run src/scripts/create_adjective_with_adverb.py, then copying and word wrapping result
 REAL_ADVERB_ADJECTIVES: Final[set[str]] = {
     "irremediabilis", "decorus", "muscosus", "sextuplex", "suavis", "activus", "palaestricus", "perfidelis", "sanus", "praecipuus", 
     "collaudabilis", "celer", "vivax", "syndesmoticus", "iocularis", "apprimus", "frequens", "superus", "purus", 

@@ -8,16 +8,16 @@
 # ///
 
 """
-Fetch Latin adjectives from Wiktionary and extract which ones lack adverb forms.
+Fetch Latin adjectives from Wiktionary and extract which ones have adverb forms.
 
 This script scrapes the Wiktionary category `Category:Latin adjectives`
 using Pywikibot, parses entries with mwparserfromhell, and writes out a Python
-file containing a set of adjectives that do not have explicit adverbs listed.
+file containing a set of adjectives that have explicit adverbs listed.
 
 Output
 ------
-_latin_adjectives_no_adverb.py
-    Temporary file that contains a single Python set named NO_ADVERB_ADJECTIVES,
+_latin_adjectives_with_adverb.py
+    Temporary file that contains a single Python set named REAL_ADVERB_ADJECTIVES,
     which can be copied elsewhere in the codebase.
 """
 
@@ -109,10 +109,10 @@ def main() -> None:
         Path(__file__).parent.parent
         / "core"
         / "accido"
-        / "_latin_adjectives_no_adverb.py"
+        / "_latin_adjectives_with_adverb.py"
     )
     out_file.write_text(
-        "# Auto-generated list of Latin adjectives without explicit adverbs\n\n"
+        "# Auto-generated list of Latin adjectives with adverbs\n\n"
         f"NO_ADVERB_ADJECTIVES = {no_adverb!r}\n"
     )
 
