@@ -1,6 +1,5 @@
 @ Verbs
 rescue/snatch away: eripio, eripere, eripui, ereptus
-# FIXME: English inflection would be messed up here
 not know of: ignoro, ignorare, ignoravi, ignoratus
 join: iungo, iungere, iunxi, iunctus
 marry: nubo, nubere, nupsi, nuptus
