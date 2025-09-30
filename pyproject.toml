@@ -26,14 +26,14 @@ dependencies = [
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "platformdirs==4.4.0",
-  "pyinstaller==6.15.0",
+  "pyinstaller==6.16.0",
   "waitress==3.0.2",
   "wn @ git+https://github.com/goodmami/wn.git",
 ]
 
 [dependency-groups]
 dev = [
-  "basedpyright==1.31.4",
+  "basedpyright==1.31.5",
   "coverage==7.10.7",
   "doc8==2.0.0",
   "griffe==1.14.0",
@@ -42,12 +42,12 @@ dev = [
   "mypy[faster-cache]==1.18.2",
   "pytest==8.4.2",
   "pytest-env==1.1.5",
-  "pytest-pythonhashseed==1.0.1",
+  "pytest-pythonhashseed==2.0.0",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.13.1",
-  "syrupy==4.9.1",
+  "ruff==0.13.2",
+  "syrupy==5.0.0",
 ]
 
 types = [
