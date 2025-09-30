@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 
     from .type_aliases import Conjugation, Ending, Endings
 
-
 # TODO: Change formatting to make it clear that lines be longer here to 130 e.g. with below horizontal line
 # -----------------------------------------------------------------------------
 # DEFECTIVE VERBS
@@ -1277,11 +1276,22 @@ IRREGULAR_ADJECTIVES: Final[
     "magnus": ("maior", "maxim", None, None, None),
     "parvus": ("minor", "minim", None, None, None),
     # multo (adverb) exists but that would very much stuff up things
+    # TODO: Maybe it can not stuff up things?
     "multus": ("plus", "plurim", None, None, None),
     # nequam should probably just be put in as a regular
     "nequam": ("nequior", "nequissim", None, None, None),
     "frugi": ("frugalior", "frugalissim", "frugaliter", "frugalius", "frugalissime"),
     "dexter": ("dexterior", "dextim", None, None, None),
+    # ultro (adverb) exists but that would very much stuff up things
+    "ulter": ("ulterior", "ultim", None, None, None),
+    # FIXME: but 'extimus' exists for superlative
+    # Would need to define way to get MultipleEndings into f-strings perhaps?
+    "exter": ("exterior", "extrem", None, None, None),
+    # Same here with 'postumus'
+    "posterus": ("posterior", "postrem", None, None, None),
+    # supra (adverb) exists but that would very much stuff up things
+    # Superlatives 'superrimus' 'superrumus' 'summus'
+    "superus": ("superior", "suprem", None, None, None),
 }  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
