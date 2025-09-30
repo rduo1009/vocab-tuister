@@ -22,7 +22,7 @@ _latin_adjectives_with_adverb.py
 """
 
 # ruff: noqa: T201, ANN001, ANN201, BLE001
-# pyright: basic, reportMissingImports=false
+# pyright: basic, reportMissingImports=false, reportMissingModuleSource=false
 
 import logging
 from pathlib import Path
