@@ -3,7 +3,7 @@ think/consider: cogito, cogitare, cogitavi, cogitatus
 favour/support: faveo, favere, favi, fautus
 lie: iaceo, iacere, iacui, iacitum
 order/command: impero, imperare, imperavi, imperatus
-not know: nescio, nescire, nescivi, nescitumk
+not know: nescio, nescire, nescivi, nescitum
 kill: occido, occidere, occidi, occisus
 beg: oro, orare, oravi, oratus
 drive: pello, pellere, pepuli, pulsus
