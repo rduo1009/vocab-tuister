@@ -573,3 +573,84 @@ def test_main_be_inflections():
     assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.IMPERATIVE, number=Number.PLURAL, person=2), main=True) == "be!"
 
     assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "about to be"
+
+
+def test_main_can_inflections():
+    word = "can"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they can"
+
+    # these sound kind of awkward? but correct i guess
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may can"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I could"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you could"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he could"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we could"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all could"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might can"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might can"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might can"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might can"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might can"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might can"
+
+    # this is not great, hence they 'be able to' is needed as an alternative meaning
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may have could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I had could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you had could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he had could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we had could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all had could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they had could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might have could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will have could"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will have could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to can"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to have could"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "canning"

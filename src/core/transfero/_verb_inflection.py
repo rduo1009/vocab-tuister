@@ -25,6 +25,17 @@ if TYPE_CHECKING:
 
 @cache
 def _get_first_inflection(lemma: str, tag: str) -> str:
+    if lemma == "can":
+        match tag:
+            case "VBP":  # present non-third
+                return "can"
+            case "VBZ":  # present third singular
+                return "can"
+            case "VBD":  # past
+                return "could"
+            case _:  # everything else is correct
+                pass
+
     return lemminflect.getInflection(lemma, tag)[0]
 
 
@@ -571,6 +582,9 @@ def _find_futactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
     present_participle = _get_first_inflection(lemma, "VBG")
+
+    if lemma == "can":  # 'I could' is the same for both perfect and future
+        return _find_peractind_inflections(lemma, number, person)
 
     match (number, person):
         case (Number.SINGULAR, 1):
