@@ -16,10 +16,8 @@ difficult: difficilis, difficile, (3-2)
 faithful/loyal: fidelis, fidele, (3-2)
 
 @ Pronouns
-# FIXME: haven't implemented this one!
 someone: aliquis, aliqua, aliquid
 oneself: ipse, ipsa, ipsum
-# FIXME: haven't implemented this one!
 that: iste, ista, istud
 
 @ Regulars
