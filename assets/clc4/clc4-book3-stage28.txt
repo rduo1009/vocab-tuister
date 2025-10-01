@@ -13,7 +13,7 @@ fear: metus, metus, (m)
 money/wealth: opes, opum, (f)
 hope: spes, spei, (f)
 wind: ventus, venti, (m)
-# FIXME: haven't implemented this one!
+# FIXME: haven't implemented this noun!
 # HACK: Can be represented as an irregular noun
 thousand: mille
 
@@ -24,7 +24,6 @@ two: duo, duae, duo, (212)
 three: tres, tria, (3-2)
 
 @ Pronouns
-# FIXME: haven't implemented this one!
 anyone: quisquam, quisquam, quidquam/quicquam
 
 @ Regulars
