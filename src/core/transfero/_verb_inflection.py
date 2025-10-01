@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from typing import TYPE_CHECKING
 
 import lemminflect
@@ -20,6 +21,11 @@ from .exceptions import InvalidComponentsError, InvalidWordError
 if TYPE_CHECKING:
     from ..accido.misc import EndingComponents
     from ..accido.type_aliases import Person
+
+
+@cache
+def _get_first_inflection(lemma: str, tag: str) -> str:
+    return lemminflect.getInflection(lemma, tag)[0]
 
 
 def _verify_verb_inflections(components: EndingComponents) -> None:
@@ -243,9 +249,9 @@ def _inflect_lemma(  # noqa: PLR0917
 def _find_preactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    present_nonthird = lemminflect.getInflection(lemma, "VBP")[0]
-    present_third = lemminflect.getInflection(lemma, "VBZ")[0]
-    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+    present_nonthird = _get_first_inflection(lemma, "VBP")
+    present_third = _get_first_inflection(lemma, "VBZ")
+    present_participle = _get_first_inflection(lemma, "VBG")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -285,7 +291,7 @@ def _find_preactind_inflections(
 def _find_prepasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -331,10 +337,10 @@ def _find_prepasind_inflections(
 def _find_impactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+    present_participle = _get_first_inflection(lemma, "VBG")
 
     if lemma in STATIVE_VERBS:
-        past = lemminflect.getInflection(lemma, "VBD")[0]
+        past = _get_first_inflection(lemma, "VBD")
 
         match (number, person):
             case (Number.SINGULAR, 1):
@@ -471,7 +477,7 @@ def _find_impactind_inflections(
 def _find_imppasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -547,7 +553,7 @@ def _find_imppasind_inflections(
 def _find_futactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+    present_participle = _get_first_inflection(lemma, "VBG")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -614,7 +620,7 @@ def _find_futactind_inflections(
 def _find_futpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -681,8 +687,8 @@ def _find_futpasind_inflections(
 def _find_peractind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past = lemminflect.getInflection(lemma, "VBD")[0]
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past = _get_first_inflection(lemma, "VBD")
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -736,7 +742,7 @@ def _find_peractind_inflections(
 def _find_perpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -785,7 +791,7 @@ def _find_perpasind_inflections(
 def _find_plpactind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -817,7 +823,7 @@ def _find_plpactind_inflections(
 def _find_plppasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -849,7 +855,7 @@ def _find_plppasind_inflections(
 def _find_fpractind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -881,7 +887,7 @@ def _find_fpractind_inflections(
 def _find_fprpasind_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -911,11 +917,11 @@ def _find_fprpasind_inflections(
 
 
 def _find_preactipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (lemminflect.getInflection(lemma, "VB")[0],)
+    return (_get_first_inflection(lemma, "VB"),)
 
 
 def _find_prepasipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (f"be {lemminflect.getInflection(lemma, 'VBN')[0]}",)
+    return (f"be {_get_first_inflection(lemma, 'VBN')}",)
 
 
 def _find_futactipe_inflections(
@@ -948,7 +954,7 @@ def _find_futactipe_inflections(
 def _find_futpasipe_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 2):
@@ -990,20 +996,20 @@ def _find_futactinf_inflections(lemma: str) -> tuple[str, ...]:
 
 
 def _find_peractinf_inflections(lemma: str) -> tuple[str, ...]:
-    return (f"to have {lemminflect.getInflection(lemma, 'VBN')[0]}",)
+    return (f"to have {_get_first_inflection(lemma, 'VBN')}",)
 
 
 def _find_prepasinf_inflections(lemma: str) -> tuple[str, ...]:
-    return (f"to be {lemminflect.getInflection(lemma, 'VBN')[0]}",)
+    return (f"to be {_get_first_inflection(lemma, 'VBN')}",)
 
 
 def _find_futpasinf_inflections(lemma: str) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
     return (f"to be about to be {past_participle}",)
 
 
 def _find_perpasinf_inflections(lemma: str) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
     return (f"to have been {past_participle}",)
 
 
@@ -1060,7 +1066,7 @@ def _find_impactsbj_inflections(
 def _find_peractsbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1092,7 +1098,7 @@ def _find_peractsbj_inflections(
 def _find_plpactsbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1124,7 +1130,7 @@ def _find_plpactsbj_inflections(
 def _find_prepassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1156,7 +1162,7 @@ def _find_prepassbj_inflections(
 def _find_imppassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1188,7 +1194,7 @@ def _find_imppassbj_inflections(
 def _find_perpassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1220,7 +1226,7 @@ def _find_perpassbj_inflections(
 def _find_plppassbj_inflections(
     lemma: str, number: Number, person: Person
 ) -> tuple[str, ...]:
-    past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+    past_participle = _get_first_inflection(lemma, "VBN")
 
     match (number, person):
         case (Number.SINGULAR, 1):
@@ -1256,22 +1262,22 @@ def _find_participle_inflections(
 
     match (components.tense, components.voice):
         case (Tense.PRESENT, Voice.ACTIVE):
-            present_participle = lemminflect.getInflection(lemma, "VBG")[0]
+            present_participle = _get_first_inflection(lemma, "VBG")
             return (present_participle,)
 
         case (Tense.PERFECT, Voice.ACTIVE):
-            past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+            past_participle = _get_first_inflection(lemma, "VBN")
             return (f"having {past_participle}",)
 
         case (Tense.PERFECT, Voice.PASSIVE):
-            past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+            past_participle = _get_first_inflection(lemma, "VBN")
             return (f"having been {past_participle}", past_participle)
 
         case (Tense.FUTURE, Voice.ACTIVE):
             return (f"about to {lemma}",)
 
         case (Tense.FUTURE, Voice.PASSIVE):
-            past_participle = lemminflect.getInflection(lemma, "VBN")[0]
+            past_participle = _get_first_inflection(lemma, "VBN")
             return (
                 f"requiring to be {past_participle}",
                 f"to be {past_participle}",
@@ -1291,7 +1297,7 @@ def _find_verbal_noun_inflections(
 
     match components.mood:
         case Mood.GERUND:
-            return (lemminflect.getInflection(lemma, "VBG")[0],)
+            return (_get_first_inflection(lemma, "VBG"),)
 
         case Mood.SUPINE:
             return (f"to {lemma}",)

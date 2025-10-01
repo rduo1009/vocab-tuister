@@ -38,10 +38,6 @@ class MultipleChoiceLatToEngQuestion(MultipleChoiceQuestion):
 def generate_multiplechoice_lattoeng(
     vocab_list: Vocab, chosen_word: Word, number_multiplechoice_options: int
 ) -> MultipleChoiceLatToEngQuestion:
-    # Remove `chosen_word` from copy of `vocab_list`
-    vocab_list = vocab_list.copy()
-    vocab_list.remove(chosen_word)
-
     prompt = chosen_word._first
 
     # Pick meaning
@@ -54,8 +50,16 @@ def generate_multiplechoice_lattoeng(
         )
 
     # Pick other possible choices
-    possible_choices: list[str] = []
-    for vocab in vocab_list:
+    candidate_words = random.sample(
+        [w for w in vocab_list if w is not chosen_word],
+        k=number_multiplechoice_options - 1,
+    )
+
+    other_choices: list[str] = []
+    for vocab in candidate_words:
+        if len(other_choices) >= number_multiplechoice_options - 1:
+            break
+
         current_meaning = normalise_to_multiplemeanings(vocab.meaning)
 
         if isinstance(vocab, Verb):  # inflect other choices if verb as well
@@ -68,13 +72,12 @@ def generate_multiplechoice_lattoeng(
                 )
             )
 
-        possible_choices.extend(current_meaning.meanings)
+        meaning = random.choice(current_meaning.meanings)
+        if meaning != answer and meaning not in other_choices:
+            other_choices.append(meaning)
 
     # Put together choices
-    choices = [
-        answer,
-        *random.sample(possible_choices, number_multiplechoice_options - 1),
-    ]
+    choices = [answer, *other_choices]
     random.shuffle(choices)
 
     return MultipleChoiceLatToEngQuestion(
