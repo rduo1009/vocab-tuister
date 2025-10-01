@@ -64,9 +64,12 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:
             return (lemma,)
 
         case Degree.COMPARATIVE:
-            return (f"more {lemma}",)
+            # archaic, but still worth adding
+            comparatives = lemminflect.getInflection(lemma, "RBR")
+            return (f"more {lemma}", *comparatives)
 
         case _:
+            superlatives = lemminflect.getInflection(lemma, "RBS")
             return (
                 f"most {lemma}",
                 f"very {lemma}",
@@ -74,4 +77,5 @@ def _inflect_lemma(lemma: str, degree: Degree) -> tuple[str, ...]:
                 f"rather {lemma}",
                 f"too {lemma}",
                 f"quite {lemma}",
+                *superlatives,
             )

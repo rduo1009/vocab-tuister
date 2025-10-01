@@ -4,7 +4,6 @@ surround: circumvenio, circumvenire, circumveni, circumventus
 defend: defendo, defendere, defendi, defensus
 march/stride: incedo, incedere, incessi, incessus
 prefer: malo, malle, malui
-# FIXME: English inflection would be messed up here
 hate: odi, odisse, osus sum
 finish: perficio, perficere, perfeci, perfectus
 despise/reject: sperno, spernere, sprevi, spretus

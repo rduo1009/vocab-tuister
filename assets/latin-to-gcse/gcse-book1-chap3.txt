@@ -13,7 +13,6 @@ invite: invito, invitare, invitavi, invitatus
 weep/cry: lacrimo, lacrimare, lacrimavi, lacrimatus
 remain/stay: maneo, manere, mansi, mansus
 attack: oppugno, oppugnare, oppugnavi, oppugnatus
-# FIXME: Why does 'can' not work with certain lemminflect inflections?
 can/be able: possum, posse, potui
 search for/look for/ask: quaero, quaerere, quaesivi, quaesitus
 

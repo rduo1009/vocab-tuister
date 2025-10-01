@@ -25,6 +25,17 @@ if TYPE_CHECKING:
 
 @cache
 def _get_first_inflection(lemma: str, tag: str) -> str:
+    if lemma == "can":
+        match tag:
+            case "VBP":  # present non-third
+                return "can"
+            case "VBZ":  # present third singular
+                return "can"
+            case "VBD":  # past
+                return "could"
+            case _:  # everything else is correct
+                pass
+
     return lemminflect.getInflection(lemma, tag)[0]
 
 
@@ -81,20 +92,17 @@ def find_verb_inflections(
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
         return _find_verbal_noun_inflections(verb, components)
 
-    # For English inflection, deponent and semi-deponent verbs are treated based on context
-    # Deponent: always active in meaning.
-    # Semi-deponent: active in present system, passive (in form and meaning) in perfect system.
-    if components.voice == Voice.DEPONENT:
+    if components.voice == Voice.DEPONENT:  # deponents active always
         components.voice = Voice.ACTIVE
     elif components.voice == Voice.SEMI_DEPONENT:
-        if components.tense in {
+        if components.tense in {  # semi-deponents passive in perfect
             Tense.PERFECT,
             Tense.PLUPERFECT,
             Tense.FUTURE_PERFECT,
         }:
-            components.voice = Voice.PASSIVE  # Perfect system is passive
+            components.voice = Voice.PASSIVE
         else:
-            components.voice = Voice.ACTIVE  # Present system is active
+            components.voice = Voice.ACTIVE
 
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)
@@ -258,12 +266,29 @@ def _find_preactind_inflections(
             return (f"I {present_nonthird}", f"I am {present_participle}")
 
         case (Number.PLURAL, 1):
+            # NOTE: These overrides are only present in branches where the main
+            # inflection would be completely wrong. There may still be incorrect
+            # other inflections elsewhere
+            if lemma == "be":
+                return ("we are", "we are being")
+
             return (f"we {present_nonthird}", f"we are {present_participle}")
 
         case (Number.SINGULAR, 2):
+            if lemma == "be":
+                return ("you are", "you are being")
+
             return (f"you {present_nonthird}", f"you are {present_participle}")
 
         case (Number.PLURAL, 2):
+            if lemma == "be":
+                return (
+                    "you all are",
+                    "you all are being",
+                    "you are",
+                    "you are being",
+                )
+
             return (
                 f"you all {present_nonthird}",
                 f"you all are {present_participle}",
@@ -282,6 +307,9 @@ def _find_preactind_inflections(
             )
 
         case _:
+            if lemma == "be":
+                return ("they are", "they are being")
+
             return (
                 f"they {present_nonthird}",
                 f"they are {present_participle}",
@@ -555,6 +583,9 @@ def _find_futactind_inflections(
 ) -> tuple[str, ...]:
     present_participle = _get_first_inflection(lemma, "VBG")
 
+    if lemma == "can":  # 'I could' is the same for both perfect and future
+        return _find_peractind_inflections(lemma, number, person)
+
     match (number, person):
         case (Number.SINGULAR, 1):
             return (
@@ -695,6 +726,9 @@ def _find_peractind_inflections(
             return (f"I {past}", f"I have {past_participle}", f"I did {lemma}")
 
         case (Number.PLURAL, 1):
+            if lemma == "be":
+                return ("we were", "we have been", "we did be")
+
             return (
                 f"we {past}",
                 f"we have {past_participle}",
@@ -702,6 +736,9 @@ def _find_peractind_inflections(
             )
 
         case (Number.SINGULAR, 2):
+            if lemma == "be":
+                return ("you were", "you have been", "you did be")
+
             return (
                 f"you {past}",
                 f"you have {past_participle}",
@@ -709,6 +746,16 @@ def _find_peractind_inflections(
             )
 
         case (Number.PLURAL, 2):
+            if lemma == "be":
+                return (
+                    "you all were",
+                    "you all have been",
+                    "you all did be",
+                    "you were",
+                    "you have been",
+                    "you did be",
+                )
+
             return (
                 f"you all {past}",
                 f"you all have {past_participle}",
@@ -732,6 +779,9 @@ def _find_peractind_inflections(
             )
 
         case _:
+            if lemma == "be":
+                return ("they were", "they have been", "they did be")
+
             return (
                 f"they {past}",
                 f"they have {past_participle}",
@@ -917,11 +967,15 @@ def _find_fprpasind_inflections(
 
 
 def _find_preactipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (_get_first_inflection(lemma, "VB"),)
+    return (
+        f"{_get_first_inflection(lemma, 'VB')}!",
+        _get_first_inflection(lemma, "VB"),
+    )
 
 
 def _find_prepasipe_inflections(lemma: str) -> tuple[str, ...]:
-    return (f"be {_get_first_inflection(lemma, 'VBN')}",)
+    past_participle = _get_first_inflection(lemma, "VBN")
+    return (f"be {past_participle}!", f"be {past_participle}")
 
 
 def _find_futactipe_inflections(
@@ -929,13 +983,29 @@ def _find_futactipe_inflections(
 ) -> tuple[str, ...]:
     match (number, person):
         case (Number.SINGULAR, 2):
-            return (f"you shall {lemma}", f"you will {lemma}")
+            return (
+                f"you shall {lemma}!",
+                f"you will {lemma}!",
+                f"you shall {lemma}",
+                f"you will {lemma}",
+            )
 
         case (Number.SINGULAR, 3):
-            return (f"let him {lemma}", f"let her {lemma}", f"let it {lemma}")
+            return (
+                f"let him {lemma}!",
+                f"let her {lemma}!",
+                f"let it {lemma}!",
+                f"let him {lemma}",
+                f"let her {lemma}",
+                f"let it {lemma}",
+            )
 
         case (Number.PLURAL, 2):
             return (
+                f"you all shall {lemma}!",
+                f"you all will {lemma}!",
+                f"you shall {lemma}!",
+                f"you will {lemma}!",
                 f"you all shall {lemma}",
                 f"you all will {lemma}",
                 f"you shall {lemma}",
@@ -943,7 +1013,7 @@ def _find_futactipe_inflections(
             )
 
         case (Number.PLURAL, 3):
-            return (f"let them {lemma}",)
+            return (f"let them {lemma}!", f"let them {lemma}")
 
         case _:
             raise ValueError(
@@ -959,12 +1029,17 @@ def _find_futpasipe_inflections(
     match (number, person):
         case (Number.SINGULAR, 2):
             return (
+                f"you shall be {past_participle}!",
+                f"you will be {past_participle}!",
                 f"you shall be {past_participle}",
                 f"you will be {past_participle}",
             )
 
         case (Number.SINGULAR, 3):
             return (
+                f"let him be {past_participle}!",
+                f"let her be {past_participle}!",
+                f"let it be {past_participle}!",
                 f"let him be {past_participle}",
                 f"let her be {past_participle}",
                 f"let it be {past_participle}",
@@ -972,6 +1047,10 @@ def _find_futpasipe_inflections(
 
         case (Number.PLURAL, 2):
             return (
+                f"you all shall be {past_participle}!",
+                f"you all will be {past_participle}!",
+                f"you shall be {past_participle}!",
+                f"you will be {past_participle}!",
                 f"you all shall be {past_participle}",
                 f"you all will be {past_participle}",
                 f"you shall be {past_participle}",
@@ -979,7 +1058,10 @@ def _find_futpasipe_inflections(
             )
 
         case (Number.PLURAL, 3):
-            return (f"let them be {past_participle}",)
+            return (
+                f"let them be {past_participle}!",
+                f"let them be {past_participle}",
+            )
 
         case _:
             raise ValueError(
