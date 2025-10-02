@@ -17,7 +17,7 @@ easy: facilis, facile, (3-2)
 unwilling: invitus, invita, invitum, (212)
 very big: maximus, maxima, maximum, (212)
 # FIXME: haven't implemented this adjective!
-few/a few: pauci, paucae, pauca
+few/a few: pauci, paucae, pauca, (212)
 
 @ Regulars
 from: a/ab
