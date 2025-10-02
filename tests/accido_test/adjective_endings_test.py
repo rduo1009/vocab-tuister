@@ -203,3 +203,100 @@ class TestAdverbEdgeCases:
         # Check that comparative and superlative adverbs return None
         assert adj.get(degree=Degree.COMPARATIVE, adverb=True) is None
         assert adj.get(degree=Degree.SUPERLATIVE, adverb=True) is None
+
+
+@pytest.fixture
+def adjective_plurale_tantum_212():
+    return Adjective("pauci", "paucae", "pauca", declension="212", meaning="few")
+
+
+@pytest.fixture
+def adjective_plurale_tantum_31():
+    return Adjective("novensides", "novensidium", termination=1, declension="3", meaning="Nine Gods")
+
+
+@pytest.fixture
+def adjective_plurale_tantum_32():
+    return Adjective("tres", "tria", termination=2, declension="3", meaning="three")
+
+
+@pytest.fixture
+def adjective_plurale_tantum_33():
+    return Adjective("acres", "acres", "acria", termination=3, declension="3", meaning="sharp (pl)")
+
+
+# Plural-only adjectives only have plural forms (no singular)
+ADJECTIVE_PLURAL_COMBINATIONS = (
+    (Degree.POSITIVE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
+    (Degree.POSITIVE, Gender.FEMININE, Case.NOMINATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.FEMININE, Case.VOCATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.FEMININE, Case.ACCUSATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.FEMININE, Case.GENITIVE, Number.PLURAL), (Degree.POSITIVE, Gender.FEMININE, Case.DATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.FEMININE, Case.ABLATIVE, Number.PLURAL),
+    (Degree.POSITIVE, Gender.NEUTER, Case.NOMINATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.NEUTER, Case.VOCATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.NEUTER, Case.ACCUSATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.NEUTER, Case.GENITIVE, Number.PLURAL), (Degree.POSITIVE, Gender.NEUTER, Case.DATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.NEUTER, Case.ABLATIVE, Number.PLURAL),
+)  # fmt: skip
+
+
+class TestAdjectivePluraleTantum:
+    """Test plural-only adjectives (plurale tantum)."""
+
+    @pytest.mark.parametrize(("degree", "gender", "case", "number", "expected"), [ADJECTIVE_PLURAL_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "pauci", "pauci", "paucos", "paucorum", "paucis", "paucis",
+        "paucae", "paucae", "paucas", "paucarum", "paucis", "paucis",
+        "pauca", "pauca", "pauca", "paucorum", "paucis", "paucis",
+    ])])  # fmt: skip
+    def test_declension212(self, adjective_plurale_tantum_212, degree, gender, case, number, expected):
+        assert adjective_plurale_tantum_212.get(degree=degree, gender=gender, case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("degree", "gender", "case", "number", "expected"), [ADJECTIVE_PLURAL_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "novensides", "novensides", "novensides", "novensidium", "novensidibus", "novensidibus",
+        "novensides", "novensides", "novensides", "novensidium", "novensidibus", "novensidibus",
+        "novensidia", "novensidia", "novensidia", "novensidium", "novensidibus", "novensidibus",
+    ])])  # fmt: skip
+    def test_declension31(self, adjective_plurale_tantum_31, degree, gender, case, number, expected):
+        assert adjective_plurale_tantum_31.get(degree=degree, gender=gender, case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("degree", "gender", "case", "number", "expected"), [ADJECTIVE_PLURAL_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "tres", "tres", "tres", "trium", "tribus", "tribus",
+        "tres", "tres", "tres", "trium", "tribus", "tribus",
+        "tria", "tria", "tria", "trium", "tribus", "tribus",
+    ])])  # fmt: skip
+    def test_declension32(self, adjective_plurale_tantum_32, degree, gender, case, number, expected):
+        assert adjective_plurale_tantum_32.get(degree=degree, gender=gender, case=case, number=number) == expected
+
+    @pytest.mark.parametrize(("degree", "gender", "case", "number", "expected"), [ADJECTIVE_PLURAL_COMBINATIONS[i] + (form,) for i, form in enumerate([
+        "acres", "acres", "acres", "acrium", "acribus", "acribus",
+        "acres", "acres", "acres", "acrium", "acribus", "acribus",
+        "acria", "acria", "acria", "acrium", "acribus", "acribus",
+    ])])  # fmt: skip
+    def test_declension33(self, adjective_plurale_tantum_33, degree, gender, case, number, expected):
+        assert adjective_plurale_tantum_33.get(degree=degree, gender=gender, case=case, number=number) == expected
+
+    def test_no_singular_forms_212(self, adjective_plurale_tantum_212):
+        """Test that 212 plural-only adjectives have no singular endings."""
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_212.endings.keys())
+
+    def test_no_singular_forms_31(self, adjective_plurale_tantum_31):
+        """Test that 3-1 plural-only adjectives have no singular endings."""
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_31.endings.keys())
+
+    def test_no_singular_forms_32(self, adjective_plurale_tantum_32):
+        """Test that 3-2 plural-only adjectives have no singular endings."""
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_32.endings.keys())
+
+    def test_no_singular_forms_33(self, adjective_plurale_tantum_33):
+        """Test that 3-3 plural-only adjectives have no singular endings."""
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_33.endings.keys())
+
+    def test_plurale_tantum_attribute_212(self, adjective_plurale_tantum_212):
+        """Test that 212 plural-only adjectives have plurale_tantum set to True."""
+        assert adjective_plurale_tantum_212.plurale_tantum is True
+
+    def test_plurale_tantum_attribute_31(self, adjective_plurale_tantum_31):
+        """Test that 3-1 plural-only adjectives have plurale_tantum set to True."""
+        assert adjective_plurale_tantum_31.plurale_tantum is True
+
+    def test_plurale_tantum_attribute_32(self, adjective_plurale_tantum_32):
+        """Test that 3-2 plural-only adjectives have plurale_tantum set to True."""
+        assert adjective_plurale_tantum_32.plurale_tantum is True
+
+    def test_plurale_tantum_attribute_33(self, adjective_plurale_tantum_33):
+        """Test that 3-3 plural-only adjectives have plurale_tantum set to True."""
+        assert adjective_plurale_tantum_33.plurale_tantum is True
+
