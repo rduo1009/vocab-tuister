@@ -89,6 +89,7 @@ class Adjective(Word):
         "mascgen",
         "mascnom",
         "neutnom",
+        "plurale_tantum",
         "principal_parts",
         "termination",
     )
@@ -141,6 +142,7 @@ class Adjective(Word):
         self.termination: Termination | None = termination
         self.irregular_flag: bool = False
         self.adverb_flag: bool = self.mascnom in REAL_ADVERB_ADJECTIVES
+        self.plurale_tantum: bool = False
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
             self.irregular_flag = True
@@ -189,7 +191,16 @@ class Adjective(Word):
         self.femnom = self.principal_parts[1]
         self.neutnom = self.principal_parts[2]
 
-        self._pos_stem = self.femnom[:-1]  # cara -> car-
+        if (
+            self.mascnom.endswith("i")
+            and self.femnom.endswith("ae")
+            and self.neutnom.endswith("a")
+        ):
+            self.plurale_tantum = True
+            self._pos_stem = self.femnom[:-2]  # nonnullae -> nonnull-
+        else:
+            # TODO: Add check that mascnom ends in 'us'/'er', femnom ends in 'a', neutnom ends in 'um' otherwise?
+            self._pos_stem = self.femnom[:-1]  # cara -> car-
 
         if self.mascnom not in IRREGULAR_ADJECTIVES:
             self._cmp_stem = f"{self._pos_stem}ior"  # car- -> carior-
@@ -202,15 +213,19 @@ class Adjective(Word):
 
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # carus
-            "Aposmvocsg": self.mascnom
+            "Aposmvocsg": self.mascnom  # miser
             if self.mascnom.endswith("er")
-            else f"{self._pos_stem}e",  # miser
+            else f"{self._pos_stem}e",  # care
             "Aposmaccsg": f"{self._pos_stem}um",  # carum
             "Aposmgensg": f"{self._pos_stem}i",  # cari
             "Aposmdatsg": f"{self._pos_stem}o",  # caro
             "Aposmablsg": f"{self._pos_stem}o",  # caro
-            "Aposmnompl": f"{self._pos_stem}i",  # cari
-            "Aposmvocpl": f"{self._pos_stem}i",  # cari
+            "Aposmnompl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}i",  # cari
+            "Aposmvocpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}i",  # cari
             "Aposmaccpl": f"{self._pos_stem}os",  # caros
             "Aposmgenpl": f"{self._pos_stem}orum",  # carorum
             "Aposmdatpl": f"{self._pos_stem}is",  # caris
@@ -221,7 +236,7 @@ class Adjective(Word):
             "Aposfgensg": f"{self._pos_stem}ae",  # carae
             "Aposfdatsg": f"{self._pos_stem}ae",  # carae
             "Aposfablsg": f"{self._pos_stem}a",  # cara
-            "Aposfnompl": f"{self._pos_stem}ae",  # carae
+            "Aposfnompl": f"{self._pos_stem}ae",  # carae # even if plural only, _pos_stem is derived from the feminine anyway
             "Aposfvocpl": f"{self._pos_stem}ae",  # carae
             "Aposfaccpl": f"{self._pos_stem}as",  # caras
             "Aposfgenpl": f"{self._pos_stem}arum",  # cararum
@@ -233,9 +248,15 @@ class Adjective(Word):
             "Aposngensg": f"{self._pos_stem}i",  # cari
             "Aposndatsg": f"{self._pos_stem}o",  # caro
             "Aposnablsg": f"{self._pos_stem}o",  # caro
-            "Aposnnompl": f"{self._pos_stem}a",  # cara
-            "Aposnvocpl": f"{self._pos_stem}a",  # cara
-            "Aposnaccpl": f"{self._pos_stem}a",  # cara
+            "Aposnnompl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}a",  # cara
+            "Aposnvocpl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}a",  # cara
+            "Aposnaccpl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}a",  # cara
             "Aposngenpl": f"{self._pos_stem}orum",  # carorum
             "Aposndatpl": f"{self._pos_stem}is",  # caris
             "Aposnablpl": f"{self._pos_stem}is",  # caris
@@ -336,6 +357,11 @@ class Adjective(Word):
                     ),  # laetissime
                 }
 
+        if self.plurale_tantum:
+            self.endings = {
+                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            }
+
         return endings
 
     def _31_endings(self) -> Endings:
@@ -347,7 +373,10 @@ class Adjective(Word):
 
         self.mascgen = self.principal_parts[1]
 
-        if not self.mascgen.endswith("is"):
+        if self.mascnom.endswith("es") and self.mascgen.endswith("um"):
+            # same _pos_stem (remove last 2 chars from genitive)
+            self.plurale_tantum = True
+        elif not self.mascgen.endswith("is"):
             raise InvalidInputError(
                 f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
             )
@@ -372,10 +401,16 @@ class Adjective(Word):
             "Aposmgensg": self.mascgen,  # ingentis
             "Aposmdatsg": f"{self._pos_stem}i",  # ingenti
             "Aposmablsg": f"{self._pos_stem}i",  # ingenti
-            "Aposmnompl": f"{self._pos_stem}es",  # ingentes
-            "Aposmvocpl": f"{self._pos_stem}es",  # ingentes
-            "Aposmaccpl": f"{self._pos_stem}es",  # ingentes
-            "Aposmgenpl": f"{self._pos_stem}ium",  # ingentium
+            "Aposmnompl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
+            "Aposmvocpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
+            "Aposmaccpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
+            "Aposmgenpl": f"{self._pos_stem}ium",  # ingentium # even if plural only, _pos_stem is derived from the genitive anyway
             "Aposmdatpl": f"{self._pos_stem}ibus",  # ingentibus
             "Aposmablpl": f"{self._pos_stem}ibus",  # ingentibus
             "Aposfnomsg": self.mascnom,  # ingens
@@ -384,9 +419,15 @@ class Adjective(Word):
             "Aposfgensg": self.mascgen,  # ingentis
             "Aposfdatsg": f"{self._pos_stem}i",  # ingenti
             "Aposfablsg": f"{self._pos_stem}i",  # ingenti
-            "Aposfnompl": f"{self._pos_stem}es",  # ingentes
-            "Aposfvocpl": f"{self._pos_stem}es",  # ingentes
-            "Aposfaccpl": f"{self._pos_stem}es",  # ingentes
+            "Aposfnompl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
+            "Aposfvocpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
+            "Aposfaccpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # ingentes
             "Aposfgenpl": f"{self._pos_stem}ium",  # ingentium
             "Aposfdatpl": f"{self._pos_stem}ibus",  # ingentibus
             "Aposfablpl": f"{self._pos_stem}ibus",  # ingentibus
@@ -499,6 +540,11 @@ class Adjective(Word):
                     ),  # atrocissime
                 }
 
+        if self.plurale_tantum:
+            self.endings = {
+                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            }
+
         return endings
 
     def _32_endings(self) -> Endings:
@@ -509,6 +555,12 @@ class Adjective(Word):
             )
 
         self.neutnom = self.principal_parts[1]
+
+        if self.mascnom.endswith("es") and self.neutnom.endswith("a"):
+            # same _pos_stem (remove last 2 chars from nominative)
+            self.plurale_tantum = True
+
+        # TODO: Add check that mascnom ends in 'is', neutnom ends in 'e' otherwise?
 
         self._pos_stem = self.mascnom[:-2]  # fortis -> fort-
         if not self.irregular_flag:
@@ -529,7 +581,7 @@ class Adjective(Word):
             "Aposmgensg": f"{self._pos_stem}is",  # fortis
             "Aposmdatsg": f"{self._pos_stem}i",  # forti
             "Aposmablsg": f"{self._pos_stem}i",  # forti
-            "Aposmnompl": f"{self._pos_stem}es",  # fortes
+            "Aposmnompl": f"{self._pos_stem}es",  # fortes # even if plural only, _pos_stem is derived from the masculine anyway
             "Aposmvocpl": f"{self._pos_stem}es",  # fortes
             "Aposmaccpl": f"{self._pos_stem}es",  # fortes
             "Aposmgenpl": f"{self._pos_stem}ium",  # fortium
@@ -553,9 +605,15 @@ class Adjective(Word):
             "Aposngensg": f"{self._pos_stem}is",  # fortis
             "Aposndatsg": f"{self._pos_stem}i",  # fortibus
             "Aposnablsg": f"{self._pos_stem}i",  # fortibus
-            "Aposnnompl": f"{self._pos_stem}ia",  # fortia
-            "Aposnvocpl": f"{self._pos_stem}ia",  # fortia
-            "Aposnaccpl": f"{self._pos_stem}ia",  # fortia
+            "Aposnnompl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # fortia
+            "Aposnvocpl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # fortia
+            "Aposnaccpl": self.neutnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # fortia
             "Aposngenpl": f"{self._pos_stem}ium",  # fortium
             "Aposndatpl": f"{self._pos_stem}ibus",  # fortibus
             "Aposnablpl": f"{self._pos_stem}ibus",  # fortibus
@@ -611,7 +669,7 @@ class Adjective(Word):
             "Asprfvocsg": f"{self._spr_stem}a",  # fortissima
             "Asprfaccsg": f"{self._spr_stem}am",  # fortissimam
             "Asprfgensg": f"{self._spr_stem}ae",  # fortissimae
-            "Asprfdatsg": f"{self._spr_stem}ae",  # crrissimae
+            "Asprfdatsg": f"{self._spr_stem}ae",  # fortissimae
             "Asprfablsg": f"{self._spr_stem}a",  # fortissima
             "Asprfnompl": f"{self._spr_stem}ae",  # fortissimae
             "Asprfvocpl": f"{self._spr_stem}ae",  # fortissimae
@@ -656,6 +714,11 @@ class Adjective(Word):
                     ),  # fortissime
                 }
 
+        if self.plurale_tantum:
+            self.endings = {
+                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            }
+
         return endings
 
     def _33_endings(self) -> Endings:
@@ -669,11 +732,21 @@ class Adjective(Word):
         self.femnom = self.principal_parts[1]
         self.neutnom = self.principal_parts[2]
 
+        if (
+            self.mascnom.endswith("es")
+            and self.femnom.endswith("es")
+            and self.neutnom.endswith("a")
+        ):
+            # same _pos_stem (remove last 2 chars from feminine)
+            self.plurale_tantum = True
+
+        # TODO: Add check that mascnom ends in 'er', femnom ends in 'is', neutnom ends in 'e' otherwise?
+
         self._pos_stem = self.femnom[:-2]  # acris -> acr-
         if not self.irregular_flag:
             self._cmp_stem = f"{self._pos_stem}ior"  # acr- -> acrior-
             if self.mascnom.endswith("er"):
-                self._spr_stem = f"{self.mascnom}rim"  # cer- -> acerrim-
+                self._spr_stem = f"{self.mascnom}rim"  # acer- -> acerrim-
             elif self.mascnom in LIS_ADJECTIVES:
                 self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
             else:
@@ -686,9 +759,15 @@ class Adjective(Word):
             "Aposmgensg": f"{self._pos_stem}is",  # acris
             "Aposmdatsg": f"{self._pos_stem}i",  # acri
             "Aposmablsg": f"{self._pos_stem}i",  # acri
-            "Aposmnompl": f"{self._pos_stem}es",  # acres
-            "Aposmvocpl": f"{self._pos_stem}es",  # acres
-            "Aposmaccpl": f"{self._pos_stem}es",  # acres
+            "Aposmnompl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # acres
+            "Aposmvocpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # acres
+            "Aposmaccpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}es",  # acres
             "Aposmgenpl": f"{self._pos_stem}ium",  # acrium
             "Aposmdatpl": f"{self._pos_stem}ibus",  # acribus
             "Aposmablpl": f"{self._pos_stem}ibus",  # acribus
@@ -698,7 +777,7 @@ class Adjective(Word):
             "Aposfgensg": f"{self._pos_stem}is",  # acris
             "Aposfdatsg": f"{self._pos_stem}i",  # acri
             "Aposfablsg": f"{self._pos_stem}i",  # acri
-            "Aposfnompl": f"{self._pos_stem}es",  # acres
+            "Aposfnompl": f"{self._pos_stem}es",  # acres # even if plural only, _pos_stem is derived from the feminine anyway
             "Aposfvocpl": f"{self._pos_stem}es",  # acres
             "Aposfaccpl": f"{self._pos_stem}es",  # acres
             "Aposfgenpl": f"{self._pos_stem}ium",  # acrium
@@ -710,9 +789,15 @@ class Adjective(Word):
             "Aposngensg": f"{self._pos_stem}is",  # acris
             "Aposndatsg": f"{self._pos_stem}i",  # acri
             "Aposnablsg": f"{self._pos_stem}i",  # acri
-            "Aposnnompl": f"{self._pos_stem}ia",  # acria
-            "Aposnvocpl": f"{self._pos_stem}ia",  # acria
-            "Aposnaccpl": f"{self._pos_stem}ia",  # acria
+            "Aposnnompl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # acria
+            "Aposnvocpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # acria
+            "Aposnaccpl": self.mascnom
+            if self.plurale_tantum
+            else f"{self._pos_stem}ia",  # acria
             "Aposngenpl": f"{self._pos_stem}ium",  # acrium
             "Aposndatpl": f"{self._pos_stem}ibus",  # acribus
             "Aposnablpl": f"{self._pos_stem}ibus",  # acribus
@@ -812,6 +897,11 @@ class Adjective(Word):
                         else f"{self._spr_stem}e"
                     ),  # acerrime
                 }
+
+        if self.plurale_tantum:
+            self.endings = {
+                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            }
 
         return endings
 
@@ -1007,6 +1097,7 @@ class Adjective(Word):
             and self.irregular_flag == other.irregular_flag
             and self.declension == other.declension
             and self.principal_parts == other.principal_parts
+            and self.plurale_tantum == other.plurale_tantum
         ):
             return NotImplemented
 
