@@ -19,7 +19,7 @@ class TestAdjectiveErrors:
     def test_errors_invalid_genitive(self):
         with pytest.raises(InvalidInputError) as error:
             Adjective("laetus", "laeta", declension="3", meaning="happy", termination=1)
-        assert str(error.value) == "Invalid genitive form: 'laeta' (must end in '-is')"
+        assert str(error.value) == "Invalid genitive form: 'laeta' (must end in '-is' or '-ium' for plural-only)"
 
     def test_errors_wrong_number_principal_parts_32(self):
         with pytest.raises(InvalidInputError) as error:
