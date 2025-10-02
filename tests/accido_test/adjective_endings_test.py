@@ -270,19 +270,19 @@ class TestAdjectivePluraleTantum:
 
     def test_no_singular_forms_212(self, adjective_plurale_tantum_212):
         """Test that 212 plural-only adjectives have no singular endings."""
-        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_212.endings.keys())
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_212.endings)
 
     def test_no_singular_forms_31(self, adjective_plurale_tantum_31):
         """Test that 3-1 plural-only adjectives have no singular endings."""
-        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_31.endings.keys())
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_31.endings)
 
     def test_no_singular_forms_32(self, adjective_plurale_tantum_32):
         """Test that 3-2 plural-only adjectives have no singular endings."""
-        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_32.endings.keys())
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_32.endings)
 
     def test_no_singular_forms_33(self, adjective_plurale_tantum_33):
         """Test that 3-3 plural-only adjectives have no singular endings."""
-        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_33.endings.keys())
+        assert not any(k.endswith("sg") for k in adjective_plurale_tantum_33.endings)
 
     def test_plurale_tantum_attribute_212(self, adjective_plurale_tantum_212):
         """Test that 212 plural-only adjectives have plurale_tantum set to True."""
