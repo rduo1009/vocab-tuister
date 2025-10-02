@@ -6,7 +6,7 @@ finish/wear out: conficio, conficere, confeci, confectus
 teach: doceo, docere, docui, doctus
 bring/carry/bear: fero, ferre, tuli, latus
 prefer: malo, malle, malui
-do not want/refuse: nolo, nolle, nolui
+not want/refuse: nolo, nolle, nolui
 offer: offero, offerre, obtuli, oblatus
 show: ostendo, ostendere, ostendi, ostentus
 promise: promitto, promittere, promisi, promissus

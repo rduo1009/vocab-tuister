@@ -97,6 +97,7 @@ lint.ignore = [
   "ERA001",  # commented out code
   "FIX001",  # fixme comments
   "FIX002",  # todo comments
+  "FIX003",  # xxx comments
   "FIX004",  # hack comments
   "I",
   "PLC0414", # 'useless' import aliases 

@@ -95,11 +95,6 @@ def generate_typein_lattoeng(
                 known_synonyms=meanings.meanings[1:],
                 include_similar_words=similar_words,
             ):
-                # HACK: `find_inflection` currently doesn't support inflecting multi-word phrases
-                # TODO: deal with this later
-                if " " in meaning:
-                    continue
-
                 # Skip errors to make this part more resilient
                 try:
                     inflected_meanings.update(

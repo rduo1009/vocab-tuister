@@ -36,6 +36,22 @@ def _get_first_inflection(lemma: str, tag: str) -> str:
             case _:  # everything else is correct
                 pass
 
+    # Handle phrasal definitions starting with 'not'
+    if lemma.startswith("not "):
+        bare = lemma[4:]  # strip "not "
+
+        match tag:
+            case "VB":  # imperative (i.e. only imperative uses "VB")
+                return f"do not {bare}"
+            case "VBP":  # present non-third
+                return f"do not {bare}"
+            case "VBZ":  # present third singular
+                return f"does not {bare}"
+            case "VBD":  # past
+                return f"did not {bare}"
+            case _:  # everything else is correct
+                pass
+
     return lemminflect.getInflection(lemma, tag)[0]
 
 
@@ -89,6 +105,16 @@ def find_verb_inflections(
     """
     _verify_verb_inflections(components)
 
+    # Handle phrasal definitions
+    # NOTE: This assumes that the first word in the phrase is the verb.
+    # I believe this is always true.
+    if len(parts := verb.split(maxsplit=1)) > 1 and not verb.startswith("not "):  # fmt: skip
+        verb, rest = parts  # 'run away' -> 'run', 'away'
+        bases = find_verb_inflections(verb, components)  # 'run' -> 'I run'
+        return tuple(  # 'I run' -> 'I run away'
+            f"{base} {rest}" for base in bases
+        )
+
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
         return _find_verbal_noun_inflections(verb, components)
 
@@ -107,6 +133,7 @@ def find_verb_inflections(
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)
 
+    # XXX: Is this nature of using all lemmas continued throughout transfero?
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
     except KeyError as e:
@@ -1375,6 +1402,8 @@ def _find_participle_inflections(
 def _find_verbal_noun_inflections(
     verb: str, components: EndingComponents
 ) -> tuple[str, ...]:
+    # XXX: Why is lemma repeated from find_verb_inflections?
+
     lemma = lemminflect.getLemma(verb, "VERB")[0]
 
     match components.mood:
