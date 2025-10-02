@@ -358,8 +358,8 @@ class Adjective(Word):
                 }
 
         if self.plurale_tantum:
-            self.endings = {
-                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            endings = {
+                k: v for k, v in endings.items() if not k.endswith("sg")
             }
 
         return endings
@@ -373,15 +373,16 @@ class Adjective(Word):
 
         self.mascgen = self.principal_parts[1]
 
-        if self.mascnom.endswith("es") and self.mascgen.endswith("um"):
-            # same _pos_stem (remove last 2 chars from genitive)
+        if self.mascnom.endswith("es") and self.mascgen.endswith("ium"):
+            # plural-only: genitive is plural form ending in -ium
             self.plurale_tantum = True
+            self._pos_stem = self.mascgen[:-3]  # novensidium -> novensid-
         elif not self.mascgen.endswith("is"):
             raise InvalidInputError(
-                f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
+                f"Invalid genitive form: '{self.mascgen}' (must end in '-is' or '-ium' for plural-only)"
             )
-
-        self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
+        else:
+            self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
 
         if not self.irregular_flag:
             self._cmp_stem = f"{self._pos_stem}ior"  # ingent- > ingentior-
@@ -541,8 +542,8 @@ class Adjective(Word):
                 }
 
         if self.plurale_tantum:
-            self.endings = {
-                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            endings = {
+                k: v for k, v in endings.items() if not k.endswith("sg")
             }
 
         return endings
@@ -715,8 +716,8 @@ class Adjective(Word):
                 }
 
         if self.plurale_tantum:
-            self.endings = {
-                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            endings = {
+                k: v for k, v in endings.items() if not k.endswith("sg")
             }
 
         return endings
@@ -789,13 +790,13 @@ class Adjective(Word):
             "Aposngensg": f"{self._pos_stem}is",  # acris
             "Aposndatsg": f"{self._pos_stem}i",  # acri
             "Aposnablsg": f"{self._pos_stem}i",  # acri
-            "Aposnnompl": self.mascnom
+            "Aposnnompl": self.neutnom
             if self.plurale_tantum
             else f"{self._pos_stem}ia",  # acria
-            "Aposnvocpl": self.mascnom
+            "Aposnvocpl": self.neutnom
             if self.plurale_tantum
             else f"{self._pos_stem}ia",  # acria
-            "Aposnaccpl": self.mascnom
+            "Aposnaccpl": self.neutnom
             if self.plurale_tantum
             else f"{self._pos_stem}ia",  # acria
             "Aposngenpl": f"{self._pos_stem}ium",  # acrium
@@ -899,8 +900,8 @@ class Adjective(Word):
                 }
 
         if self.plurale_tantum:
-            self.endings = {
-                k: v for k, v in self.endings.items() if not k.endswith("sg")
+            endings = {
+                k: v for k, v in endings.items() if not k.endswith("sg")
             }
 
         return endings
