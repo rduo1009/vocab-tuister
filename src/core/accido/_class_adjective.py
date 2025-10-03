@@ -378,7 +378,7 @@ class Adjective(Word):
             self._pos_stem = self.mascgen[:-3]  # novensidium -> novensid-
         elif not self.mascgen.endswith("is"):
             raise InvalidInputError(
-                f"Invalid genitive form: '{self.mascgen}' (must end in '-is' or '-ium' for plural-only)"
+                f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
             )
         else:
             self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
