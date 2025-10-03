@@ -374,7 +374,6 @@ class Adjective(Word):
         self.mascgen = self.principal_parts[1]
 
         if self.mascnom.endswith("es") and self.mascgen.endswith("ium"):
-            # plural-only: genitive is plural form ending in -ium
             self.plurale_tantum = True
             self._pos_stem = self.mascgen[:-3]  # novensidium -> novensid-
         elif not self.mascgen.endswith("is"):
