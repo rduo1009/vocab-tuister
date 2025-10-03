@@ -299,4 +299,3 @@ class TestAdjectivePluraleTantum:
     def test_plurale_tantum_attribute_33(self, adjective_plurale_tantum_33):
         """Test that 3-3 plural-only adjectives have plurale_tantum set to True."""
         assert adjective_plurale_tantum_33.plurale_tantum is True
-
