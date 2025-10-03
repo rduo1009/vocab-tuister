@@ -29,7 +29,6 @@ courage/virtue: virtus, virtutis, (f)
 bold/daring: audax, audacis, (3-1)
 famous/clear: clarus, clara, clarum, (212)
 cruel: crudelis, crudele, (3-2)
-# FIXME: haven't implemented this adjective!
 few/a few: pauci, paucae, pauca, (212)
 alone/lonely/only: solus, sola, solum, (212)
 

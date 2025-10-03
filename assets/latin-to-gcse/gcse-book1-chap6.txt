@@ -34,7 +34,6 @@ wife: uxor, uxoris, (f)
 
 @ Adjectives
 terrified: perterritus, perterrita, perterritum, (212)
-# FIXME: haven't implemented this adjective!
 one: unus, una, unum, (212)
 two: duo, duae, duo, (212)
 three: tres, tria, (3-2)
