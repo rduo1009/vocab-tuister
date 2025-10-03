@@ -19,10 +19,10 @@ wound: vulnus, vulneris, (n)
 @ Adjectives
 cruel: crudelis, crudele, (3-2)
 learned/clever: doctus, docta, doctum, (212)
-very bad/worst: pessimus, pessima, pessimum, (212)
-one: unus, una, unum, (212)
 two: duo, duae, duo, (212)
+very bad/worst: pessimus, pessima, pessimum, (212)
 three: tres, tria, (3-2)
+one: unus, una, unum, (212)
 
 @ Regulars
 at last/finally: denique

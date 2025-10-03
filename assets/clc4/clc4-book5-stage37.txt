@@ -17,7 +17,6 @@ battle: proelium, proelii, (n)
 storm: tempestas, tempestatis, (f)
 
 @ Adjectives
-# FIXME: Implement plural only adjectives (only a couple in wiktionary category)
 several: complures, complura, (3-2)
 worthy/appropriate: dignus, digna, dignum, (212)
 without a care: securus, secura, securum, (212)

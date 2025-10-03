@@ -16,13 +16,11 @@ price: pretium, pretii, (n)
 harsh/hard: durus, dura, durum, (212)
 heavy/serious: gravis, grave, (3-2)
 unlucky: infelix, infelicis, (3-1)
+some/several: nonnulli, nonnullae, nonnulla, (212)
 full: plenus, plena, plenum, (212)
 more: plus, pluris, (3-1)
 sacred: sacer, sacra, sacrum, (212)
 wise: sapiens, sapientis, (3-1)
-
-@ Pronouns
-some/several: nonnulli, nonnullae, nonnulla
 
 @ Regulars
 from/by: a/ab

@@ -1268,7 +1268,7 @@ LIS_ADJECTIVES: Final[set[str]] = {
 # superlative and adverb forms.
 # Note that some of these adjectives do not have adverb forms, so the adverb
 # forms are given a None value instead.
-IRREGULAR_ADJECTIVES: Final[
+IRREGULAR_STEM_ADJECTIVES: Final[
     dict[str, tuple[str, str, str | None, str | None, str | None]]
 ] = {
     "bonus": ("melior", "optim", "bene", "melius", "optime"),
@@ -1293,6 +1293,29 @@ IRREGULAR_ADJECTIVES: Final[
     # Superlatives 'superrimus' 'superrumus' 'summus'
     "superus": ("superior", "suprem", None, None, None),
 }  # fmt: skip
+
+IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
+    "duo": {
+        "Aposmnompl": "duo",
+        "Aposmvocpl": "duo",
+        "Aposmaccpl": MultipleEndings(regular="duos", second="duo"),
+        "Aposmgenpl": MultipleEndings(regular="duorum", second="duum"),
+        "Aposmdatpl": "duobus",
+        "Aposmablpl": "duobus",
+        "Aposfnompl": "duae",
+        "Aposfvocpl": "duae",
+        "Aposfaccpl": "duas",
+        "Aposfgenpl": "duarum",
+        "Aposfdatpl": "duabus",
+        "Aposfablpl": "duabus",
+        "Aposnnompl": "duo",
+        "Aposnvocpl": "duo",
+        "Aposnaccpl": "duo",
+        "Aposngenpl": MultipleEndings(regular="duorum", second="duum"),
+        "Aposndatpl": "duobus",
+        "Aposnablpl": "duobus",
+    }
+}
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
 UNCOMPARABLE_ADVERBS: Final[set[str]] = {
