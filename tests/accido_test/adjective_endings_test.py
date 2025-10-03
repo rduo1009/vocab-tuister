@@ -212,7 +212,7 @@ def adjective_plurale_tantum_212():
 
 @pytest.fixture
 def adjective_plurale_tantum_31():
-    return Adjective("novensides", "novensidium", termination=1, declension="3", meaning="Nine Gods")
+    return Adjective("novensides", "novensidium", termination=1, declension="3", meaning="of the Novensiles")
 
 
 @pytest.fixture
