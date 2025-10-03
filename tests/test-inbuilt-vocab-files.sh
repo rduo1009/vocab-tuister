@@ -2,6 +2,7 @@
 set -euo pipefail
 
 # TODO: Improve:
+# - change server port used
 # - loop through files in alphabetical order
 # - better formatting with colours, the `testing with vocab file` gets overwritten by test result
 # - overall result at the end
