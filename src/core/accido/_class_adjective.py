@@ -11,6 +11,7 @@ from warnings import deprecated
 from ._class_word import Word
 from ._edge_cases import (
     IRREGULAR_ADJECTIVES,
+    IRREGULAR_STEM_ADJECTIVES,
     LIS_ADJECTIVES,
     REAL_ADVERB_ADJECTIVES,
     UNCOMPARABLE_ADVERBS,
@@ -145,8 +146,12 @@ class Adjective(Word):
         self.plurale_tantum: bool = False
 
         if self.mascnom in IRREGULAR_ADJECTIVES:
+            self.endings = IRREGULAR_ADJECTIVES[self.mascnom]
+            return
+
+        if self.mascnom in IRREGULAR_STEM_ADJECTIVES:
             self.irregular_flag = True
-            irregular_data = IRREGULAR_ADJECTIVES[self.mascnom]
+            irregular_data = IRREGULAR_STEM_ADJECTIVES[self.mascnom]
 
             self._cmp_stem: str = irregular_data[0]
             self._spr_stem: str = irregular_data[1]
@@ -202,7 +207,7 @@ class Adjective(Word):
             # TODO: Add check that mascnom ends in 'us'/'er', femnom ends in 'a', neutnom ends in 'um' otherwise?
             self._pos_stem = self.femnom[:-1]  # cara -> car-
 
-        if self.mascnom not in IRREGULAR_ADJECTIVES:
+        if self.mascnom not in IRREGULAR_STEM_ADJECTIVES:
             self._cmp_stem = f"{self._pos_stem}ior"  # car- -> carior-
             if self.mascnom.endswith("er"):
                 self._spr_stem = f"{self.mascnom}rim"  # miser- -> miserrim-
