@@ -204,7 +204,19 @@ class Adjective(Word):
             self.plurale_tantum = True
             self._pos_stem = self.femnom[:-2]  # nonnullae -> nonnull-
         else:
-            # TODO: Add check that mascnom ends in 'us'/'er', femnom ends in 'a', neutnom ends in 'um' otherwise?
+            if not (self.mascnom.endswith(("us", "er"))):
+                raise InvalidInputError(
+                    f"Invalid masculine form: '{self.mascnom}' (must end in '-us' or '-er')"
+                )
+            if not self.femnom.endswith("a"):
+                raise InvalidInputError(
+                    f"Invalid feminine form: '{self.femnom}' (must end in '-a')"
+                )
+            if not self.neutnom.endswith("um"):
+                raise InvalidInputError(
+                    f"Invalid neuter form: '{self.neutnom}' (must end in '-um')"
+                )
+
             self._pos_stem = self.femnom[:-1]  # cara -> car-
 
         if self.mascnom not in IRREGULAR_STEM_ADJECTIVES:
@@ -381,6 +393,10 @@ class Adjective(Word):
         if self.mascnom.endswith("es") and self.mascgen.endswith("ium"):
             self.plurale_tantum = True
             self._pos_stem = self.mascgen[:-3]  # novensidium -> novensid-
+        elif not self.mascnom.endswith("ns"):
+            raise InvalidInputError(
+                f"Invalid nominative form: '{self.mascnom}' (must end in '-ns')"
+            )
         elif not self.mascgen.endswith("is"):
             raise InvalidInputError(
                 f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
@@ -565,7 +581,14 @@ class Adjective(Word):
             # same _pos_stem (remove last 2 chars from nominative)
             self.plurale_tantum = True
 
-        # TODO: Add check that mascnom ends in 'is', neutnom ends in 'e' otherwise?
+        if not self.mascnom.endswith("is"):
+            raise InvalidInputError(
+                f"Invalid masculine form: '{self.mascnom}' (must end in '-is')"
+            )
+        if not self.neutnom.endswith("e"):
+            raise InvalidInputError(
+                f"Invalid neuter form: '{self.neutnom}' (must end in '-e')"
+            )
 
         self._pos_stem = self.mascnom[:-2]  # fortis -> fort-
         if not self.irregular_flag:
@@ -745,7 +768,18 @@ class Adjective(Word):
             # same _pos_stem (remove last 2 chars from feminine)
             self.plurale_tantum = True
 
-        # TODO: Add check that mascnom ends in 'er', femnom ends in 'is', neutnom ends in 'e' otherwise?
+        if not self.mascnom.endswith("er"):
+            raise InvalidInputError(
+                f"Invalid masculine form: '{self.mascnom}' (must end in '-er')"
+            )
+        if not self.femnom.endswith("is"):
+            raise InvalidInputError(
+                f"Invalid feminine form: '{self.femnom}' (must end in '-is')"
+            )
+        if not self.neutnom.endswith("e"):
+            raise InvalidInputError(
+                f"Invalid neuter form: '{self.neutnom}' (must end in '-e')"
+            )
 
         self._pos_stem = self.femnom[:-2]  # acris -> acr-
         if not self.irregular_flag:
