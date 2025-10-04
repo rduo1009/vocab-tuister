@@ -393,10 +393,6 @@ class Adjective(Word):
         if self.mascnom.endswith("es") and self.mascgen.endswith("ium"):
             self.plurale_tantum = True
             self._pos_stem = self.mascgen[:-3]  # novensidium -> novensid-
-        elif not self.mascnom.endswith("ns"):
-            raise InvalidInputError(
-                f"Invalid nominative form: '{self.mascnom}' (must end in '-ns')"
-            )
         elif not self.mascgen.endswith("is"):
             raise InvalidInputError(
                 f"Invalid genitive form: '{self.mascgen}' (must end in '-is')"
