@@ -1168,6 +1168,7 @@ def find_derived_verb_changes(
 # -----------------------------------------------------------------------------
 # NOUNS
 
+# TODO: Fix formatting: keeping each form on one line is probably okay
 IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     "ego": {
         "Nnomsg": "ego", "Nvocsg": "ego",   "Naccsg": "me",
@@ -1306,7 +1307,45 @@ IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
         "Aposngenpl": MultipleEndings(regular="duorum", second="duum"),
         "Aposndatpl": "duobus",
         "Aposnablpl": "duobus",
-    }
+    },
+    "mille": {
+        "Aposmnomsg": "mille",
+        "Aposmvocsg": "mille",
+        "Aposmaccsg": "mille",
+        "Aposmgensg": "mille",
+        "Aposmdatsg": "mille",
+        "Aposmablsg": "mille",
+        "Aposmnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmgenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposmdatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposmablpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposfnomsg": "mille",
+        "Aposfvocsg": "mille",
+        "Aposfaccsg": "mille",
+        "Aposfgensg": "mille",
+        "Aposfdatsg": "mille",
+        "Aposfablsg": "mille",
+        "Aposfnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfgenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposfdatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposfablpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposnnomsg": "mille",
+        "Aposnvocsg": "mille",
+        "Aposnaccsg": "mille",
+        "Aposngensg": "mille",
+        "Aposndatsg": "mille",
+        "Aposnablsg": "mille",
+        "Aposnnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposnvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposnaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposngenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposndatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposnablpl": MultipleEndings(regular="milibus", second="millibus"),
+    },
 }
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
