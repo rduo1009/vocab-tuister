@@ -31,6 +31,49 @@ class TestAdjectiveErrors:
             Adjective("laetus", "laeta", declension="3", meaning="happy", termination=3)
         assert str(error.value) == "Third-termination adjectives must have 3 principal parts. (adjective 'laetus' given)"
 
+    # Tests for 2-1-2 adjective principal parts validation
+    def test_errors_invalid_masculine_212(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("laeta", "laeta", "laetum", declension="212", meaning="happy")
+        assert str(error.value) == "Invalid masculine form: 'laeta' (must end in '-us' or '-er')"
+
+    def test_errors_invalid_feminine_212(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("laetus", "laetus", "laetum", declension="212", meaning="happy")
+        assert str(error.value) == "Invalid feminine form: 'laetus' (must end in '-a')"
+
+    def test_errors_invalid_neuter_212(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("laetus", "laeta", "laetus", declension="212", meaning="happy")
+        assert str(error.value) == "Invalid neuter form: 'laetus' (must end in '-um')"
+
+    # Tests for 3-2 adjective principal parts validation
+    def test_errors_invalid_masculine_32(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("facile", "facile", declension="3", meaning="easy", termination=2)
+        assert str(error.value) == "Invalid masculine form: 'facile' (must end in '-is')"
+
+    def test_errors_invalid_neuter_32(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("facilis", "facilis", declension="3", meaning="easy", termination=2)
+        assert str(error.value) == "Invalid neuter form: 'facilis' (must end in '-e')"
+
+    # Tests for 3-3 adjective principal parts validation
+    def test_errors_invalid_masculine_33(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("celeris", "celeris", "celere", declension="3", meaning="quick", termination=3)
+        assert str(error.value) == "Invalid masculine form: 'celeris' (must end in '-er')"
+
+    def test_errors_invalid_feminine_33(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("celer", "celere", "celere", declension="3", meaning="quick", termination=3)
+        assert str(error.value) == "Invalid feminine form: 'celere' (must end in '-is')"
+
+    def test_errors_invalid_neuter_33(self):
+        with pytest.raises(InvalidInputError) as error:
+            Adjective("celer", "celeris", "celeris", declension="3", meaning="quick", termination=3)
+        assert str(error.value) == "Invalid neuter form: 'celeris' (must end in '-e')"
+
 
 class TestAdjectiveDunder:
     def test_repr(self):
