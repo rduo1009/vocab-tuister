@@ -1275,7 +1275,7 @@ IRREGULAR_STEM_ADJECTIVES: Final[
     "malus": ("peior", "pessim", "male", "peius", "pessime"),
     "magnus": ("maior", "maxim", None, None, None),
     "parvus": ("minor", "minim", None, None, None),
-    "multus": ("plus", "plurim", "multus", None, None),
+    "multus": ("plus", "plurim", "multo", None, None),
     # nequam should probably just be put in as a regular
     "nequam": ("nequior", "nequissim", None, None, None),
     "frugi": ("frugalior", "frugalissim", "frugaliter", "frugalius", "frugalissime"),
