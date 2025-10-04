@@ -583,7 +583,7 @@ DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
 # IRREGULAR VERBS
 
 type _IrregularVerb = Literal[
-    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio"
+    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio", "fio"
 ]
 
 IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
@@ -595,6 +595,7 @@ IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
     "fero": 3,
     "eo": 4,  # no idea if this really matters?
     "facio": 5,
+    "fio": 4,
 }
 
 IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
@@ -607,6 +608,7 @@ IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
     "fero": ("fer", "fere"),
     "eo": ("", "ie"),  # fourth conjugation-like?
     "facio": ("fac", "facie"),
+    "fio": ("f", "fie"),
 }
 
 IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
@@ -777,6 +779,17 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
         },
         additions={},
         deletions=set(),
+    ),
+    "fio": DictChanges( # fio, fieri, factus sum
+        # irregular imperfect subjunctive and imperatives
+        replacements={
+            "Vimpsdpsbjsg1": "fierem",   "Vimpsdpsbjsg2": "fieres",   "Vimpsdpsbjsg3": "fieret",
+            "Vimpsdpsbjpl1": "fieremus", "Vimpsdpsbjpl2": "fieretis", "Vimpsdpsbjpl3": "fierent",
+            "Vpresdpipesg2": MultipleEndings(regular="fac", second="face"),
+        },
+        additions={},
+        # no present participles
+        deletions={re.compile(r"^.presdpptc.*$")},
     ),
 }  # fmt: skip
 
@@ -1168,6 +1181,7 @@ def find_derived_verb_changes(
 # -----------------------------------------------------------------------------
 # NOUNS
 
+# TODO: Fix formatting: keeping each form on one line is probably okay
 IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     "ego": {
         "Nnomsg": "ego", "Nvocsg": "ego",   "Naccsg": "me",
@@ -1306,7 +1320,45 @@ IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
         "Aposngenpl": MultipleEndings(regular="duorum", second="duum"),
         "Aposndatpl": "duobus",
         "Aposnablpl": "duobus",
-    }
+    },
+    "mille": {
+        "Aposmnomsg": "mille",
+        "Aposmvocsg": "mille",
+        "Aposmaccsg": "mille",
+        "Aposmgensg": "mille",
+        "Aposmdatsg": "mille",
+        "Aposmablsg": "mille",
+        "Aposmnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposmgenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposmdatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposmablpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposfnomsg": "mille",
+        "Aposfvocsg": "mille",
+        "Aposfaccsg": "mille",
+        "Aposfgensg": "mille",
+        "Aposfdatsg": "mille",
+        "Aposfablsg": "mille",
+        "Aposfnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposfgenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposfdatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposfablpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposnnomsg": "mille",
+        "Aposnvocsg": "mille",
+        "Aposnaccsg": "mille",
+        "Aposngensg": "mille",
+        "Aposndatsg": "mille",
+        "Aposnablsg": "mille",
+        "Aposnnompl": MultipleEndings(regular="milia", second="millia"),
+        "Aposnvocpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposnaccpl": MultipleEndings(regular="milia", second="millia"),
+        "Aposngenpl": MultipleEndings(regular="milium", second="millium"),
+        "Aposndatpl": MultipleEndings(regular="milibus", second="millibus"),
+        "Aposnablpl": MultipleEndings(regular="milibus", second="millibus"),
+    },
 }
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs

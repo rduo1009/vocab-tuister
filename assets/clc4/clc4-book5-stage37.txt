@@ -1,7 +1,6 @@
 @ Verbs
 learn: disco, discere, didici, discitus
 hesitate/doubt: dubito, dubitare, dubitavi, dubitatus
-# FIXME: haven't implemented this verb!
 become/be made: fio, fieri, factus sum
 forget: obliviscor, oblivisci, oblitus sum
 alarm/disturb: perturbo, perturbare, perturbavi, perturbatus
