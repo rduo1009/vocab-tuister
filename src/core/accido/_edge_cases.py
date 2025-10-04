@@ -583,7 +583,7 @@ DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
 # IRREGULAR VERBS
 
 type _IrregularVerb = Literal[
-    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio"
+    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio", "fio"
 ]
 
 IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
@@ -595,6 +595,7 @@ IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
     "fero": 3,
     "eo": 4,  # no idea if this really matters?
     "facio": 5,
+    "fio": 4,
 }
 
 IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
@@ -607,6 +608,7 @@ IRREGULAR_VERB_STEMS: Final[dict[_IrregularVerb, tuple[str, str]]] = {
     "fero": ("fer", "fere"),
     "eo": ("", "ie"),  # fourth conjugation-like?
     "facio": ("fac", "facie"),
+    "fio": ("f", "fie"),
 }
 
 IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
@@ -777,6 +779,17 @@ IRREGULAR_VERB_CHANGES: Final[dict[_IrregularVerb, DictChanges[Ending]]] = {
         },
         additions={},
         deletions=set(),
+    ),
+    "fio": DictChanges( # fio, fieri, factus sum
+        # irregular imperfect subjunctive and imperatives
+        replacements={
+            "Vimpsdpsbjsg1": "fierem",   "Vimpsdpsbjsg2": "fieres",   "Vimpsdpsbjsg3": "fieret",
+            "Vimpsdpsbjpl1": "fieremus", "Vimpsdpsbjpl2": "fieretis", "Vimpsdpsbjpl3": "fierent",
+            "Vpresdpipesg2": MultipleEndings(regular="fac", second="face"),
+        },
+        additions={},
+        # no present participles
+        deletions={re.compile(r"^.presdpptc.*$")},
     ),
 }  # fmt: skip
 
