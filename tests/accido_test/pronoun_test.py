@@ -2,7 +2,7 @@ import pytest
 from src.core.accido._edge_cases import PRONOUNS
 from src.core.accido.endings import Noun, Pronoun
 from src.core.accido.exceptions import InvalidInputError
-from src.core.accido.misc import Case, EndingComponents, Gender, MultipleMeanings, Number
+from src.core.accido.misc import Case, EndingComponents, Gender, MultipleEndings, MultipleMeanings, Number
 
 
 class TestPronounDunder:
@@ -43,6 +43,9 @@ def test_pronoun():
 def test_get():
     word = Pronoun("ille", meaning="that")
     assert word.get(gender=Gender.MASCULINE, case=Case.GENITIVE, number=Number.SINGULAR) == "illius"
+
+    word = Pronoun("quisquam", meaning="that")
+    assert word.get(gender=Gender.NEUTER, case=Case.ACCUSATIVE, number=Number.SINGULAR) == MultipleEndings(regular="quidquam", second="quicquam")
 
 
 def test_errors_cannot_recognise():
