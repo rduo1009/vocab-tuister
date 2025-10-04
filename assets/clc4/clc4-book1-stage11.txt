@@ -6,7 +6,6 @@ support: faveo, favere, favi, fautus
 invite: invito, invitare, invitavi, invitatus
 go: eo, ire, ii/ivi, itus
 read: lego, legere, legi, lectus
-# FIXME: Semi-deponent??
 please: placeo, placere, placui, placitus
 promise: promitto, promittere, promisi, promissus
 strike/beat: verbero, verberare, verberavi, verberatus
