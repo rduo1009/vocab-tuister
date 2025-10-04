@@ -510,6 +510,8 @@ class MultipleMeanings:
         return self.__add__(other)
 
 
+# TODO: Improve documentation. This should *always* have a 'regular' attribute.
+# Should add an explicit check for this as well?
 class MultipleEndings(SimpleNamespace):
     """Represents multiple endings for a word.
 
