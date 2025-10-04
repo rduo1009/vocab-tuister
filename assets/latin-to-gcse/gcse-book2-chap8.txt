@@ -30,8 +30,7 @@ voice/shout: vox, vocis, (f)
 
 @ Adjectives
 high/deep: altus, alta, altum, (212)
-# HACK: Plural adjective are not supported, providing 'the rest' meaning below
-the other: ceterus, cetera, ceterum, (212)
+the other: ceteri, ceterae, cetera, (212)
 none/not any: nullus, nulla, nullum, (212)
 what sort of: qualis, quale, (3-2)
 sacred: sacer, sacra, sacrum, (212)
