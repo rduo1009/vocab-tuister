@@ -18,4 +18,5 @@ def test_getall():
 
 def test_prefix():
     multiple_endings = MultipleEndings(baz="a", foo="b", bar="c")
-    assert multiple_endings + "\n" == "a/b/c\n"
+    assert multiple_endings + "d" == MultipleEndings(baz="ad", foo="bd", bar="cd")
+    assert "d" + multiple_endings == MultipleEndings(baz="da", foo="db", bar="dc")
