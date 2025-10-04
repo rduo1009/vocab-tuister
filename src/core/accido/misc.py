@@ -550,10 +550,13 @@ class MultipleEndings(SimpleNamespace):
     def __str__(self) -> str:
         return "/".join(self.__dict__.values())
 
-    def __add__(self, val2: str) -> str:
-        return self.__str__() + val2
+    # Allows for a suffix/prefix to be added to all of the endings.
+    def __add__(self, val2: str) -> MultipleEndings:
+        suffixed = {
+            key: f"{value}{val2}" for key, value in self.__dict__.items()
+        }
+        return MultipleEndings(**suffixed)
 
-    # Allows for a prefix to be added to all of the endings.
     def __radd__(self, val2: str) -> MultipleEndings:
         prefixed = {
             key: f"{val2}{value}" for key, value in self.__dict__.items()

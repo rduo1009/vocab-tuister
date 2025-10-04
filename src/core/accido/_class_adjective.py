@@ -154,7 +154,7 @@ class Adjective(Word):
             irregular_data = IRREGULAR_STEM_ADJECTIVES[self.mascnom]
 
             self._cmp_stem: str = irregular_data[0]
-            self._spr_stem: str = irregular_data[1]
+            self._spr_stem: Ending = irregular_data[1]
 
             if None not in irregular_data[2:]:
                 assert irregular_data[2] is not None
@@ -301,42 +301,43 @@ class Adjective(Word):
             "Acmpngenpl": f"{self._cmp_stem}um",  # cariorum
             "Acmpndatpl": f"{self._cmp_stem}ibus",  # carioribus
             "Acmpnablpl": f"{self._cmp_stem}ibus",  # carioribus
-            "Asprmnomsg": f"{self._spr_stem}us",  # carrissimus
-            "Asprmvocsg": f"{self._spr_stem}e",  # carrissime
-            "Asprmaccsg": f"{self._spr_stem}um",  # carrissimum
-            "Asprmgensg": f"{self._spr_stem}i",  # carrissimi
-            "Asprmdatsg": f"{self._spr_stem}o",  # carrissimo
-            "Asprmablsg": f"{self._spr_stem}o",  # carrissimo
-            "Asprmnompl": f"{self._spr_stem}i",  # carrissimi
-            "Asprmvocpl": f"{self._spr_stem}i",  # carrissimi
-            "Asprmaccpl": f"{self._spr_stem}os",  # carrissimos
-            "Asprmgenpl": f"{self._spr_stem}orum",  # carrissimorum
-            "Asprmdatpl": f"{self._spr_stem}is",  # carrissimis
-            "Asprmablpl": f"{self._spr_stem}is",  # carrissimis
-            "Asprfnomsg": f"{self._spr_stem}a",  # carrissima
-            "Asprfvocsg": f"{self._spr_stem}a",  # carrissima
-            "Asprfaccsg": f"{self._spr_stem}am",  # carrissimam
-            "Asprfgensg": f"{self._spr_stem}ae",  # carrissimae
-            "Asprfdatsg": f"{self._spr_stem}ae",  # crrissimae
-            "Asprfablsg": f"{self._spr_stem}a",  # carrissima
-            "Asprfnompl": f"{self._spr_stem}ae",  # carrissimae
-            "Asprfvocpl": f"{self._spr_stem}ae",  # carrissimae
-            "Asprfaccpl": f"{self._spr_stem}as",  # carrissimas
-            "Asprfgenpl": f"{self._spr_stem}arum",  # carrissimarum
-            "Asprfdatpl": f"{self._spr_stem}is",  # carrissimis
-            "Asprfablpl": f"{self._spr_stem}is",  # carrissimis
-            "Asprnnomsg": f"{self._spr_stem}um",  # carrissimum
-            "Asprnvocsg": f"{self._spr_stem}um",  # carrissimum
-            "Asprnaccsg": f"{self._spr_stem}um",  # carrissimum
-            "Asprngensg": f"{self._spr_stem}i",  # carrissimi
-            "Asprndatsg": f"{self._spr_stem}o",  # carrissimo
-            "Asprnablsg": f"{self._spr_stem}o",  # carrissimo
-            "Asprnnompl": f"{self._spr_stem}a",  # carrissima
-            "Asprnvocpl": f"{self._spr_stem}a",  # carrissima
-            "Asprnaccpl": f"{self._spr_stem}a",  # carrissima
-            "Asprngenpl": f"{self._spr_stem}orum",  # carrissimorum
-            "Asprndatpl": f"{self._spr_stem}is",  # carrissimis
-            "Asprnablpl": f"{self._spr_stem}is",  # carrissimis
+            # TODO: Perhaps doing this for everything is better for performance?
+            "Asprmnomsg": self._spr_stem + "us",  # carrissimus
+            "Asprmvocsg": self._spr_stem + "e",  # carrissime
+            "Asprmaccsg": self._spr_stem + "um",  # carrissimum
+            "Asprmgensg": self._spr_stem + "i",  # carrissimi
+            "Asprmdatsg": self._spr_stem + "o",  # carrissimo
+            "Asprmablsg": self._spr_stem + "o",  # carrissimo
+            "Asprmnompl": self._spr_stem + "i",  # carrissimi
+            "Asprmvocpl": self._spr_stem + "i",  # carrissimi
+            "Asprmaccpl": self._spr_stem + "os",  # carrissimos
+            "Asprmgenpl": self._spr_stem + "orum",  # carrissimorum
+            "Asprmdatpl": self._spr_stem + "is",  # carrissimis
+            "Asprmablpl": self._spr_stem + "is",  # carrissimis
+            "Asprfnomsg": self._spr_stem + "a",  # carrissima
+            "Asprfvocsg": self._spr_stem + "a",  # carrissima
+            "Asprfaccsg": self._spr_stem + "am",  # carrissimam
+            "Asprfgensg": self._spr_stem + "ae",  # carrissimae
+            "Asprfdatsg": self._spr_stem + "ae",  # crrissimae
+            "Asprfablsg": self._spr_stem + "a",  # carrissima
+            "Asprfnompl": self._spr_stem + "ae",  # carrissimae
+            "Asprfvocpl": self._spr_stem + "ae",  # carrissimae
+            "Asprfaccpl": self._spr_stem + "as",  # carrissimas
+            "Asprfgenpl": self._spr_stem + "arum",  # carrissimarum
+            "Asprfdatpl": self._spr_stem + "is",  # carrissimis
+            "Asprfablpl": self._spr_stem + "is",  # carrissimis
+            "Asprnnomsg": self._spr_stem + "um",  # carrissimum
+            "Asprnvocsg": self._spr_stem + "um",  # carrissimum
+            "Asprnaccsg": self._spr_stem + "um",  # carrissimum
+            "Asprngensg": self._spr_stem + "i",  # carrissimi
+            "Asprndatsg": self._spr_stem + "o",  # carrissimo
+            "Asprnablsg": self._spr_stem + "o",  # carrissimo
+            "Asprnnompl": self._spr_stem + "a",  # carrissima
+            "Asprnvocpl": self._spr_stem + "a",  # carrissima
+            "Asprnaccpl": self._spr_stem + "a",  # carrissima
+            "Asprngenpl": self._spr_stem + "orum",  # carrissimorum
+            "Asprndatpl": self._spr_stem + "is",  # carrissimis
+            "Asprnablpl": self._spr_stem + "is",  # carrissimis
         }
 
         if self.adverb_flag:
@@ -358,7 +359,7 @@ class Adjective(Word):
                     "Dspr": (
                         self._irregular_spradv
                         if self.irregular_flag
-                        else f"{self._spr_stem}e"
+                        else self._spr_stem + "e"
                     ),  # laetissime
                 }
 
@@ -484,42 +485,42 @@ class Adjective(Word):
             "Acmpngenpl": f"{self._cmp_stem}um",  # ingentiorum
             "Acmpndatpl": f"{self._cmp_stem}ibus",  # ingentioribus
             "Acmpnablpl": f"{self._cmp_stem}ibus",  # ingentioribus
-            "Asprmnomsg": f"{self._spr_stem}us",  # ingentissimus
-            "Asprmvocsg": f"{self._spr_stem}e",  # ingentissime
-            "Asprmaccsg": f"{self._spr_stem}um",  # ingentissimum
-            "Asprmgensg": f"{self._spr_stem}i",  # ingentissimi
-            "Asprmdatsg": f"{self._spr_stem}o",  # ingentissimo
-            "Asprmablsg": f"{self._spr_stem}o",  # ingentissimo
-            "Asprmnompl": f"{self._spr_stem}i",  # ingentissimi
-            "Asprmvocpl": f"{self._spr_stem}i",  # ingentissimi
-            "Asprmaccpl": f"{self._spr_stem}os",  # ingentissimos
-            "Asprmgenpl": f"{self._spr_stem}orum",  # ingentissimorum
-            "Asprmdatpl": f"{self._spr_stem}is",  # ingentissimis
-            "Asprmablpl": f"{self._spr_stem}is",  # ingentissimis
-            "Asprfnomsg": f"{self._spr_stem}a",  # ingentissima
-            "Asprfvocsg": f"{self._spr_stem}a",  # ingentissima
-            "Asprfaccsg": f"{self._spr_stem}am",  # ingentissimam
-            "Asprfgensg": f"{self._spr_stem}ae",  # ingentissimae
-            "Asprfdatsg": f"{self._spr_stem}ae",  # ingentissimae
-            "Asprfablsg": f"{self._spr_stem}a",  # ingentissima
-            "Asprfnompl": f"{self._spr_stem}ae",  # ingentissimae
-            "Asprfvocpl": f"{self._spr_stem}ae",  # ingentissimae
-            "Asprfaccpl": f"{self._spr_stem}as",  # ingentissimas
-            "Asprfgenpl": f"{self._spr_stem}arum",  # ingentissimarum
-            "Asprfdatpl": f"{self._spr_stem}is",  # ingentissimis
-            "Asprfablpl": f"{self._spr_stem}is",  # ingentissimis
-            "Asprnnomsg": f"{self._spr_stem}um",  # ingentissimum
-            "Asprnvocsg": f"{self._spr_stem}um",  # ingentissimum
-            "Asprnaccsg": f"{self._spr_stem}um",  # ingentissimum
-            "Asprngensg": f"{self._spr_stem}i",  # ingentissimi
-            "Asprndatsg": f"{self._spr_stem}o",  # ingentissimo
-            "Asprnablsg": f"{self._spr_stem}o",  # ingentissimo
-            "Asprnnompl": f"{self._spr_stem}a",  # ingentissima
-            "Asprnvocpl": f"{self._spr_stem}a",  # ingentissima
-            "Asprnaccpl": f"{self._spr_stem}a",  # ingentissima
-            "Asprngenpl": f"{self._spr_stem}orum",  # ingentissimorum
-            "Asprndatpl": f"{self._spr_stem}is",  # ingentissimis
-            "Asprnablpl": f"{self._spr_stem}is",  # ingentissimis
+            "Asprmnomsg": self._spr_stem + "us",  # ingentissimus
+            "Asprmvocsg": self._spr_stem + "e",  # ingentissime
+            "Asprmaccsg": self._spr_stem + "um",  # ingentissimum
+            "Asprmgensg": self._spr_stem + "i",  # ingentissimi
+            "Asprmdatsg": self._spr_stem + "o",  # ingentissimo
+            "Asprmablsg": self._spr_stem + "o",  # ingentissimo
+            "Asprmnompl": self._spr_stem + "i",  # ingentissimi
+            "Asprmvocpl": self._spr_stem + "i",  # ingentissimi
+            "Asprmaccpl": self._spr_stem + "os",  # ingentissimos
+            "Asprmgenpl": self._spr_stem + "orum",  # ingentissimorum
+            "Asprmdatpl": self._spr_stem + "is",  # ingentissimis
+            "Asprmablpl": self._spr_stem + "is",  # ingentissimis
+            "Asprfnomsg": self._spr_stem + "a",  # ingentissima
+            "Asprfvocsg": self._spr_stem + "a",  # ingentissima
+            "Asprfaccsg": self._spr_stem + "am",  # ingentissimam
+            "Asprfgensg": self._spr_stem + "ae",  # ingentissimae
+            "Asprfdatsg": self._spr_stem + "ae",  # ingentissimae
+            "Asprfablsg": self._spr_stem + "a",  # ingentissima
+            "Asprfnompl": self._spr_stem + "ae",  # ingentissimae
+            "Asprfvocpl": self._spr_stem + "ae",  # ingentissimae
+            "Asprfaccpl": self._spr_stem + "as",  # ingentissimas
+            "Asprfgenpl": self._spr_stem + "arum",  # ingentissimarum
+            "Asprfdatpl": self._spr_stem + "is",  # ingentissimis
+            "Asprfablpl": self._spr_stem + "is",  # ingentissimis
+            "Asprnnomsg": self._spr_stem + "um",  # ingentissimum
+            "Asprnvocsg": self._spr_stem + "um",  # ingentissimum
+            "Asprnaccsg": self._spr_stem + "um",  # ingentissimum
+            "Asprngensg": self._spr_stem + "i",  # ingentissimi
+            "Asprndatsg": self._spr_stem + "o",  # ingentissimo
+            "Asprnablsg": self._spr_stem + "o",  # ingentissimo
+            "Asprnnompl": self._spr_stem + "a",  # ingentissima
+            "Asprnvocpl": self._spr_stem + "a",  # ingentissima
+            "Asprnaccpl": self._spr_stem + "a",  # ingentissima
+            "Asprngenpl": self._spr_stem + "orum",  # ingentissimorum
+            "Asprndatpl": self._spr_stem + "is",  # ingentissimis
+            "Asprnablpl": self._spr_stem + "is",  # ingentissimis
         }
 
         if self.adverb_flag:
@@ -541,7 +542,7 @@ class Adjective(Word):
                     "Dspr": (
                         self._irregular_spradv
                         if self.irregular_flag
-                        else f"{self._spr_stem}e"
+                        else self._spr_stem + "e"
                     ),  # atrocissime
                 }
 
@@ -658,42 +659,42 @@ class Adjective(Word):
             "Acmpngenpl": f"{self._cmp_stem}um",  # fortiorum
             "Acmpndatpl": f"{self._cmp_stem}ibus",  # fortioribus
             "Acmpnablpl": f"{self._cmp_stem}ibus",  # fortioribus
-            "Asprmnomsg": f"{self._spr_stem}us",  # fortissimus
-            "Asprmvocsg": f"{self._spr_stem}e",  # fortissime
-            "Asprmaccsg": f"{self._spr_stem}um",  # fortissimum
-            "Asprmgensg": f"{self._spr_stem}i",  # fortissimi
-            "Asprmdatsg": f"{self._spr_stem}o",  # fortissimo
-            "Asprmablsg": f"{self._spr_stem}o",  # fortissimo
-            "Asprmnompl": f"{self._spr_stem}i",  # fortissimi
-            "Asprmvocpl": f"{self._spr_stem}i",  # fortissimi
-            "Asprmaccpl": f"{self._spr_stem}os",  # fortissimi
-            "Asprmgenpl": f"{self._spr_stem}orum",  # fortissimorum
-            "Asprmdatpl": f"{self._spr_stem}is",  # fortissimis
-            "Asprmablpl": f"{self._spr_stem}is",  # fortissimis
-            "Asprfnomsg": f"{self._spr_stem}a",  # fortissima
-            "Asprfvocsg": f"{self._spr_stem}a",  # fortissima
-            "Asprfaccsg": f"{self._spr_stem}am",  # fortissimam
-            "Asprfgensg": f"{self._spr_stem}ae",  # fortissimae
-            "Asprfdatsg": f"{self._spr_stem}ae",  # fortissimae
-            "Asprfablsg": f"{self._spr_stem}a",  # fortissima
-            "Asprfnompl": f"{self._spr_stem}ae",  # fortissimae
-            "Asprfvocpl": f"{self._spr_stem}ae",  # fortissimae
-            "Asprfaccpl": f"{self._spr_stem}as",  # fortissimas
-            "Asprfgenpl": f"{self._spr_stem}arum",  # fortissimarum
-            "Asprfdatpl": f"{self._spr_stem}is",  # fortissimis
-            "Asprfablpl": f"{self._spr_stem}is",  # fortissimis
-            "Asprnnomsg": f"{self._spr_stem}um",  # fortissimum
-            "Asprnvocsg": f"{self._spr_stem}um",  # fortissimum
-            "Asprnaccsg": f"{self._spr_stem}um",  # fortissimum
-            "Asprngensg": f"{self._spr_stem}i",  # fortissimi
-            "Asprndatsg": f"{self._spr_stem}o",  # fortissimo
-            "Asprnablsg": f"{self._spr_stem}o",  # fortissimo
-            "Asprnnompl": f"{self._spr_stem}a",  # fortissima
-            "Asprnvocpl": f"{self._spr_stem}a",  # fortissima
-            "Asprnaccpl": f"{self._spr_stem}a",  # fortissima
-            "Asprngenpl": f"{self._spr_stem}orum",  # fortissimorum
-            "Asprndatpl": f"{self._spr_stem}is",  # fortissimis
-            "Asprnablpl": f"{self._spr_stem}is",  # fortissimis
+            "Asprmnomsg": self._spr_stem + "us",  # fortissimus
+            "Asprmvocsg": self._spr_stem + "e",  # fortissime
+            "Asprmaccsg": self._spr_stem + "um",  # fortissimum
+            "Asprmgensg": self._spr_stem + "i",  # fortissimi
+            "Asprmdatsg": self._spr_stem + "o",  # fortissimo
+            "Asprmablsg": self._spr_stem + "o",  # fortissimo
+            "Asprmnompl": self._spr_stem + "i",  # fortissimi
+            "Asprmvocpl": self._spr_stem + "i",  # fortissimi
+            "Asprmaccpl": self._spr_stem + "os",  # fortissimi
+            "Asprmgenpl": self._spr_stem + "orum",  # fortissimorum
+            "Asprmdatpl": self._spr_stem + "is",  # fortissimis
+            "Asprmablpl": self._spr_stem + "is",  # fortissimis
+            "Asprfnomsg": self._spr_stem + "a",  # fortissima
+            "Asprfvocsg": self._spr_stem + "a",  # fortissima
+            "Asprfaccsg": self._spr_stem + "am",  # fortissimam
+            "Asprfgensg": self._spr_stem + "ae",  # fortissimae
+            "Asprfdatsg": self._spr_stem + "ae",  # fortissimae
+            "Asprfablsg": self._spr_stem + "a",  # fortissima
+            "Asprfnompl": self._spr_stem + "ae",  # fortissimae
+            "Asprfvocpl": self._spr_stem + "ae",  # fortissimae
+            "Asprfaccpl": self._spr_stem + "as",  # fortissimas
+            "Asprfgenpl": self._spr_stem + "arum",  # fortissimarum
+            "Asprfdatpl": self._spr_stem + "is",  # fortissimis
+            "Asprfablpl": self._spr_stem + "is",  # fortissimis
+            "Asprnnomsg": self._spr_stem + "um",  # fortissimum
+            "Asprnvocsg": self._spr_stem + "um",  # fortissimum
+            "Asprnaccsg": self._spr_stem + "um",  # fortissimum
+            "Asprngensg": self._spr_stem + "i",  # fortissimi
+            "Asprndatsg": self._spr_stem + "o",  # fortissimo
+            "Asprnablsg": self._spr_stem + "o",  # fortissimo
+            "Asprnnompl": self._spr_stem + "a",  # fortissima
+            "Asprnvocpl": self._spr_stem + "a",  # fortissima
+            "Asprnaccpl": self._spr_stem + "a",  # fortissima
+            "Asprngenpl": self._spr_stem + "orum",  # fortissimorum
+            "Asprndatpl": self._spr_stem + "is",  # fortissimis
+            "Asprnablpl": self._spr_stem + "is",  # fortissimis
         }
 
         if self.adverb_flag:
@@ -715,7 +716,7 @@ class Adjective(Word):
                     "Dspr": (
                         self._irregular_spradv
                         if self.irregular_flag
-                        else f"{self._spr_stem}e"
+                        else self._spr_stem + "e"
                     ),  # fortissime
                 }
 
@@ -842,42 +843,42 @@ class Adjective(Word):
             "Acmpngenpl": f"{self._cmp_stem}um",  # acriorum
             "Acmpndatpl": f"{self._cmp_stem}ibus",  # acrioribus
             "Acmpnablpl": f"{self._cmp_stem}ibus",  # acrioribus
-            "Asprmnomsg": f"{self._spr_stem}us",  # acerrimus
-            "Asprmvocsg": f"{self._spr_stem}e",  # acerrime
-            "Asprmaccsg": f"{self._spr_stem}um",  # acerrimum
-            "Asprmgensg": f"{self._spr_stem}i",  # acerrimi
-            "Asprmdatsg": f"{self._spr_stem}o",  # acerrimo
-            "Asprmablsg": f"{self._spr_stem}o",  # acerrimo
-            "Asprmnompl": f"{self._spr_stem}i",  # acerrimi
-            "Asprmvocpl": f"{self._spr_stem}i",  # acerrimi
-            "Asprmaccpl": f"{self._spr_stem}os",  # acerrimos
-            "Asprmgenpl": f"{self._spr_stem}orum",  # acerrimorum
-            "Asprmdatpl": f"{self._spr_stem}is",  # acerrimis
-            "Asprmablpl": f"{self._spr_stem}is",  # acerrimis
-            "Asprfnomsg": f"{self._spr_stem}a",  # acerrima
-            "Asprfvocsg": f"{self._spr_stem}a",  # acerrima
-            "Asprfaccsg": f"{self._spr_stem}am",  # acerrimam
-            "Asprfgensg": f"{self._spr_stem}ae",  # acerrimae
-            "Asprfdatsg": f"{self._spr_stem}ae",  # crrissimae
-            "Asprfablsg": f"{self._spr_stem}a",  # acerrima
-            "Asprfnompl": f"{self._spr_stem}ae",  # acerrimae
-            "Asprfvocpl": f"{self._spr_stem}ae",  # acerrimae
-            "Asprfaccpl": f"{self._spr_stem}as",  # acerrimas
-            "Asprfgenpl": f"{self._spr_stem}arum",  # acerrimarum
-            "Asprfdatpl": f"{self._spr_stem}is",  # acerrimis
-            "Asprfablpl": f"{self._spr_stem}is",  # acerrimis
-            "Asprnnomsg": f"{self._spr_stem}um",  # acerrimum
-            "Asprnvocsg": f"{self._spr_stem}um",  # acerrimum
-            "Asprnaccsg": f"{self._spr_stem}um",  # acerrimum
-            "Asprngensg": f"{self._spr_stem}i",  # acerrimi
-            "Asprndatsg": f"{self._spr_stem}o",  # acerrimo
-            "Asprnablsg": f"{self._spr_stem}o",  # acerrimo
-            "Asprnnompl": f"{self._spr_stem}a",  # acerrima
-            "Asprnvocpl": f"{self._spr_stem}a",  # acerrima
-            "Asprnaccpl": f"{self._spr_stem}a",  # acerrima
-            "Asprngenpl": f"{self._spr_stem}orum",  # acerrimorum
-            "Asprndatpl": f"{self._spr_stem}is",  # acerrimis
-            "Asprnablpl": f"{self._spr_stem}is",  # acerrimis
+            "Asprmnomsg": self._spr_stem + "us",  # acerrimus
+            "Asprmvocsg": self._spr_stem + "e",  # acerrime
+            "Asprmaccsg": self._spr_stem + "um",  # acerrimum
+            "Asprmgensg": self._spr_stem + "i",  # acerrimi
+            "Asprmdatsg": self._spr_stem + "o",  # acerrimo
+            "Asprmablsg": self._spr_stem + "o",  # acerrimo
+            "Asprmnompl": self._spr_stem + "i",  # acerrimi
+            "Asprmvocpl": self._spr_stem + "i",  # acerrimi
+            "Asprmaccpl": self._spr_stem + "os",  # acerrimos
+            "Asprmgenpl": self._spr_stem + "orum",  # acerrimorum
+            "Asprmdatpl": self._spr_stem + "is",  # acerrimis
+            "Asprmablpl": self._spr_stem + "is",  # acerrimis
+            "Asprfnomsg": self._spr_stem + "a",  # acerrima
+            "Asprfvocsg": self._spr_stem + "a",  # acerrima
+            "Asprfaccsg": self._spr_stem + "am",  # acerrimam
+            "Asprfgensg": self._spr_stem + "ae",  # acerrimae
+            "Asprfdatsg": self._spr_stem + "ae",  # crrissimae
+            "Asprfablsg": self._spr_stem + "a",  # acerrima
+            "Asprfnompl": self._spr_stem + "ae",  # acerrimae
+            "Asprfvocpl": self._spr_stem + "ae",  # acerrimae
+            "Asprfaccpl": self._spr_stem + "as",  # acerrimas
+            "Asprfgenpl": self._spr_stem + "arum",  # acerrimarum
+            "Asprfdatpl": self._spr_stem + "is",  # acerrimis
+            "Asprfablpl": self._spr_stem + "is",  # acerrimis
+            "Asprnnomsg": self._spr_stem + "um",  # acerrimum
+            "Asprnvocsg": self._spr_stem + "um",  # acerrimum
+            "Asprnaccsg": self._spr_stem + "um",  # acerrimum
+            "Asprngensg": self._spr_stem + "i",  # acerrimi
+            "Asprndatsg": self._spr_stem + "o",  # acerrimo
+            "Asprnablsg": self._spr_stem + "o",  # acerrimo
+            "Asprnnompl": self._spr_stem + "a",  # acerrima
+            "Asprnvocpl": self._spr_stem + "a",  # acerrima
+            "Asprnaccpl": self._spr_stem + "a",  # acerrima
+            "Asprngenpl": self._spr_stem + "orum",  # acerrimorum
+            "Asprndatpl": self._spr_stem + "is",  # acerrimis
+            "Asprnablpl": self._spr_stem + "is",  # acerrimis
         }
 
         if self.adverb_flag:
@@ -899,7 +900,7 @@ class Adjective(Word):
                     "Dspr": (
                         self._irregular_spradv
                         if self.irregular_flag
-                        else f"{self._spr_stem}e"
+                        else self._spr_stem + "e"
                     ),  # acerrime
                 }
 
