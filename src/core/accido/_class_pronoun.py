@@ -4,13 +4,20 @@ from __future__ import annotations
 
 import logging
 from functools import total_ordering
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 from warnings import deprecated
 
 from ._class_word import Word
 from ._edge_cases import PRONOUNS
 from .exceptions import InvalidInputError
-from .misc import Case, EndingComponents, Gender, MultipleMeanings, Number
+from .misc import (
+    Case,
+    EndingComponents,
+    Gender,
+    MultipleEndings,
+    MultipleMeanings,
+    Number,
+)
 
 if TYPE_CHECKING:
     from src.core.accido.type_aliases import Endings
@@ -81,14 +88,28 @@ class Pronoun(Word):
         self._first: str = self.pronoun
         self.meaning: Meaning = meaning
 
-        # HACK: hopefully this is the case!
-        assert isinstance(self.endings["Pmnomsg"], str)
-        assert isinstance(self.endings["Pfnomsg"], str)
-        assert isinstance(self.endings["Pnnomsg"], str)
+        def _get_single_ending(
+            *, case: Case, number: Number, gender: Gender
+        ) -> str:
+            ending = self.get(case=case, number=number, gender=gender)
+            if isinstance(ending, MultipleEndings):
+                ending = cast("str", ending.regular)
+            assert ending is not None
+            return ending
 
-        self.mascnom: str = self.endings["Pmnomsg"]
-        self.femnom: str = self.endings["Pfnomsg"]
-        self.neutnom: str = self.endings["Pnnomsg"]
+        self.mascnom: str = _get_single_ending(
+            case=Case.NOMINATIVE,
+            number=Number.SINGULAR,
+            gender=Gender.MASCULINE,
+        )
+        self.femnom: str = _get_single_ending(
+            case=Case.NOMINATIVE,
+            number=Number.SINGULAR,
+            gender=Gender.FEMININE,
+        )
+        self.neutnom: str = _get_single_ending(
+            case=Case.NOMINATIVE, number=Number.SINGULAR, gender=Gender.NEUTER
+        )
 
         self.principal_parts: tuple[str, ...] = (
             self.mascnom,
