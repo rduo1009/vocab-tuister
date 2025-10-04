@@ -466,6 +466,7 @@ class TestVerbConjugation:
             "absum": ("absum", "abesse", "afui", "afuturus"),
             "eo": ("eo", "ire", "ii", "itus"),
             "inquam": ("inquam", None, None, None),
+            "fio": ("fio", "fieri", "factus sum", None),
         }[word]
 
         assert Verb(pp[0], pp[1], pp[2], pp[3], meaning="placeholder").endings == IRREGULAR_VERBS[word]  # pyright: ignore[reportArgumentType]
