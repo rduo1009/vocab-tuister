@@ -159,7 +159,7 @@ def test_principalparts_adjective():
         assert output.prompt == "laetus"
         assert output.principal_parts == ("laetus", "laeta", "laetum")
 
-    word = Adjective("ingens", "ingentis", declension="3", termination=2, meaning="large")
+    word = Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")
     vocab_list = VocabList([word], "")
     amount = 500
 

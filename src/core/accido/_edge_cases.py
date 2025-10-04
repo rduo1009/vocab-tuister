@@ -1317,6 +1317,9 @@ IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
     }
 }
 
+# adjectives with principal parts that don't match validation code (so bypass them)
+IRREGULAR_PP_ADJECTIVES: Final[set[str]] = {"tres"}
+
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
 UNCOMPARABLE_ADVERBS: Final[set[str]] = {
     "gratis", "abdicative", "abusive", "fere", "eo", "here", "imperative", "qua", "rite", "sic", "sat", "vero", "et", "gratuito", 
