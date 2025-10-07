@@ -1362,7 +1362,7 @@ IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
 }
 
 # adjectives with principal parts that don't match validation code (so bypass them)
-IRREGULAR_PP_ADJECTIVES: Final[set[str]] = {"tres"}
+IRREGULAR_PP_ADJECTIVES: Final[set[str]] = {"tres", "alius", "ambo"}
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
 UNCOMPARABLE_ADVERBS: Final[set[str]] = {
