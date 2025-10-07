@@ -204,20 +204,20 @@ class Adjective(Word):
         ):
             self.plurale_tantum = True
             self._pos_stem = self.femnom[:-2]  # nonnullae -> nonnull-
-        elif self.mascnom not in IRREGULAR_PP_ADJECTIVES:
-            if not (self.mascnom.endswith(("us", "er"))):
-                raise InvalidInputError(
-                    f"Invalid masculine form: '{self.mascnom}' (must end in '-us' or '-er')"
-                )
-            if not self.femnom.endswith("a"):
-                raise InvalidInputError(
-                    f"Invalid feminine form: '{self.femnom}' (must end in '-a')"
-                )
-            if not self.neutnom.endswith("um"):
-                raise InvalidInputError(
-                    f"Invalid neuter form: '{self.neutnom}' (must end in '-um')"
-                )
-
+        else:
+            if self.mascnom not in IRREGULAR_PP_ADJECTIVES:
+                if not (self.mascnom.endswith(("us", "er"))):
+                    raise InvalidInputError(
+                        f"Invalid masculine form: '{self.mascnom}' (must end in '-us' or '-er')"
+                    )
+                if not self.femnom.endswith("a"):
+                    raise InvalidInputError(
+                        f"Invalid feminine form: '{self.femnom}' (must end in '-a')"
+                    )
+                if not self.neutnom.endswith("um"):
+                    raise InvalidInputError(
+                        f"Invalid neuter form: '{self.neutnom}' (must end in '-um')"
+                    )
             self._pos_stem = self.femnom[:-1]  # cara -> car-
 
         if self.mascnom not in IRREGULAR_STEM_ADJECTIVES:
@@ -581,8 +581,7 @@ class Adjective(Word):
         if self.mascnom.endswith("es") and self.neutnom.endswith("a"):
             # same _pos_stem (remove last 2 chars from nominative)
             self.plurale_tantum = True
-
-        if self.mascnom not in IRREGULAR_PP_ADJECTIVES:
+        elif self.mascnom not in IRREGULAR_PP_ADJECTIVES:
             if not self.mascnom.endswith("is"):
                 raise InvalidInputError(
                     f"Invalid masculine form: '{self.mascnom}' (must end in '-is')"
