@@ -131,7 +131,7 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.DATIVE, Number.PLURAL): ("for you all", "to you"),
         (Case.ABLATIVE, Number.PLURAL): ("by you all", "by means of you all", "with you all", "you all"),
     },
-    "oneself": {
+    "oneself": { # XXX: should this be changed? only just 'oneself' here, then make the others secondary meanings?
         (Case.ACCUSATIVE, Number.SINGULAR): ("oneself", "himself", "herself", "itself"),
         (Case.ACCUSATIVE, Number.PLURAL): ("themselves",),
         (Case.GENITIVE, Number.SINGULAR): ("of oneself", "one's", "of himself", "his", "of herself", "her", "of itself", "its"),
@@ -148,5 +148,21 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ABLATIVE, Number.PLURAL): (
             "by themselves", "by means of themselves", "with themselves", "themselves",
         ),
-    }
+    },
+    "anyone": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("anyone",),
+        (Case.VOCATIVE, Number.SINGULAR): ("anyone",),
+        (Case.ACCUSATIVE, Number.SINGULAR): ("anyone",),
+        (Case.GENITIVE, Number.SINGULAR): ("of anyone", "anyone's"),
+        (Case.DATIVE, Number.SINGULAR): ("for anyone", "to anyone"),
+        (Case.ABLATIVE, Number.SINGULAR): ("by anyone", "by means of anyone", "with anyone", "anyone"),
+    },
+    "anything": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("anything",),
+        (Case.VOCATIVE, Number.SINGULAR): ("anything",),
+        (Case.ACCUSATIVE, Number.SINGULAR): ("anything",),
+        (Case.GENITIVE, Number.SINGULAR): ("of anything", "anything's"),
+        (Case.DATIVE, Number.SINGULAR): ("for anything", "to anything"),
+        (Case.ABLATIVE, Number.SINGULAR): ("by anything", "by means of anything", "with anything", "anything"),
+    },
 }  # fmt: skip
