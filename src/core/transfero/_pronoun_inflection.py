@@ -132,6 +132,10 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ABLATIVE, Number.PLURAL): ("by you all", "by means of you all", "with you all", "you all"),
     },
     "oneself": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("oneself",),
+        (Case.NOMINATIVE, Number.PLURAL): ("themselves",),
+        (Case.VOCATIVE, Number.SINGULAR): ("oneself",),
+        (Case.VOCATIVE, Number.PLURAL): ("themselves",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("oneself",),
         (Case.ACCUSATIVE, Number.PLURAL): ("themselves",),
         (Case.GENITIVE, Number.SINGULAR): ("of oneself", "one's"),
@@ -142,6 +146,10 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ABLATIVE, Number.PLURAL): ("by themselves", "by means of themselves", "with themselves", "themselves"),
     },
     "himself": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("himself",),
+        (Case.NOMINATIVE, Number.PLURAL): ("themselves",),
+        (Case.VOCATIVE, Number.SINGULAR): ("himself",),
+        (Case.VOCATIVE, Number.PLURAL): ("themselves",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("himself",),
         (Case.ACCUSATIVE, Number.PLURAL): ("themselves",),
         (Case.GENITIVE, Number.SINGULAR): ("of himself", "his"),
@@ -152,6 +160,10 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ABLATIVE, Number.PLURAL): ("by themselves", "by means of themselves", "with themselves", "themselves"),
     },
     "herself": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("herself",),
+        (Case.NOMINATIVE, Number.PLURAL): ("themselves",),
+        (Case.VOCATIVE, Number.SINGULAR): ("herself",),
+        (Case.VOCATIVE, Number.PLURAL): ("themselves",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("herself",),
         (Case.ACCUSATIVE, Number.PLURAL): ("themselves",),
         (Case.GENITIVE, Number.SINGULAR): ("of herself", "her"),
@@ -162,6 +174,10 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
         (Case.ABLATIVE, Number.PLURAL): ("by themselves", "by means of themselves", "with themselves", "themselves"),
     },
     "itself": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("itself",),
+        (Case.NOMINATIVE, Number.PLURAL): ("themselves",),
+        (Case.VOCATIVE, Number.SINGULAR): ("itself",),
+        (Case.VOCATIVE, Number.PLURAL): ("themselves",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("itself",),
         (Case.ACCUSATIVE, Number.PLURAL): ("themselves",),
         (Case.GENITIVE, Number.SINGULAR): ("of itself", "its"),
