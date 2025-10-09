@@ -25,6 +25,37 @@ if TYPE_CHECKING:
 
 @cache
 def _get_first_inflection(lemma: str, tag: str) -> str:
+    # FIXME: This is still probably not enough to fix the issue
+    if lemma == "ought":
+        match tag:
+            case "VBP":  # present non-third
+                return "ought"
+            case "VBZ":  # present third singular
+                return "ought"
+            case "VBD":  # past
+                return "ought"
+            case "VBG":  # present participle
+                return "being ought"
+            case "VBN":  # past participle
+                return "ought"
+            case _:
+                pass
+
+    if lemma == "dare":
+        match tag:
+            case "VBP":  # present non-third
+                return "dare"
+            case "VBZ":  # present third singular
+                return "dares"
+            case "VBD":  # past
+                return "dared"
+            case "VBG":  # present participle
+                return "daring"
+            case "VBN":  # past participle
+                return "dared"
+            case _:
+                pass
+
     if lemma == "can":
         match tag:
             case "VBP":  # present non-third
