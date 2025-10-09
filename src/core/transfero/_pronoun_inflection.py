@@ -177,5 +177,17 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
             "with a certain", "a certain",
         ),
         (Case.ABLATIVE, Number.PLURAL): ("by certain", "by means of certain", "with certain", "certain"),
-    }
+    },
+    "one": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("one",),
+        (Case.NOMINATIVE, Number.PLURAL): ("one",),
+        (Case.ACCUSATIVE, Number.SINGULAR): ("one",),
+        (Case.ACCUSATIVE, Number.PLURAL): ("one",),
+        (Case.GENITIVE, Number.SINGULAR): ("of one",),
+        (Case.GENITIVE, Number.PLURAL): ("of one",),
+        (Case.DATIVE, Number.SINGULAR): ("for one", "to one"),
+        (Case.DATIVE, Number.PLURAL): ("for one", "to one"),
+        (Case.ABLATIVE, Number.SINGULAR): ("by one", "by means of one", "with one", "one"),
+        (Case.ABLATIVE, Number.PLURAL): ("by one", "by means of one", "with one", "one"),
+    },
 }  # fmt: skip
