@@ -151,7 +151,6 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
     },
     "anyone": {
         (Case.NOMINATIVE, Number.SINGULAR): ("anyone",),
-        (Case.VOCATIVE, Number.SINGULAR): ("anyone",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("anyone",),
         (Case.GENITIVE, Number.SINGULAR): ("of anyone", "anyone's"),
         (Case.DATIVE, Number.SINGULAR): ("for anyone", "to anyone"),
@@ -159,10 +158,24 @@ PRONOUNS: Final[dict[str, _Inflections]] = {
     },
     "anything": {
         (Case.NOMINATIVE, Number.SINGULAR): ("anything",),
-        (Case.VOCATIVE, Number.SINGULAR): ("anything",),
         (Case.ACCUSATIVE, Number.SINGULAR): ("anything",),
         (Case.GENITIVE, Number.SINGULAR): ("of anything", "anything's"),
         (Case.DATIVE, Number.SINGULAR): ("for anything", "to anything"),
         (Case.ABLATIVE, Number.SINGULAR): ("by anything", "by means of anything", "with anything", "anything"),
     },
+    "certain": {
+        (Case.NOMINATIVE, Number.SINGULAR): ("certain", "a certain"),
+        (Case.NOMINATIVE, Number.PLURAL): ("certain",),
+        (Case.ACCUSATIVE, Number.SINGULAR): ("certain", "a certain"),
+        (Case.ACCUSATIVE, Number.PLURAL): ("certain",),
+        (Case.GENITIVE, Number.SINGULAR): ("of certain", "of a certain"),
+        (Case.GENITIVE, Number.PLURAL): ("of certain",),
+        (Case.DATIVE, Number.SINGULAR): ("for certain", "to certain", "for a certain", "to a certain"),
+        (Case.DATIVE, Number.PLURAL): ("for certain", "to certain"),
+        (Case.ABLATIVE, Number.SINGULAR): (
+            "by certain", "by means of certain", "with certain", "certain", "by a certain", "by means of a certain",
+            "with a certain", "a certain",
+        ),
+        (Case.ABLATIVE, Number.PLURAL): ("by certain", "by means of certain", "with certain", "certain"),
+    }
 }  # fmt: skip
