@@ -17,7 +17,7 @@ faithful/loyal: fidelis, fidele, (3-2)
 
 @ Pronouns
 someone: aliquis, aliqua, aliquid
-oneself: ipse, ipsa, ipsum
+oneself/himself/herself/itself: ipse, ipsa, ipsum
 that: iste, ista, istud
 
 @ Regulars
