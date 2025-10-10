@@ -25,7 +25,6 @@ if TYPE_CHECKING:
 
 @cache
 def _get_first_inflection(lemma: str, tag: str) -> str:
-    # FIXME: This is still probably not enough to fix the issue
     if lemma == "ought":
         match tag:
             case "VBP":  # present non-third
@@ -33,7 +32,7 @@ def _get_first_inflection(lemma: str, tag: str) -> str:
             case "VBZ":  # present third singular
                 return "ought"
             case "VBD":  # past
-                return "ought"
+                return "was ought"
             case "VBG":  # present participle
                 return "being ought"
             case "VBN":  # past participle
@@ -786,6 +785,8 @@ def _find_peractind_inflections(
         case (Number.PLURAL, 1):
             if lemma == "be":
                 return ("we were", "we have been", "we did be")
+            if lemma == "ought":
+                past = "were ought"
 
             return (
                 f"we {past}",
@@ -796,6 +797,8 @@ def _find_peractind_inflections(
         case (Number.SINGULAR, 2):
             if lemma == "be":
                 return ("you were", "you have been", "you did be")
+            if lemma == "ought":
+                past = "were ought"
 
             return (
                 f"you {past}",
@@ -813,6 +816,8 @@ def _find_peractind_inflections(
                     "you have been",
                     "you did be",
                 )
+            if lemma == "ought":
+                past = "were ought"
 
             return (
                 f"you all {past}",
@@ -839,6 +844,8 @@ def _find_peractind_inflections(
         case _:
             if lemma == "be":
                 return ("they were", "they have been", "they did be")
+            if lemma == "ought":
+                past = "were ought"
 
             return (
                 f"they {past}",
