@@ -24,7 +24,24 @@ if TYPE_CHECKING:
 
 
 @cache
-def _get_first_inflection(lemma: str, tag: str) -> str:
+def _get_first_inflection(lemma: str, tag: str) -> str:  # noqa: PLR0915
+    # NOTE: Accepting that some of these require using different words and are
+    # less precise in definition.
+    if lemma == "should":
+        match tag:
+            case "VBP":  # present non-third
+                return "should"
+            case "VBZ":  # present third singular
+                return "should"
+            case "VBD":  # past
+                return "had to"
+            case "VBG":  # present participle
+                return "having to"
+            case "VBN":  # past participle
+                return "had to"
+            case _:
+                raise AssertionError(f"{lemma}, {tag}")
+
     if lemma == "must":
         match tag:
             case "VBP":  # present non-third
@@ -179,6 +196,8 @@ def find_verb_inflections(
     # XXX: Is this nature of using all lemmas continued throughout transfero?
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
+        if verb == "should":  # 'should' gets lemmatised to 'shall'
+            lemmas = ("should",)
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
