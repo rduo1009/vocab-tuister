@@ -24,7 +24,67 @@ if TYPE_CHECKING:
 
 
 @cache
-def _get_first_inflection(lemma: str, tag: str) -> str:
+def _get_first_inflection(lemma: str, tag: str) -> str:  # noqa: PLR0915
+    # NOTE: Accepting that some of these require using different words and are
+    # less precise in definition.
+    if lemma == "should":
+        match tag:
+            case "VBP":  # present non-third
+                return "should"
+            case "VBZ":  # present third singular
+                return "should"
+            case "VBD":  # past
+                return "had to"
+            case "VBG":  # present participle
+                return "having to"
+            case "VBN":  # past participle
+                return "had to"
+            case _:
+                raise AssertionError(f"{lemma}, {tag}")
+
+    if lemma == "must":
+        match tag:
+            case "VBP":  # present non-third
+                return "must"
+            case "VBZ":  # present third singular
+                return "must"
+            case "VBG":  # present participle
+                return "having to"
+            case "VBN":  # past participle
+                return "had to"
+            case _:
+                pass
+
+    if lemma == "ought":
+        match tag:
+            case "VBP":  # present non-third
+                return "ought"
+            case "VBZ":  # present third singular
+                return "ought"
+            case "VBD":  # past
+                return "was ought"
+            case "VBG":  # present participle
+                return "being ought"
+            case "VBN":  # past participle
+                return "ought"
+            case _:
+                pass
+
+    if lemma == "dare":
+        match tag:
+            case "VBP":  # present non-third
+                return "dare"
+            case "VBZ":  # present third singular
+                return "dares"
+            case "VBD":  # past
+                return "dared"
+            case "VBG":  # present participle
+                return "daring"
+            case "VBN":  # past participle
+                return "dared"
+            case _:
+                pass
+
     if lemma == "can":
         match tag:
             case "VBP":  # present non-third
@@ -136,6 +196,8 @@ def find_verb_inflections(
     # XXX: Is this nature of using all lemmas continued throughout transfero?
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
+        if verb == "should":  # 'should' gets lemmatised to 'shall'
+            lemmas = ("should",)
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
@@ -615,6 +677,14 @@ def _find_futactind_inflections(
 
     match (number, person):
         case (Number.SINGULAR, 1):
+            if lemma == "must":
+                return (
+                    "I will have to",
+                    "I will be having to",
+                    "I shall have to",
+                    "I shall be having to",
+                )
+
             return (
                 f"I will {lemma}",
                 f"I will be {present_participle}",
@@ -623,6 +693,13 @@ def _find_futactind_inflections(
             )
 
         case (Number.PLURAL, 1):
+            if lemma == "must":
+                return (
+                    "we will have to",
+                    "we will be having to",
+                    "we shall have to",
+                    "we shall be having to",
+                )
             return (
                 f"we will {lemma}",
                 f"we will be {present_participle}",
@@ -631,6 +708,13 @@ def _find_futactind_inflections(
             )
 
         case (Number.SINGULAR, 2):
+            if lemma == "must":
+                return (
+                    "you will have to",
+                    "you will be having to",
+                    "you shall have to",
+                    "you shall be having to",
+                )
             return (
                 f"you will {lemma}",
                 f"you will be {present_participle}",
@@ -639,6 +723,17 @@ def _find_futactind_inflections(
             )
 
         case (Number.PLURAL, 2):
+            if lemma == "must":
+                return (
+                    "you all will have to",
+                    "you all will be having to",
+                    "you all shall have to",
+                    "you all shall be having to",
+                    "you will have to",
+                    "you will be having to",
+                    "you shall have to",
+                    "you shall be having to",
+                )
             return (
                 f"you all will {lemma}",
                 f"you all will be {present_participle}",
@@ -651,6 +746,21 @@ def _find_futactind_inflections(
             )
 
         case (Number.SINGULAR, 3):
+            if lemma == "must":
+                return (
+                    "he will have to",
+                    "he will be having to",
+                    "he shall have to",
+                    "he shall be having to",
+                    "she will have to",
+                    "she will be having to",
+                    "she shall have to",
+                    "she shall be having to",
+                    "it will have to",
+                    "it will be having to",
+                    "it shall have to",
+                    "it shall be having to",
+                )
             return (
                 f"he will {lemma}",
                 f"he will be {present_participle}",
@@ -667,6 +777,13 @@ def _find_futactind_inflections(
             )
 
         case _:
+            if lemma == "must":
+                return (
+                    "they will have to",
+                    "they will be having to",
+                    "they shall have to",
+                    "they shall be having to",
+                )
             return (
                 f"they will {lemma}",
                 f"they will be {present_participle}",
@@ -750,12 +867,22 @@ def _find_peractind_inflections(
 
     match (number, person):
         case (Number.SINGULAR, 1):
+            if lemma == "must":
+                return ("I must", "I had to", "I have had to", "I did have to")
             return (f"I {past}", f"I have {past_participle}", f"I did {lemma}")
 
         case (Number.PLURAL, 1):
             if lemma == "be":
                 return ("we were", "we have been", "we did be")
-
+            if lemma == "ought":
+                past = "were ought"
+            if lemma == "must":
+                return (
+                    "we must",
+                    "we had to",
+                    "we have had to",
+                    "we did have to",
+                )
             return (
                 f"we {past}",
                 f"we have {past_participle}",
@@ -765,6 +892,15 @@ def _find_peractind_inflections(
         case (Number.SINGULAR, 2):
             if lemma == "be":
                 return ("you were", "you have been", "you did be")
+            if lemma == "ought":
+                past = "were ought"
+            if lemma == "must":
+                return (
+                    "you must",
+                    "you had to",
+                    "you have had to",
+                    "you did have to",
+                )
 
             return (
                 f"you {past}",
@@ -782,6 +918,19 @@ def _find_peractind_inflections(
                     "you have been",
                     "you did be",
                 )
+            if lemma == "ought":
+                past = "were ought"
+            if lemma == "must":
+                return (
+                    "you all must",
+                    "you all had to",
+                    "you all have had to",
+                    "you all did have to",
+                    "you must",
+                    "you had to",
+                    "you have had to",
+                    "you did have to",
+                )
 
             return (
                 f"you all {past}",
@@ -793,6 +942,21 @@ def _find_peractind_inflections(
             )
 
         case (Number.SINGULAR, 3):
+            if lemma == "must":
+                return (
+                    "he must",
+                    "he had to",
+                    "he have had to",
+                    "he did have to",
+                    "she must",
+                    "she had to",
+                    "she have had to",
+                    "she did have to",
+                    "it must",
+                    "it had to",
+                    "it have had to",
+                    "it did have to",
+                )
             return (
                 f"he {past}",
                 f"he has {past_participle}",
@@ -808,6 +972,15 @@ def _find_peractind_inflections(
         case _:
             if lemma == "be":
                 return ("they were", "they have been", "they did be")
+            if lemma == "ought":
+                past = "were ought"
+            if lemma == "must":
+                return (
+                    "they must",
+                    "they had to",
+                    "they have had to",
+                    "they did have to",
+                )
 
             return (
                 f"they {past}",
@@ -1101,6 +1274,8 @@ def _find_preactinf_inflections(lemma: str) -> tuple[str, ...]:
 
 
 def _find_futactinf_inflections(lemma: str) -> tuple[str, ...]:
+    if lemma == "must":
+        return ("to be about to have to",)
     return (f"to be about to {lemma}",)
 
 
@@ -1109,10 +1284,14 @@ def _find_peractinf_inflections(lemma: str) -> tuple[str, ...]:
 
 
 def _find_prepasinf_inflections(lemma: str) -> tuple[str, ...]:
+    if lemma == "must":
+        return ("to be have to",)
     return (f"to be {_get_first_inflection(lemma, 'VBN')}",)
 
 
 def _find_futpasinf_inflections(lemma: str) -> tuple[str, ...]:
+    if lemma == "must":
+        return ("to be about to be have to",)
     past_participle = _get_first_inflection(lemma, "VBN")
     return (f"to be about to be {past_participle}",)
 
@@ -1127,21 +1306,33 @@ def _find_preactsbj_inflections(
 ) -> tuple[str, ...]:
     match (number, person):
         case (Number.SINGULAR, 1):
+            if lemma == "must":
+                return ("I may have to",)
             return (f"I may {lemma}",)
 
         case (Number.PLURAL, 1):
+            if lemma == "must":
+                return ("we may have to",)
             return (f"we may {lemma}",)
 
         case (Number.SINGULAR, 2):
+            if lemma == "must":
+                return ("you may have to",)
             return (f"you may {lemma}",)
 
         case (Number.PLURAL, 2):
+            if lemma == "must":
+                return ("you all may have to", "you may have to")
             return (f"you all may {lemma}", f"you may {lemma}")
 
         case (Number.SINGULAR, 3):
+            if lemma == "must":
+                return ("he may have to", "she may have to", "it may have to")
             return (f"he may {lemma}", f"she may {lemma}", f"it may {lemma}")
 
         case _:
+            if lemma == "must":
+                return ("they may have to",)
             return (f"they may {lemma}",)
 
 
@@ -1150,18 +1341,32 @@ def _find_impactsbj_inflections(
 ) -> tuple[str, ...]:
     match (number, person):
         case (Number.SINGULAR, 1):
+            if lemma == "must":
+                return ("I might have to",)
             return (f"I might {lemma}",)
 
         case (Number.PLURAL, 1):
+            if lemma == "must":
+                return ("we might have to",)
             return (f"we might {lemma}",)
 
         case (Number.SINGULAR, 2):
+            if lemma == "must":
+                return ("you might have to",)
             return (f"you might {lemma}",)
 
         case (Number.PLURAL, 2):
+            if lemma == "must":
+                return ("you all might have to", "you might have to")
             return (f"you all might {lemma}", f"you might {lemma}")
 
         case (Number.SINGULAR, 3):
+            if lemma == "must":
+                return (
+                    "he might have to",
+                    "she might have to",
+                    "it might have to",
+                )
             return (
                 f"he might {lemma}",
                 f"she might {lemma}",
@@ -1169,6 +1374,8 @@ def _find_impactsbj_inflections(
             )
 
         case _:
+            if lemma == "must":
+                return ("they might have to",)
             return (f"they might {lemma}",)
 
 
@@ -1383,6 +1590,8 @@ def _find_participle_inflections(
             return (f"having been {past_participle}", past_participle)
 
         case (Tense.FUTURE, Voice.ACTIVE):
+            if lemma == "must":
+                return ("about to have to",)
             return (f"about to {lemma}",)
 
         case (Tense.FUTURE, Voice.PASSIVE):

@@ -13,8 +13,6 @@ import json
 from pathlib import Path
 from typing import Final, cast
 
-from .exceptions import InvalidWordError
-
 with (Path(__file__).parent.absolute() / "adj_to_adv.json").open(
     encoding="utf-8"
 ) as file:
@@ -52,4 +50,18 @@ def adj_to_adv(adjective: str) -> str:
     if adjective in ADJECTIVE_TO_ADVERB:
         return ADJECTIVE_TO_ADVERB[adjective]
 
-    raise InvalidWordError(f"Word '{adjective}' is not an adjective.")
+    # Fallback if adjective not in table
+    if (
+        adjective.endswith("y")
+        and len(adjective) > 1
+        and adjective[-2] not in "aeiou"
+    ):
+        return adjective[:-1] + "ily"
+
+    if adjective.endswith("ic"):
+        return adjective + "ally"
+
+    if adjective.endswith("le"):
+        return adjective[:-1] + "y"
+
+    return adjective + "ly"
