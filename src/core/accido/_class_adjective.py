@@ -222,100 +222,100 @@ class Adjective(Word):
             self._pos_stem = self.femnom[:-1]  # cara -> car-
 
         if self.mascnom not in IRREGULAR_STEM_ADJECTIVES:
-            self._cmp_stem = f"{self._pos_stem}ior"  # car- -> carior-
+            self._cmp_stem = self._pos_stem + "ior"  # car- -> carior-
             if self.mascnom.endswith("er"):
-                self._spr_stem = f"{self.mascnom}rim"  # miser- -> miserrim-
+                self._spr_stem = self.mascnom + "rim"  # miser- -> miserrim-
             elif self.mascnom in LIS_ADJECTIVES:
-                self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
+                self._spr_stem = self._pos_stem + "lim"  # facil- -> facillim-
             else:
-                self._spr_stem = f"{self._pos_stem}issim"  # car- -> carissim-
+                self._spr_stem = self._pos_stem + "issim"  # car- -> carissim-
 
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # carus
             "Aposmvocsg": self.mascnom  # miser
             if self.mascnom.endswith("er")
-            else f"{self._pos_stem}e",  # care
-            "Aposmaccsg": f"{self._pos_stem}um",  # carum
-            "Aposmgensg": f"{self._pos_stem}i",  # cari
-            "Aposmdatsg": f"{self._pos_stem}o",  # caro
-            "Aposmablsg": f"{self._pos_stem}o",  # caro
+            else self._pos_stem + "e",  # care
+            "Aposmaccsg": self._pos_stem + "um",  # carum
+            "Aposmgensg": self._pos_stem + "i",  # cari
+            "Aposmdatsg": self._pos_stem + "o",  # caro
+            "Aposmablsg": self._pos_stem + "o",  # caro
             "Aposmnompl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}i",  # cari
+            else self._pos_stem + "i",  # cari
             "Aposmvocpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}i",  # cari
-            "Aposmaccpl": f"{self._pos_stem}os",  # caros
-            "Aposmgenpl": f"{self._pos_stem}orum",  # carorum
-            "Aposmdatpl": f"{self._pos_stem}is",  # caris
-            "Aposmablpl": f"{self._pos_stem}is",  # caris
+            else self._pos_stem + "i",  # cari
+            "Aposmaccpl": self._pos_stem + "os",  # caros
+            "Aposmgenpl": self._pos_stem + "orum",  # carorum
+            "Aposmdatpl": self._pos_stem + "is",  # caris
+            "Aposmablpl": self._pos_stem + "is",  # caris
             "Aposfnomsg": self.femnom,  # cara
             "Aposfvocsg": self.femnom,  # cara
-            "Aposfaccsg": f"{self._pos_stem}am",  # caram
-            "Aposfgensg": f"{self._pos_stem}ae",  # carae
-            "Aposfdatsg": f"{self._pos_stem}ae",  # carae
-            "Aposfablsg": f"{self._pos_stem}a",  # cara
-            "Aposfnompl": f"{self._pos_stem}ae",  # carae # even if plural only, _pos_stem is derived from the feminine anyway
-            "Aposfvocpl": f"{self._pos_stem}ae",  # carae
-            "Aposfaccpl": f"{self._pos_stem}as",  # caras
-            "Aposfgenpl": f"{self._pos_stem}arum",  # cararum
-            "Aposfdatpl": f"{self._pos_stem}is",  # caris
-            "Aposfablpl": f"{self._pos_stem}is",  # caris
+            "Aposfaccsg": self._pos_stem + "am",  # caram
+            "Aposfgensg": self._pos_stem + "ae",  # carae
+            "Aposfdatsg": self._pos_stem + "ae",  # carae
+            "Aposfablsg": self._pos_stem + "a",  # cara
+            "Aposfnompl": self._pos_stem
+            + "ae",  # carae # even if plural only, _pos_stem is derived from the feminine anyway
+            "Aposfvocpl": self._pos_stem + "ae",  # carae
+            "Aposfaccpl": self._pos_stem + "as",  # caras
+            "Aposfgenpl": self._pos_stem + "arum",  # cararum
+            "Aposfdatpl": self._pos_stem + "is",  # caris
+            "Aposfablpl": self._pos_stem + "is",  # caris
             "Aposnnomsg": self.neutnom,  # carum
             "Aposnvocsg": self.neutnom,  # carum
             "Aposnaccsg": self.neutnom,  # carum
-            "Aposngensg": f"{self._pos_stem}i",  # cari
-            "Aposndatsg": f"{self._pos_stem}o",  # caro
-            "Aposnablsg": f"{self._pos_stem}o",  # caro
+            "Aposngensg": self._pos_stem + "i",  # cari
+            "Aposndatsg": self._pos_stem + "o",  # caro
+            "Aposnablsg": self._pos_stem + "o",  # caro
             "Aposnnompl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}a",  # cara
+            else self._pos_stem + "a",  # cara
             "Aposnvocpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}a",  # cara
+            else self._pos_stem + "a",  # cara
             "Aposnaccpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}a",  # cara
-            "Aposngenpl": f"{self._pos_stem}orum",  # carorum
-            "Aposndatpl": f"{self._pos_stem}is",  # caris
-            "Aposnablpl": f"{self._pos_stem}is",  # caris
+            else self._pos_stem + "a",  # cara
+            "Aposngenpl": self._pos_stem + "orum",  # carorum
+            "Aposndatpl": self._pos_stem + "is",  # caris
+            "Aposnablpl": self._pos_stem + "is",  # caris
             "Acmpmnomsg": self._cmp_stem,  # carior
             "Acmpmvocsg": self._cmp_stem,  # carior
-            "Acmpmaccsg": f"{self._cmp_stem}em",  # cariorem
-            "Acmpmgensg": f"{self._cmp_stem}is",  # carioris
-            "Acmpmdatsg": f"{self._cmp_stem}i",  # cariori
-            "Acmpmablsg": f"{self._cmp_stem}e",  # cariore
-            "Acmpmnompl": f"{self._cmp_stem}es",  # cariores
-            "Acmpmvocpl": f"{self._cmp_stem}es",  # cariores
-            "Acmpmaccpl": f"{self._cmp_stem}es",  # cariores
-            "Acmpmgenpl": f"{self._cmp_stem}um",  # cariorum
-            "Acmpmdatpl": f"{self._cmp_stem}ibus",  # carioribus
-            "Acmpmablpl": f"{self._cmp_stem}ibus",  # carioribus
+            "Acmpmaccsg": self._cmp_stem + "em",  # cariorem
+            "Acmpmgensg": self._cmp_stem + "is",  # carioris
+            "Acmpmdatsg": self._cmp_stem + "i",  # cariori
+            "Acmpmablsg": self._cmp_stem + "e",  # cariore
+            "Acmpmnompl": self._cmp_stem + "es",  # cariores
+            "Acmpmvocpl": self._cmp_stem + "es",  # cariores
+            "Acmpmaccpl": self._cmp_stem + "es",  # cariores
+            "Acmpmgenpl": self._cmp_stem + "um",  # cariorum
+            "Acmpmdatpl": self._cmp_stem + "ibus",  # carioribus
+            "Acmpmablpl": self._cmp_stem + "ibus",  # carioribus
             "Acmpfnomsg": self._cmp_stem,  # carior
             "Acmpfvocsg": self._cmp_stem,  # carior
-            "Acmpfaccsg": f"{self._cmp_stem}em",  # cariorem
-            "Acmpfgensg": f"{self._cmp_stem}is",  # carioris
-            "Acmpfdatsg": f"{self._cmp_stem}i",  # cariori
-            "Acmpfablsg": f"{self._cmp_stem}e",  # cariore
-            "Acmpfnompl": f"{self._cmp_stem}es",  # cariores
-            "Acmpfvocpl": f"{self._cmp_stem}es",  # cariores
-            "Acmpfaccpl": f"{self._cmp_stem}es",  # cariores
-            "Acmpfgenpl": f"{self._cmp_stem}um",  # cariorum
-            "Acmpfdatpl": f"{self._cmp_stem}ibus",  # carioribus
-            "Acmpfablpl": f"{self._cmp_stem}ibus",  # carioribus
-            "Acmpnnomsg": f"{self._cmp_stem[:-3]}ius",  # carius
-            "Acmpnvocsg": f"{self._cmp_stem[:-3]}ius",  # carius
-            "Acmpnaccsg": f"{self._cmp_stem[:-3]}ius",  # carius
-            "Acmpngensg": f"{self._cmp_stem}is",  # carioris
-            "Acmpndatsg": f"{self._cmp_stem}i",  # cariori
-            "Acmpnablsg": f"{self._cmp_stem}e",  # cariore
-            "Acmpnnompl": f"{self._cmp_stem}a",  # cariora
-            "Acmpnvocpl": f"{self._cmp_stem}a",  # cariora
-            "Acmpnaccpl": f"{self._cmp_stem}a",  # cariora
-            "Acmpngenpl": f"{self._cmp_stem}um",  # cariorum
-            "Acmpndatpl": f"{self._cmp_stem}ibus",  # carioribus
-            "Acmpnablpl": f"{self._cmp_stem}ibus",  # carioribus
-            # TODO: Perhaps doing this for everything is better for performance?
+            "Acmpfaccsg": self._cmp_stem + "em",  # cariorem
+            "Acmpfgensg": self._cmp_stem + "is",  # carioris
+            "Acmpfdatsg": self._cmp_stem + "i",  # cariori
+            "Acmpfablsg": self._cmp_stem + "e",  # cariore
+            "Acmpfnompl": self._cmp_stem + "es",  # cariores
+            "Acmpfvocpl": self._cmp_stem + "es",  # cariores
+            "Acmpfaccpl": self._cmp_stem + "es",  # cariores
+            "Acmpfgenpl": self._cmp_stem + "um",  # cariorum
+            "Acmpfdatpl": self._cmp_stem + "ibus",  # carioribus
+            "Acmpfablpl": self._cmp_stem + "ibus",  # carioribus
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # carius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # carius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # carius
+            "Acmpngensg": self._cmp_stem + "is",  # carioris
+            "Acmpndatsg": self._cmp_stem + "i",  # cariori
+            "Acmpnablsg": self._cmp_stem + "e",  # cariore
+            "Acmpnnompl": self._cmp_stem + "a",  # cariora
+            "Acmpnvocpl": self._cmp_stem + "a",  # cariora
+            "Acmpnaccpl": self._cmp_stem + "a",  # cariora
+            "Acmpngenpl": self._cmp_stem + "um",  # cariorum
+            "Acmpndatpl": self._cmp_stem + "ibus",  # carioribus
+            "Acmpnablpl": self._cmp_stem + "ibus",  # carioribus
             "Asprmnomsg": self._spr_stem + "us",  # carrissimus
             "Asprmvocsg": self._spr_stem + "e",  # carrissime
             "Asprmaccsg": self._spr_stem + "um",  # carrissimum
@@ -359,7 +359,7 @@ class Adjective(Word):
                 "Dpos": (
                     self._irregular_posadv
                     if self.irregular_flag
-                    else f"{self._pos_stem}e"
+                    else self._pos_stem + "e"
                 )  # laete
             }
 
@@ -368,7 +368,7 @@ class Adjective(Word):
                     "Dcmp": (
                         self._irregular_cmpadv
                         if self.irregular_flag
-                        else f"{self._pos_stem}ius"
+                        else self._pos_stem + "ius"
                     ),  # laetius
                     "Dspr": (
                         self._irregular_spradv
@@ -407,101 +407,102 @@ class Adjective(Word):
             self._pos_stem = self.mascgen[:-2]  # ingentis -> ingent-
 
         if not self.irregular_flag:
-            self._cmp_stem = f"{self._pos_stem}ior"  # ingent- > ingentior-
+            self._cmp_stem = self._pos_stem + "ior"  # ingent- > ingentior-
             if self.mascnom.endswith("er"):
-                self._spr_stem = f"{self.mascnom}rim"  # miser- -> miserrim-
+                self._spr_stem = self.mascnom + "rim"  # miser- -> miserrim-
             elif self.mascnom in LIS_ADJECTIVES:
-                self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
+                self._spr_stem = self._pos_stem + "lim"  # facil- -> facillim-
             else:
                 self._spr_stem = (
-                    f"{self._pos_stem}issim"  # ingent- -> ingentissim-
+                    self._pos_stem + "issim"  # ingent- -> ingentissim-
                 )
 
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # ingens
             "Aposmvocsg": self.mascnom,  # ingens
-            "Aposmaccsg": f"{self._pos_stem}em",  # ingentem
+            "Aposmaccsg": self._pos_stem + "em",  # ingentem
             "Aposmgensg": self.mascgen,  # ingentis
-            "Aposmdatsg": f"{self._pos_stem}i",  # ingenti
-            "Aposmablsg": f"{self._pos_stem}i",  # ingenti
+            "Aposmdatsg": self._pos_stem + "i",  # ingenti
+            "Aposmablsg": self._pos_stem + "i",  # ingenti
             "Aposmnompl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
+            else self._pos_stem + "es",  # ingentes
             "Aposmvocpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
+            else self._pos_stem + "es",  # ingentes
             "Aposmaccpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
-            "Aposmgenpl": f"{self._pos_stem}ium",  # ingentium # even if plural only, _pos_stem is derived from the genitive anyway
-            "Aposmdatpl": f"{self._pos_stem}ibus",  # ingentibus
-            "Aposmablpl": f"{self._pos_stem}ibus",  # ingentibus
+            else self._pos_stem + "es",  # ingentes
+            "Aposmgenpl": self._pos_stem
+            + "ium",  # ingentium # even if plural only, _pos_stem is derived from the genitive anyway
+            "Aposmdatpl": self._pos_stem + "ibus",  # ingentibus
+            "Aposmablpl": self._pos_stem + "ibus",  # ingentibus
             "Aposfnomsg": self.mascnom,  # ingens
             "Aposfvocsg": self.mascnom,  # ingens
-            "Aposfaccsg": f"{self._pos_stem}em",  # ingentem
+            "Aposfaccsg": self._pos_stem + "em",  # ingentem
             "Aposfgensg": self.mascgen,  # ingentis
-            "Aposfdatsg": f"{self._pos_stem}i",  # ingenti
-            "Aposfablsg": f"{self._pos_stem}i",  # ingenti
+            "Aposfdatsg": self._pos_stem + "i",  # ingenti
+            "Aposfablsg": self._pos_stem + "i",  # ingenti
             "Aposfnompl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
+            else self._pos_stem + "es",  # ingentes
             "Aposfvocpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
+            else self._pos_stem + "es",  # ingentes
             "Aposfaccpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # ingentes
-            "Aposfgenpl": f"{self._pos_stem}ium",  # ingentium
-            "Aposfdatpl": f"{self._pos_stem}ibus",  # ingentibus
-            "Aposfablpl": f"{self._pos_stem}ibus",  # ingentibus
+            else self._pos_stem + "es",  # ingentes
+            "Aposfgenpl": self._pos_stem + "ium",  # ingentium
+            "Aposfdatpl": self._pos_stem + "ibus",  # ingentibus
+            "Aposfablpl": self._pos_stem + "ibus",  # ingentibus
             "Aposnnomsg": self.mascnom,  # ingens
             "Aposnvocsg": self.mascnom,  # ingens
             "Aposnaccsg": self.mascnom,  # ingens
             "Aposngensg": self.mascgen,  # ingentis
-            "Aposndatsg": f"{self._pos_stem}i",  # ingenti
-            "Aposnablsg": f"{self._pos_stem}i",  # ingenti
-            "Aposnnompl": f"{self._pos_stem}ia",  # ingentia
-            "Aposnvocpl": f"{self._pos_stem}ia",  # ingentia
-            "Aposnaccpl": f"{self._pos_stem}ia",  # ingentia
-            "Aposngenpl": f"{self._pos_stem}ium",  # ingentium
-            "Aposndatpl": f"{self._pos_stem}ibus",  # ingentibus
-            "Aposnablpl": f"{self._pos_stem}ibus",  # ingentibus
+            "Aposndatsg": self._pos_stem + "i",  # ingenti
+            "Aposnablsg": self._pos_stem + "i",  # ingenti
+            "Aposnnompl": self._pos_stem + "ia",  # ingentia
+            "Aposnvocpl": self._pos_stem + "ia",  # ingentia
+            "Aposnaccpl": self._pos_stem + "ia",  # ingentia
+            "Aposngenpl": self._pos_stem + "ium",  # ingentium
+            "Aposndatpl": self._pos_stem + "ibus",  # ingentibus
+            "Aposnablpl": self._pos_stem + "ibus",  # ingentibus
             "Acmpmnomsg": self._cmp_stem,  # ingentior
             "Acmpmvocsg": self._cmp_stem,  # ingentior
-            "Acmpmaccsg": f"{self._cmp_stem}em",  # ingentiorem
-            "Acmpmgensg": f"{self._cmp_stem}is",  # ingentioris
-            "Acmpmdatsg": f"{self._cmp_stem}i",  # ingentiori
-            "Acmpmablsg": f"{self._cmp_stem}e",  # ingentiore
-            "Acmpmnompl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpmvocpl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpmaccpl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpmgenpl": f"{self._cmp_stem}um",  # ingentiorum
-            "Acmpmdatpl": f"{self._cmp_stem}ibus",  # ingentioribus
-            "Acmpmablpl": f"{self._cmp_stem}ibus",  # ingentioribus
+            "Acmpmaccsg": self._cmp_stem + "em",  # ingentiorem
+            "Acmpmgensg": self._cmp_stem + "is",  # ingentioris
+            "Acmpmdatsg": self._cmp_stem + "i",  # ingentiori
+            "Acmpmablsg": self._cmp_stem + "e",  # ingentiore
+            "Acmpmnompl": self._cmp_stem + "es",  # ingentiores
+            "Acmpmvocpl": self._cmp_stem + "es",  # ingentiores
+            "Acmpmaccpl": self._cmp_stem + "es",  # ingentiores
+            "Acmpmgenpl": self._cmp_stem + "um",  # ingentiorum
+            "Acmpmdatpl": self._cmp_stem + "ibus",  # ingentioribus
+            "Acmpmablpl": self._cmp_stem + "ibus",  # ingentioribus
             "Acmpfnomsg": self._cmp_stem,  # ingentior
             "Acmpfvocsg": self._cmp_stem,  # ingentior
-            "Acmpfaccsg": f"{self._cmp_stem}em",  # ingentiorem
-            "Acmpfgensg": f"{self._cmp_stem}is",  # ingentioris
-            "Acmpfdatsg": f"{self._cmp_stem}i",  # ingentiori
-            "Acmpfablsg": f"{self._cmp_stem}e",  # ingentiore
-            "Acmpfnompl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpfvocpl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpfaccpl": f"{self._cmp_stem}es",  # ingentiores
-            "Acmpfgenpl": f"{self._cmp_stem}um",  # ingentiorum
-            "Acmpfdatpl": f"{self._cmp_stem}ibus",  # ingentioribus
-            "Acmpfablpl": f"{self._cmp_stem}ibus",  # ingentioribus
-            "Acmpnnomsg": f"{self._cmp_stem[:-3]}ius",  # ingentius
-            "Acmpnvocsg": f"{self._cmp_stem[:-3]}ius",  # ingentius
-            "Acmpnaccsg": f"{self._cmp_stem[:-3]}ius",  # ingentius
-            "Acmpngensg": f"{self._cmp_stem}is",  # ingentioris
-            "Acmpndatsg": f"{self._cmp_stem}i",  # ingentiori
-            "Acmpnablsg": f"{self._cmp_stem}e",  # ingentiore
-            "Acmpnnompl": f"{self._cmp_stem}a",  # ingentiora
-            "Acmpnvocpl": f"{self._cmp_stem}a",  # ingentiora
-            "Acmpnaccpl": f"{self._cmp_stem}a",  # ingentiora
-            "Acmpngenpl": f"{self._cmp_stem}um",  # ingentiorum
-            "Acmpndatpl": f"{self._cmp_stem}ibus",  # ingentioribus
-            "Acmpnablpl": f"{self._cmp_stem}ibus",  # ingentioribus
+            "Acmpfaccsg": self._cmp_stem + "em",  # ingentiorem
+            "Acmpfgensg": self._cmp_stem + "is",  # ingentioris
+            "Acmpfdatsg": self._cmp_stem + "i",  # ingentiori
+            "Acmpfablsg": self._cmp_stem + "e",  # ingentiore
+            "Acmpfnompl": self._cmp_stem + "es",  # ingentiores
+            "Acmpfvocpl": self._cmp_stem + "es",  # ingentiores
+            "Acmpfaccpl": self._cmp_stem + "es",  # ingentiores
+            "Acmpfgenpl": self._cmp_stem + "um",  # ingentiorum
+            "Acmpfdatpl": self._cmp_stem + "ibus",  # ingentioribus
+            "Acmpfablpl": self._cmp_stem + "ibus",  # ingentioribus
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # ingentius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # ingentius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # ingentius
+            "Acmpngensg": self._cmp_stem + "is",  # ingentioris
+            "Acmpndatsg": self._cmp_stem + "i",  # ingentiori
+            "Acmpnablsg": self._cmp_stem + "e",  # ingentiore
+            "Acmpnnompl": self._cmp_stem + "a",  # ingentiora
+            "Acmpnvocpl": self._cmp_stem + "a",  # ingentiora
+            "Acmpnaccpl": self._cmp_stem + "a",  # ingentiora
+            "Acmpngenpl": self._cmp_stem + "um",  # ingentiorum
+            "Acmpndatpl": self._cmp_stem + "ibus",  # ingentioribus
+            "Acmpnablpl": self._cmp_stem + "ibus",  # ingentioribus
             "Asprmnomsg": self._spr_stem + "us",  # ingentissimus
             "Asprmvocsg": self._spr_stem + "e",  # ingentissime
             "Asprmaccsg": self._spr_stem + "um",  # ingentissimum
@@ -545,7 +546,7 @@ class Adjective(Word):
                 "Dpos": (
                     self._irregular_posadv
                     if self.irregular_flag
-                    else f"{self._pos_stem}er"
+                    else self._pos_stem + "er"
                 )  # atrociter
             }
 
@@ -554,7 +555,7 @@ class Adjective(Word):
                     "Dcmp": (
                         self._irregular_cmpadv
                         if self.irregular_flag
-                        else f"{self._pos_stem}ius"
+                        else self._pos_stem + "ius"
                     ),  # atrocius
                     "Dspr": (
                         self._irregular_spradv
@@ -594,95 +595,96 @@ class Adjective(Word):
 
         self._pos_stem = self.mascnom[:-2]  # fortis -> fort-
         if not self.irregular_flag:
-            self._cmp_stem = f"{self._pos_stem}ior"  # fort- -> fortior-
+            self._cmp_stem = self._pos_stem + "ior"  # fort- -> fortior-
             if self.mascnom.endswith("er"):
-                self._spr_stem = f"{self.mascnom}rim"  # miser- -> miserrim-
+                self._spr_stem = self.mascnom + "rim"  # miser- -> miserrim-
             elif self.mascnom in LIS_ADJECTIVES:
-                self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
+                self._spr_stem = self._pos_stem + "lim"  # facil- -> facillim-
             else:
                 self._spr_stem = (
-                    f"{self._pos_stem}issim"  # fort- -> fortissim-
+                    self._pos_stem + "issim"  # fort- -> fortissim-
                 )
 
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # fortis
             "Aposmvocsg": self.mascnom,  # fortis
-            "Aposmaccsg": f"{self._pos_stem}em",  # fortem
-            "Aposmgensg": f"{self._pos_stem}is",  # fortis
-            "Aposmdatsg": f"{self._pos_stem}i",  # forti
-            "Aposmablsg": f"{self._pos_stem}i",  # forti
-            "Aposmnompl": f"{self._pos_stem}es",  # fortes # even if plural only, _pos_stem is derived from the masculine anyway
-            "Aposmvocpl": f"{self._pos_stem}es",  # fortes
-            "Aposmaccpl": f"{self._pos_stem}es",  # fortes
-            "Aposmgenpl": f"{self._pos_stem}ium",  # fortium
-            "Aposmdatpl": f"{self._pos_stem}ibus",  # fortibus
-            "Aposmablpl": f"{self._pos_stem}ibus",  # fortibus
+            "Aposmaccsg": self._pos_stem + "em",  # fortem
+            "Aposmgensg": self._pos_stem + "is",  # fortis
+            "Aposmdatsg": self._pos_stem + "i",  # forti
+            "Aposmablsg": self._pos_stem + "i",  # forti
+            "Aposmnompl": self._pos_stem
+            + "es",  # fortes # even if plural only, _pos_stem is derived from the masculine anyway
+            "Aposmvocpl": self._pos_stem + "es",  # fortes
+            "Aposmaccpl": self._pos_stem + "es",  # fortes
+            "Aposmgenpl": self._pos_stem + "ium",  # fortium
+            "Aposmdatpl": self._pos_stem + "ibus",  # fortibus
+            "Aposmablpl": self._pos_stem + "ibus",  # fortibus
             "Aposfnomsg": self.mascnom,  # fortis
             "Aposfvocsg": self.mascnom,  # fortis
-            "Aposfaccsg": f"{self._pos_stem}em",  # fortem
-            "Aposfgensg": f"{self._pos_stem}is",  # fortis
-            "Aposfdatsg": f"{self._pos_stem}i",  # forti
-            "Aposfablsg": f"{self._pos_stem}i",  # forti
-            "Aposfnompl": f"{self._pos_stem}es",  # fortes
-            "Aposfvocpl": f"{self._pos_stem}es",  # fortes
-            "Aposfaccpl": f"{self._pos_stem}es",  # fortes
-            "Aposfgenpl": f"{self._pos_stem}ium",  # fortium
-            "Aposfdatpl": f"{self._pos_stem}ibus",  # fortibus
-            "Aposfablpl": f"{self._pos_stem}ibus",  # fortibus
+            "Aposfaccsg": self._pos_stem + "em",  # fortem
+            "Aposfgensg": self._pos_stem + "is",  # fortis
+            "Aposfdatsg": self._pos_stem + "i",  # forti
+            "Aposfablsg": self._pos_stem + "i",  # forti
+            "Aposfnompl": self._pos_stem + "es",  # fortes
+            "Aposfvocpl": self._pos_stem + "es",  # fortes
+            "Aposfaccpl": self._pos_stem + "es",  # fortes
+            "Aposfgenpl": self._pos_stem + "ium",  # fortium
+            "Aposfdatpl": self._pos_stem + "ibus",  # fortibus
+            "Aposfablpl": self._pos_stem + "ibus",  # fortibus
             "Aposnnomsg": self.neutnom,  # forte
             "Aposnvocsg": self.neutnom,  # forte
             "Aposnaccsg": self.neutnom,  # forte
-            "Aposngensg": f"{self._pos_stem}is",  # fortis
-            "Aposndatsg": f"{self._pos_stem}i",  # fortibus
-            "Aposnablsg": f"{self._pos_stem}i",  # fortibus
+            "Aposngensg": self._pos_stem + "is",  # fortis
+            "Aposndatsg": self._pos_stem + "i",  # fortibus
+            "Aposnablsg": self._pos_stem + "i",  # fortibus
             "Aposnnompl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # fortia
+            else self._pos_stem + "ia",  # fortia
             "Aposnvocpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # fortia
+            else self._pos_stem + "ia",  # fortia
             "Aposnaccpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # fortia
-            "Aposngenpl": f"{self._pos_stem}ium",  # fortium
-            "Aposndatpl": f"{self._pos_stem}ibus",  # fortibus
-            "Aposnablpl": f"{self._pos_stem}ibus",  # fortibus
+            else self._pos_stem + "ia",  # fortia
+            "Aposngenpl": self._pos_stem + "ium",  # fortium
+            "Aposndatpl": self._pos_stem + "ibus",  # fortibus
+            "Aposnablpl": self._pos_stem + "ibus",  # fortibus
             "Acmpmnomsg": self._cmp_stem,  # fortior
             "Acmpmvocsg": self._cmp_stem,  # fortior
-            "Acmpmaccsg": f"{self._cmp_stem}em",  # fortiorem
-            "Acmpmgensg": f"{self._cmp_stem}is",  # fortioris
-            "Acmpmdatsg": f"{self._cmp_stem}i",  # fortiori
-            "Acmpmablsg": f"{self._cmp_stem}e",  # fortiore
-            "Acmpmnompl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpmvocpl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpmaccpl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpmgenpl": f"{self._cmp_stem}um",  # fortiorum
-            "Acmpmdatpl": f"{self._cmp_stem}ibus",  # fortioribus
-            "Acmpmablpl": f"{self._cmp_stem}ibus",  # fortioribus
+            "Acmpmaccsg": self._cmp_stem + "em",  # fortiorem
+            "Acmpmgensg": self._cmp_stem + "is",  # fortioris
+            "Acmpmdatsg": self._cmp_stem + "i",  # fortiori
+            "Acmpmablsg": self._cmp_stem + "e",  # fortiore
+            "Acmpmnompl": self._cmp_stem + "es",  # fortiores
+            "Acmpmvocpl": self._cmp_stem + "es",  # fortiores
+            "Acmpmaccpl": self._cmp_stem + "es",  # fortiores
+            "Acmpmgenpl": self._cmp_stem + "um",  # fortiorum
+            "Acmpmdatpl": self._cmp_stem + "ibus",  # fortioribus
+            "Acmpmablpl": self._cmp_stem + "ibus",  # fortioribus
             "Acmpfnomsg": self._cmp_stem,  # fortior
             "Acmpfvocsg": self._cmp_stem,  # fortior
-            "Acmpfaccsg": f"{self._cmp_stem}em",  # fortiorem
-            "Acmpfgensg": f"{self._cmp_stem}is",  # fortioris
-            "Acmpfdatsg": f"{self._cmp_stem}i",  # fortiori
-            "Acmpfablsg": f"{self._cmp_stem}e",  # fortiore
-            "Acmpfnompl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpfvocpl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpfaccpl": f"{self._cmp_stem}es",  # fortiores
-            "Acmpfgenpl": f"{self._cmp_stem}um",  # fortiorum
-            "Acmpfdatpl": f"{self._cmp_stem}ibus",  # fortioribus
-            "Acmpfablpl": f"{self._cmp_stem}ibus",  # fortioribus
-            "Acmpnnomsg": f"{self._cmp_stem[:-3]}ius",  # fortius
-            "Acmpnvocsg": f"{self._cmp_stem[:-3]}ius",  # fortius
-            "Acmpnaccsg": f"{self._cmp_stem[:-3]}ius",  # fortius
-            "Acmpngensg": f"{self._cmp_stem}is",  # fortioris
-            "Acmpndatsg": f"{self._cmp_stem}i",  # fortiori
-            "Acmpnablsg": f"{self._cmp_stem}e",  # fortiore
-            "Acmpnnompl": f"{self._cmp_stem}a",  # fortiora
-            "Acmpnvocpl": f"{self._cmp_stem}a",  # fortiora
-            "Acmpnaccpl": f"{self._cmp_stem}a",  # fortiora
-            "Acmpngenpl": f"{self._cmp_stem}um",  # fortiorum
-            "Acmpndatpl": f"{self._cmp_stem}ibus",  # fortioribus
-            "Acmpnablpl": f"{self._cmp_stem}ibus",  # fortioribus
+            "Acmpfaccsg": self._cmp_stem + "em",  # fortiorem
+            "Acmpfgensg": self._cmp_stem + "is",  # fortioris
+            "Acmpfdatsg": self._cmp_stem + "i",  # fortiori
+            "Acmpfablsg": self._cmp_stem + "e",  # fortiore
+            "Acmpfnompl": self._cmp_stem + "es",  # fortiores
+            "Acmpfvocpl": self._cmp_stem + "es",  # fortiores
+            "Acmpfaccpl": self._cmp_stem + "es",  # fortiores
+            "Acmpfgenpl": self._cmp_stem + "um",  # fortiorum
+            "Acmpfdatpl": self._cmp_stem + "ibus",  # fortioribus
+            "Acmpfablpl": self._cmp_stem + "ibus",  # fortioribus
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # fortius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # fortius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # fortius
+            "Acmpngensg": self._cmp_stem + "is",  # fortioris
+            "Acmpndatsg": self._cmp_stem + "i",  # fortiori
+            "Acmpnablsg": self._cmp_stem + "e",  # fortiore
+            "Acmpnnompl": self._cmp_stem + "a",  # fortiora
+            "Acmpnvocpl": self._cmp_stem + "a",  # fortiora
+            "Acmpnaccpl": self._cmp_stem + "a",  # fortiora
+            "Acmpngenpl": self._cmp_stem + "um",  # fortiorum
+            "Acmpndatpl": self._cmp_stem + "ibus",  # fortioribus
+            "Acmpnablpl": self._cmp_stem + "ibus",  # fortioribus
             "Asprmnomsg": self._spr_stem + "us",  # fortissimus
             "Asprmvocsg": self._spr_stem + "e",  # fortissime
             "Asprmaccsg": self._spr_stem + "um",  # fortissimum
@@ -726,7 +728,7 @@ class Adjective(Word):
                 "Dpos": (
                     self._irregular_posadv
                     if self.irregular_flag
-                    else f"{self._pos_stem}iter"
+                    else self._pos_stem + "iter"
                 )  # fortiter
             }
 
@@ -735,7 +737,7 @@ class Adjective(Word):
                     "Dcmp": (
                         self._irregular_cmpadv
                         if self.irregular_flag
-                        else f"{self._pos_stem}ius"
+                        else self._pos_stem + "ius"
                     ),  # fortius
                     "Dspr": (
                         self._irregular_spradv
@@ -786,99 +788,100 @@ class Adjective(Word):
 
         self._pos_stem = self.femnom[:-2]  # acris -> acr-
         if not self.irregular_flag:
-            self._cmp_stem = f"{self._pos_stem}ior"  # acr- -> acrior-
+            self._cmp_stem = self._pos_stem + "ior"  # acr- -> acrior-
             if self.mascnom.endswith("er"):
-                self._spr_stem = f"{self.mascnom}rim"  # acer- -> acerrim-
+                self._spr_stem = self.mascnom + "rim"  # acer- -> acerrim-
             elif self.mascnom in LIS_ADJECTIVES:
-                self._spr_stem = f"{self._pos_stem}lim"  # facil- -> facillim-
+                self._spr_stem = self._pos_stem + "lim"  # facil- -> facillim-
             else:
-                self._spr_stem = f"{self._pos_stem}issim"  # levis -> levissim-
+                self._spr_stem = self._pos_stem + "issim"  # levis -> levissim-
 
         endings: Endings = {
             "Aposmnomsg": self.mascnom,  # acer
             "Aposmvocsg": self.mascnom,  # acer
-            "Aposmaccsg": f"{self._pos_stem}em",  # acrem
-            "Aposmgensg": f"{self._pos_stem}is",  # acris
-            "Aposmdatsg": f"{self._pos_stem}i",  # acri
-            "Aposmablsg": f"{self._pos_stem}i",  # acri
+            "Aposmaccsg": self._pos_stem + "em",  # acrem
+            "Aposmgensg": self._pos_stem + "is",  # acris
+            "Aposmdatsg": self._pos_stem + "i",  # acri
+            "Aposmablsg": self._pos_stem + "i",  # acri
             "Aposmnompl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # acres
+            else self._pos_stem + "es",  # acres
             "Aposmvocpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # acres
+            else self._pos_stem + "es",  # acres
             "Aposmaccpl": self.mascnom
             if self.plurale_tantum
-            else f"{self._pos_stem}es",  # acres
-            "Aposmgenpl": f"{self._pos_stem}ium",  # acrium
-            "Aposmdatpl": f"{self._pos_stem}ibus",  # acribus
-            "Aposmablpl": f"{self._pos_stem}ibus",  # acribus
+            else self._pos_stem + "es",  # acres
+            "Aposmgenpl": self._pos_stem + "ium",  # acrium
+            "Aposmdatpl": self._pos_stem + "ibus",  # acribus
+            "Aposmablpl": self._pos_stem + "ibus",  # acribus
             "Aposfnomsg": self.femnom,  # acris
             "Aposfvocsg": self.femnom,  # acris
-            "Aposfaccsg": f"{self._pos_stem}em",  # acrem
-            "Aposfgensg": f"{self._pos_stem}is",  # acris
-            "Aposfdatsg": f"{self._pos_stem}i",  # acri
-            "Aposfablsg": f"{self._pos_stem}i",  # acri
-            "Aposfnompl": f"{self._pos_stem}es",  # acres # even if plural only, _pos_stem is derived from the feminine anyway
-            "Aposfvocpl": f"{self._pos_stem}es",  # acres
-            "Aposfaccpl": f"{self._pos_stem}es",  # acres
-            "Aposfgenpl": f"{self._pos_stem}ium",  # acrium
-            "Aposfdatpl": f"{self._pos_stem}ibus",  # acribus
-            "Aposfablpl": f"{self._pos_stem}ibus",  # acribus
+            "Aposfaccsg": self._pos_stem + "em",  # acrem
+            "Aposfgensg": self._pos_stem + "is",  # acris
+            "Aposfdatsg": self._pos_stem + "i",  # acri
+            "Aposfablsg": self._pos_stem + "i",  # acri
+            "Aposfnompl": self._pos_stem
+            + "es",  # acres # even if plural only, _pos_stem is derived from the feminine anyway
+            "Aposfvocpl": self._pos_stem + "es",  # acres
+            "Aposfaccpl": self._pos_stem + "es",  # acres
+            "Aposfgenpl": self._pos_stem + "ium",  # acrium
+            "Aposfdatpl": self._pos_stem + "ibus",  # acribus
+            "Aposfablpl": self._pos_stem + "ibus",  # acribus
             "Aposnnomsg": self.neutnom,  # acre
             "Aposnvocsg": self.neutnom,  # acre
             "Aposnaccsg": self.neutnom,  # acre
-            "Aposngensg": f"{self._pos_stem}is",  # acris
-            "Aposndatsg": f"{self._pos_stem}i",  # acri
-            "Aposnablsg": f"{self._pos_stem}i",  # acri
+            "Aposngensg": self._pos_stem + "is",  # acris
+            "Aposndatsg": self._pos_stem + "i",  # acri
+            "Aposnablsg": self._pos_stem + "i",  # acri
             "Aposnnompl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # acria
+            else self._pos_stem + "ia",  # acria
             "Aposnvocpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # acria
+            else self._pos_stem + "ia",  # acria
             "Aposnaccpl": self.neutnom
             if self.plurale_tantum
-            else f"{self._pos_stem}ia",  # acria
-            "Aposngenpl": f"{self._pos_stem}ium",  # acrium
-            "Aposndatpl": f"{self._pos_stem}ibus",  # acribus
-            "Aposnablpl": f"{self._pos_stem}ibus",  # acribus
+            else self._pos_stem + "ia",  # acria
+            "Aposngenpl": self._pos_stem + "ium",  # acrium
+            "Aposndatpl": self._pos_stem + "ibus",  # acribus
+            "Aposnablpl": self._pos_stem + "ibus",  # acribus
             "Acmpmnomsg": self._cmp_stem,  # acrior
             "Acmpmvocsg": self._cmp_stem,  # acrior
-            "Acmpmaccsg": f"{self._cmp_stem}em",  # acriorem
-            "Acmpmgensg": f"{self._cmp_stem}is",  # acrioris
-            "Acmpmdatsg": f"{self._cmp_stem}i",  # acriori
-            "Acmpmablsg": f"{self._cmp_stem}e",  # acriore
-            "Acmpmnompl": f"{self._cmp_stem}es",  # acriores
-            "Acmpmvocpl": f"{self._cmp_stem}es",  # acriores
-            "Acmpmaccpl": f"{self._cmp_stem}es",  # acriores
-            "Acmpmgenpl": f"{self._cmp_stem}um",  # acriorum
-            "Acmpmdatpl": f"{self._cmp_stem}ibus",  # acrioribus
-            "Acmpmablpl": f"{self._cmp_stem}ibus",  # acrioribus
+            "Acmpmaccsg": self._cmp_stem + "em",  # acriorem
+            "Acmpmgensg": self._cmp_stem + "is",  # acrioris
+            "Acmpmdatsg": self._cmp_stem + "i",  # acriori
+            "Acmpmablsg": self._cmp_stem + "e",  # acriore
+            "Acmpmnompl": self._cmp_stem + "es",  # acriores
+            "Acmpmvocpl": self._cmp_stem + "es",  # acriores
+            "Acmpmaccpl": self._cmp_stem + "es",  # acriores
+            "Acmpmgenpl": self._cmp_stem + "um",  # acriorum
+            "Acmpmdatpl": self._cmp_stem + "ibus",  # acrioribus
+            "Acmpmablpl": self._cmp_stem + "ibus",  # acrioribus
             "Acmpfnomsg": self._cmp_stem,  # acrior
             "Acmpfvocsg": self._cmp_stem,  # acrior
-            "Acmpfaccsg": f"{self._cmp_stem}em",  # acriorem
-            "Acmpfgensg": f"{self._cmp_stem}is",  # acrioris
-            "Acmpfdatsg": f"{self._cmp_stem}i",  # acriori
-            "Acmpfablsg": f"{self._cmp_stem}e",  # acriore
-            "Acmpfnompl": f"{self._cmp_stem}es",  # acriores
-            "Acmpfvocpl": f"{self._cmp_stem}es",  # acriores
-            "Acmpfaccpl": f"{self._cmp_stem}es",  # acriores
-            "Acmpfgenpl": f"{self._cmp_stem}um",  # acriorum
-            "Acmpfdatpl": f"{self._cmp_stem}ibus",  # acrioribus
-            "Acmpfablpl": f"{self._cmp_stem}ibus",  # acrioribus
-            "Acmpnnomsg": f"{self._cmp_stem[:-3]}ius",  # acrius
-            "Acmpnvocsg": f"{self._cmp_stem[:-3]}ius",  # acrius
-            "Acmpnaccsg": f"{self._cmp_stem[:-3]}ius",  # acrius
-            "Acmpngensg": f"{self._cmp_stem}is",  # acrioris
-            "Acmpndatsg": f"{self._cmp_stem}i",  # acriori
-            "Acmpnablsg": f"{self._cmp_stem}e",  # acriore
-            "Acmpnnompl": f"{self._cmp_stem}a",  # acriora
-            "Acmpnvocpl": f"{self._cmp_stem}a",  # acriora
-            "Acmpnaccpl": f"{self._cmp_stem}a",  # acriora
-            "Acmpngenpl": f"{self._cmp_stem}um",  # acriorum
-            "Acmpndatpl": f"{self._cmp_stem}ibus",  # acrioribus
-            "Acmpnablpl": f"{self._cmp_stem}ibus",  # acrioribus
+            "Acmpfaccsg": self._cmp_stem + "em",  # acriorem
+            "Acmpfgensg": self._cmp_stem + "is",  # acrioris
+            "Acmpfdatsg": self._cmp_stem + "i",  # acriori
+            "Acmpfablsg": self._cmp_stem + "e",  # acriore
+            "Acmpfnompl": self._cmp_stem + "es",  # acriores
+            "Acmpfvocpl": self._cmp_stem + "es",  # acriores
+            "Acmpfaccpl": self._cmp_stem + "es",  # acriores
+            "Acmpfgenpl": self._cmp_stem + "um",  # acriorum
+            "Acmpfdatpl": self._cmp_stem + "ibus",  # acrioribus
+            "Acmpfablpl": self._cmp_stem + "ibus",  # acrioribus
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # acrius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # acrius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # acrius
+            "Acmpngensg": self._cmp_stem + "is",  # acrioris
+            "Acmpndatsg": self._cmp_stem + "i",  # acriori
+            "Acmpnablsg": self._cmp_stem + "e",  # acriore
+            "Acmpnnompl": self._cmp_stem + "a",  # acriora
+            "Acmpnvocpl": self._cmp_stem + "a",  # acriora
+            "Acmpnaccpl": self._cmp_stem + "a",  # acriora
+            "Acmpngenpl": self._cmp_stem + "um",  # acriorum
+            "Acmpndatpl": self._cmp_stem + "ibus",  # acrioribus
+            "Acmpnablpl": self._cmp_stem + "ibus",  # acrioribus
             "Asprmnomsg": self._spr_stem + "us",  # acerrimus
             "Asprmvocsg": self._spr_stem + "e",  # acerrime
             "Asprmaccsg": self._spr_stem + "um",  # acerrimum
@@ -922,7 +925,7 @@ class Adjective(Word):
                 "Dpos": (
                     self._irregular_posadv
                     if self.irregular_flag
-                    else f"{self._pos_stem}iter"
+                    else self._pos_stem + "iter"
                 )  # acriter
             }
 
@@ -931,7 +934,7 @@ class Adjective(Word):
                     "Dcmp": (
                         self._irregular_cmpadv
                         if self.irregular_flag
-                        else f"{self._pos_stem}ius"
+                        else self._pos_stem + "ius"
                     ),  # acrius
                     "Dspr": (
                         self._irregular_spradv
