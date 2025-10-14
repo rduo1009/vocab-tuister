@@ -135,7 +135,8 @@ class Adjective(Word):
         super().__init__()
 
         self.principal_parts: tuple[str, ...] = principal_parts
-        self._principal_parts: tuple[str, ...] = self.principal_parts
+        self._principal_parts: str
+        object.__setattr__(self, "_principal_parts", principal_parts)
         self.mascnom: str = self.principal_parts[0]
 
         self._first: str = self.principal_parts[0]
