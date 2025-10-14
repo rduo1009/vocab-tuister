@@ -1,7 +1,7 @@
 @ Verbs
 accuse: accuso, accusare, accusavi, accusatus
 break: frango, frangere, fregi, fractus
-obtain: adpiscor, adipisci, adeptus sum
+obtain: adipiscor, adipisci, adeptus sum
 accompany: comitor, comitari, comitatus sum
 try: conor, conari, conatus sum
 catch sight of: conspicor, conspicari, conspicatus sum

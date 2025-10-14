@@ -22,7 +22,7 @@ two: duo, duae, duo, (212)
 three: tres, tria, (3-2)
 
 @ Pronouns
-anyone: quisquam, quisquam, quidquam/quicquam
+anyone/anything: quisquam, quisquam, quicquam/quidquam
 
 @ Regulars
 and: ac

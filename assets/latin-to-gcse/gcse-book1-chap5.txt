@@ -22,7 +22,7 @@ mountain: mons, montis, (m)
 death: mors, mortis, (f)
 we: nos
 peace: pax, pacis, (f)
-oneself: se
+oneself/himself/herself/itself: se
 wood: silva, silvae, (f)
 you all/you: vos
 

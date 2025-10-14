@@ -21,7 +21,7 @@ idle/on holiday: otiosus, otiosa, otiosum, (212)
 poor: pauper, pauperis, (3-1)
 
 @ Pronouns
-certain/one/some: quidam, quaedam, quoddam
+certain/one: quidam, quaedam, quoddam
 
 @ Regulars
 misfortune: res adversae

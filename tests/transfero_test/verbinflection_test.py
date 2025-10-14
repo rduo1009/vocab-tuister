@@ -739,6 +739,283 @@ def test_main_not_inflections():
     assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "about to not want"
 
 
+def test_main_dare_inflections():
+    word = "dare"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he dares"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they dare"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I am dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you are dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he is dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we are dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all are dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they are dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may dare"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I was daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you were daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he was daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we were daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all were daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they were daring"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might dare"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will dare"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may have dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I had dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you had dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he had dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we had dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all had dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they had dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might have dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will have dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to have dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to have been dared"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to be about to dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be about to be dared"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "daring"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "about to dare"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "having been dared"
+
+
+def test_main_ought_inflections():
+    word = "ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I am ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you are ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he is ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we are ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all are ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they are ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I was being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you were being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he was being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we were being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all were being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they were being ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I was ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you were ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he was ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we were ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all were ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they were ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may have ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I had ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you had ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he had ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we had ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all had ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they had ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might have ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will have ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to have ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to have been ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to be about to ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be about to be ought"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "being ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "about to ought"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "having been ought"
+
+
+def test_main_must_inflections():
+    word = "must"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they must"
+
+    # NOTE: There is no correct form for passive
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I am musted"
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you are musted"
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he is musted"
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we are musted"
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all are musted"
+    # assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they are musted"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may have to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I was having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you were having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he was having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we were having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all were having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they were having to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.IMPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might have to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will have to"
+
+    assert {"I must", "I had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1)))
+    assert {"you must", "you had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2)))
+    assert {"he must", "he had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3)))
+    assert {"we must", "we had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1)))
+    assert {"you must", "you had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2)))
+    assert {"they must", "they had to"}.issubset(find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)))
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I may have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you may have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he may have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we may have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all may have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they may have had to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I had had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you had had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he had had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we had had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all had had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they had had to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=1), main=True) == "I might have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=2), main=True) == "you might have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.SINGULAR, person=3), main=True) == "he might have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=1), main=True) == "we might have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=2), main=True) == "you all might have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PLUPERFECT, voice=Voice.ACTIVE, mood=Mood.SUBJUNCTIVE, number=Number.PLURAL, person=3), main=True) == "they might have had to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=1), main=True) == "I will have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=2), main=True) == "you will have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.SINGULAR, person=3), main=True) == "he will have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=1), main=True) == "we will have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=2), main=True) == "you all will have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE_PERFECT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3), main=True) == "they will have had to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to must"
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to have had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to have been had to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.INFINITIVE), main=True) == "to be about to have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.PASSIVE, mood=Mood.INFINITIVE), main=True) == "to be about to be have to"
+
+    assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "having to"
+    assert find_inflection(word, EndingComponents(tense=Tense.FUTURE, voice=Voice.ACTIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "about to have to"
+    assert find_inflection(word, EndingComponents(tense=Tense.PERFECT, voice=Voice.PASSIVE, mood=Mood.PARTICIPLE, number=Number.SINGULAR, case=Case.NOMINATIVE, gender=Gender.MASCULINE), main=True) == "having been had to"
+
+
 def test_multi_word_verbs():
     word = "run away"
     assert find_inflection(word, EndingComponents(tense=Tense.PRESENT, voice=Voice.ACTIVE, mood=Mood.INDICATIVE, number=Number.PLURAL, person=3)) == {"they run away", "they are running away"}
