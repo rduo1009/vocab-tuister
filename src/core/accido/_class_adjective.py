@@ -303,9 +303,9 @@ class Adjective(Word):
             "Acmpfgenpl": self._cmp_stem + "um",  # cariorum
             "Acmpfdatpl": self._cmp_stem + "ibus",  # carioribus
             "Acmpfablpl": self._cmp_stem + "ibus",  # carioribus
-            "Acmpnnomsg": self._cmp_stem + ":-3]}ius",  # carius
-            "Acmpnvocsg": self._cmp_stem + ":-3]}ius",  # carius
-            "Acmpnaccsg": self._cmp_stem + ":-3]}ius",  # carius
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # carius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # carius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # carius
             "Acmpngensg": self._cmp_stem + "is",  # carioris
             "Acmpndatsg": self._cmp_stem + "i",  # cariori
             "Acmpnablsg": self._cmp_stem + "e",  # cariore
@@ -490,9 +490,9 @@ class Adjective(Word):
             "Acmpfgenpl": self._cmp_stem + "um",  # ingentiorum
             "Acmpfdatpl": self._cmp_stem + "ibus",  # ingentioribus
             "Acmpfablpl": self._cmp_stem + "ibus",  # ingentioribus
-            "Acmpnnomsg": self._cmp_stem + ":-3]}ius",  # ingentius
-            "Acmpnvocsg": self._cmp_stem + ":-3]}ius",  # ingentius
-            "Acmpnaccsg": self._cmp_stem + ":-3]}ius",  # ingentius
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # ingentius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # ingentius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # ingentius
             "Acmpngensg": self._cmp_stem + "is",  # ingentioris
             "Acmpndatsg": self._cmp_stem + "i",  # ingentiori
             "Acmpnablsg": self._cmp_stem + "e",  # ingentiore
@@ -672,9 +672,9 @@ class Adjective(Word):
             "Acmpfgenpl": self._cmp_stem + "um",  # fortiorum
             "Acmpfdatpl": self._cmp_stem + "ibus",  # fortioribus
             "Acmpfablpl": self._cmp_stem + "ibus",  # fortioribus
-            "Acmpnnomsg": self._cmp_stem + ":-3]}ius",  # fortius
-            "Acmpnvocsg": self._cmp_stem + ":-3]}ius",  # fortius
-            "Acmpnaccsg": self._cmp_stem + ":-3]}ius",  # fortius
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # fortius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # fortius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # fortius
             "Acmpngensg": self._cmp_stem + "is",  # fortioris
             "Acmpndatsg": self._cmp_stem + "i",  # fortiori
             "Acmpnablsg": self._cmp_stem + "e",  # fortiore
@@ -869,9 +869,9 @@ class Adjective(Word):
             "Acmpfgenpl": self._cmp_stem + "um",  # acriorum
             "Acmpfdatpl": self._cmp_stem + "ibus",  # acrioribus
             "Acmpfablpl": self._cmp_stem + "ibus",  # acrioribus
-            "Acmpnnomsg": self._cmp_stem + ":-3]}ius",  # acrius
-            "Acmpnvocsg": self._cmp_stem + ":-3]}ius",  # acrius
-            "Acmpnaccsg": self._cmp_stem + ":-3]}ius",  # acrius
+            "Acmpnnomsg": self._cmp_stem[:-3] + "ius",  # acrius
+            "Acmpnvocsg": self._cmp_stem[:-3] + "ius",  # acrius
+            "Acmpnaccsg": self._cmp_stem[:-3] + "ius",  # acrius
             "Acmpngensg": self._cmp_stem + "is",  # acrioris
             "Acmpndatsg": self._cmp_stem + "i",  # acriori
             "Acmpnablsg": self._cmp_stem + "e",  # acriore
