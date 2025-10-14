@@ -25,7 +25,7 @@ dependencies = [
   "flask==3.1.2",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "platformdirs==4.4.0",
+  "platformdirs==4.5.0",
   "pyinstaller==6.16.0",
   "waitress==3.0.2",
   "wn @ git+https://github.com/goodmami/wn.git",
@@ -33,7 +33,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "basedpyright==1.31.5",
+  "basedpyright==1.31.7",
   "coverage==7.10.7",
   "doc8==2.0.0",
   "griffe==1.14.0",
@@ -41,17 +41,17 @@ dev = [
   "interrogate==1.7.0",
   "mypy[faster-cache]==1.18.2",
   "pytest==8.4.2",
-  "pytest-env==1.1.5",
+  "pytest-env==1.2.0",
   "pytest-pythonhashseed==2.0.0",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.13.2",
+  "ruff==0.14.0",
   "syrupy==5.0.0",
 ]
 
 types = [
-  "optype==0.13.4",
+  "optype==0.14.0",
   "types-regex==2025.9.18.20250921",
   "types-waitress==3.0.1.20250801",
 ]
