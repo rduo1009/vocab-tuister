@@ -2,8 +2,6 @@
 
 # pyright: reportAny=false, reportExplicitAny=false
 
-from __future__ import annotations
-
 from ._base import (
     MultiAnswerQuestion as MultiAnswerQuestion,
     MultipleChoiceQuestion as MultipleChoiceQuestion,

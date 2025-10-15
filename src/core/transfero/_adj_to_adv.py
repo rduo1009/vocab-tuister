@@ -7,8 +7,6 @@ The original python package is not used as it has been unmaintained for a few
 years now.
 """
 
-from __future__ import annotations
-
 import json
 from pathlib import Path
 from typing import Final, cast

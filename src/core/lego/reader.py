@@ -1,12 +1,10 @@
 """Contains functions for reading vocab files."""
 
-from __future__ import annotations
-
 import hashlib
 import hmac
 import logging
 import warnings
-import zlib
+from compression import zlib
 from io import StringIO
 from pathlib import Path
 from re import match

@@ -1,7 +1,5 @@
 """Create sample setting json to allow go code to be generated."""
 
-from __future__ import annotations
-
 import json
 from pathlib import Path
 from typing import Any, get_type_hints

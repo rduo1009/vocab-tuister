@@ -1,6 +1,6 @@
 # Data files
 
-The wordnet database at `wn.db.xz` was created by:
+The wordnet database at `wn.db.zst` was created by:
 
 - running `import src` to download `wn.db`
 - running following after `sqlite3` to remove unneeded tables
@@ -25,4 +25,4 @@ DELETE FROM proposed_ilis;
 VACUUM;
 ```
 
-- running `xz -9e src/core/transfero/wn_data/wn.db` to compress
+- running `zstd -19 src/core/transfero/wn_data/wn.db` to compress
