@@ -1,12 +1,12 @@
 """Contains miscellaneous functions, classes and constants used by ``accido``."""
 
-# pyright: reportUninitializedInstanceVariable=false, reportAny=false
+# pyright: reportUninitializedInstanceVariable=false, reportAny=false, reportExplicitAny=false
 
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from functools import total_ordering
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Final, overload
+from typing import TYPE_CHECKING, Any, Final, overload
 
 from aenum import MultiValue
 
@@ -508,21 +508,30 @@ class MultipleMeanings:
         return self.__add__(other)
 
 
-# TODO: Improve documentation. This should *always* have a 'regular' attribute.
-# Should add an explicit check for this as well?
 class MultipleEndings(SimpleNamespace):
     """Represents multiple endings for a word.
 
-    The fact that the attribute names can be customised means that this
-    class can be used for many use cases.
+    This class allows multiple named endings for a word form, where the
+    `regular` attribute is always required. Other optional attributes may
+    represent specific usages (e.g., `partitive`, `poetic`, etc.).
+
+    The attribute names are flexible, allowing use in different contexts.
     e.g. `MultipleEndings(regular="nostri", partitive="nostrum")`
-    would allow for "nostrum" being the partitive genitive, while
-    "nostri" being for the rest of the genitive uses.
+    represents the genitive forms "nostri" (regular) and "nostrum" (partitive).
+
+    Parameters
+    ----------
+    regular : str
+        The standard or most common form of the word.
+    **kwargs : str
+        Additional named endings, such as partitive, poetic, etc.
 
     Attributes
     ----------
-    value : str
-    etc.
+    regular : str
+        The regular form (required).
+    others : Any
+        Any additional attributes provided at initialisation.
 
     Examples
     --------
@@ -530,15 +539,30 @@ class MultipleEndings(SimpleNamespace):
     >>> foo.regular
     'nostri'
 
-    >>> foo.__str__()
+    >>> str(foo)
     'nostri/nostrum'
 
     >>> foo.get_all()
     ('nostri', 'nostrum')
     """
 
+    def __init__(self, **kwargs: str) -> None:
+        super().__init__(**kwargs)
+        if kwargs and "regular" not in kwargs:  # prevent issues with pickle
+            raise ValueError(
+                "MultipleEndings must have a 'regular' attribute."
+            )
+
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        self.__dict__.update(state)
+        # This should never run as the above would have caught it before being pickled.
+        if not hasattr(self, "regular"):  # pragma: no cover
+            raise ValueError(
+                "MultipleEndings must have a 'regular' attribute."
+            )
+
     def get_all(self) -> tuple[str, ...]:
-        """Return a list of all the possible endings.
+        """Return a tuple of all the possible endings.
 
         Returns
         -------
