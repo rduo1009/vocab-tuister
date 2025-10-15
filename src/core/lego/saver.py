@@ -6,7 +6,7 @@ import hashlib
 import hmac
 import logging
 import warnings
-import zlib
+from compression import zlib
 from pathlib import Path
 from typing import TYPE_CHECKING, BinaryIO
 
