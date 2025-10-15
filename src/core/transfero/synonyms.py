@@ -2,8 +2,6 @@
 
 # pyright: reportUnusedCallResult=false
 
-from __future__ import annotations
-
 import logging
 import lzma
 import sys as _sys

@@ -1,7 +1,5 @@
 """Contains functions that inflect English nouns."""
 
-from __future__ import annotations
-
 import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 

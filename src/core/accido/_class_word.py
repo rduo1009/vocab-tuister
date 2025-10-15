@@ -2,8 +2,6 @@
 
 # pyright: reportImplicitOverride=false, reportExplicitAny=false, reportAny=false
 
-from __future__ import annotations
-
 from abc import ABC, abstractmethod
 from functools import total_ordering
 from typing import TYPE_CHECKING, Any

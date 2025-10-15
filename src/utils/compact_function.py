@@ -1,7 +1,5 @@
 """Contains a function for compacting a list."""
 
-from __future__ import annotations
-
 
 def compact[T](sequence: list[T]) -> list[T]:
     """Compact a list by adding all elements up that can be added together.
