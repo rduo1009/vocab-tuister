@@ -177,6 +177,8 @@ def find_verb_inflections(
 
     try:
         lemmas = lemminflect.getLemma(verb, "VERB")
+        if verb == "should":  # 'should' gets lemmatised to 'shall'
+            lemmas = ("should",)
     except KeyError as e:
         raise InvalidWordError(f"Word {verb} is not a verb.") from e
 
