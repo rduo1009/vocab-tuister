@@ -510,21 +510,30 @@ class MultipleMeanings:
         return self.__add__(other)
 
 
-# TODO: Improve documentation. This should *always* have a 'regular' attribute.
-# Should add an explicit check for this as well?
 class MultipleEndings(SimpleNamespace):
     """Represents multiple endings for a word.
 
-    The fact that the attribute names can be customised means that this
-    class can be used for many use cases.
+    This class allows multiple named endings for a word form, where the
+    `regular` attribute is always required. Other optional attributes may
+    represent specific usages (e.g., `partitive`, `poetic`, etc.).
+
+    The attribute names are flexible, allowing use in different contexts.
     e.g. `MultipleEndings(regular="nostri", partitive="nostrum")`
-    would allow for "nostrum" being the partitive genitive, while
-    "nostri" being for the rest of the genitive uses.
+    represents the genitive forms "nostri" (regular) and "nostrum" (partitive).
+
+    Parameters
+    ----------
+    regular : str
+        The standard or most common form of the word.
+    **kwargs : str
+        Additional named endings, such as partitive, poetic, etc.
 
     Attributes
     ----------
-    value : str
-    etc.
+    regular : str
+        The regular form (required).
+    others : Any
+        Any additional attributes provided at initialisation.
 
     Examples
     --------
@@ -532,7 +541,7 @@ class MultipleEndings(SimpleNamespace):
     >>> foo.regular
     'nostri'
 
-    >>> foo.__str__()
+    >>> str(foo)
     'nostri/nostrum'
 
     >>> foo.get_all()
@@ -555,7 +564,7 @@ class MultipleEndings(SimpleNamespace):
             )
 
     def get_all(self) -> tuple[str, ...]:
-        """Return a list of all the possible endings.
+        """Return a tuple of all the possible endings.
 
         Returns
         -------
