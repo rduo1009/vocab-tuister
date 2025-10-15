@@ -40,7 +40,7 @@ whole: totus, tota, totum, (212)
 
 @ Pronouns
 same: idem, eadem, idem
-oneself: ipse, ipsa, ipsum
+oneself/himself/herself/itself: ipse, ipsa, ipsum
 
 @ Regulars
 the rest/the others: ceteri/ceterae/cetera
