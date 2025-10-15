@@ -11,6 +11,7 @@ repos:
     rev: 2.2.1
     hooks:
       - id: poetry-lock
+        language_version: python3.14
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
