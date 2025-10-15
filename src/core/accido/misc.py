@@ -1,6 +1,6 @@
 """Contains miscellaneous functions, classes and constants used by ``accido``."""
 
-# pyright: reportUninitializedInstanceVariable=false, reportAny=false
+# pyright: reportUninitializedInstanceVariable=false, reportAny=false, reportExplicitAny=false
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from enum import StrEnum, auto
 from functools import total_ordering
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Final, overload
+from typing import TYPE_CHECKING, Any, Final, overload
 
 from aenum import MultiValue
 
@@ -538,6 +538,21 @@ class MultipleEndings(SimpleNamespace):
     >>> foo.get_all()
     ('nostri', 'nostrum')
     """
+
+    def __init__(self, **kwargs: str) -> None:
+        super().__init__(**kwargs)
+        if kwargs and "regular" not in kwargs:  # prevent issues with pickle
+            raise ValueError(
+                "MultipleEndings must have a 'regular' attribute."
+            )
+
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        self.__dict__.update(state)
+        # This should never run as the above would have caught it before being pickled.
+        if not hasattr(self, "regular"):  # pragma: no cover
+            raise ValueError(
+                "MultipleEndings must have a 'regular' attribute."
+            )
 
     def get_all(self) -> tuple[str, ...]:
         """Return a list of all the possible endings.
