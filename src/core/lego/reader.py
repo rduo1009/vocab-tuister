@@ -4,7 +4,7 @@ import hashlib
 import hmac
 import logging
 import warnings
-import zlib
+from compression import zlib
 from io import StringIO
 from pathlib import Path
 from re import match
