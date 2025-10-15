@@ -1,6 +1,6 @@
 import pytest
 from src.core.accido.endings import Adjective
-from src.core.accido.misc import Case, Degree, Gender, MultipleEndings, Number
+from src.core.accido.misc import Case, Degree, Gender, Number
 
 ADJECTIVE_COMBINATIONS = (
     (Degree.POSITIVE, Gender.MASCULINE, Case.NOMINATIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.VOCATIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.ACCUSATIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.GENITIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.DATIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.ABLATIVE, Number.SINGULAR), (Degree.POSITIVE, Gender.MASCULINE, Case.NOMINATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.VOCATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.ACCUSATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.GENITIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.DATIVE, Number.PLURAL), (Degree.POSITIVE, Gender.MASCULINE, Case.ABLATIVE, Number.PLURAL),
@@ -299,9 +299,3 @@ class TestAdjectivePluraleTantum:
     def test_plurale_tantum_attribute_33(self, adjective_plurale_tantum_33):
         """Test that 3-3 plural-only adjectives have plurale_tantum set to True."""
         assert adjective_plurale_tantum_33.plurale_tantum is True
-
-
-# TODO: Delete this if f-strings are removed from ending creation
-def test_multiple_endings_superlative():
-    exter = Adjective("exter", "extera", "exterum", declension="212", meaning="outside")
-    assert exter.get(degree=Degree.SUPERLATIVE, case=Case.ACCUSATIVE, number=Number.SINGULAR, gender=Gender.MASCULINE) == MultipleEndings(regular="extremum", second="extimum")
