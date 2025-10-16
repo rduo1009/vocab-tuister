@@ -4,32 +4,32 @@ from src.core.accido.misc import Case, ComponentsSubtype, EndingComponents, Gend
 
 
 def test_eq():
-    word1 = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
+    word1 = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
     assert word1 != "error"
 
 
 def test_eq_different_meaning():
-    word1 = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
-    word2 = Verb("test1o", "testare", "test3i", "test4", meaning="something else")
+    word1 = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
+    word2 = Verb("test1o", "testare", "test3i", "test4us", meaning="something else")
     assert word1 != word2
 
 
 def test_eq_different_endings():
-    word1 = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
-    word2 = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
+    word1 = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
+    word2 = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
     word2.endings["Vpreactindsg1"] = "error"
     assert word1 != word2
 
 
 def test_lt():
-    foo = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
+    foo = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
     with pytest.raises(TypeError) as error:
         _ = foo < "2"
     assert error
 
 
 def test_getitem():
-    word1 = Verb("test1o", "testare", "test3i", "test4", meaning="test5")
+    word1 = Verb("test1o", "testare", "test3i", "test4us", meaning="test5")
     assert word1["Vpreactindsg1"] == "test1o"
 
 
