@@ -65,6 +65,11 @@ class TestVerbErrors:
             Verb("celo", "celare", "celavi", "celatux", meaning="hide")
         assert str(error.value) == "Invalid perfect passive participle form: 'celatux' (must end in '-us')"
 
+    def test_errors_invalid_fap(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("caleo", "calere", "calui", "caliturux", meaning="hide")
+        assert str(error.value) == "Invalid future active participle form: 'caliturux' (must end in '-urus')"
+
     def test_errors_missing_perfect(self):
         with pytest.raises(InvalidInputError) as error:
             Verb("amo", "amare", ppp="amatus", meaning="love")  # pyright: ignore[reportCallIssue]

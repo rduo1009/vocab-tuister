@@ -480,12 +480,6 @@ class Verb(Word):
                     f"Verb '{self.present}' has no perfect, but perfect provided."
                 )
 
-            assert self.ppp is not None
-            if not self.ppp.endswith("us"):
-                raise InvalidInputError(
-                    f"Invalid perfect passive participle form: '{self.ppp}' (must end in '-us')"
-                )
-
             self.no_perfect = True
         else:
             if self.perfect is None:
