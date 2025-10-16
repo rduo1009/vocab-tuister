@@ -1,7 +1,5 @@
 """Contains rules for filtering words and questions."""
 
-from __future__ import annotations
-
 import re
 from typing import TYPE_CHECKING, Final, cast
 

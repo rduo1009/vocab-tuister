@@ -41,8 +41,21 @@ if sys.platform == "darwin":
 
     if target_arch == "universal2":
         # fmt: off
-        replaced_stdlib_extensions = ("_asyncio", "_bisect", "_blake2", "_bz2", "_codecs_cn", "_codecs_hk", "_codecs_iso2022", "_codecs_jp", "_codecs_kr", "_codecs_tw", "_contextvars", "_csv", "_ctypes", "_curses", "_datetime", "_dbm", "_decimal", "_elementtree", "_hashlib", "_heapq", "_json", "_lzma", "_md5", "_multibytecodec", "_multiprocessing", "_opcode", "_pickle", "_posixshmem", "_posixsubprocess", "_queue", "_random", "_scproxy", "_sha1", "_sha2", "_sha3", "_socket", "_sqlite3", "_ssl", "_statistics", "_struct", "_uuid", "array", "binascii", "fcntl", "grp", "math", "mmap", "pyexpat", "readline", "resource", "select", "syslog", "termios", "unicodedata", "zlib")
-        replaced_dylibs = ("libpython3.13", "libintl.8", "liblzma.5", "libmpdec.4", "libcrypto.3", "libb2.1", "libssl.3", "libncursesw.6", "libreadline.8", "libsqlite3.0")
+        replaced_stdlib_extensions = (
+            "_asyncio", "_bisect", "_blake2", "_bz2", "_codecs_cn", "_codecs_hk", "_codecs_iso2022", "_codecs_jp", "_codecs_kr",
+            "_codecs_tw", "_csv", "_ctypes", "_ctypes_test", "_curses", "_curses_panel", "_dbm", "_decimal", "_elementtree",
+            "_hashlib","_heapq", "_hmac", "_interpchannels", "_interpqueues", "_interpreters", "_json", "_lsprof", "_lzma",
+            "_md5", "_multibytecodec", "_multiprocessing", "_pickle", "_posixshmem", "_posixsubprocess", "_queue", "_random",
+            "_remote_debugging", "_scproxy", "_sha1", "_sha2", "_sha3", "_socket", "_sqlite3", "_ssl", "_statistics", "_struct",
+            "_testbuffer", "_testcapi", "_testclinic", "_testclinic_limited", "_testimportmultiple", "_testinternalcapi",
+            "_testlimitedcapi", "_testmultiphase", "_testsinglephase", "_tkinter", "_uuid", "_xxtestfuzz", "_zoneinfo", "_zstd",
+            "array", "binascii", "cmath", "fcntl", "grp", "math", "mmap", "pyexpat", "readline", "resource", "select", "syslog",
+            "termios", "unicodedata", "xxlimited", "xxlimited_35", "xxsubtype", "zlib",
+        )
+        replaced_dylibs = (
+            "libpython3.14", "libssl.3", "libcrypto.3", "libzstd.1", "libintl.8", "liblzma.5", "libmpdec.4", "libreadline.8",
+            "libz.1",
+        )
         # fmt: on
 
         def replace_binaries(dep_list):
@@ -60,8 +73,8 @@ if sys.platform == "darwin":
 
             for extension in replaced_stdlib_extensions:
                 replace_binary(
-                    f"lib-dynload/{extension}.cpython-313-darwin.so",
-                    f"src/_build/macos/stdlib/{extension}.cpython-313-darwin.so",
+                    f"python3.14/lib-dynload/{extension}.cpython-314-darwin.so",
+                    f"src/_build/macos/stdlib/{extension}.cpython-314-darwin.so",
                 )
 
             for dylib in replaced_dylibs:
@@ -81,7 +94,7 @@ else:
     raise ValueError(f"Unsupported platform {sys.platform}")
 
 data_files = [
-    ("src/core/transfero/wn_data/wn.db.xz", "src/core/transfero/wn_data"),
+    ("src/core/transfero/wn_data/wn.db.zst", "src/core/transfero/wn_data"),
     ("src/core/transfero/adj_to_adv.json", "src/core/transfero"),
     ("src/server/templates", "src/server/templates"),
     ("src/server/static", "src/server/static"),
@@ -99,16 +112,7 @@ wn_data_files = [
     (os.path.join(wn_dir, "schema.sql"), "wn"),
 ]
 
-hiddenimports = [
-    # Numpy
-    "numpy.core.multiarray",
-
-    # Tomli
-    # *collect_submodules("tomli"),
-    "ddc459050edb75a05942__mypyc",  # MacOS
-    "5bae8a57b5ef85818b48__mypyc",  # Linux (both arm and amd64)
-    "3c22db458360489351e4__mypyc",  # Windows
-]  # fmt: skip
+hiddenimports = ["numpy.core.multiarray"] 
 
 a = Analysis(
     ["src/__main__.py"],

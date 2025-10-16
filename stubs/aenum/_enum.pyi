@@ -1,7 +1,5 @@
 # pyright: reportAny=false, reportExplicitAny=false
 
-from __future__ import annotations
-
 from collections import OrderedDict
 from collections.abc import Iterator, Mapping, Sequence
 from typing import Any, Literal, TypeVar

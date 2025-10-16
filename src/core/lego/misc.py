@@ -1,7 +1,5 @@
 """Contains miscellaneous constants and classes used by ``lego``."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Final
 

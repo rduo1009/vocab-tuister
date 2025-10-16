@@ -17,8 +17,8 @@ poetry install --only main
 # Install deps that need to be in universal2
 if [[ "$target_arch" == "universal2" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/90/73/bcb0e36614601016552fa9344544a3a2ae1809dc1401b100eab02e772e1f/regex-2024.11.6-cp313-cp313-macosx_10_13_universal2.whl
-        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/83/0e/67eb10a7ecc77a0c2bbe2b0235765b98d164d81600746914bebada795e97/MarkupSafe-3.0.2-cp313-cp313-macosx_10_13_universal2.whl
+        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl
+        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/44/b7/3b4663aa3b4af16819f2ab6a78c4111c7e9b066725d8107753c2257448a5/regex-2025.9.18-cp314-cp314-macosx_10_13_universal2.whl
         poetry run python3 -m pip install --force src/_build/macos/wheels/*.whl
     fi
 fi

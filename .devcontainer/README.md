@@ -8,8 +8,8 @@ The devcontainer provides a complete development environment with:
 
 ### Languages & Runtimes
 
-- **Python 3.13** - Required for the vocab-tuister server
-- **Go 1.24** - Required for the vocab-tuister client
+- **Python 3.14** - Required for the vocab-tuister server
+- **Go 1.25** - Required for the vocab-tuister client
 
 ### Development Tools
 

@@ -1,7 +1,5 @@
 """Contains functions that inflect English pronouns."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Final
 
 from ..accido.misc import Case, ComponentsType, Number
