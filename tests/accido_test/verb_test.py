@@ -21,6 +21,60 @@ class TestVerbErrors:
             Verb("celo", "celare", "error", "celatus", meaning="hide")
         assert str(error.value) == "Invalid perfect form: 'error' (must end in '-i')"
 
+    def test_ppp_ends_in_um(self):
+        word1 = Verb("celo", "celare", "celavi", "celatum", meaning="hide")
+        assert word1.endings["Vperpasindsg1"] == "celatus sum"
+
+    def test_errors_missing_infinitive(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("celo", meaning="hide")
+        assert str(error.value) == "Verb 'celo' is not irregular, but no infinitive provided."
+
+    def test_errors_deponent_missing_perfect(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("loquor", "loqui", meaning="say")
+        assert str(error.value) == "Verb 'loquor' is not irregular, but no perfect provided."
+
+    def test_errors_deponent_with_ppp(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("loquor", "loqui", "locutus sum", "locutus", meaning="say")
+        assert str(error.value) == "Verb 'loquor' is deponent, but ppp provided."
+
+    def test_errors_deponent_invalid_perfect(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("loquor", "loqui", "locutus", meaning="say")
+        assert str(error.value) == "Invalid perfect form: 'locutus' (must have 'sum')"
+
+    def test_errors_semideponent_with_ppp(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("fido", "fidere", "fisus sum", "fisus", meaning="trust")
+        assert str(error.value) == "Verb 'fido' is semi-deponent, but ppp provided."
+
+    def test_errors_semideponent_invalid_present(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("fidus", "fidere", "fisus sum", meaning="trust")
+        assert str(error.value) == "Invalid present form: 'fidus' (must end in '-o')"
+
+    def test_errors_semideponent_invalid_infinitive(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("fido", "fiderus", "fisus sum", meaning="trust")
+        assert str(error.value) == "Invalid infinitive form for semi-deponent: 'fiderus'"
+
+    def test_errors_invalid_ppp_not_us(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("celo", "celare", "celavi", "celatux", meaning="hide")
+        assert str(error.value) == "Invalid perfect passive participle form: 'celatux' (must end in '-us')"
+
+    def test_errors_missing_perfect(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("amo", "amare", ppp="amatus", meaning="love")  # pyright: ignore[reportCallIssue]
+        assert str(error.value) == "Verb 'amo' is not irregular, but no perfect provided."
+
+    def test_errors_missing_ppp(self):
+        with pytest.raises(InvalidInputError) as error:
+            Verb("amo", "amare", "amavi", meaning="love")
+        assert str(error.value) == "Verb 'amo' is not irregular or deponent, but no ppp provided."
+
 
 class TestVerbDunder:
     def test_getnone(self):

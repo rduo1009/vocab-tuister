@@ -364,6 +364,11 @@ class Verb(Word):
             self.impersonal_passive = self.present in IMPERSONAL_PASSIVE_VERBS
             self.no_future = self.present in MISSING_FUTURE_VERBS
 
+            if not self.present.endswith("o") and not irregular_flag:
+                raise InvalidInputError(
+                    f"Invalid present form: '{self.present}' (must end in '-o')"
+                )
+
             # Determine stems
             if is_irregular_verb(self.present):
                 self.conjugation = get_irregular_verb_conjugation(self.present)
@@ -475,6 +480,12 @@ class Verb(Word):
                     f"Verb '{self.present}' has no perfect, but perfect provided."
                 )
 
+            assert self.ppp is not None
+            if not self.ppp.endswith("us"):
+                raise InvalidInputError(
+                    f"Invalid perfect passive participle form: '{self.ppp}' (must end in '-us')"
+                )
+
             self.no_perfect = True
         else:
             if self.perfect is None:
@@ -503,6 +514,11 @@ class Verb(Word):
                     f"Verb '{self.present}' does not have a future active participle provided."
                 )
 
+            if not self.ppp.endswith("urus"):
+                raise InvalidInputError(
+                    f"Invalid future active participle form: '{self.ppp}' (must end in '-urus')"
+                )
+
             self.no_ppp = True
             self.no_supine = True
             self.fap_fourthpp = True
@@ -516,7 +532,12 @@ class Verb(Word):
 
             # HACK: convert supine into ppp, even if the ppp doesn't exist
             if self.ppp.endswith("um"):
-                self.ppp = self.ppp[:-2] + "um"
+                self.ppp = self.ppp[:-2] + "us"
+
+            if not self.ppp.endswith("us"):
+                raise InvalidInputError(
+                    f"Invalid perfect passive participle form: '{self.ppp}' (must end in '-us')"
+                )
 
             self._ppp_stem = self.ppp[:-2]
             self._fap_stem = self.ppp[:-1] + "r"
