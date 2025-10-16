@@ -1,5 +1,7 @@
 """Contains edge case endings."""
 
+# ruff: noqa: SIM905
+
 import re
 from typing import TYPE_CHECKING, Annotated, Final, Literal, TypeIs, cast
 
@@ -11,215 +13,156 @@ if TYPE_CHECKING:
 
     from .type_aliases import Conjugation, Ending, Endings
 
-# TODO: Change formatting to make it clear that lines be longer here to 130 e.g. with below horizontal line
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # DEFECTIVE VERBS
 
-# FIXME: These lists are incorrect in places. If a verb has multiple etymologies,
-# and one of those is defective, then the word will show up here even the other
-# etymologies are not defective.
+# FIXME: These lists are incorrect in places. If a verb has multiple etymologies, and one of those is defective, then the word
+# will show up here even the other etymologies are not defective.
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_active-only_verbs
 # deletions: cedo (multiple etymologies)
-ACTIVE_ONLY_VERBS: Final[set[str]] = {
-    "abaeto", "abbaeto", "abbatizo", "abbito", "abito", "abluo", "abnumero", "abnuto", "abolesco", "abrenuntio", "absum",
-    "abundo", "accedo", "accersio", "accieo", "accino", "accipitro", "accresco", "aceo", "acesco", "acontizo", "acquiesco",
-    "adaestuo", "adambulo", "adaugesco", "adbito", "adcedo", "adcresco", "addecet", "addisco", "addormio", "addormisco",
-    "adequito", "aderro", "adesurio", "adfleo", "adfremo", "adfrio", "adfulgeo", "adhaereo", "adhaeresco", "adheresco",
-    "adhinnio", "adiaceo", "adincresco", "adito", "adjaceo", "adlubesco", "adluceo", "adludio", "adluo", "admeo", "admigro",
-    "admugio", "admurmuro", "adnato", "adnavigo", "adno", "adnullo", "adnuto", "adoleo", "adolesco", "adpertineo", "adploro",
-    "adquiesco", "adremigo", "adrepo", "adsibilo", "adsideo", "adsido", "adsisto", "adstrepo", "adstupeo", "adsum", "advento",
-    "advesperascit", "advigilo", "aegresco", "aegroto", "aequivaleo", "aerugino", "aerusco", "aestivo", "affremo", "affugio",
-    "affulgeo", "aiio", "aio", "albeo", "albesco", "alesco", "algeo", "algesco", "allegorizo", "alluceo", "amaresco", "amtruo",
-    "annato", "annavigo", "annicto", "anno", "annuto", "antesto", "antevolo", "antisto", "apage", "apparesco", "appertineo",
-    "apploro", "apposco", "arboresco", "ardesco", "areo", "aresco", "arguto", "arrepo", "assenesco", "assibilo", "assideo",
-    "assido", "assisto", "assum", "astrepo", "astupeo", "augesco", "auresco", "auroresco", "aurugino", "autumnascit",
-    "autumnescit", "autumno", "auxilio", "aveo", "babello", "baeto", "balbutio", "balo", "barbio", "barrio", "baulo", "bebo",
-    "bello", "beneplaceo", "beto", "blatero", "bombio", "bombizo", "bubo", "bubulcito", "bullesco", "cacaturio", "calefacto",
-    "caleo", "calesco", "calleo", "calveo", "cambio", "candeo", "candesco", "caneo", "canesco", "casso", "catulio", "caurio",
-    "caverno", "celebresco", "cenaturio", "ceveo", "cineresco", "circo", "circumcurso", "circumdoleo", "circumerro",
-    "circumfulgeo", "circumgesto", "circumiaceo", "circumluceo", "circumluo", "circumpendeo", "circumsideo", "circumsido",
-    "circumsilio", "circumstupeo", "circumvestio", "claresco", "clocito", "clueo", "cluo", "coacesco", "coalesco", "coest",
-    "cohaereo", "cohaeresco", "cohereo", "colliquesco", "colluceo", "colludo", "commadeo", "commaneo", "commarceo", "commeto",
-    "commiseresco", "commitigo", "commurmuro", "compareo", "compluit", "computresco", "concaleo", "concido", "concresco",
-    "condecet", "condisco", "condoleo", "condormio", "condormisco", "confluo", "confulgeo", "congruo", "coniveo", "conluceo",
-    "conludo", "conniveo", "conputresco", "conquiesco", "conquinisco", "conresurgo", "consanesco", "conscio", "consenesco",
-    "consilesco", "consipio", "consono", "conspiro", "conspondeo", "consto", "constupeo", "consuadeo", "consurgo", "contabesco",
-    "contenebresco", "conticeo", "contrasto", "contremesco", "contremo", "contumulo", "convaleo", "convalesco", "convecto", 
-    "conviso", "cornesco", "correpo", "correspondeo", "corresurgo", "corrideo", "corusco", "crebesco", "crebresco", "crepo",
-    "cresco", "crispio", "crocio", "crocito", "crotolo", "crudesco", "cubo", "cucio", "cucubo", "cucurio", "cursito", "decet",
-    "decido", "decresco", "dedecet", "dedisco", "dedoleo", "deeo", "deferveo", "defervesco", "defloresco", "dego", "dehisco",
-    "deliquesco", "deliro", "delitesco", "delitisco", "demano", "denarro", "denormo", "dependeo", "depropero", "derigeo",
-    "desaevio", "descisco", "desenesco", "deserpo", "desideo", "desipio", "desisto", "destico", "desum", "desurgo", "devigesco",
-    "diffingo", "diffleo", "diffluo", "diluceo", "dilucesco", "diluculat", "disconvenio", "discrepo", "dishiasco", "dispereo",
-    "disserpo", "dissono", "dissuadeo", "dissulto", "distaedet", "disto", "ditesco", "doleo", "dormisco", "drenso", "drindio",
-    "drivoro", "dulcesco", "duresco", "edisco", "edormio", "eduro", "effervesco", "effervo", "effloreo", "effloresco", "effulgeo",
-    "egeo", "elanguesco", "elatro", "eluceo", "elucesco", "elugeo", "emacresco", "emaneo", "emarcesco", "emeto", "emineo",
-    "enitesco", "equio", "equito", "erepo", "erugino", "escado", "eschado", "evanesco", "exacerbesco", "exalbesco", "exardesco",
-    "exaresco", "exaugeo", "excado", "excandesco", "excido", "excresco", "exhorreo", "exilio", "existo", "exolesco", "expectoro",
-    "exposco", "exserto", "exsilio", "exsisto", "exsolesco", "exsono", "exsto", "exsurgo", "extabesco", "exto", "exurgo",
-    "fabrio", "fatisco", "felio", "fervesco", "fetesco", "fetifico", "fistulesco", "flaccesco", "flagro", "flaveo", "flavesco",
-    "floreo", "floresco", "fluo", "folleo", "formico", "fraceo", "fracesco", "fraglo", "fragro", "frendesco", "frigeo",
-    "frigesco", "frigutio", "frondeo", "frondesco", "frugesco", "fulgeo", "fulgesco", "fulgo", "furo", "gannio", "gestio",
-    "gingrio", "glabresco", "glattio", "glaucio", "glisco", "glocio", "gloctoro", "glottoro", "gracillo", "grandesco",
-    "grandinat", "gravesco", "grundio", "grunnio", "hebeo", "hebesco", "herbesco", "hilaresco", "hinnio", "hio", "hirrio",
-    "hittio", "hiulco", "horripilo", "humeo", "iaceo", "ignesco", "illuceo", "immaneo", "immigro", "immineo", "immugio",
-    "immurmuro", "inacesco", "inaestuo", "inalbeo", "inalbesco", "inambulo", "inaresco", "incalesco", "incalfacio", "incandesco",
-    "incanesco", "incido", "incino", "inclaresco", "increbesco", "increbresco", "incresco", "incubo", "incumbo", "incurvesco",
-    "indecoro", "induresco", "ineptio", "inerro", "infenso", "inferveo", "infervesco", "infremo", "ingravesco", "ingruo",
-    "inhaereo", "inhaeresco", "inhorreo", "inhorresco", "inluceo", "inmaneo", "inmineo", "inquilino", "inscendo", "insenesco",
-    "inserpo", "insibilo", "insilio", "insolesco", "insono", "instupeo", "insum", "intabesco", "intepeo", "interaresco",
-    "interbito", "intercido", "intereo", "interequito", "interfugio", "interfulgeo", "interiaceo", "interjaceo", "interluceo",
-    "intermaneo", "internecto", "interniteo", "intersono", "intersum", "intervolito", "intervolo", "intremo", "intribuo",
-    "intumesco", "invaleo", "invalesco", "invergo", "inveterasco", "involito", "iuvenesco", "jaceo", "juvenesco", "labasco",
-    "lactesco", "lallo", "lampo", "languesco", "lapidesco", "lassesco", "lateo", "latesco", "lentesco", "liceo", "limo", "lipio",
-    "lippio", "liqueo", "liquesco", "longisco", "loretho", "luceo", "lucesco", "lucisco", "luo", "lutesco", "maceo", "maceresco",
-    "macesco", "macresco", "madeo", "madesco", "malo", "marceo", "marcesco", "matresco", "maturesco", "maumo", "mellifico",
-    "miccio", "mico", "mintrio", "minurrio", "miseresco", "miseret", "mitesco", "mitilo", "mollesco", "morigero", "muceo",
-    "mucesco", "mugio", "murrio", "mutio", "muttio", "nausco", "nigresco", "ningit", "ninguit", "ninguo", "niteo", "nitesco",
-    "nivesco", "no", "noctesco", "nolo", "notesco", "nupturio", "obaresco", "obatresco", "obbrutesco", "obdormisco", "obdulcesco",
-    "obduresco", "obfulgeo", "obhorreoobiaceo", "objaceo", "oblitesco", "obmutesco", "oboleo", "obrigesco", "obsido", "obsolesco",
-    "obsordesco", "obstipesco", "obstupesco", "obsum", "obsurdesco", "obtenebresco", "obticeo", "obtorpeo", "obvio", "occallesco",
-    "occido", "offulgeo", "oggannio", "*oleo", "oleo", "olesco", "olo", "onco", "oportet", "oppedo", "oscito", "palleo",
-    "pallesco", "palpebro", "palpito", "papo", "pappo", "passito", "pateo", "patesco", "pauperasco", "paupulo", "pauso", "pedo",
-    "pelluceo", "pendeo", "percalleo", "percrebesco", "percrebresco", "perdo", "perdormisco", "pereffluo", "perferveo",
-    "perhorreo", "perlateo", "perluceo", "permaneo", "permereo", "perniteo", "peroleo", "persedeo", "perserpo", "persilio",
-    "persisto", "pertimeo", "pertineo", "pervaleo", "pervigeo", "pervolo", "pilpito", "pinguesco", "pipilo", "pipio", "pipo",
-    "pisito", "plipio", "pluit", "plumesco", "pluo", "praeambulo", "praeemineo", "praefloreo", "praefugio", "praefulgeo",
-    "praegestio", "praeiaceo", "praejaceo", "praeluceo", "praeniteo", "praeoleo", "praependeo", "praepolleo", "praesideo",
-    "praesono", "praesum", "praeterfugio", "praetimeo", "praevaleo", "praevalesco", "procido", "prodeo", "profluo", "proluceo",
-    "promineo", "propendeo", "proprio", "prorepo", "proserpo", "prosto", "prosum", "prurio", "pubesco", "pulpo", "purpurasco",
-    "putesco", "putreo", "putresco", "quaxo", "quiesco", "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco",
-    "ravio", "rebello", "recaleo", "recido", "recrepo", "recumbo", "redintegrasco", "redoleo", "redormio", "refert", "refloreo",
-    "refluo", "refrigesco", "refulgeo", "relanguesco", "reluceo", "remaneo", "remollesco", "remugio", "renideo", "reniteo",
-    "repauso", "repo", "repto", "resido", "resipisco", "resplendeo", "resurgo", "retono", "reviresco", "revivesco", "revivisco",
-    "revivo", "ricio", "ricto", "rigesco", "rubesco", "rufesco", "rugio", "rumino", "sagio", "salveo", "sanesco", "sanguino",
-    "sapio", "scabo", "scateo", "scato", "scaturio", "scaturrio", "scripturio", "secubo", "senesco", "seresco", "serpo", "sevio",
-    "siccesco", "sido", "silesco", "soccito", "sordeo", "sordesco", "splendeo", "splendesco", "spumesco", "squaleo", "sternuo",
-    "stinguo", "strideo", "strido", "stritto", "studeo", "stupeo", "stupesco", "subfulgeo", "subiaceo", "subjaceo", "subluceo",
-    "suboleo", "subrepo", "subrubeo", "subsilio", "subsisto", "subsum", "subterfugio", "subteriaceo", "subterjaceo", "subtimeo",
-    "succido", "succino", "succresco", "succubo", "sufferveo", "suffugio", "suffulgeo", "sugglutio", "sullaturio", "sum",
-    "superbio", "supercresco", "supereffluo", "superemineo", "superfugio", "superiaceo", "superimmineo", "superjaceo",
-    "superluceo", "superoccupo", "supersapio", "supersideo", "supersto", "supersum", "suprasedeo", "supterfugio", "surio",
-    "tabeo", "tabesco", "tenebresco", "tenebrico", "tepeo", "tepesco", "tetrinnio", "tinnipo", "tintino", "torpeo", "torpesco",
-    "traluceo", "transfluo", "transfugio", "transfulgeo", "transilio", "transluceo", "transpareo", "transvado", "transvenio",
-    "trico", "trittilo", "trucilo", "tumeo", "tumesco", "turgeo", "turgesco", "tussio", "umbresco", "umeo", "umesco", "unco",
-    "urco", "urvo", "vado", "vagio", "vago", "valeo", "valesco", "vanesco", "varico", "vento", "vero", "vesanio", "vesico",
-    "vesperascit", "veterasco", "veteresco", "vigeo", "vigesco", "vireo", "viresco", "viridesco", "volito", "volo",
-}  # fmt: skip
+ACTIVE_ONLY_VERBS: Final[set[str]] = set("""abaeto abbaeto abbatizo abbito abito abluo abnumero abnuto abolesco abrenuntio
+absum abundo accedo accersio accieo accino accipitro accresco aceo acesco acontizo acquiesco adaestuo adambulo adaugesco adbito
+adcedo adcresco addecet addisco addormio addormisco adequito aderro adesurio adfleo adfremo adfrio adfulgeo adhaereo adhaeresco
+adheresco adhinnio adiaceo adincresco adito adjaceo adlubesco adluceo adludio adluo admeo admigro admugio admurmuro adnato
+adnavigo adno adnullo adnuto adoleo adolesco adpertineo adploro adquiesco adremigo adrepo adsibilo adsideo adsido adsisto
+adstrepo adstupeo adsum advento advesperascit advigilo aegresco aegroto aequivaleo aerugino aerusco aestivo affremo affugio
+affulgeo aiio aio albeo albesco alesco algeo algesco allegorizo alluceo amaresco amtruo annato annavigo annicto anno annuto
+antesto antevolo antisto apage apparesco appertineo apploro apposco arboresco ardesco areo aresco arguto arrepo assenesco
+assibilo assideo assido assisto assum astrepo astupeo augesco auresco auroresco aurugino autumnascit autumnescit autumno auxilio
+aveo babello baeto balbutio balo barbio barrio baulo bebo bello beneplaceo beto blatero bombio bombizo bubo bubulcito bullesco
+cacaturio calefacto caleo calesco calleo calveo cambio candeo candesco caneo canesco casso catulio caurio caverno celebresco
+cenaturio ceveo cineresco circo circumcurso circumdoleo circumerro circumfulgeo circumgesto circumiaceo circumluceo circumluo
+circumpendeo circumsideo circumsido circumsilio circumstupeo circumvestio claresco clocito clueo cluo coacesco coalesco coest
+cohaereo cohaeresco cohereo colliquesco colluceo colludo commadeo commaneo commarceo commeto commiseresco commitigo commurmuro
+compareo compluit computresco concaleo concido concresco condecet condisco condoleo condormio condormisco confluo confulgeo
+congruo coniveo conluceo conludo conniveo conputresco conquiesco conquinisco conresurgo consanesco conscio consenesco consilesco
+consipio consono conspiro conspondeo consto constupeo consuadeo consurgo contabesco contenebresco conticeo contrasto contremesco
+contremo contumulo convaleo convalesco convecto conviso cornesco correpo correspondeo corresurgo corrideo corusco crebesco
+crebresco crepo cresco crispio crocio crocito crotolo crudesco cubo cucio cucubo cucurio cursito decet decido decresco dedecet
+dedisco dedoleo deeo deferveo defervesco defloresco dego dehisco deliquesco deliro delitesco delitisco demano denarro denormo
+dependeo depropero derigeo desaevio descisco desenesco deserpo desideo desipio desisto destico desum desurgo devigesco diffingo
+diffleo diffluo diluceo dilucesco diluculat disconvenio discrepo dishiasco dispereo disserpo dissono dissuadeo dissulto distaedet
+disto ditesco doleo dormisco drenso drindio drivoro dulcesco duresco edisco edormio eduro effervesco effervo effloreo effloresco
+effulgeo egeo elanguesco elatro eluceo elucesco elugeo emacresco emaneo emarcesco emeto emineo enitesco equio equito erepo
+erugino escado eschado evanesco exacerbesco exalbesco exardesco exaresco exaugeo excado excandesco excido excresco exhorreo
+exilio existo exolesco expectoro exposco exserto exsilio exsisto exsolesco exsono exsto exsurgo extabesco exto exurgo fabrio
+fatisco felio fervesco fetesco fetifico fistulesco flaccesco flagro flaveo flavesco floreo floresco fluo folleo formico fraceo
+fracesco fraglo fragro frendesco frigeo frigesco frigutio frondeo frondesco frugesco fulgeo fulgesco fulgo furo gannio gestio
+gingrio glabresco glattio glaucio glisco glocio gloctoro glottoro gracillo grandesco grandinat gravesco grundio grunnio hebeo
+hebesco herbesco hilaresco hinnio hio hirrio hittio hiulco horripilo humeo iaceo ignesco illuceo immaneo immigro immineo immugio
+immurmuro inacesco inaestuo inalbeo inalbesco inambulo inaresco incalesco incalfacio incandesco incanesco incido incino
+inclaresco increbesco increbresco incresco incubo incumbo incurvesco indecoro induresco ineptio inerro infenso inferveo
+infervesco infremo ingravesco ingruo inhaereo inhaeresco inhorreo inhorresco inluceo inmaneo inmineo inquilino inscendo insenesco
+inserpo insibilo insilio insolesco insono instupeo insum intabesco intepeo interaresco interbito intercido intereo interequito
+interfugio interfulgeo interiaceo interjaceo interluceo intermaneo internecto interniteo intersono intersum intervolito intervolo
+intremo intribuo intumesco invaleo invalesco invergo inveterasco involito iuvenesco jaceo juvenesco labasco lactesco lallo lampo
+languesco lapidesco lassesco lateo latesco lentesco liceo limo lipio lippio liqueo liquesco longisco loretho luceo lucesco
+lucisco luo lutesco maceo maceresco macesco macresco madeo madesco malo marceo marcesco matresco maturesco maumo mellifico miccio
+mico mintrio minurrio miseresco miseret mitesco mitilo mollesco morigero muceo mucesco mugio murrio mutio muttio nausco nigresco
+ningit ninguit ninguo niteo nitesco nivesco no noctesco nolo notesco nupturio obaresco obatresco obbrutesco obdormisco obdulcesco
+obduresco obfulgeo obhorreoobiaceo objaceo oblitesco obmutesco oboleo obrigesco obsido obsolesco obsordesco obstipesco obstupesco
+obsum obsurdesco obtenebresco obticeo obtorpeo obvio occallesco occido offulgeo oggannio oleo olesco olo onco oportet oppedo
+oscito palleo pallesco palpebro palpito papo pappo passito pateo patesco pauperasco paupulo pauso pedo pelluceo pendeo percalleo
+percrebesco percrebresco perdo perdormisco pereffluo perferveo perhorreo perlateo perluceo permaneo permereo perniteo peroleo
+persedeo perserpo persilio persisto pertimeo pertineo pervaleo pervigeo pervolo pilpito pinguesco pipilo pipio pipo pisito plipio
+pluit plumesco pluo praeambulo praeemineo praefloreo praefugio praefulgeo praegestio praeiaceo praejaceo praeluceo praeniteo
+praeoleo praependeo praepolleo praesideo praesono praesum praeterfugio praetimeo praevaleo praevalesco procido prodeo profluo
+proluceo promineo propendeo proprio prorepo proserpo prosto prosum prurio pubesco pulpo purpurasco putesco putreo putresco quaxo
+quiesco quirrito rabio racco radicesco ranceo rancesco ranco ravio rebello recaleo recido recrepo recumbo redintegrasco redoleo
+redormio refert refloreo refluo refrigesco refulgeo relanguesco reluceo remaneo remollesco remugio renideo reniteo repauso repo
+repto resido resipisco resplendeo resurgo retono reviresco revivesco revivisco revivo ricio ricto rigesco rubesco rufesco rugio
+rumino sagio salveo sanesco sanguino sapio scabo scateo scato scaturio scaturrio scripturio secubo senesco seresco serpo sevio
+siccesco sido silesco soccito sordeo sordesco splendeo splendesco spumesco squaleo sternuo stinguo strideo strido stritto studeo
+stupeo stupesco subfulgeo subiaceo subjaceo subluceo suboleo subrepo subrubeo subsilio subsisto subsum subterfugio subteriaceo
+subterjaceo subtimeo succido succino succresco succubo sufferveo suffugio suffulgeo sugglutio sullaturio sum superbio supercresco
+supereffluo superemineo superfugio superiaceo superimmineo superjaceo superluceo superoccupo supersapio supersideo supersto
+supersum suprasedeo supterfugio surio tabeo tabesco tenebresco tenebrico tepeo tepesco tetrinnio tinnipo tintino torpeo torpesco
+traluceo transfluo transfugio transfulgeo transilio transluceo transpareo transvado transvenio trico trittilo trucilo tumeo
+tumesco turgeo turgesco tussio umbresco umeo umesco unco urco urvo vado vagio vago valeo valesco vanesco varico vento vero
+vesanio vesico vesperascit veterasco veteresco vigeo vigesco vireo viresco viridesco volito volo""".split())  # fmt: skip
+
 
 # FIXME: Handling 'accido' with multiple meanings is broken
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem
 # additions: possum (defective), nolo (defective), malo (defective)
 # deletions: incumbo (probably mistake), ruo (multiple etymologies), cedo (multiple etymologies)
-MISSING_PPP_VERBS: Final[set[str]] = {
-    "abaeto", "abago", "abarceo", "abbaeto", "abbatizo", "abbito", "abequito", "aberceo", "abhorresco", "abito", "abiturio",
-    "abnato", "abnumero", "abnuto", "abolesco", "aboriscor", "aborto", "abrenuntio", "absilio", "absisto", "absono", "absto",
-    "abstulo", "accano", "accersio", "accessito", "accido", "accieo", "accipitro", "accubo", "aceo", "acesco", "acetasco",
-    "acontizo", "adaestuo", "adambulo", "adaugesco", "adbello", "adbito", "adcubo", "addecet", "addenseo", "addisco", "addormio",
-    "addormisco", "aderro", "adesurio", "adfleo", "adformido", "adfremo", "adfrio", "adfulgeo", "adgemo", "adgravesco", "adiaceo",
-    "adincresco", "adjaceo", "adlubesco", "adluceo", "adludio", "adluo", "admeo", "admigro", "admugio", "adnicto", "adnubilo",
-    "adnullo", "adnuto", "adnutrio", "adoleo", "adolesco", "adpertineo", "adploro", "adpostulo", "adprenso", "adremigo", "adrepo",
-    "adservio", "adsibilo", "adsido", "adsisto", "adsono", "adsto", "adstrepo", "adstupeo", "adtolero", "adtollo", "adtorqueo",
-    "adurgeo", "advecto", "advesperascit", "advivo", "aegreo", "aegresco", "aerusco", "affleo", "afformido", "affremo", "affrio",
-    "affugio", "affulgeo", "aiio", "aio", "albeo", "albesco", "albicasco", "alesco", "algeo", "algesco", "allegorizo", "alluceo",
-    "alludio", "alluo", "alto", "amaresco", "ambigo", "amtruo", "amylo", "annicto", "anno", "annubilo", "annuto", "annutrio",
-    "antecello", "antecurro", "antepolleo", "antesto", "antevio", "antisto", "apage", "aperto", "apolactizo", "apotheco",
-    "apozymo", "apparesco", "appertineo", "apploro", "apposco", "appostulo", "apprenso", "apricor", "arboresco", "ardesco",
-    "areo", "aresco", "arguto", "arrepo", "assenesco", "asservio", "assibilo", "assido", "assisto", "assono", "astituo", "asto",
-    "astrepo", "astrifico", "astupeo", "attolero", "attollo", "attorqueo", "attorreo", "aufugio", "augesco", "augifico",
-    "auresco", "auroresco", "auroro", "aurugino", "autumnascit", "autumnescit", "autumno", "aveo", "baeto", "balbutio", "barbio",
-    "batto", "battuo", "batuo", "baulo", "bebo", "bellor", "beto", "blatio", "bombio", "bovinor", "bubo", "bubulcito", "bullesco",
-    "cacaturio", "calefacto", "calesco", "calleo", "calveo", "calvor", "cambio", "candeo", "candesco", "candico", "candifico",
-    "caneo", "canesco", "carro", "casso", "catulio", "caumo", "caurio", "caverno", "celebresco", "cenaturio", "ceveo",
-    "cineresco", "cio", "circito", "circumcurro", "circumcurso", "circumdoleo", "circumerro", "circumfulgeo", "circumgesto",
-    "circumiaceo", "circumluceo", "circumluo", "circumpendeo", "circumsido", "circumsilio", "circumsisto", "circumsto",
-    "circumstupeo", "circumtergeo", "circumtono", "circumtorqueo", "circumtueor", "circumvado", "circumverto", "circumvestio",
-    "circumvorto", "clango", "clareo", "claresco", "claudeo", "clocito", "clueo", "clueor", "cluo", "coacesco", "coexsisto",
-    "cohaeresco", "cohorresco", "collineo", "colliquesco", "colluceo", "commadeo", "commaneo", "commarceo", "commemini",
-    "commeto", "commiseresco", "commitigo", "compalpo", "comparco", "compasco", "compendo", "comperco", "compesco", "compluit",
-    "comprecor", "computresco", "concaleo", "concalesco", "concallesco", "concido", "concupio", "condecet", "condenseo",
-    "condisco", "condoleo", "condolesco", "condormio", "condormisco", "conferveo", "confervesco", "confluo", "conforio",
-    "confremo", "confulgeo", "congemo", "congruo", "coniveo", "conluceo", "conniveo", "conpesco", "conputresco", "conquinisco",
-    "conresurgo", "conrideo", "consanesco", "consarrio", "consenesco", "consilesco", "consimilo", "consipio", "consono",
-    "constupeo", "consuadeo", "contabesco", "contenebresco", "conticeo", "conticesco", "conticisco", "continor", "contollo",
-    "contrasto", "contremesco", "contremisco", "contremo", "contumulo", "convaleo", "convecto", "convergo", "converro",
-    "convescor", "conviso", "convomo", "convorro", "cornesco", "correpo", "corresurgo", "corrideo", "cratio", "crebesco",
-    "crebresco", "crispio", "crocio", "crotolo", "crudesco", "cucio", "cucubo", "cucurio", "cunio", "cupisco", "cursito",
-    "decet", "decido", "decumbo", "dedecet", "dedisco", "dedoleo", "deeo", "defervesco", "defloreo", "defloresco", "defugio",
-    "dego", "degulo", "dehisco", "delambo", "deliquesco", "deliro", "delitesco", "delitisco", "delumbo", "demadesco", "demolio",
-    "denarro", "denormo", "denseo", "dependeo", "deposco", "depropero", "depudet", "derepo", "derigeo", "derigesco", "deruo",
-    "desenesco", "deserpo", "desideo", "desido", "desipio", "desorbeo", "despecto", "despuo", "destico", "desuesco", "desurgo",
-    "devigesco", "dicturio", "diffingo", "diffiteor", "diluceo", "dilucesco", "diluculat", "disconvenio", "discupio", "dishiasco",
-    "dispecto", "dispereo", "disquiro", "dissero", "disserpo", "dissideo", "dissono", "dissulto", "distaedet", "disto", "ditesco",
-    "divergo", "dormisco", "drenso", "drindio", "drivoro", "dulcesco", "duplo", "duresco", "edisco", "edormisco", "eduro",
-    "effervesco", "effervo", "effloreo", "effloresco", "effluo", "effulgeo", "elanguesco", "elatro", "elego", "eluceo",
-    "elucesco", "elugeo", "emacresco", "emarcesco", "ematuresco", "emeto", "emineo", "emolo", "eniteo", "enitesco", "enotesco",
-    "equio", "ercisco", "erubesco", "erudero", "escado", "eschado", "evalesco", "evanesco", "evilesco", "exacerbesco",
-    "exalbesco", "exaresco", "excado", "excandesco", "excido", "excommunico", "exhorreo", "exhorresco", "exilio", "existo",
-    "exolesco", "expallesco", "expaveo", "expavesco", "expectoro", "expetesso", "expetisso", "exposco", "exserto", "exsilio",
-    "exsolesco", "exsono", "exsplendesco", "extabesco", "extimesco", "extollo", "exurgeo", "fabrio", "faeteo", "fatisco", "felio",
-    "fervesco", "feteo", "fetesco", "fetifico", "fistulesco", "flacceo", "flaccesco", "flagro", "flaveo", "flavesco", "floreo",
-    "floresco", "foeteo", "folleo", "forio", "formico", "fraceo", "fracesco", "fraglo", "fragro", "frendesco", "frigefacto",
-    "frigeo", "frigesco", "frigutio", "fritinnio", "frondeo", "frondesco", "frugesco", "frutesco", "fulgeo", "fulgesco", "fulgo",
-    "furo", "furvesco", "gannio", "gingrio", "glabresco", "glabro", "glattio", "glaucio", "glisco", "glocio", "gloctoro",
-    "glottoro", "gracillo", "graduo", "grandesco", "grandinat", "gravesco", "hebeo", "hebesco", "herbesco", "hercisco", "hiasco",
-    "hilaresco", "hinnio", "hirrio", "hisco", "hittio", "horior", "horreo", "horresco", "horripilo", "humeo", "ignesco",
-    "illuceo", "illucesco", "imbibo", "immadesco", "immaneo", "immineo", "immurmuro", "impedico", "impendeo", "inacesco",
-    "inaestuo", "inalbeo", "inalbesco", "inambulo", "inardesco", "inaresco", "incalesco", "incalfacio", "incandesco", "incanesco",
-    "incino", "inclaresco", "incolo", "increbesco", "increbresco", "incresco", "inculpo", "incurvesco", "indecoro", 
-    "indigeo", "indolesco", "induresco", "ineptio", "infenso", "infervesco", "infindo", "infit", "infremo", "infrendo",
-    "ingemesco", "ingemisco", "ingravesco", "ingruo", "inhaeresco", "inhorreo", "inhorresco", "inluceo", "inlucesco", "inmaneo",
-    "inmineo", "innotesco", "inoboedio", "inquilino", "insenesco", "inserto", "insisto", "insolesco", "insono", "instabilio",
-    "instimulo", "instupeo", "intabesco", "intepeo", "intepesco", "interaresco", "interbito", "intercido", "interequito",
-    "interfluo", "interfugio", "interfulgeo", "interiaceo", "interjaceo", "interluceo", "intermaneo", "internecto", "interniteo",
-    "interquiesco", "intersono", "intersto", "intervolito", "intollo", "intremo", "intribuo", "intumesco", "inurgeo", "invalesco",
-    "invergo", "invesperascit", "inveterasco", "ito", "iuvenesco", "labasco", "lacteo", "lactesco", "lallo", "lampo", "lanceo",
-    "lancio", "langueo", "languesco", "lapidesco", "lassesco", "lateo", "latesco", "lentesco", "lipio", "liqueo", "liquesco",
-    "liquor", "liveo", "livido", "longisco", "loretho", "luceo", "lucesco", "lucisco", "luo", "lutesco", "maceo", "maceresco",
-    "macesco", "macresco", "madeo", "madesco", "maereo", "maledictito", "mammo", "marceo", "marcesco", "matresco", "maturesco",
-    "maumo", "medeor", "mellifico", "memini", "miccio", "mico", "mintrio", "minurrio", "miseresco", "miseret", "mitesco",
-    "mitilo", "moereo", "molio", "mollesco", "moror", "muceo", "mucesco", "murrio", "mutio", "muttio", "nauculor", "nausco",
-    "naviculor", "nigreo", "nigresco", "ningit", "ningo", "ninguit", "ninguo", "niteo", "nitesco", "nivesco", "no", "noctesco",
-    "nominito", "notesco", "nubilo", "nupturio", "obaresco", "obatresco", "obaudio", "obbrutesco", "obducto", "obdulcesco",
-    "obduresco", "obfulgeo", "obhorreo", "obiaceo", "objaceo", "oblanguesco", "oblitesco", "obmordeo", "obmutesco", "obnoxio",
-    "oboleo", "obrigesco", "obsido", "obsono", "obsordesco", "obstipesco", "obstupesco", "obsurdesco", "obtenebresco", "obtexo",
-    "obticeo", "obticesco", "obtingo", "obtorpeo", "obtorpesco", "obtueor", "occallesco", "occino", "offulgeo", "oleo", "olesco",
-    "olo", "onco", "oporteo", "oportet", "oppedo", "optingo", "oscitor", "paedagogo", "palleo", "pallesco", "palpebro", "pangito",
-    "papo", "pappo", "parturio", "passito", "pateo", "patesco", "patio", "patrisso", "patrizo", "pauperasco", "paveo", "pavesco",
-    "pelluceo", "pendeo", "percalleo", "percrebesco", "percrebresco", "perdisco", "perdo", "perdormisco", "perducto", "pereffluo",
-    "perferveo", "perfugio", "perhorreo", "perhorresco", "perlateo", "perlinio", "perluceo", "permereo", "perniteo", "peroleo",
-    "perpetuito", "perscisco", "persedeo", "perserpo", "persilio", "persisto", "pertimeo", "pertimesco", "pertineo", "pertingo",
-    "pertorqueo", "perurgeo", "perurgueo", "pervaleo", "pervigeo", "petesso", "petisso", "pilpito", "pinguesco", "pipilo",
-    "pipio", "pipo", "pisito", "plecto", "plipio", "pluit", "plumesco", "pluo", "polleo", "populo", "porceo", "posco", "posteo",
-    "praeambulo", "praeemineo", "praefloreo", "praefluo", "praefugio", "praefulgeo", "praegestio", "praeiaceo", "praejaceo",
-    "praeluceo", "praemando", "praeniteo", "praeoleo", "praependeo", "praepolleo", "praesagio", "praeservio", "praesipio",
-    "praesono", "praeterfluo", "praeterfugio", "praetimeo", "praevalesco", "procello", "procido", "profugio", "proluceo",
-    "promineo", "propalo", "prurio", "psallo", "pubesco", "pulpo", "purgito", "purpurasco", "puteo", "putesco", "putreo",
-    "putresco", "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco", "ravio", "rebullio", "recaleo",
-    "recommoneo", "recrepo", "recumbo", "redintegrasco", "redoleo", "redormio", "reducto", "refello", "refert", "referveo",
-    "refingo", "refloreo", "refrigesco", "refugio", "refulgeo", "relanguesco", "reluceo", "rememini", "reminisco", "reminiscor",
-    "remollesco", "remugio", "reneo", "renideo", "reniteo", "rennuo", "renuo", "reporrigo", "reposco", "resipisco", "resisto",
-    "resplendeo", "resto", "reticeo", "retono", "revindico", "reviresco", "revivesco", "revivisco", "revivo", "ricio", "ricto",
-    "rigeo", "rigesco", "rubeo", "rubesco", "rufesco", "rugio", "sacio", "sagio", "salveo", "sanesco", "sanguino", "sapio",
-    "sardo", "satago", "scabo", "scateo", "scato", "scaturio", "scaturrio", "scopo", "scripturio", "seneo", "senesco", "sentisco",
-    "seresco", "sevio", "siccesco", "sicilio", "sido", "sileo", "silesco", "singultio", "soccito", "sordeo", "sordesco",
-    "sospito", "splendeo", "splendesco", "spumesco", "squaleo", "stabulo", "sternuo", "sterto", "stinguo", "stipendio",
-    "strideo", "strido", "stritto", "studeo", "stupeo", "stupesco", "subdoceo", "subedo", "subfulgeo", "subiaceo", "subjaceo",
-    "subluceo", "suboleo", "subrubeo", "subservio", "subsilio", "subsisto", "subsono", "subterfluo", "subterfugio", "subteriaceo",
-    "subterjaceo", "subtimeo", "suburgeo", "subvolo", "subvolvo", "succido", "succino", "succubo", "sufferveo", "suffringo",
-    "suffugio", "suffulgeo", "sugglutio", "sullaturio", "superbio", "supercresco", "supereffluo", "superemineo", "superextollo",
-    "superfluo", "superfugio", "superfulgeo", "superiaceo", "superimmineo", "superjaceo", "superluceo", "superobruo",
-    "supersapio", "supersto", "supertraho", "supervaleo", "supervivo", "supo", "suppedo", "supterfugio", "surio", "sustollo",
-    "tabeo", "tabesco", "temno", "tenebresco", "tenebrico", "tenerasco", "tepeo", "tepesco", "tetrinnio", "tibicino", "timeo",
-    "tinnipo", "tintino", "tongeo", "torculo", "torpeo", "torpesco", "traluceo", "transfluo", "transfulgeo", "transilio",
-    "transluceo", "transpicio", "transtineo", "transvado", "transvenio", "tremesco", "tremisco", "trico", "trittilo", "trucilo",
-    "tumeo", "tumesco", "tumido", "turgeo", "turgesco", "tussio", "udo", "umbresco", "umeo", "umesco", "unco", "urco", "urgeo",
-    "urgueo", "urvo", "vacefio", "vado", "vagio", "vago", "valesco", "vanesco", "vanno", "vegeo", "vento", "verecundor", "vergo",
-    "vervago", "vesanio", "vescor", "vesico", "vesperascit", "veterasco", "veteresco", "vibrisso", "vigeo", "vigesco", "vilesco",
-    "vireo", "viresco", "viridesco", "vissio", "vitulor", "vivesco",
-    "possum", "nolo", "malo",
-}  # fmt: skip
+MISSING_PPP_VERBS: Final[set[str]] = set("""abaeto abago abarceo abbaeto abbatizo abbito abequito aberceo abhorresco abito
+abiturio abnato abnumero abnuto abolesco aboriscor aborto abrenuntio absilio absisto absono absto abstulo accano accersio
+accessito accido accieo accipitro accubo aceo acesco acetasco acontizo adaestuo adambulo adaugesco adbello adbito adcubo addecet
+addenseo addisco addormio addormisco aderro adesurio adfleo adformido adfremo adfrio adfulgeo adgemo adgravesco adiaceo
+adincresco adjaceo adlubesco adluceo adludio adluo admeo admigro admugio adnicto adnubilo adnullo adnuto adnutrio adoleo adolesco
+adpertineo adploro adpostulo adprenso adremigo adrepo adservio adsibilo adsido adsisto adsono adsto adstrepo adstupeo adtolero
+adtollo adtorqueo adurgeo advecto advesperascit advivo aegreo aegresco aerusco affleo afformido affremo affrio affugio affulgeo
+aiio aio albeo albesco albicasco alesco algeo algesco allegorizo alluceo alludio alluo alto amaresco ambigo amtruo amylo annicto
+anno annubilo annuto annutrio antecello antecurro antepolleo antesto antevio antisto apage aperto apolactizo apotheco apozymo
+apparesco appertineo apploro apposco appostulo apprenso apricor arboresco ardesco areo aresco arguto arrepo assenesco asservio
+assibilo assido assisto assono astituo asto astrepo astrifico astupeo attolero attollo attorqueo attorreo aufugio augesco
+augifico auresco auroresco auroro aurugino autumnascit autumnescit autumno aveo baeto balbutio barbio batto battuo batuo baulo
+bebo bellor beto blatio bombio bovinor bubo bubulcito bullesco cacaturio calefacto calesco calleo calveo calvor cambio candeo
+candesco candico candifico caneo canesco carro casso catulio caumo caurio caverno celebresco cenaturio ceveo cineresco cio
+circito circumcurro circumcurso circumdoleo circumerro circumfulgeo circumgesto circumiaceo circumluceo circumluo circumpendeo
+circumsido circumsilio circumsisto circumsto circumstupeo circumtergeo circumtono circumtorqueo circumtueor circumvado
+circumverto circumvestio circumvorto clango clareo claresco claudeo clocito clueo clueor cluo coacesco coexsisto cohaeresco
+cohorresco collineo colliquesco colluceo commadeo commaneo commarceo commemini commeto commiseresco commitigo compalpo comparco
+compasco compendo comperco compesco compluit comprecor computresco concaleo concalesco concallesco concido concupio condecet
+condenseo condisco condoleo condolesco condormio condormisco conferveo confervesco confluo conforio confremo confulgeo congemo
+congruo coniveo conluceo conniveo conpesco conputresco conquinisco conresurgo conrideo consanesco consarrio consenesco consilesco
+consimilo consipio consono constupeo consuadeo contabesco contenebresco conticeo conticesco conticisco continor contollo
+contrasto contremesco contremisco contremo contumulo convaleo convecto convergo converro convescor conviso convomo convorro
+cornesco correpo corresurgo corrideo cratio crebesco crebresco crispio crocio crotolo crudesco cucio cucubo cucurio cunio cupisco
+cursito decet decido decumbo dedecet dedisco dedoleo deeo defervesco defloreo defloresco defugio dego degulo dehisco delambo
+deliquesco deliro delitesco delitisco delumbo demadesco demolio denarro denormo denseo dependeo deposco depropero depudet derepo
+derigeo derigesco deruo desenesco deserpo desideo desido desipio desorbeo despecto despuo destico desuesco desurgo devigesco
+dicturio diffingo diffiteor diluceo dilucesco diluculat disconvenio discupio dishiasco dispecto dispereo disquiro dissero
+disserpo dissideo dissono dissulto distaedet disto ditesco divergo dormisco drenso drindio drivoro dulcesco duplo duresco edisco
+edormisco eduro effervesco effervo effloreo effloresco effluo effulgeo elanguesco elatro elego eluceo elucesco elugeo emacresco
+emarcesco ematuresco emeto emineo emolo eniteo enitesco enotesco equio ercisco erubesco erudero escado eschado evalesco evanesco
+evilesco exacerbesco exalbesco exaresco excado excandesco excido excommunico exhorreo exhorresco exilio existo exolesco
+expallesco expaveo expavesco expectoro expetesso expetisso exposco exserto exsilio exsolesco exsono exsplendesco extabesco
+extimesco extollo exurgeo fabrio faeteo fatisco felio fervesco feteo fetesco fetifico fistulesco flacceo flaccesco flagro flaveo
+flavesco floreo floresco foeteo folleo forio formico fraceo fracesco fraglo fragro frendesco frigefacto frigeo frigesco frigutio
+fritinnio frondeo frondesco frugesco frutesco fulgeo fulgesco fulgo furo furvesco gannio gingrio glabresco glabro glattio glaucio
+glisco glocio gloctoro glottoro gracillo graduo grandesco grandinat gravesco hebeo hebesco herbesco hercisco hiasco hilaresco
+hinnio hirrio hisco hittio horior horreo horresco horripilo humeo ignesco illuceo illucesco imbibo immadesco immaneo immineo
+immurmuro impedico impendeo inacesco inaestuo inalbeo inalbesco inambulo inardesco inaresco incalesco incalfacio incandesco
+incanesco incino inclaresco incolo increbesco increbresco incresco inculpo incurvesco indecoro indigeo indolesco induresco
+ineptio infenso infervesco infindo infit infremo infrendo ingemesco ingemisco ingravesco ingruo inhaeresco inhorreo inhorresco
+inluceo inlucesco inmaneo inmineo innotesco inoboedio inquilino insenesco inserto insisto insolesco insono instabilio instimulo
+instupeo intabesco intepeo intepesco interaresco interbito intercido interequito interfluo interfugio interfulgeo interiaceo
+interjaceo interluceo intermaneo internecto interniteo interquiesco intersono intersto intervolito intollo intremo intribuo
+intumesco inurgeo invalesco invergo invesperascit inveterasco ito iuvenesco labasco lacteo lactesco lallo lampo lanceo lancio
+langueo languesco lapidesco lassesco lateo latesco lentesco lipio liqueo liquesco liquor liveo livido longisco loretho luceo
+lucesco lucisco luo lutesco maceo maceresco macesco macresco madeo madesco maereo maledictito malo mammo marceo marcesco matresco
+maturesco maumo medeor mellifico memini miccio mico mintrio minurrio miseresco miseret mitesco mitilo moereo molio mollesco moror
+muceo mucesco murrio mutio muttio nauculor nausco naviculor nigreo nigresco ningit ningo ninguit ninguo niteo nitesco nivesco no
+noctesco nolo nominito notesco nubilo nupturio obaresco obatresco obaudio obbrutesco obducto obdulcesco obduresco obfulgeo
+obhorreo obiaceo objaceo oblanguesco oblitesco obmordeo obmutesco obnoxio oboleo obrigesco obsido obsono obsordesco obstipesco
+obstupesco obsurdesco obtenebresco obtexo obticeo obticesco obtingo obtorpeo obtorpesco obtueor occallesco occino offulgeo oleo
+olesco olo onco oporteo oportet oppedo optingo oscitor paedagogo palleo pallesco palpebro pangito papo pappo parturio passito
+pateo patesco patio patrisso patrizo pauperasco paveo pavesco pelluceo pendeo percalleo percrebesco percrebresco perdisco perdo
+perdormisco perducto pereffluo perferveo perfugio perhorreo perhorresco perlateo perlinio perluceo permereo perniteo peroleo
+perpetuito perscisco persedeo perserpo persilio persisto pertimeo pertimesco pertineo pertingo pertorqueo perurgeo perurgueo
+pervaleo pervigeo petesso petisso pilpito pinguesco pipilo pipio pipo pisito plecto plipio pluit plumesco pluo polleo populo
+porceo posco possum posteo praeambulo praeemineo praefloreo praefluo praefugio praefulgeo praegestio praeiaceo praejaceo
+praeluceo praemando praeniteo praeoleo praependeo praepolleo praesagio praeservio praesipio praesono praeterfluo praeterfugio
+praetimeo praevalesco procello procido profugio proluceo promineo propalo prurio psallo pubesco pulpo purgito purpurasco puteo
+putesco putreo putresco quirrito rabio racco radicesco ranceo rancesco ranco ravio rebullio recaleo recommoneo recrepo recumbo
+redintegrasco redoleo redormio reducto refello refert referveo refingo refloreo refrigesco refugio refulgeo relanguesco reluceo
+rememini reminisco reminiscor remollesco remugio reneo renideo reniteo rennuo renuo reporrigo reposco resipisco resisto
+resplendeo resto reticeo retono revindico reviresco revivesco revivisco revivo ricio ricto rigeo rigesco rubeo rubesco rufesco
+rugio sacio sagio salveo sanesco sanguino sapio sardo satago scabo scateo scato scaturio scaturrio scopo scripturio seneo senesco
+sentisco seresco sevio siccesco sicilio sido sileo silesco singultio soccito sordeo sordesco sospito splendeo splendesco spumesco
+squaleo stabulo sternuo sterto stinguo stipendio strideo strido stritto studeo stupeo stupesco subdoceo subedo subfulgeo subiaceo
+subjaceo subluceo suboleo subrubeo subservio subsilio subsisto subsono subterfluo subterfugio subteriaceo subterjaceo subtimeo
+suburgeo subvolo subvolvo succido succino succubo sufferveo suffringo suffugio suffulgeo sugglutio sullaturio superbio
+supercresco supereffluo superemineo superextollo superfluo superfugio superfulgeo superiaceo superimmineo superjaceo superluceo
+superobruo supersapio supersto supertraho supervaleo supervivo supo suppedo supterfugio surio sustollo tabeo tabesco temno
+tenebresco tenebrico tenerasco tepeo tepesco tetrinnio tibicino timeo tinnipo tintino tongeo torculo torpeo torpesco traluceo
+transfluo transfulgeo transilio transluceo transpicio transtineo transvado transvenio tremesco tremisco trico trittilo trucilo
+tumeo tumesco tumido turgeo turgesco tussio udo umbresco umeo umesco unco urco urgeo urgueo urvo vacefio vado vagio vago valesco
+vanesco vanno vegeo vento verecundor vergo vervago vesanio vescor vesico vesperascit veterasco veteresco vibrisso vigeo vigesco
+vilesco vireo viresco viridesco vissio vitulor vivesco""".split())  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_supine_stem_except_in_the_future_active_participle
 FUTURE_ACTIVE_PARTICIPLE_VERBS: Final[set[str]] = {
@@ -238,66 +181,48 @@ MISSING_GERUND_VERBS: Final[set[str]] = {
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_perfect_stem
 # deletions: ruo (multiple etymologies), claudo (multiple etymologies), cedo (multiple etymologies)
-MISSING_PERFECT_VERBS: Final[set[str]] = {
-    "abaeto", "abago", "abarceo", "abbaeto", "abbito", "aberceo", "abhorresco", "abiturio", "abnato", "abnumero", "absono",
-    "absto", "accessito", "accieo", "accipitro", "accubo", "acontizo", "adaugesco", "adbello", "adbito", "adcubo", "addenseo",
-    "addormio", "addormisco", "adfleo", "adformido", "adfremo", "adfrio", "adgemo", "adgravesco", "adincresco", "adlubesco",
-    "adludio", "admeo", "admugio", "adnicto", "adnubilo", "adnuto", "adnutrio", "adoleo", "adolesco", "adpostulo", "adprenso",
-    "adservio", "adsibilo", "adsono", "adstrepo", "adtolero", "adtollo", "adtorqueo", "adurgeo", "advecto", "aegreo", "aegresco",
-    "aerusco", "affleo", "afformido", "affremo", "affrio", "albeo", "albesco", "albicasco", "alesco", "alludio", "alto",
-    "amaresco", "ambigo", "amoeno", "amtruo", "amylo", "annicto", "anno", "annubilo", "annuto", "annutrio", "antecello",
-    "antecurro", "antepolleo", "antevio", "apage", "aperto", "apolactizo", "apotheco", "apozymo", "apparesco", "apposco",
-    "appostulo", "apprenso", "arboresco", "arguto", "assenesco", "asservio", "assibilo", "assono", "astituo", "astrepo",
-    "astrifico", "attolero", "attollo", "attorqueo", "attorreo", "auctifico", "augesco", "augifico", "auresco", "auroresco",
-    "auroro", "aurugino", "autumnascit", "auxilio", "aveo", "baeto", "barbio", "bebo", "beto", "blandio", "blatio", "bombio",
-    "bubo", "bubulcito", "bullesco", "cacaturio", "calefacto", "calesco", "calo", "calveo", "candico", "candifico", "carnifico", 
-    "carro", "catulio", "caurio", "celebresco", "cenaturio", "cineresco", "cio", "circito", "circumcurro", "circumdoleo",
-    "circumgesto", "circumluo", "circumpendeo", "circumsido", "circumstupeo", "circumtergeo", "circumtorqueo", "circumverto",
-    "circumvestio", "circumvorto", "clareo", "clarigo", "claudeo", "clocito", "clueo", "cluo", "collineo", "commeto",
-    "commiseresco", "commitigo", "compalpo", "compasco", "compendo", "concavo", "concupio", "condenseo", "condormio", "confarreo",
-    "conresurgo", "conrideo", "consarrio", "consimilo", "consipio", "consuadeo", "contenebresco", "contigno", "contollo",
-    "contumulo", "convaleo", "convecto", "convergo", "converro", "conviso", "convomo", "convorro", "cornesco", "corresurgo",
-    "corrideo", "cratio", "crispio", "crocio", "crotolo", "cucurio", "cunio", "cupisco", "cursito", "deeo", "defloreo", "degravo",
-    "degulo", "delambo", "delumbo", "demadesco", "demolio", "demordeo", "denarro", "denormo", "denseo", "depango", "depecto",
-    "depropero", "derigeo", "deserpo", "desorbeo", "despecto", "despuo", "destico", "desuesco", "desurgo", "devigesco",
-    "dicturio", "diffingo", "diiugo", "dilorico", "disconvenio", "discupio", "dishiasco", "disiugo", "dispecto", "displodo",
-    "disquiro", "dissero", "disserpo", "dissulto", "distaedet", "ditesco", "diverbero", "divergo", "dormisco", "drenso",
-    "drindio", "drivoro", "duplo", "edormisco", "eduro", "effervo", "effusco", "effutio", "elaqueo", "elatro", "ematuresco",
-    "emeto", "emolo", "eniteo", "enotesco", "equio", "ercisco", "erudero", "eviscero", "exacerbesco", "excalfacio", "excarnifico",
-    "excommunico", "exolesco", "expaveo", "expectoro", "expetesso", "expetisso", "exserto", "exsolesco", "exsplendesco", "exsto",
-    "exterebro", "exto", "extollo", "exurgeo", "faeteo", "fatisco", "felio", "fervesco", "feteo", "fetesco", "fetifico",
-    "fistulesco", "flacceo", "flavesco", "floresco", "foeteo", "folleo", "formico", "fraceo", "frendesco", "frigefacto",
-    "frigutio", "fritinnio", "frugesco", "frutesco", "fulgesco", "furvesco", "gingrio", "glabresco", "glabro", "glattio",
-    "glaucio", "glisco", "glocio", "gracillo", "graduo", "grandesco", "grandinat", "gravesco", "hebeo", "hebesco", "herbesco",
-    "hercisco", "hiasco", "hilaresco", "hirrio", "hisco", "hittio", "hiulco", "horripilo", "humeo", "ignesco", "illuceo",
-    "imbrico", "immordeo", "immurmuro", "impedico", "impendeo", "impeto", "impetrio", "inaestuo", "inalbeo", "inalbesco",
-    "incalfacio", "incero", "inculpo", "incurvesco", "indecoro", "ineptio", "infenso", "infervesco", "infindo", "infrendo",
-    "ingravesco", "inhaeresco", "inluceo", "inoboedio", "inserto", "insolesco", "instabilio", "instimulo", "intepesco",
-    "interaresco", "interbito", "interequito", "intermaneo", "internecto", "intervolito", "intollo", "intribuo", "inurgeo",
-    "invergo", "invesperascit", "kalo", "labasco", "lacteo", "lactesco", "lallo", "lanceo", "lancio", "langueo", "lapidesco",
-    "largio", "lassesco", "latesco", "leno", "lentesco", "lipio", "liveo", "livido", "longisco", "loretho", "lucisco", "lutesco",
-    "maceo", "maceresco", "macesco", "maledictito", "mammo", "marcesco", "matresco", "mellifico", "miccio", "mintrio", "minurrio",
-    "miseresco", "mitesco", "mitilo", "moereo", "molio", "mollesco", "muceo", "mucesco", "murrio", "nausco", "nigreo", "nitesco",
-    "nivesco", "noctesco", "nominito", "nubilo", "obaresco", "obatresco", "obducto", "obmordeo", "obnoxio", "obsido", "obsono",
-    "obtenebresco", "obticeo", "obtorpeo", "offusco", "olesco", "olo", "onco", "oppedo", "paedagogo", "palpebro", "pangito",
-    "passito", "patio", "patrisso", "patrizo", "pauperasco", "pavesco", "perdormisco", "perducto", "pereffluo", "perlinio",
-    "perlino", "perpetuito", "perscisco", "pertingo", "pertorqueo", "petesso", "petisso", "pilo", "pilpito", "pinguesco",
-    "pipilo", "pipio", "pipo", "pisito", "plecto", "plipio", "plumesco", "polleo", "populo", "porceo", "posteo", "praefluo",
-    "praegestio", "praemando", "praemoveo", "praeoleo", "praependeo", "praeservio", "praeterfluo", "praetorqueo", "praevalesco",
-    "procello", "procido", "propalo", "prurio", "pulpo", "purgito", "purpurasco", "puteo", "quadripartio", "quadruplo", "quatio",
-    "quirrito", "rabio", "racco", "radicesco", "ranceo", "rancesco", "ranco", "ravio", "recommoneo", "redintegrasco", "redormio",
-    "reducto", "refingo", "reminisco", "remollesco", "remollio", "remugio", "reneo", "reporrigo", "reposco", "retono",
-    "revindico", "revivo", "ricio", "ricto", "rigeo", "rufesco", "sacio", "sagio", "salivo", "sallo", "salveo", "sanesco",
-    "sanguino", "sardo", "satago", "scopo", "scripturio", "seneo", "sentisco", "seresco", "sevio", "siccesco", "sicilio",
-    "silesco", "singultio", "soccito", "sospito", "spumesco", "stabulo", "stinguo", "stritto", "subdoceo", "subinvideo",
-    "subservio", "subsono", "subterfluo", "suburgeo", "subvolo", "subvolvo", "succino", "succubo", "suffringo", "sugglutio",
-    "sullaturio", "superbio", "supereffluo", "superextollo", "superfulgeo", "superimmineo", "superluceo", "superobruo",
-    "superoccupo", "supertraho", "supervaleo", "supervestio", "supo", "suppedo", "surio", "sustollo", "tenebresco", "tenerasco",
-    "tetrinnio", "tibicino", "tinnipo", "tongeo", "torculo", "traluceo", "transluceo", "transpicio", "transtineo", "transvenio",
-    "tremesco", "tremisco", "trico", "trittilo", "trucilo", "tueo", "tumeo", "tumido", "turgesco", "tussio", "umbresco", "umeo",
-    "umesco", "unco", "urco", "urvo", "vanesco", "vanno", "vento", "vervago", "vesanio", "vesico", "veterasco", "veteresco",
-    "vibrisso", "vieo", "vilesco", "viresco", "viridesco", "vissio",
-}  # fmt: skip
+MISSING_PERFECT_VERBS: Final[set[str]] = set("""abaeto abago abarceo abbaeto abbito aberceo abhorresco abiturio abnato
+abnumero absono absto accessito accieo accipitro accubo acontizo adaugesco adbello adbito adcubo addenseo addormio addormisco
+adfleo adformido adfremo adfrio adgemo adgravesco adincresco adlubesco adludio admeo admugio adnicto adnubilo adnuto adnutrio
+adoleo adolesco adpostulo adprenso adservio adsibilo adsono adstrepo adtolero adtollo adtorqueo adurgeo advecto aegreo aegresco
+aerusco affleo afformido affremo affrio albeo albesco albicasco alesco alludio alto amaresco ambigo amoeno amtruo amylo annicto
+anno annubilo annuto annutrio antecello antecurro antepolleo antevio apage aperto apolactizo apotheco apozymo apparesco apposco
+appostulo apprenso arboresco arguto assenesco asservio assibilo assono astituo astrepo astrifico attolero attollo attorqueo
+attorreo auctifico augesco augifico auresco auroresco auroro aurugino autumnascit auxilio aveo baeto barbio bebo beto blandio
+blatio bombio bubo bubulcito bullesco cacaturio calefacto calesco calo calveo candico candifico carnifico carro catulio caurio
+celebresco cenaturio cineresco cio circito circumcurro circumdoleo circumgesto circumluo circumpendeo circumsido circumstupeo
+circumtergeo circumtorqueo circumverto circumvestio circumvorto clareo clarigo claudeo clocito clueo cluo collineo commeto
+commiseresco commitigo compalpo compasco compendo concavo concupio condenseo condormio confarreo conresurgo conrideo consarrio
+consimilo consipio consuadeo contenebresco contigno contollo contumulo convaleo convecto convergo converro conviso convomo
+convorro cornesco corresurgo corrideo cratio crispio crocio crotolo cucurio cunio cupisco cursito deeo defloreo degravo degulo
+delambo delumbo demadesco demolio demordeo denarro denormo denseo depango depecto depropero derigeo deserpo desorbeo despecto
+despuo destico desuesco desurgo devigesco dicturio diffingo diiugo dilorico disconvenio discupio dishiasco disiugo dispecto
+displodo disquiro dissero disserpo dissulto distaedet ditesco diverbero divergo dormisco drenso drindio drivoro duplo edormisco
+eduro effervo effusco effutio elaqueo elatro ematuresco emeto emolo eniteo enotesco equio ercisco erudero eviscero exacerbesco
+excalfacio excarnifico excommunico exolesco expaveo expectoro expetesso expetisso exserto exsolesco exsplendesco exsto exterebro
+exto extollo exurgeo faeteo fatisco felio fervesco feteo fetesco fetifico fistulesco flacceo flavesco floresco foeteo folleo
+formico fraceo frendesco frigefacto frigutio fritinnio frugesco frutesco fulgesco furvesco gingrio glabresco glabro glattio
+glaucio glisco glocio gracillo graduo grandesco grandinat gravesco hebeo hebesco herbesco hercisco hiasco hilaresco hirrio hisco
+hittio hiulco horripilo humeo ignesco illuceo imbrico immordeo immurmuro impedico impendeo impeto impetrio inaestuo inalbeo
+inalbesco incalfacio incero inculpo incurvesco indecoro ineptio infenso infervesco infindo infrendo ingravesco inhaeresco inluceo
+inoboedio inserto insolesco instabilio instimulo intepesco interaresco interbito interequito intermaneo internecto intervolito
+intollo intribuo inurgeo invergo invesperascit kalo labasco lacteo lactesco lallo lanceo lancio langueo lapidesco largio lassesco
+latesco leno lentesco lipio liveo livido longisco loretho lucisco lutesco maceo maceresco macesco maledictito mammo marcesco
+matresco mellifico miccio mintrio minurrio miseresco mitesco mitilo moereo molio mollesco muceo mucesco murrio nausco nigreo
+nitesco nivesco noctesco nominito nubilo obaresco obatresco obducto obmordeo obnoxio obsido obsono obtenebresco obticeo obtorpeo
+offusco olesco olo onco oppedo paedagogo palpebro pangito passito patio patrisso patrizo pauperasco pavesco perdormisco perducto
+pereffluo perlinio perlino perpetuito perscisco pertingo pertorqueo petesso petisso pilo pilpito pinguesco pipilo pipio pipo
+pisito plecto plipio plumesco polleo populo porceo posteo praefluo praegestio praemando praemoveo praeoleo praependeo praeservio
+praeterfluo praetorqueo praevalesco procello procido propalo prurio pulpo purgito purpurasco puteo quadripartio quadruplo quatio
+quirrito rabio racco radicesco ranceo rancesco ranco ravio recommoneo redintegrasco redormio reducto refingo reminisco remollesco
+remollio remugio reneo reporrigo reposco retono revindico revivo ricio ricto rigeo rufesco sacio sagio salivo sallo salveo
+sanesco sanguino sardo satago scopo scripturio seneo sentisco seresco sevio siccesco sicilio silesco singultio soccito sospito
+spumesco stabulo stinguo stritto subdoceo subinvideo subservio subsono subterfluo suburgeo subvolo subvolvo succino succubo
+suffringo sugglutio sullaturio superbio supereffluo superextollo superfulgeo superimmineo superluceo superobruo superoccupo
+supertraho supervaleo supervestio supo suppedo surio sustollo tenebresco tenerasco tetrinnio tibicino tinnipo tongeo torculo
+traluceo transluceo transpicio transtineo transvenio tremesco tremisco trico trittilo trucilo tueo tumeo tumido turgesco tussio
+umbresco umeo umesco unco urco urvo vanesco vanno vento vervago vesanio vesico veterasco veteresco vibrisso vieo vilesco viresco
+viridesco vissio""".split())  # fmt: skip
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_missing_future
 # deletions: cedo (multiple etymologies), apage (not really a verb)
@@ -317,18 +242,14 @@ IMPERSONAL_VERBS: Final[set[str]] = {
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_verbs_with_impersonal_passive
 # NOTE: Some verbs in here might be 'impersonal in the passive in Old Latin', not sure if that counts?
-IMPERSONAL_PASSIVE_VERBS: Final[set[str]] = {
-    "abaestuo", "abambulo", "abeo", "abequito", "abludo", "abnato", "abnocto", "aborto", "absilio", "absisto", "absono", "absto",
-    "accano", "accapito", "accessito", "accubo", "adcubo", "adfluo", "adservio", "adsto", "adsurgo", "advenio", "advivo",
-    "affluo", "antevenio", "asservio", "assurgo", "asto", "aufugio", "buccino", "bucino", "cado", "concubo", "concumbo",
-    "conferveo", "confugio", "consisto", "convivo", "curso", "decumbo", "defluo", "depoclo", "diffugio", "dissideo", "dormio",
-    "evenio", "faveo", "ferveo", "fervo", "hymnio", "inoboedio", "insanio", "insisto", "intersto", "lapso", "ningo", "obsisto",
-    "obsto", "paeniteo", "pareo", "perdoleo", "pereo", "perfluo", "perfugio", "persto", "pervenio", "poeniteo", "possum",
-    "profugio", "psallo", "redeo", "referveo", "refugio", "resilio", "resisto", "resto", "revenio", "saevio", "sedeo", "servio",
-    "sterto", "sto", "subservio", "subvenio", "supervivo", "usito", "vapulo", "venio", "victito", "vivo", "volo", "vomito",
-}  # fmt: skip
+IMPERSONAL_PASSIVE_VERBS: Final[set[str]] = set("""abaestuo abambulo abeo abequito abludo abnato abnocto aborto absilio 
+absisto absono absto accano accapito accessito accubo adcubo adfluo adservio adsto adsurgo advenio advivo affluo antevenio 
+asservio assurgo asto aufugio buccino bucino cado concubo concumbo conferveo confugio consisto convivo curso decumbo defluo 
+depoclo diffugio dissideo dormio evenio faveo ferveo fervo hymnio inoboedio insanio insisto intersto lapso ningo obsisto obsto 
+paeniteo pareo perdoleo pereo perfluo perfugio persto pervenio poeniteo possum profugio psallo redeo referveo refugio resilio 
+resisto resto revenio saevio sedeo servio sterto sto subservio subvenio supervivo usito vapulo venio victito vivo volo vomito""".split())  # fmt: skip
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # FULLY DEFECTIVE VERBS
 # (verbs where it is more convenient to simply define the endings manually)
 
@@ -576,13 +497,10 @@ DEFECTIVE_VERBS: Final[dict[str, Endings]] = {
     },
 }  # fmt: skip
 
-
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # IRREGULAR VERBS
 
-type _IrregularVerb = Literal[
-    "sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio", "fio"
-]
+type _IrregularVerb = Literal["sum", "possum", "volo", "nolo", "malo", "fero", "eo", "facio", "fio"]  # fmt: skip
 
 IRREGULAR_VERB_CONJUGATION: Final[dict[_IrregularVerb, Conjugation]] = {
     "sum": 3,
@@ -842,9 +760,7 @@ def find_irregular_verb_stems(present: _IrregularVerb) -> tuple[str, str]:
     return IRREGULAR_VERB_STEMS[present]
 
 
-def find_irregular_verb_changes(
-    present: _IrregularVerb,
-) -> DictChanges[Ending]:
+def find_irregular_verb_changes(present: _IrregularVerb) -> DictChanges[Ending]:  # fmt: skip
     """Return the changes for an irregular verb.
 
     Parameters
@@ -860,31 +776,23 @@ def find_irregular_verb_changes(
     return IRREGULAR_VERB_CHANGES[present]
 
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # DERIVED IRREGULAR VERBS (prefix)
 
-type _DerivedVerb = Annotated[
-    str, "A verb that is derived from an irregular verb."
-]
-type _DerivedVerbGroups = Literal[
-    "sum", "sum_preptc", "fero", "eo", "eo_impersonal_passive", "facio"
-]
+type _DerivedVerb = Annotated[str, "A verb that is derived from an irregular verb."]  # fmt: skip
+type _DerivedVerbGroups = Literal["sum", "sum_preptc", "fero", "eo", "eo_impersonal_passive", "facio"]  # fmt: skip
 
-DERIVED_IRREGULAR_VERB_CONJUGATION: Final[
-    dict[_DerivedVerbGroups, Conjugation]
-] = {
+DERIVED_IRREGULAR_VERB_CONJUGATION: Final[dict[_DerivedVerbGroups, Conjugation]] = {
     "sum": 3,
     "sum_preptc": 3,
     "fero": 3,
     "eo": 4,
     "eo_impersonal_passive": 4,
     "facio": 5,
-}
+}  # fmt: skip
 
 
-DERIVED_IRREGULAR_VERB_STEMS: Final[
-    dict[_DerivedVerbGroups, tuple[str, str]]
-] = {
+DERIVED_IRREGULAR_VERB_STEMS: Final[dict[_DerivedVerbGroups, tuple[str, str]]] = {
     # (_inf_stem, _preptc_stem), unused or impossible stems are not provided
     "sum": ("", ""),
     "sum_preptc": ("", "se"),
@@ -892,12 +800,10 @@ DERIVED_IRREGULAR_VERB_STEMS: Final[
     "eo": ("", "i"),
     "eo_impersonal_passive": ("", "i"),
     "facio": ("fac", "face"),
-}
+}  # fmt: skip
 
 DERIVED_IRREGULAR_VERBS: Final[dict[_DerivedVerbGroups, set[_DerivedVerb]]] = {
-    "sum": {
-        "adsum", "obsum", "desum", "insum", "intersum", "prosum", "subsum", "supersum",
-    },
+    "sum": {"adsum", "obsum", "desum", "insum", "intersum", "prosum", "subsum", "supersum"},
     "sum_preptc": {"absum", "praesum"},
     "fero": {
         "affero", "aufero", "circumfero", "confero", "defero", "differo", "effero", "infero", "interfero", "introfero", "offero",
@@ -1069,16 +975,14 @@ DERIVED_IRREGULAR_CHANGES: Final[
     ),
 }  # fmt: skip
 
-_DERIVED_PRINCIPAL_STEMS: Final[
-    dict[_DerivedVerbGroups, tuple[str, str, str, str]]
-] = {
+_DERIVED_PRINCIPAL_STEMS: Final[dict[_DerivedVerbGroups, tuple[str, str, str, str]]] = {
     "sum": ("sum", "esse", "fui", "futurus"),
     "sum_preptc": ("sum", "esse", "fui", "futurus"),
     "fero": ("fero", "ferre", "tuli", "latus"),
     "eo": ("eo", "ire", "ii", "itus"),
     "eo_impersonal_passive": ("eo", "ire", "ii", "itus"),
     "facio": ("facio", "facere", "feci", "factus"),
-}
+}  # fmt: skip
 
 
 def is_derived_verb(present: str) -> TypeIs[_DerivedVerb]:
@@ -1118,9 +1022,7 @@ def get_derived_verb_conjugation(present: _DerivedVerb) -> Conjugation:
     Conjugation
         The conjugation of the verb.
     """
-    return DERIVED_IRREGULAR_VERB_CONJUGATION[
-        _find_derived_verb_group(present)
-    ]
+    return DERIVED_IRREGULAR_VERB_CONJUGATION[_find_derived_verb_group(present)]  # fmt: skip
 
 
 def find_derived_verb_stems(present: _DerivedVerb) -> tuple[str, str]:
@@ -1148,9 +1050,7 @@ def find_derived_verb_stems(present: _DerivedVerb) -> tuple[str, str]:
     )
 
 
-def find_derived_verb_changes(
-    principal_parts: tuple[str, ...],
-) -> DictChanges[Ending]:
+def find_derived_verb_changes(principal_parts: tuple[str, ...]) -> DictChanges[Ending]:  # fmt: skip
     """Find the changes for a derived verb.
 
     Strip the main part from the principal parts (e.g. absum -> ab-), and
@@ -1176,49 +1076,74 @@ def find_derived_verb_changes(
     )
 
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # NOUNS
 
-# TODO: Fix formatting: keeping each form on one line is probably okay
 IRREGULAR_NOUNS: Final[dict[str, Endings]] = {
     "ego": {
-        "Nnomsg": "ego", "Nvocsg": "ego",   "Naccsg": "me",
-        "Ngensg": "mei", "Ndatsg": "mihi",  "Nablsg": "me",
-        "Nnompl": "nos", "Nvocpl": "nos",   "Naccpl": "nos",
+        "Nnomsg": "ego",
+        "Nvocsg": "ego",
+        "Naccsg": "me",
+        "Ngensg": "mei",
+        "Ndatsg": "mihi",
+        "Nablsg": "me",
+        "Nnompl": "nos",
+        "Nvocpl": "nos",
+        "Naccpl": "nos",
         "Ngenpl": MultipleEndings(regular="nostri", partitive="nostrum"),
-        "Ndatpl": "nobis", "Nablpl": "nobis",
+        "Ndatpl": "nobis",
+        "Nablpl": "nobis",
     },
-    "nos": { # Plurals as sometimes they are included in vocab lists alone
-        "Nnompl": "nos", "Nvocpl": "nos",   "Naccpl": "nos",
+    "nos": {  # Plurals as sometimes they are included in vocab lists alone
+        "Nnompl": "nos",
+        "Nvocpl": "nos",
+        "Naccpl": "nos",
         "Ngenpl": MultipleEndings(regular="nostri", partitive="nostrum"),
-        "Ndatpl": "nobis", "Nablpl": "nobis",
+        "Ndatpl": "nobis",
+        "Nablpl": "nobis",
     },
     "tu": {
-        "Nnomsg": "tu", "Nvocsg": "tu",    "Naccsg": "te",
-        "Ngensg": "tui", "Ndatsg": "tibi",  "Nablsg": "te",
-        "Nnompl": "vos", "Nvocpl": "vos",   "Naccpl": "vos",
+        "Nnomsg": "tu",
+        "Nvocsg": "tu",
+        "Naccsg": "te",
+        "Ngensg": "tui",
+        "Ndatsg": "tibi",
+        "Nablsg": "te",
+        "Nnompl": "vos",
+        "Nvocpl": "vos",
+        "Naccpl": "vos",
         "Ngenpl": MultipleEndings(regular="vestri", partitive="vestrum"),
-        "Ndatpl": "vobis", "Nablpl": "vobis",
+        "Ndatpl": "vobis",
+        "Nablpl": "vobis",
     },
     "vos": {
-        "Nnompl": "vos", "Nvocpl": "vos",   "Naccpl": "vos",
+        "Nnompl": "vos",
+        "Nvocpl": "vos",
+        "Naccpl": "vos",
         "Ngenpl": MultipleEndings(regular="vestri", partitive="vestrum"),
-        "Ndatpl": "vobis", "Nablpl": "vobis",
+        "Ndatpl": "vobis",
+        "Nablpl": "vobis",
     },
     "se": {
         "Naccsg": "se",
-        "Ngensg": "sui", "Ndatsg": "sibi", "Nablsg": "se",
+        "Ngensg": "sui",
+        "Ndatsg": "sibi",
+        "Nablsg": "se",
         "Naccpl": "se",
-        "Ngenpl": "sui", "Ndatpl": "sibi", "Nablpl": "se",
+        "Ngenpl": "sui",
+        "Ndatpl": "sibi",
+        "Nablpl": "se",
     },
-}  # fmt: skip
+}
 
 IRREGULAR_DECLINED_NOUNS: Final[dict[str, Endings]] = {
     "deus": {
         "Nnomsg": "deus",
         "Nvocsg": MultipleEndings(regular="dee", second="deus"),
         "Naccsg": "deum",
-        "Ngensg": "dei",  "Ndatsg": "deo", "Nablsg": "deo",
+        "Ngensg": "dei",
+        "Ndatsg": "deo",
+        "Nablsg": "deo",
         "Nnompl": MultipleEndings(regular="dei", second="di", third="dii"),
         "Nvocpl": MultipleEndings(regular="dei", second="di", third="dii"),
         "Naccpl": "deos",
@@ -1227,62 +1152,85 @@ IRREGULAR_DECLINED_NOUNS: Final[dict[str, Endings]] = {
         "Nablpl": MultipleEndings(regular="deis", second="dis", third="diis"),
     },
     "dea": {
-        "Nnomsg": "dea",    "Nvocsg": "dea",    "Naccsg": "deam",
-        "Ngensg": "deae",   "Ndatsg": "deae",   "Nablsg": "dea",
-        "Nnompl": "deae",   "Nvocpl": "deae",   "Naccpl": "deas",
-        "Ngenpl": "dearum", "Ndatpl": "deabus", "Nablpl": "deabus",
+        "Nnomsg": "dea",
+        "Nvocsg": "dea",
+        "Naccsg": "deam",
+        "Ngensg": "deae",
+        "Ndatsg": "deae",
+        "Nablsg": "dea",
+        "Nnompl": "deae",
+        "Nvocpl": "deae",
+        "Naccpl": "deas",
+        "Ngenpl": "dearum",
+        "Ndatpl": "deabus",
+        "Nablpl": "deabus",
     },
     "domus": {  # domus will be considered as a fourth declension noun only
-        "Nnomsg": "domus",   "Nvocsg": "domus",   "Naccsg": "domum",
+        "Nnomsg": "domus",
+        "Nvocsg": "domus",
+        "Naccsg": "domum",
         "Ngensg": MultipleEndings(regular="domus", locative="domi"),
         "Ndatsg": MultipleEndings(regular="domui", second="domo", third="domu"),
         "Nablsg": MultipleEndings(regular="domu", second="domo"),  # for consistency
-        "Nnompl": "domus",   "Nvocpl": "domus",
+        "Nnompl": "domus",
+        "Nvocpl": "domus",
         "Naccpl": MultipleEndings(regular="domus", second="domos"),
         "Ngenpl": MultipleEndings(regular="domuum", second="domorum"),
-        "Ndatpl": "domibus", "Nablpl": "domibus",
+        "Ndatpl": "domibus",
+        "Nablpl": "domibus",
     },
     "bos": {
-        "Nnomsg": "bos",   "Nvocsg": "bos",   "Naccsg": "bovem",
-        "Ngensg": "bovis", "Ndatsg": "bovi",  "Nablsg": "bove",
-        "Nnompl": "boves", "Nvocpl": "boves", "Naccpl": "boves",
+        "Nnomsg": "bos",
+        "Nvocsg": "bos",
+        "Naccsg": "bovem",
+        "Ngensg": "bovis",
+        "Ndatsg": "bovi",
+        "Nablsg": "bove",
+        "Nnompl": "boves",
+        "Nvocpl": "boves",
+        "Naccpl": "boves",
         "Ngenpl": MultipleEndings(regular="bovum", second="boum", third="boverum"),
         "Ndatpl": MultipleEndings(regular="bovibus", second="bobus", third="bubus"),
         "Nablpl": MultipleEndings(regular="bovibus", second="bobus", third="bubus"),
     },
     "epulum": {
-        "Nnomsg": "epulum", "Nvocsg": "epulum", "Naccsg": "epulum",
-        "Ngensg": "epuli",  "Ndatsg": "epulo",  "Nablsg": "epulo",
+        "Nnomsg": "epulum",
+        "Nvocsg": "epulum",
+        "Naccsg": "epulum",
+        "Ngensg": "epuli",
+        "Ndatsg": "epulo",
+        "Nablsg": "epulo",
         "Nnompl": MultipleEndings(regular="epula", second="epulae"),
         "Nvocpl": MultipleEndings(regular="epula", second="epulae"),
         "Naccpl": MultipleEndings(regular="epula", second="epulas"),
         "Ngenpl": MultipleEndings(regular="epulorum", second="epularum"),
-        "Ndatpl": "epulis", "Nablpl": "epulis",
+        "Ndatpl": "epulis",
+        "Nablpl": "epulis",
     },
     "sus": {
-        "Nnomsg": "sus",  "Nvocsg": "sus",  "Naccsg": "suem",
-        "Ngensg": "suis", "Ndatsg": "sui",  "Nablsg": "sue",
-        "Nnompl": "sues", "Nvocpl": "sues", "Naccpl": "sues",
+        "Nnomsg": "sus",
+        "Nvocsg": "sus",
+        "Naccsg": "suem",
+        "Ngensg": "suis",
+        "Ndatsg": "sui",
+        "Nablsg": "sue",
+        "Nnompl": "sues",
+        "Nvocpl": "sues",
+        "Naccpl": "sues",
         "Ngenpl": "suum",
         "Ndatpl": MultipleEndings(regular="suibus", second="subus"),
         "Nablpl": MultipleEndings(regular="suibus", second="subus"),
     },
 }  # fmt: skip
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # ADJECTIVES
 
-LIS_ADJECTIVES: Final[set[str]] = {
-    "facilis", "difficilis", "similis", "dissimilis", "gracilis", "humilis",
-}  # fmt: skip
+LIS_ADJECTIVES: Final[set[str]] = {"facilis", "difficilis", "similis", "dissimilis", "gracilis", "humilis"}  # fmt: skip
 
-# Contains adjectives that have irregular forms in the comparative,
-# superlative and adverb forms.
-# Note that some of these adjectives do not have adverb forms, so the adverb
-# forms are given a None value instead.
-IRREGULAR_STEM_ADJECTIVES: Final[
-    dict[str, tuple[str, Ending, str | None, str | None, str | None]]
-] = {
+# Contains adjectives that have irregular forms in the comparative, superlative and adverb forms.
+# Note that some of these adjectives do not have adverb forms, so the adverb forms are given a `None` value instead.
+IRREGULAR_STEM_ADJECTIVES: Final[dict[str, tuple[str, Ending, str | None, str | None, str | None]]] = {
     "bonus": ("melior", "optim", "bene", "melius", "optime"),
     "malus": ("peior", "pessim", "male", "peius", "pessime"),
     "magnus": ("maior", "maxim", None, None, None),
@@ -1363,191 +1311,138 @@ IRREGULAR_ADJECTIVES: Final[dict[str, Endings]] = {
 IRREGULAR_PP_ADJECTIVES: Final[set[str]] = {"tres", "alius", "ambo"}
 
 # Taken from https://en.wiktionary.org/wiki/Category:Latin_uncomparable_adverbs
-UNCOMPARABLE_ADVERBS: Final[set[str]] = {
-    "gratis", "abdicative", "abusive", "fere", "eo", "here", "imperative", "qua", "rite", "sic", "sat", "vero", "et", "gratuito", 
-    "ni", "universe", "ne", "ea", "nec", "forte", "mane", "ubique", "numquam", "quotidie", "quotannis", "dein", "hodie", 
-    "scilicet", "jam", "ter", "luce", "umquam", "alias", "alibi", "amen", "ante", "numero", "passive", "finite", "hic", "super", 
-    "semper", "relative", "frustra", "ut", "nunc", "ergo", "crebra", "canatim", "acervatim", "quadrupedatim", "vermiculate", 
-    "olim", "una", "haut", "quaque", "undique", "cavernatim", "undatim", "Celtice", "Anglice", "triste", "nuncupative", "tam", 
-    "solum", "ita", "circa", "verbatim", "quid", "cur", "mere", "mire", "diverse", "clam", "cetera", "mox", "repente", "furtim", 
-    "subito", "hoc", "denique", "quidem", "qui", "temere", "mage", "item", "furto", "interim", "paene", "post", "ubi", "nunquam", 
-    "versus", "futile", "pone", "dulce", "ferme", "heri", "forsan", "quoque", "cordate", "suave", "alio", "reflexive", "ultra", 
-    "sexto", "primo", "tandem", "satis", "falso", "sacrilege", "pene", "quondam", "sincere", "bis", "como", "ideo", "inde", 
-    "continuo", "contra", "retro", "num", "hoi", "juxta", "hau", "circum", "recto", "iam", "puta", "cras", "tum", "rursus", 
-    "deinde", "festive", "tamen", "explicate", "adhuc", "semel", "tantum", "praesto", "propter", "unde", "idcirco", "ibidem", 
-    "neque", "usque", "etiam", "nimium", "prius", "protinus", "uti", "nimis", "itaque", "iterum", "asseverate", "potius", "AUC", 
-    "satin", "romanice", "sensate", "recens", "mutuum", "passim", "secundo", "sis", "inductive", "quo", "topper", "hac", "magis", 
-    "videlicet", "foris", "sursum", "aliunde", "perenne", "simul", "vulgo", "sesqui", "patrie", "porro", "obiter", "statim", 
-    "interea", "quocum", "sacrate", "quomodo", "abunde", "vix", "dilucide", "medie", "vicies", "tunc", "intra", "adeo", "casu", 
-    "illo", "paulisper", "altum", "fors", "anniversarie", "procul", "enucleate", "gradatim", "minime", "quanti", "perdite", 
-    "nonne", "neutro", "abhinc", "horno", "intemperate", "tanti", "verum", "mutuo", "aliquid", "incontra", "dorsum", 
-    "inaugurato", "cubi", "romane", "superfluo", "caute", "contrarie", "mutua", "iuxta", "perpetuo", "perpetue", "duplicato", 
-    "perfacile", "fortuito", "brevi", "recta", "divise", "impraesentiarum", "liberaliter", "porod", "nimirum", "sortito", 
-    "maledice", "benedice", "nondum", "quin", "auspicato", "matutino", "primum", "sollerter", "sodes", "augurato", "perbene", 
-    "confestim", "huc", "ilico", "nudius", "quadrate", "eminus", "ceu", "fortasse", "bifariam", "bipartito", "divinitus", 
-    "divorse", "eadem", "exinde", "haud", "occulto", "quoquomodo", "quidni", "aliter", "alterne", "amabo", "humanitus", "humi", 
-    "hinc", "repens", "loquaciter", "antea", "isti", "accusatorie", "hactenus", "hauddum", "gregatim", "gratiis", "forsit", 
-    "forsitan", "fortassis", "amatorie", "omnino", "mecum", "tecum", "secum", "nobiscum", "vobiscum", "quicum", "quibuscum", 
-    "satisne", "satine", "pondo", "consolatorie", "ubinam", "ubicumque", "foras", "multo", "primitus", "nuncupatim", "promiscue", 
-    "imperiose", "conserte", "consuetudinarie", "eapropter", "improvide", "propterea", "litteratim", "millies", "quare", "quoad", 
-    "huiusmodi", "quemadmodum", "comminus", "volup", "vulgare", "interdum", "tanquam", "nempe", "illico", "coniecturaliter", 
-    "imprimis", "denuo", "quantumvis", "illi", "rivatim", "longule", "caelitus", "coelitus", "abinde", "posthac", "pagatim", 
-    "dehinc", "nequiquam", "quadripartito", "sicut", "circiter", "commodum", "deorsum", "illic", "istuc", "pacifice", "prae", 
-    "condicionaliter", "praeceps", "futtile", "palaestrice", "palaestricos", "palam", "propalam", "alternis", "palliolatim", 
-    "membratim", "participialiter", "matronaliter", "patrice", "superne", "pancratice", "aviditer", "avariter", "aventer", 
-    "imperiabiliter", "imperabiliter", "imperatorie", "quacum", "cotidie", "citra", "tempori", "equidem", "aeterno", "aeternum", 
-    "aliquando", "perpetuum", "illac", "consulariter", "ultro", "subtus", "consentanee", "meridie", "bovatim", "velut", 
-    "hospitaliter", "rursum", "inurbane", "gentilitus", "decenter", "somnialiter", "sedulo", "tantopere", "vicibus", 
-    "adseverate", "praesertim", "iure", "graece", "tertium", "tertio", "quartum", "quintum", "maeste", "ceterum", "voluptuose", 
-    "obviam", "dubie", "inferne", "producte", "spurce", "oppido", "commodo", "nihilo", "decimum", "eodem", "nocte", "alicubi", 
-    "aliquanto", "aliquotiens", "vesperi", "paullo", "praes", "demum", "illoc", "interdiu", "municipatim", "nonnumquam", 
-    "postea", "postremo", "privatim", "quater", "quotiens", "sponte", "viritim", "nonnihil", "aliqua", "aliquo", "saltem", 
-    "admodum", "cumque", "duntaxat", "dumtaxat", "ejusmodi", "eiusmodi", "invicem", "nihilominus", "partim", "paulatim", 
-    "paullatim", "proinde", "quamdiu", "quamvis", "quatenus", "revera", "tantundem", "unquam", "utrimque", "adaeque", "canonice", 
-    "deinceps", "formaliter", "huiuscemodi", "iampridem", "pariter", "permaxime", "philosophice", "similiter", "specialiter", 
-    "tamquam", "unice", "universaliter", "tantummodo", "nequando", "inscie", "praeterea", "quocumque", "sicuti", "aliquamdiu", 
-    "aliquantum", "aliquam", "antiquitus", "bipertito", "retrorsum", "coram", "cuneatim", "desuper", "pridem", "identidem", 
-    "iniussu", "insuper", "introrsus", "introrsum", "intus", "necubi", "nequaquam", "nusquam", "penitus", "posteaquam", 
-    "postremum", "postridie", "potissimum", "praeterquam", "pridie", "profecto", "setius", "singillatim", "sinistrorsus", 
-    "siquidem", "sudum", "tripertito", "turmatim", "utinam", "vicem", "vicissim", "alioquin", "alioqui", "amodo", "illuc", 
-    "intrinsecus", "numquid", "peregre", "quacumque", "quaecumque", "quamcumque", "quoadusque", "quousque", "seorsum", "septies", 
-    "usquequo", "utique", "utraque", "alterutrum", "alteruter", "deterius", "extrinsecus", "qualiter", "ingratis", "desursum", 
-    "immo", "superabundanter", "corporaliter", "quapropter", "naturaliter", "milies", "quotienscumque", "easdem", "indesinenter", 
-    "multifariam", "ostentui", "adversum", "solummodo", "taliter", "inpraesentiarum", "ambitiose", "exin", "libentissime", 
-    "perperam", "proculdubio", "funditus", "simitu", "simitur", "sensim", "saltim", "tamdiu", "certatim", "illinc", "divisim", 
-    "nexabunde", "explicanter", "familiariter", "parumper", "attamen", "extemplo", "forinsecus", "iuge", "qualibet", "commixtim", 
-    "commistim", "consequenter", "septimum", "octavum", "consideranter", "consimiliter", "assentatorie", "adsentatorie", 
-    "appetenter", "apprime", "adprime", "articulatim", "amplifice", "alicunde", "aliquantisper", "adfatim", "affatim", "adfabre", 
-    "affabre", "actuose", "actutum", "aliorsum", "aliovorsum", "antehac", "antidea", "cottidie", "alternatim", "caesim", 
-    "carptim", "castellatim", "cautim", "catervatim", "cursim", "circumscripte", "confertim", "centuriatim", "dudum", "eatenus", 
-    "exsultim", "exultim", "generatim", "horsum", "correpte", "celeriuscule", "centiens", "centies", "curiatim", "deciens", 
-    "decies", "deorsus", "derepente", "desperanter", "dextrorsum", "dextrorsus", "dextrovorsum", "dupliciter", "efficienter", 
-    "fataliter", "feraciter", "furialiter", "generaliter", "genialiter", "adubi", "sinceriter", "sextum", "quinquies", 
-    "septuagies", "quamobrem", "unianimiter", "istiusmodi", "memoriter", "quamlibet", "suppliciter", "prorsus", "totiens", 
-    "procaciter", "quolibet", "tripliciter", "altrinsecus", "cognoscibiliter", "cuiusmodi", "gallice", "infirmiter", 
-    "insipienter", "lycaonice", "minutatim", "multipliciter", "nequiter", "noctu", "particulatim", "perendie", "quantocius", 
-    "quinimmo", "quoquam", "raptim", "segregatim", "sexies", "sicine", "sicubi", "silenter", "utpote", "utro", "mendaciter", 
-    "sufficienter", "achariter", "ignoranter", "infideliter", "inprimis", "inpudenter", "impudenter", "propere", "quadrifariam", 
-    "radicitus", "septempliciter", "terribiliter", "veluti", "etiamnum", "habitualiter", "idipsum", "incunctanter", 
-    "inseparabiliter", "litteraliter", "originaliter", "peculiariter", "peramanter", "perinde", "personaliter", "pluries", 
-    "praecellenter", "quodammodo", "reapse", "sollemniter", "summatim", "summopere", "symbolice", "aliquantulum", "aliquatenus", 
-    "circulariter", "conformiter", "hujusmodi", "illibenter", "imo", "impotenter", "indifferenter", "ineleganter", 
-    "infallibiliter", "insigniter", "insimul", "irregulariter", "regulariter", "itidem", "jampridem", "litterate", "localiter", 
-    "magistraliter", "neutiquam", "nonnunquam", "noviter", "nullatenus", "nullibi", "ordinatim", "perniciter", 
-    "perpendiculariter", "quantopere", "saepenumero", "secius", "sexagecuplum", "sigillatim", "sophistice", "sparsim", 
-    "speciatim", "strictim", "subinde", "trifariam", "tropice", "uniformiter", "usquam", "cujusmodi", "quaelibet", "quamprimum", 
-    "quovis", "sensibiliter", "impigre", "licenter", "muliebriter", "impariter", "luculenter", "perquam", "proin", "propemodum", 
-    "quonam", "quorsum", "quoties", "rationaliter", "realiter", "simulac", "toties", "protenus", "uspiam", "circulatim", 
-    "dispersim", "ecquid", "ioculariter", "istic", "mordicus", "notabiliter", "oppidatim", "persaepe", "plurifariam", 
-    "provinciatim", "quaterdecies", "quingenties", "quinquiens", "regionatim", "sexagies", "sexagiens", "tricies", "vicatim", 
-    "vivatim", "vixdum", "adhoc", "cuicuimodi", "ecquando", "etiamnunc", "iamdudum", "jamdudum", "ingratiis", "miliens", 
-    "milliens", "ostiatim", "perliberaliter", "permixtim", "perraro", "populariter", "quadringentiens", "quadringenties", 
-    "quindeciens", "quindecies", "quorsom", "tantisper", "triciens", "incomposite", "viciens", "propatulo", "ducenties", 
-    "ducentiens", "inibi", "tributim", "quadragies", "quadragiens", "illim", "perbreviter", "aliquandiu", "petulanter", 
-    "titubanter", "orthogonaliter", "utrinque", "octogies", "octogiens", "septiens", "voluptarie", "persapienter", 
-    "incredibiliter", "propediem", "postmodo", "puriter", "trecenties", "trecentiens", "Volsce", "indidem", "ubertim", 
-    "domesticatim", "duodecies", "subsultim", "cominus", "decussatim", "disiunctim", "independenter", "multoties", "postmodum", 
-    "praeterpropter", "quantumlibet", "quomodolibet", "seiunctim", "fasciatim", "albescente", "hoze", "Iberice", "anglice", 
-    "exadversum", "danice", "recessim", "adusque", "aliuta", "assulatim", "bacchatim", "blanditim", "capreolatim", "citatim", 
-    "collusorie", "datatim", "improperanter", "pedatim", "perlubenter", "fabriliter", "indiscriminatim", "perpetim", "jactanter", 
-    "iamiam", "jamjam", "iamiamque", "jamjamque", "iuxtim", "juxtim", "perdiu", "duis", "minume", "hucusque", "surridicule", 
-    "subridicule", "peraeque", "meliuscule", "munditer", "nitenter", "nonies", "pompaliter", "proquam", "quadantenus", 
-    "quadratim", "quadrifariter", "reflexim", "septifariam", "signanter", "somniculose", "tabulatim", "testatim", "ubilibet", 
-    "ubiquaque", "ubivis", "ullatenus", "universatim", "vacive", "vafre", "veraciter", "volgariter", "cujuscemodi", "iccirco", 
-    "nequicquam", "quojus", "quorsus", "eoad", "disjunctim", "hujuscemodi", "indisiunctim", "indisjunctim", "sejunctim", 
-    "accedenter", "undecies", "quandocumque", "facul", "prosus", "utcumque", "tumultuario", "aegyptiace", "etiamdum", 
-    "circumcirca", "ilicet", "sophos", "clanculum", "verticaliter", "usurpative", "guttatim", "quirquir", "Hiberice", 
-    "trinaliter", "plerumque", "plerunque", "pleraque", "undecumque", "insolabiliter", "simulatque", "dedicative", "exim", 
-    "minutim", "tantumdem", "quoquo", "quaqua", "vesperascente", "trucissime", "tuatim", "meatim", "utque", "dunc", 
-    "nichilominus", "desusum", "novies", "unciatim", "haudquaquam", "hmoi", "longitrorsus", "longitrosus", "istinc", "nequo", 
-    "octies", "iusum", "diatim", "dietim", "Cimbrice", "compluriens", "dierecte", "utut", "usualiter", "fartim", "medullitus", 
-    "aliquovorsum", "istorsum", "poenaliter", "certative", "pugnitus", "punctim", "pugilice", "sensualiter", "sententialiter", 
-    "visibiliter", "aemulanter", "adpetenter", "expetenter", "perpetualiter", "contemplabiliter", "contemplatim", "templatim", 
-    "extempulo", "patronymice", "tractabiliter", "tractim", "conducibiliter", "deductim", "signatim", "praedicative", "oretenus", 
-    "aliquoties", "permale", "pessum", "quantisper", "incassum", "siremps", "viꝫ", "usqꝫ", "scissim", "fluctuatim", "quomo", 
-    "temporatim", "quandoque", "noscum", "voscum", "urbanatim", "noctanter", "inpigre", "rusticatim", "maestiter", "laetanter", 
-    "dextere", "totaliter", "umbraliter", "amariter", "cunque", "capitulatim", "desubito", "efflictim", "enimvero", "exiliter", 
-    "furenter", "immisericorditer", "immortaliter", "incisim", "infabre", "innumerabiliter", "insatiabiliter", "abaliud", 
-    "utrubi", "incurabiliter", "irremediabiliter", "irremisse", "irremissibiliter", "taxim", "velud", "urceatim", "sicunde", 
-    "laudabiliter", "undequadragiens", "duodetriciens", "nonagiens", "quinquagiens", "quinquagies", "manipulatim", "multimodis", 
-    "tolutim", "rationabiliter", "ideoque", "ritualiter", "abante", "extunc", "usquequaque", "alacriter", "numne", "numnam", 
-    "nuncubi", "pectinatim", "cordicitus", "rarenter", "stirpitus", "illatenus", "praequam", "animitus", "quotlibet", "opipare", 
-    "perbelle", "perbenigne", "corditus", "undelibet", "universim", "quotiescumque", "glorianter", "aliqualiter", "oculitus", 
-    "dubitatim", "syndesmotice", "viliter", "ceteroqui", "illorsum", "observanter", "aliquisquam", "quotcumque", "quomodocumque", 
-    "nudiustertius", "ampliter", "pertinenter", "nominaliter", "sciꝫ", "gradualiter", "qn̄ꝫ", "utrubique", "iosum", "deorsom", 
-    "deosum", "zosum", "iosu", "diosum", "deorsu", "iosso", "iossu", "iusu", "nunciam", "inquantum", "offatim", "terdeciens", 
-    "tergiversanter", "noviens", "praeterhac", "quandolibet", "undeunde", "disertim", "sedecies", "sexdecies", "aliquit", 
-    "stillatim", "lasciviter", "stillanter", "actualiter", "virtualiter", "ambifariam", "ambifarius", "summissim", "submissim", 
-    "simulter", "solerter", "faculter", "nominetenus", "omnifariam", "nonnil", "nonnichil", "scalatim", "nichilo", "pluraliter", 
-    "ubiubi",
-}  # fmt: skip
+UNCOMPARABLE_ADVERBS: Final[set[str]] = set("""AUC Anglice Celtice Cimbrice Hiberice Iberice Volsce abaliud abante
+abdicative abhinc abinde abunde abusive accedenter accusatorie acervatim achariter actualiter actuose actutum adaeque adeo
+adfabre adfatim adhoc adhuc admodum adpetenter adprime adsentatorie adseverate adubi adusque adversum aegyptiace aemulanter
+aeterno aeternum affabre affatim alacriter albescente alias alibi alicubi alicunde alio alioqui alioquin aliorsum aliovorsum
+aliqua aliqualiter aliquam aliquamdiu aliquandiu aliquando aliquantisper aliquanto aliquantulum aliquantum aliquatenus aliquid
+aliquisquam aliquit aliquo aliquotiens aliquoties aliquovorsum aliter aliunde aliuta alternatim alterne alternis alteruter
+alterutrum altrinsecus altum amabo amariter amatorie ambifariam ambifarius ambitiose amen amodo amplifice ampliter anglice
+animitus anniversarie ante antea antehac antidea antiquitus appetenter apprime articulatim assentatorie asseverate assulatim
+attamen augurato auspicato avariter aventer aviditer bacchatim benedice bifariam bipartito bipertito bis blanditim bovatim brevi
+caelitus caesim canatim canonice capitulatim capreolatim carptim castellatim casu catervatim caute cautim cavernatim celeriuscule
+centiens centies centuriatim certatim certative cetera ceteroqui ceterum ceu circa circiter circulariter circulatim circum
+circumcirca circumscripte citatim citra clam clanculum coelitus cognoscibiliter collusorie cominus comminus commistim commixtim
+commodo commodum como compluriens condicionaliter conducibiliter confertim confestim conformiter coniecturaliter consentanee
+consequenter conserte consideranter consimiliter consolatorie consuetudinarie consulariter contemplabiliter contemplatim continuo
+contra contrarie coram cordate cordicitus corditus corporaliter correpte cotidie cottidie cras crebra cubi cuicuimodi cuiusmodi
+cujuscemodi cujusmodi cumque cuneatim cunque cur curiatim cursim danice datatim decenter deciens decies decimum decussatim
+dedicative deductim dehinc dein deinceps deinde demum denique denuo deorsom deorsu deorsum deorsus deosum derepente desperanter
+desubito desuper desursum desusum deterius dextere dextrorsum dextrorsus dextrovorsum diatim dierecte dietim dilucide diosum
+disertim disiunctim disjunctim dispersim diverse divinitus divise divisim divorse domesticatim dorsum dubie dubitatim ducentiens
+ducenties dudum duis dulce dumtaxat dunc duntaxat duodecies duodetriciens duplicato dupliciter ea eadem eapropter easdem eatenus
+ecquando ecquid efficienter efflictim eiusmodi ejusmodi eminus enimvero enucleate eo eoad eodem equidem ergo et etiam etiamdum
+etiamnum etiamnunc exadversum exiliter exim exin exinde expetenter explicanter explicate exsultim extemplo extempulo extrinsecus
+extunc exultim fabriliter facul faculter falso familiariter fartim fasciatim fataliter feraciter fere ferme festive finite
+fluctuatim foras forinsecus foris formaliter fors forsan forsit forsitan fortasse fortassis forte fortuito frustra funditus
+furenter furialiter furtim furto futile futtile gallice generaliter generatim genialiter gentilitus glorianter gradatim
+gradualiter graece gratiis gratis gratuito gregatim guttatim habitualiter hac hactenus hau haud hauddum haudquaquam haut here
+heri hic hinc hmoi hoc hodie hoi horno horsum hospitaliter hoze huc hucusque huiuscemodi huiusmodi hujuscemodi hujusmodi
+humanitus humi iam iamdudum iamiam iamiamque iampridem ibidem iccirco idcirco identidem ideo ideoque idipsum ignoranter ilicet
+ilico illac illatenus illi illibenter illic illico illim illinc illo illoc illorsum illuc immisericorditer immo immortaliter imo
+impariter imperabiliter imperative imperatorie imperiabiliter imperiose impigre impotenter impraesentiarum imprimis improperanter
+improvide impudenter inaugurato incassum incisim incomposite incontra incredibiliter incunctanter incurabiliter inde
+independenter indesinenter indidem indifferenter indiscriminatim indisiunctim indisjunctim inductive ineleganter infabre
+infallibiliter inferne infideliter infirmiter ingratiis ingratis inibi iniussu innumerabiliter inpigre inpraesentiarum inprimis
+inpudenter inquantum insatiabiliter inscie inseparabiliter insigniter insimul insipienter insolabiliter insuper intemperate
+interdiu interdum interea interim intra intrinsecus introrsum introrsus intus inurbane invicem ioculariter iosso iossu iosu iosum
+irregulariter irremediabiliter irremisse irremissibiliter isti istic istinc istiusmodi istorsum istuc ita itaque item iterum
+itidem iuge iure iusu iusum iuxta iuxtim jactanter jam jamdudum jamjam jamjamque jampridem juxta juxtim laetanter lasciviter
+laudabiliter libentissime liberaliter licenter litteraliter litterate litteratim localiter longitrorsus longitrosus longule
+loquaciter luce luculenter lycaonice maeste maestiter mage magis magistraliter maledice mane manipulatim matronaliter matutino
+meatim mecum medie medullitus meliuscule membratim memoriter mendaciter mere meridie miliens milies milliens millies minime
+minume minutatim minutim mire mordicus mox muliebriter multifariam multimodis multipliciter multo multoties munditer municipatim
+mutua mutuo mutuum naturaliter ne nec necubi nempe nequando nequaquam neque nequicquam nequiquam nequiter nequo neutiquam neutro
+nexabunde ni nichilo nichilominus nihilo nihilominus nimirum nimis nimium nitenter nobiscum noctanter nocte noctu nominaliter
+nominetenus nonagiens nondum nonies nonne nonnichil nonnihil nonnil nonnumquam nonnunquam noscum notabiliter noviens novies
+noviter nudius nudiustertius nullatenus nullibi num numero numnam numne numquam numquid nunc nunciam nuncubi nuncupatim
+nuncupative nunquam nusquam obiter observanter obviam occulto octavum octies octogiens octogies oculitus offatim olim omnifariam
+omnino opipare oppidatim oppido ordinatim oretenus originaliter orthogonaliter ostentui ostiatim pacifice paene pagatim
+palaestrice palaestricos palam palliolatim pancratice pariter participialiter particulatim partim parumper passim passive patrice
+patrie patronymice paulatim paulisper paullatim paullo pectinatim peculiariter pedatim pene penitus peraeque peramanter perbelle
+perbene perbenigne perbreviter perdite perdiu peregre perendie perenne perfacile perinde perliberaliter perlubenter permale
+permaxime permixtim perniciter perpendiculariter perperam perpetim perpetualiter perpetue perpetuo perpetuum perquam perraro
+persaepe persapienter personaliter pertinenter pessum petulanter philosophice pleraque plerumque plerunque pluraliter pluries
+plurifariam poenaliter pompaliter pondo pone populariter porod porro post postea posteaquam posthac postmodo postmodum postremo
+postremum postridie potissimum potius prae praecellenter praeceps praedicative praequam praes praesertim praesto praeterea
+praeterhac praeterpropter praeterquam pridem pridie primitus primo primum prius privatim procaciter procul proculdubio producte
+profecto proin proinde promiscue propalam propatulo propediem propemodum propere propter propterea proquam prorsus prosus
+protenus protinus provinciatim pugilice pugnitus punctim puriter puta qn̄ꝫ qua quacum quacumque quadantenus quadragiens
+quadragies quadrate quadratim quadrifariam quadrifariter quadringentiens quadringenties quadripartito quadrupedatim quaecumque
+quaelibet qualibet qualiter quamcumque quamdiu quamlibet quamobrem quamprimum quamvis quandocumque quandolibet quandoque quanti
+quantisper quantocius quantopere quantumlibet quantumvis quapropter quaqua quaque quare quartum quatenus quater quaterdecies
+quemadmodum qui quibuscum quicum quid quidem quidni quin quindeciens quindecies quingenties quinimmo quinquagiens quinquagies
+quinquiens quinquies quintum quirquir quo quoad quoadusque quocum quocumque quodammodo quojus quolibet quomo quomodo
+quomodocumque quomodolibet quonam quondam quoquam quoque quoquo quoquomodo quorsom quorsum quorsus quotannis quotcumque quotidie
+quotiens quotienscumque quoties quotiescumque quotlibet quousque quovis radicitus raptim rarenter rationabiliter rationaliter
+realiter reapse recens recessim recta recto reflexim reflexive regionatim regulariter relative repens repente retro retrorsum
+revera rite ritualiter rivatim romane romanice rursum rursus rusticatim sacrate sacrilege saepenumero saltem saltim sat satin
+satine satis satisne scalatim scilicet scissim sciꝫ secius secum secundo sedecies sedulo segregatim seiunctim sejunctim semel
+semper sensate sensibiliter sensim sensualiter sententialiter seorsum septempliciter septiens septies septifariam septimum
+septuagies sesqui setius sexagecuplum sexagiens sexagies sexdecies sexies sexto sextum sic sicine sicubi sicunde sicut sicuti
+sigillatim signanter signatim silenter similiter simitu simitur simul simulac simulatque simulter sincere sinceriter singillatim
+sinistrorsus siquidem siremps sis sodes solerter sollemniter sollerter solum solummodo somnialiter somniculose sophistice sophos
+sortito sparsim specialiter speciatim sponte spurce statim stillanter stillatim stirpitus strictim suave subinde subito submissim
+subridicule subsultim subtus sudum sufficienter summatim summissim summopere super superabundanter superfluo superne suppliciter
+surridicule sursum symbolice syndesmotice tabulatim taliter tam tamdiu tamen tamquam tandem tanquam tanti tantisper tantopere
+tantum tantumdem tantummodo tantundem taxim tecum temere templatim temporatim tempori ter terdeciens tergiversanter terribiliter
+tertio tertium testatim titubanter tolutim topper totaliter totiens toties tractabiliter tractim trecentiens trecenties tributim
+triciens tricies trifariam trinaliter tripertito tripliciter triste tropice trucissime tuatim tum tumultuario tunc turmatim
+ubertim ubi ubicumque ubilibet ubinam ubiquaque ubique ubiubi ubivis ullatenus ultra ultro umbraliter umquam una unciatim undatim
+unde undecies undecumque undelibet undequadragiens undeunde undique unianimiter unice uniformiter universaliter universatim
+universe universim unquam urbanatim urceatim uspiam usquam usque usquequaque usquequo usqꝫ usualiter usurpative ut utcumque uti
+utinam utique utpote utque utraque utrimque utrinque utro utrubi utrubique utut vacive vafre velud velut veluti veraciter
+verbatim vermiculate vero versus verticaliter verum vesperascente vesperi vicatim vicem vicibus viciens vicies vicissim videlicet
+viliter viritim virtualiter visibiliter vivatim vix vixdum viꝫ vobiscum volgariter volup voluptarie voluptuose voscum vulgare
+vulgo zosum""".split())  # fmt: skip
 
 # Created from pipx run src/scripts/create_adjective_with_adverb.py, then copying and word wrapping result
-REAL_ADVERB_ADJECTIVES: Final[set[str]] = {
-    "irremediabilis", "decorus", "muscosus", "sextuplex", "suavis", "activus", "palaestricus", "perfidelis", "sanus", "praecipuus", 
-    "collaudabilis", "celer", "vivax", "syndesmoticus", "iocularis", "apprimus", "frequens", "superus", "purus", 
-    "plenus", "respectivus", "nasutus", "inaequalis", "Celticus", "culpabilis", "atrox", "impar", "nuncupativus", "hilaris", 
-    "unanimus", "condicionalis", "communis", "infidelis", "evidens", "acer", "fabrilis", "iudicialis", "lepidus", "ocularis", 
-    "idoneus", "gratus", "iactans", "orthogonalis", "gentilis", "pugnax", "quincuplex", "imperitus", "germanus", "opiparus", 
-    "fatalis", "sollers", "sortitus", "irregularis", "verus", "impatiens", "atticus", "poenalis", "invisibilis", "continens", 
-    "dulcis", "superfluus", "patronymicus", "cognoscibilis", "tyrannicus", "extemporalis", "frugalis", "densus", "inenodabilis", 
-    "egregius", "invidiosus", "realis", "brevis", "blandus", "amatorius", "impiger", "exilis", "foelix", "quinquiplex", 
-    "infirmus", "clarus", "eximius", "bellus", "verax", "procax", "unanimis", "fanaticus", "largus", "studiosus", "creber", 
-    "putidus", "accommodatus", "contemptus", "lenis", "Latinus", "formosus", "fortis", "contemplabilis", "pertinax", "improsper", 
-    "rabiosus", "muliebris", "tumidus", "verticalis", "absconditus", "dissimilis", "fallax", "pompalis", "imperativus", "uber", 
-    "placidus", "magistralis", "avidus", "inhospitalis", "divinus", "immortalis", "centralis", "tardus", "indefessus", "civilis", 
-    "Numidus", "passivus", "benevolus", "mendax", "luculentus", "maestus", "iocundus", "imprudens", "peritus", "inanis", 
-    "infelix", "conubialis", "magnificus", "ducalis", "acerbus", "servilis", "peramans", "cordialis", "superbus", "malus", 
-    "acharis", "aequus", "declamatorius", "inutilis", "significatorius", "inclemens", "insipiens", "serus", "multus", 
-    "patheticus", "consuetudinarius", "promiscuus", "sedulus", "Ibericus", "vermiculatus", "regularis", "inreprehensibilis", 
-    "admirabilis", "officialis", "solidus", "haereticus", "venustus", "petulans", "contentus", "improbus", "inurbanus", 
-    "aliquantus", "castus", "actuosus", "generalis", "concinnus", "argutus", "aeternus", "hiulcus", "adverbialis", "indisertus", 
-    "semicircularis", "insignis", "innumerabilis", "vafer", "pudens", "iracundus", "perfacilis", "senilis", "adulatorius", 
-    "linearis", "subitus", "grandis", "medicabilis", "sublimis", "dolosus", "abundus", "Cimbricus", "independens", "similis", 
-    "tranquillus", "perpendicularis", "adsiduus", "socors", "militarius", "primus", "philosophicus", "amarus", "impunis", 
-    "citus", "laudabilis", "cautus", "iucundus", "peculiaris", "cruentus", "lacrimosus", "simplex", "formalis", "benignus", 
-    "causarius", "cordatus", "lugubris", "irremissibilis", "identicus", "universalis", "praecellens", "patricus", "pronus", 
-    "politicus", "jactans", "contumax", "tripertitus", "attentus", "imperiosus", "vulgaris", "sophisticus", "inpunis", 
-    "immodestus", "litteratus", "fraudulentus", "virilis", "litteralis", "bipartitus", "coniecturalis", "astutus", 
-    "consentaneus", "duplex", "quadruplex", "consimilis", "idealis", "persapiens", "foedus", "lubens", "palliolatus", "copiosus", 
-    "flagitiosus", "irreprehensibilis", "fartus", "impudens", "romanicus", "personalis", "pacificus", "gravis", "sententialis", 
-    "incurabilis", "Numidicus", "stultus", "femininus", "sensibilis", "naturalis", "puerilis", "effrenatus", "licens", "quies", 
-    "accusatorius", "eminens", "amoenus", "constans", "salsus", "aegyptiacus", "hostilis", "futtilis", "inseparabilis", 
-    "honorificus", "militaris", "indebitus", "somniculosus", "longinquus", "indefensus", "ingeniosus", "memor", "rapidus", 
-    "crudelis", "frugi", "libens", "insalubris", "perspicax", "lacrimabilis", "symbolicus", "obscurus", "querulus", "Megaricus", 
-    "excellens", "tentativus", "vacivus", "periculosus", "tolerabilis", "inhumanus", "infirmis", "virulentus", "fidelis", 
-    "saluber", "originalis", "saepis", "trux", "uniformis", "mollis", "tenuis", "infrequens", "aequabilis", "sollemnis", 
-    "aliqualis", "incredibilis", "laboriosus", "elegans", "longulus", "romanus", "fortuitus", "properus", "anilis", "humilis", 
-    "modestus", "affabilis", "favorabilis", "precativus", "gulosus", "sagax", "pellax", "obnoxius", "manifestus", "callidus", 
-    "Hibericus", "insatiabilis", "indissolubilis", "popularis", "contrarius", "hospitalis", "unianimis", "firmus", "durabilis", 
-    "velox", "perpetualis", "sacrilegus", "internus", "relativus", "ferinus", "prudens", "ridiculus", "gelidus", "sensualis", 
-    "inculpatus", "laetus", "septemplex", "incruentus", "latinus", "rationalis", "inelegans", "necessus", "oscitans", 
-    "perbrevis", "insuperabilis", "generosus", "immisericors", "loquax", "subtilis", "mobilis", "avarus", "violentus", "invisus", 
-    "liberalis", "talis", "pravus", "visibilis", "perfectus", "legitimus", "sincerus", "improprius", "regalis", "gracilis", 
-    "rarus", "durus", "indubius", "criticus", "megaricus", "perrarus", "facilis", "credibilis", "quintuplex", "magnus", 
-    "ambiguus", "firmis", "minutus", "anniversarius", "turpis", "aequalis", "latus", "ulter", "tractabilis", "necessarius", 
-    "commodus", "dierectus", "habitualis", "conformis", "amicus", "ferox", "patrius", "certus", "paulus", "beatus", "papillaris", 
-    "perennis", "minax", "praeproperus", "arctus", "supernus", "utilis", "serenus", "sententiosus", "longiusculus", "frigidus", 
-    "difficilis", "perridiculus", "probus", "fugax", "altus", "miser", "hilarus", "adclivis", "ignorabilis", "consularis", 
-    "incontinens", "novemplex", "torvus", "indispositus", "inferus", "longanimis", "impius", "vigilans", "mundus", 
-    "incompositus", "spiritalis", "auspicatus", "inpudens", "indiscretus", "iugis", "meliusculus", "asper", "interrogativus", 
-    "liber", "consolatorius", "inconstans", "bonus", "danicus", "mirabilis", "gloriosus", "clemens", "numerosus", "septuplex", 
-    "pretiosus", "providus", "notabilis", "Libycus", "securus", "scholasticus", "singularis", "vitiosus", "inoffensus", "pius", 
-    "participialis", "tutus", "humanus", "potissimus", "barbarus", "vocalis", "imperatorius", "stomachosus", "usualis", "unicus", 
-    "mutuus", "agilis", "diversus", "felix", "fortunatus", "longus", "insolens", "pernix", "impurus", "impotens", "decemplex", 
-    "Atticus", "enervis", "romanticus", "trinalis", "verisimilis", "mediocris", "lentus", "irrisibilis", "praeclarus", "moralis", 
-    "probabilis", "Occitanus", "indifferens", "pudicus", "reflexivus", "par", "tristis", "assiduus", "festivus", "gratuitus", 
-    "conducibilis", "intemperatus", "saevus", "candidulus", "cothurnatus", "intemperans", "specialis", "familiaris", "continuus", 
-    "supplex", "localis", "jocundus", "aeger", "fraternus", "instrenuus", "circularis", "indigestus", "multiplex", "essentialis", 
-    "triplex", "complusculi", "prolixus", "sonorus", "efficax", "excusabilis", "jucundus", "opportunus", "genialis", "laxus", 
-    "corporalis", "discordiosus", "horribilis", "pulcher", "consideratus", "strenuus", "terribilis", "absurdus", "repens", 
-    "ferax", "normalis", "planus", "matronalis", "philosophus", "perpetuus", "gallicus", "novus", "pollucibilis", "illecebrosus", 
-    "amplus", "audax", "navus", "tener", "pulcer", "animosus", "vicinus", "acutulus", "furialis", "futilis", "indiligens", 
-    "comis", "segnis", "universus", "centumplex", "levis", "violens", "sensatus", "lividus", "amabilis", "vehemens"
-}  # fmt: skip
+REAL_ADVERB_ADJECTIVES: Final[set[str]] = set("""Atticus Celticus Cimbricus Hibericus Ibericus Latinus Libycus Megaricus
+Numidicus Numidus Occitanus absconditus absurdus abundus accommodatus accusatorius acer acerbus acharis activus actuosus acutulus
+adclivis admirabilis adsiduus adulatorius adverbialis aeger aegyptiacus aequabilis aequalis aequus aeternus affabilis agilis
+aliqualis aliquantus altus amabilis amarus amatorius ambiguus amicus amoenus amplus anilis animosus anniversarius apprimus arctus
+argutus asper assiduus astutus atrox attentus atticus audax auspicatus avarus avidus barbarus beatus bellus benevolus benignus
+bipartitus blandus bonus brevis callidus candidulus castus causarius cautus celer centralis centumplex certus circularis citus
+civilis clarus clemens cognoscibilis collaudabilis comis commodus communis complusculi concinnus condicionalis conducibilis
+conformis coniecturalis consentaneus consideratus consimilis consolatorius constans consuetudinarius consularis contemplabilis
+contemptus contentus continens continuus contrarius contumax conubialis copiosus cordatus cordialis corporalis cothurnatus creber
+credibilis criticus crudelis cruentus culpabilis danicus decemplex declamatorius decorus densus dierectus difficilis discordiosus
+dissimilis diversus divinus dolosus ducalis dulcis duplex durabilis durus efficax effrenatus egregius elegans eminens enervis
+essentialis evidens excellens excusabilis exilis eximius extemporalis fabrilis facilis fallax familiaris fanaticus fartus fatalis
+favorabilis felix femininus ferax ferinus ferox festivus fidelis firmis firmus flagitiosus foedus foelix formalis formosus fortis
+fortuitus fortunatus fraternus fraudulentus frequens frigidus frugalis frugi fugax furialis futilis futtilis gallicus gelidus
+generalis generosus genialis gentilis germanus gloriosus gracilis grandis gratuitus gratus gravis gulosus habitualis haereticus
+hilaris hilarus hiulcus honorificus horribilis hospitalis hostilis humanus humilis iactans idealis identicus idoneus ignorabilis
+illecebrosus immisericors immodestus immortalis impar impatiens imperativus imperatorius imperiosus imperitus impiger impius
+impotens improbus improprius improsper imprudens impudens impunis impurus inaequalis inanis inclemens incompositus inconstans
+incontinens incredibilis incruentus inculpatus incurabilis indebitus indefensus indefessus independens indifferens indigestus
+indiligens indiscretus indisertus indispositus indissolubilis indubius inelegans inenodabilis infelix inferus infidelis infirmis
+infirmus infrequens ingeniosus inhospitalis inhumanus innumerabilis inoffensus inpudens inpunis inreprehensibilis insalubris
+insatiabilis inseparabilis insignis insipiens insolens instrenuus insuperabilis intemperans intemperatus internus interrogativus
+inurbanus inutilis invidiosus invisibilis invisus iocularis iocundus iracundus irregularis irremediabilis irremissibilis
+irreprehensibilis irrisibilis iucundus iudicialis iugis jactans jocundus jucundus laboriosus lacrimabilis lacrimosus laetus
+largus latinus latus laudabilis laxus legitimus lenis lentus lepidus levis libens liber liberalis licens linearis litteralis
+litteratus lividus localis longanimis longinquus longiusculus longulus longus loquax lubens luculentus lugubris maestus
+magistralis magnificus magnus malus manifestus matronalis medicabilis mediocris megaricus meliusculus memor mendax militaris
+militarius minax minutus mirabilis miser mobilis modestus mollis moralis muliebris multiplex multus mundus muscosus mutuus
+nasutus naturalis navus necessarius necessus normalis notabilis novemplex novus numerosus nuncupativus obnoxius obscurus ocularis
+officialis opiparus opportunus originalis orthogonalis oscitans pacificus palaestricus palliolatus papillaris par participialis
+passivus patheticus patricus patrius patronymicus paulus peculiaris pellax peramans perbrevis perennis perfacilis perfectus
+perfidelis periculosus peritus pernix perpendicularis perpetualis perpetuus perrarus perridiculus persapiens personalis perspicax
+pertinax petulans philosophicus philosophus pius placidus planus plenus poenalis politicus pollucibilis pompalis popularis
+potissimus praecellens praecipuus praeclarus praeproperus pravus precativus pretiosus primus probabilis probus procax prolixus
+promiscuus pronus properus providus prudens pudens pudicus puerilis pugnax pulcer pulcher purus putidus quadruplex querulus quies
+quincuplex quinquiplex quintuplex rabiosus rapidus rarus rationalis realis reflexivus regalis regularis relativus repens
+respectivus ridiculus romanicus romanticus romanus sacrilegus saepis saevus sagax salsus saluber sanus scholasticus securus
+sedulus segnis semicircularis senilis sensatus sensibilis sensualis sententialis sententiosus septemplex septuplex serenus serus
+servilis sextuplex significatorius similis simplex sincerus singularis socors solidus sollemnis sollers somniculosus sonorus
+sophisticus sortitus specialis spiritalis stomachosus strenuus studiosus stultus suavis subitus sublimis subtilis superbus
+superfluus supernus superus supplex symbolicus syndesmoticus talis tardus tener tentativus tenuis terribilis tolerabilis torvus
+tractabilis tranquillus trinalis tripertitus triplex tristis trux tumidus turpis tutus tyrannicus uber ulter unanimis unanimus
+unianimis unicus uniformis universalis universus usualis utilis vacivus vafer vehemens velox venustus verax verisimilis
+vermiculatus verticalis verus vicinus vigilans violens violentus virilis virulentus visibilis vitiosus vivax vocalis vulgaris""".split())  # fmt: skip
 
-
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------
 # PRONOUNS
 
 PRONOUNS: Final[dict[str, Endings]] = {
