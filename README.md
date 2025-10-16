@@ -6,5 +6,5 @@
 [![Code coverage](https://codecov.io/github/rduo1009/vocab-tuister/graph/badge.svg?token=YB492UEDOJ)](https://codecov.io/github/rduo1009/vocab-tuister)
 
 Vocab-tester is a tool for improving your Latin vocabulary and endings.\
-This is the fork of the original vocab-tester repo that adds a TUI for testing.
+This is the fork of the original vocab-tester repo that adds a TUI.
 See the docs [here](docs/).
