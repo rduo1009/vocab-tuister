@@ -137,8 +137,8 @@ class Verb(Word):
             Defaults to ``None`` if not applicable.
         ppp : str | None
             The perfect passive participle form, if the verb is not
-            irregular or deponent. The supine can also be used here, but
-            is not supported. Defaults to ``None`` if not applicable.
+            irregular or deponent. The supine can also be used here if a ppp
+            form does not exist. Defaults to ``None`` if not applicable.
         meaning : Meaning
 
         Raises
