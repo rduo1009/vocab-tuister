@@ -2,8 +2,6 @@
 
 # ruff: noqa: TC002
 
-from __future__ import annotations
-
 import logging
 import sys
 import warnings

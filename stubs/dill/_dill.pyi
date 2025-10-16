@@ -1,7 +1,5 @@
 # pyright: reportAny=false, reportExplicitAny=false
 
-from __future__ import annotations
-
 from pickle import Unpickler as StockUnpickler
 from typing import Any
 

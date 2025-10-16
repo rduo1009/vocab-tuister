@@ -2,8 +2,6 @@
 
 # pyright: reportPrivateUsage=false
 
-from __future__ import annotations
-
 import logging
 import random
 from typing import TYPE_CHECKING, Final

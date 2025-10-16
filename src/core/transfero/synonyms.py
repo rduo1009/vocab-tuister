@@ -2,12 +2,10 @@
 
 # pyright: reportUnusedCallResult=false
 
-from __future__ import annotations
-
 import logging
-import lzma
 import sys as _sys
 import warnings
+from compression import zstd
 from functools import cache
 from pathlib import Path
 from shutil import copyfileobj
@@ -60,9 +58,9 @@ def setup_wn() -> None:
         )
         wn.config.data_directory = str(_wn_data_path)
 
-        if (compressed_db_path := _wn_data_path / "wn.db.xz").exists():
+        if (compressed_db_path := _wn_data_path / "wn.db.zst").exists():
             with (
-                lzma.open(compressed_db_path, "rb") as f_in,
+                zstd.open(compressed_db_path, "rb") as f_in,
                 (_wn_data_path / "wn.db").open("wb") as f_out,
             ):
                 copyfileobj(f_in, f_out)
@@ -82,13 +80,13 @@ def setup_wn() -> None:
         _wn_data_path.mkdir(parents=True, exist_ok=True)
 
         # 1. Check if the compressed database exists.
-        if (compressed_db_path := _wn_data_path / "wn.db.xz").exists():
+        if (compressed_db_path := _wn_data_path / "wn.db.zst").exists():
             # Decompress into a temporary directory.
             _tmp_dir_obj = TemporaryDirectory()
             _wn_data_path = Path(_tmp_dir_obj.name)
 
             with (
-                lzma.open(compressed_db_path, "rb") as f_in,
+                zstd.open(compressed_db_path, "rb") as f_in,
                 (_wn_data_path / "wn.db").open("wb") as f_out,
             ):
                 copyfileobj(f_in, f_out)

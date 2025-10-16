@@ -1,7 +1,5 @@
 """Create sample vocab-tuister server outputs to allow go code to be generated."""
 
-from __future__ import annotations
-
 import json
 from io import StringIO
 from pathlib import Path

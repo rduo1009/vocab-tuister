@@ -2,8 +2,6 @@
 
 # ruff: noqa: D103, PLW0603
 
-from __future__ import annotations
-
 import json
 import logging
 import traceback
