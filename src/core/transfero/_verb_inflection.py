@@ -173,8 +173,22 @@ def find_verb_inflections(
             f"{base} {rest}" for base in bases
         )
 
+    try:
+        lemmas = lemminflect.getLemma(verb, "VERB")
+        if verb == "should":  # 'should' gets lemmatised to 'shall'
+            lemmas = ("should",)
+    except KeyError as e:
+        raise InvalidWordError(f"Word {verb} is not a verb.") from e
+
+    inflections: list[str] = []
+
     if components.mood in {Mood.GERUND, Mood.SUPINE}:
-        return _find_verbal_noun_inflections(verb, components)
+        for lemma in lemmas:
+            inflections.extend(
+                _find_verbal_noun_inflections(lemma, components)
+            )
+
+        return tuple(dict.fromkeys(inflections))
 
     if components.voice == Voice.DEPONENT:  # deponents active always
         components.voice = Voice.ACTIVE
@@ -191,15 +205,6 @@ def find_verb_inflections(
     if components.mood == Mood.PARTICIPLE:
         return _find_participle_inflections(verb, components)
 
-    # XXX: Is this nature of using all lemmas continued throughout transfero?
-    try:
-        lemmas = lemminflect.getLemma(verb, "VERB")
-        if verb == "should":  # 'should' gets lemmatised to 'shall'
-            lemmas = ("should",)
-    except KeyError as e:
-        raise InvalidWordError(f"Word {verb} is not a verb.") from e
-
-    inflections: list[str] = []
     if hasattr(components, "number") and hasattr(components, "person"):
         for lemma in lemmas:
             inflections.extend(
@@ -224,6 +229,7 @@ def find_verb_inflections(
     return tuple(dict.fromkeys(inflections))
 
 
+# XXX: Eventually a tabular solution would be better for this.
 def _inflect_lemma(  # noqa: PLR0917
     lemma: str,
     tense: Tense,
@@ -1607,12 +1613,8 @@ def _find_participle_inflections(
 
 
 def _find_verbal_noun_inflections(
-    verb: str, components: EndingComponents
+    lemma: str, components: EndingComponents
 ) -> tuple[str, ...]:
-    # XXX: Why is lemma repeated from find_verb_inflections?
-
-    lemma = lemminflect.getLemma(verb, "VERB")[0]
-
     match components.mood:
         case Mood.GERUND:
             return (_get_first_inflection(lemma, "VBG"),)
