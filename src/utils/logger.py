@@ -45,12 +45,12 @@ def log_uncaught_exceptions(
     """
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
-    else:
-        logging.critical(  # noqa: LOG015
-            "%s: %s", exc_type.__name__, exc_value
-        )
 
-    sys.exit(1)
+    logging.critical(  # noqa: LOG015
+        "%s: %s", exc_type.__name__, exc_value
+    )
+
+    raise exc_value
 
 
 def custom_formatwarning(
