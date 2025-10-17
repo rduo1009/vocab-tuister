@@ -7,23 +7,18 @@ import logging
 import traceback
 from io import StringIO
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
-from flask import Flask, Response, render_template, request
+from flask import Flask, jsonify, render_template, request
 from platformdirs import PlatformDirs
+from pydantic import ValidationError
 from waitress import serve
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 from ..core.lego.cache import cache_vocab_file
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import SessionConfig, Settings
 from ..core.transfero.synonyms import setup_wn
-from ..utils.typeddict_validator import (
-    DictExtraKeyError,
-    DictIncorrectTypeError,
-    DictMissingKeyError,
-    validate_typeddict,
-)
 from ._json_encode import QuestionClassEncoder
 from .exceptions import InvalidSettingsError
 
@@ -38,58 +33,34 @@ vocab_list: VocabList | None = None
 settings: Settings | None = None
 
 
-@app.errorhandler(BadRequest)
-def handle_bad_request(e: BadRequest) -> tuple[str, int]:
-    logger.error(
-        "%s\n%s",
-        e.description,
-        "\n".join(traceback.format_tb(e.__traceback__)),
+@app.errorhandler(InternalServerError)
+def handle_internal_server_error(e: InternalServerError):
+    original_e = e.original_exception
+
+    if original_e is None:
+        logger.error("%s", e)
+        return "500 Internal Server Error", 500
+
+    tb = "".join(
+        traceback.format_exception(
+            type(original_e), original_e, original_e.__traceback__
+        )
     )
-    return f"Bad request: {e}", 400
+    logger.error("%s", tb)
+
+    return f"500 Internal Server Error: {original_e}", 500
 
 
 def _get_settings() -> Settings:
     settings_file = Path(dirs.user_config_path) / "settings.json"
-
     try:
-        with settings_file.open("r", encoding="utf-8") as f:
-            raw_settings = json.load(f)
+        return Settings.model_validate_json(settings_file.read_text())
     except FileNotFoundError as e:
         raise InvalidSettingsError(
             f"Settings file not found at {settings_file}."
         ) from e
-
-    try:
-        _ = validate_typeddict(raw_settings, Settings)
-
-    except DictMissingKeyError as e:
-        keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
-        raise InvalidSettingsError(
-            f"Required settings are missing: {keys_str}."
-        ) from e
-
-    except DictExtraKeyError as e:
-        keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
-        raise InvalidSettingsError(
-            f"Unrecognised settings were provided: {keys_str}."
-        ) from e
-
-    except DictIncorrectTypeError as e:
-        type_error_details: list[str] = []
-        for field, detail in sorted(e.incorrect_types.items()):
-            expected_type_str = str(detail.expected)
-            actual_type_str = (
-                detail.actual.__name__
-                if hasattr(detail.actual, "__name__")
-                else str(detail.actual)
-            )
-            type_error_details.append(
-                f"Expected type {expected_type_str} for '{field}', but received"
-                f" type {actual_type_str}"
-            )
-        raise InvalidSettingsError(f"{'; '.join(type_error_details)}.") from e
-
-    return raw_settings
+    except ValidationError as e:
+        raise InvalidSettingsError(f"Invalid settings: {e}") from e
 
 
 @app.route("/")
@@ -145,74 +116,37 @@ def create_session():
         raise BadRequest("Vocab file has not been provided.")
 
     logger.info("Validating settings.")
-    session_config: dict[str, Any] = request.get_json()
-    try:
-        question_amount = session_config.pop("number-of-questions")
-    except KeyError as e:
-        raise BadRequest(
-            "Required config is missing: 'number-of-questions'. "
-            "(InvalidSessionConfigError)"
-        ) from e
+    payload = request.get_json()
+    question_amount = payload["number-of-questions"]
+    session_config = payload["config"]
 
     if not isinstance(question_amount, int):
-        raise BadRequest(
-            "Invalid session config: 'number-of-questions' must be "
-            f"an integer (got type {type(question_amount).__name__}). "
-            "(InvalidSessionConfigError)"
+        logger.error(
+            "Invalid session config: 'number-of-questions' must be an "
+            "integer (got type %s).",
+            type(question_amount).__name__,
         )
+        return {
+            "error": "InvalidSessionConfigError",
+            "details": None,
+        }, 400  # TODO: do this
 
     try:
-        _ = validate_typeddict(session_config, SessionConfig)
-    except DictMissingKeyError as e:
-        keys_str = ", ".join(f"'{k}'" for k in sorted(e.missing_keys))
-        raise BadRequest(
-            f"Required config is missing: {keys_str}. (InvalidSessionConfigError)"
-        ) from e
-
-    except DictExtraKeyError as e:
-        keys_str = ", ".join(f"'{k}'" for k in sorted(e.extra_keys))
-        raise BadRequest(
-            f"Unrecognised config was provided: {keys_str}. "
-            "(InvalidSessionConfigError)"
-        ) from e
-
-    except DictIncorrectTypeError as e:
-        type_error_details: list[str] = []
-        for field, detail in sorted(e.incorrect_types.items()):
-            expected_type_str = str(detail.expected)
-            actual_type_str = (
-                detail.actual.__name__
-                if hasattr(detail.actual, "__name__")
-                else str(detail.actual)
-            )
-            type_error_details.append(
-                f"Expected type {expected_type_str} for '{field}', but received"
-                f" type {actual_type_str}"
-            )
-        raise BadRequest(
-            f"{'; '.join(type_error_details)}. (InvalidSessionConfigError)"
-        ) from e
+        session_config = SessionConfig.model_validate(session_config)
+    except ValidationError as e:
+        logger.exception("Invalid session config.")
+        return {"error": "InvalidSessionConfigError", "details": e.json()}, 400
 
     logger.info("Returning %d questions.", question_amount)
-    try:
-        return Response(
-            _generate_questions_json(
-                vocab_list,
-                question_amount,
-                cast("SessionConfig", session_config),  # pyright: ignore[reportInvalidCast]
-            ),
-            mimetype="application/json",
-        )
-    except Exception as e:
-        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
-            e.__traceback__
-        ) from e
+    return jsonify(
+        _generate_questions_json(vocab_list, question_amount, session_config)
+    )
 
 
 def main_dev(port: int, *, debug: bool = False):
     global settings
     settings = _get_settings()
-    if settings["include-synonyms"]:
+    if settings.include_synonyms:
         setup_wn()
     app.run(host="127.0.0.1", port=port, debug=debug)
 
@@ -220,6 +154,6 @@ def main_dev(port: int, *, debug: bool = False):
 def main(port: int):
     global settings
     settings = _get_settings()
-    if settings["include-synonyms"]:
+    if settings.include_synonyms:
         setup_wn()
     serve(app, host="127.0.0.1", port=port)

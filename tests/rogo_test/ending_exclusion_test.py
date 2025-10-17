@@ -1,22 +1,21 @@
-# pyright: reportTypedDictNotRequiredAccess=false
-
-
 import contextlib
 from itertools import combinations
-from typing import TYPE_CHECKING
 
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.accido.misc import Case, Degree, Gender, Mood, Number, Tense, Voice
 from src.core.lego.misc import VocabList
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
+from src.core.rogo.type_aliases import SessionConfig, Settings
 
-if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings: Settings = {"include-synonyms": False, "include-similar-words": False}  # they're not needed
+def _to_snake(kebab: str) -> str:
+    return kebab.replace("-", "_")
 
-default_session_config: SessionConfig = {
+
+settings: Settings = Settings(**{"include-synonyms": False, "include-similar-words": False})  # they're not needed
+
+default_session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -133,7 +132,7 @@ default_session_config: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 # NOTE: These are incomplete but should be enough to test the functionality.
 exclude_components_adjective = {
@@ -203,11 +202,11 @@ def test_ending_exclusion_adjective():
     keys = tuple(exclude_components_adjective.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
-        session_config["exclude-adverbs"] = True
+            setattr(session_config, _to_snake(key), True)
+        session_config.exclude_adverbs = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
@@ -227,10 +226,10 @@ def test_ending_exclusion_noun():
     keys = tuple(exclude_components_noun.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
+            setattr(session_config, _to_snake(key), True)
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
@@ -250,10 +249,10 @@ def test_ending_exclusion_pronoun():
     keys = tuple(exclude_components_pronoun.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
+            setattr(session_config, _to_snake(key), True)
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
@@ -273,11 +272,11 @@ def test_ending_exclusion_verb():
     keys = tuple(exclude_components_verb.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
-        session_config["exclude-participles"] = True
+            setattr(session_config, _to_snake(key), True)
+        session_config.exclude_participles = True
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
@@ -289,7 +288,7 @@ def test_ending_exclusion_verb():
             pass
 
 
-# Just copying the above test, as regular words should not cause any issues
+# Just model_copying the above test, as regular words should not cause any issues
 def test_ending_exclusion_regularword():
     word = RegularWord("sed", meaning="but")
     vocab_list = VocabList([word], "")
@@ -298,10 +297,10 @@ def test_ending_exclusion_regularword():
     keys = tuple(exclude_components_verb.keys())
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
+            setattr(session_config, _to_snake(key), True)
 
         try:
             for output in ask_question_without_sr(vocab_list, amount, session_config, settings):

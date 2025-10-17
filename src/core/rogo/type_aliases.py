@@ -1,245 +1,160 @@
 """Contains type aliases used by rogo."""
 
-from typing import ReadOnly, TypedDict
+# pyright: reportUnannotatedClassAttribute=false
+
+from typing import TYPE_CHECKING
+
+from pydantic import BaseModel, ConfigDict
 
 from src.core.accido.endings import Word
 
+if TYPE_CHECKING:
+    from pydantic import StrictBool, StrictInt
+
 type Vocab = list[Word]
 
-Settings = TypedDict(
-    "Settings",
-    {
-        "include-synonyms": ReadOnly[bool],
-        "include-similar-words": ReadOnly[bool],
-    },
-)
 
-SessionConfig = TypedDict(
-    "SessionConfig",
-    {
-        "exclude-adjectives": ReadOnly[bool],
-        "exclude-adjective-212-declension": ReadOnly[bool],
-        "exclude-adjective-third-declension": ReadOnly[bool],
-        "exclude-adjective-masculine": ReadOnly[bool],
-        "exclude-adjective-feminine": ReadOnly[bool],
-        "exclude-adjective-neuter": ReadOnly[bool],
-        "exclude-adjective-nominative": ReadOnly[bool],
-        "exclude-adjective-vocative": ReadOnly[bool],
-        "exclude-adjective-accusative": ReadOnly[bool],
-        "exclude-adjective-genitive": ReadOnly[bool],
-        "exclude-adjective-dative": ReadOnly[bool],
-        "exclude-adjective-ablative": ReadOnly[bool],
-        "exclude-adjective-singular": ReadOnly[bool],
-        "exclude-adjective-plural": ReadOnly[bool],
-        "exclude-adjective-positive": ReadOnly[bool],
-        "exclude-adjective-comparative": ReadOnly[bool],
-        "exclude-adjective-superlative": ReadOnly[bool],
-
-        "exclude-adverbs": ReadOnly[bool],
-        "exclude-adverb-positive": ReadOnly[bool],
-        "exclude-adverb-comparative": ReadOnly[bool],
-        "exclude-adverb-superlative": ReadOnly[bool],
-
-        "exclude-nouns": ReadOnly[bool],
-        "exclude-noun-first-declension": ReadOnly[bool],
-        "exclude-noun-second-declension": ReadOnly[bool],
-        "exclude-noun-third-declension": ReadOnly[bool],
-        "exclude-noun-fourth-declension": ReadOnly[bool],
-        "exclude-noun-fifth-declension": ReadOnly[bool],
-        "exclude-noun-irregular-declension": ReadOnly[bool],
-        "exclude-noun-nominative": ReadOnly[bool],
-        "exclude-noun-vocative": ReadOnly[bool],
-        "exclude-noun-accusative": ReadOnly[bool],
-        "exclude-noun-genitive": ReadOnly[bool],
-        "exclude-noun-dative": ReadOnly[bool],
-        "exclude-noun-ablative": ReadOnly[bool],
-        "exclude-noun-singular": ReadOnly[bool],
-        "exclude-noun-plural": ReadOnly[bool],
-
-        "exclude-pronouns": ReadOnly[bool],
-        "exclude-pronoun-masculine": ReadOnly[bool],
-        "exclude-pronoun-feminine": ReadOnly[bool],
-        "exclude-pronoun-neuter": ReadOnly[bool],
-        "exclude-pronoun-nominative": ReadOnly[bool],
-        "exclude-pronoun-vocative": ReadOnly[bool],
-        "exclude-pronoun-accusative": ReadOnly[bool],
-        "exclude-pronoun-genitive": ReadOnly[bool],
-        "exclude-pronoun-dative": ReadOnly[bool],
-        "exclude-pronoun-ablative": ReadOnly[bool],
-        "exclude-pronoun-singular": ReadOnly[bool],
-        "exclude-pronoun-plural": ReadOnly[bool],
-
-        "exclude-regulars": ReadOnly[bool],
-
-        "exclude-verbs": ReadOnly[bool],
-        "exclude-deponents": ReadOnly[bool],
-        "exclude-verb-first-conjugation": ReadOnly[bool],
-        "exclude-verb-second-conjugation": ReadOnly[bool],
-        "exclude-verb-third-conjugation": ReadOnly[bool],
-        "exclude-verb-fourth-conjugation": ReadOnly[bool],
-        "exclude-verb-mixed-conjugation": ReadOnly[bool],
-        "exclude-verb-irregular-conjugation": ReadOnly[bool],
-        "exclude-verb-present-active-indicative": ReadOnly[bool],
-        "exclude-verb-imperfect-active-indicative": ReadOnly[bool],
-        "exclude-verb-future-active-indicative": ReadOnly[bool],
-        "exclude-verb-perfect-active-indicative": ReadOnly[bool],
-        "exclude-verb-pluperfect-active-indicative": ReadOnly[bool],
-        "exclude-verb-future-perfect-active-indicative": ReadOnly[bool],
-        "exclude-verb-present-passive-indicative": ReadOnly[bool],
-        "exclude-verb-imperfect-passive-indicative": ReadOnly[bool],
-        "exclude-verb-future-passive-indicative": ReadOnly[bool],
-        "exclude-verb-perfect-passive-indicative": ReadOnly[bool],
-        "exclude-verb-pluperfect-passive-indicative": ReadOnly[bool],
-        "exclude-verb-future-perfect-passive-indicative": ReadOnly[bool],
-        "exclude-verb-present-active-subjunctive": ReadOnly[bool],
-        "exclude-verb-imperfect-active-subjunctive": ReadOnly[bool],
-        "exclude-verb-perfect-active-subjunctive": ReadOnly[bool],
-        "exclude-verb-pluperfect-active-subjunctive": ReadOnly[bool],
-        "exclude-verb-present-active-imperative": ReadOnly[bool],
-        "exclude-verb-future-active-imperative": ReadOnly[bool],
-        "exclude-verb-present-passive-imperative": ReadOnly[bool],
-        "exclude-verb-future-passive-imperative": ReadOnly[bool],
-        "exclude-verb-present-active-infinitive": ReadOnly[bool],
-        "exclude-verb-future-active-infinitive": ReadOnly[bool],
-        "exclude-verb-perfect-active-infinitive": ReadOnly[bool],
-        "exclude-verb-present-passive-infinitive": ReadOnly[bool],
-        "exclude-verb-future-passive-infinitive": ReadOnly[bool],
-        "exclude-verb-perfect-passive-infinitive": ReadOnly[bool],
-        "exclude-verb-singular": ReadOnly[bool],
-        "exclude-verb-plural": ReadOnly[bool],
-        "exclude-verb-1st-person": ReadOnly[bool],
-        "exclude-verb-2nd-person": ReadOnly[bool],
-        "exclude-verb-3rd-person": ReadOnly[bool],
-
-        "exclude-participles": ReadOnly[bool],
-        "exclude-participle-present-active": ReadOnly[bool],
-        "exclude-participle-perfect-passive": ReadOnly[bool],
-        "exclude-participle-future-active": ReadOnly[bool],
-        "exclude-gerundives": ReadOnly[bool],
-        "exclude-participle-masculine": ReadOnly[bool],
-        "exclude-participle-feminine": ReadOnly[bool],
-        "exclude-participle-neuter": ReadOnly[bool],
-        "exclude-participle-nominative": ReadOnly[bool],
-        "exclude-participle-vocative": ReadOnly[bool],
-        "exclude-participle-accusative": ReadOnly[bool],
-        "exclude-participle-genitive": ReadOnly[bool],
-        "exclude-participle-dative": ReadOnly[bool],
-        "exclude-participle-ablative": ReadOnly[bool],
-        "exclude-participle-singular": ReadOnly[bool],
-        "exclude-participle-plural": ReadOnly[bool],
-
-        "exclude-gerunds": ReadOnly[bool],
-        "exclude-supines": ReadOnly[bool],
-
-        "english-subjunctives": ReadOnly[bool],
-        "english-verbal-nouns": ReadOnly[bool],
-
-        "include-typein-engtolat": ReadOnly[bool],
-        "include-typein-lattoeng": ReadOnly[bool],
-        "include-parse": ReadOnly[bool],
-        "include-inflect": ReadOnly[bool],
-        "include-principal-parts": ReadOnly[bool],
-        "include-multiplechoice-engtolat": ReadOnly[bool],
-        "include-multiplechoice-lattoeng": ReadOnly[bool],
-        "number-multiplechoice-options": ReadOnly[int],
-    },
-)  # fmt: skip
+def _to_kebab(snake: str) -> str:
+    return snake.replace("_", "-")
 
 
-SessionConfigRules = TypedDict(
-    "SessionConfigRules",
-    {
-        "exclude-adjective-masculine": ReadOnly[str],
-        "exclude-adjective-feminine": ReadOnly[str],
-        "exclude-adjective-neuter": ReadOnly[str],
-        "exclude-adjective-nominative": ReadOnly[str],
-        "exclude-adjective-vocative": ReadOnly[str],
-        "exclude-adjective-accusative": ReadOnly[str],
-        "exclude-adjective-genitive": ReadOnly[str],
-        "exclude-adjective-dative": ReadOnly[str],
-        "exclude-adjective-ablative": ReadOnly[str],
-        "exclude-adjective-singular": ReadOnly[str],
-        "exclude-adjective-plural": ReadOnly[str],
-        "exclude-adjective-positive": ReadOnly[str],
-        "exclude-adjective-comparative": ReadOnly[str],
-        "exclude-adjective-superlative": ReadOnly[str],
+class Settings(BaseModel):
+    """Global settings for vocab-tester."""
 
-        "exclude-adverbs": ReadOnly[str],
-        "exclude-adverb-positive": ReadOnly[str],
-        "exclude-adverb-comparative": ReadOnly[str],
-        "exclude-adverb-superlative": ReadOnly[str],
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_by_name=False,
+        validate_by_alias=True,
+        alias_generator=_to_kebab,
+    )
 
-        "exclude-noun-nominative": ReadOnly[str],
-        "exclude-noun-vocative": ReadOnly[str],
-        "exclude-noun-accusative": ReadOnly[str],
-        "exclude-noun-genitive": ReadOnly[str],
-        "exclude-noun-dative": ReadOnly[str],
-        "exclude-noun-ablative": ReadOnly[str],
-        "exclude-noun-singular": ReadOnly[str],
-        "exclude-noun-plural": ReadOnly[str],
+    include_synonyms: StrictBool
+    include_similar_words: StrictBool
 
-        "exclude-pronoun-masculine": ReadOnly[str],
-        "exclude-pronoun-feminine": ReadOnly[str],
-        "exclude-pronoun-neuter": ReadOnly[str],
-        "exclude-pronoun-nominative": ReadOnly[str],
-        "exclude-pronoun-vocative": ReadOnly[str],
-        "exclude-pronoun-accusative": ReadOnly[str],
-        "exclude-pronoun-genitive": ReadOnly[str],
-        "exclude-pronoun-dative": ReadOnly[str],
-        "exclude-pronoun-ablative": ReadOnly[str],
-        "exclude-pronoun-singular": ReadOnly[str],
-        "exclude-pronoun-plural": ReadOnly[str],
 
-        "exclude-verb-present-active-indicative": ReadOnly[str],
-        "exclude-verb-imperfect-active-indicative": ReadOnly[str],
-        "exclude-verb-future-active-indicative": ReadOnly[str],
-        "exclude-verb-perfect-active-indicative": ReadOnly[str],
-        "exclude-verb-pluperfect-active-indicative": ReadOnly[str],
-        "exclude-verb-future-perfect-active-indicative": ReadOnly[str],
-        "exclude-verb-present-passive-indicative": ReadOnly[str],
-        "exclude-verb-imperfect-passive-indicative": ReadOnly[str],
-        "exclude-verb-future-passive-indicative": ReadOnly[str],
-        "exclude-verb-perfect-passive-indicative": ReadOnly[str],
-        "exclude-verb-pluperfect-passive-indicative": ReadOnly[str],
-        "exclude-verb-future-perfect-passive-indicative": ReadOnly[str],
-        "exclude-verb-present-active-subjunctive": ReadOnly[str],
-        "exclude-verb-imperfect-active-subjunctive": ReadOnly[str],
-        "exclude-verb-perfect-active-subjunctive": ReadOnly[str],
-        "exclude-verb-pluperfect-active-subjunctive": ReadOnly[str],
-        "exclude-verb-present-active-imperative": ReadOnly[str],
-        "exclude-verb-future-active-imperative": ReadOnly[str],
-        "exclude-verb-present-passive-imperative": ReadOnly[str],
-        "exclude-verb-future-passive-imperative": ReadOnly[str],
-        "exclude-verb-present-active-infinitive": ReadOnly[str],
-        "exclude-verb-future-active-infinitive": ReadOnly[str],
-        "exclude-verb-perfect-active-infinitive": ReadOnly[str],
-        "exclude-verb-present-passive-infinitive": ReadOnly[str],
-        "exclude-verb-future-passive-infinitive": ReadOnly[str],
-        "exclude-verb-perfect-passive-infinitive": ReadOnly[str],
-        "exclude-verb-singular": ReadOnly[str],
-        "exclude-verb-plural": ReadOnly[str],
-        "exclude-verb-1st-person": ReadOnly[str],
-        "exclude-verb-2nd-person": ReadOnly[str],
-        "exclude-verb-3rd-person": ReadOnly[str],
+class SessionConfig(BaseModel):
+    """Config for a vocab-tester testing session."""
 
-        "exclude-participles": ReadOnly[str],
-        "exclude-participle-present-active": ReadOnly[str],
-        "exclude-participle-perfect-passive": ReadOnly[str],
-        "exclude-participle-future-active": ReadOnly[str],
-        "exclude-gerundives": ReadOnly[str],
-        "exclude-participle-masculine": ReadOnly[str],
-        "exclude-participle-feminine": ReadOnly[str],
-        "exclude-participle-neuter": ReadOnly[str],
-        "exclude-participle-nominative": ReadOnly[str],
-        "exclude-participle-vocative": ReadOnly[str],
-        "exclude-participle-accusative": ReadOnly[str],
-        "exclude-participle-genitive": ReadOnly[str],
-        "exclude-participle-dative": ReadOnly[str],
-        "exclude-participle-ablative": ReadOnly[str],
-        "exclude-participle-singular": ReadOnly[str],
-        "exclude-participle-plural": ReadOnly[str],
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_by_name=False,
+        validate_by_alias=True,
+        alias_generator=_to_kebab,
+    )
 
-        "exclude-gerunds": ReadOnly[str],
-        "exclude-supines": ReadOnly[str],
-    },
-)  # fmt: skip
+    exclude_adjectives: StrictBool
+    exclude_adjective_212_declension: StrictBool
+    exclude_adjective_third_declension: StrictBool
+    exclude_adjective_masculine: StrictBool
+    exclude_adjective_feminine: StrictBool
+    exclude_adjective_neuter: StrictBool
+    exclude_adjective_nominative: StrictBool
+    exclude_adjective_vocative: StrictBool
+    exclude_adjective_accusative: StrictBool
+    exclude_adjective_genitive: StrictBool
+    exclude_adjective_dative: StrictBool
+    exclude_adjective_ablative: StrictBool
+    exclude_adjective_singular: StrictBool
+    exclude_adjective_plural: StrictBool
+    exclude_adjective_positive: StrictBool
+    exclude_adjective_comparative: StrictBool
+    exclude_adjective_superlative: StrictBool
+    exclude_adverbs: StrictBool
+    exclude_adverb_positive: StrictBool
+    exclude_adverb_comparative: StrictBool
+    exclude_adverb_superlative: StrictBool
+    exclude_nouns: StrictBool
+    exclude_noun_first_declension: StrictBool
+    exclude_noun_second_declension: StrictBool
+    exclude_noun_third_declension: StrictBool
+    exclude_noun_fourth_declension: StrictBool
+    exclude_noun_fifth_declension: StrictBool
+    exclude_noun_irregular_declension: StrictBool
+    exclude_noun_nominative: StrictBool
+    exclude_noun_vocative: StrictBool
+    exclude_noun_accusative: StrictBool
+    exclude_noun_genitive: StrictBool
+    exclude_noun_dative: StrictBool
+    exclude_noun_ablative: StrictBool
+    exclude_noun_singular: StrictBool
+    exclude_noun_plural: StrictBool
+    exclude_pronouns: StrictBool
+    exclude_pronoun_masculine: StrictBool
+    exclude_pronoun_feminine: StrictBool
+    exclude_pronoun_neuter: StrictBool
+    exclude_pronoun_nominative: StrictBool
+    exclude_pronoun_vocative: StrictBool
+    exclude_pronoun_accusative: StrictBool
+    exclude_pronoun_genitive: StrictBool
+    exclude_pronoun_dative: StrictBool
+    exclude_pronoun_ablative: StrictBool
+    exclude_pronoun_singular: StrictBool
+    exclude_pronoun_plural: StrictBool
+    exclude_regulars: StrictBool
+    exclude_verbs: StrictBool
+    exclude_deponents: StrictBool
+    exclude_verb_first_conjugation: StrictBool
+    exclude_verb_second_conjugation: StrictBool
+    exclude_verb_third_conjugation: StrictBool
+    exclude_verb_fourth_conjugation: StrictBool
+    exclude_verb_mixed_conjugation: StrictBool
+    exclude_verb_irregular_conjugation: StrictBool
+    exclude_verb_present_active_indicative: StrictBool
+    exclude_verb_imperfect_active_indicative: StrictBool
+    exclude_verb_future_active_indicative: StrictBool
+    exclude_verb_perfect_active_indicative: StrictBool
+    exclude_verb_pluperfect_active_indicative: StrictBool
+    exclude_verb_future_perfect_active_indicative: StrictBool
+    exclude_verb_present_passive_indicative: StrictBool
+    exclude_verb_imperfect_passive_indicative: StrictBool
+    exclude_verb_future_passive_indicative: StrictBool
+    exclude_verb_perfect_passive_indicative: StrictBool
+    exclude_verb_pluperfect_passive_indicative: StrictBool
+    exclude_verb_future_perfect_passive_indicative: StrictBool
+    exclude_verb_present_active_subjunctive: StrictBool
+    exclude_verb_imperfect_active_subjunctive: StrictBool
+    exclude_verb_perfect_active_subjunctive: StrictBool
+    exclude_verb_pluperfect_active_subjunctive: StrictBool
+    exclude_verb_present_active_imperative: StrictBool
+    exclude_verb_future_active_imperative: StrictBool
+    exclude_verb_present_passive_imperative: StrictBool
+    exclude_verb_future_passive_imperative: StrictBool
+    exclude_verb_present_active_infinitive: StrictBool
+    exclude_verb_future_active_infinitive: StrictBool
+    exclude_verb_perfect_active_infinitive: StrictBool
+    exclude_verb_present_passive_infinitive: StrictBool
+    exclude_verb_future_passive_infinitive: StrictBool
+    exclude_verb_perfect_passive_infinitive: StrictBool
+    exclude_verb_singular: StrictBool
+    exclude_verb_plural: StrictBool
+    exclude_verb_1st_person: StrictBool
+    exclude_verb_2nd_person: StrictBool
+    exclude_verb_3rd_person: StrictBool
+    exclude_participles: StrictBool
+    exclude_participle_present_active: StrictBool
+    exclude_participle_perfect_passive: StrictBool
+    exclude_participle_future_active: StrictBool
+    exclude_gerundives: StrictBool
+    exclude_participle_masculine: StrictBool
+    exclude_participle_feminine: StrictBool
+    exclude_participle_neuter: StrictBool
+    exclude_participle_nominative: StrictBool
+    exclude_participle_vocative: StrictBool
+    exclude_participle_accusative: StrictBool
+    exclude_participle_genitive: StrictBool
+    exclude_participle_dative: StrictBool
+    exclude_participle_ablative: StrictBool
+    exclude_participle_singular: StrictBool
+    exclude_participle_plural: StrictBool
+    exclude_gerunds: StrictBool
+    exclude_supines: StrictBool
+    english_subjunctives: StrictBool
+    english_verbal_nouns: StrictBool
+    include_typein_engtolat: StrictBool
+    include_typein_lattoeng: StrictBool
+    include_parse: StrictBool
+    include_inflect: StrictBool
+    include_principal_parts: StrictBool
+    include_multiplechoice_engtolat: StrictBool
+    include_multiplechoice_lattoeng: StrictBool
+    number_multiplechoice_options: StrictInt

@@ -1,18 +1,15 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.exceptions import InvalidSessionConfigError
+from src.core.rogo.type_aliases import SessionConfig, Settings
 
-if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import SessionConfig, Settings
+settings: Settings = Settings(**{"include-synonyms": True, "include-similar-words": True})  # they're not needed
 
-settings: Settings = {"include-synonyms": True, "include-similar-words": True}  # they're not needed
-
-session_config_no_question_type: SessionConfig = {
+session_config_no_question_type: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -129,7 +126,7 @@ session_config_no_question_type: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 
 def test_no_question_type():
@@ -142,7 +139,7 @@ def test_no_question_type():
     assert str(error.value) == "No question type has been enabled."
 
 
-session_config_no_words: SessionConfig = {
+session_config_no_words: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -259,7 +256,7 @@ session_config_no_words: SessionConfig = {
     "include-multiplechoice-engtolat": True,
     "include-multiplechoice-lattoeng": True,
     "number-multiplechoice-options": 3,
-}
+})
 
 
 def test_ask_questions_empty_vocab_raises():

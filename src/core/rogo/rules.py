@@ -1,7 +1,7 @@
 """Contains rules for filtering words and questions."""
 
 import re
-from typing import TYPE_CHECKING, Final, cast
+from typing import TYPE_CHECKING, Final
 
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
@@ -9,144 +9,144 @@ from .question_classes import QuestionClasses
 if TYPE_CHECKING:
     from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
-    from .type_aliases import SessionConfig, SessionConfigRules, Vocab
+    from .type_aliases import SessionConfig, Vocab
 
-RULE_REGEX: Final[SessionConfigRules] = {
+RULE_REGEX: Final[dict[str,str]] = {
     # Verb tense/voice/mood
-    "exclude-verb-present-active-indicative": r"^Vpreactind[a-z][a-z]\d$",
-    "exclude-verb-imperfect-active-indicative": r"^Vimpactind[a-z][a-z]\d$",
-    "exclude-verb-future-active-indicative": r"^Vfutactind[a-z][a-z]\d$",
-    "exclude-verb-future-perfect-active-indicative": r"^Vfpractind[a-z][a-z]\d$",
-    "exclude-verb-perfect-active-indicative": r"^Vperactind[a-z][a-z]\d$",
-    "exclude-verb-pluperfect-active-indicative": r"^Vplpactind[a-z][a-z]\d$",
-    "exclude-verb-present-passive-indicative": r"^Vprepasind[a-z][a-z]\d$",
-    "exclude-verb-imperfect-passive-indicative": r"^Vimppasind[a-z][a-z]\d$",
-    "exclude-verb-future-passive-indicative": r"^Vfutpasind[a-z][a-z]\d$",
-    "exclude-verb-future-perfect-passive-indicative": r"^Vfprpasind[a-z][a-z]\d$",
-    "exclude-verb-perfect-passive-indicative": r"^Vperpasind[a-z][a-z]\d$",
-    "exclude-verb-pluperfect-passive-indicative": r"^Vplppasind[a-z][a-z]\d$",
-    "exclude-verb-present-active-subjunctive": r"^Vpreactsbj[a-z][a-z]\d$",
-    "exclude-verb-imperfect-active-subjunctive": r"^Vimpactsbj[a-z][a-z]\d$",
-    "exclude-verb-perfect-active-subjunctive": r"^Vperactsbj[a-z][a-z]\d$",
-    "exclude-verb-pluperfect-active-subjunctive": r"^Vplpactsbj[a-z][a-z]\d$",
-    "exclude-verb-present-active-imperative": r"^Vpreactipe[a-z][a-z]\d$",
-    "exclude-verb-future-active-imperative": r"^Vfutactipe[a-z][a-z]\d$",
-    "exclude-verb-present-passive-imperative": r"^Vprepasipe[a-z][a-z]\d$",
-    "exclude-verb-future-passive-imperative": r"^Vfutpasipe[a-z][a-z]\d$",
-    "exclude-verb-present-active-infinitive": r"^Vpreactinf   $",
-    "exclude-verb-future-active-infinitive": r"^Vfutactinf   $",
-    "exclude-verb-perfect-active-infinitive": r"^Vperactinf   $",
-    "exclude-verb-present-passive-infinitive": r"^Vprepasinf   $",
-    "exclude-verb-future-passive-infinitive": r"^Vfutpasinf   $",
-    "exclude-verb-perfect-passive-infinitive": r"^Vperpasinf   $",
+    "exclude_verb_present_active_indicative": r"^Vpreactind[a-z][a-z]\d$",
+    "exclude_verb_imperfect_active_indicative": r"^Vimpactind[a-z][a-z]\d$",
+    "exclude_verb_future_active_indicative": r"^Vfutactind[a-z][a-z]\d$",
+    "exclude_verb_future_perfect_active_indicative": r"^Vfpractind[a-z][a-z]\d$",
+    "exclude_verb_perfect_active_indicative": r"^Vperactind[a-z][a-z]\d$",
+    "exclude_verb_pluperfect_active_indicative": r"^Vplpactind[a-z][a-z]\d$",
+    "exclude_verb_present_passive_indicative": r"^Vprepasind[a-z][a-z]\d$",
+    "exclude_verb_imperfect_passive_indicative": r"^Vimppasind[a-z][a-z]\d$",
+    "exclude_verb_future_passive_indicative": r"^Vfutpasind[a-z][a-z]\d$",
+    "exclude_verb_future_perfect_passive_indicative": r"^Vfprpasind[a-z][a-z]\d$",
+    "exclude_verb_perfect_passive_indicative": r"^Vperpasind[a-z][a-z]\d$",
+    "exclude_verb_pluperfect_passive_indicative": r"^Vplppasind[a-z][a-z]\d$",
+    "exclude_verb_present_active_subjunctive": r"^Vpreactsbj[a-z][a-z]\d$",
+    "exclude_verb_imperfect_active_subjunctive": r"^Vimpactsbj[a-z][a-z]\d$",
+    "exclude_verb_perfect_active_subjunctive": r"^Vperactsbj[a-z][a-z]\d$",
+    "exclude_verb_pluperfect_active_subjunctive": r"^Vplpactsbj[a-z][a-z]\d$",
+    "exclude_verb_present_active_imperative": r"^Vpreactipe[a-z][a-z]\d$",
+    "exclude_verb_future_active_imperative": r"^Vfutactipe[a-z][a-z]\d$",
+    "exclude_verb_present_passive_imperative": r"^Vprepasipe[a-z][a-z]\d$",
+    "exclude_verb_future_passive_imperative": r"^Vfutpasipe[a-z][a-z]\d$",
+    "exclude_verb_present_active_infinitive": r"^Vpreactinf   $",
+    "exclude_verb_future_active_infinitive": r"^Vfutactinf   $",
+    "exclude_verb_perfect_active_infinitive": r"^Vperactinf   $",
+    "exclude_verb_present_passive_infinitive": r"^Vprepasinf   $",
+    "exclude_verb_future_passive_infinitive": r"^Vfutpasinf   $",
+    "exclude_verb_perfect_passive_infinitive": r"^Vperpasinf   $",
 
     # Verb number
-    "exclude-verb-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg\d$",
-    "exclude-verb-plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]pl\d$",
+    "exclude_verb_singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg\d$",
+    "exclude_verb_plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]pl\d$",
 
     # Verb person
-    "exclude-verb-1st-person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]1$",
-    "exclude-verb-2nd-person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]2$",
-    "exclude-verb-3rd-person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]3$",
+    "exclude_verb_1st_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]1$",
+    "exclude_verb_2nd_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]2$",
+    "exclude_verb_3rd_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]3$",
 
     # Participles
-    "exclude-participles": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participles": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle tense/voice
-    "exclude-participle-present-active": r"^Vpreactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-participle-perfect-passive": r"^Vperpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-participle-future-active": r"^Vfutactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-gerundives": r"^Vfutpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_present_active": r"^Vpreactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_perfect_passive": r"^Vperpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_future_active": r"^Vfutactptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_gerundives": r"^Vfutpasptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle gender
-    "exclude-participle-masculine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcm[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-participle-feminine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcf[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-participle-neuter": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcn[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_masculine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcm[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_feminine": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcf[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_participle_neuter": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptcn[a-z][a-z][a-z][a-z][a-z]$",
 
     # Participle case
-    "exclude-participle-nominative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]nom[a-z][a-z]$",
-    "exclude-participle-vocative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]voc[a-z][a-z]$",
-    "exclude-participle-accusative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]acc[a-z][a-z]$",
-    "exclude-participle-genitive": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]gen[a-z][a-z]$",
-    "exclude-participle-dative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]dat[a-z][a-z]$",
-    "exclude-participle-ablative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]abl[a-z][a-z]$",
+    "exclude_participle_nominative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]nom[a-z][a-z]$",
+    "exclude_participle_vocative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]voc[a-z][a-z]$",
+    "exclude_participle_accusative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]acc[a-z][a-z]$",
+    "exclude_participle_genitive": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]gen[a-z][a-z]$",
+    "exclude_participle_dative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]dat[a-z][a-z]$",
+    "exclude_participle_ablative": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z]abl[a-z][a-z]$",
 
     # Participle number
-    "exclude-participle-singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]sg$",
-    "exclude-participle-plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]pl$",
+    "exclude_participle_singular": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]sg$",
+    "exclude_participle_plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z]pl$",
 
     # Verbal nouns
-    "exclude-gerunds": r"^Vger[a-z][a-z][a-z]$",
-    "exclude-supines": r"^Vsup[a-z][a-z][a-z]$",
+    "exclude_gerunds": r"^Vger[a-z][a-z][a-z]$",
+    "exclude_supines": r"^Vsup[a-z][a-z][a-z]$",
 
     # Noun case
-    "exclude-noun-nominative": r"^Nnom[a-z][a-z]$",
-    "exclude-noun-vocative": r"^Nvoc[a-z][a-z]$",
-    "exclude-noun-accusative": r"^Nacc[a-z][a-z]$",
-    "exclude-noun-genitive": r"^Ngen[a-z][a-z]$",
-    "exclude-noun-dative": r"^Ndat[a-z][a-z]$",
-    "exclude-noun-ablative": r"^Nabl[a-z][a-z]$",
+    "exclude_noun_nominative": r"^Nnom[a-z][a-z]$",
+    "exclude_noun_vocative": r"^Nvoc[a-z][a-z]$",
+    "exclude_noun_accusative": r"^Nacc[a-z][a-z]$",
+    "exclude_noun_genitive": r"^Ngen[a-z][a-z]$",
+    "exclude_noun_dative": r"^Ndat[a-z][a-z]$",
+    "exclude_noun_ablative": r"^Nabl[a-z][a-z]$",
 
     # Noun number
-    "exclude-noun-singular": r"^N[a-z][a-z][a-z]sg$",
-    "exclude-noun-plural": r"^N[a-z][a-z][a-z]pl$",
+    "exclude_noun_singular": r"^N[a-z][a-z][a-z]sg$",
+    "exclude_noun_plural": r"^N[a-z][a-z][a-z]pl$",
 
     # Adjective gender
-    "exclude-adjective-masculine": r"^A[a-z][a-z][a-z]m[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-adjective-feminine": r"^A[a-z][a-z][a-z]f[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-adjective-neuter": r"^A[a-z][a-z][a-z]n[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_masculine": r"^A[a-z][a-z][a-z]m[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_feminine": r"^A[a-z][a-z][a-z]f[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_neuter": r"^A[a-z][a-z][a-z]n[a-z][a-z][a-z][a-z][a-z]$",
 
     # Adjective case
-    "exclude-adjective-nominative": r"^A[a-z][a-z][a-z][a-z]nom[a-z][a-z]$",
-    "exclude-adjective-vocative": r"^A[a-z][a-z][a-z][a-z]voc[a-z][a-z]$",
-    "exclude-adjective-accusative": r"^A[a-z][a-z][a-z][a-z]acc[a-z][a-z]$",
-    "exclude-adjective-genitive": r"^A[a-z][a-z][a-z][a-z]gen[a-z][a-z]$",
-    "exclude-adjective-dative": r"^A[a-z][a-z][a-z][a-z]dat[a-z][a-z]$",
-    "exclude-adjective-ablative": r"^A[a-z][a-z][a-z][a-z]abl[a-z][a-z]$",
+    "exclude_adjective_nominative": r"^A[a-z][a-z][a-z][a-z]nom[a-z][a-z]$",
+    "exclude_adjective_vocative": r"^A[a-z][a-z][a-z][a-z]voc[a-z][a-z]$",
+    "exclude_adjective_accusative": r"^A[a-z][a-z][a-z][a-z]acc[a-z][a-z]$",
+    "exclude_adjective_genitive": r"^A[a-z][a-z][a-z][a-z]gen[a-z][a-z]$",
+    "exclude_adjective_dative": r"^A[a-z][a-z][a-z][a-z]dat[a-z][a-z]$",
+    "exclude_adjective_ablative": r"^A[a-z][a-z][a-z][a-z]abl[a-z][a-z]$",
     
     # Adjective number
-    "exclude-adjective-singular": r"^A[a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg$",
-    "exclude-adjective-plural": r"^A[a-z][a-z][a-z][a-z][a-z][a-z][a-z]pl$",
+    "exclude_adjective_singular": r"^A[a-z][a-z][a-z][a-z][a-z][a-z][a-z]sg$",
+    "exclude_adjective_plural": r"^A[a-z][a-z][a-z][a-z][a-z][a-z][a-z]pl$",
     
     # Adjective degree
-    "exclude-adjective-positive": r"^Apos[a-z][a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-adjective-comparative": r"^Acmp[a-z][a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-adjective-superlative": r"^Aspr[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_positive": r"^Apos[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_comparative": r"^Acmp[a-z][a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_adjective_superlative": r"^Aspr[a-z][a-z][a-z][a-z][a-z][a-z]$",
     
     # Adverb
-    "exclude-adverbs": r"^D[a-z][a-z][a-z]$",
+    "exclude_adverbs": r"^D[a-z][a-z][a-z]$",
     
     # Adverb degree
-    "exclude-adverb-positive": r"^Dpos$",
-    "exclude-adverb-comparative": r"^Dcmp$",
-    "exclude-adverb-superlative": r"^Dspr$",
+    "exclude_adverb_positive": r"^Dpos$",
+    "exclude_adverb_comparative": r"^Dcmp$",
+    "exclude_adverb_superlative": r"^Dspr$",
     
     # Pronoun gender
-    "exclude-pronoun-masculine": r"^Pm[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-pronoun-feminine": r"^Pf[a-z][a-z][a-z][a-z][a-z]$",
-    "exclude-pronoun-neuter": r"^Pn[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_pronoun_masculine": r"^Pm[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_pronoun_feminine": r"^Pf[a-z][a-z][a-z][a-z][a-z]$",
+    "exclude_pronoun_neuter": r"^Pn[a-z][a-z][a-z][a-z][a-z]$",
 
     # Pronoun case
-    "exclude-pronoun-nominative": r"^P[a-z]nom[a-z][a-z]$",
-    "exclude-pronoun-vocative": r"^P[a-z]voc[a-z][a-z]$",
-    "exclude-pronoun-accusative": r"^P[a-z]acc[a-z][a-z]$",
-    "exclude-pronoun-genitive": r"^P[a-z]gen[a-z][a-z]$",
-    "exclude-pronoun-dative": r"^P[a-z]dat[a-z][a-z]$",
-    "exclude-pronoun-ablative": r"^P[a-z]abl[a-z][a-z]$",
+    "exclude_pronoun_nominative": r"^P[a-z]nom[a-z][a-z]$",
+    "exclude_pronoun_vocative": r"^P[a-z]voc[a-z][a-z]$",
+    "exclude_pronoun_accusative": r"^P[a-z]acc[a-z][a-z]$",
+    "exclude_pronoun_genitive": r"^P[a-z]gen[a-z][a-z]$",
+    "exclude_pronoun_dative": r"^P[a-z]dat[a-z][a-z]$",
+    "exclude_pronoun_ablative": r"^P[a-z]abl[a-z][a-z]$",
 
     # Pronoun number
-    "exclude-pronoun-singular": r"^P[a-z][a-z][a-z][a-z]sg$",
-    "exclude-pronoun-plural": r"^P[a-z][a-z][a-z][a-z]pl$",
+    "exclude_pronoun_singular": r"^P[a-z][a-z][a-z][a-z]sg$",
+    "exclude_pronoun_plural": r"^P[a-z][a-z][a-z][a-z]pl$",
 }  # fmt: skip
 
 CLASS_RULES: Final[dict[str, QuestionClasses]] = {
-    "include-typein-engtolat": QuestionClasses.TYPEIN_ENGTOLAT,
-    "include-typein-lattoeng": QuestionClasses.TYPEIN_LATTOENG,
-    "include-parse": QuestionClasses.PARSEWORD_LATTOCOMP,
-    "include-inflect": QuestionClasses.PARSEWORD_COMPTOLAT,
-    "include-principal-parts": QuestionClasses.PRINCIPAL_PARTS,
-    "include-multiplechoice-engtolat": QuestionClasses.MULTIPLECHOICE_ENGTOLAT,
-    "include-multiplechoice-lattoeng": QuestionClasses.MULTIPLECHOICE_LATTOENG,
+    "include_typein_engtolat": QuestionClasses.TYPEIN_ENGTOLAT,
+    "include_typein_lattoeng": QuestionClasses.TYPEIN_LATTOENG,
+    "include_parse": QuestionClasses.PARSEWORD_LATTOCOMP,
+    "include_inflect": QuestionClasses.PARSEWORD_COMPTOLAT,
+    "include_principal_parts": QuestionClasses.PRINCIPAL_PARTS,
+    "include_multiplechoice_engtolat": QuestionClasses.MULTIPLECHOICE_ENGTOLAT,
+    "include_multiplechoice_lattoeng": QuestionClasses.MULTIPLECHOICE_LATTOENG,
 }
 
 
@@ -174,15 +174,15 @@ def filter_words(
     vocab = vocab_list.vocab.copy()
     to_exclude: list[type] = []
 
-    if session_config["exclude-nouns"]:
+    if session_config.exclude_nouns:
         to_exclude.append(Noun)
-    if session_config["exclude-verbs"]:
+    if session_config.exclude_verbs:
         to_exclude.append(Verb)
-    if session_config["exclude-adjectives"]:
+    if session_config.exclude_adjectives:
         to_exclude.append(Adjective)
-    if session_config["exclude-pronouns"]:
+    if session_config.exclude_pronouns:
         to_exclude.append(Pronoun)
-    if session_config["exclude-regulars"]:
+    if session_config.exclude_regulars:
         to_exclude.append(RegularWord)
 
     if to_exclude:
@@ -195,61 +195,61 @@ def filter_words(
                 current_conjugation = item.conjugation
                 conjugation_excluded = (
                     (
-                        session_config["exclude-verb-first-conjugation"]
+                        session_config.exclude_verb_first_conjugation
                         and current_conjugation == 1
                     )
                     or (
-                        session_config["exclude-verb-second-conjugation"]
+                        session_config.exclude_verb_second_conjugation
                         and current_conjugation == 2
                     )
                     or (
-                        session_config["exclude-verb-third-conjugation"]
+                        session_config.exclude_verb_third_conjugation
                         and current_conjugation == 3
                     )
                     or (
-                        session_config["exclude-verb-fourth-conjugation"]
+                        session_config.exclude_verb_fourth_conjugation
                         and current_conjugation == 4
                     )
                     or (
-                        session_config["exclude-verb-mixed-conjugation"]
+                        session_config.exclude_verb_mixed_conjugation
                         and current_conjugation == 5
                     )
                     or (
-                        session_config["exclude-verb-irregular-conjugation"]
+                        session_config.exclude_verb_irregular_conjugation
                         and current_conjugation == 0
                     )
                 )
                 if conjugation_excluded:
                     vocab.remove(item)
 
-                if session_config["exclude-deponents"] and item.deponent:
+                if session_config.exclude_deponents and item.deponent:
                     vocab.remove(item)
 
             case Noun():
                 current_declension = item.declension
                 declension_excluded = (
                     (
-                        session_config["exclude-noun-first-declension"]
+                        session_config.exclude_noun_first_declension
                         and current_declension == 1
                     )
                     or (
-                        session_config["exclude-noun-second-declension"]
+                        session_config.exclude_noun_second_declension
                         and current_declension == 2
                     )
                     or (
-                        session_config["exclude-noun-third-declension"]
+                        session_config.exclude_noun_third_declension
                         and current_declension == 3
                     )
                     or (
-                        session_config["exclude-noun-fourth-declension"]
+                        session_config.exclude_noun_fourth_declension
                         and current_declension == 4
                     )
                     or (
-                        session_config["exclude-noun-fifth-declension"]
+                        session_config.exclude_noun_fifth_declension
                         and current_declension == 5
                     )
                     or (
-                        session_config["exclude-noun-irregular-declension"]
+                        session_config.exclude_noun_irregular_declension
                         and current_declension == 0
                     )
                 )
@@ -259,10 +259,10 @@ def filter_words(
             case Adjective():
                 current_adj_declension = item.declension
                 if (
-                    session_config["exclude-adjective-212-declension"]
+                    session_config.exclude_adjective_212_declension
                     and current_adj_declension == "212"
                 ) or (
-                    session_config["exclude-adjective-third-declension"]
+                    session_config.exclude_adjective_third_declension
                     and current_adj_declension == "3"
                 ):
                     vocab.remove(item)
@@ -289,9 +289,9 @@ def filter_endings(endings: Endings, session_config: SessionConfig) -> Endings:
         The filtered endings.
     """
     filtered_endings = endings
-    for setting, value in session_config.items():
+    for setting, value in session_config.model_dump().items():  # pyright: ignore[reportAny]
         if value and (setting in RULE_REGEX):
-            regex_pattern = cast("str", RULE_REGEX[setting])
+            regex_pattern = RULE_REGEX[setting]
             filtered_endings = {
                 key: ending
                 for key, ending in filtered_endings.items()
@@ -314,4 +314,8 @@ def filter_questions(session_config: SessionConfig) -> set[QuestionClasses]:
     set[QuestionClasses]
         The filtered classes.
     """
-    return {value for key, value in CLASS_RULES.items() if session_config[key]}
+    return {
+        value
+        for key, value in CLASS_RULES.items()
+        if getattr(session_config, key)
+    }

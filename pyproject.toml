@@ -26,6 +26,7 @@ dependencies = [
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "platformdirs==4.5.0",
+  "pydantic==2.12.2",
   "pyinstaller==6.16.0",
   "waitress==3.0.2",
   "wn @ git+https://github.com/goodmami/wn.git",

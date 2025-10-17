@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING, Final
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.rules import CLASS_RULES
+from src.core.rogo.type_aliases import SessionConfig, Settings
 from src.server._json_encode import QuestionClassEncoder
 
 if TYPE_CHECKING:
     from collections.abc import Generator
 
     from src.core.lego.misc import VocabList
-    from src.core.rogo.type_aliases import SessionConfig, Settings
 
 QUESTION_TYPE_SETTINGS: Final[tuple[str, ...]] = tuple(CLASS_RULES.keys())
 
@@ -41,12 +41,12 @@ into: in
 from: e
 """)
 
-DEFAULT_SETTINGS: Settings = {
+DEFAULT_SETTINGS: Settings = Settings(**{
     "include-synonyms": False,
     "include-similar-words": False,
-}  # they're not needed
+})  # they're not needed
 
-DEFAULT_SESSION_CONFIG: SessionConfig = {
+DEFAULT_SESSION_CONFIG: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -163,7 +163,7 @@ DEFAULT_SESSION_CONFIG: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 QUESTION_AMOUNT: Final[int] = 2000  # seems reasonable
 
@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
     # Create json files
     for setting in QUESTION_TYPE_SETTINGS:
-        DEFAULT_SESSION_CONFIG[setting] = True
+        setattr(DEFAULT_SESSION_CONFIG, setting, True)
 
         data_generator = _generate_questions_sample_json(
             vocab_list=vocab,
@@ -214,4 +214,4 @@ if __name__ == "__main__":
             for data_str in data_generator:
                 output_file.write(data_str + "\n")
 
-        DEFAULT_SESSION_CONFIG[setting] = False
+        setattr(DEFAULT_SESSION_CONFIG, setting, False)
