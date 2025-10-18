@@ -201,7 +201,7 @@ func TestCheck(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := questions.Check(tt.question, tt.input)
+			got := tt.question.Check(tt.input)
 			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %t, got %t (test %s)", tt.want, got, name))
 		})
 	}
@@ -230,52 +230,6 @@ func TestGetChoices(t *testing.T) {
 			},
 			want:    []string{"name", "boy", "hear"},
 			wantErr: nil,
-		},
-		"ParseWordCompToLatQuestion": {
-			question: &questions.ParseWordCompToLatQuestion{
-				Prompt:     "that: ille, illa, illud",
-				Components: "dative singular neuter",
-				MainAnswer: "illi",
-				Answers:    []string{"illi"},
-			},
-			want:    []string(nil),
-			wantErr: fmt.Errorf("type *questions.ParseWordCompToLatQuestion not supported by GetChoices"),
-		},
-		"ParseWordLatToCompQuestion": {
-			question: &questions.ParseWordLatToCompQuestion{
-				Prompt:          "captae",
-				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer:      "perfect passive participle feminine dative singular",
-				Answers:         []string{"perfect passive participle feminine dative singular"},
-			},
-			want:    []string(nil),
-			wantErr: fmt.Errorf("type *questions.ParseWordLatToCompQuestion not supported by GetChoices"),
-		},
-		"PrincipalPartsQuestion": {
-			question: &questions.PrincipalPartsQuestion{
-				Prompt:         "ingens",
-				PrincipalParts: []string{"ingens", "ingentis"},
-			},
-			want:    []string(nil),
-			wantErr: fmt.Errorf("type *questions.PrincipalPartsQuestion not supported by GetChoices"),
-		},
-		"TypeInEngToLatQuestion": {
-			question: &questions.TypeInEngToLatQuestion{
-				Prompt:     "into",
-				MainAnswer: "in",
-				Answers:    []string{"in"},
-			},
-			want:    []string(nil),
-			wantErr: fmt.Errorf("type *questions.TypeInEngToLatQuestion not supported by GetChoices"),
-		},
-		"TypeInLatToEngQuestion": {
-			question: &questions.TypeInLatToEngQuestion{
-				Prompt:     "ingenti",
-				MainAnswer: "large",
-				Answers:    []string{"large"},
-			},
-			want:    []string(nil),
-			wantErr: fmt.Errorf("type *questions.TypeInLatToEngQuestion not supported by GetChoices"),
 		},
 	}
 
@@ -307,7 +261,7 @@ func TestGetChoices(t *testing.T) {
 				)
 			}()
 
-			got = questions.GetChoices(tt.question)
+			got = tt.question.(questions.MultipleChoiceQuestion).GetChoices()
 		})
 	}
 }
@@ -378,7 +332,7 @@ func TestMainAnswer(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := questions.GetMainAnswer(tt.question)
+			got := tt.question.GetMainAnswer()
 			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %t, got %t (test %s)", tt.want, got, name))
 		})
 	}
@@ -450,7 +404,7 @@ func TestQuestionMode(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := questions.QuestionMode(tt.question)
+			got := tt.question.QuestionMode()
 			assert.Equal(t, tt.want, got, fmt.Sprintf("expected %v, got %v (test %s)", tt.want, got, name))
 		})
 	}

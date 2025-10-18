@@ -11,6 +11,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/pkg/questions"
 )
 
+// TODO: Remove this when View() is created??
 func questionStringRegular(q questions.Question) string {
 	switch q := q.(type) {
 	case *questions.TypeInEngToLatQuestion:
@@ -86,7 +87,7 @@ func (m Model) View() string {
 				internal.IncorrectStyle.Render(
 					fmt.Sprintf(
 						" ✕ %s",
-						questions.GetMainAnswer(currentQuestionStruct).(string),
+						currentQuestionStruct.GetMainAnswer().(string),
 					),
 				),
 			))
@@ -126,7 +127,7 @@ func (m Model) View() string {
 		case enums.Incorrect:
 			for i := range requiredPPTextinputs {
 				m.textinput.Blur()
-				if x := questions.GetMainAnswer(currentQuestionStruct).([]string)[i]; m.principalPartsTextinputs[i].Value() != x {
+				if x := currentQuestionStruct.GetMainAnswer().([]string)[i]; m.principalPartsTextinputs[i].Value() != x {
 					b.WriteString(lipgloss.JoinHorizontal(
 						lipgloss.Top,
 						m.principalPartsTextinputs[i].View(),
@@ -147,7 +148,7 @@ func (m Model) View() string {
 	case enums.MultipleChoice:
 		b.WriteString(questionStringMultipleChoice(currentQuestionStruct))
 		b.WriteRune('\n')
-		for i, choice := range questions.GetChoices(currentQuestionStruct) {
+		for i, choice := range currentQuestionStruct.(questions.MultipleChoiceQuestion).GetChoices() {
 			if m.selectedOption == i+1 {
 				switch m.appStatus {
 				case enums.Unanswered:

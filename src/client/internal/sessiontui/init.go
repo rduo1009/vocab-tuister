@@ -14,7 +14,6 @@ import (
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
-	unionjson "github.com/widmogrod/mkunion/x/shared"
 
 	"github.com/rduo1009/vocab-tuister/src/client/pkg"
 	"github.com/rduo1009/vocab-tuister/src/client/pkg/questions"
@@ -51,27 +50,30 @@ func (m Model) Init() tea.Cmd {
 			// Read vocab and session config files
 			vocabListData, err := os.ReadFile(m.vocabListPath)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to read vocab list file at %s: %w", m.vocabListPath, err)}
 			}
 
 			sessionConfigPath := m.sessionConfigPath
 			sessionConfigData, err := os.ReadFile(sessionConfigPath)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to read session config file at %s: %w", sessionConfigPath, err)}
 			}
 
 			// Add user provided number of questions to temporary session config map
 			var rawSessionConfig map[string]any
 			err = json.Unmarshal(sessionConfigData, &rawSessionConfig)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to unmarshal session config from %s: %w", sessionConfigPath, err)}
 			}
-			rawSessionConfig["number-of-questions"] = m.numberOfQuestions
+			toSend := map[string]any{
+				"number-of-questions": m.numberOfQuestions,
+				"config":              rawSessionConfig,
+			}
 
 			// Marshal the updated session config
-			sessionConfigData, err = json.Marshal(rawSessionConfig)
+			sessionConfigData, err = json.Marshal(toSend)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to marshal session config with number-of-questions: %w", err)}
 			}
 
 			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -94,21 +96,24 @@ func (m Model) Init() tea.Cmd {
 				bytes.NewBuffer([]byte(vocabList)),
 			)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to create HTTP request for vocab list to %s: %w", vocabListURL, err)}
 			}
 			req1.Header.Set("Content-Type", "text/plain")
 
 			resp1, err := client.Do(req1)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to post vocab list to %s: %w", vocabListURL, err)}
 			}
 			defer resp1.Body.Close()
 
 			if resp1.StatusCode != http.StatusOK {
+				body, _ := io.ReadAll(resp1.Body)
 				return errMsg{
 					fmt.Errorf(
-						"failed to post vocab file, status code: %d",
+						"failed to post vocab file to %s, status code: %d, response: %s",
+						vocabListURL,
 						resp1.StatusCode,
+						string(body),
 					),
 				}
 			}
@@ -126,21 +131,24 @@ func (m Model) Init() tea.Cmd {
 				bytes.NewBuffer(sessionConfigData),
 			)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to create HTTP request for session config to %s: %w", sessionConfigURL, err)}
 			}
 			req2.Header.Set("Content-Type", "application/json")
 
 			resp2, err := client.Do(req2)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to post session config to %s: %w", sessionConfigURL, err)}
 			}
 			defer resp2.Body.Close()
 
 			if resp2.StatusCode != http.StatusOK {
+				body, _ := io.ReadAll(resp2.Body)
 				return errMsg{
 					fmt.Errorf(
-						"failed to post session config, status code: %d",
+						"failed to post session config to %s, status code: %d, response: %s",
+						sessionConfigURL,
 						resp2.StatusCode,
+						string(body),
 					),
 				}
 			}
@@ -148,22 +156,24 @@ func (m Model) Init() tea.Cmd {
 			// Read response from server
 			body, err := io.ReadAll(resp2.Body)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to read response body from %s: %w", sessionConfigURL, err)}
 			}
 
 			objects, err := extractJSONObjects(body)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to extract JSON objects from response: %w", err)}
 			}
 
 			// Unmarshal response into questions.Questions type
 			var response questions.Questions
-			for _, object := range objects {
-				part, err := unionjson.JSONUnmarshal[questions.Question](object)
+
+			for i, object := range objects {
+				// Unmarshal the question
+				q, err := questions.UnmarshalQuestion(object)
 				if err != nil {
-					return errMsg{err}
+					return errMsg{fmt.Errorf("failed to unmarshal question at index %d: %w", i, err)}
 				}
-				response = append(response, part)
+				response = append(response, q)
 			}
 
 			if len(response) != m.numberOfQuestions {
@@ -181,7 +191,7 @@ func (m Model) Init() tea.Cmd {
 			var sessionConfig pkg.SessionConfig
 			err = json.Unmarshal(sessionConfigData, &sessionConfig)
 			if err != nil {
-				return errMsg{err}
+				return errMsg{fmt.Errorf("failed to unmarshal verified session config: %w", err)}
 			}
 
 			return initOkMsg{

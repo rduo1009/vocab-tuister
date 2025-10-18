@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	outputFilepath = "questions.go"
+	outputFilepath = "questions_structs.go"
 	jsonDir        = "../../../scripts/json_output/questions"
 )
 

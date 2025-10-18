@@ -7,7 +7,7 @@ import logging
 import traceback
 from io import StringIO
 from pathlib import Path
-from typing import TYPE_CHECKING, TypedDict, cast
+from typing import TYPE_CHECKING, TypedDict
 
 from flask import Flask, jsonify, render_template, request
 from platformdirs import PlatformDirs
@@ -113,19 +113,14 @@ def send_vocab():
 
 def _generate_questions_json(
     vocab_list: VocabList, question_amount: int, session_config: SessionConfig
-) -> str:
-    def _rearrange[T](d: dict[str, T]) -> dict[str, str | dict[str, T]]:
-        question_type = cast("str", d.pop("question_type"))
-        return {"question_type": question_type, question_type: d}
-
+):
     assert settings is not None
-    json_list = [
-        _rearrange(json.loads(json.dumps(question, cls=QuestionClassEncoder)))
+    return [
+        json.loads(json.dumps(question, cls=QuestionClassEncoder))
         for question in ask_question_without_sr(
             vocab_list, question_amount, session_config, settings
         )
     ]
-    return json.dumps(json_list)
 
 
 @app.route("/session", methods=["POST"])

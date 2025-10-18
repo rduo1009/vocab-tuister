@@ -70,7 +70,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	// If Init has ran, continue as normal
 	numberOptions := m.sessionConfig.NumberMultiplechoiceOptions
-	m.questionMode = questions.QuestionMode(m.questions[m.currentQuestion-1])
+	m.questionMode = m.questions[m.currentQuestion-1].QuestionMode()
 	currentQuestionStruct := m.questions[m.currentQuestion-1]
 
 	var requiredPPTextinputs int
@@ -144,18 +144,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				switch m.questionMode {
 				case enums.Regular:
-					correct = questions.Check(currentQuestionStruct, m.textinput.Value())
+					correct = currentQuestionStruct.Check(m.textinput.Value())
 
 				case enums.PrincipalParts:
 					var response []string
 					for i := range requiredPPTextinputs {
 						response = append(response, m.principalPartsTextinputs[i].Value())
 					}
-					correct = questions.Check(currentQuestionStruct, response)
+					correct = currentQuestionStruct.Check(response)
 
 				case enums.MultipleChoice:
-					selectedOptionString := questions.GetChoices(currentQuestionStruct)[m.selectedOption-1]
-					correct = questions.Check(currentQuestionStruct, selectedOptionString)
+					selectedOptionString := currentQuestionStruct.(questions.MultipleChoiceQuestion).GetChoices()[m.selectedOption-1]
+					correct = currentQuestionStruct.Check(selectedOptionString)
 				}
 
 				if correct {
@@ -174,7 +174,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.appStatus = enums.Unanswered
 				m.selectedOption = 1
 
-				m.questionMode = questions.QuestionMode(m.questions[m.currentQuestion-1])
+				m.questionMode = m.questions[m.currentQuestion-1].QuestionMode()
 				currentQuestionStruct := m.questions[m.currentQuestion-1]
 
 				if m.questionMode == enums.PrincipalParts {
