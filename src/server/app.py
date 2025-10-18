@@ -7,15 +7,16 @@ import logging
 import traceback
 from io import StringIO
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, TypedDict, cast
 
 from flask import Flask, jsonify, render_template, request
 from platformdirs import PlatformDirs
 from pydantic import ValidationError
 from waitress import serve
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import InternalServerError
 
 from ..core.lego.cache import cache_vocab_file
+from ..core.lego.exceptions import InvalidVocabFileFormatError
 from ..core.rogo.asker import ask_question_without_sr
 from ..core.rogo.type_aliases import SessionConfig, Settings
 from ..core.transfero.synonyms import setup_wn
@@ -31,6 +32,17 @@ dirs = PlatformDirs("vocab-tuister", "rduo1009")
 app = Flask(__name__)
 vocab_list: VocabList | None = None
 settings: Settings | None = None
+
+
+class ErrorResponse(TypedDict):
+    """Error returned to the TUI.
+
+    Note that the TUI will need to handle `details` differently depending on
+    the value of `error`.
+    """
+
+    error: str
+    details: str
 
 
 @app.errorhandler(InternalServerError)
@@ -55,7 +67,7 @@ def _get_settings() -> Settings:
     settings_file = Path(dirs.user_config_path) / "settings.json"
     try:
         return Settings.model_validate_json(settings_file.read_text())
-    except FileNotFoundError as e:
+    except FileNotFoundError as e:  # these should be fatal errors
         raise InvalidSettingsError(
             f"Settings file not found at {settings_file}."
         ) from e
@@ -78,18 +90,24 @@ def info():
 def send_vocab():
     global vocab_list
 
+    logger.info("Reading vocab file.")
+    vocab_list_text = StringIO(request.get_data().decode("utf-8"))
     try:
-        logger.info("Reading vocab file.")
-        vocab_list_text = StringIO(request.get_data().decode("utf-8"))
         # TODO: Allow user to customise whether to compress in settings
         vocab_list, _ = cache_vocab_file(
-            vocab_list_text, dirs.user_cache_path, compress=True
+            vocab_list_text, cache_folder=dirs.user_cache_path, compress=True
         )
-    except Exception as e:
-        raise BadRequest(f"{type(e).__name__}: {e}").with_traceback(
-            e.__traceback__
-        ) from e
+    except InvalidVocabFileFormatError as e:
+        logger.exception("Invalid vocab file format.")
+        return ErrorResponse(
+            error="InvalidVocabFileFormatError",
+            details=json.dumps({
+                "line-number": e.line_number,
+                "msg": e.message,
+            }),
+        ), 400
 
+    # TODO: Eventually return table of vocab here.
     return "Vocab file received."
 
 
@@ -112,8 +130,8 @@ def _generate_questions_json(
 
 @app.route("/session", methods=["POST"])
 def create_session():
-    if not vocab_list:
-        raise BadRequest("Vocab file has not been provided.")
+    if not vocab_list:  # should never happen, so raising exception
+        raise ValueError("Vocab file has not been provided.")
 
     logger.info("Validating settings.")
     payload = request.get_json()
@@ -126,16 +144,27 @@ def create_session():
             "integer (got type %s).",
             type(question_amount).__name__,
         )
-        return {
-            "error": "InvalidSessionConfigError",
-            "details": None,
-        }, 400  # TODO: do this
+        return (
+            ErrorResponse(
+                error="InvalidSessionConfigError",
+                details=json.dumps([  # trying to mimic return of ValidationError.json()
+                    {
+                        "type": "int_type",
+                        "loc": ("number-of-questions"),
+                        "msg": "Input should be a valid integer",
+                    }  # fields 'input' and 'url' missing as they won't be used
+                ]),
+            ),
+            400,
+        )
 
     try:
         session_config = SessionConfig.model_validate(session_config)
     except ValidationError as e:
         logger.exception("Invalid session config.")
-        return {"error": "InvalidSessionConfigError", "details": e.json()}, 400
+        return ErrorResponse(
+            error="InvalidSessionConfigError", details=e.json()
+        ), 400
 
     logger.info("Returning %d questions.", question_amount)
     return jsonify(

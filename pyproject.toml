@@ -123,6 +123,7 @@ lint.per-file-ignores."src/core/rogo/asker.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/rogo/rules.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/server/app.py" = [ "ANN" ]
 lint.flake8-type-checking.quote-annotations = true
+lint.flake8-type-checking.runtime-evaluated-base-classes = [ "pydantic.BaseModel" ]
 lint.flake8-type-checking.strict = true
 lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"

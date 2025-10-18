@@ -2,14 +2,9 @@
 
 # pyright: reportUnannotatedClassAttribute=false
 
-from typing import TYPE_CHECKING
-
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt
 
 from src.core.accido.endings import Word
-
-if TYPE_CHECKING:
-    from pydantic import StrictBool, StrictInt
 
 type Vocab = list[Word]
 
