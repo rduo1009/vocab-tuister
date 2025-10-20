@@ -15,7 +15,7 @@ repos:
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
+    rev: v0.14.1
     hooks:
       - id: ruff
         args: [--fix]
@@ -37,7 +37,7 @@ repos:
         args: [-w, "79"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.10.0"
+    rev: "v2.11.0"
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]
@@ -53,7 +53,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: "0.7.22"
+    rev: "1.0.0"
     hooks:
       - id: mdformat
         types: [markdown]
