@@ -98,7 +98,7 @@ def generate_typein_lattoeng(
                     inflected_meanings.update(
                         find_inflection(meaning, components=ending_components)
                     )
-                except (IndexError, InvalidWordError):
+                except IndexError, InvalidWordError:
                     continue
 
         # Inflect the main meaning (__str__ returns the main meaning)
