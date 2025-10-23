@@ -112,7 +112,16 @@ wn_data_files = [
     (os.path.join(wn_dir, "schema.sql"), "wn"),
 ]
 
-hiddenimports = ["numpy.core.multiarray"] 
+hiddenimports = [
+    # Numpy
+    "numpy.core.multiarray",
+
+    # Tomli
+    # *collect_submodules("tomli"),
+    "ddc459050edb75a05942__mypyc",  # MacOS
+    "5bae8a57b5ef85818b48__mypyc",  # Linux (both arm and amd64)
+    "3c22db458360489351e4__mypyc",  # Windows
+]  # fmt: skip
 
 a = Analysis(
     ["src/__main__.py"],
