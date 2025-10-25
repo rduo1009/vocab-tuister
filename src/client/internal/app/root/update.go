@@ -3,9 +3,9 @@ package root
 import (
 	"github.com/charmbracelet/bubbles/v2/key"
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/lipgloss/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 )
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -15,13 +15,15 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
 	switch msg := msg.(type) {
-	case tea.KeyPressMsg:
+	case tea.KeyMsg:
 		// Applied to all pages of the TUI
 		switch {
 		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
 		case key.Matches(msg, m.keys.Help):
 			m.help.ShowAll = !m.help.ShowAll
+		case key.Matches(msg, m.keys.PreviousFocus):
+			m.navigator.Previous()
 		case key.Matches(msg, m.keys.NextFocus):
 			m.navigator.Next()
 		}
@@ -32,27 +34,39 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case key.Matches(msg, m.keys.Left):
 				if m.currentPage > 0 {
 					m.currentPage--
+					m.navigator.Reset()
 					m.tabs.Prev()
 				}
 			case key.Matches(msg, m.keys.Right):
 				if m.currentPage < len(m.pageOrder)-1 {
 					m.currentPage++
+					m.navigator.Reset()
 					m.tabs.Next()
 				}
 			}
 		}
+
 	case tea.WindowSizeMsg:
 		m.width, m.height = msg.Width, msg.Height
 		m.help.Width = msg.Width
 		m.tabs.Width = msg.Width
 
-		if m.pageOrder[m.currentPage] == modes.Create {
-			currentPageModel.SetWidth(m.width)
-			currentPageModel.SetHeight(m.height - lipgloss.Height(m.tabs.View()))
+	case navigator.AddNavigableMsg:
+		for _, component := range msg.Components {
+			m.navigator.Add(component)
 		}
+
+	case navigator.RemoveNavigableMsg:
+		for _, id := range msg.IDs {
+			m.navigator.Remove(id)
+		}
+
+	case app.ErrMsg:
+		m.err = msg
+		return m, tea.Quit
 	}
 
-	_, cmd = currentPageModel.Update(msg)
+	currentPageModel, cmd = currentPageModel.Update(msg)
 	cmds = append(cmds, cmd)
 
 	return m, tea.Batch(cmds...)

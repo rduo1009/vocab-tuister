@@ -1,10 +1,9 @@
 package config
 
 import (
-	"github.com/charmbracelet/bubbles/v2/help"
 	"github.com/charmbracelet/huh/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
 )
 
 type appStatus int
@@ -20,6 +19,7 @@ type (
 		focused bool
 		form    *huh.Form
 	}
+	resetButton struct{ focused bool }
 )
 
 func (hb *headerBorder) SetFocused(focused bool) {
@@ -30,6 +30,10 @@ func (hb *headerBorder) Focused() bool {
 	return hb.focused
 }
 
+func (hb *headerBorder) ID() string {
+	return "HeaderBorder"
+}
+
 func (fb *formBorder) SetFocused(focused bool) {
 	fb.focused = focused
 }
@@ -38,78 +42,52 @@ func (fb *formBorder) Focused() bool {
 	return fb.focused
 }
 
+func (fb *formBorder) ID() string {
+	return "FormBorder"
+}
+
+func (rb *resetButton) SetFocused(focused bool) {
+	rb.focused = focused
+}
+
+func (rb *resetButton) Focused() bool {
+	return rb.focused
+}
+
+func (rb *resetButton) ID() string {
+	return "ResetButton"
+}
+
 type Model struct {
 	// Layout state
 	width, height int
 
 	// Components
-	HeaderBorder *headerBorder
-	FormBorder   *formBorder
-	form         *huh.Form
-	help         *help.Model // The default help model (used when selecting preset is focused)
+	HeaderSection *headerBorder
+	FormSection   *formBorder
+	ResetButton   *resetButton
+	form          *huh.Form
+	jsonview      *jsonview.JSONView
 
 	// Application state
-	appStatus appStatus
-	keys      keyMap
-	wizard    *SessionConfigWizard
-	err       error
-
-	filePath string
-}
-
-// NOTE: This doesn't reset SettingsWizard. The values in SettingsWizard should remain the same.
-func newForm() *huh.Form {
-	groups := make([]*huh.Group, len(wizard.Pages))
-	for i, page := range wizard.Pages {
-		if page.Options[0].Type == modes.OptionBool {
-			groups[i] = huh.NewGroup(
-				huh.NewMultiSelect[string]().
-					Title(page.Title).
-					Options(func() (o []huh.Option[string]) {
-						for _, field := range page.Options {
-							o = append(
-								o,
-								huh.NewOption(field.DisplayName, field.InternalName).
-									Selected(field.BoolValue),
-							)
-						}
-						return o
-					}()...),
-			)
-			continue
-		}
-
-		options := make([]huh.Field, len(page.Options))
-		for j, option := range page.Options {
-			switch option.Type {
-			case modes.OptionNumber:
-				options[j] = huh.NewInput().Title(option.DisplayName).Prompt(">")
-
-			default:
-				panic("unreachable")
-			}
-		}
-
-		groups[i] = huh.NewGroup(options...)
-	}
-
-	return huh.NewForm(groups...)
+	appStatus        appStatus
+	rawSessionConfig string
+	err              error
 }
 
 func New() *Model {
-	form := newForm()  // returns pointer
-	help := help.New() // returns value
+	form := DefaultForm()
 
 	headerBorder := headerBorder{focused: false}
 	formBorder := formBorder{focused: false, form: form}
+	resetButton := resetButton{focused: false}
 
 	return &Model{
-		HeaderBorder: &headerBorder,
-		FormBorder:   &formBorder,
-		form:         form,
-		help:         &help,
-		appStatus:    CreateSessionConfig,
-		keys:         headerKeys,
-		wizard:       &wizard,
+		HeaderSection: &headerBorder,
+		FormSection:   &formBorder,
+		ResetButton:   &resetButton,
+		form:          form,
+		jsonview:      jsonview.New(""),
+		appStatus:     CreateSessionConfig,
 	}
 }

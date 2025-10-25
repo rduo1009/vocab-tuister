@@ -54,6 +54,9 @@ func New() *Model {
 
 	createtui := create.New()
 
+	nav := navigator.New([]navigator.Navigable{}, 0)
+	nav.Add(tabs)
+
 	return &Model{
 		currentPage: 0,
 		pageOrder:   pageOrder,
@@ -67,6 +70,6 @@ func New() *Model {
 		tabs:      tabs,
 		help:      &help,
 		keys:      keys,
-		navigator: navigator.New([]navigator.Navigable{tabs}, 0),
+		navigator: nav,
 	}
 }

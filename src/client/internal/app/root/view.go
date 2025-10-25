@@ -1,25 +1,27 @@
 package root
 
 import (
-	"strings"
-
 	tea "github.com/charmbracelet/bubbletea/v2"
+	"github.com/charmbracelet/lipgloss"
 )
 
 func (m *Model) View() tea.View {
-	var b strings.Builder
+	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
-	b.WriteString(m.tabs.View())
-	b.WriteRune('\n')
+	tabsView := m.tabs.View()
 
-	b.WriteString(m.pages[m.pageOrder[m.currentPage]].View())
+	var helpView string
 	if m.tabs.Focused() {
-		b.WriteString(m.help.View(m.keys))
+		helpView = m.help.View(m.keys)
 	} else {
-		b.WriteString(m.help.View(m.pages[m.pageOrder[m.currentPage]].KeyMap()))
+		helpView = m.help.View(currentPageModel.KeyMap())
 	}
 
-	v := tea.NewView(b.String())
+	currentPageModel.SetWidth(m.width)
+	currentPageModel.SetHeight(m.height - lipgloss.Height(tabsView) - lipgloss.Height(helpView) - 4)
+	pageView := currentPageModel.View()
+
+	v := tea.NewView(lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView))
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"
 	return v

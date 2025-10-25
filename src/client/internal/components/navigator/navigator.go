@@ -1,9 +1,15 @@
 package navigator
 
+type (
+	AddNavigableMsg    struct{ Components []Navigable }
+	RemoveNavigableMsg struct{ IDs []string }
+)
+
 // Navigable represents any component that can receive navigation focus.
 type Navigable interface {
 	SetFocused(bool)
 	Focused() bool
+	ID() string
 }
 
 // Navigator manages focus between multiple navigable components.
@@ -46,4 +52,41 @@ func (n *Navigator) Current() Navigable {
 
 func (n *Navigator) CurrentIndex() int {
 	return n.Index
+}
+
+func (n *Navigator) Add(component Navigable) {
+	n.Items = append(n.Items, component)
+	// If this is the first item, set focus to it
+	if len(n.Items) == 1 {
+		n.Index = 0
+		component.SetFocused(true)
+	}
+}
+
+func (n *Navigator) Remove(id string) {
+	for i, item := range n.Items {
+		if item.ID() == id {
+			// Unfocus if removing current
+			if i == n.Index {
+				item.SetFocused(false)
+				if len(n.Items) > 1 {
+					n.Index = (i - 1 + len(n.Items)) % len(n.Items)
+					n.Items[n.Index].SetFocused(true)
+				} else {
+					n.Index = 0
+				}
+			} else if i < n.Index {
+				n.Index--
+			}
+
+			// Remove item
+			n.Items = append(n.Items[:i], n.Items[i+1:]...)
+			return
+		}
+	}
+}
+
+func (n *Navigator) Reset() {
+	n.Items = n.Items[:1]
+	n.Index = 0
 }
