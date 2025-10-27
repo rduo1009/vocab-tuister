@@ -18,8 +18,8 @@ var (
 	regularExclusions           []string
 	miscellaneous               []string
 	questionTypes               []string
-	numberMultipleChoiceOptions string = "3"
-	numberOfQuestions           string = "50"
+	numberMultipleChoiceOptions = "3"
+	numberOfQuestions           = "50"
 )
 
 var allKeys = []string{

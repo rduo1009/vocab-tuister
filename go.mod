@@ -3,18 +3,19 @@ module github.com/rduo1009/vocab-tuister
 go 1.25
 
 require (
+	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/charmbracelet/bubbles/v2 v2.0.0-beta.1.0.20251001202932-f03bfcc799df
 	github.com/charmbracelet/bubbletea/v2 v2.0.0-beta.5
 	github.com/charmbracelet/huh/v2 v2.0.0-20251002004642-2558071e918d
 	github.com/charmbracelet/lipgloss v1.1.0
-	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta1
+	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta.3.0.20250917201909-41ff0bf215ea
 	github.com/spf13/cobra v1.10.1
+	golang.org/x/sys v0.37.0
 	golang.org/x/term v0.36.0
 )
 
 require (
 	github.com/agnivade/levenshtein v1.2.0 // indirect
-	github.com/alecthomas/chroma/v2 v2.14.0 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20231202071711-9a357b53e9c9 // indirect
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
@@ -97,7 +98,6 @@ require (
 	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.46.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect

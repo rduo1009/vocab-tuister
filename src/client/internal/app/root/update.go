@@ -20,12 +20,22 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
-		case key.Matches(msg, m.keys.Help):
-			m.help.ShowAll = !m.help.ShowAll
-		case key.Matches(msg, m.keys.PreviousFocus):
-			m.navigator.Previous()
-		case key.Matches(msg, m.keys.NextFocus):
-			m.navigator.Next()
+		}
+
+		if !currentPageModel.HasOverlay() {
+			switch {
+			case key.Matches(msg, m.keys.Help):
+				m.help.ShowAll = !m.help.ShowAll
+			case key.Matches(msg, m.keys.PreviousFocus):
+				m.navigator.Previous()
+			case key.Matches(msg, m.keys.NextFocus):
+				m.navigator.Next()
+			}
+		} else {
+			switch {
+			case key.Matches(msg, m.keys.Help):
+				m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll
+			}
 		}
 
 		// Applied to only when tabs are selected

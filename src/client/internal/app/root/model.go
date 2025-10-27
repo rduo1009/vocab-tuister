@@ -20,9 +20,10 @@ type Model struct {
 	pageOrder     []modes.PageName
 
 	// Components
-	pages map[modes.PageName]util.ComponentModel
-	tabs  *tabs.Tabs
-	help  *help.Model // The default help model (used when tabs are focused)
+	pages       map[modes.PageName]util.PageModel
+	tabs        *tabs.Model
+	help        *help.Model
+	overlayHelp *help.Model
 
 	// Application state
 	keys          keyMap
@@ -49,27 +50,29 @@ func New() *Model {
 		modes.Settings,
 	}
 
-	tabs := tabs.New(toStringers(pageOrder), 0, true)
-	help := help.New()
+	t := tabs.New(toStringers(pageOrder), 0, true)
+	h := help.New()
+	overlayHelp := help.New()
 
 	createtui := create.New()
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
-	nav.Add(tabs)
+	nav.Add(t)
 
 	return &Model{
 		currentPage: 0,
 		pageOrder:   pageOrder,
-		pages: map[modes.PageName]util.ComponentModel{
+		pages: map[modes.PageName]util.PageModel{
 			modes.Create:   createtui,
 			modes.Review:   nil,
 			modes.Test:     nil,
 			modes.Help:     nil,
 			modes.Settings: nil,
 		}, // TODO: Do this
-		tabs:      tabs,
-		help:      &help,
-		keys:      keys,
-		navigator: nav,
+		tabs:        t,
+		help:        &h,
+		overlayHelp: &overlayHelp,
+		keys:        keys,
+		navigator:   nav,
 	}
 }

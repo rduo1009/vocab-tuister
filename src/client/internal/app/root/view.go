@@ -2,8 +2,10 @@ package root
 
 import (
 	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/v2"
 )
+
+var dimPageStyle = lipgloss.NewStyle() //.Foreground(lipgloss.Color("8"))
 
 func (m *Model) View() tea.View {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
@@ -20,8 +22,27 @@ func (m *Model) View() tea.View {
 	currentPageModel.SetWidth(m.width)
 	currentPageModel.SetHeight(m.height - lipgloss.Height(tabsView) - lipgloss.Height(helpView) - 4)
 	pageView := currentPageModel.View()
+	fullView := lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView)
 
-	v := tea.NewView(lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView))
+	var canvas *lipgloss.Canvas
+	if currentPageModel.HasOverlay() {
+		dimPageView := dimPageStyle.Render(fullView)
+		canvas = lipgloss.NewCanvas(lipgloss.NewLayer(dimPageView))
+
+		overlayPageView := currentPageModel.OverlayView(m.width/2, m.height/2)
+		overlayHelpView := m.overlayHelp.View(currentPageModel.OverlayKeyMap())
+		overlayView := lipgloss.Place(m.width, m.height,
+			lipgloss.Center, lipgloss.Center,
+			lipgloss.JoinVertical(lipgloss.Left, overlayPageView, overlayHelpView),
+			lipgloss.WithWhitespaceChars(" "),
+		)
+
+		canvas.AddLayers(lipgloss.NewLayer(overlayView))
+	} else {
+		canvas = lipgloss.NewCanvas(lipgloss.NewLayer(fullView))
+	}
+
+	v := tea.NewView(canvas.Render())
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"
 	return v

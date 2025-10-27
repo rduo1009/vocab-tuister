@@ -4,6 +4,7 @@ import (
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/charmbracelet/bubbles/v2/key"
@@ -11,7 +12,7 @@ import (
 	"github.com/charmbracelet/huh/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
@@ -79,6 +80,26 @@ func generateSessionConfig() tea.Msg {
 	return RawSessionConfigMsg(value)
 }
 
+func readSessionConfigFile(selectedFile string) tea.Cmd {
+	return func() tea.Msg {
+		rawSessionConfig, err := os.ReadFile(selectedFile)
+		if err != nil {
+			return app.ErrMsg(fmt.Errorf("failed to read session config file at %s: %w", selectedFile, err))
+		}
+
+		var value jsontext.Value = rawSessionConfig
+		err = value.Canonicalize(jsontext.WithIndent("  "),
+			jsontext.SpaceAfterColon(true),
+			jsontext.SpaceAfterComma(false),
+		)
+		if err != nil {
+			return app.ErrMsg(fmt.Errorf("failed to canonicalize json: %w", err))
+		}
+
+		return RawSessionConfigMsg(value)
+	}
+}
+
 func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
@@ -87,7 +108,9 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		if m.HeaderSection.Focused() {
 			switch {
 			case key.Matches(msg, m.HeaderSection.KeyMap().(headerBorderKeyMap).PressButton):
-				panic("not implemented")
+				cmds = append(cmds, func() tea.Msg {
+					return filepicker.FilepickStartMsg{}
+				})
 			}
 		} else if m.ResetButton.Focused() {
 			switch {
@@ -105,13 +128,15 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		m.appStatus = ReviewSessionConfig
 		m.rawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.rawSessionConfig)
+
+	case filepicker.FilepickPickedMsg:
+		cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
 	}
 
 	if m.FormSection.Focused() {
 		switch m.form.State {
 		case huh.StateNormal:
-			form, cmd := m.form.Update(msg)
-			m.form = form.(*huh.Form)
+			_, cmd := m.form.Update(msg)
 			cmds = append(cmds, cmd)
 		case huh.StateCompleted:
 			switch m.appStatus {
@@ -134,8 +159,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 				// use tea.Sequence as these need to be ran in order
 				return m, tea.Sequence(cmds...)
 			case ReviewSessionConfig:
-				jsonviewModel, cmd := m.jsonview.Update(msg)
-				m.jsonview = jsonviewModel.(*jsonview.JSONView)
+				_, cmd := m.jsonview.Update(msg)
 				cmds = append(cmds, cmd)
 			}
 		}

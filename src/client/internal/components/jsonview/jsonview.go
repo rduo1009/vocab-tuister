@@ -13,10 +13,10 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
-// JSONView is a bubbletea component that displays JSON content with syntax highlighting
+// Model is a bubbletea component that displays JSON content with syntax highlighting
 // and scrolling capabilities. It uses the viewport component for scrolling and
 // the chroma library for syntax highlighting.
-type JSONView struct {
+type Model struct {
 	// viewport is the underlying viewport that handles scrolling
 	viewport viewport.Model
 	// content is the raw JSON string to display
@@ -28,11 +28,11 @@ type JSONView struct {
 
 // New creates a new JSON viewer component with the given JSON content.
 // The viewport must be sized using SetWidth and SetHeight before use.
-func New(jsonContent string) *JSONView {
+func New(jsonContent string) *Model {
 	// Create a new viewport without initial dimensions
 	vp := viewport.New()
 
-	return &JSONView{
+	return &Model{
 		content:  jsonContent,
 		viewport: vp,
 	}
@@ -40,14 +40,14 @@ func New(jsonContent string) *JSONView {
 
 // Init initializes the component. It returns nil as no initial commands
 // are needed for this component.
-func (m *JSONView) Init() tea.Cmd {
+func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
 // Update handles incoming messages and updates the component state accordingly.
 // It delegates all message handling to the viewport, which handles navigation
 // keys internally. The method returns the updated model and any commands to execute.
-func (m *JSONView) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	// Delegate all message handling to the viewport
 	// The viewport handles navigation keys (arrows, page up/down, etc.) internally
 	var cmd tea.Cmd
@@ -56,13 +56,13 @@ func (m *JSONView) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 }
 
 // View renders the component as a string. It returns the viewport's view.
-func (m *JSONView) View() string {
+func (m *Model) View() string {
 	return m.viewport.View()
 }
 
 // SetWidth sets the width of the component and updates the viewport accordingly.
 // This also refreshes the content to ensure it's properly formatted for the new width.
-func (m *JSONView) SetWidth(width int) {
+func (m *Model) SetWidth(width int) {
 	m.viewport.SetWidth(width)
 	// Refresh content with the new width
 	m.viewport.SetContent(m.getHighlightedContent())
@@ -70,7 +70,7 @@ func (m *JSONView) SetWidth(width int) {
 
 // SetHeight sets the height of the component and updates the viewport accordingly.
 // This also refreshes the content to ensure it's properly formatted for the new height.
-func (m *JSONView) SetHeight(height int) {
+func (m *Model) SetHeight(height int) {
 	m.viewport.SetHeight(height)
 	// Refresh content with the new height
 	m.viewport.SetContent(m.getHighlightedContent())
@@ -101,13 +101,13 @@ func (k jsonViewKeyMap) FullHelp() [][]key.Binding {
 
 // KeyMap returns the component's keymap for help display.
 // It implements part of the ComponentModel interface.
-func (m *JSONView) KeyMap() help.KeyMap {
+func (m *Model) KeyMap() help.KeyMap {
 	return jsonViewKeyMap{&m.viewport.KeyMap}
 }
 
 // SetContent updates the JSON content displayed by the component.
 // It clears the highlighted cache and resets the scroll position to the top.
-func (m *JSONView) SetContent(jsonContent string) {
+func (m *Model) SetContent(jsonContent string) {
 	m.content = jsonContent
 	// Clear the cache so it gets regenerated with the new content
 	m.highlighted = ""
@@ -121,7 +121,7 @@ func (m *JSONView) SetContent(jsonContent string) {
 // It caches the result to avoid re-highlighting on every render. The highlighting
 // uses the chroma library with the terminal256 formatter and monokai theme.
 // If highlighting fails, it falls back to the plain content.
-func (m *JSONView) getHighlightedContent() string {
+func (m *Model) getHighlightedContent() string {
 	// Return cached version if available
 	if m.highlighted != "" {
 		return m.highlighted

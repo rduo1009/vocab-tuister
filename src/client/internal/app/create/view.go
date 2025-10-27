@@ -10,6 +10,19 @@ func (m *Model) SetHeight(height int) {
 	m.configtui.SetHeight(height)
 }
 
+func (m *Model) HasOverlay() bool {
+	return m.configtuiFilepickerStatus == filepickerActive
+}
+
+func (m *Model) OverlayView(width, height int) string {
+	m.configtuiFilepicker.Width = width
+	m.configtuiFilepicker.Height = height
+	if m.configtuiFilepickerStatus == filepickerActive {
+		return m.configtuiFilepicker.View()
+	}
+	panic("unreachable")
+}
+
 func (m *Model) View() string {
 	return m.configtui.View()
 }

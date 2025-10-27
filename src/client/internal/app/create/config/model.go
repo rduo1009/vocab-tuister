@@ -67,12 +67,11 @@ type Model struct {
 	FormSection   *formBorder
 	ResetButton   *resetButton
 	form          *huh.Form
-	jsonview      *jsonview.JSONView
+	jsonview      *jsonview.Model
 
 	// Application state
 	appStatus        appStatus
 	rawSessionConfig string
-	err              error
 }
 
 func New() *Model {

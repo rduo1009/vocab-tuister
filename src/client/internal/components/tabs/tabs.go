@@ -68,7 +68,7 @@ func activeTabStyle(focused bool) lipgloss.Style {
 	return inactiveTabStyle(focused).Border(activeTabBorder(lipgloss.NormalBorder()), true)
 }
 
-type Tabs struct {
+type Model struct {
 	Width int
 
 	tabNames  []string
@@ -76,33 +76,33 @@ type Tabs struct {
 	isFocused bool
 }
 
-func (t *Tabs) SetFocused(focused bool) {
+func (t *Model) SetFocused(focused bool) {
 	t.isFocused = focused
 }
 
-func (t *Tabs) Focused() bool {
+func (t *Model) Focused() bool {
 	return t.isFocused
 }
 
-func (t *Tabs) ID() string {
+func (t *Model) ID() string {
 	return "tabs"
 }
 
-func (t *Tabs) Next() {
+func (t *Model) Next() {
 	t.active++
 }
 
-func (t *Tabs) Prev() {
+func (t *Model) Prev() {
 	t.active--
 }
 
-func New(names []fmt.Stringer, active int, isFocused bool) *Tabs {
+func New(names []fmt.Stringer, active int, isFocused bool) *Model {
 	tabNames := make([]string, len(names))
 	for i, n := range names {
 		tabNames[i] = n.String()
 	}
 
-	return &Tabs{
+	return &Model{
 		tabNames:  tabNames,
 		active:    active,
 		isFocused: isFocused,
@@ -110,16 +110,16 @@ func New(names []fmt.Stringer, active int, isFocused bool) *Tabs {
 }
 
 // Init helps satisfy the StringViewModel. It is a no-op.
-func (t *Tabs) Init() tea.Cmd {
+func (t *Model) Init() tea.Cmd {
 	return nil
 }
 
 // Update helps satisfy the StringViewModel. It is a no-op.
-func (t *Tabs) Update(_ tea.Msg) (*Tabs, tea.Cmd) {
+func (t *Model) Update(_ tea.Msg) (*Model, tea.Cmd) {
 	return t, nil
 }
 
-func (t *Tabs) View() string {
+func (t *Model) View() string {
 	// Tabs
 	var renderedTabs []string
 	for i, pageName := range t.tabNames {
