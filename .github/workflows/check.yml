@@ -10,7 +10,7 @@ jobs:
     name: test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -44,7 +44,7 @@ jobs:
     name: integration test with python
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -116,7 +116,7 @@ jobs:
     name: test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: "recursive"
@@ -165,7 +165,7 @@ jobs:
     name: integration test with golang
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: "recursive"
