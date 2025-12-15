@@ -24,7 +24,7 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Cache tox
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .tox
           key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'poetry.lock') }}
@@ -59,7 +59,7 @@ jobs:
 
       - name: Load cached Poetry installation
         id: cached-poetry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.local # Poetry installs here on Ubuntu
           key: poetry-${{ runner.os }}-1
@@ -81,7 +81,7 @@ jobs:
           poetry config installer.parallel true
 
       - name: Cache Poetry virtualenv
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
