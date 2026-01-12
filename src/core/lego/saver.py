@@ -102,8 +102,9 @@ def save_vocab_dump(
 
         logger.info("Saving vocab dump with compression to %s.", file_path)
 
-        with Path(file_path).open("wb") as file:
-            file.write(zlib.compress(pickled_data + signature.encode()))
+        Path(file_path).write_bytes(
+            zlib.compress(pickled_data + signature.encode())
+        )
         return
 
     if file_path.suffix == ".gzip":

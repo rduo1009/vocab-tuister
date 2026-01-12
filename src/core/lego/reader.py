@@ -138,8 +138,7 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
     >>> read_vocab_file(Path("path_to_file.txt"))  # doctest: +SKIP
     """
     if isinstance(source, (str, Path)):
-        with Path(source).open("r", encoding="utf-8") as f:
-            contents = f.read()
+        contents = Path(source).read_text(encoding="utf-8")
     else:
         contents = source.read()
 
