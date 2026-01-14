@@ -105,6 +105,7 @@ lint.ignore = [
   "PLR0912", # too many branches
   "PLR0913", # too many arguments
   "PLW1514", # encoding in `open()`
+  "RUF067",  # empty init files
   "S101",    # assertions
   "S301",    # using `pickle`
   "S311",    # using `random`

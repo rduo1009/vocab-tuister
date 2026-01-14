@@ -62,9 +62,8 @@ def read_vocab_dump(source: str | Path | BinaryIO) -> VocabList:
         if filename.suffix == ".gzip":
             logger.info("File %s is being decompressed and read.", filename)
 
-            with Path(filename).open("rb") as file:
-                compressed_content = file.read()
-                content = zlib.decompress(compressed_content)
+            compressed_content = Path(filename).read_bytes()
+            content = zlib.decompress(compressed_content)
         else:
             logger.info("File %s being read.", filename)
 
