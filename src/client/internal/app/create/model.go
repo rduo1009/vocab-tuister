@@ -2,6 +2,7 @@ package create
 
 import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/list"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util/appdir"
 )
@@ -21,6 +22,7 @@ type Model struct {
 	// Components
 	configtui           *config.Model
 	configtuiFilepicker *filepicker.Model
+	listtui             *list.Model
 
 	// Application state
 	configtuiFilepickerStatus filepickerStatus

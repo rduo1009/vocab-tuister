@@ -1,5 +1,7 @@
 package create
 
+import "github.com/charmbracelet/lipgloss/v2"
+
 func (m *Model) SetWidth(width int) {
 	m.width = width
 	m.configtui.SetWidth(width)
@@ -24,5 +26,5 @@ func (m *Model) OverlayView(width, height int) string {
 }
 
 func (m *Model) View() string {
-	return m.configtui.View()
+	return lipgloss.JoinHorizontal(lipgloss.Top, m.listtui.View(), m.configtui.View())
 }

@@ -84,7 +84,7 @@ func setUpTUI(t *testing.T) (*teatest.TestModel, string) {
 }
 
 func sendKeyWithDelay(tm *teatest.TestModel, keyType tea.KeyType) {
-	tm.Send(tea.KeyMsg{Type: keyType})
+	tm.Send(tea.KeyPressMsg{Type: keyType})
 	time.Sleep(time.Millisecond * millisecondDelay)
 }
 

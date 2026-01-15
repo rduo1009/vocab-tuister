@@ -4,6 +4,7 @@ go 1.25
 
 require (
 	github.com/alecthomas/chroma/v2 v2.14.0
+	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/bubbles/v2 v2.0.0-beta.1.0.20251001202932-f03bfcc799df
 	github.com/charmbracelet/bubbletea/v2 v2.0.0-beta.5
 	github.com/charmbracelet/huh/v2 v2.0.0-20251002004642-2558071e918d
@@ -19,7 +20,6 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20231202071711-9a357b53e9c9 // indirect
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
-	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/bitfield/gotestdox v0.2.2 // indirect
@@ -80,6 +80,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
+	github.com/sahilm/fuzzy v0.1.1 // indirect
 	github.com/segmentio/golines v0.12.2 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect

@@ -56,16 +56,16 @@ func setUpTUI(t *testing.T) (*teatest.TestModel, string) {
 
 func sendKeyWithDelay(tm *teatest.TestModel, keyType tea.KeyType, keyRunes ...rune) {
 	if keyType == tea.KeyRunes {
-		tm.Send(tea.KeyMsg{Type: keyType, Runes: keyRunes})
+		tm.Send(tea.KeyPressMsg{Type: keyType, Runes: keyRunes})
 	} else {
-		tm.Send(tea.KeyMsg{Type: keyType})
+		tm.Send(tea.KeyPressMsg{Type: keyType})
 	}
 	time.Sleep(time.Millisecond * millisecondDelay)
 }
 
 func typeWithDelay(tm *teatest.TestModel, s string) {
 	for _, c := range s {
-		tm.Send(tea.KeyMsg{
+		tm.Send(tea.KeyPressMsg{
 			Type:  tea.KeyRunes,
 			Runes: []rune{c},
 		})

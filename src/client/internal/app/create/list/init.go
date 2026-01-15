@@ -1,4 +1,4 @@
-package config
+package list
 
 import (
 	tea "github.com/charmbracelet/bubbletea/v2"
@@ -9,7 +9,9 @@ import (
 
 func (m *Model) Init() tea.Cmd {
 	return tea.Batch(
-		m.form.Init(),
-		util.MsgCmd(navigator.AddNavigableMsg{Components: []navigator.Navigable{m.HeaderSection, m.FormSection}}),
+		m.VocabEditor.Init(),
+		util.MsgCmd(navigator.AddNavigableMsg{
+			Components: []navigator.Navigable{m.HeaderSection, m.VocabEditor, m.SelectButton},
+		}),
 	)
 }

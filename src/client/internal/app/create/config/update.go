@@ -104,23 +104,21 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		if m.HeaderSection.Focused() {
 			switch {
-			case key.Matches(msg, m.HeaderSection.KeyMap().(headerBorderKeyMap).PressButton):
-				cmds = append(cmds, func() tea.Msg {
-					return filepicker.FilepickStartMsg{}
-				})
+			case key.Matches(msg, m.HeaderSection.KeyMap().PressButton):
+				cmds = append(cmds, util.MsgCmd(filepicker.FilepickStartMsg{}))
 			}
 		} else if m.ResetButton.Focused() {
 			switch {
-			case key.Matches(msg, m.ResetButton.KeyMap().(resetButtonKeyMap).PressButton):
+			case key.Matches(msg, m.ResetButton.KeyMap().PressButton):
 				m.form = DefaultForm()
 				m.form.State = huh.StateNormal
 				m.appStatus = CreateSessionConfig
-				cmds = append(cmds, func() tea.Msg {
-					return navigator.RemoveNavigableMsg{IDs: []string{m.ResetButton.ID()}}
-				})
+				cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
+					IDs: []string{m.ResetButton.ID()},
+				}))
 			}
 		}
 
@@ -141,20 +139,16 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		case huh.StateCompleted:
 			switch m.appStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
-				// navigator: [HeaderBorder, FormBorder]
+				// navigator: [HeaderSection, FormSection]
 				cmds = append(cmds, generateSessionConfig,
-					// now navigator: [HeaderBorder]
-					func() tea.Msg {
-						return navigator.RemoveNavigableMsg{
-							IDs: []string{m.FormSection.ID()},
-						}
-					},
-					// now navigator: [HeaderBorder, ResetButton, FormBorder]
-					func() tea.Msg {
-						return navigator.AddNavigableMsg{
-							Components: []navigator.Navigable{m.ResetButton, m.FormSection},
-						}
-					},
+					// now navigator: [HeaderSection]
+					util.MsgCmd(navigator.RemoveNavigableMsg{
+						IDs: []string{m.FormSection.ID()},
+					}),
+					// now navigator: [HeaderSection, ResetButton, FormSection]
+					util.MsgCmd(navigator.AddNavigableMsg{
+						Components: []navigator.Navigable{m.ResetButton, m.FormSection},
+					}),
 				)
 				// use tea.Sequence as these need to be ran in order
 				return m, tea.Sequence(cmds...)

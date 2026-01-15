@@ -5,24 +5,16 @@ import (
 )
 
 type keyMap struct {
-	PreviousFocus key.Binding
-	NextFocus     key.Binding
 	Left          key.Binding
 	Right         key.Binding
+	PreviousFocus key.Binding
+	NextFocus     key.Binding
 	Submit        key.Binding
 	Help          key.Binding
 	Quit          key.Binding
 }
 
 var keys = keyMap{
-	PreviousFocus: key.NewBinding(
-		key.WithKeys("["),
-		key.WithHelp("[", "focus previous"),
-	),
-	NextFocus: key.NewBinding(
-		key.WithKeys("]"),
-		key.WithHelp("]", "focus next"),
-	),
 	Left: key.NewBinding(
 		key.WithKeys("left"),
 		key.WithHelp("↑", "left tab"),
@@ -30,6 +22,14 @@ var keys = keyMap{
 	Right: key.NewBinding(
 		key.WithKeys("right"),
 		key.WithHelp("→", "right tab"),
+	),
+	PreviousFocus: key.NewBinding(
+		key.WithKeys("["),
+		key.WithHelp("[", "focus previous"),
+	),
+	NextFocus: key.NewBinding(
+		key.WithKeys("]"),
+		key.WithHelp("]", "focus next"),
 	),
 	Help: key.NewBinding(
 		key.WithKeys("ctrl+h"),
@@ -42,12 +42,12 @@ var keys = keyMap{
 }
 
 func (k keyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.Left, k.Right, k.NextFocus, k.Help, k.Quit}
 }
 
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.PreviousFocus, k.NextFocus, k.Left, k.Right},
+		{k.Left, k.Right, k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }

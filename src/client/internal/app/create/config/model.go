@@ -6,44 +6,44 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
 )
 
-type appStatus int
+type createSessionConfigStatus int
 
 const (
-	CreateSessionConfig appStatus = iota
+	CreateSessionConfig createSessionConfigStatus = iota
 	ReviewSessionConfig
 )
 
 type (
-	headerBorder struct{ focused bool }
-	formBorder   struct {
+	headerSection struct{ focused bool }
+	formSection   struct {
 		focused bool
 		form    *huh.Form
 	}
 	resetButton struct{ focused bool }
 )
 
-func (hb *headerBorder) SetFocused(focused bool) {
-	hb.focused = focused
+func (hs *headerSection) SetFocused(focused bool) {
+	hs.focused = focused
 }
 
-func (hb *headerBorder) Focused() bool {
-	return hb.focused
+func (hs *headerSection) Focused() bool {
+	return hs.focused
 }
 
-func (hb *headerBorder) ID() string {
-	return "HeaderBorder"
+func (hs *headerSection) ID() string {
+	return "ConfigHeaderSection"
 }
 
-func (fb *formBorder) SetFocused(focused bool) {
-	fb.focused = focused
+func (fs *formSection) SetFocused(focused bool) {
+	fs.focused = focused
 }
 
-func (fb *formBorder) Focused() bool {
-	return fb.focused
+func (fs *formSection) Focused() bool {
+	return fs.focused
 }
 
-func (fb *formBorder) ID() string {
-	return "FormBorder"
+func (fs *formSection) ID() string {
+	return "FormSection"
 }
 
 func (rb *resetButton) SetFocused(focused bool) {
@@ -63,27 +63,27 @@ type Model struct {
 	width, height int
 
 	// Components
-	HeaderSection *headerBorder
-	FormSection   *formBorder
+	HeaderSection *headerSection
+	FormSection   *formSection
 	ResetButton   *resetButton
 	form          *huh.Form
 	jsonview      *jsonview.Model
 
 	// Application state
-	appStatus        appStatus
+	appStatus        createSessionConfigStatus
 	rawSessionConfig string
 }
 
 func New() *Model {
 	form := DefaultForm()
 
-	headerBorder := headerBorder{focused: false}
-	formBorder := formBorder{focused: false, form: form}
+	headerSection := headerSection{focused: false}
+	formSection := formSection{focused: false, form: form}
 	resetButton := resetButton{focused: false}
 
 	return &Model{
-		HeaderSection: &headerBorder,
-		FormSection:   &formBorder,
+		HeaderSection: &headerSection,
+		FormSection:   &formSection,
 		ResetButton:   &resetButton,
 		form:          form,
 		jsonview:      jsonview.New(""),

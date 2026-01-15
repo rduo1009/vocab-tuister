@@ -5,24 +5,31 @@ import (
 	"github.com/charmbracelet/bubbles/v2/key"
 )
 
-type headerBorderKeyMap struct {
+type headerSectionKeyMap struct {
+	PressButton   key.Binding
 	PreviousFocus key.Binding
 	NextFocus     key.Binding
-	PressButton   key.Binding
 	Help          key.Binding
 	Quit          key.Binding
 }
 
-func (k headerBorderKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
+func (k headerSectionKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.PressButton, k.NextFocus, k.Help, k.Quit}
 }
 
-func (k headerBorderKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{{k.NextFocus, k.PressButton, k.Help, k.Quit}}
+func (k headerSectionKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.PressButton, k.PreviousFocus},
+		{k.NextFocus, k.Help, k.Quit},
+	}
 }
 
-func (hb *headerBorder) KeyMap() help.KeyMap {
-	return headerBorderKeyMap{
+func (hs *headerSection) KeyMap() headerSectionKeyMap {
+	return headerSectionKeyMap{
+		PressButton: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "press button"),
+		),
 		PreviousFocus: key.NewBinding(
 			key.WithKeys("["),
 			key.WithHelp("[", "focus previous"),
@@ -30,10 +37,6 @@ func (hb *headerBorder) KeyMap() help.KeyMap {
 		NextFocus: key.NewBinding(
 			key.WithKeys("]"),
 			key.WithHelp("]", "focus next"),
-		),
-		PressButton: key.NewBinding(
-			key.WithKeys("enter"),
-			key.WithHelp("enter", "press button"),
 		),
 		Help: key.NewBinding(
 			key.WithKeys("ctrl+h"),
@@ -47,23 +50,30 @@ func (hb *headerBorder) KeyMap() help.KeyMap {
 }
 
 type resetButtonKeyMap struct {
+	PressButton   key.Binding
 	PreviousFocus key.Binding
 	NextFocus     key.Binding
-	PressButton   key.Binding
 	Help          key.Binding
 	Quit          key.Binding
 }
 
 func (k resetButtonKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
+	return []key.Binding{k.PressButton, k.NextFocus, k.Help, k.Quit}
 }
 
 func (k resetButtonKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{{k.NextFocus, k.PressButton, k.Help, k.Quit}}
+	return [][]key.Binding{
+		{k.PressButton, k.PreviousFocus},
+		{k.NextFocus, k.Help, k.Quit},
+	}
 }
 
-func (rb *resetButton) KeyMap() help.KeyMap {
+func (rb *resetButton) KeyMap() resetButtonKeyMap {
 	return resetButtonKeyMap{
+		PressButton: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "press button"),
+		),
 		PreviousFocus: key.NewBinding(
 			key.WithKeys("["),
 			key.WithHelp("[", "focus previous"),
@@ -71,10 +81,6 @@ func (rb *resetButton) KeyMap() help.KeyMap {
 		NextFocus: key.NewBinding(
 			key.WithKeys("]"),
 			key.WithHelp("]", "focus next"),
-		),
-		PressButton: key.NewBinding(
-			key.WithKeys("enter"),
-			key.WithHelp("enter", "press button"),
 		),
 		Help: key.NewBinding(
 			key.WithKeys("ctrl+h"),
@@ -89,20 +95,20 @@ func (rb *resetButton) KeyMap() help.KeyMap {
 
 // TODO: Need to combine the helps???
 
-type formBorderKeyMap struct {
-	fb *formBorder
+type formSectionKeyMap struct {
+	fs *formSection
 }
 
-func (k formBorderKeyMap) ShortHelp() []key.Binding {
-	return k.fb.form.KeyBinds()
+func (k formSectionKeyMap) ShortHelp() []key.Binding {
+	return k.fs.form.KeyBinds()
 }
 
-func (k formBorderKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{k.fb.form.KeyBinds()}
+func (k formSectionKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{k.fs.form.KeyBinds()}
 }
 
-func (fb *formBorder) KeyMap() help.KeyMap {
-	return formBorderKeyMap{fb: fb}
+func (fs *formSection) KeyMap() help.KeyMap {
+	return formSectionKeyMap{fs: fs}
 }
 
 func (m *Model) KeyMap() help.KeyMap {

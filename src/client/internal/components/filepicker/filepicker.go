@@ -11,6 +11,8 @@ import (
 	"github.com/charmbracelet/bubbles/v2/key"
 	tea "github.com/charmbracelet/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 type (
@@ -104,21 +106,19 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		switch {
 		case key.Matches(msg, m.keys.Submit):
 			if m.selectedFile == "" {
 				m.err = errors.New("Cannot submit as no file was selected")
 				cmds = append(cmds, clearErrorAfter(2*time.Second))
 			} else {
-				cmds = append(cmds, func() tea.Msg {
-					return FilepickPickedMsg{SelectedFile: m.selectedFile}
-				})
+				cmds = append(cmds, util.MsgCmd(FilepickPickedMsg{
+					SelectedFile: m.selectedFile,
+				}))
 			}
 		case key.Matches(msg, m.keys.Exit):
-			cmds = append(cmds, func() tea.Msg {
-				return FilepickExitMsg{}
-			})
+			cmds = append(cmds, util.MsgCmd(FilepickExitMsg{}))
 		}
 
 	case clearErrorMsg:
