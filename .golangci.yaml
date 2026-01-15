@@ -39,6 +39,7 @@ linters:
       - std-error-handling
     paths:
       - src/_vendor
+      - src/client/internal/components/vocabeditor
       - third_party$
       - builtin$
       - examples$
