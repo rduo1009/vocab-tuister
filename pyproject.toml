@@ -28,7 +28,7 @@ dependencies = [
   "platformdirs==4.5.0",
   "pyinstaller==6.16.0",
   "waitress==3.0.2",
-  "wn==0.13.0",
+  "wn @ git+https://github.com/goodmami/wn.git@d91877",
 ]
 
 [dependency-groups]

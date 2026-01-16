@@ -2100,10 +2100,8 @@ description = "Wordnet interface library"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-files = [
-    {file = "wn-0.13.0-py3-none-any.whl", hash = "sha256:ee1f2574078b592faa44ee254d4d8115ec951036800537f8915f201cb4d02541"},
-    {file = "wn-0.13.0.tar.gz", hash = "sha256:c0e6852e5142354a3b4565a231746ecedc952535e926d3ef6498bd77a52691c6"},
-]
+files = []
+develop = false
 
 [package.dependencies]
 httpx = "*"
@@ -2113,7 +2111,13 @@ tomli = "*"
 editor = ["wn-editor"]
 web = ["starlette"]
 
+[package.source]
+type = "git"
+url = "https://github.com/goodmami/wn.git"
+reference = "d91877"
+resolved_reference = "d91877ceafd6e124cf6565e72e8df9fe7f018e8b"
+
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<3.15"
-content-hash = "adb57ab118761a3e199b2d3030b020e6b6d3b23392e14457ede90767a6d973eb"
+content-hash = "eed6826f79f270af08c8de142176c2f527d20558357328bcb8478603461161a3"
