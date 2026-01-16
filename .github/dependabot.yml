@@ -6,6 +6,8 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "🚧 build(deps):"
+    ignore:
+      - dependency-name: "wn"
 
   - package-ecosystem: "gomod"
     directory: "/"
