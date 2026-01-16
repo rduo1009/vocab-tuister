@@ -96,7 +96,7 @@ def setup_wn() -> None:
         # 2. If not, check for an existing uncompressed database.
         elif (uncompressed_db_path := _wn_data_path / "wn.db").exists():
             # Use the existing persistent directory directly.
-            wn.config.data_directory = str(uncompressed_db_path)
+            wn.config.data_directory = str(uncompressed_db_path.parent)
 
         # 3. If neither exists, download a fresh copy.
         else:
