@@ -19,7 +19,7 @@ var containsStr = slices.Contains[[]string, string]
 // 	return false
 // }
 
-//go:generate poetry run python3 ../../../scripts/create_question_json.py
+//go:generate uv run python3 ../../../scripts/create_question_json.py
 //go:generate go run ../../../structs_generator.go
 //go:generate mkunion watch -g questions.go
 //go:generate mkunion

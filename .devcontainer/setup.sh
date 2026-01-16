@@ -7,27 +7,18 @@ echo "🚀 Setting up Vocab Tuister development environment..."
 # Update package list
 sudo apt-get update
 
-# Install pipx
-echo "📦 Installing pipx..."
-sudo apt-get install -y pipx
-pipx ensurepath
+# Install uv
+echo "⚡ Installing uv..."
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source $HOME/.cargo/env
 
-# Install poetry using pipx
-echo "📝 Installing Poetry..."
-pipx install poetry
-
-# Configure poetry
-echo "⚙️  Configuring Poetry..."
-poetry config virtualenvs.create true
-poetry config virtualenvs.in-project true
-
-# Install Python dependencies with poetry
+# Install Python dependencies with uv
 echo "🐍 Installing Python dependencies..."
-poetry install --sync
+uv sync
 
 # Install pre-commit
 echo "🔧 Installing pre-commit..."
-pipx install pre-commit
+uv tool install pre-commit
 
 # Install pre-commit hooks
 echo "🪝 Installing pre-commit hooks..."
@@ -57,13 +48,13 @@ go generate -x src/generate.go
 # Verify installations
 echo "✅ Verifying installations..."
 echo "Python: $(python --version)"
-echo "Poetry: $(poetry --version)"
+echo "uv: $(uv --version)"
 echo "Go: $(go version)"
 echo "golangci-lint: $(golangci-lint --version)"
 echo "pre-commit: $(pre-commit --version)"
 echo "GitHub CLI: $(gh --version)"
 
 echo "🎉 Development environment setup complete!"
-echo "📖 You can now run 'poetry shell' to activate the virtual environment"
-echo "🧪 Run tests with 'poetry run pytest' or 'go test ./...' for Go tests"
+echo "📖 You can now run 'uv run <command>' to run commands in the environment"
+echo "🧪 Run tests with 'uv run pytest' or 'go test ./...' for Go tests"
 echo "🔍 Run linters with 'pre-commit run --all-files'"

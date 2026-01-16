@@ -1,6 +1,6 @@
 [build-system]
-build-backend = "poetry_dynamic_versioning.backend"
-requires = [ "poetry-core>=2.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
+build-backend = "hatchling.build"
+requires = [ "hatchling", "uv-dynamic-versioning" ]
 
 [project]
 name = "vocab-tester"
@@ -15,7 +15,6 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dynamic = [ "version" ]
-
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
@@ -56,18 +55,23 @@ types = [
   "types-waitress==3.0.1.20250801",
 ]
 
-[tool.poetry]
-requires-poetry = ">=2.0"
-packages = [ { include = "src" } ]
-exclude = [ "**/*.go", "src/scripts/**" ]
-include = [ "src/core/transfero/wn_data/wn.db.zst" ]
-version = "0.0.0"                                    # placeholder
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
 
-[tool.poetry.requires-plugins]
-poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
+[tool.hatch.metadata]
+allow-direct-references = true
 
-[tool.poetry-dynamic-versioning]
-enable = true
+[tool.hatch.build.targets.wheel]
+packages = [ "src" ]
+
+[tool.uv]
+
+[tool.uv.build-backend]
+module-name = [ "src" ]
+module-root = ""
+source-exclude = [ "**/*.go", "src/scripts/**" ]
+source-include = [ "src/core/transfero/wn_data/wn.db.zst" ]
+wheel-exclude = [ "**/*.go", "src/scripts/**" ]
 
 [tool.ruff]
 target-version = "py314"

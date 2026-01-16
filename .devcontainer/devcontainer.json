@@ -49,11 +49,10 @@
   "postCreateCommand": ".devcontainer/setup.sh",
 
   "containerEnv": {
-    "POETRY_VENV_IN_PROJECT": "true",
-    "POETRY_CACHE_DIR": "/workspaces/vocab-tuister/.poetry-cache"
+    "UV_CACHE_DIR": "/workspaces/vocab-tuister/.uv-cache"
   },
 
   "mounts": [
-    "source=vocab-tuister-poetry-cache,target=/workspaces/vocab-tuister/.poetry-cache,type=volume"
+    "source=vocab-tuister-uv-cache,target=/workspaces/vocab-tuister/.uv-cache,type=volume"
   ]
 }

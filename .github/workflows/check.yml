@@ -27,7 +27,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .tox
-          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'poetry.lock') }}
+          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'uv.lock') }}
           restore-keys: |
             tox-${{ hashFiles('.python-version') }}-
 
@@ -57,48 +57,23 @@ jobs:
         with:
           python-version-file: ".python-version"
 
-      - name: Load cached Poetry installation
-        id: cached-poetry
-        uses: actions/cache@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          path: ~/.local # Poetry installs here on Ubuntu
-          key: poetry-${{ runner.os }}-1
-
-      - name: Install Poetry
-        if: steps.cached-poetry.outputs.cache-hit != 'true'
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-
-      - name: Configure Poetry if cached
-        if: steps.cached-poetry.outputs.cache-hit == 'true'
-        run: |
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
-          poetry config installer.parallel true
-
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v5
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
-          restore-keys: |
-            venv-${{ runner.os }}-
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: Install deps
-        run: poetry install --no-interaction --no-root
+        run: uv sync
 
       - name: Run integration tests
         id: run-tests
-        run: poetry run pytest -m 'integration' -n0
+        run: uv run pytest -m 'integration' -n0
         continue-on-error: true
 
       - name: Update test data
         if: steps.run-tests.outcome == 'failure'
-        run: poetry run pytest --pythonhashseed 1 --snapshot-update -m 'integration' -n0
+        run: uv run pytest --pythonhashseed 1 --snapshot-update -m 'integration' -n0
 
       - name: Upload changed files
         if: steps.run-tests.outcome == 'failure'
