@@ -3,8 +3,8 @@ build-backend = "hatchling.build"
 requires = [ "hatchling", "uv-dynamic-versioning" ]
 
 [project]
-name = "vocab-tester"
-description = "An application that tests Latin vocabulary and grammar."
+name = "vocab-tuister"
+description = "An application that tests Latin vocabulary and grammar. (server for TUI experiment)"
 readme = "README.md"
 license = "MIT"
 license-files = [ "LICENSE" ]

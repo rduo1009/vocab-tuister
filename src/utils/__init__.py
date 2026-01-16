@@ -1,4 +1,4 @@
-"""General functions used by ``vocab-tester`` and its tests."""
+"""General functions used by ``vocab-tuister`` and its tests."""
 
 from typing import TYPE_CHECKING
 

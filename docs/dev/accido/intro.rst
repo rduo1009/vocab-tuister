@@ -2,7 +2,7 @@
  accido - determining Latin endings
 ####################################
 
-The ``accido`` package allows ``vocab-tester`` to find the endings of Latin
+The ``accido`` package allows ``vocab-tuister`` to find the endings of Latin
 words. It also provides various utilities for working with Latin words.
 
 ****************

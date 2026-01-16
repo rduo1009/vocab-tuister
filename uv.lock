@@ -1155,7 +1155,7 @@ wheels = [
 ]
 
 [[package]]
-name = "vocab-tester"
+name = "vocab-tuister"
 source = { editable = "." }
 dependencies = [
     { name = "aenum" },

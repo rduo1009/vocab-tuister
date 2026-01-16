@@ -2,7 +2,7 @@
  Setting the random seed
 #########################
 
-Randomness is used in various places in ``vocab-tester``. Setting the seed for
+Randomness is used in various places in ``vocab-tuister``. Setting the seed for
 the random module (using ``random.seed()``) is supported.
 
 To do this, use the environment variable:
