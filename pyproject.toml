@@ -66,6 +66,12 @@ packages = [ "src" ]
 exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
 artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
 
+[tool.uv]
+cache-keys = [
+  { file = "pyproject.toml" },
+  { git = { commit = true, tags = true } },
+]
+
 [tool.ruff]
 target-version = "py314"
 line-length = 79
@@ -226,6 +232,9 @@ python_version = "3.14"
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
 
 [tool.basedpyright]
 include = [ "src", "tests", "stubs" ]
