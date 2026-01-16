@@ -4,7 +4,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
 )
 
-//go:generate poetry run python3 ../../../scripts/create_question_json.py
+//go:generate uv run python3 ../../../scripts/create_question_json.py
 //go:generate go run ../../../structs_generator.go
 
 type Question interface {

@@ -14,7 +14,7 @@ def _to_kebab(snake: str) -> str:
 
 
 class Settings(BaseModel):
-    """Global settings for vocab-tester."""
+    """Global settings for vocab-tuister."""
 
     model_config = ConfigDict(
         extra="forbid",
@@ -28,7 +28,7 @@ class Settings(BaseModel):
 
 
 class SessionConfig(BaseModel):
-    """Config for a vocab-tester testing session."""
+    """Config for a vocab-tuister testing session."""
 
     model_config = ConfigDict(
         extra="forbid",
