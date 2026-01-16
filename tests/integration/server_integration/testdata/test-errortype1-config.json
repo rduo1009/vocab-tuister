@@ -8,6 +8,7 @@
   "exclude-regulars": false,
 
   "exclude-deponents": false,
+  "exclude-semi-deponents": false,
 
   "exclude-verb-first-conjugation": false,
   "exclude-verb-second-conjugation": false,
