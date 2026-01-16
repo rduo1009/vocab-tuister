@@ -88,6 +88,7 @@ class SessionConfig(BaseModel):
     exclude_regulars: StrictBool
     exclude_verbs: StrictBool
     exclude_deponents: StrictBool
+    exclude_semi_deponents: StrictBool
     exclude_verb_first_conjugation: StrictBool
     exclude_verb_second_conjugation: StrictBool
     exclude_verb_third_conjugation: StrictBool

@@ -1,10 +1,10 @@
 [build-system]
-build-backend = "poetry_dynamic_versioning.backend"
-requires = [ "poetry-core>=2.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0" ]
+build-backend = "hatchling.build"
+requires = [ "hatchling", "uv-dynamic-versioning" ]
 
 [project]
-name = "vocab-tester"
-description = "An application that tests Latin vocabulary and grammar."
+name = "vocab-tuister"
+description = "An application that tests Latin vocabulary and grammar. (server for TUI experiment)"
 readme = "README.md"
 license = "MIT"
 license-files = [ "LICENSE" ]
@@ -15,60 +15,63 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dynamic = [ "version" ]
-
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts @ git+https://github.com/BrianPugh/cyclopts.git",
+  "cyclopts==4.5.0",
   "dill==0.4.0",
   "dunamai==1.25.0",
   "flask==3.1.2",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "platformdirs==4.5.0",
+  "platformdirs==4.5.1",
   "pydantic==2.12.2",
   "pyinstaller==6.16.0",
   "waitress==3.0.2",
-  "wn @ git+https://github.com/goodmami/wn.git",
+  "wn @ git+https://github.com/goodmami/wn.git@d91877",
 ]
 
 [dependency-groups]
 dev = [
   "basedpyright==1.31.7",
-  "coverage==7.10.7",
+  "coverage==7.13.1",
   "doc8==2.0.0",
-  "griffe==1.14.0",
-  "icecream==2.1.8",
+  "griffe==1.15.0",
+  "icecream==2.1.9",
   "interrogate==1.7.0",
   "mypy[faster-cache]==1.18.2",
-  "pytest==8.4.2",
+  "pytest==9.0.2",
   "pytest-env==1.2.0",
-  "pytest-pythonhashseed==2.0.0",
+  "pytest-pythonhashseed==2.0.1",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.14.0",
+  "ruff==0.14.13",
   "syrupy==5.0.0",
 ]
 
 types = [
-  "optype==0.14.0",
-  "types-regex==2025.9.18.20250921",
+  "optype==0.15.0",
+  "types-regex==2026.1.15.20260116",
   "types-waitress==3.0.1.20250801",
 ]
 
-[tool.poetry]
-requires-poetry = ">=2.0"
-packages = [ { include = "src" } ]
-exclude = [ "**/*.go", "src/scripts/**" ]
-include = [ "src/core/transfero/wn_data/wn.db.zst" ]
-version = "0.0.0"                                    # placeholder
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
 
-[tool.poetry.requires-plugins]
-poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
+[tool.hatch.metadata]
+allow-direct-references = true
 
-[tool.poetry-dynamic-versioning]
-enable = true
+[tool.hatch.build.targets.wheel]
+packages = [ "src" ]
+exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
+artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
+
+[tool.uv]
+cache-keys = [
+  { file = "pyproject.toml" },
+  { git = { commit = true, tags = true } },
+]
 
 [tool.ruff]
 target-version = "py314"
@@ -106,6 +109,7 @@ lint.ignore = [
   "PLR0912", # too many branches
   "PLR0913", # too many arguments
   "PLW1514", # encoding in `open()`
+  "RUF067",  # empty init files
   "S101",    # assertions
   "S301",    # using `pickle`
   "S311",    # using `random`
@@ -123,7 +127,9 @@ lint.per-file-ignores."src/core/rogo/asker.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/rogo/rules.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/server/app.py" = [ "ANN" ]
 lint.flake8-type-checking.quote-annotations = true
-lint.flake8-type-checking.runtime-evaluated-base-classes = [ "pydantic.BaseModel" ]
+lint.flake8-type-checking.runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+]
 lint.flake8-type-checking.strict = true
 lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"
@@ -230,6 +236,9 @@ python_version = "3.14"
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
 
 [tool.basedpyright]
 include = [ "src", "tests", "stubs" ]

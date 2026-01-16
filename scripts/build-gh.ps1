@@ -9,16 +9,14 @@ if ($env:debug -eq 'True') {
 }
 
 # INSTALL DEPS
-poetry sync --only main # slower but works better?
-# poetry env remove --all
-# poetry install --only main
+uv sync --no-dev
 
 # BUILD PYTHON SERVER
-poetry run dunamai from any | Set-Content -Path '__version__.txt'
+uv run dunamai from any | Set-Content -Path '__version__.txt'
 if ($env:debug -eq 'True') {
-    poetry run pyinstaller vocab-tuister-server.spec -- --clean
+    uv run pyinstaller vocab-tuister-server.spec -- --clean
 } else {
-    poetry run pyinstaller vocab-tuister-server.spec
+    uv run pyinstaller vocab-tuister-server.spec
 }
 
 # BUILD GO CLIENT
@@ -50,7 +48,7 @@ go build `
 # Write-Host ''
 # if ([string]::IsNullOrEmpty($response)) { $response = 'Y' }
 # if ($response -eq 'y' -or $response -eq 'Y') {
-#     poetry install --sync
+#     uv sync
 # } # else {
-#     poetry install --only main --sync
+#     uv sync --no-dev
 # }

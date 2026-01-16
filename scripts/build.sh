@@ -10,32 +10,32 @@ if [[ $debug == "True" ]]; then
 fi
 
 # Only install necessary deps to speed up build
-# poetry sync --only main # slower
-poetry env remove --all
-poetry install --only main
+# uv sync --no-dev # slower
+uv venv --allow-existing
+uv sync --no-dev
 
 # Install deps that need to be in universal2
 if [[ "$target_arch" == "universal2" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl
-        poetry run python3 -m pip install --force https://files.pythonhosted.org/packages/44/b7/3b4663aa3b4af16819f2ab6a78c4111c7e9b066725d8107753c2257448a5/regex-2025.9.18-cp314-cp314-macosx_10_13_universal2.whl
-        poetry run python3 -m pip install --force src/_build/macos/wheels/*.whl
+        uv run python3 -m pip install --force https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl
+        uv run python3 -m pip install --force https://files.pythonhosted.org/packages/44/b7/3b4663aa3b4af16819f2ab6a78c4111c7e9b066725d8107753c2257448a5/regex-2025.9.18-cp314-cp314-macosx_10_13_universal2.whl
+        uv run python3 -m pip install --force src/_build/macos/wheels/*.whl
     fi
 fi
 
 # Build python server
-poetry run dunamai from any > __version__.txt
+uv run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- -- --debug
+        uv run pyinstaller vocab-tuister-server.spec -- -- --debug
     else
-        poetry run pyinstaller vocab-tuister-server.spec
+        uv run pyinstaller vocab-tuister-server.spec
     fi
 else
     if [[ $debug == "True" ]]; then
-        poetry run pyinstaller vocab-tuister-server.spec -- -- --debug --target-arch "$target_arch"
+        uv run pyinstaller vocab-tuister-server.spec -- -- --debug --target-arch "$target_arch"
     else
-        poetry run pyinstaller vocab-tuister-server.spec -- -- --target-arch "$target_arch"
+        uv run pyinstaller vocab-tuister-server.spec -- -- --target-arch "$target_arch"
     fi
 fi
 
@@ -91,7 +91,7 @@ fi
 go mod tidy
 go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
 
-version=$(poetry run dunamai from any)
+version=$(uv run dunamai from any)
 if [[ "$build_universal2" == "true" ]]; then
     tmpdir=$(mktemp -d)
 
@@ -119,7 +119,7 @@ fi
 # read -r response
 # echo
 # if [[ -z "$response" || "$response" == "y" || "$response" == "Y" ]]; then
-#     poetry install --sync
+#     uv sync
 # else
-#     poetry install --only main --sync
+#     uv sync --no-dev
 # fi

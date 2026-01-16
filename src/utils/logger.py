@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Any, Final, NoReturn
 from colors import color as ansicolour  # avoiding spelling nightmare
 
 if TYPE_CHECKING:
+    from logging import LogRecord
     from types import TracebackType
 
 type _AnsiColour = partial[str]
@@ -93,7 +94,7 @@ class CustomLogFormatter(logging.Formatter):
             logging.CRITICAL: LOGGER_PALETTE["critical_colour"],
         }
 
-    def format(self, record: logging.LogRecord) -> str:
+    def format(self, record: LogRecord) -> str:
         """Format the log message.
 
         Parameters
@@ -105,7 +106,7 @@ class CustomLogFormatter(logging.Formatter):
         -------
         str
             The formatted log message.
-        """
+        """  # noqa: DOC102
         time_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # noqa: DTZ005
         colour = self.level_colours.get(
             record.levelno, LOGGER_PALETTE["info_colour"]

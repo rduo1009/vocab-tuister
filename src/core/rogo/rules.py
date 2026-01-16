@@ -225,6 +225,12 @@ def filter_words(
                 if session_config.exclude_deponents and item.deponent:
                     vocab.remove(item)
 
+                if (
+                    session_config.exclude_semi_deponents
+                    and item.semi_deponent
+                ):
+                    vocab.remove(item)
+
             case Noun():
                 current_declension = item.declension
                 declension_excluded = (

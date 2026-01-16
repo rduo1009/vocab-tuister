@@ -2,7 +2,7 @@
  transfero - inflecting English words
 ######################################
 
-The ``transfero`` package allows ``vocab-tester`` to find the inflections of
+The ``transfero`` package allows ``vocab-tuister`` to find the inflections of
 English words, based on the grammatical components of the Latin endings. The
 features of this package are all in the ``transfero.words.find_inflection``
 function. The ``find_inflection`` function takes three parameters:

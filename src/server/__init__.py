@@ -1,4 +1,4 @@
-"""Contains the server for vocab-tester."""
+"""Contains the server for vocab-tuister."""
 
 from . import app, exceptions
 
