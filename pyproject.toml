@@ -24,7 +24,7 @@ dependencies = [
   "flask==3.1.2",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "platformdirs==4.5.0",
+  "platformdirs==4.5.1",
   "pyinstaller==6.16.0",
   "waitress==3.0.2",
   "wn @ git+https://github.com/goodmami/wn.git@d91877",
