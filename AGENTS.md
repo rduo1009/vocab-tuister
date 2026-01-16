@@ -55,8 +55,8 @@ The agent should try to run tests specific to the changes that have been made.
 However, more blanket tests are available with these commands:
 
 ```bash
-poetry run pytest -m 'not manual and not integration'
-poetry run pytest --pythonhashseed 1 -m 'integration'
+uv run pytest -m 'not manual and not integration'
+uv run pytest --pythonhashseed 1 -m 'integration'
 go test ./src/...
 ```
 

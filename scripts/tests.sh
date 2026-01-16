@@ -1,3 +1,3 @@
 #!/bin/bash
 
-poetry run pytest
+uv run pytest

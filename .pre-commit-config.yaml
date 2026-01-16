@@ -1,17 +1,16 @@
 exclude: "src/_vendor/.*"
 
 ci:
-  skip: [poetry-lock, golangci-lint]
+  skip: [uv-lock, golangci-lint]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
 repos:
   # Check project deps
-  - repo: https://github.com/python-poetry/poetry
-    rev: 2.2.1
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.26
     hooks:
-      - id: poetry-lock
-        language_version: python3.14
+      - id: uv-lock
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit

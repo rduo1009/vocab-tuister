@@ -13,9 +13,8 @@ The devcontainer provides a complete development environment with:
 
 ### Development Tools
 
-- **Poetry** - Python dependency management and virtual environments
-- **pipx** - Python application installer
-- **pre-commit** - Git hooks for code quality
+- **uv** - Python package and project manager
+- **prek** - Git hooks for code quality
 - **golangci-lint** - Go linter and code analyzer
 - **GitHub CLI** - GitHub command line interface
 - **Git** - Version control
@@ -35,24 +34,24 @@ The devcontainer provides a complete development environment with:
 1. **Wait for Setup**: The first time you open the container, it will automatically run the setup script which:
 
    - Installs all required tools
-   - Sets up Poetry virtual environment
+   - Installs uv
    - Installs Python and Go dependencies
    - Configures pre-commit hooks
    - Installs Go tools
 
 1. **Start Developing**: Once setup is complete, you can:
 
-   - Activate the Python virtual environment: `poetry shell`
-   - Run Python tests: `poetry run pytest`
+   - Run commands in the environment: `uv run <command>`
+   - Run Python tests: `uv run pytest`
    - Run Go tests: `go test ./...`
-   - Run linters: `pre-commit run --all-files`
+   - Run linters: `prek run --all-files`
    - Build the project: `./scripts/build.sh`
 
 ## Configuration
 
 The devcontainer is configured to:
 
-- Mount a persistent volume for Poetry cache
+- Mount a persistent volume for uv cache
 - Forward ports 5000 and 8080 for local development
 - Set up the Python virtual environment in the project directory
 - Configure VS Code settings for optimal development experience
