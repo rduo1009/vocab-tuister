@@ -51,7 +51,7 @@ dev = [
 
 types = [
   "optype==0.14.0",
-  "types-regex==2025.9.18.20250921",
+  "types-regex==2026.1.15.20260116",
   "types-waitress==3.0.1.20250801",
 ]
 
