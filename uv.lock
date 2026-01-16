@@ -784,14 +784,14 @@ wheels = [
 
 [[package]]
 name = "pytest-pythonhashseed"
-version = "2.0.0"
+version = "2.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c0/5e/dba814f4af0b8cba212838359eb666e2acd053c100a9b2e2e1fbdd4541eb/pytest_pythonhashseed-2.0.0.tar.gz", hash = "sha256:08094d58472ea8261aec1c43702972bdadf4afbcfb17811289e391f290fc6fe9", size = 6274, upload-time = "2025-09-28T09:48:29.151Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b7/4c/c98aa845a47fdd67e002d215f07875e7a40ac55ea3b103ba64e50ecb6532/pytest_pythonhashseed-2.0.1.tar.gz", hash = "sha256:4076a1cb95f701a2ed23f5c201873b8e53a0bff1467f7a31450abb5a4237911a", size = 6370, upload-time = "2025-11-16T21:38:06.256Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/37/34/aa254b8a0a7312156622a8613114fab5f948512fbaa80d51cbcfb04fbb3c/pytest_pythonhashseed-2.0.0-py3-none-any.whl", hash = "sha256:6b73a61aec32edf09a6b6bfed90b702ed394c060dbd5ecca64a42335bbe3fa05", size = 7231, upload-time = "2025-09-28T09:48:28.081Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/34/977a29ab1a0f85ddab05511fbd87bb905c67695ba84251012d0ac10672bf/pytest_pythonhashseed-2.0.1-py3-none-any.whl", hash = "sha256:141d0c9a02ab15f2ae997e39188ee77e0336b3b175da9a1894824195a0fdd1de", size = 7321, upload-time = "2025-11-16T21:38:05.153Z" },
 ]
 
 [[package]]
@@ -1223,7 +1223,7 @@ dev = [
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.18.2" },
     { name = "pytest", specifier = "==9.0.2" },
     { name = "pytest-env", specifier = "==1.2.0" },
-    { name = "pytest-pythonhashseed", specifier = "==2.0.0" },
+    { name = "pytest-pythonhashseed", specifier = "==2.0.1" },
     { name = "pytest-sugar", specifier = "==1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
     { name = "rstfmt", specifier = "==0.0.14" },
