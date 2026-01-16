@@ -16,13 +16,13 @@ source $HOME/.cargo/env
 echo "🐍 Installing Python dependencies..."
 uv sync
 
-# Install pre-commit
-echo "🔧 Installing pre-commit..."
-uv tool install pre-commit
+# Install prek
+echo "🔧 Installing pre-commit (prek)..."
+uv tool install prek
 
 # Install pre-commit hooks
 echo "🪝 Installing pre-commit hooks..."
-pre-commit install
+prek install -f
 
 # Install golangci-lint
 echo "🐹 Installing golangci-lint..."
@@ -51,10 +51,10 @@ echo "Python: $(python --version)"
 echo "uv: $(uv --version)"
 echo "Go: $(go version)"
 echo "golangci-lint: $(golangci-lint --version)"
-echo "pre-commit: $(pre-commit --version)"
+echo "prek: $(prek --version)"
 echo "GitHub CLI: $(gh --version)"
 
 echo "🎉 Development environment setup complete!"
 echo "📖 You can now run 'uv run <command>' to run commands in the environment"
 echo "🧪 Run tests with 'uv run pytest' or 'go test ./...' for Go tests"
-echo "🔍 Run linters with 'pre-commit run --all-files'"
+echo "🔍 Run linters with 'prek run --all-files'"

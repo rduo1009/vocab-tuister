@@ -14,7 +14,7 @@ The devcontainer provides a complete development environment with:
 ### Development Tools
 
 - **uv** - Python package and project manager
-- **pre-commit** - Git hooks for code quality
+- **prek** - Git hooks for code quality
 - **golangci-lint** - Go linter and code analyzer
 - **GitHub CLI** - GitHub command line interface
 - **Git** - Version control
@@ -44,7 +44,7 @@ The devcontainer provides a complete development environment with:
    - Run commands in the environment: `uv run <command>`
    - Run Python tests: `uv run pytest`
    - Run Go tests: `go test ./...`
-   - Run linters: `pre-commit run --all-files`
+   - Run linters: `prek run --all-files`
    - Build the project: `./scripts/build.sh`
 
 ## Configuration
