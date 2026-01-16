@@ -26,7 +26,7 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Install interrogate
-        run: pipx install interrogate
+        run: python3 -m pip install interrogate
 
       - name: Run interrogate
         run: interrogate --fail-under 80 --generate-badge docs/assets/interrogate_badge.svg src -c pyproject.toml
