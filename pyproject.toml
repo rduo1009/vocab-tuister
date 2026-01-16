@@ -63,15 +63,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = [ "src" ]
-
-[tool.uv]
-
-[tool.uv.build-backend]
-module-name = [ "src" ]
-module-root = ""
-source-exclude = [ "**/*.go", "src/scripts/**" ]
-source-include = [ "src/core/transfero/wn_data/wn.db.zst" ]
-wheel-exclude = [ "**/*.go", "src/scripts/**" ]
+exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
+artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
 
 [tool.ruff]
 target-version = "py314"
