@@ -105,6 +105,7 @@ session_config: SessionConfig = {
     "exclude-nouns": False,
     "exclude-verbs": False,
     "exclude-deponents": False,
+    "exclude-semi-deponents": False,
     "exclude-adjectives": False,
     "exclude-pronouns": False,
     "exclude-regulars": False,

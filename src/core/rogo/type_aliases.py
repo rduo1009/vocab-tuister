@@ -72,6 +72,7 @@ SessionConfig = TypedDict(
         "exclude-regulars": ReadOnly[bool],
 
         "exclude-verbs": ReadOnly[bool],
+        "exclude-semi-deponents": ReadOnly[bool],
         "exclude-deponents": ReadOnly[bool],
         "exclude-verb-first-conjugation": ReadOnly[bool],
         "exclude-verb-second-conjugation": ReadOnly[bool],
