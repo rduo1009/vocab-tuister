@@ -85,7 +85,7 @@ def read_vocab_dump(source: str | Path | BinaryIO) -> VocabList:
             return raw_data
 
         warnings.warn(
-            "Vocab dump is from a different version of vocab-tester.",
+            "Vocab dump is from a different version of vocab-tuister.",
             stacklevel=2,
         )
         return read_vocab_file(StringIO(raw_data.vocab_list_text))

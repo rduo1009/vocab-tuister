@@ -1,4 +1,4 @@
-"""Contains a custom encoder for converting some vocab-tester classes to JSON."""
+"""Contains a custom encoder for converting some vocab-tuister classes to JSON."""
 
 # pyright: reportExplicitAny=false
 

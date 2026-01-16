@@ -23,7 +23,7 @@ class VocabList:
         The vocabulary in the list.
     version : str
         The version of the package. Used to regenerate the endings if the
-        version of ``vocab-tester`` is different (e.g. if the package is updated).
+        version of ``vocab-tuister`` is different (e.g. if the package is updated).
 
     Examples
     --------
