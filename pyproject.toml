@@ -41,7 +41,7 @@ dev = [
   "mypy[faster-cache]==1.18.2",
   "pytest==9.0.2",
   "pytest-env==1.2.0",
-  "pytest-pythonhashseed==2.0.0",
+  "pytest-pythonhashseed==2.0.1",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
