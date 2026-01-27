@@ -38,7 +38,7 @@ dev = [
   "griffe==1.15.0",
   "icecream==2.1.9",
   "interrogate==1.7.0",
-  "mypy[faster-cache]==1.18.2",
+  "mypy[faster-cache]==1.19.1",
   "pytest==9.0.2",
   "pytest-env==1.2.0",
   "pytest-pythonhashseed==2.0.1",
