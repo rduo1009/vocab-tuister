@@ -55,16 +55,16 @@ types = [
   "types-waitress==3.0.1.20250801",
 ]
 
-[tool.hatch.version]
-source = "uv-dynamic-versioning"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
 [tool.hatch.build.targets.wheel]
 packages = [ "src" ]
 exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
 artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
 
 [tool.uv]
 cache-keys = [
@@ -141,11 +141,6 @@ addopts = [
 markers = [ "manual: manually checked tests", "integration: integration tests" ]
 env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
-[tool.coverage.run]
-branch = true
-parallel = true
-omit = [ "tests/*", "src/_vendor/*", "src/scripts/*" ]
-
 [tool.coverage.report]
 exclude_also = [
   "raise AssertionError",
@@ -159,15 +154,15 @@ exclude_also = [
   'if getattr\(_sys, "frozen", False\) and hasattr\(_sys, "_MEIPASS"\):',
 ]
 
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [ "tests/*", "src/_vendor/*", "src/scripts/*" ]
+
 [tool.tox]
 requires = [ "tox>=4.2" ]
 env_list = [ "py314", "doctest", "type" ]
 skip_missing_interpreters = true
-
-[tool.tox.env_run_base]
-description = "run tests using pytest"
-deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
 
 [tool.tox.env.doctest]
 description = "run doctests"
@@ -222,6 +217,11 @@ commands = [
     "--ignore-unused-allowlist",
   ],
 ]
+
+[tool.tox.env_run_base]
+description = "run tests using pytest"
+deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
+commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
 
 [tool.tox.gh]
 python = { "3.14" = [ "py314", "type", "doctest" ] }
@@ -289,10 +289,9 @@ ignore-nested-classes = true
 ignore-overloaded-functions = true
 exclude = [ "setup.py", "docs", "build", "src/_vendor" ]
 
-[tool.poe.tasks.coverage]
-shell = "./scripts/coverage.sh"
-help = "Run coverage on the project."
-
+[tool.poe.tasks.badges]
+cmd = "./scripts/badges.sh"
+help = "Generate badges for the project."
 [tool.poe.tasks.build]
 cmd = "./scripts/build.sh"
 help = "Build the project."
@@ -301,10 +300,10 @@ args = [
   { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
 ]
 
+[tool.poe.tasks.coverage]
+shell = "./scripts/coverage.sh"
+help = "Run coverage on the project."
+
 [tool.poe.tasks.test]
 cmd = "tox --parallel"
 help = "Run tests on the project."
-
-[tool.poe.tasks.badges]
-cmd = "./scripts/badges.sh"
-help = "Generate badges for the project."
