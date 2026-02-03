@@ -150,7 +150,8 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 						Components: []navigator.Navigable{m.ResetButton, m.FormSection},
 					}),
 				)
-				// use tea.Sequence as these need to be ran in order
+				// NOTE: use tea.Sequence as these need to be ran in order
+				// also note that `cmds` could not be altered after this, so returning early is fine
 				return m, tea.Sequence(cmds...)
 			case ReviewSessionConfig:
 				_, cmd := m.jsonview.Update(msg)

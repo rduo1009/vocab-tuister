@@ -10,6 +10,7 @@ import (
 func (m *Model) Init() tea.Cmd {
 	return tea.Batch(
 		m.VocabEditor.Init(),
+		m.VocabEditor.CursorBlink(),
 		util.MsgCmd(navigator.AddNavigableMsg{
 			Components: []navigator.Navigable{m.HeaderSection, m.VocabEditor, m.SelectButton},
 		}),

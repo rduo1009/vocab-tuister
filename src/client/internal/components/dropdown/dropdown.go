@@ -12,9 +12,15 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
+type (
+	DropdownStartMsg  struct{}
+	DropdownExitMsg   struct{}
+	DropdownPickedMsg struct{ ChosenItem fmt.Stringer }
+)
+
 const (
 	defaultWidth = 20
-	listHeight   = 6 // XXX: ??
+	listHeight   = 6 // XXX: Choose value
 )
 
 var (
@@ -23,9 +29,15 @@ var (
 	quitTextStyle     = lipgloss.NewStyle().Margin(1, 0, 2, 4)
 )
 
-type item string
+type item struct {
+	fmt.Stringer
+}
 
 func (i item) FilterValue() string { return "" }
+
+type StringItem string
+
+func (s StringItem) String() string { return string(s) }
 
 type itemDelegate struct{}
 
@@ -38,7 +50,7 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		return
 	}
 
-	str := fmt.Sprintf("%s", i)
+	str := i.String()
 
 	var fn func(...string) string
 	if index == m.Index() {
@@ -50,24 +62,29 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 	fmt.Fprint(w, fn(str))
 }
 
+// XXX: Generic?
 type Model struct {
 	width, height int
 	list          list.Model
-	choice        string
 	quitting      bool
+	err           error
+}
+
+func (m *Model) KeyMap() help.KeyMap {
+	return m.list
 }
 
 // TODO: Use?
 //
 //	AdditionalShortHelpKeys func() []key.Binding
 //	AdditionalFullHelpKeys  func() []key.Binding
-func New(names []string) *Model {
-	var items []list.Item
-	for _, name := range names {
-		items = append(items, item(name))
+func New(items []fmt.Stringer) *Model {
+	var listItems []list.Item
+	for _, i := range items {
+		listItems = append(listItems, item{i})
 	}
 
-	l := list.New(items, itemDelegate{}, defaultWidth, listHeight)
+	l := list.New(listItems, itemDelegate{}, defaultWidth, listHeight)
 	l.SetShowTitle(false)
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)
@@ -84,21 +101,24 @@ func (m *Model) Init() tea.Cmd {
 }
 
 func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+	var cmds []tea.Cmd
+	var cmd tea.Cmd
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch keypress := msg.String(); keypress {
 		case "enter":
-			i, ok := m.list.SelectedItem().(item)
-			if ok {
-				m.choice = string(i)
-			}
-			return m, tea.Quit
+			i, _ := m.list.SelectedItem().(item)
+			cmds = append(cmds, util.MsgCmd(DropdownPickedMsg{i.Stringer}))
+		case "esc":
+			cmds = append(cmds, util.MsgCmd(DropdownExitMsg{}))
 		}
 	}
 
-	var cmd tea.Cmd
-	m.list, cmd = m.list.Update(msg)
-	return m, cmd
+	_, cmd = m.list.Update(msg)
+	cmds = append(cmds, cmd)
+
+	return m, tea.Batch(cmds...)
 }
 
 func (m *Model) SetWidth(width int) {
@@ -113,8 +133,4 @@ func (m *Model) View() string {
 	m.list.SetWidth(m.width)
 	m.list.SetHeight(m.height)
 	return "\n" + m.list.View()
-}
-
-func (m *Model) KeyMap() help.KeyMap {
-	return m.list
 }

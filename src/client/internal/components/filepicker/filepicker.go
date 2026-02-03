@@ -61,6 +61,10 @@ func (k FilePickerKeys) FullHelp() [][]key.Binding {
 	}
 }
 
+func (m *Model) KeyMap() help.KeyMap {
+	return m.keys
+}
+
 func New(currentDirectory string, allowedTypes ...string) *Model {
 	fp := filepicker.New()
 
@@ -91,10 +95,6 @@ func New(currentDirectory string, allowedTypes ...string) *Model {
 		),
 	}
 	return &Model{filepicker: fp, keys: keys}
-}
-
-func (m *Model) KeyMap() help.KeyMap {
-	return m.keys
 }
 
 func (m *Model) Init() tea.Cmd {

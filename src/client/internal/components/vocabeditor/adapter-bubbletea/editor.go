@@ -735,11 +735,11 @@ func (m *Model) SetCursorPositionEnd() error {
 }
 
 // GetCursorPosition returns the current cursor position in the editor.
-func (m Model) GetCursorPosition() editor.Position {
+func (m *Model) GetCursorPosition() editor.Position {
 	return m.editor.GetBuffer().GetCursor().Position
 }
 
-func (m Model) Init() tea.Cmd {
+func (m *Model) Init() tea.Cmd {
 	return m.listenForEditorUpdate()
 }
 
@@ -757,13 +757,18 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		}
 
 		keyEvent := convertBubbleKey(msg)
-		err := m.editor.HandleKey(keyEvent)
-		if err != nil {
+		// NOTE: to avoid these being typed into editor while switching focus
+		if keyEvent.Rune == '[' || keyEvent.Rune == ']' {
+			goto skipHandleKey
+		}
+
+		if err := m.editor.HandleKey(keyEvent); err != nil {
 			cmds = append(cmds, func() tea.Msg {
 				return ErrorMsg{ID: err.ID(), Error: err.Error()}
 			})
 		}
 
+	skipHandleKey:
 		if m.editor.IsSearchMode() {
 			switch keyEvent.Key {
 			case editor.KeyEscape:
@@ -866,7 +871,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-func (m Model) View() string {
+func (m *Model) View() string {
 	state := m.editor.GetState()
 
 	content := m.viewport.View()

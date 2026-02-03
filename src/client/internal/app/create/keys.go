@@ -14,5 +14,17 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.configtui.KeyMap()
 	}
 
+	if m.configtuiFilepickerStatus == filepickerActive {
+		return m.configtuiFilepicker.KeyMap() // XXX: Currently unused? or maybe used?
+	}
+
+	if m.listtui.HeaderSection.Focused() || m.listtui.SelectButton.Focused() || m.listtui.VocabEditor.Focused() {
+		return m.listtui.KeyMap()
+	}
+
+	if m.listtuiModeDropdownActive {
+		return m.listtuiModeDropdown.KeyMap()
+	}
+
 	panic("not implemented")
 }

@@ -17,7 +17,7 @@ type keyMap struct {
 var keys = keyMap{
 	Left: key.NewBinding(
 		key.WithKeys("left"),
-		key.WithHelp("↑", "left tab"),
+		key.WithHelp("←", "left tab"),
 	),
 	Right: key.NewBinding(
 		key.WithKeys("right"),

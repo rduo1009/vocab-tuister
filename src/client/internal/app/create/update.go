@@ -6,6 +6,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
@@ -13,18 +14,24 @@ import (
 func (m *Model) Update(msg tea.Msg) (util.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
-	if _, ok := msg.(filepicker.FilepickStartMsg); ok {
+	switch msg.(type) {
+	case filepicker.FilepickStartMsg:
 		m.configtuiFilepickerStatus = filepickerActive
-	} else if _, ok := msg.(filepicker.FilepickPickedMsg); ok {
+
+	case filepicker.FilepickPickedMsg, filepicker.FilepickExitMsg:
 		m.configtuiFilepickerStatus = filepickerInactive
-	} else if _, ok := msg.(filepicker.FilepickExitMsg); ok {
-		m.configtuiFilepickerStatus = filepickerInactive
+
+	case dropdown.DropdownStartMsg:
+		m.listtuiModeDropdownActive = true
+
+	case dropdown.DropdownPickedMsg, dropdown.DropdownExitMsg:
+		m.listtuiModeDropdownActive = false
 	}
 
 	if m.configtuiFilepickerStatus == filepickerUninitialised {
 		_, cmd := m.configtuiFilepicker.Update(msg)
 
-		// Ensure that the filepicker is set up properly
+		// HACK: Ensure that the filepicker is set up properly
 		msgType := reflect.TypeOf(msg)
 		if msgType != nil && strings.HasSuffix(msgType.String(), ".readDirMsg") {
 			m.configtuiFilepickerStatus = filepickerInactive
@@ -36,12 +43,15 @@ func (m *Model) Update(msg tea.Msg) (util.PageModel, tea.Cmd) {
 		if m.configtuiFilepickerStatus == filepickerActive {
 			_, cmd := m.configtuiFilepicker.Update(msg)
 			cmds = append(cmds, cmd)
-		}
-	} else {
-		if m.configtui.HeaderSection.Focused() || m.configtui.FormSection.Focused() || m.configtui.ResetButton.Focused() {
-			_, cmd := m.configtui.Update(msg)
+		} else if m.configtui.HeaderSection.Focused() && m.listtuiModeDropdownActive {
+			_, cmd := m.listtuiModeDropdown.Update(msg)
 			cmds = append(cmds, cmd)
 		}
+	} else {
+		_, cmd := m.configtui.Update(msg)
+		cmds = append(cmds, cmd)
+		_, cmd = m.listtui.Update(msg)
+		cmds = append(cmds, cmd)
 	}
 
 	return m, tea.Batch(cmds...)

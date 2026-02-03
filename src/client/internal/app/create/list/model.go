@@ -1,7 +1,6 @@
 package list
 
 import (
-	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	vocabeditor "github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/adapter-bubbletea"
 )
 
@@ -12,6 +11,19 @@ const (
 	LocalList
 	CustomList
 )
+
+// NOTE: Manually define the display values.
+func (m createListStatus) String() string {
+	switch m {
+	case InbuiltList:
+		return "Inbuilt list"
+	case LocalList:
+		return "Local list"
+	case CustomList:
+		return "Create list"
+	}
+	panic("unreachable")
+}
 
 type (
 	headerSection struct{ focused bool }
@@ -48,27 +60,28 @@ type Model struct {
 
 	// Components
 	HeaderSection *headerSection
-	ModeDropdown  *dropdown.Model
 	VocabEditor   *vocabeditor.Model
 	SelectButton  *selectButton
 
 	// Application state
-	appStatus            createListStatus
-	statusDropdownActive bool
-	rawSessionConfig     string
+	appStatus               createListStatus
+	vocabEditorInitisalised bool
+	rawSessionConfig        string
 }
 
 func New() *Model {
 	headerSection := headerSection{focused: false}
-	modeDropdown := dropdown.New([]string{"Inbuilt list", "Local list", "Create list"})
 	ve := vocabeditor.New(0, 0) // placeholder size values
+
+	ve.DisableVimMode(true)
+	ve.SetCursorMode(vocabeditor.CursorBlink)
 	selectButton := selectButton{focused: false}
 
 	return &Model{
-		HeaderSection: &headerSection,
-		ModeDropdown:  modeDropdown,
-		VocabEditor:   &ve,
-		SelectButton:  &selectButton,
-		appStatus:     InbuiltList,
+		HeaderSection:           &headerSection,
+		VocabEditor:             &ve,
+		SelectButton:            &selectButton,
+		appStatus:               InbuiltList,
+		vocabEditorInitisalised: false,
 	}
 }
