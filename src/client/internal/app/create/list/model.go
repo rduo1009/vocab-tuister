@@ -75,6 +75,7 @@ func New() *Model {
 
 	ve.DisableVimMode(true)
 	ve.SetCursorMode(vocabeditor.CursorBlink)
+	ve.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
 	selectButton := selectButton{focused: false}
 
 	return &Model{
