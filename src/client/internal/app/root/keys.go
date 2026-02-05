@@ -42,7 +42,7 @@ var keys = keyMap{
 }
 
 func (k keyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Left, k.Right, k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.NextFocus, k.Left, k.Right, k.Help, k.Quit}
 }
 
 func (k keyMap) FullHelp() [][]key.Binding {

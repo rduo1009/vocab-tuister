@@ -14,12 +14,12 @@ type headerSectionKeyMap struct {
 }
 
 func (k headerSectionKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.OpenDropdown, k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.NextFocus, k.OpenDropdown, k.Help, k.Quit}
 }
 
 func (k headerSectionKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.OpenDropdown, k.NextFocus, k.PreviousFocus},
+		{k.OpenDropdown, k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }
@@ -62,7 +62,7 @@ func (k vocabEditorKeyMap) ShortHelp() []key.Binding {
 
 func (k vocabEditorKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.NextFocus, k.PreviousFocus},
+		{k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }
@@ -101,7 +101,7 @@ func (k selectButtonKeyMap) ShortHelp() []key.Binding {
 }
 
 func (k selectButtonKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{{k.NextFocus, k.PressButton, k.Help, k.Quit}}
+	return [][]key.Binding{{k.PressButton, k.PreviousFocus, k.NextFocus}, {k.Help, k.Quit}}
 }
 
 func (sb *selectButton) KeyMap() selectButtonKeyMap {

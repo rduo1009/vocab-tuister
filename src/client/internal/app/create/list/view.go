@@ -92,7 +92,7 @@ func (m *Model) View() string {
 
 	// Footer section
 	footerView := boldStyle.Render("List:")
-	selectListView := buttonStyle(m.HeaderSection.Focused()).Render(selectListText(m.appStatus))
+	selectListView := buttonStyle(m.SelectButton.Focused()).Render(selectListText(m.appStatus))
 	footerSectionView := footerBorderStyle(m.SelectButton.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, footerView, selectListView))

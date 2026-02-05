@@ -14,13 +14,13 @@ type headerSectionKeyMap struct {
 }
 
 func (k headerSectionKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.PressButton, k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
 }
 
 func (k headerSectionKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.PressButton, k.PreviousFocus},
-		{k.NextFocus, k.Help, k.Quit},
+		{k.PressButton, k.PreviousFocus, k.NextFocus},
+		{k.Help, k.Quit},
 	}
 }
 
@@ -58,13 +58,13 @@ type resetButtonKeyMap struct {
 }
 
 func (k resetButtonKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.PressButton, k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
 }
 
 func (k resetButtonKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.PressButton, k.PreviousFocus},
-		{k.NextFocus, k.Help, k.Quit},
+		{k.PressButton, k.PreviousFocus, k.NextFocus},
+		{k.Help, k.Quit},
 	}
 }
 
