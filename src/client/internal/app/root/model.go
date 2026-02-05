@@ -3,7 +3,7 @@ package root
 import (
 	"fmt"
 
-	"github.com/charmbracelet/bubbles/v2/help"
+	"charm.land/bubbles/v2/help"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"

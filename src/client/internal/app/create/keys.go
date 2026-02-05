@@ -1,6 +1,6 @@
 package create
 
-import "github.com/charmbracelet/bubbles/v2/help"
+import "charm.land/bubbles/v2/help"
 
 func (m *Model) OverlayKeyMap() help.KeyMap {
 	if m.configtuiFilepickerStatus == filepickerActive {

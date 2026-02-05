@@ -1,6 +1,6 @@
 package create
 
-import tea "github.com/charmbracelet/bubbletea/v2"
+import tea "charm.land/bubbletea/v2"
 
 func (m *Model) Init() tea.Cmd {
 	return tea.Batch(

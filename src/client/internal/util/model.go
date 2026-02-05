@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/charmbracelet/bubbles/v2/help"
-	tea "github.com/charmbracelet/bubbletea/v2"
+	"charm.land/bubbles/v2/help"
+	tea "charm.land/bubbletea/v2"
 )
 
 // ComponentModel is a variant of tea.Model which uses string views instead of tea.View.

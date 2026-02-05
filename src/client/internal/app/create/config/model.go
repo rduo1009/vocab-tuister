@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/charmbracelet/huh/v2"
+	"charm.land/huh/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
 )

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/charmbracelet/lipgloss/v2"
+	"charm.land/lipgloss/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/adapter-bubbletea/highlighter"
 	editor "github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/core"

@@ -1,6 +1,6 @@
 package config
 
-import "github.com/charmbracelet/lipgloss/v2"
+import "charm.land/lipgloss/v2"
 
 var boldStyle = lipgloss.NewStyle().Bold(true)
 

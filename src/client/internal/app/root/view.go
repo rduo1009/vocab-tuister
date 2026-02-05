@@ -1,11 +1,11 @@
 package root
 
 import (
-	tea "github.com/charmbracelet/bubbletea/v2"
-	"github.com/charmbracelet/lipgloss/v2"
+	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
-var dimPageStyle = lipgloss.NewStyle() //.Foreground(lipgloss.Color("8"))
+var dimPageStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
 
 func (m *Model) View() tea.View {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
@@ -24,10 +24,10 @@ func (m *Model) View() tea.View {
 	pageView := currentPageModel.View()
 	fullView := lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView)
 
-	var canvas *lipgloss.Canvas
+	var compositor *lipgloss.Compositor
 	if currentPageModel.HasOverlay() {
 		dimPageView := dimPageStyle.Render(fullView)
-		canvas = lipgloss.NewCanvas(lipgloss.NewLayer(dimPageView))
+		compositor = lipgloss.NewCompositor(lipgloss.NewLayer(dimPageView))
 
 		overlayPageView := currentPageModel.OverlayView(m.width/2, m.height/2)
 		overlayHelpView := m.overlayHelp.View(currentPageModel.OverlayKeyMap())
@@ -37,12 +37,12 @@ func (m *Model) View() tea.View {
 			lipgloss.WithWhitespaceChars(" "),
 		)
 
-		canvas.AddLayers(lipgloss.NewLayer(overlayView))
+		compositor.AddLayers(lipgloss.NewLayer(overlayView))
 	} else {
-		canvas = lipgloss.NewCanvas(lipgloss.NewLayer(fullView))
+		compositor = lipgloss.NewCompositor(lipgloss.NewLayer(fullView))
 	}
 
-	v := tea.NewView(canvas.Render())
+	v := tea.NewView(compositor.Render())
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"
 	return v

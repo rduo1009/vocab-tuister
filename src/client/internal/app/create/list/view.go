@@ -3,7 +3,7 @@ package list
 import (
 	"fmt"
 
-	"github.com/charmbracelet/lipgloss/v2"
+	"charm.land/lipgloss/v2"
 )
 
 var boldStyle = lipgloss.NewStyle().Bold(true)

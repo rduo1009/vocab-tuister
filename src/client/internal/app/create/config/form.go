@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/charmbracelet/huh/v2"
+	"charm.land/huh/v2"
 )
 
 // TODO: Would https://github.com/charmbracelet/huh/pull/195 be relevant??

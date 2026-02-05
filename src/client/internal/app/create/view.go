@@ -1,6 +1,6 @@
 package create
 
-import "github.com/charmbracelet/lipgloss/v2"
+import "charm.land/lipgloss/v2"
 
 func (m *Model) SetWidth(width int) {
 	m.width = width
