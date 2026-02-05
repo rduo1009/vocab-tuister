@@ -49,6 +49,7 @@ formatters:
     - gci
     - gofumpt
     - goimports
+    - golines
 
   settings:
     gci:
@@ -57,8 +58,13 @@ formatters:
         - default
         - prefix(github.com/rduo1009/vocab-tuister)
       custom-order: true
+
     gofumpt:
       extra-rules: true
+
+    golines:
+      max-len: 120
+      tab-len: 8
 
   exclusions:
     generated: lax
