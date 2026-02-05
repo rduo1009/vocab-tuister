@@ -141,7 +141,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 			expected = "file ending in " + strings.Join(m.filepicker.AllowedTypes, ", ")
 		}
 
-		m.err = errors.New(path + " is not valid (expected " + expected + ")")
+		m.err = fmt.Errorf("%s is not valid (expected %s)", path, expected)
 		m.selectedFile = ""
 		cmds = append(cmds, clearErrorAfter(2*time.Second))
 	}
