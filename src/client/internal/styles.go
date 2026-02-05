@@ -39,8 +39,14 @@ var (
 	CheckedStyle         = BoldStyle
 	SelectedCheckedStyle = lipgloss.NewStyle().Inherit(SelectedStyle).Inherit(CheckedStyle)
 
-	TextinputFocusedStyle = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkPink), Dark: lipgloss.Color(lightPink)})
-	ChoiceSelectedStyle   = lipgloss.NewStyle().Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkPink), Dark: lipgloss.Color(lightPink)})
-	CorrectStyle          = BoldStyle.Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkGreen), Dark: lipgloss.Color(lightGreen)})
-	IncorrectStyle        = BoldStyle.Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkRed), Dark: lipgloss.Color(lightRed)})
+	TextinputFocusedStyle = lipgloss.NewStyle().
+				Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkPink), Dark: lipgloss.Color(lightPink)})
+	ChoiceSelectedStyle = lipgloss.NewStyle().
+				Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkPink), Dark: lipgloss.Color(lightPink)})
+	CorrectStyle = BoldStyle.Foreground(
+		lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkGreen), Dark: lipgloss.Color(lightGreen)},
+	)
+	IncorrectStyle = BoldStyle.Foreground(
+		lipglosscompat.AdaptiveColor{Light: lipgloss.Color(darkRed), Dark: lipgloss.Color(lightRed)},
+	)
 )

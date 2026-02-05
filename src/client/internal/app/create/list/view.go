@@ -98,7 +98,10 @@ func (m *Model) View() string {
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, footerView, selectListView))
 
 	// Editor section
-	m.VocabEditor.SetSize(m.width-6, m.height-lipgloss.Height(headerSectionView)-lipgloss.Height(footerSectionView)+2)
+	m.VocabEditor.SetSize(
+		m.width-6,
+		m.height-lipgloss.Height(headerSectionView)-lipgloss.Height(footerSectionView)+2,
+	)
 	editorSectionView := editorBorderStyle(m.VocabEditor.Focused()).
 		Width(m.width).
 		Height(m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(footerSectionView) + 2).

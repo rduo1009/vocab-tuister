@@ -79,7 +79,9 @@ func (m *Model) View() string {
 		resetButtonView := buttonStyle(m.ResetButton.Focused()).Render("Reset form")
 
 		m.jsonview.SetWidth(m.width)
-		m.jsonview.SetHeight(m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(resetButtonView) - 3)
+		m.jsonview.SetHeight(
+			m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(resetButtonView) - 3,
+		)
 
 		sessionConfigView := m.jsonview.View()
 

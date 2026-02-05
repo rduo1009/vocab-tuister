@@ -35,8 +35,14 @@ func activeTabBorder(b lipgloss.Border) lipgloss.Border {
 
 var (
 	// TODO: Remove need to use lipglosscompat.
-	highlightColour        = lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#874bfd"), Dark: lipgloss.Color("#7d56f4")}
-	highlightFocusedColour = lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#baa8f0"), Dark: lipgloss.Color("#baa8f0")}
+	highlightColour = lipglosscompat.AdaptiveColor{
+		Light: lipgloss.Color("#874bfd"),
+		Dark:  lipgloss.Color("#7d56f4"),
+	}
+	highlightFocusedColour = lipglosscompat.AdaptiveColor{
+		Light: lipgloss.Color("#baa8f0"),
+		Dark:  lipgloss.Color("#baa8f0"),
+	}
 
 	tabGap = inactiveTabStyle(false).
 		BorderTop(false).

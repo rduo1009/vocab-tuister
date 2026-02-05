@@ -311,16 +311,22 @@ func DefaultForm() *huh.Form {
 			huh.NewMultiSelect[string]().
 				Title("Question types").
 				Options(
-					huh.NewOption("Type-in English to Latin", "include-typein-engtolat").Selected(true),
-					huh.NewOption("Type-in Latin to English", "include-typein-lattoeng").Selected(true),
+					huh.NewOption("Type-in English to Latin", "include-typein-engtolat").
+						Selected(true),
+					huh.NewOption("Type-in Latin to English", "include-typein-lattoeng").
+						Selected(true),
 					huh.NewOption("Parsing", "include-parse").Selected(true),
 					huh.NewOption("Inflecting", "include-inflect").Selected(true),
 					huh.NewOption("Principal parts", "include-principal-parts").Selected(true),
-					huh.NewOption("Multiple choice English to Latin", "include-multiplechoice-engtolat").Selected(true),
-					huh.NewOption("Multiple choice Latin to English", "include-multiplechoice-lattoeng").Selected(true),
+					huh.NewOption("Multiple choice English to Latin", "include-multiplechoice-engtolat").
+						Selected(true),
+					huh.NewOption("Multiple choice Latin to English", "include-multiplechoice-lattoeng").
+						Selected(true),
 				).
 				Value(&questionTypes),
-			huh.NewInput().Title("Number of options in multiple choice questions").Value(&numberMultipleChoiceOptions),
+			huh.NewInput().
+				Title("Number of options in multiple choice questions").
+				Value(&numberMultipleChoiceOptions),
 			huh.NewInput().Title("Number of questions").Value(&numberOfQuestions),
 		),
 	)

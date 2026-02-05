@@ -155,7 +155,9 @@ var errorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#fa003f"))
 
 func (m *Model) View() string {
 	m.filepicker.SetHeight(m.Height)
-	m.filepicker.Styles.EmptyDirectory = m.filepicker.Styles.EmptyDirectory.SetString("No files found in directory.")
+	m.filepicker.Styles.EmptyDirectory = m.filepicker.Styles.EmptyDirectory.SetString(
+		"No files found in directory.",
+	)
 
 	var b strings.Builder
 	if m.err != nil {

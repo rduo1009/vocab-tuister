@@ -10,7 +10,8 @@ func (m *Model) OverlayKeyMap() help.KeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
-	if m.configtui.HeaderSection.Focused() || m.configtui.ResetButton.Focused() || m.configtui.FormSection.Focused() {
+	if m.configtui.HeaderSection.Focused() || m.configtui.ResetButton.Focused() ||
+		m.configtui.FormSection.Focused() {
 		return m.configtui.KeyMap()
 	}
 
