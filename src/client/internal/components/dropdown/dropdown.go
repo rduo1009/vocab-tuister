@@ -102,7 +102,6 @@ func (m *Model) Init() tea.Cmd {
 
 func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
-	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -115,8 +114,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		}
 	}
 
-	_, cmd = m.list.Update(msg)
-	cmds = append(cmds, cmd)
+	util.UpdaterVal(&cmds, &m.list, msg)
 
 	return m, tea.Batch(cmds...)
 }

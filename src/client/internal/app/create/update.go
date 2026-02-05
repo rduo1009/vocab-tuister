@@ -29,29 +29,23 @@ func (m *Model) Update(msg tea.Msg) (util.PageModel, tea.Cmd) {
 	}
 
 	if m.configtuiFilepickerStatus == filepickerUninitialised {
-		_, cmd := m.configtuiFilepicker.Update(msg)
+		util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
 
 		// HACK: Ensure that the filepicker is set up properly
 		msgType := reflect.TypeOf(msg)
 		if msgType != nil && strings.HasSuffix(msgType.String(), ".readDirMsg") {
 			m.configtuiFilepickerStatus = filepickerInactive
 		}
-
-		cmds = append(cmds, cmd)
 	}
 	if m.HasOverlay() {
 		if m.configtuiFilepickerStatus == filepickerActive {
-			_, cmd := m.configtuiFilepicker.Update(msg)
-			cmds = append(cmds, cmd)
+			util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
 		} else if m.configtui.HeaderSection.Focused() && m.listtuiModeDropdownActive {
-			_, cmd := m.listtuiModeDropdown.Update(msg)
-			cmds = append(cmds, cmd)
+			util.UpdaterPtr(&cmds, m.listtuiModeDropdown, msg)
 		}
 	} else {
-		_, cmd := m.configtui.Update(msg)
-		cmds = append(cmds, cmd)
-		_, cmd = m.listtui.Update(msg)
-		cmds = append(cmds, cmd)
+		util.UpdaterPtr(&cmds, m.configtui, msg)
+		util.UpdaterPtr(&cmds, m.listtui, msg)
 	}
 
 	return m, tea.Batch(cmds...)

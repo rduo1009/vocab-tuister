@@ -6,11 +6,11 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
-	var cmd tea.Cmd
 
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
@@ -76,8 +76,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 	}
 
-	currentPageModel, cmd = currentPageModel.Update(msg)
-	cmds = append(cmds, cmd)
+	util.UpdaterPtr(&cmds, currentPageModel, msg)
 
 	return m, tea.Batch(cmds...)
 }

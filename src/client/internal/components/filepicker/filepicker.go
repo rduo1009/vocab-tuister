@@ -103,7 +103,6 @@ func (m *Model) Init() tea.Cmd {
 
 func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmds []tea.Cmd
-	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
@@ -125,8 +124,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		m.err = nil
 	}
 
-	m.filepicker, cmd = m.filepicker.Update(msg)
-	cmds = append(cmds, cmd)
+	util.UpdaterVal(&cmds, &m.filepicker, msg)
 
 	// Did the user select a file?
 	if didSelect, path := m.filepicker.DidSelectFile(msg); didSelect {

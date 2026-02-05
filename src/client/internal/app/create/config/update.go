@@ -134,8 +134,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	if m.FormSection.Focused() {
 		switch m.form.State {
 		case huh.StateNormal:
-			_, cmd := m.form.Update(msg)
-			cmds = append(cmds, cmd)
+			util.UpdaterPtr(&cmds, m.form, msg)
 		case huh.StateCompleted:
 			switch m.appStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
@@ -154,8 +153,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 				// also note that `cmds` could not be altered after this, so returning early is fine
 				return m, tea.Sequence(cmds...)
 			case ReviewSessionConfig:
-				_, cmd := m.jsonview.Update(msg)
-				cmds = append(cmds, cmd)
+				util.UpdaterPtr(&cmds, m.jsonview, msg)
 			}
 		}
 	}
