@@ -29,14 +29,6 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if m.HeaderSection.Focused() {
-			//if m.statusDropdownActive {
-			//	switch {
-			//	case key.Matches(msg, m.HeaderSection.KeyMap().PreviousFocus):
-			//		m.statusDropdownActive = false
-			//	case key.Matches(msg, m.HeaderSection.KeyMap().NextFocus):
-			//		m.statusDropdownActive = false
-			//	}
-			//} else {
 			switch {
 			case key.Matches(msg, m.HeaderSection.KeyMap().OpenDropdown):
 				cmds = append(cmds, util.MsgCmd(dropdown.DropdownStartMsg{}))
@@ -46,10 +38,17 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 			case key.Matches(msg, m.SelectButton.KeyMap().PressButton): // TODO:
 			}
 		}
-	}
 
-	_, cmd := m.VocabEditor.Update(msg)
-	cmds = append(cmds, cmd)
+		// NOTE: Normal mode cannot be disabled in the editor,
+		// so have to manually prevent escaping to normal mode
+		if msg.String() != "esc" {
+			_, cmd := m.VocabEditor.Update(msg)
+			cmds = append(cmds, cmd)
+		}
+	default:
+		_, cmd := m.VocabEditor.Update(msg)
+		cmds = append(cmds, cmd)
+	}
 
 	return m, tea.Batch(cmds...)
 }

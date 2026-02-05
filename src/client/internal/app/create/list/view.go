@@ -50,13 +50,13 @@ func editorBorderStyle(focused bool) lipgloss.Style {
 		return lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("#c6fba4")).
-			Padding(1, 2)
+			Padding(0, 2)
 	}
 
 	return lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("#80ff2c")).
-		Padding(1, 2)
+		Padding(0, 2)
 }
 
 func selectListText(status createListStatus) string {

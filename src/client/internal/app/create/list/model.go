@@ -73,7 +73,12 @@ func New() *Model {
 	headerSection := headerSection{focused: false}
 	ve := vocabeditor.New(0, 0) // placeholder size values
 
-	ve.DisableVimMode(true)
+	ve.SetInsertMode()
+	ve.DisableCommandMode(true)
+	ve.DisableVisualMode(true)
+	ve.DisableVisualLineMode(true)
+	ve.DisableSearchMode(true)
+
 	ve.SetCursorMode(vocabeditor.CursorBlink)
 	ve.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
 	selectButton := selectButton{focused: false}
