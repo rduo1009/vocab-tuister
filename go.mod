@@ -61,6 +61,8 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
+	github.com/mitranim/gg v0.1.29 // indirect
+	github.com/mitranim/gow v0.0.0-20250926091427-aad163e590a8 // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/go-app-paths v0.2.2 // indirect
@@ -72,6 +74,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
+	github.com/rjeczalik/notify v0.9.3 // indirect
 	github.com/sahilm/fuzzy v0.1.1 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/wadey/gocovmerge v0.0.0-20160331181800-b5bfa59ec0ad // indirect
@@ -101,6 +104,7 @@ require (
 
 tool (
 	github.com/charmbracelet/vhs
+	github.com/mitranim/gow
 	github.com/wadey/gocovmerge
 	golang.org/x/tools/cmd/stringer
 )
