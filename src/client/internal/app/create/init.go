@@ -28,6 +28,7 @@ func (m *Model) Init() tea.Cmd {
 		m.configtui.Init(),
 		m.listtuiModeDropdown.Init(),
 		m.listtuiFilepicker.Init(),
+		m.listtuiSaveAs.Init(),
 		m.configtuiFilepicker.Init(),
 	)
 }

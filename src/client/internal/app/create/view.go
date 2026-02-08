@@ -15,19 +15,23 @@ func (m *Model) SetHeight(height int) {
 }
 
 func (m *Model) HasOverlay() bool {
-	return m.configtuiFilepickerStatus == filepickerActive || m.listtuiFilepickerStatus == filepickerActive ||
+	return m.configtuiFilepickerActive || m.listtuiFilepickerActive || m.listtuiSaveAsActive ||
 		m.listtuiModeDropdownActive
 }
 
 func (m *Model) OverlayView(width, height int) (view string, x, y int) {
-	if m.configtuiFilepickerStatus == filepickerActive {
+	if m.configtuiFilepickerActive {
 		m.configtuiFilepicker.SetWidth(width / 2)
 		m.configtuiFilepicker.SetHeight(height / 2)
 		return m.configtuiFilepicker.View(width, height)
-	} else if m.listtuiFilepickerStatus == filepickerActive {
+	} else if m.listtuiFilepickerActive {
 		m.listtuiFilepicker.SetWidth(width / 2)
 		m.listtuiFilepicker.SetHeight(height / 2)
 		return m.listtuiFilepicker.View(width, height)
+	} else if m.listtuiSaveAsActive {
+		m.listtuiSaveAs.SetWidth(width / 2)
+		m.listtuiSaveAs.SetHeight(height / 2)
+		return m.listtuiSaveAs.View(width, height)
 	} else if m.listtuiModeDropdownActive {
 		view = m.listtuiModeDropdown.View()
 		x = 12

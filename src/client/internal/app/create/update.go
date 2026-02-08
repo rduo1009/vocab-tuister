@@ -6,6 +6,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -16,25 +17,43 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	case filepicker.FilepickStartMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
-			m.configtuiFilepickerStatus = filepickerActive
+			m.configtuiFilepickerActive = true
 		case "listtuiFilepicker":
-			m.listtuiFilepickerStatus = filepickerActive
+			m.listtuiFilepickerActive = true
 		}
 
 	case filepicker.FilepickPickedMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
-			m.configtuiFilepickerStatus = filepickerInactive
+			m.configtuiFilepickerActive = false
 		case "listtuiFilepicker":
-			m.listtuiFilepickerStatus = filepickerInactive
+			m.listtuiFilepickerActive = false
 		}
 
 	case filepicker.FilepickExitMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
-			m.configtuiFilepickerStatus = filepickerInactive
+			m.configtuiFilepickerActive = false
 		case "listtuiFilepicker":
-			m.listtuiFilepickerStatus = filepickerInactive
+			m.listtuiFilepickerActive = false
+		}
+
+	case saveas.SaveAsStartMsg:
+		switch msg.ID {
+		case "listtuiSaveAs":
+			m.listtuiSaveAsActive = true
+		}
+
+	case saveas.SaveAsSelectedMsg:
+		switch msg.ID {
+		case "listtuiSaveAs":
+			m.listtuiSaveAsActive = false
+		}
+
+	case saveas.SaveAsExitMsg:
+		switch msg.ID {
+		case "listtuiSaveAs":
+			m.listtuiSaveAsActive = false
 		}
 
 	case dropdown.DropdownStartMsg:
@@ -45,10 +64,12 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	}
 
 	if m.HasOverlay() {
-		if m.configtuiFilepickerStatus == filepickerActive {
+		if m.configtuiFilepickerActive {
 			util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
-		} else if m.listtuiFilepickerStatus == filepickerActive {
+		} else if m.listtuiFilepickerActive {
 			util.UpdaterPtr(&cmds, m.listtuiFilepicker, msg)
+		} else if m.listtuiSaveAsActive {
+			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
 		} else if m.listtuiModeDropdownActive {
 			util.UpdaterPtr(&cmds, m.listtuiModeDropdown, msg)
 		}
@@ -56,6 +77,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 		if _, ok := msg.(tea.KeyMsg); !ok {
 			util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
 			util.UpdaterPtr(&cmds, m.listtuiFilepicker, msg)
+			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
 		}
 		util.UpdaterPtr(&cmds, m.configtui, msg)
 		util.UpdaterPtr(&cmds, m.listtui, msg)

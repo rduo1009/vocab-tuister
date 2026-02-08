@@ -10,25 +10,20 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
-type vocabListMsg string
+func saveVocabList(filePath, list string) tea.Cmd {
+	return func() tea.Msg {
+		if err := os.WriteFile(filePath, []byte(list), 0o644); err != nil {
+			return app.ErrMsg(fmt.Errorf("failed to save vocab list to %s: %w", filePath, err))
+		}
+		return nil
+	}
+}
 
-// func saveList(filePath, list string) tea.Cmd {
-// 	return func() tea.Msg {
-// 		absPath, err := filepath.Abs(filePath)
-// 		if err != nil {
-// 			return errMsg{err}
-// 		}
-
-// 		if err = os.WriteFile(absPath, []byte(list), 0o644); err != nil {
-// 			return errMsg{err}
-// 		}
-
-// 		return saveMsg(absPath)
-// 	}
-// }
+type vocabListReadMsg string
 
 func readVocabList(filePath string) tea.Cmd {
 	return func() tea.Msg {
@@ -37,7 +32,7 @@ func readVocabList(filePath string) tea.Cmd {
 			return app.ErrMsg(fmt.Errorf("failed to read vocab list from %s: %w", filePath, err))
 		}
 
-		return vocabListMsg(string(b))
+		return vocabListReadMsg(string(b))
 	}
 }
 
@@ -59,7 +54,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 						util.MsgCmd(filepicker.FilepickStartMsg{ID: "listtuiFilepicker"}),
 					)
 				case CustomList:
-					panic("not implemented") // TODO:
+					cmds = append(
+						cmds,
+						util.MsgCmd(saveas.SaveAsStartMsg{ID: "listtuiSaveAs"}),
+					)
 				}
 			}
 		}
@@ -86,10 +84,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		case LocalList:
 			m.VocabEditor.SetNormalMode()
 			m.VocabEditor.DisableInsertMode(true)
-			homeDir, err := os.UserHomeDir()
-			if err != nil { // pretty serious error if this fails
-				panic(err)
-			}
+			homeDir, _ := os.UserHomeDir()
 			cmds = append(cmds, util.MsgCmd(
 				filepicker.FilepickSetPathMsg{
 					ID:   "listtuiFilepicker",
@@ -101,12 +96,17 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			m.VocabEditor.SetInsertMode()
 		}
 
-	case vocabListMsg:
+	case vocabListReadMsg:
 		m.VocabEditor.SetContent(string(msg))
 
 	case filepicker.FilepickPickedMsg:
 		if msg.ID == "listtuiFilepicker" {
 			cmds = append(cmds, readVocabList(msg.SelectedFile))
+		}
+
+	case saveas.SaveAsSelectedMsg:
+		if msg.ID == "listtuiSaveAs" {
+			cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
 		}
 	}
 

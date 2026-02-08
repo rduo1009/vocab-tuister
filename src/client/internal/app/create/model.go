@@ -2,20 +2,14 @@ package create
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/list"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util/appdir"
-)
-
-type filepickerStatus int
-
-const (
-	filepickerUninitialised filepickerStatus = iota
-	filepickerInactive
-	filepickerActive
 )
 
 type Model struct {
@@ -28,11 +22,13 @@ type Model struct {
 	listtui             *list.Model
 	listtuiModeDropdown *dropdown.Model
 	listtuiFilepicker   *filepicker.Model
+	listtuiSaveAs       *saveas.Model
 
 	// Application state
-	configtuiFilepickerStatus filepickerStatus
-	listtuiFilepickerStatus   filepickerStatus
+	configtuiFilepickerActive bool
 	listtuiModeDropdownActive bool
+	listtuiFilepickerActive   bool
+	listtuiSaveAsActive       bool
 	inbuiltListDir            string
 }
 
@@ -43,16 +39,21 @@ func New(inbuiltListDir string) *Model {
 	listtuiModeDropdown := dropdown.New([]fmt.Stringer{list.InbuiltList, list.LocalList, list.CustomList})
 	listtuiFilepicker := filepicker.New("listtuiFilepicker", inbuiltListDir, ".txt")
 
+	homeDir, _ := os.UserHomeDir()
+	listtuiSaveAs := saveas.New("listtuiSaveAs", homeDir, ".txt")
+
 	return &Model{
 		configtui:           configtui,
 		configtuiFilepicker: configtuiFilepicker,
 		listtui:             listtui,
 		listtuiModeDropdown: listtuiModeDropdown,
 		listtuiFilepicker:   listtuiFilepicker,
+		listtuiSaveAs:       listtuiSaveAs,
 
-		configtuiFilepickerStatus: filepickerUninitialised,
-		listtuiFilepickerStatus:   filepickerUninitialised,
+		configtuiFilepickerActive: false,
 		listtuiModeDropdownActive: false,
+		listtuiFilepickerActive:   false,
+		listtuiSaveAsActive:       false,
 		inbuiltListDir:            inbuiltListDir,
 	}
 }

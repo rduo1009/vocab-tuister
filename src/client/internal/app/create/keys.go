@@ -8,7 +8,7 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.configtui.KeyMap()
 	}
 
-	if m.configtuiFilepickerStatus == filepickerActive {
+	if m.configtuiFilepickerActive {
 		return m.configtuiFilepicker.KeyMap() // XXX: Currently unused? or maybe used?
 	}
 
@@ -20,5 +20,5 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.listtuiModeDropdown.KeyMap()
 	}
 
-	panic("not implemented")
+	panic("unreachable")
 }
