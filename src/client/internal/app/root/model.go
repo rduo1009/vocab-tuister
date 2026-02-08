@@ -5,12 +5,12 @@ import (
 
 	"charm.land/bubbles/v2/help"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 type Model struct {
@@ -20,7 +20,7 @@ type Model struct {
 	pageOrder     []modes.PageName
 
 	// Components
-	pages       map[modes.PageName]util.PageModel
+	pages       map[modes.PageName]app.PageModel
 	tabs        *tabs.Model
 	help        *help.Model
 	overlayHelp *help.Model
@@ -41,7 +41,7 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 	return res
 }
 
-func New() *Model {
+func New(inbuiltListDir string) *Model {
 	pageOrder := []modes.PageName{
 		modes.Create,
 		modes.Review,
@@ -54,7 +54,7 @@ func New() *Model {
 	h := help.New()
 	overlayHelp := help.New()
 
-	createtui := create.New()
+	createtui := create.New(inbuiltListDir)
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)
@@ -62,7 +62,7 @@ func New() *Model {
 	return &Model{
 		currentPage: 0,
 		pageOrder:   pageOrder,
-		pages: map[modes.PageName]util.PageModel{
+		pages: map[modes.PageName]app.PageModel{
 			modes.Create:   createtui,
 			modes.Review:   nil,
 			modes.Test:     nil,

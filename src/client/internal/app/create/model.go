@@ -27,25 +27,32 @@ type Model struct {
 	configtuiFilepicker *filepicker.Model
 	listtui             *list.Model
 	listtuiModeDropdown *dropdown.Model
+	listtuiFilepicker   *filepicker.Model
 
 	// Application state
 	configtuiFilepickerStatus filepickerStatus
+	listtuiFilepickerStatus   filepickerStatus
 	listtuiModeDropdownActive bool
+	inbuiltListDir            string
 }
 
-func New() *Model {
+func New(inbuiltListDir string) *Model {
 	configtui := config.New()
-	configtuiFilepicker := filepicker.New(appdir.AppDirs.UserConfig(), ".json")
-	listtui := list.New()
+	configtuiFilepicker := filepicker.New("configtuiFilepicker", appdir.AppDirs.UserConfig(), ".json")
+	listtui := list.New(inbuiltListDir)
 	listtuiModeDropdown := dropdown.New([]fmt.Stringer{list.InbuiltList, list.LocalList, list.CustomList})
+	listtuiFilepicker := filepicker.New("listtuiFilepicker", inbuiltListDir, ".txt")
 
 	return &Model{
 		configtui:           configtui,
 		configtuiFilepicker: configtuiFilepicker,
 		listtui:             listtui,
 		listtuiModeDropdown: listtuiModeDropdown,
+		listtuiFilepicker:   listtuiFilepicker,
 
 		configtuiFilepickerStatus: filepickerUninitialised,
+		listtuiFilepickerStatus:   filepickerUninitialised,
 		listtuiModeDropdownActive: false,
+		inbuiltListDir:            inbuiltListDir,
 	}
 }

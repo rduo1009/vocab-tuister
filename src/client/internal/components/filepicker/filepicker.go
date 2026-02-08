@@ -16,9 +16,16 @@ import (
 )
 
 type (
-	FilepickStartMsg  struct{}
-	FilepickExitMsg   struct{}
-	FilepickPickedMsg struct{ SelectedFile string }
+	FilepickStartMsg   struct{ ID string }
+	FilepickExitMsg    struct{ ID string }
+	FilepickSetPathMsg struct {
+		ID   string
+		Path string
+	}
+	FilepickPickedMsg struct {
+		ID           string
+		SelectedFile string
+	}
 )
 
 type clearErrorMsg struct{}
@@ -30,14 +37,15 @@ func clearErrorAfter(t time.Duration) tea.Cmd {
 }
 
 type Model struct {
-	Height int
-	Width  int
-	keys   FilePickerKeys
+	ID            string
+	width, height int
+	keys          FilePickerKeys
 
 	filepicker filepicker.Model
+	help       help.Model
 
 	selectedFile string
-	err          error
+	err          error // TODO: use `app.ErrMsg` instead
 }
 
 type FilePickerKeys struct {
@@ -65,8 +73,9 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.keys
 }
 
-func New(currentDirectory string, allowedTypes ...string) *Model {
+func New(ID, currentDirectory string, allowedTypes ...string) *Model {
 	fp := filepicker.New()
+	help := help.New()
 
 	if len(allowedTypes) > 0 {
 		fp.AllowedTypes = allowedTypes
@@ -94,17 +103,29 @@ func New(currentDirectory string, allowedTypes ...string) *Model {
 			key.WithHelp("ctrl+q", "quit"),
 		),
 	}
-	return &Model{filepicker: fp, keys: keys}
+	return &Model{ID: ID, filepicker: fp, help: help, keys: keys}
 }
 
 func (m *Model) Init() tea.Cmd {
 	return m.filepicker.Init()
 }
 
+func (m *Model) SetPath(path string) {
+	m.filepicker.CurrentDirectory = path
+}
+
 func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
+	case FilepickSetPathMsg:
+		if msg.ID == m.ID {
+			m.filepicker.CurrentDirectory = msg.Path
+			m.selectedFile = ""
+			m.err = nil
+			cmds = append(cmds, m.filepicker.Init())
+		}
+
 	case tea.KeyPressMsg:
 		switch {
 		case key.Matches(msg, m.keys.Submit):
@@ -113,11 +134,15 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 				cmds = append(cmds, clearErrorAfter(2*time.Second))
 			} else {
 				cmds = append(cmds, util.MsgCmd(FilepickPickedMsg{
+					ID:           m.ID,
 					SelectedFile: m.selectedFile,
 				}))
 			}
+		case key.Matches(msg, m.keys.Help):
+			m.help.ShowAll = !m.help.ShowAll
 		case key.Matches(msg, m.keys.Exit):
-			cmds = append(cmds, util.MsgCmd(FilepickExitMsg{}))
+			cmds = append(cmds, util.MsgCmd(FilepickExitMsg{ID: m.ID}))
+			return m, tea.Batch(cmds...) // or else the filepicker's own esc handling will run
 		}
 
 	case clearErrorMsg:
@@ -125,6 +150,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	}
 
 	util.UpdaterVal(&cmds, &m.filepicker, msg)
+	util.UpdaterVal(&cmds, &m.help, msg)
 
 	// Did the user select a file?
 	if didSelect, path := m.filepicker.DidSelectFile(msg); didSelect {
@@ -149,10 +175,24 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-var errorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#fa003f"))
+var (
+	errorStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("#fa003f"))
+	borderStyle = lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("#ffffff")).
+			Padding(0, 1)
+)
 
-func (m *Model) View() string {
-	m.filepicker.SetHeight(m.Height)
+func (m *Model) SetWidth(width int) {
+	m.width = width
+}
+
+func (m *Model) SetHeight(height int) {
+	m.height = height
+}
+
+func (m *Model) View(screenWidth, screenHeight int) (view string, x, y int) {
+	m.filepicker.SetHeight(m.height)
 	m.filepicker.Styles.EmptyDirectory = m.filepicker.Styles.EmptyDirectory.SetString(
 		"No files found in directory.",
 	)
@@ -168,5 +208,11 @@ func (m *Model) View() string {
 	b.WriteString("\n\n")
 	b.WriteString(m.filepicker.View())
 
-	return b.String()
+	content := b.String()
+	help := m.help.View(m.keys)
+
+	view = borderStyle.Width(m.width).Height(m.height).Render(lipgloss.JoinVertical(lipgloss.Left, content, help))
+	x = (screenWidth - lipgloss.Width(view)) / 2
+	y = (screenHeight - lipgloss.Height(view)) / 2
+	return view, x, y
 }

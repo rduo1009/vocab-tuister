@@ -19,7 +19,7 @@ import (
 
 type configMap map[string]any
 
-type RawSessionConfigMsg []byte
+type rawSessionConfigMsg []byte
 
 func generateSessionConfig() tea.Msg {
 	configMap := make(configMap)
@@ -77,7 +77,7 @@ func generateSessionConfig() tea.Msg {
 		return app.ErrMsg(fmt.Errorf("failed to canonicalize json: %w", err))
 	}
 
-	return RawSessionConfigMsg(value)
+	return rawSessionConfigMsg(value)
 }
 
 func readSessionConfigFile(selectedFile string) tea.Cmd {
@@ -96,11 +96,11 @@ func readSessionConfigFile(selectedFile string) tea.Cmd {
 			return app.ErrMsg(fmt.Errorf("failed to canonicalize json: %w", err))
 		}
 
-		return RawSessionConfigMsg(value)
+		return rawSessionConfigMsg(value)
 	}
 }
 
-func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
@@ -108,7 +108,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		if m.HeaderSection.Focused() {
 			switch {
 			case key.Matches(msg, m.HeaderSection.KeyMap().PressButton):
-				cmds = append(cmds, util.MsgCmd(filepicker.FilepickStartMsg{}))
+				cmds = append(cmds, util.MsgCmd(filepicker.FilepickStartMsg{ID: "configtuiFilepicker"}))
 			}
 		} else if m.ResetButton.Focused() {
 			switch {
@@ -122,13 +122,15 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 			}
 		}
 
-	case RawSessionConfigMsg:
+	case rawSessionConfigMsg:
 		m.appStatus = ReviewSessionConfig
 		m.rawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.rawSessionConfig)
 
 	case filepicker.FilepickPickedMsg:
-		cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
+		if msg.ID == "configtuiFilepicker" {
+			cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
+		}
 	}
 
 	if m.FormSection.Focused() {

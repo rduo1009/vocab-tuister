@@ -15,14 +15,24 @@ func (m *Model) SetHeight(height int) {
 }
 
 func (m *Model) HasOverlay() bool {
-	return m.configtuiFilepickerStatus == filepickerActive
+	return m.configtuiFilepickerStatus == filepickerActive || m.listtuiFilepickerStatus == filepickerActive ||
+		m.listtuiModeDropdownActive
 }
 
-func (m *Model) OverlayView(width, height int) string {
+func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	if m.configtuiFilepickerStatus == filepickerActive {
-		m.configtuiFilepicker.Width = width
-		m.configtuiFilepicker.Height = height
-		return m.configtuiFilepicker.View()
+		m.configtuiFilepicker.SetWidth(width / 2)
+		m.configtuiFilepicker.SetHeight(height / 2)
+		return m.configtuiFilepicker.View(width, height)
+	} else if m.listtuiFilepickerStatus == filepickerActive {
+		m.listtuiFilepicker.SetWidth(width / 2)
+		m.listtuiFilepicker.SetHeight(height / 2)
+		return m.listtuiFilepicker.View(width, height)
+	} else if m.listtuiModeDropdownActive {
+		view = m.listtuiModeDropdown.View()
+		x = 12
+		y = 4
+		return view, x, y
 	}
 	panic("unreachable")
 }

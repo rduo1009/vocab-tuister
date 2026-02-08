@@ -10,7 +10,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"github.com/alecthomas/chroma/v2/quick"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 )
 
 // Model is a bubbletea component that displays JSON content with syntax highlighting
@@ -47,7 +47,7 @@ func (m *Model) Init() tea.Cmd {
 // Update handles incoming messages and updates the component state accordingly.
 // It delegates all message handling to the viewport, which handles navigation
 // keys internally. The method returns the updated model and any commands to execute.
-func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	// Delegate all message handling to the viewport
 	// The viewport handles navigation keys (arrows, page up/down, etc.) internally
 	var cmd tea.Cmd

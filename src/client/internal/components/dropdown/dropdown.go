@@ -9,6 +9,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -18,15 +19,11 @@ type (
 	DropdownPickedMsg struct{ ChosenItem fmt.Stringer }
 )
 
-const (
-	defaultWidth = 20
-	listHeight   = 6 // XXX: Choose value
-)
+const defaultHeight = 5 // arbitrary
 
 var (
-	itemStyle         = lipgloss.NewStyle().Background(lipgloss.Color("#707070"))
-	selectedItemStyle = lipgloss.NewStyle().Background(lipgloss.Color("#a7a7a7"))
-	quitTextStyle     = lipgloss.NewStyle().Margin(1, 0, 2, 4)
+	itemStyle         = lipgloss.NewStyle().Background(lipgloss.Color("#707070")).Padding(0, 1)
+	selectedItemStyle = lipgloss.NewStyle().Background(lipgloss.Color("#a7a7a7")).Padding(0, 1)
 )
 
 type item struct {
@@ -79,20 +76,40 @@ func (m *Model) KeyMap() help.KeyMap {
 //	AdditionalShortHelpKeys func() []key.Binding
 //	AdditionalFullHelpKeys  func() []key.Binding
 func New(items []fmt.Stringer) *Model {
-	var listItems []list.Item
+	var (
+		listItems []list.Item
+		maxWidth  int
+	)
+
 	for _, i := range items {
+		s := i.String()
+		w := lipgloss.Width(s)
+		if w > maxWidth {
+			maxWidth = w
+		}
 		listItems = append(listItems, item{i})
 	}
 
-	l := list.New(listItems, itemDelegate{}, defaultWidth, listHeight)
+	width := maxWidth + 2
+
+	height := len(items)
+	if height > defaultHeight {
+		height = defaultHeight
+	}
+	if height == 0 {
+		height = 1
+	}
+
+	l := list.New(listItems, itemDelegate{}, width, height)
 	l.SetShowTitle(false)
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)
 	l.SetShowPagination(false)
+	l.SetShowHelp(false)
 
 	m := &Model{list: l}
-	m.width = defaultWidth
-	m.height = listHeight // TODO: remove later
+	m.width = width
+	m.height = height
 	return m
 }
 
@@ -100,7 +117,7 @@ func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
-func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
@@ -109,7 +126,7 @@ func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
 		case "enter":
 			i, _ := m.list.SelectedItem().(item)
 			cmds = append(cmds, util.MsgCmd(DropdownPickedMsg{i.Stringer}))
-		case "esc":
+		case "esc": // FIXME: fsr this quits the whole app???
 			cmds = append(cmds, util.MsgCmd(DropdownExitMsg{}))
 		}
 	}
@@ -130,5 +147,5 @@ func (m *Model) SetHeight(height int) {
 func (m *Model) View() string {
 	m.list.SetWidth(m.width)
 	m.list.SetHeight(m.height)
-	return "\n" + m.list.View()
+	return m.list.View()
 }

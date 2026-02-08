@@ -65,15 +65,16 @@ type Model struct {
 
 	// Application state
 	appStatus               createListStatus
+	inbuiltListDir          string
 	vocabEditorInitisalised bool
 	rawSessionConfig        string
 }
 
-func New() *Model {
+func New(inbuiltListDir string) *Model {
 	headerSection := headerSection{focused: false}
 	ve := vocabeditor.New(0, 0) // placeholder size values
 
-	ve.SetInsertMode()
+	ve.DisableInsertMode(true)
 	ve.DisableCommandMode(true)
 	ve.DisableVisualMode(true)
 	ve.DisableVisualLineMode(true)
@@ -88,6 +89,7 @@ func New() *Model {
 		VocabEditor:             &ve,
 		SelectButton:            &selectButton,
 		appStatus:               InbuiltList,
+		inbuiltListDir:          inbuiltListDir,
 		vocabEditorInitisalised: false,
 	}
 }

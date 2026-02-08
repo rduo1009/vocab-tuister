@@ -5,7 +5,7 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-var dimPageStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))
+var dimPageStyle = lipgloss.NewStyle().Faint(true)
 
 func (m *Model) View() tea.View {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
@@ -24,25 +24,19 @@ func (m *Model) View() tea.View {
 	pageView := currentPageModel.View()
 	fullView := lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView)
 
-	var compositor *lipgloss.Compositor
+	var layers []*lipgloss.Layer
 	if currentPageModel.HasOverlay() {
-		dimPageView := dimPageStyle.Render(fullView)
-		compositor = lipgloss.NewCompositor(lipgloss.NewLayer(dimPageView))
+		dimPageLayer := lipgloss.NewLayer(dimPageStyle.Render(fullView))
 
-		overlayPageView := currentPageModel.OverlayView(m.width/2, m.height/2)
-		overlayHelpView := m.overlayHelp.View(currentPageModel.OverlayKeyMap())
-		overlayView := lipgloss.Place(m.width, m.height,
-			lipgloss.Center, lipgloss.Center,
-			lipgloss.JoinVertical(lipgloss.Left, overlayPageView, overlayHelpView),
-			lipgloss.WithWhitespaceChars(" "),
-		)
+		overlayPageView, x, y := currentPageModel.OverlayView(m.width, m.height)
+		overlayLayer := lipgloss.NewLayer(overlayPageView).X(x).Y(y)
 
-		compositor.AddLayers(lipgloss.NewLayer(overlayView))
+		layers = []*lipgloss.Layer{dimPageLayer, overlayLayer}
 	} else {
-		compositor = lipgloss.NewCompositor(lipgloss.NewLayer(fullView))
+		layers = []*lipgloss.Layer{lipgloss.NewLayer(fullView)}
 	}
 
-	v := tea.NewView(compositor.Render())
+	v := tea.NewView(lipgloss.NewCompositor(layers...).Render())
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"
 	return v

@@ -17,9 +17,9 @@ import (
 	lipglosscompat "charm.land/lipgloss/v2/compat"
 	"github.com/atotto/clipboard"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/adapter-bubbletea/highlighter"
 	editor "github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/core"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 type Theme struct {
@@ -743,7 +743,7 @@ func (m *Model) Init() tea.Cmd {
 	return m.listenForEditorUpdate()
 }
 
-func (m *Model) Update(msg tea.Msg) (util.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
