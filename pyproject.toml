@@ -48,23 +48,18 @@ dev = [
   "ruff==0.15.0",
   "syrupy==5.1.0",
 ]
-
 types = [
   "optype==0.15.0",
   "types-regex==2026.1.15.20260116",
   "types-waitress==3.0.1.20250801",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = [ "src" ]
-exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
-artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.version]
-source = "uv-dynamic-versioning"
+[tool.hatch]
+build.targets.wheel.packages = [ "src" ]
+build.targets.wheel.exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
+build.targets.wheel.artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
+metadata.allow-direct-references = true
+version.source = "uv-dynamic-versioning"
 
 [tool.uv]
 cache-keys = [
@@ -77,25 +72,23 @@ target-version = "py314"
 line-length = 79
 exclude = [ "src/_vendor/**" ]
 unsafe-fixes = true
-
 format.preview = true
 format.indent-style = "space"
 format.quote-style = "double"
 format.skip-magic-trailing-comma = true
 format.docstring-code-line-length = 72
 format.docstring-code-format = true
-
 lint.select = [ "ALL" ]
-lint.extend-select = [ "W505" ] # doc line too long
+lint.extend-select = [ "W505" ]
 lint.ignore = [
   "ANN401",  # `Any` in function arguments
   "C901",    # mccabe complexity
   "COM812",  # trailing commas
   "CPY001",  # no copyright
   "D105",    # magic method docstrings
-  "DOC502",  # extraneous docstring exceptions 
+  "DOC502",  # extraneous docstring exceptions
   "E",
-  "EM101",   # raw string in exception 
+  "EM101",   # raw string in exception
   "EM102",   # fstring in exception
   "ERA001",  # commented out code
   "FIX001",  # fixme comments
@@ -103,7 +96,7 @@ lint.ignore = [
   "FIX003",  # xxx comments
   "FIX004",  # hack comments
   "I",
-  "PLC0414", # 'useless' import aliases 
+  "PLC0414", # 'useless' import aliases
   "PLR0911", # too many `return`s
   "PLR0912", # too many branches
   "PLR0913", # too many arguments
@@ -131,43 +124,39 @@ lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"
 lint.preview = true
 
-[tool.pytest.ini_options]
-addopts = [
+[tool.pytest]
+ini_options.addopts = [
   "--strict-markers",
   "--ignore=src/_vendor",
   "--ignore=src/_build",
   "-n4",
 ]
-markers = [ "manual: manually checked tests", "integration: integration tests" ]
-env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
+ini_options.markers = [ "manual: manually checked tests", "integration: integration tests" ]
+ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
-[tool.coverage.report]
-exclude_also = [
+[tool.coverage]
+run.branch = true
+run.omit = [ "src/_vendor/*", "src/scripts/*", "tests/*" ]
+run.parallel = true
+report.exclude_also = [
+  "@(abc\\.)?abstractmethod",
+  "@overload",
+  "if __name__ == .__main__.:",
+  "if _seed is not None",
+  'if getattr\(_sys, "frozen", False\) and hasattr\(_sys, "_MEIPASS"\):',
+  "if TYPE_CHECKING:",
   "raise AssertionError",
   "raise NotImplementedError",
   "return NotImplemented",
-  "if __name__ == .__main__.:",
-  "@(abc\\.)?abstractmethod",
-  "@overload",
-  "if TYPE_CHECKING:",
-  "if _seed is not None",
-  'if getattr\(_sys, "frozen", False\) and hasattr\(_sys, "_MEIPASS"\):',
 ]
-
-[tool.coverage.run]
-branch = true
-parallel = true
-omit = [ "tests/*", "src/_vendor/*", "src/scripts/*" ]
 
 [tool.tox]
 requires = [ "tox>=4.2" ]
 env_list = [ "py314", "doctest", "type" ]
 skip_missing_interpreters = true
-
-[tool.tox.env.doctest]
-description = "run doctests"
-deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-commands = [
+env.doctest.description = "run doctests"
+env.doctest.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
+env.doctest.commands = [
   [
     "pytest",
     "--doctest-ignore-import-errors",
@@ -179,12 +168,10 @@ commands = [
     "docs/",
   ],
 ]
-
-[tool.tox.env.type]
-description = "run type checks and check stubs"
-deps = [ "basedpyright", "icecream", "mypy", "optype", "pytest", "requests" ]
-set_env = { MYPYPATH = "stubs" }
-commands = [
+env.type.description = "run type checks and check stubs"
+env.type.deps = [ "basedpyright", "icecream", "mypy", "optype", "pytest", "requests" ]
+env.type.set_env = { MYPYPATH = "stubs" }
+env.type.commands = [
   [
     "basedpyright",
   ],
@@ -217,14 +204,10 @@ commands = [
     "--ignore-unused-allowlist",
   ],
 ]
-
-[tool.tox.env_run_base]
-description = "run tests using pytest"
-deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
-
-[tool.tox.gh]
-python = { "3.14" = [ "py314", "type", "doctest" ] }
+env_run_base.description = "run tests using pytest"
+env_run_base.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
+env_run_base.commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
+gh.python = { "3.14" = [ "py314", "type", "doctest" ] }
 
 [tool.mypy]
 mypy_path = "stubs"
@@ -241,10 +224,8 @@ include = [ "src", "tests", "stubs" ]
 exclude = [ "src/_build", "src/_vendor", "tests/conftest.py" ]
 stubPath = "stubs"
 extraPaths = [ "./src" ]
-
 reportImportCycles = "information"
 reportPossiblyUnboundVariable = "warning"
-
 reportImplicitStringConcatenation = false
 reportImplicitOverride = false
 reportUnusedImport = false
@@ -289,21 +270,16 @@ ignore-nested-classes = true
 ignore-overloaded-functions = true
 exclude = [ "setup.py", "docs", "build", "src/_vendor" ]
 
-[tool.poe.tasks.badges]
-cmd = "./scripts/badges.sh"
-help = "Generate badges for the project."
-[tool.poe.tasks.build]
-cmd = "./scripts/build.sh"
-help = "Build the project."
-args = [
+[tool.poe]
+tasks.badges.cmd = "./scripts/badges.sh"
+tasks.badges.help = "Generate badges for the project."
+tasks.build.cmd = "./scripts/build.sh"
+tasks.build.help = "Build the project."
+tasks.build.args = [
   { name = "debug", default = false, type = "boolean", help = "Build the project into a folder instead of a single file." },
   { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
 ]
-
-[tool.poe.tasks.coverage]
-shell = "./scripts/coverage.sh"
-help = "Run coverage on the project."
-
-[tool.poe.tasks.test]
-cmd = "tox --parallel"
-help = "Run tests on the project."
+tasks.coverage.shell = "./scripts/coverage.sh"
+tasks.coverage.help = "Run coverage on the project."
+tasks.test.cmd = "tox --parallel"
+tasks.test.help = "Run tests on the project."
