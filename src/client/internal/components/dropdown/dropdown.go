@@ -14,9 +14,9 @@ import (
 )
 
 type (
-	DropdownStartMsg  struct{}
-	DropdownExitMsg   struct{}
-	DropdownPickedMsg struct{ ChosenItem fmt.Stringer }
+	StartMsg  struct{}
+	ExitMsg   struct{}
+	PickedMsg struct{ ChosenItem fmt.Stringer }
 )
 
 const defaultHeight = 5 // arbitrary
@@ -83,19 +83,18 @@ func New(items []fmt.Stringer) *Model {
 
 	for _, i := range items {
 		s := i.String()
+
 		w := lipgloss.Width(s)
 		if w > maxWidth {
 			maxWidth = w
 		}
+
 		listItems = append(listItems, item{i})
 	}
 
 	width := maxWidth + 2
 
-	height := len(items)
-	if height > defaultHeight {
-		height = defaultHeight
-	}
+	height := min(len(items), defaultHeight)
 	if height == 0 {
 		height = 1
 	}
@@ -110,6 +109,7 @@ func New(items []fmt.Stringer) *Model {
 	m := &Model{list: l}
 	m.width = width
 	m.height = height
+
 	return m
 }
 
@@ -120,14 +120,14 @@ func (m *Model) Init() tea.Cmd {
 func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	if msg, ok := msg.(tea.KeyMsg); ok {
 		switch keypress := msg.String(); keypress {
 		case "enter":
 			i, _ := m.list.SelectedItem().(item)
-			cmds = append(cmds, util.MsgCmd(DropdownPickedMsg{i.Stringer}))
+			cmds = append(cmds, util.MsgCmd(PickedMsg{i.Stringer}))
+
 		case "esc": // FIXME: fsr this quits the whole app???
-			cmds = append(cmds, util.MsgCmd(DropdownExitMsg{}))
+			cmds = append(cmds, util.MsgCmd(ExitMsg{}))
 		}
 	}
 
@@ -147,5 +147,6 @@ func (m *Model) SetHeight(height int) {
 func (m *Model) View() string {
 	m.list.SetWidth(m.width)
 	m.list.SetHeight(m.height)
+
 	return m.list.View()
 }

@@ -22,6 +22,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal MultipleChoiceEngToLatQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "MultipleChoiceLatToEngQuestion":
@@ -29,6 +30,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal MultipleChoiceLatToEngQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "ParseWordCompToLatQuestion":
@@ -36,6 +38,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal ParseWordCompToLatQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "ParseWordLatToCompQuestion":
@@ -43,6 +46,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal ParseWordLatToCompQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "TypeInEngToLatQuestion":
@@ -50,6 +54,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal TypeInEngToLatQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "TypeInLatToEngQuestion":
@@ -57,6 +62,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal TypeInLatToEngQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	case "PrincipalPartsQuestion":
@@ -64,6 +70,7 @@ func UnmarshalQuestion(data []byte) (Question, error) {
 		if err := json.Unmarshal(data, &q); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal PrincipalPartsQuestion: %w", err)
 		}
+
 		return &q, nil
 
 	default:

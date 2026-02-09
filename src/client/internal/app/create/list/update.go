@@ -19,6 +19,7 @@ func saveVocabList(filePath, list string) tea.Cmd {
 		if err := os.WriteFile(filePath, []byte(list), 0o644); err != nil {
 			return app.ErrMsg(fmt.Errorf("failed to save vocab list to %s: %w", filePath, err))
 		}
+
 		return nil
 	}
 }
@@ -43,7 +44,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	case tea.KeyMsg:
 		if m.HeaderSection.Focused() {
 			if key.Matches(msg, m.HeaderSection.KeyMap().OpenDropdown) {
-				cmds = append(cmds, util.MsgCmd(dropdown.DropdownStartMsg{}))
+				cmds = append(cmds, util.MsgCmd(dropdown.StartMsg{}))
 			}
 		} else if m.SelectButton.Focused() {
 			if key.Matches(msg, m.SelectButton.KeyMap().PressButton) {
@@ -51,12 +52,13 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 				case InbuiltList, LocalList:
 					cmds = append(
 						cmds,
-						util.MsgCmd(filepicker.FilepickStartMsg{ID: "listtuiFilepicker"}),
+						util.MsgCmd(filepicker.StartMsg{ID: "listtuiFilepicker"}),
 					)
+
 				case CustomList:
 					cmds = append(
 						cmds,
-						util.MsgCmd(saveas.SaveAsStartMsg{ID: "listtuiSaveAs"}),
+						util.MsgCmd(saveas.StartMsg{ID: "listtuiSaveAs"}),
 					)
 				}
 			}
@@ -69,28 +71,31 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, tea.Batch(cmds...)
 		}
 
-	case dropdown.DropdownPickedMsg:
+	case dropdown.PickedMsg:
 		m.appStatus = msg.ChosenItem.(createListStatus)
 		switch m.appStatus {
 		case InbuiltList:
 			m.VocabEditor.SetNormalMode()
 			m.VocabEditor.DisableInsertMode(true)
 			cmds = append(cmds, util.MsgCmd(
-				filepicker.FilepickSetPathMsg{
+				filepicker.SetPathMsg{
 					ID:   "listtuiFilepicker",
 					Path: m.inbuiltListDir,
 				},
 			))
+
 		case LocalList:
 			m.VocabEditor.SetNormalMode()
 			m.VocabEditor.DisableInsertMode(true)
+
 			homeDir, _ := os.UserHomeDir()
 			cmds = append(cmds, util.MsgCmd(
-				filepicker.FilepickSetPathMsg{
+				filepicker.SetPathMsg{
 					ID:   "listtuiFilepicker",
 					Path: homeDir,
 				},
 			))
+
 		case CustomList:
 			m.VocabEditor.DisableInsertMode(false)
 			m.VocabEditor.SetInsertMode()
@@ -99,12 +104,12 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	case vocabListReadMsg:
 		m.VocabEditor.SetContent(string(msg))
 
-	case filepicker.FilepickPickedMsg:
+	case filepicker.PickedMsg:
 		if msg.ID == "listtuiFilepicker" {
 			cmds = append(cmds, readVocabList(msg.SelectedFile))
 		}
 
-	case saveas.SaveAsSelectedMsg:
+	case saveas.SelectedMsg:
 		if msg.ID == "listtuiSaveAs" {
 			cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
 		}

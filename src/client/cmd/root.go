@@ -20,6 +20,7 @@ func extractEmbeddedFS(efs embed.FS, target string) error {
 		if err != nil {
 			return err
 		}
+
 		if d.IsDir() {
 			return nil
 		}
@@ -33,6 +34,7 @@ func extractEmbeddedFS(efs embed.FS, target string) error {
 		if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
 			return err
 		}
+
 		return os.WriteFile(dst, data, 0o644)
 	})
 }

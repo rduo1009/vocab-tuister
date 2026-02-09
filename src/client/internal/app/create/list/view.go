@@ -40,6 +40,7 @@ func headerBorderStyle(focused bool) lipgloss.Style {
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("#a9eaa9"))
 	}
+
 	return lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("#2cb42c"))
@@ -63,11 +64,14 @@ func selectListText(status createListStatus) string {
 	switch status {
 	case InbuiltList:
 		return "Select inbuilt list..."
+
 	case LocalList:
 		return "Select local list..."
+
 	case CustomList:
 		return "Save list..."
 	}
+
 	panic("unreachable")
 }
 
@@ -77,6 +81,7 @@ func footerBorderStyle(focused bool) lipgloss.Style {
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("#ffd19a"))
 	}
+
 	return lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("#ff8c00"))

@@ -15,10 +15,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
 	switch msg := msg.(type) {
-	case tea.KeyPressMsg:
+	case tea.KeyMsg:
 		// Applied to all pages of the TUI
-		switch {
-		case key.Matches(msg, m.keys.Quit):
+		if key.Matches(msg, m.keys.Quit) {
 			return m, tea.Quit
 		}
 
@@ -26,16 +25,15 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch {
 			case key.Matches(msg, m.keys.Help):
 				m.help.ShowAll = !m.help.ShowAll
+
 			case key.Matches(msg, m.keys.PreviousFocus):
 				m.navigator.Previous()
+
 			case key.Matches(msg, m.keys.NextFocus):
 				m.navigator.Next()
 			}
-		} else {
-			switch {
-			case key.Matches(msg, m.keys.Help):
-				m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll
-			}
+		} else if key.Matches(msg, m.keys.Help) {
+			m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll
 		}
 
 		// Applied to only when tabs are selected
@@ -47,6 +45,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.navigator.Reset()
 					m.tabs.Prev()
 				}
+
 			case key.Matches(msg, m.keys.Right):
 				if m.currentPage < len(m.pageOrder)-1 {
 					m.currentPage++

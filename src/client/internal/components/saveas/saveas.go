@@ -1,6 +1,7 @@
 package saveas
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -18,14 +19,14 @@ import (
 )
 
 type (
-	SaveAsStartMsg    struct{ ID string }
-	SaveAsExitMsg     struct{ ID string }
-	SaveAsSelectedMsg struct {
+	StartMsg    struct{ ID string }
+	ExitMsg     struct{ ID string }
+	SelectedMsg struct {
 		ID        string
 		Path      string
 		Overwrite bool
 	}
-	SaveAsSetPathMsg struct {
+	SetPathMsg struct {
 		ID   string
 		Path string
 	}
@@ -34,7 +35,7 @@ type (
 type Model struct {
 	ID            string
 	width, height int
-	keys          SaveAsKeys
+	keys          saveAsKeys
 
 	filepicker filepicker.Model
 	textinput  textinput.Model
@@ -45,7 +46,7 @@ type Model struct {
 	err              error
 }
 
-type SaveAsKeys struct {
+type saveAsKeys struct {
 	filepicker.KeyMap
 	Submit     key.Binding
 	CycleFocus key.Binding
@@ -53,11 +54,11 @@ type SaveAsKeys struct {
 	Exit       key.Binding
 }
 
-func (k SaveAsKeys) ShortHelp() []key.Binding {
+func (k saveAsKeys) ShortHelp() []key.Binding {
 	return []key.Binding{k.CycleFocus, k.Submit, k.Help, k.Exit}
 }
 
-func (k SaveAsKeys) FullHelp() [][]key.Binding {
+func (k saveAsKeys) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.CycleFocus, k.Submit},
 		{k.Up, k.Down, k.Open, k.Back},
@@ -69,8 +70,9 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.keys
 }
 
-func New(ID, currentDirectory string, allowedTypes ...string) *Model {
+func New(id, currentDirectory string, allowedTypes ...string) *Model {
 	fp := filepicker.New()
+
 	fp.CurrentDirectory = currentDirectory
 	if len(allowedTypes) > 0 {
 		fp.AllowedTypes = allowedTypes
@@ -82,7 +84,7 @@ func New(ID, currentDirectory string, allowedTypes ...string) *Model {
 
 	hlp := help.New()
 
-	keys := SaveAsKeys{
+	keys := saveAsKeys{
 		KeyMap: filepicker.DefaultKeyMap(),
 		Submit: key.NewBinding(
 			key.WithKeys("enter"),
@@ -103,7 +105,7 @@ func New(ID, currentDirectory string, allowedTypes ...string) *Model {
 	}
 
 	return &Model{
-		ID:         ID,
+		ID:         id,
 		filepicker: fp,
 		textinput:  ti,
 		help:       hlp,
@@ -119,7 +121,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-	case SaveAsSetPathMsg:
+	case SetPathMsg:
 		if msg.ID == m.ID {
 			m.filepicker.CurrentDirectory = msg.Path
 			m.err = nil
@@ -132,18 +134,20 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 			switch msg.String() {
 			case "y", "Y", "enter":
 				// Confirm overwrite
-				cmds = append(cmds, util.MsgCmd(SaveAsSelectedMsg{
+				cmds = append(cmds, util.MsgCmd(SelectedMsg{
 					ID:        m.ID,
 					Path:      m.pendingPath,
 					Overwrite: true,
 				}))
 				m.confirmOverwrite = false
 				m.pendingPath = ""
+
 			case "n", "N", "esc":
 				// Cancel overwrite
 				m.confirmOverwrite = false
 				m.pendingPath = ""
 			}
+
 			return m, nil // Consume key
 		}
 
@@ -155,7 +159,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, m.keys.Exit) {
-			cmds = append(cmds, util.MsgCmd(SaveAsExitMsg{ID: m.ID}))
+			cmds = append(cmds, util.MsgCmd(ExitMsg{ID: m.ID}))
 			return m, tea.Batch(cmds...)
 		}
 
@@ -170,25 +174,31 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 				// Attempt to submit
 				filename := strings.TrimSpace(m.textinput.Value())
 				if filename == "" {
-					m.err = fmt.Errorf("filename cannot be empty")
+					m.err = errors.New("filename cannot be empty")
+
 					cmds = append(cmds, clearErrorAfter(2*time.Second))
+
 					return m, tea.Batch(cmds...)
 				}
 
 				if len(m.filepicker.AllowedTypes) > 0 {
 					valid := false
+
 					for _, ext := range m.filepicker.AllowedTypes {
 						if strings.HasSuffix(filename, ext) {
 							valid = true
 							break
 						}
 					}
+
 					if !valid {
 						m.err = fmt.Errorf(
 							"invalid file type (expected %s)",
 							strings.Join(m.filepicker.AllowedTypes, ", "),
 						)
+
 						cmds = append(cmds, clearErrorAfter(2*time.Second))
+
 						return m, tea.Batch(cmds...)
 					}
 				}
@@ -202,12 +212,13 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 					m.pendingPath = fullPath
 				} else {
 					// File doesn't exist -> Select immediately
-					cmds = append(cmds, util.MsgCmd(SaveAsSelectedMsg{
+					cmds = append(cmds, util.MsgCmd(SelectedMsg{
 						ID:        m.ID,
 						Path:      fullPath,
 						Overwrite: false,
 					}))
 				}
+
 				return m, tea.Batch(cmds...)
 			}
 		}
@@ -240,7 +251,9 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 			if len(m.filepicker.AllowedTypes) > 0 {
 				expected = "file ending in " + strings.Join(m.filepicker.AllowedTypes, ", ")
 			}
+
 			m.err = fmt.Errorf("%s is not valid (expected %s)", filepath.Base(path), expected)
+
 			cmds = append(cmds, clearErrorAfter(2*time.Second))
 		}
 	} else {
@@ -253,14 +266,6 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	}
 
 	return m, tea.Batch(cmds...)
-}
-
-func (m *Model) cycleFocus() {
-	if m.textinput.Focused() {
-		m.textinput.Blur()
-	} else {
-		m.textinput.Focus()
-	}
 }
 
 type clearErrorMsg struct{}
@@ -295,7 +300,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	// --- Construction of Base View ---
 
 	// 1. Header
-	header := fmt.Sprintf("Save in: %s", m.filepicker.CurrentDirectory)
+	header := "Save in: " + m.filepicker.CurrentDirectory
 	if m.err != nil {
 		header = errorStyle.Render(m.err.Error())
 	}
@@ -303,10 +308,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	// 2. File Picker
 	// Calculate available height for file picker
 	// Total Height - Header(1) - "Filename:"(1) - TextInput(1) - Borders(2) = approx -5?
-	fpHeight := m.height - 6
-	if fpHeight < 5 {
-		fpHeight = 5 // Minimum viable height
-	}
+	fpHeight := max(m.height-6, 5) // 5 is minimum viable height
 	m.filepicker.SetHeight(fpHeight)
 
 	fpStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder())
@@ -315,6 +317,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	} else {
 		fpStyle = fpStyle.BorderForeground(lipgloss.Color("240")) // Dim border
 	}
+
 	fpView := fpStyle.Width(m.width - 4).Render(m.filepicker.View()) // -4 for paddings/borders
 
 	// 3. Text Input
@@ -324,6 +327,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	} else {
 		tiStyle = tiStyle.Foreground(lipgloss.Color("240"))
 	}
+
 	tiView := tiStyle.Render(m.textinput.View())
 
 	// Assemble Base Stack
@@ -375,4 +379,12 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	y := (screenHeight - lipgloss.Height(finalView)) / 2
 
 	return finalView, x, y
+}
+
+func (m *Model) cycleFocus() {
+	if m.textinput.Focused() {
+		m.textinput.Blur()
+	} else {
+		m.textinput.Focus()
+	}
 }

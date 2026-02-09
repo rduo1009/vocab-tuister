@@ -17,6 +17,7 @@ func UpdaterVal[M updatableVal[M]](cmds *[]tea.Cmd, toUpdate *M, msg tea.Msg) {
 	if cmd != nil {
 		*cmds = append(*cmds, cmd)
 	}
+
 	*toUpdate = updated
 }
 

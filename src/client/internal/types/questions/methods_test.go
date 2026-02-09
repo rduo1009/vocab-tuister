@@ -235,8 +235,10 @@ func TestGetChoices(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			var gotErr error
-			var got []string
+			var (
+				gotErr error
+				got    []string
+			)
 
 			defer func() {
 				if r := recover(); r != nil {

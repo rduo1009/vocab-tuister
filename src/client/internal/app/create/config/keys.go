@@ -112,17 +112,21 @@ func (fs *formSection) KeyMap() help.KeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
-	if m.FormSection.Focused() {
+	switch {
+	case m.FormSection.Focused():
 		if m.appStatus == CreateSessionConfig {
 			return m.FormSection.KeyMap()
-		} else {
-			return m.jsonview.KeyMap()
 		}
-	} else if m.HeaderSection.Focused() {
-		return m.HeaderSection.KeyMap()
-	} else if m.ResetButton.Focused() {
-		return m.ResetButton.KeyMap()
-	}
 
-	panic("unreachable")
+		return m.jsonview.KeyMap()
+
+	case m.HeaderSection.Focused():
+		return m.HeaderSection.KeyMap()
+
+	case m.ResetButton.Focused():
+		return m.ResetButton.KeyMap()
+
+	default:
+		panic("unreachable")
+	}
 }

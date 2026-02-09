@@ -23,6 +23,7 @@ func buttonStyle(focused bool) lipgloss.Style {
 			MarginRight(5).
 			Padding(0, 1)
 	}
+
 	return lipgloss.NewStyle().
 		Foreground(lipgloss.Color("#fff7db")).
 		Background(lipgloss.Color("#888b7e")).
@@ -37,6 +38,7 @@ func headerBorderStyle(focused bool) lipgloss.Style {
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color("#9a9afa"))
 	}
+
 	return lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(lipgloss.Color("#5f5fff"))

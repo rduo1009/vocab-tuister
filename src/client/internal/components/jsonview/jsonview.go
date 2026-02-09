@@ -51,7 +51,9 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	// Delegate all message handling to the viewport
 	// The viewport handles navigation keys (arrows, page up/down, etc.) internally
 	var cmd tea.Cmd
+
 	m.viewport, cmd = m.viewport.Update(msg)
+
 	return m, cmd
 }
 
@@ -129,6 +131,7 @@ func (m *Model) getHighlightedContent() string {
 
 	// Use chroma to syntax highlight the JSON
 	var buf bytes.Buffer
+
 	err := quick.Highlight(&buf, m.content, "json", "terminal256", "monokai")
 	if err != nil {
 		// If highlighting fails for any reason, fall back to plain text
@@ -140,5 +143,6 @@ func (m *Model) getHighlightedContent() string {
 	// Cache the highlighted output, removing any trailing newline
 	highlighted := buf.String()
 	m.highlighted = strings.TrimSuffix(highlighted, "\n")
+
 	return m.highlighted
 }

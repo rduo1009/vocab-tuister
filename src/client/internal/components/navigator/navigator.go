@@ -29,6 +29,7 @@ func (n *Navigator) Next() {
 	if len(n.Items) == 0 {
 		return
 	}
+
 	n.Items[n.Index].SetFocused(false)
 	n.Index = (n.Index + 1) % len(n.Items)
 	n.Items[n.Index].SetFocused(true)
@@ -38,6 +39,7 @@ func (n *Navigator) Previous() {
 	if len(n.Items) == 0 {
 		return
 	}
+
 	n.Items[n.Index].SetFocused(false)
 	n.Index = (n.Index - 1 + len(n.Items)) % len(n.Items)
 	n.Items[n.Index].SetFocused(true)
@@ -47,6 +49,7 @@ func (n *Navigator) Current() Navigable {
 	if len(n.Items) == 0 {
 		return nil
 	}
+
 	return n.Items[n.Index]
 }
 
@@ -59,6 +62,7 @@ func (n *Navigator) Add(component Navigable) {
 	// If this is the first item, set focus to it
 	if len(n.Items) == 1 {
 		n.Index = 0
+
 		component.SetFocused(true)
 	}
 }
@@ -69,6 +73,7 @@ func (n *Navigator) Remove(id string) {
 			// Unfocus if removing current
 			if i == n.Index {
 				item.SetFocused(false)
+
 				if len(n.Items) > 1 {
 					n.Index = (i - 1 + len(n.Items)) % len(n.Items)
 					n.Items[n.Index].SetFocused(true)
@@ -81,6 +86,7 @@ func (n *Navigator) Remove(id string) {
 
 			// Remove item
 			n.Items = append(n.Items[:i], n.Items[i+1:]...)
+
 			return
 		}
 	}

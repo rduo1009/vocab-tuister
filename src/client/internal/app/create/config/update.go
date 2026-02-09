@@ -49,16 +49,19 @@ func generateSessionConfig() tea.Msg {
 		_, ok := selected[key]
 		configMap[key] = ok
 	}
+
 	numberMultipleChoiceOptionsString, err := strconv.Atoi(numberMultipleChoiceOptions)
 	if err != nil {
 		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberMultipleChoiceOptions, err))
 	}
+
 	configMap["number-multiplechoice-options"] = numberMultipleChoiceOptionsString
 
 	numberOfQuestionsString, err := strconv.Atoi(numberOfQuestions)
 	if err != nil {
 		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberOfQuestions, err))
 	}
+
 	configMap["number-of-questions"] = numberOfQuestionsString
 
 	data, err := json.Marshal(configMap)
@@ -67,7 +70,8 @@ func generateSessionConfig() tea.Msg {
 	}
 
 	// Convert to Value and canonicalize to maintain alphabetical key ordering
-	var value jsontext.Value = data
+	value := jsontext.Value(data)
+
 	err = value.Canonicalize(
 		jsontext.WithIndent("  "),
 		jsontext.SpaceAfterColon(true),
@@ -87,7 +91,8 @@ func readSessionConfigFile(selectedFile string) tea.Cmd {
 			return app.ErrMsg(fmt.Errorf("failed to read session config file at %s: %w", selectedFile, err))
 		}
 
-		var value jsontext.Value = rawSessionConfig
+		value := jsontext.Value(rawSessionConfig)
+
 		err = value.Canonicalize(jsontext.WithIndent("  "),
 			jsontext.SpaceAfterColon(true),
 			jsontext.SpaceAfterComma(false),
@@ -105,21 +110,15 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		if m.HeaderSection.Focused() {
-			switch {
-			case key.Matches(msg, m.HeaderSection.KeyMap().PressButton):
-				cmds = append(cmds, util.MsgCmd(filepicker.FilepickStartMsg{ID: "configtuiFilepicker"}))
-			}
-		} else if m.ResetButton.Focused() {
-			switch {
-			case key.Matches(msg, m.ResetButton.KeyMap().PressButton):
-				m.form = DefaultForm()
-				m.form.State = huh.StateNormal
-				m.appStatus = CreateSessionConfig
-				cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
-					IDs: []string{m.ResetButton.ID()},
-				}))
-			}
+		if m.HeaderSection.Focused() && key.Matches(msg, m.HeaderSection.KeyMap().PressButton) {
+			cmds = append(cmds, util.MsgCmd(filepicker.StartMsg{ID: "configtuiFilepicker"}))
+		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
+			m.form = DefaultForm()
+			m.form.State = huh.StateNormal
+			m.appStatus = CreateSessionConfig
+			cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
+				IDs: []string{m.ResetButton.ID()},
+			}))
 		}
 
 	case rawSessionConfigMsg:
@@ -127,7 +126,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		m.rawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.rawSessionConfig)
 
-	case filepicker.FilepickPickedMsg:
+	case filepicker.PickedMsg:
 		if msg.ID == "configtuiFilepicker" {
 			cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
 		}
@@ -137,6 +136,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		switch m.form.State {
 		case huh.StateNormal:
 			util.UpdaterPtr(&cmds, m.form, msg)
+
 		case huh.StateCompleted:
 			switch m.appStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
@@ -154,6 +154,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 				// NOTE: use tea.Sequence as these need to be ran in order
 				// also note that `cmds` could not be altered after this, so returning early is fine
 				return m, tea.Sequence(cmds...)
+
 			case ReviewSessionConfig:
 				util.UpdaterPtr(&cmds, m.jsonview, msg)
 			}

@@ -67,25 +67,23 @@ func (k vocabEditorKeyMap) FullHelp() [][]key.Binding {
 	}
 }
 
-func VocabEditorKeyMap() vocabEditorKeyMap {
-	return vocabEditorKeyMap{
-		PreviousFocus: key.NewBinding(
-			key.WithKeys("["),
-			key.WithHelp("[", "focus previous"),
-		),
-		NextFocus: key.NewBinding(
-			key.WithKeys("]"),
-			key.WithHelp("]", "focus next"),
-		),
-		Help: key.NewBinding(
-			key.WithKeys("ctrl+h"),
-			key.WithHelp("ctrl+h", "toggle additional help"),
-		),
-		Quit: key.NewBinding(
-			key.WithKeys("ctrl+q", "ctrl+c"),
-			key.WithHelp("ctrl+q", "quit"),
-		),
-	}
+var defaultVocabEditorKeyMap = vocabEditorKeyMap{
+	PreviousFocus: key.NewBinding(
+		key.WithKeys("["),
+		key.WithHelp("[", "focus previous"),
+	),
+	NextFocus: key.NewBinding(
+		key.WithKeys("]"),
+		key.WithHelp("]", "focus next"),
+	),
+	Help: key.NewBinding(
+		key.WithKeys("ctrl+h"),
+		key.WithHelp("ctrl+h", "toggle additional help"),
+	),
+	Quit: key.NewBinding(
+		key.WithKeys("ctrl+q", "ctrl+c"),
+		key.WithHelp("ctrl+q", "quit"),
+	),
 }
 
 type selectButtonKeyMap struct {
@@ -130,11 +128,14 @@ func (sb *selectButton) KeyMap() selectButtonKeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
-	if m.HeaderSection.Focused() {
+	switch {
+	case m.HeaderSection.Focused():
 		return m.HeaderSection.KeyMap()
-	} else if m.VocabEditor.Focused() {
-		return VocabEditorKeyMap()
-	} else if m.SelectButton.Focused() {
+
+	case m.VocabEditor.Focused():
+		return defaultVocabEditorKeyMap
+
+	case m.SelectButton.Focused():
 		return m.SelectButton.KeyMap()
 	}
 

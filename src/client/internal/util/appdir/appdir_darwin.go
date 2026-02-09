@@ -17,6 +17,7 @@ func (d *dirs) UserConfig() string {
 	if home == "" {
 		home = "."
 	}
+
 	return filepath.Join(home, "Library", "Application Support", d.name)
 }
 
@@ -25,6 +26,7 @@ func (d *dirs) UserCache() string {
 	if home == "" {
 		home = "."
 	}
+
 	return filepath.Join(home, "Library", "Caches", d.name)
 }
 
@@ -33,6 +35,7 @@ func (d *dirs) UserLogs() string {
 	if home == "" {
 		home = "."
 	}
+
 	return filepath.Join(home, "Library", "Logs", d.name)
 }
 
@@ -41,5 +44,6 @@ func (d *dirs) UserData() string {
 	if home == "" {
 		home = "."
 	}
+
 	return filepath.Join(home, "Library", "Application Support", d.name)
 }

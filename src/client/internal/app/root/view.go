@@ -39,5 +39,6 @@ func (m *Model) View() tea.View {
 	v := tea.NewView(lipgloss.NewCompositor(layers...).Render())
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"
+
 	return v
 }

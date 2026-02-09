@@ -20,24 +20,29 @@ func (m *Model) HasOverlay() bool {
 }
 
 func (m *Model) OverlayView(width, height int) (view string, x, y int) {
-	if m.configtuiFilepickerActive {
+	switch {
+	case m.configtuiFilepickerActive:
 		m.configtuiFilepicker.SetWidth(width / 2)
 		m.configtuiFilepicker.SetHeight(height / 2)
 		return m.configtuiFilepicker.View(width, height)
-	} else if m.listtuiFilepickerActive {
+
+	case m.listtuiFilepickerActive:
 		m.listtuiFilepicker.SetWidth(width / 2)
 		m.listtuiFilepicker.SetHeight(height / 2)
 		return m.listtuiFilepicker.View(width, height)
-	} else if m.listtuiSaveAsActive {
+
+	case m.listtuiSaveAsActive:
 		m.listtuiSaveAs.SetWidth(width / 2)
 		m.listtuiSaveAs.SetHeight(height / 2)
 		return m.listtuiSaveAs.View(width, height)
-	} else if m.listtuiModeDropdownActive {
+
+	case m.listtuiModeDropdownActive:
 		view = m.listtuiModeDropdown.View()
 		x = 12
 		y = 4
 		return view, x, y
 	}
+
 	panic("unreachable")
 }
 

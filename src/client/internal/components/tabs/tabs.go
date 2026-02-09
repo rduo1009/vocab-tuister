@@ -18,6 +18,7 @@ func inactiveTabBorder(b lipgloss.Border) lipgloss.Border {
 	b.TopRight = "╮"
 	b.BottomLeft = "┴"
 	b.BottomRight = "┴"
+
 	return b
 }
 
@@ -30,6 +31,7 @@ func activeTabBorder(b lipgloss.Border) lipgloss.Border {
 	b.TopRight = "╮"
 	b.BottomLeft = "┘"
 	b.BottomRight = "└"
+
 	return b
 }
 
@@ -61,6 +63,7 @@ func inactiveTabStyle(focused bool) lipgloss.Style {
 			BorderForeground(highlightFocusedColour).
 			Padding(0, 5)
 	}
+
 	return lipgloss.NewStyle().
 		Border(inactiveTabBorder(lipgloss.NormalBorder()), true).
 		BorderForeground(highlightColour).
@@ -71,6 +74,7 @@ func activeTabStyle(focused bool) lipgloss.Style {
 	if focused {
 		return inactiveTabStyle(focused).Border(activeTabBorder(lipgloss.NormalBorder()), true)
 	}
+
 	return inactiveTabStyle(focused).Border(activeTabBorder(lipgloss.NormalBorder()), true)
 }
 
@@ -130,6 +134,7 @@ func (t *Model) View() string {
 	var renderedTabs []string
 	for i, pageName := range t.tabNames {
 		var style lipgloss.Style
+
 		isActive := i == t.active
 		// TODO: Refactor this further after moving styles to styles package.
 		if isActive {
@@ -140,6 +145,7 @@ func (t *Model) View() string {
 
 		renderedTabs = append(renderedTabs, style.Render(pageName))
 	}
+
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 
 	// Gap to the right

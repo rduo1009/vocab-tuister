@@ -14,63 +14,67 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-	case filepicker.FilepickStartMsg:
+	case filepicker.StartMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
 			m.configtuiFilepickerActive = true
+
 		case "listtuiFilepicker":
 			m.listtuiFilepickerActive = true
 		}
 
-	case filepicker.FilepickPickedMsg:
+	case filepicker.PickedMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
 			m.configtuiFilepickerActive = false
+
 		case "listtuiFilepicker":
 			m.listtuiFilepickerActive = false
 		}
 
-	case filepicker.FilepickExitMsg:
+	case filepicker.ExitMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
 			m.configtuiFilepickerActive = false
+
 		case "listtuiFilepicker":
 			m.listtuiFilepickerActive = false
 		}
 
-	case saveas.SaveAsStartMsg:
-		switch msg.ID {
-		case "listtuiSaveAs":
+	case saveas.StartMsg:
+		if msg.ID == "listtuiSaveAs" {
 			m.listtuiSaveAsActive = true
 		}
 
-	case saveas.SaveAsSelectedMsg:
-		switch msg.ID {
-		case "listtuiSaveAs":
+	case saveas.SelectedMsg:
+		if msg.ID == "listtuiSaveAs" {
 			m.listtuiSaveAsActive = false
 		}
 
-	case saveas.SaveAsExitMsg:
-		switch msg.ID {
-		case "listtuiSaveAs":
+	case saveas.ExitMsg:
+		if msg.ID == "listtuiSaveAs" {
 			m.listtuiSaveAsActive = false
 		}
 
-	case dropdown.DropdownStartMsg:
+	case dropdown.StartMsg:
 		m.listtuiModeDropdownActive = true
 
-	case dropdown.DropdownPickedMsg, dropdown.DropdownExitMsg:
+	case dropdown.PickedMsg, dropdown.ExitMsg:
 		m.listtuiModeDropdownActive = false
 	}
 
 	if m.HasOverlay() {
-		if m.configtuiFilepickerActive {
+		switch {
+		case m.configtuiFilepickerActive:
 			util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
-		} else if m.listtuiFilepickerActive {
+
+		case m.listtuiFilepickerActive:
 			util.UpdaterPtr(&cmds, m.listtuiFilepicker, msg)
-		} else if m.listtuiSaveAsActive {
+
+		case m.listtuiSaveAsActive:
 			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
-		} else if m.listtuiModeDropdownActive {
+
+		case m.listtuiModeDropdownActive:
 			util.UpdaterPtr(&cmds, m.listtuiModeDropdown, msg)
 		}
 	} else {
@@ -79,6 +83,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			util.UpdaterPtr(&cmds, m.listtuiFilepicker, msg)
 			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
 		}
+
 		util.UpdaterPtr(&cmds, m.configtui, msg)
 		util.UpdaterPtr(&cmds, m.listtui, msg)
 	}

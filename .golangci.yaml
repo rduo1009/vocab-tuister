@@ -9,6 +9,9 @@ linters:
     - dupl
     - errcheck
     - errname
+    - exhaustive
+    - funcorder
+    - gocheckcompilerdirectives
     - goconst
     - gocritic
     - godot
@@ -16,10 +19,12 @@ linters:
     - govet
     - ineffassign
     - misspell
+    - modernize
     - nakedret
     - nilerr
     - noctx
     - nolintlint
+    - perfsprint
     - revive
     - rowserrcheck
     - staticcheck
@@ -29,6 +34,13 @@ linters:
     - unused
     - wastedassign
     - whitespace
+    - wsl_v5
+
+  settings:
+    wsl_v5:
+      branch-max-lines: 5
+      case-max-lines: 1
+      allow-whole-block: true
 
   exclusions:
     generated: lax

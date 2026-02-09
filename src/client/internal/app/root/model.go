@@ -38,6 +38,7 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 	for i, v := range items {
 		res[i] = v
 	}
+
 	return res
 }
 

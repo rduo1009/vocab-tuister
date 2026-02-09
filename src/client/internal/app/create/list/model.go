@@ -17,11 +17,14 @@ func (m createListStatus) String() string {
 	switch m {
 	case InbuiltList:
 		return "Inbuilt list"
+
 	case LocalList:
 		return "Local list"
+
 	case CustomList:
 		return "Create list"
 	}
+
 	panic("unreachable")
 }
 
@@ -82,6 +85,7 @@ func New(inbuiltListDir string) *Model {
 
 	ve.SetCursorMode(vocabeditor.CursorBlink)
 	ve.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
+
 	selectButton := selectButton{focused: false}
 
 	return &Model{
