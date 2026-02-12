@@ -5,7 +5,9 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -69,6 +71,22 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		for _, id := range msg.IDs {
 			m.navigator.Remove(id)
 		}
+
+	case navigator.ReplaceNavigableMsg:
+		m.navigator.Replace(msg.ID, msg.Components...)
+
+	case create.LoadDataReqMsg:
+		cmds = append(
+			cmds,
+			loadDataCmd(msg.VocabList, msg.RawSessionConfig, 5500), // TODO: actual server port here
+		)
+
+	case ListConfigLoadedMsg:
+		m.vocabList = msg.vocabList
+		m.sessionConfig = msg.sessionConfig
+		// XXX: Perhaps a better solution to this whole thing could be done to avoid needing to do this.
+		m.pages[modes.Create].(*create.Model).LoadSection.ListStatus = create.StatusLoaded
+		m.pages[modes.Create].(*create.Model).LoadSection.ConfigStatus = create.StatusLoaded
 
 	case app.ErrMsg:
 		m.err = msg

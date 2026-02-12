@@ -50,19 +50,21 @@ func generateSessionConfig() tea.Msg {
 		configMap[key] = ok
 	}
 
-	numberMultipleChoiceOptionsString, err := strconv.Atoi(numberMultipleChoiceOptions)
+	numberMultipleChoiceOptions, err := strconv.Atoi(numberMultipleChoiceOptionsString)
 	if err != nil {
-		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberMultipleChoiceOptions, err))
+		return app.ErrMsg(
+			fmt.Errorf("failed to convert %s to integer: %w", numberMultipleChoiceOptionsString, err),
+		)
 	}
 
-	configMap["number-multiplechoice-options"] = numberMultipleChoiceOptionsString
+	configMap["number-multiplechoice-options"] = numberMultipleChoiceOptions
 
-	numberOfQuestionsString, err := strconv.Atoi(numberOfQuestions)
+	numberOfQuestions, err := strconv.Atoi(numberOfQuestionsString)
 	if err != nil {
-		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberOfQuestions, err))
+		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberOfQuestionsString, err))
 	}
 
-	configMap["number-of-questions"] = numberOfQuestionsString
+	configMap["number-of-questions"] = numberOfQuestions
 
 	data, err := json.Marshal(configMap)
 	if err != nil {
@@ -116,6 +118,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			m.form = DefaultForm()
 			m.form.State = huh.StateNormal
 			m.appStatus = CreateSessionConfig
+			m.RawSessionConfig = ""
 			cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
 				IDs: []string{m.ResetButton.ID()},
 			}))
@@ -123,8 +126,8 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	case rawSessionConfigMsg:
 		m.appStatus = ReviewSessionConfig
-		m.rawSessionConfig = string(msg)
-		m.jsonview.SetContent(m.rawSessionConfig)
+		m.RawSessionConfig = string(msg)
+		m.jsonview.SetContent(m.RawSessionConfig)
 
 	case filepicker.PickedMsg:
 		if msg.ID == "configtuiFilepicker" {
@@ -140,14 +143,11 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		case huh.StateCompleted:
 			switch m.appStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
-				// navigator: [HeaderSection, FormSection]
+				// navigator: [..., HeaderSection, FormSection, ...]
 				cmds = append(cmds, generateSessionConfig,
-					// now navigator: [HeaderSection]
-					util.MsgCmd(navigator.RemoveNavigableMsg{
-						IDs: []string{m.FormSection.ID()},
-					}),
-					// now navigator: [HeaderSection, ResetButton, FormSection]
-					util.MsgCmd(navigator.AddNavigableMsg{
+					// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
+					util.MsgCmd(navigator.ReplaceNavigableMsg{
+						ID:         m.FormSection.ID(),
 						Components: []navigator.Navigable{m.ResetButton, m.FormSection},
 					}),
 				)

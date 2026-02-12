@@ -71,7 +71,7 @@ type Model struct {
 
 	// Application state
 	appStatus        createSessionConfigStatus
-	rawSessionConfig string
+	RawSessionConfig string
 }
 
 func New() *Model {

@@ -9,21 +9,16 @@ import (
 
 func (m *Model) Init() tea.Cmd {
 	return tea.Batch(
-		tea.Sequence(
-			util.MsgCmd(navigator.AddNavigableMsg{
-				Components: []navigator.Navigable{
-					m.listtui.HeaderSection,
-					m.listtui.VocabEditor,
-					m.listtui.SelectButton,
-				},
-			}),
-			util.MsgCmd(navigator.AddNavigableMsg{
-				Components: []navigator.Navigable{
-					m.configtui.HeaderSection,
-					m.configtui.FormSection,
-				},
-			}),
-		),
+		util.MsgCmd(navigator.AddNavigableMsg{
+			Components: []navigator.Navigable{
+				m.listtui.HeaderSection,
+				m.listtui.VocabEditor,
+				m.listtui.SelectButton,
+				m.configtui.HeaderSection,
+				m.configtui.FormSection,
+				m.LoadSection,
+			},
+		}),
 		m.listtui.Init(),
 		m.configtui.Init(),
 		m.listtuiModeDropdown.Init(),

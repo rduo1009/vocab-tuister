@@ -1,6 +1,7 @@
 package create
 
 import (
+	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
@@ -10,10 +11,23 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
+type LoadDataReqMsg struct {
+	VocabList        string
+	RawSessionConfig string
+}
+
 func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) {
+			cmds = append(cmds, util.MsgCmd(LoadDataReqMsg{
+				VocabList:        m.listtui.VocabEditor.GetCurrentContent(),
+				RawSessionConfig: m.configtui.RawSessionConfig,
+			}))
+		}
+
 	case filepicker.StartMsg:
 		switch msg.ID {
 		case "configtuiFilepicker":
@@ -84,8 +98,35 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
 		}
 
+		if _, ok := msg.(tea.KeyMsg); ok &&
+			m.listtui.VocabEditor.IsInsertMode() &&
+			m.listtui.VocabEditor.Focused() &&
+			m.LoadSection.ListStatus == StatusLoaded {
+			m.LoadSection.ListStatus = StatusPending
+		}
+
 		util.UpdaterPtr(&cmds, m.configtui, msg)
 		util.UpdaterPtr(&cmds, m.listtui, msg)
+	}
+
+	if m.listtui.VocabEditor.GetCurrentContent() == "" {
+		if m.LoadSection.ListStatus == StatusPending {
+			m.LoadSection.ListStatus = StatusMissing
+		}
+	} else {
+		if m.LoadSection.ListStatus == StatusMissing {
+			m.LoadSection.ListStatus = StatusPending
+		}
+	}
+
+	if m.configtui.RawSessionConfig == "" {
+		if m.LoadSection.ConfigStatus == StatusPending {
+			m.LoadSection.ConfigStatus = StatusMissing
+		}
+	} else {
+		if m.LoadSection.ConfigStatus == StatusMissing {
+			m.LoadSection.ConfigStatus = StatusPending
+		}
 	}
 
 	return m, tea.Batch(cmds...)

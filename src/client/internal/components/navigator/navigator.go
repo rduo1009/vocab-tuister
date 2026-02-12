@@ -1,8 +1,12 @@
 package navigator
 
 type (
-	AddNavigableMsg    struct{ Components []Navigable }
-	RemoveNavigableMsg struct{ IDs []string }
+	AddNavigableMsg     struct{ Components []Navigable }
+	RemoveNavigableMsg  struct{ IDs []string }
+	ReplaceNavigableMsg struct {
+		ID         string
+		Components []Navigable
+	}
 )
 
 // Navigable represents any component that can receive navigation focus.
@@ -86,6 +90,45 @@ func (n *Navigator) Remove(id string) {
 
 			// Remove item
 			n.Items = append(n.Items[:i], n.Items[i+1:]...)
+
+			return
+		}
+	}
+}
+
+func (n *Navigator) Replace(id string, components ...Navigable) {
+	for i, item := range n.Items {
+		if item.ID() == id {
+			// Unfocus if replacing current
+			wasFocused := (i == n.Index)
+			if wasFocused {
+				item.SetFocused(false)
+			}
+
+			// Replace item with new components
+			newItems := make([]Navigable, 0, len(n.Items)-1+len(components))
+			newItems = append(newItems, n.Items[:i]...)
+			newItems = append(newItems, components...)
+			newItems = append(newItems, n.Items[i+1:]...)
+			n.Items = newItems
+
+			if len(n.Items) == 0 {
+				n.Index = 0
+
+				return
+			}
+
+			if wasFocused {
+				if len(components) > 0 {
+					n.Index = i
+				} else {
+					n.Index = (i - 1 + len(n.Items)) % len(n.Items)
+				}
+
+				n.Items[n.Index].SetFocused(true)
+			} else if i < n.Index {
+				n.Index += len(components) - 1
+			}
 
 			return
 		}

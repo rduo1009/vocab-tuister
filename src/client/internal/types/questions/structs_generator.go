@@ -12,7 +12,7 @@ import (
 
 const (
 	outputFilepath = "questions_structs.go"
-	jsonDir        = "../../../scripts/json_output/questions"
+	jsonDir        = "../../../../scripts/json_output/questions"
 )
 
 func removeStartLines(s string, n int) string {

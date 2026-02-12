@@ -45,7 +45,7 @@ type Model struct {
 	help       help.Model
 
 	selectedFile string
-	err          error // TODO: use `app.ErrMsg` instead
+	err          error
 }
 
 type filePickerKeys struct {

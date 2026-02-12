@@ -4,22 +4,22 @@ import (
 	"charm.land/huh/v2"
 )
 
-// TODO: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
+// XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
 
 var (
-	partsOfSpeechExclusions     []string
-	verbExclusions              []string
-	participleExclusions        []string
-	otherVerbExclusions         []string
-	nounExclusions              []string
-	adjectiveExclusions         []string
-	adverbExclusions            []string
-	pronounExclusions           []string
-	regularExclusions           []string
-	miscellaneous               []string
-	questionTypes               []string
-	numberMultipleChoiceOptions = "3"
-	numberOfQuestions           = "50"
+	partsOfSpeechExclusions           []string
+	verbExclusions                    []string
+	participleExclusions              []string
+	otherVerbExclusions               []string
+	nounExclusions                    []string
+	adjectiveExclusions               []string
+	adverbExclusions                  []string
+	pronounExclusions                 []string
+	regularExclusions                 []string
+	miscellaneous                     []string
+	questionTypes                     []string
+	numberMultipleChoiceOptionsString = "3"
+	numberOfQuestionsString           = "50"
 )
 
 var allKeys = []string{
@@ -92,6 +92,7 @@ var allKeys = []string{
 	"exclude-pronoun-vocative",
 	"exclude-pronouns",
 	"exclude-regulars",
+	"exclude-semi-deponents",
 	"exclude-supines",
 	"exclude-verb-1st-person",
 	"exclude-verb-2nd-person",
@@ -161,6 +162,7 @@ func DefaultForm() *huh.Form {
 				Title("Verb exclusions").
 				Options(
 					huh.NewOption("Deponent verbs", "exclude-deponents"),
+					huh.NewOption("Semi-deponent verbs", "exclude-semi-deponents"),
 					huh.NewOption("First conjugation verbs", "exclude-verb-first-conjugation"),
 					huh.NewOption("Second conjugation verbs", "exclude-verb-second-conjugation"),
 					huh.NewOption("Third conjugation verbs", "exclude-verb-third-conjugation"),
@@ -326,8 +328,8 @@ func DefaultForm() *huh.Form {
 				Value(&questionTypes),
 			huh.NewInput().
 				Title("Number of options in multiple choice questions").
-				Value(&numberMultipleChoiceOptions),
-			huh.NewInput().Title("Number of questions").Value(&numberOfQuestions),
+				Value(&numberMultipleChoiceOptionsString),
+			huh.NewInput().Title("Number of questions").Value(&numberOfQuestionsString),
 		),
 	)
 }

@@ -30,7 +30,10 @@ logger = logging.getLogger(__name__)
 
 dirs = PlatformDirs("vocab-tuister", "rduo1009")
 app = Flask(__name__)
+
 vocab_list: VocabList | None = None
+question_amount: int | None = None
+session_config: SessionConfig | None = None
 settings: Settings | None = None
 
 
@@ -42,6 +45,7 @@ class ErrorResponse(TypedDict):
     """
 
     error: str
+    message: str
     details: str
 
 
@@ -101,6 +105,7 @@ def send_vocab():
         logger.exception("Invalid vocab file format.")
         return ErrorResponse(
             error="InvalidVocabFileFormatError",
+            message=f"{e.message} (error on line {e.line_number})",
             details=json.dumps({
                 "line-number": e.line_number,
                 "msg": e.message,
@@ -111,24 +116,12 @@ def send_vocab():
     return "Vocab file received."
 
 
-def _generate_questions_json(
-    vocab_list: VocabList, question_amount: int, session_config: SessionConfig
-):
-    assert settings is not None
-    return [
-        json.loads(json.dumps(question, cls=QuestionClassEncoder))
-        for question in ask_question_without_sr(
-            vocab_list, question_amount, session_config, settings
-        )
-    ]
-
-
-@app.route("/session", methods=["POST"])
-def create_session():
-    if not vocab_list:  # should never happen, so raising exception
-        raise ValueError("Vocab file has not been provided.")
+@app.route("/send-config", methods=["POST"])
+def send_config():
+    global session_config
 
     logger.info("Validating settings.")
+
     payload = request.get_json()
     question_amount = payload["number-of-questions"]
     session_config = payload["config"]
@@ -142,6 +135,7 @@ def create_session():
         return (
             ErrorResponse(
                 error="InvalidSessionConfigError",
+                message="Invalid session config: 'number-of-questions' must be an integer.",
                 details=json.dumps([  # trying to mimic return of ValidationError.json()
                     {
                         "type": "int_type",
@@ -158,10 +152,38 @@ def create_session():
     except ValidationError as e:
         logger.exception("Invalid session config.")
         return ErrorResponse(
-            error="InvalidSessionConfigError", details=e.json()
+            error="InvalidSessionConfigError",
+            message=f"Invalid session config: {e!s}",
+            details=e.json(),
         ), 400
 
-    logger.info("Returning %d questions.", question_amount)
+    return "Session config received."
+
+
+def _generate_questions_json(
+    vocab_list: VocabList, question_amount: int, session_config: SessionConfig
+):
+    assert settings is not None
+    return [
+        json.loads(json.dumps(question, cls=QuestionClassEncoder))
+        for question in ask_question_without_sr(
+            vocab_list, question_amount, session_config, settings
+        )
+    ]
+
+
+@app.route("/session", methods=["POST"])
+def create_session():
+    if not vocab_list:
+        raise ValueError("Vocab file has not been provided.")
+
+    if not question_amount:
+        raise ValueError("The number of questions has not been provided.")
+
+    if not session_config:
+        raise ValueError("Session config has not been provided.")
+
+    logger.info("Returning %d questions.")
     return jsonify(
         _generate_questions_json(vocab_list, question_amount, session_config)
     )

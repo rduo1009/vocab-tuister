@@ -69,7 +69,7 @@ func New(inbuiltListDir string) *Model {
 			modes.Test:     nil,
 			modes.Help:     nil,
 			modes.Settings: nil,
-		}, // TODO: Do this
+		},
 		tabs:        t,
 		help:        &h,
 		overlayHelp: &overlayHelp,

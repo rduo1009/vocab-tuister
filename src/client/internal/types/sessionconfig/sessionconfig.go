@@ -72,6 +72,7 @@ type SessionConfig struct {
 	ExcludePronounVocative                    bool `json:"exclude-pronoun-vocative"`
 	ExcludePronouns                           bool `json:"exclude-pronouns"`
 	ExcludeRegulars                           bool `json:"exclude-regulars"`
+	ExcludeSemiDeponents                      bool `json:"exclude-semi-deponents"`
 	ExcludeSupines                            bool `json:"exclude-supines"`
 	ExcludeVerb1stPerson                      bool `json:"exclude-verb-1st-person"`
 	ExcludeVerb2ndPerson                      bool `json:"exclude-verb-2nd-person"`

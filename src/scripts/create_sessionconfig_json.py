@@ -53,7 +53,7 @@ def _model_zero_values(model: type[BaseModel]) -> dict[str, Any]:
 
 
 if __name__ == "__main__":
-    filename: str = "Settings_sample.json"
+    filename: str = "SessionConfig_sample.json"
     output_path: Path = Path(Path(__file__).parent / "json_output" / filename)
     output_path.parent.mkdir(parents=True, exist_ok=True)  # needed?
 
