@@ -10,8 +10,8 @@ require (
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/atotto/clipboard v0.1.4
 	github.com/spf13/cobra v1.10.1
-	golang.org/x/sys v0.38.0
-	golang.org/x/term v0.36.0
+	golang.org/x/sys v0.41.0
+	golang.org/x/term v0.40.0
 )
 
 require (
@@ -86,13 +86,14 @@ require (
 	github.com/ysmood/leakless v0.9.0 // indirect
 	github.com/yuin/goldmark v1.7.4 // indirect
 	github.com/yuin/goldmark-emoji v1.0.3 // indirect
-	golang.org/x/crypto v0.43.0 // indirect
+	golang.org/x/crypto v0.48.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/mod v0.29.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
-	golang.org/x/sync v0.18.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
-	golang.org/x/tools v0.38.0 // indirect
+	golang.org/x/mod v0.33.0 // indirect
+	golang.org/x/net v0.50.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/telemetry v0.0.0-20260209163413-e7419c687ee4 // indirect
+	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/tools v0.42.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
@@ -106,5 +107,6 @@ tool (
 	github.com/charmbracelet/vhs
 	github.com/mitranim/gow
 	github.com/wadey/gocovmerge
+	golang.org/x/tools/cmd/deadcode
 	golang.org/x/tools/cmd/stringer
 )

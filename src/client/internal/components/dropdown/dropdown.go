@@ -32,10 +32,6 @@ type item struct {
 
 func (i item) FilterValue() string { return "" }
 
-type StringItem string
-
-func (s StringItem) String() string { return string(s) }
-
 type itemDelegate struct{}
 
 func (d itemDelegate) Height() int                             { return 1 }

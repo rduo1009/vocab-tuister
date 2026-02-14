@@ -43,6 +43,9 @@ linters:
       case-max-lines: 1
       allow-whole-block: true
 
+    funcorder:
+      struct-method: false
+
   exclusions:
     generated: lax
     presets:
@@ -52,7 +55,7 @@ linters:
       - std-error-handling
     paths:
       - src/_vendor
-      - src/client/internal/components/vocabeditor # TODO: Remove this
+      - src/client/internal/components/vocabeditor
       - third_party$
       - builtin$
       - examples$

@@ -60,6 +60,7 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 		if _, err := p.Run(); err != nil {
 			return err
 		}
+
 		return nil
 	},
 }
