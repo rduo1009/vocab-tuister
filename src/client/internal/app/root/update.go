@@ -17,7 +17,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		// Applied to all pages of the TUI
 		if key.Matches(msg, m.keys.Quit) {
 			return m, tea.Quit

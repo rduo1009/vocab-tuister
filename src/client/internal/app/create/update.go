@@ -20,7 +20,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) {
 			cmds = append(cmds, util.MsgCmd(LoadDataReqMsg{
 				VocabList:        m.listtui.VocabEditor.GetCurrentContent(),
@@ -92,13 +92,13 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			util.UpdaterPtr(&cmds, m.listtuiModeDropdown, msg)
 		}
 	} else {
-		if _, ok := msg.(tea.KeyMsg); !ok {
+		if _, ok := msg.(tea.KeyPressMsg); !ok {
 			util.UpdaterPtr(&cmds, m.configtuiFilepicker, msg)
 			util.UpdaterPtr(&cmds, m.listtuiFilepicker, msg)
 			util.UpdaterPtr(&cmds, m.listtuiSaveAs, msg)
 		}
 
-		if _, ok := msg.(tea.KeyMsg); ok &&
+		if _, ok := msg.(tea.KeyPressMsg); ok &&
 			m.listtui.VocabEditor.IsInsertMode() &&
 			m.listtui.VocabEditor.Focused() &&
 			m.LoadSection.ListStatus == StatusLoaded {

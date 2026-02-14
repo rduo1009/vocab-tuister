@@ -41,7 +41,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		if m.HeaderSection.Focused() {
 			if key.Matches(msg, m.HeaderSection.KeyMap().OpenDropdown) {
 				cmds = append(cmds, util.MsgCmd(dropdown.StartMsg{}))

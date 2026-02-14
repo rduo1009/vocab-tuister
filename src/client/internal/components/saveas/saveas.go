@@ -128,7 +128,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 			// cmds = append(cmds, m.filepicker.Init())
 		}
 
-	case tea.KeyMsg:
+	case tea.KeyPressMsg:
 		// 1. Handle Overwrite Confirmation Mode
 		if m.confirmOverwrite {
 			switch msg.String() {
@@ -259,8 +259,8 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	} else {
 		// Even if not focused, we might want to update filepicker for non-key messages
 		// (like window resize, or async file loading if it had any).
-		// However, we must filter out KeyMsg.
-		if _, ok := msg.(tea.KeyMsg); !ok {
+		// However, we must filter out KeyPressMsg.
+		if _, ok := msg.(tea.KeyPressMsg); !ok {
 			util.UpdaterVal(&cmds, &m.filepicker, msg)
 		}
 	}
