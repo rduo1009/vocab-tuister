@@ -61,8 +61,8 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.27 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
-	github.com/mitranim/gg v0.1.29 // indirect
-	github.com/mitranim/gow v0.0.0-20250926091427-aad163e590a8 // indirect
+	github.com/mitranim/gg v0.1.31 // indirect
+	github.com/mitranim/gow v0.0.0-20260212131737-37335dcb6fe0 // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/go-app-paths v0.2.2 // indirect

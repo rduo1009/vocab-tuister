@@ -131,8 +131,12 @@ github.com/mitchellh/hashstructure/v2 v2.0.2 h1:vGKWl0YJqUNxE8d+h8f6NJLcCJrgbhC4
 github.com/mitchellh/hashstructure/v2 v2.0.2/go.mod h1:MG3aRVU/N29oo/V/IhBX8GR/zz4kQkprJgF2EVszyDE=
 github.com/mitranim/gg v0.1.29 h1:Jpu9tWq+RpDoeMds3KyG0ebErsxXKqGBiP34VBCIidA=
 github.com/mitranim/gg v0.1.29/go.mod h1:x2V+nJJOpeMl/XEoHou9zlTvFxYAcGOCqOAKpVkF0Yc=
+github.com/mitranim/gg v0.1.31 h1:fqHz57cY9vDwRBQxnj/PA5a4U4/ZxQxYzxH07xKlhzw=
+github.com/mitranim/gg v0.1.31/go.mod h1:x2V+nJJOpeMl/XEoHou9zlTvFxYAcGOCqOAKpVkF0Yc=
 github.com/mitranim/gow v0.0.0-20250926091427-aad163e590a8 h1:TpGHxDFAli5/0EIvKDdnVuUe6Bbgxpcn1GLLe+6UwF8=
 github.com/mitranim/gow v0.0.0-20250926091427-aad163e590a8/go.mod h1:QMe54SwKHDjY6vv71rGoGCgIYnKLWYNhS3Bf/8R7YRI=
+github.com/mitranim/gow v0.0.0-20260212131737-37335dcb6fe0 h1:7kTyWw4QfLER3qiQk8XEc8PQKjExwpyPw65HKI5iFj4=
+github.com/mitranim/gow v0.0.0-20260212131737-37335dcb6fe0/go.mod h1:0D7n3WoAzgZq5YJmt5q3YgbLkwsUjtYQyPZCvUdB3W4=
 github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 h1:ZK8zHtRHOkbHy6Mmr5D264iyp3TiX5OmNcI5cIARiQI=
 github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6/go.mod h1:CJlz5H+gyd6CUWT45Oy4q24RdLyn7Md9Vj2/ldJBSIo=
 github.com/muesli/cancelreader v0.2.2 h1:3I4Kt4BQjOR54NavqnDogx/MIoWBFa0StPA8ELUXHmA=
