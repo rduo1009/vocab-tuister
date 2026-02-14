@@ -7,6 +7,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
@@ -24,6 +25,7 @@ type Model struct {
 	tabs        *tabs.Model
 	help        *help.Model
 	overlayHelp *help.Model
+	errorDialog errordialog.Model
 
 	// Application state
 	keys          keyMap
@@ -75,5 +77,6 @@ func New(inbuiltListDir string) *Model {
 		overlayHelp: &overlayHelp,
 		keys:        keys,
 		navigator:   nav,
+		errorDialog: errordialog.New(),
 	}
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
@@ -21,6 +22,10 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Applied to all pages of the TUI
 		if key.Matches(msg, m.keys.Quit) {
 			return m, tea.Quit
+		}
+
+		if m.errorDialog.Visible() {
+			util.UpdaterVal(&cmds, &m.errorDialog, msg)
 		}
 
 		if !currentPageModel.HasOverlay() {
@@ -90,7 +95,10 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case app.ErrMsg:
 		m.err = msg
-		return m, tea.Quit
+		return m, m.errorDialog.SetError(msg)
+
+	case errordialog.TimeoutMsg:
+		util.UpdaterVal(&cmds, &m.errorDialog, msg)
 	}
 
 	util.UpdaterPtr(&cmds, currentPageModel, msg)

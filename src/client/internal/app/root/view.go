@@ -36,6 +36,16 @@ func (m *Model) View() tea.View {
 		layers = []*lipgloss.Layer{lipgloss.NewLayer(fullView)}
 	}
 
+	if m.errorDialog.Visible() {
+		m.errorDialog.SetWidth(m.width)
+		m.errorDialog.SetHeight(m.height)
+
+		dialogView := m.errorDialog.View()
+		dialogLayer := lipgloss.NewLayer(dialogView).X(m.width - m.width/4).Y(0)
+
+		layers = append(layers, dialogLayer)
+	}
+
 	v := tea.NewView(lipgloss.NewCompositor(layers...).Render())
 	v.AltScreen = true
 	v.WindowTitle = "Vocab Tester"

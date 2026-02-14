@@ -115,6 +115,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 	}
 
+	// FIXME: fsr pressing "enter" on insert mode freezes app
 	util.UpdaterPtr(&cmds, m.VocabEditor, msg)
 
 	return m, tea.Batch(cmds...)
