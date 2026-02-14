@@ -20,7 +20,7 @@ func (m *Model) View() tea.View {
 	}
 
 	currentPageModel.SetWidth(m.width)
-	currentPageModel.SetHeight(m.height - lipgloss.Height(tabsView) - lipgloss.Height(helpView) - 4)
+	currentPageModel.SetHeight(m.height - lipgloss.Height(tabsView) - lipgloss.Height(helpView))
 	pageView := currentPageModel.View()
 	fullView := lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView)
 

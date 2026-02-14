@@ -15,8 +15,6 @@ import (
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
-	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
-
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		// Applied to all pages of the TUI
@@ -28,7 +26,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			util.UpdaterVal(&cmds, &m.errorDialog, msg)
 		}
 
-		if !currentPageModel.HasOverlay() {
+		if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() {
 			switch {
 			case key.Matches(msg, m.keys.Help):
 				m.help.ShowAll = !m.help.ShowAll
@@ -52,6 +50,8 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.navigator.Reset()
 					m.tabs.Prev()
 				}
+				// to re-add the navigable components
+				cmds = append(cmds, m.pages[m.pageOrder[m.currentPage]].Init())
 
 			case key.Matches(msg, m.keys.Right):
 				if m.currentPage < len(m.pageOrder)-1 {
@@ -59,6 +59,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.navigator.Reset()
 					m.tabs.Next()
 				}
+				cmds = append(cmds, m.pages[m.pageOrder[m.currentPage]].Init())
 			}
 		}
 
@@ -102,7 +103,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		util.UpdaterVal(&cmds, &m.errorDialog, msg)
 	}
 
-	util.UpdaterPtr(&cmds, currentPageModel, msg)
+	util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], msg)
 
 	return m, tea.Batch(cmds...)
 }

@@ -130,7 +130,7 @@ func buttonStyle(focused, enabled bool) lipgloss.Style {
 
 func (m *Model) View() string {
 	m.listtui.SetWidth(m.width / 2)
-	m.listtui.SetHeight(m.height)
+	m.listtui.SetHeight(m.height - 4)
 	leftView := m.listtui.View()
 
 	loadSectionWidth := m.width / 2
@@ -172,7 +172,7 @@ func (m *Model) View() string {
 		))
 
 	m.configtui.SetWidth(m.width / 2)
-	m.configtui.SetHeight(m.height - lipgloss.Height(loadSectionView))
+	m.configtui.SetHeight(m.height - lipgloss.Height(loadSectionView) - 4)
 	configView := m.configtui.View()
 
 	rightView := lipgloss.JoinVertical(lipgloss.Left, configView, loadSectionView)

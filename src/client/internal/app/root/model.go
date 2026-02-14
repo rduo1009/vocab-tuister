@@ -7,6 +7,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
@@ -58,6 +59,7 @@ func New(inbuiltListDir string) *Model {
 	overlayHelp := help.New()
 
 	createtui := create.New(inbuiltListDir)
+	reviewtui := review.New()
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)
@@ -67,7 +69,7 @@ func New(inbuiltListDir string) *Model {
 		pageOrder:   pageOrder,
 		pages: map[modes.PageName]app.PageModel{
 			modes.Create:   createtui,
-			modes.Review:   nil,
+			modes.Review:   reviewtui,
 			modes.Test:     nil,
 			modes.Help:     nil,
 			modes.Settings: nil,
