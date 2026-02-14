@@ -19,71 +19,91 @@ import (
 
 type configMap map[string]any
 
-type rawSessionConfigMsg []byte
+type (
+	rawSessionConfigMsg []byte
 
-func generateSessionConfig() tea.Msg {
-	configMap := make(configMap)
+	// In case there is an error with `generateSessionConfig` to distinguish with `app.ErrMsg`.
+	failFormMsg struct{}
+)
 
-	allSelections := [][]string{
-		partsOfSpeechExclusions,
-		verbExclusions,
-		participleExclusions,
-		otherVerbExclusions,
-		nounExclusions,
-		adjectiveExclusions,
-		adverbExclusions,
-		pronounExclusions,
-		regularExclusions,
-		miscellaneous,
-		questionTypes,
-	}
+func generateSessionConfig(values *ConfigFormValues) tea.Cmd {
+	generate := func() ([]byte, error) {
+		configMap := make(configMap)
 
-	selected := make(map[string]struct{})
-	for _, selections := range allSelections {
-		for _, key := range selections {
-			selected[key] = struct{}{}
+		allSelections := [][]string{
+			values.PartsOfSpeechExclusions,
+			values.VerbExclusions,
+			values.ParticipleExclusions,
+			values.OtherVerbExclusions,
+			values.NounExclusions,
+			values.AdjectiveExclusions,
+			values.AdverbExclusions,
+			values.PronounExclusions,
+			values.RegularExclusions,
+			values.Miscellaneous,
+			values.QuestionTypes,
 		}
-	}
 
-	for _, key := range allKeys {
-		_, ok := selected[key]
-		configMap[key] = ok
-	}
+		selected := make(map[string]struct{})
+		for _, selections := range allSelections {
+			for _, key := range selections {
+				selected[key] = struct{}{}
+			}
+		}
 
-	numberMultipleChoiceOptions, err := strconv.Atoi(numberMultipleChoiceOptionsString)
-	if err != nil {
-		return app.ErrMsg(
-			fmt.Errorf("failed to convert %s to integer: %w", numberMultipleChoiceOptionsString, err),
+		for _, key := range allKeys {
+			_, ok := selected[key]
+			configMap[key] = ok
+		}
+
+		numberMultipleChoiceOptions, err := strconv.Atoi(values.NumberMultipleChoiceOptionsString)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"failed to convert %s to integer: %w",
+				values.NumberMultipleChoiceOptionsString,
+				err,
+			)
+		}
+
+		configMap["number-multiplechoice-options"] = numberMultipleChoiceOptions
+
+		numberOfQuestions, err := strconv.Atoi(values.NumberOfQuestionsString)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"failed to convert %s to integer: %w",
+				values.NumberOfQuestionsString,
+				err,
+			)
+		}
+
+		configMap["number-of-questions"] = numberOfQuestions
+
+		data, err := json.Marshal(configMap)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal session config: %w", err)
+		}
+
+		// Convert to Value and canonicalize to maintain alphabetical key ordering
+		value := jsontext.Value(data)
+
+		err = value.Canonicalize(
+			jsontext.WithIndent("  "),
+			jsontext.SpaceAfterColon(true),
+			jsontext.SpaceAfterComma(false),
 		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to canonicalize json: %w", err)
+		}
+
+		return value, nil
 	}
 
-	configMap["number-multiplechoice-options"] = numberMultipleChoiceOptions
-
-	numberOfQuestions, err := strconv.Atoi(numberOfQuestionsString)
+	rawSessionConfig, err := generate()
 	if err != nil {
-		return app.ErrMsg(fmt.Errorf("failed to convert %s to integer: %w", numberOfQuestionsString, err))
+		return tea.Batch(util.MsgCmd(app.ErrMsg(err)), util.MsgCmd(failFormMsg{}))
 	}
 
-	configMap["number-of-questions"] = numberOfQuestions
-
-	data, err := json.Marshal(configMap)
-	if err != nil {
-		return app.ErrMsg(fmt.Errorf("failed to marshal session config: %w", err))
-	}
-
-	// Convert to Value and canonicalize to maintain alphabetical key ordering
-	value := jsontext.Value(data)
-
-	err = value.Canonicalize(
-		jsontext.WithIndent("  "),
-		jsontext.SpaceAfterColon(true),
-		jsontext.SpaceAfterComma(false),
-	)
-	if err != nil {
-		return app.ErrMsg(fmt.Errorf("failed to canonicalize json: %w", err))
-	}
-
-	return rawSessionConfigMsg(value)
+	return util.MsgCmd(rawSessionConfigMsg(rawSessionConfig))
 }
 
 func readSessionConfigFile(selectedFile string) tea.Cmd {
@@ -115,7 +135,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		if m.HeaderSection.Focused() && key.Matches(msg, m.HeaderSection.KeyMap().PressButton) {
 			cmds = append(cmds, util.MsgCmd(filepicker.StartMsg{ID: "configtuiFilepicker"}))
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
-			m.form = DefaultForm()
+			m.form, m.configFormValues = DefaultForm()
 			m.form.State = huh.StateNormal
 			m.appStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
@@ -129,10 +149,33 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		m.RawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.RawSessionConfig)
 
+		// navigator: [..., HeaderSection, FormSection, ...]
+		cmds = append(cmds,
+			// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
+			util.MsgCmd(navigator.ReplaceNavigableMsg{
+				ID:         m.FormSection.ID(),
+				Components: []navigator.Navigable{m.ResetButton, m.FormSection},
+			}),
+			util.MsgCmd(navigator.FocusNavigableMsg{ID: m.FormSection.ID()}),
+		)
+
+		// NOTE: use tea.Sequence as these need to be ran in order
+		// also note that `cmds` could not be altered after this, so returning early is fine
+		return m, tea.Sequence(cmds...)
+
 	case filepicker.PickedMsg:
 		if msg.ID == "configtuiFilepicker" {
 			cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
 		}
+
+	case failFormMsg:
+		m.form, m.configFormValues = DefaultForm()
+		m.form.State = huh.StateNormal
+		m.appStatus = CreateSessionConfig
+		m.RawSessionConfig = ""
+		cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
+			IDs: []string{m.ResetButton.ID()},
+		}))
 	}
 
 	if m.FormSection.Focused() {
@@ -143,17 +186,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		case huh.StateCompleted:
 			switch m.appStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
-				// navigator: [..., HeaderSection, FormSection, ...]
-				cmds = append(cmds, generateSessionConfig,
-					// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
-					util.MsgCmd(navigator.ReplaceNavigableMsg{
-						ID:         m.FormSection.ID(),
-						Components: []navigator.Navigable{m.ResetButton, m.FormSection},
-					}),
-				)
-				// NOTE: use tea.Sequence as these need to be ran in order
-				// also note that `cmds` could not be altered after this, so returning early is fine
-				return m, tea.Sequence(cmds...)
+				cmds = append(cmds, generateSessionConfig(m.configFormValues))
 
 			case ReviewSessionConfig:
 				util.UpdaterPtr(&cmds, m.jsonview, msg)

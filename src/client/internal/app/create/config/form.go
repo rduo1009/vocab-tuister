@@ -1,26 +1,30 @@
 package config
 
 import (
+	"errors"
+	"strconv"
+
 	"charm.land/huh/v2"
 )
 
 // XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
 
-var (
-	partsOfSpeechExclusions           []string
-	verbExclusions                    []string
-	participleExclusions              []string
-	otherVerbExclusions               []string
-	nounExclusions                    []string
-	adjectiveExclusions               []string
-	adverbExclusions                  []string
-	pronounExclusions                 []string
-	regularExclusions                 []string
-	miscellaneous                     []string
-	questionTypes                     []string
-	numberMultipleChoiceOptionsString = "3"
-	numberOfQuestionsString           = "50"
-)
+type ConfigFormValues struct {
+	PartsOfSpeechExclusions []string
+	VerbExclusions          []string
+	ParticipleExclusions    []string
+	OtherVerbExclusions     []string
+	NounExclusions          []string
+	AdjectiveExclusions     []string
+	AdverbExclusions        []string
+	PronounExclusions       []string
+	RegularExclusions       []string
+	Miscellaneous           []string
+	QuestionTypes           []string
+
+	NumberMultipleChoiceOptionsString string
+	NumberOfQuestionsString           string
+}
 
 var allKeys = []string{
 	"english-subjunctives",
@@ -141,8 +145,14 @@ var allKeys = []string{
 	"include-typein-lattoeng",
 }
 
-func DefaultForm() *huh.Form {
-	return huh.NewForm(
+func DefaultForm() (*huh.Form, *ConfigFormValues) {
+	// Default values
+	values := &ConfigFormValues{
+		NumberMultipleChoiceOptionsString: "3",
+		NumberOfQuestionsString:           "50",
+	}
+
+	form := huh.NewForm(
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
 				Title("Parts of speech exclusions").
@@ -155,7 +165,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Exclude pronouns", "exclude-pronouns"),
 					huh.NewOption("Exclude regular words", "exclude-regulars"),
 				).
-				Value(&partsOfSpeechExclusions),
+				Value(&values.PartsOfSpeechExclusions),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -201,7 +211,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("2nd person", "exclude-verb-2nd-person"),
 					huh.NewOption("3rd person", "exclude-verb-3rd-person"),
 				).
-				Value(&verbExclusions),
+				Value(&values.VerbExclusions),
 			huh.NewMultiSelect[string]().
 				Title("Participle exclusions").
 				Options(
@@ -220,7 +230,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Singular number", "exclude-participle-singular"),
 					huh.NewOption("Plural number", "exclude-participle-plural"),
 				).
-				Value(&participleExclusions),
+				Value(&values.ParticipleExclusions),
 			huh.NewMultiSelect[string]().
 				Title("Other verb exclusions").
 				Options(
@@ -228,7 +238,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Gerunds", "exclude-gerunds"),
 					huh.NewOption("Supines", "exclude-supines"),
 				).
-				Value(&otherVerbExclusions),
+				Value(&values.OtherVerbExclusions),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -249,7 +259,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Singular number", "exclude-noun-singular"),
 					huh.NewOption("Plural number", "exclude-noun-plural"),
 				).
-				Value(&nounExclusions),
+				Value(&values.NounExclusions),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -272,7 +282,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Comparative degree", "exclude-adjective-comparative"),
 					huh.NewOption("Superlative degree", "exclude-adjective-superlative"),
 				).
-				Value(&adjectiveExclusions),
+				Value(&values.AdjectiveExclusions),
 			huh.NewMultiSelect[string]().
 				Title("Adverb exclusions").
 				Options(
@@ -280,7 +290,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Comparative degree", "exclude-adverb-comparative"),
 					huh.NewOption("Superlative degree", "exclude-adverb-superlative"),
 				).
-				Value(&adverbExclusions),
+				Value(&values.AdverbExclusions),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -298,7 +308,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Singular number", "exclude-pronoun-singular"),
 					huh.NewOption("Plural number", "exclude-pronoun-plural"),
 				).
-				Value(&pronounExclusions),
+				Value(&values.PronounExclusions),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -307,7 +317,7 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("English translations of subjunctive verbs", "english-subjunctives"),
 					huh.NewOption("English translations of verbal nouns (gerunds/supines)", "english-verbal-nouns"),
 				).
-				Value(&miscellaneous),
+				Value(&values.Miscellaneous),
 		),
 		huh.NewGroup(
 			huh.NewMultiSelect[string]().
@@ -325,11 +335,29 @@ func DefaultForm() *huh.Form {
 					huh.NewOption("Multiple choice Latin to English", "include-multiplechoice-lattoeng").
 						Selected(true),
 				).
-				Value(&questionTypes),
+				Value(&values.QuestionTypes),
 			huh.NewInput().
 				Title("Number of options in multiple choice questions").
-				Value(&numberMultipleChoiceOptionsString),
-			huh.NewInput().Title("Number of questions").Value(&numberOfQuestionsString),
+				Value(&values.NumberMultipleChoiceOptionsString).
+				Validate(func(str string) error {
+					_, err := strconv.Atoi(str)
+					if err != nil {
+						return errors.New("must be an integer")
+					}
+					return nil
+				}),
+			huh.NewInput().
+				Title("Number of questions").
+				Value(&values.NumberOfQuestionsString).
+				Validate(func(str string) error {
+					_, err := strconv.Atoi(str)
+					if err != nil {
+						return errors.New("must be an integer")
+					}
+					return nil
+				}),
 		),
 	)
+
+	return form, values
 }

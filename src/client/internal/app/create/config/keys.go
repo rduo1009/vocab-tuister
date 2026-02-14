@@ -93,22 +93,49 @@ func (rb *resetButton) KeyMap() resetButtonKeyMap {
 	}
 }
 
-// TODO: Need to combine the helps???
-
 type formSectionKeyMap struct {
-	fs *formSection
+	fs            *formSection
+	PreviousFocus key.Binding
+	NextFocus     key.Binding
+	Help          key.Binding
+	Quit          key.Binding
 }
 
 func (k formSectionKeyMap) ShortHelp() []key.Binding {
-	return k.fs.form.KeyBinds()
+	return append(
+		[]key.Binding{k.NextFocus},
+		append(k.fs.form.KeyBinds(), k.Help, k.Quit)...,
+	)
 }
 
 func (k formSectionKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{k.fs.form.KeyBinds()}
+	return [][]key.Binding{
+		{k.PreviousFocus, k.NextFocus},
+		k.fs.form.KeyBinds(),
+		{k.Help, k.Quit},
+	}
 }
 
 func (fs *formSection) KeyMap() help.KeyMap {
-	return formSectionKeyMap{fs: fs}
+	return formSectionKeyMap{
+		fs: fs,
+		PreviousFocus: key.NewBinding(
+			key.WithKeys("["),
+			key.WithHelp("[", "focus previous"),
+		),
+		NextFocus: key.NewBinding(
+			key.WithKeys("]"),
+			key.WithHelp("]", "focus next"),
+		),
+		Help: key.NewBinding(
+			key.WithKeys("ctrl+h"),
+			key.WithHelp("ctrl+h", "toggle additional help"),
+		),
+		Quit: key.NewBinding(
+			key.WithKeys("ctrl+q", "ctrl+c"),
+			key.WithHelp("ctrl+q", "quit"),
+		),
+	}
 }
 
 func (m *Model) KeyMap() help.KeyMap {

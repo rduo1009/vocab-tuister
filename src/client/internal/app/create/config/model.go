@@ -71,22 +71,24 @@ type Model struct {
 
 	// Application state
 	appStatus        createSessionConfigStatus
+	configFormValues *ConfigFormValues
 	RawSessionConfig string
 }
 
 func New() *Model {
-	form := DefaultForm()
+	form, values := DefaultForm()
 
 	headerSection := headerSection{focused: false}
 	formSection := formSection{focused: false, form: form}
 	resetButton := resetButton{focused: false}
 
 	return &Model{
-		HeaderSection: &headerSection,
-		FormSection:   &formSection,
-		ResetButton:   &resetButton,
-		form:          form,
-		jsonview:      jsonview.New(""),
-		appStatus:     CreateSessionConfig,
+		HeaderSection:    &headerSection,
+		FormSection:      &formSection,
+		ResetButton:      &resetButton,
+		form:             form,
+		jsonview:         jsonview.New(""),
+		appStatus:        CreateSessionConfig,
+		configFormValues: values,
 	}
 }

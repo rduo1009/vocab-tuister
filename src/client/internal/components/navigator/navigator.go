@@ -1,5 +1,9 @@
 package navigator
 
+import (
+	"fmt"
+)
+
 type (
 	AddNavigableMsg     struct{ Components []Navigable }
 	RemoveNavigableMsg  struct{ IDs []string }
@@ -7,6 +11,7 @@ type (
 		ID         string
 		Components []Navigable
 	}
+	FocusNavigableMsg struct{ ID string }
 )
 
 // Navigable represents any component that can receive navigation focus.
@@ -18,14 +23,14 @@ type Navigable interface {
 
 // Navigator manages focus between multiple navigable components.
 type Navigator struct {
-	Items []Navigable
-	Index int
+	Items        []Navigable
+	CurrentIndex int
 }
 
 func New(items []Navigable, index int) *Navigator {
 	return &Navigator{
-		Items: items,
-		Index: index,
+		Items:        items,
+		CurrentIndex: index,
 	}
 }
 
@@ -34,9 +39,9 @@ func (n *Navigator) Next() {
 		return
 	}
 
-	n.Items[n.Index].SetFocused(false)
-	n.Index = (n.Index + 1) % len(n.Items)
-	n.Items[n.Index].SetFocused(true)
+	n.Items[n.CurrentIndex].SetFocused(false)
+	n.CurrentIndex = (n.CurrentIndex + 1) % len(n.Items)
+	n.Items[n.CurrentIndex].SetFocused(true)
 }
 
 func (n *Navigator) Previous() {
@@ -44,9 +49,9 @@ func (n *Navigator) Previous() {
 		return
 	}
 
-	n.Items[n.Index].SetFocused(false)
-	n.Index = (n.Index - 1 + len(n.Items)) % len(n.Items)
-	n.Items[n.Index].SetFocused(true)
+	n.Items[n.CurrentIndex].SetFocused(false)
+	n.CurrentIndex = (n.CurrentIndex - 1 + len(n.Items)) % len(n.Items)
+	n.Items[n.CurrentIndex].SetFocused(true)
 }
 
 func (n *Navigator) Current() Navigable {
@@ -54,44 +59,44 @@ func (n *Navigator) Current() Navigable {
 		return nil
 	}
 
-	return n.Items[n.Index]
+	return n.Items[n.CurrentIndex]
 }
 
-func (n *Navigator) CurrentIndex() int {
-	return n.Index
-}
+func (n *Navigator) Add(components ...Navigable) {
+	oldLen := len(n.Items)
+	n.Items = append(n.Items, components...)
 
-func (n *Navigator) Add(component Navigable) {
-	n.Items = append(n.Items, component)
-	// If this is the first item, set focus to it
-	if len(n.Items) == 1 {
-		n.Index = 0
-
-		component.SetFocused(true)
+	// If the list was empty before, set focus to the first item
+	if oldLen == 0 && len(n.Items) > 0 {
+		n.CurrentIndex = 0
+		n.Items[0].SetFocused(true)
 	}
 }
 
-func (n *Navigator) Remove(id string) {
-	for i, item := range n.Items {
-		if item.ID() == id {
-			// Unfocus if removing current
-			if i == n.Index {
-				item.SetFocused(false)
+func (n *Navigator) Remove(ids ...string) {
+	for _, id := range ids {
+		for i, item := range n.Items {
+			if item.ID() == id {
+				// Unfocus if removing current
+				if i == n.CurrentIndex {
+					item.SetFocused(false)
 
-				if len(n.Items) > 1 {
-					n.Index = (i - 1 + len(n.Items)) % len(n.Items)
-					n.Items[n.Index].SetFocused(true)
-				} else {
-					n.Index = 0
+					if len(n.Items) > 1 {
+						n.CurrentIndex = (i - 1 + len(n.Items)) % len(n.Items)
+						n.Items[n.CurrentIndex].SetFocused(true)
+					} else {
+						n.CurrentIndex = 0
+					}
+				} else if i < n.CurrentIndex {
+					n.CurrentIndex--
 				}
-			} else if i < n.Index {
-				n.Index--
+
+				// Remove item
+				n.Items = append(n.Items[:i], n.Items[i+1:]...)
+
+				// Break inner loop to process next ID
+				break
 			}
-
-			// Remove item
-			n.Items = append(n.Items[:i], n.Items[i+1:]...)
-
-			return
 		}
 	}
 }
@@ -100,7 +105,7 @@ func (n *Navigator) Replace(id string, components ...Navigable) {
 	for i, item := range n.Items {
 		if item.ID() == id {
 			// Unfocus if replacing current
-			wasFocused := (i == n.Index)
+			wasFocused := (i == n.CurrentIndex)
 			if wasFocused {
 				item.SetFocused(false)
 			}
@@ -113,21 +118,21 @@ func (n *Navigator) Replace(id string, components ...Navigable) {
 			n.Items = newItems
 
 			if len(n.Items) == 0 {
-				n.Index = 0
+				n.CurrentIndex = 0
 
 				return
 			}
 
 			if wasFocused {
 				if len(components) > 0 {
-					n.Index = i
+					n.CurrentIndex = i
 				} else {
-					n.Index = (i - 1 + len(n.Items)) % len(n.Items)
+					n.CurrentIndex = (i - 1 + len(n.Items)) % len(n.Items)
 				}
 
-				n.Items[n.Index].SetFocused(true)
-			} else if i < n.Index {
-				n.Index += len(components) - 1
+				n.Items[n.CurrentIndex].SetFocused(true)
+			} else if i < n.CurrentIndex {
+				n.CurrentIndex += len(components) - 1
 			}
 
 			return
@@ -137,5 +142,22 @@ func (n *Navigator) Replace(id string, components ...Navigable) {
 
 func (n *Navigator) Reset() {
 	n.Items = n.Items[:1]
-	n.Index = 0
+	n.CurrentIndex = 0
+}
+
+func (n *Navigator) FocusNavigable(id string) error {
+	for i, item := range n.Items {
+		if item.ID() == id {
+			if i == n.CurrentIndex {
+				return nil
+			}
+
+			n.Items[n.CurrentIndex].SetFocused(false)
+			n.CurrentIndex = i
+			n.Items[n.CurrentIndex].SetFocused(true)
+			return nil
+		}
+	}
+
+	return fmt.Errorf("navigable with id %s not found", id)
 }

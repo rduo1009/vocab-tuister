@@ -70,12 +70,12 @@ func (m *Model) View() string {
 	var formSectionView string
 	if m.appStatus == CreateSessionConfig {
 		m.form.WithWidth(m.width)
-		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView))
+		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - len(m.form.Errors()))
 		m.form.WithShowHelp(false)
 
 		formSectionView = formBorderStyle(m.FormSection.Focused()).
 			Width(m.width).
-			Height(m.height - lipgloss.Height(headerSectionView)).
+			Height(m.height).
 			Render(m.form.View())
 	} else {
 		resetButtonView := buttonStyle(m.ResetButton.Focused()).Render("Reset form")

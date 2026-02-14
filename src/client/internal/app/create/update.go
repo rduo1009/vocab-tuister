@@ -21,7 +21,8 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) {
+		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) &&
+			m.LoadSection.Enabled() {
 			cmds = append(cmds, util.MsgCmd(LoadDataReqMsg{
 				VocabList:        m.listtui.VocabEditor.GetCurrentContent(),
 				RawSessionConfig: m.configtui.RawSessionConfig,

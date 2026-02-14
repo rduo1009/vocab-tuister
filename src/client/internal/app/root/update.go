@@ -68,17 +68,18 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.tabs.Width = msg.Width
 
 	case navigator.AddNavigableMsg:
-		for _, component := range msg.Components {
-			m.navigator.Add(component)
-		}
+		m.navigator.Add(msg.Components...)
 
 	case navigator.RemoveNavigableMsg:
-		for _, id := range msg.IDs {
-			m.navigator.Remove(id)
-		}
+		m.navigator.Remove(msg.IDs...)
 
 	case navigator.ReplaceNavigableMsg:
 		m.navigator.Replace(msg.ID, msg.Components...)
+
+	case navigator.FocusNavigableMsg:
+		if err := m.navigator.FocusNavigable(msg.ID); err != nil {
+			return m, util.MsgCmd(app.ErrMsg(err))
+		}
 
 	case create.LoadDataReqMsg:
 		cmds = append(
