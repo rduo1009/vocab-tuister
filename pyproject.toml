@@ -35,7 +35,7 @@ dev = [
   "basedpyright==1.37.4",
   "coverage==7.13.4",
   "doc8==2.0.0",
-  "griffe==1.15.0",
+  "griffe==2.0.0",
   "icecream==2.1.10",
   "interrogate==1.7.0",
   "mypy[faster-cache]==1.19.1",
