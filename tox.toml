@@ -1,3 +1,6 @@
+requires = [ "tox-uv>=1.23" ]
+env_list = [ "py314", "doctest", "type" ]
+
 [env_run_base]
 runner = "uv-venv-lock-runner"
 description = "run tests using pytest"
@@ -58,8 +61,6 @@ commands = [
     "--ignore-unused-allowlist",
   ],
 ]
-env_list = [ "py314", "doctest", "type" ]
-requires = [ "tox-uv>=1.23.0" ]
 
 [gh.python]
 "3.14" = [ "py314", "type", "doctest" ]
