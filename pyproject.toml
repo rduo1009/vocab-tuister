@@ -131,7 +131,10 @@ ini_options.addopts = [
   "--ignore=src/_build",
   "-n4",
 ]
-ini_options.markers = [ "manual: manually checked tests", "integration: integration tests" ]
+ini_options.markers = [
+  "manual: manually checked tests",
+  "integration: integration tests",
+]
 ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
 [tool.coverage]
@@ -149,65 +152,6 @@ report.exclude_also = [
   "raise NotImplementedError",
   "return NotImplemented",
 ]
-
-[tool.tox]
-requires = [ "tox>=4.2" ]
-env_list = [ "py314", "doctest", "type" ]
-skip_missing_interpreters = true
-env.doctest.description = "run doctests"
-env.doctest.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-env.doctest.commands = [
-  [
-    "pytest",
-    "--doctest-ignore-import-errors",
-    "--doctest-modules",
-    "--doctest-glob=*.rst",
-    "-m",
-    "not manual and not integration",
-    "src/",
-    "docs/",
-  ],
-]
-env.type.description = "run type checks and check stubs"
-env.type.deps = [ "basedpyright", "icecream", "mypy", "optype", "pytest", "requests" ]
-env.type.set_env = { MYPYPATH = "stubs" }
-env.type.commands = [
-  [
-    "basedpyright",
-  ],
-  [
-    "stubtest",
-    "dill",
-    "--allowlist",
-    "stubs/dill/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "lemminflect",
-    "--allowlist",
-    "stubs/lemminflect/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "colors",
-    "--allowlist",
-    "stubs/colors/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "aenum",
-    "--allowlist",
-    "stubs/aenum/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-]
-env_run_base.description = "run tests using pytest"
-env_run_base.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-env_run_base.commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
-gh.python = { "3.14" = [ "py314", "type", "doctest" ] }
 
 [tool.mypy]
 mypy_path = "stubs"

@@ -1,0 +1,65 @@
+[env_run_base]
+runner = "uv-venv-lock-runner"
+description = "run tests using pytest"
+dependency_groups = [ "dev" ]
+commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
+
+[env.doctest]
+description = "run doctests"
+dependency_groups = [ "dev" ]
+commands = [
+  [
+    "pytest",
+    "--doctest-ignore-import-errors",
+    "--doctest-modules",
+    "--doctest-glob=*.rst",
+    "-m",
+    "not manual and not integration",
+    "src/",
+    "docs/",
+  ],
+]
+
+[env.type]
+description = "run type checks and check stubs"
+dependency_groups = [ "dev", "types" ]
+skip_missing_interpreters = true
+set_env = { MYPYPATH = "stubs" }
+commands = [
+  [
+    "basedpyright",
+  ],
+  [
+    "stubtest",
+    "dill",
+    "--allowlist",
+    "stubs/dill/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "lemminflect",
+    "--allowlist",
+    "stubs/lemminflect/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "colors",
+    "--allowlist",
+    "stubs/colors/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+  [
+    "stubtest",
+    "aenum",
+    "--allowlist",
+    "stubs/aenum/allowlist",
+    "--ignore-unused-allowlist",
+  ],
+]
+env_list = [ "py314", "doctest", "type" ]
+requires = [ "tox-uv>=1.23.0" ]
+
+[gh.python]
+"3.14" = [ "py314", "type", "doctest" ]
