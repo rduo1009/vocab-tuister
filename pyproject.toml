@@ -21,10 +21,10 @@ dependencies = [
   "cyclopts==4.5.1",
   "dill==0.4.1",
   "dunamai==1.25.0",
-  "flask==3.1.2",
+  "flask==3.1.3",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "platformdirs==4.5.1",
+  "platformdirs==4.9.2",
   "pydantic==2.12.2",
   "pyinstaller==6.18.0",
   "waitress==3.0.2",
@@ -36,17 +36,17 @@ dev = [
   "basedpyright==1.37.4",
   "coverage==7.13.4",
   "doc8==2.0.0",
-  "griffe==1.15.0",
+  "griffe==2.0.0",
   "icecream==2.1.10",
   "interrogate==1.7.0",
   "mypy[faster-cache]==1.19.1",
   "pytest==9.0.2",
-  "pytest-env==1.2.0",
+  "pytest-env==1.5.0",
   "pytest-pythonhashseed==2.0.1",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.15.0",
+  "ruff==0.15.1",
   "syrupy==5.1.0",
 ]
 types = [
@@ -156,72 +156,6 @@ report.exclude_also = [
   "raise NotImplementedError",
   "return NotImplemented",
 ]
-
-[tool.tox]
-requires = [ "tox>=4.2" ]
-env_list = [ "py314", "doctest", "type" ]
-skip_missing_interpreters = true
-env.doctest.description = "run doctests"
-env.doctest.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-env.doctest.commands = [
-  [
-    "pytest",
-    "--doctest-ignore-import-errors",
-    "--doctest-modules",
-    "--doctest-glob=*.rst",
-    "-m",
-    "not manual and not integration",
-    "src/",
-    "docs/",
-  ],
-]
-env.type.description = "run type checks and check stubs"
-env.type.deps = [
-  "basedpyright",
-  "icecream",
-  "mypy",
-  "optype",
-  "pytest",
-  "requests",
-]
-env.type.set_env = { MYPYPATH = "stubs" }
-env.type.commands = [
-  [
-    "basedpyright",
-  ],
-  [
-    "stubtest",
-    "dill",
-    "--allowlist",
-    "stubs/dill/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "lemminflect",
-    "--allowlist",
-    "stubs/lemminflect/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "colors",
-    "--allowlist",
-    "stubs/colors/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-  [
-    "stubtest",
-    "aenum",
-    "--allowlist",
-    "stubs/aenum/allowlist",
-    "--ignore-unused-allowlist",
-  ],
-]
-env_run_base.description = "run tests using pytest"
-env_run_base.deps = [ "icecream", "pytest", "pytest-xdist", "requests", "syrupy" ]
-env_run_base.commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
-gh.python = { "3.14" = [ "py314", "type", "doctest" ] }
 
 [tool.mypy]
 mypy_path = "stubs"
