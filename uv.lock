@@ -675,11 +675,11 @@ wheels = [
 
 [[package]]
 name = "optype"
-version = "0.15.0"
+version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d7/93/6b9e43138ce36fbad134bd1a50460a7bbda61105b5a964e4cf773fe4d845/optype-0.15.0.tar.gz", hash = "sha256:457d6ca9e7da19967ec16d42bdf94e240b33b5d70a56fbbf5b427e5ea39cf41e", size = 99978, upload-time = "2025-12-08T12:32:41.422Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/66/d3/c88bb4bd90867356275ca839499313851af4b36fce6919ebc5e1de26e7ca/optype-0.16.0.tar.gz", hash = "sha256:fa682fd629ef6b70ba656ebc9fdd6614ba06ce13f52e0416dd8014c7e691a2d1", size = 53498, upload-time = "2026-02-19T23:37:09.495Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/07/8b/93f6c496fc5da062fd7e7c4745b5a8dd09b7b576c626075844fe97951a7d/optype-0.15.0-py3-none-any.whl", hash = "sha256:caba40ece9ea39b499fa76c036a82e0d452a432dd4dd3e8e0d30892be2e8c76c", size = 88716, upload-time = "2025-12-08T12:32:39.669Z" },
+    { url = "https://files.pythonhosted.org/packages/91/a8/fe26515203cff140f1afc31236fb7f703d4bb4bd5679d28afcb3661c8d9f/optype-0.16.0-py3-none-any.whl", hash = "sha256:c28905713f55630b4bb8948f38e027ad13a541499ebcf957501f486da54b74d2", size = 65893, upload-time = "2026-02-19T23:37:08.217Z" },
 ]
 
 [[package]]
@@ -1295,7 +1295,7 @@ dev = [
     { name = "syrupy", specifier = "==5.1.0" },
 ]
 types = [
-    { name = "optype", specifier = "==0.15.0" },
+    { name = "optype", specifier = "==0.16.0" },
     { name = "types-regex", specifier = "==2026.1.15.20260116" },
     { name = "types-waitress", specifier = "==3.0.1.20250801" },
 ]
