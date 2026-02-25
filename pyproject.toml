@@ -45,7 +45,7 @@ dev = [
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.15.1",
+  "ruff==0.15.2",
   "syrupy==5.1.0",
 ]
 types = [
