@@ -56,7 +56,7 @@ func loadBorderStyle(focused bool) lipgloss.Style {
 		BorderForeground(lipgloss.Color("#f3ff00"))
 }
 
-func statusSymbol(s loadStatus) string {
+func statusSymbol(s LoadStatus) string {
 	switch s {
 	case StatusMissing:
 		return "×"
@@ -72,7 +72,7 @@ func statusSymbol(s loadStatus) string {
 	}
 }
 
-func statusText(s loadStatus) string {
+func statusText(s LoadStatus) string {
 	switch s {
 	case StatusMissing:
 		return "missing"
@@ -95,7 +95,7 @@ var (
 	sepStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
 )
 
-func getStatusStyle(s loadStatus) lipgloss.Style {
+func getStatusStyle(s LoadStatus) lipgloss.Style {
 	switch s {
 	case StatusMissing:
 		return missingStyle
@@ -135,7 +135,7 @@ func (m *Model) View() string {
 
 	loadSectionWidth := m.width / 2
 	statusSpace := (loadSectionWidth - 16) / 2
-	renderStatus := func(label string, status loadStatus) string {
+	renderStatus := func(label string, status LoadStatus) string {
 		symbol := statusSymbol(status)
 		text := statusText(status)
 		style := getStatusStyle(status)

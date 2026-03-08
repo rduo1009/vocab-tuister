@@ -6,71 +6,58 @@ import (
 
 type createListStatus int
 
+//go:generate go tool stringer -type=createListStatus -linecomment -output=create_list_status_gen.go
 const (
-	InbuiltList createListStatus = iota
-	LocalList
-	CustomList
+	InbuiltList createListStatus = iota // Inbuilt list
+	LocalList                           // Local list
+	CustomList                          // Create list
 )
-
-// NOTE: Manually define the display values.
-func (m createListStatus) String() string {
-	switch m {
-	case InbuiltList:
-		return "Inbuilt list"
-
-	case LocalList:
-		return "Local list"
-
-	case CustomList:
-		return "Create list"
-	}
-
-	panic("unreachable")
-}
 
 type (
 	headerSection struct{ focused bool }
 	selectButton  struct{ focused bool }
 )
 
-func (hs *headerSection) SetFocused(focused bool) {
-	hs.focused = focused
+func (hs *headerSection) Focus() {
+	hs.focused = true
+}
+
+func (hs *headerSection) Blur() {
+	hs.focused = false
 }
 
 func (hs *headerSection) Focused() bool {
 	return hs.focused
 }
 
-func (hs *headerSection) ID() string {
-	return "ListHeaderSection"
+func (sb *selectButton) Focus() {
+	sb.focused = true
 }
 
-func (sb *selectButton) SetFocused(focused bool) {
-	sb.focused = focused
+func (sb *selectButton) Blur() {
+	sb.focused = false
 }
 
 func (sb *selectButton) Focused() bool {
 	return sb.focused
 }
 
-func (sb *selectButton) ID() string {
-	return "SelectButton"
-}
-
 type Model struct {
 	// Layout state
+
 	width, height int
 
 	// Components
+
 	HeaderSection *headerSection
 	VocabEditor   *vocabeditor.Model
 	SelectButton  *selectButton
 
 	// Application state
+
 	appStatus               createListStatus
 	inbuiltListDir          string
 	vocabEditorInitisalised bool
-	rawSessionConfig        string
 }
 
 func New(inbuiltListDir string) *Model {

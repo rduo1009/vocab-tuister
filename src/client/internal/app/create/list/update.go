@@ -44,7 +44,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	case tea.KeyPressMsg:
 		if m.HeaderSection.Focused() {
 			if key.Matches(msg, m.HeaderSection.KeyMap().OpenDropdown) {
-				cmds = append(cmds, util.MsgCmd(dropdown.StartMsg{}))
+				cmds = append(cmds, util.MsgCmd(dropdown.StartMsg{ID: "listtuiDropdown"}))
 			}
 		} else if m.SelectButton.Focused() {
 			if key.Matches(msg, m.SelectButton.KeyMap().PressButton) {

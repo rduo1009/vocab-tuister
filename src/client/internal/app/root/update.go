@@ -8,7 +8,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -33,9 +33,11 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			case key.Matches(msg, m.keys.PreviousFocus):
 				m.navigator.Previous()
+				return m, nil
 
 			case key.Matches(msg, m.keys.NextFocus):
 				m.navigator.Next()
+				return m, nil
 			}
 		} else if key.Matches(msg, m.keys.Help) {
 			m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll
@@ -51,7 +53,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.tabs.Prev()
 				}
 				// to re-add the navigable components
-				cmds = append(cmds, m.pages[m.pageOrder[m.currentPage]].Init())
+				return m, m.pages[m.pageOrder[m.currentPage]].Init()
 
 			case key.Matches(msg, m.keys.Right):
 				if m.currentPage < len(m.pageOrder)-1 {
@@ -59,7 +61,8 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.navigator.Reset()
 					m.tabs.Next()
 				}
-				cmds = append(cmds, m.pages[m.pageOrder[m.currentPage]].Init())
+
+				return m, m.pages[m.pageOrder[m.currentPage]].Init()
 			}
 		}
 
@@ -68,32 +71,34 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.help.SetWidth(msg.Width)
 		m.tabs.Width = msg.Width
 
+	case tabs.SelectTabMsg:
+		m.currentPage = msg.Index
+		m.navigator.Reset()
+		m.tabs.Select(msg.Index)
+
+		if err := m.navigator.FocusNavigable(m.tabs); err != nil {
+			return m, util.MsgCmd(app.ErrMsg(err))
+		}
+
+		return m, m.pages[m.pageOrder[m.currentPage]].Init()
+
 	case navigator.AddNavigableMsg:
 		m.navigator.Add(msg.Components...)
 
 	case navigator.RemoveNavigableMsg:
-		m.navigator.Remove(msg.IDs...)
+		m.navigator.Remove(msg.Components...)
 
 	case navigator.ReplaceNavigableMsg:
-		m.navigator.Replace(msg.ID, msg.Components...)
+		m.navigator.Replace(msg.Target, msg.Replacement...)
 
 	case navigator.FocusNavigableMsg:
-		if err := m.navigator.FocusNavigable(msg.ID); err != nil {
+		if err := m.navigator.FocusNavigable(msg.Target); err != nil {
 			return m, util.MsgCmd(app.ErrMsg(err))
 		}
 
-	case create.LoadDataReqMsg:
-		cmds = append(
-			cmds,
-			loadDataCmd(msg.VocabList, msg.RawSessionConfig, 5500), // TODO: actual server port here
-		)
-
-	case ListConfigLoadedMsg:
-		m.vocabList = msg.vocabList
-		m.sessionConfig = msg.sessionConfig
-		// XXX: Perhaps a better solution to this whole thing could be done to avoid needing to do this.
-		m.pages[modes.Create].(*create.Model).LoadSection.ListStatus = create.StatusLoaded
-		m.pages[modes.Create].(*create.Model).LoadSection.ConfigStatus = create.StatusLoaded
+	case create.ListConfigPostedMsg:
+		m.vocabList = msg.VocabList
+		m.sessionConfig = msg.SessionConfig
 
 	case app.ErrMsg:
 		m.err = msg

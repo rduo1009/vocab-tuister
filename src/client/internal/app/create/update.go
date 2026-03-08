@@ -11,11 +11,6 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
-type LoadDataReqMsg struct {
-	VocabList        string
-	RawSessionConfig string
-}
-
 func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
@@ -23,11 +18,16 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	case tea.KeyPressMsg:
 		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) &&
 			m.LoadSection.Enabled() {
-			cmds = append(cmds, util.MsgCmd(LoadDataReqMsg{
-				VocabList:        m.listtui.VocabEditor.GetCurrentContent(),
-				RawSessionConfig: m.configtui.RawSessionConfig,
-			}))
+			cmds = append(cmds, postListConfigCmd(
+				m.listtui.VocabEditor.GetCurrentContent(),
+				m.configtui.RawSessionConfig,
+				5500, // TODO: actual server port here
+			))
 		}
+
+	case ListConfigPostedMsg:
+		m.LoadSection.ListStatus = StatusLoaded
+		m.LoadSection.ConfigStatus = StatusLoaded
 
 	case filepicker.StartMsg:
 		switch msg.ID {
@@ -72,10 +72,19 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 		}
 
 	case dropdown.StartMsg:
-		m.listtuiModeDropdownActive = true
+		if msg.ID == "listtuiDropdown" {
+			m.listtuiModeDropdownActive = true
+		}
 
-	case dropdown.PickedMsg, dropdown.ExitMsg:
-		m.listtuiModeDropdownActive = false
+	case dropdown.PickedMsg:
+		if msg.ID == "listtuiDropdown" {
+			m.listtuiModeDropdownActive = false
+		}
+
+	case dropdown.ExitMsg:
+		if msg.ID == "listtuiDropdown" {
+			m.listtuiModeDropdownActive = false
+		}
 	}
 
 	if m.HasOverlay() {

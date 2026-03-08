@@ -46,91 +46,134 @@ type Theme struct {
 
 var DefaultTheme = Theme{
 	NormalModeStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#179299"), Dark: lipgloss.Color("#94e2d5")}). // Teal
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#179299"), Dark: lipgloss.Color("#94e2d5")}).
+
+		// Teal
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	InsertModeStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#1e66f5"), Dark: lipgloss.Color("#89b4fa")}). // Blue
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#1e66f5"), Dark: lipgloss.Color("#89b4fa")}).
+
+		// Blue
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	VisualModeStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#8839ef"), Dark: lipgloss.Color("#cba6f7")}). // Mauve
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#8839ef"), Dark: lipgloss.Color("#cba6f7")}).
+
+		// Mauve
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	CommandModeStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#fe640b"), Dark: lipgloss.Color("#fab387")}). // Peach
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#fe640b"), Dark: lipgloss.Color("#fab387")}).
+
+		// Peach
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	SearchModeStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}). // Yellow
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}).
+
+		// Yellow
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	// Status and command line
 	StatusLineStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#ccd0da"), Dark: lipgloss.Color("#313244")}). // Surface0
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}), // Text
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#ccd0da"), Dark: lipgloss.Color("#313244")}).
+
+		// Surface0
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}),
+
+	// Text
 
 	CommandLineStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}). // Base
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}), // Text
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
+
+		// Base
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}),
+
+	// Text
 
 	// Messages and errors
 	MessageStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#40a02b"), Dark: lipgloss.Color("#a6e3a1")}), // Green
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#40a02b"), Dark: lipgloss.Color("#a6e3a1")}),
+
+	// Green
 
 	ErrorStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#d20f39"), Dark: lipgloss.Color("#f38ba8")}). // Red
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#d20f39"), Dark: lipgloss.Color("#f38ba8")}).
+
+		// Red
 		Bold(true),
 
 	// Line numbers
 	LineNumberStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#9ca0b0"), Dark: lipgloss.Color("#6c7086")}). // Overlay0
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#9ca0b0"), Dark: lipgloss.Color("#6c7086")}).
+
+		// Overlay0
 		Width(4).
 		Align(lipgloss.Right),
 
 	CurrentLineNumberStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}). // Text
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}).
+
+		// Text
 		Width(4).
 		Align(lipgloss.Right).
 		Bold(true),
 
 	// Current line highlight (subtle)
 	CurrentLineStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#e6e9ef"), Dark: lipgloss.Color("#2A2B3C")}), // Mantle / Surface0
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#e6e9ef"), Dark: lipgloss.Color("#2A2B3C")}),
+
+	// Mantle / Surface0
 
 	// Selection highlighting
 	SelectionStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#bcc0cc"), Dark: lipgloss.Color("#45475a")}), // Surface1
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#bcc0cc"), Dark: lipgloss.Color("#45475a")}),
+
+	// Surface1
 
 	// Yank highlight (brief flash effect)
 	HighlightYankStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#209fb5"), Dark: lipgloss.Color("#74c7ec")}). // Sapphire
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#209fb5"), Dark: lipgloss.Color("#74c7ec")}).
+
+		// Sapphire
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	// Search highlighting
 	SearchHighlightStyle: lipgloss.NewStyle().
-		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}). // Yellow
+		Background(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}).
+
+		// Yellow
 		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#eff1f5"), Dark: lipgloss.Color("#1e1e2e")}).
 		Bold(true),
 
 	SearchInputPromptStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}). // Yellow
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}).
+
+		// Yellow
 		Bold(true),
 
 	SearchInputTextStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}), // Text
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#4c4f69"), Dark: lipgloss.Color("#cdd6f4")}),
 
-	SearchInputCursorColor: lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#df8e1d"), Dark: lipgloss.Color("#f9e2af")}, // Yellow
+	// Text
+
+	SearchInputCursorColor: lipglosscompat.AdaptiveColor{
+		Light: lipgloss.Color("#df8e1d"),
+		Dark:  lipgloss.Color("#f9e2af"),
+	}, // Yellow
 
 	// Placeholder text
 	PlaceholderStyle: lipgloss.NewStyle().
-		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#8c8fa1"), Dark: lipgloss.Color("#7f849c")}). // Overlay1
+		Foreground(lipglosscompat.AdaptiveColor{Light: lipgloss.Color("#8c8fa1"), Dark: lipgloss.Color("#7f849c")}).
+
+		// Overlay1
 		Italic(true),
 }
 
@@ -201,10 +244,6 @@ type Model struct {
 	cursorBlinkCancel context.CancelFunc
 	clearMsgCancel    context.CancelFunc
 	clearYankCancel   context.CancelFunc
-}
-
-func (m *Model) ID() string {
-	return "VocabEditor"
 }
 
 type ErrorMsg struct {
@@ -612,11 +651,6 @@ func (m *Model) Blur() {
 // Focused returns whether the editor is currently focused.
 func (m *Model) Focused() bool {
 	return m.isFocused
-}
-
-// SetFocused sets the editor to the given state.
-func (m *Model) SetFocused(focused bool) {
-	m.isFocused = focused
 }
 
 // IsNormalMode returns whether the editor is in normal mode.

@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/questions"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 )
 
 func TestCheck(t *testing.T) {
@@ -51,7 +51,7 @@ func TestCheck(t *testing.T) {
 		"ParseWordComptoLatQuestion_1": {
 			question: &questions.ParseWordCompToLatQuestion{
 				Prompt:     "that: ille, illa, illud",
-				Components: "dative singular neuter",
+				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
 				MainAnswer: "illi",
 				Answers:    []string{"illi"},
 			},
@@ -60,7 +60,7 @@ func TestCheck(t *testing.T) {
 		"ParseWordComptoLatQuestion_2": {
 			question: &questions.ParseWordCompToLatQuestion{
 				Prompt:     "boy: puer, pueri, (m)",
-				Components: "genitive singular",
+				Components: questions.UnmarshalEndingComponents("genitive singular"),
 				MainAnswer: "pueri",
 				Answers:    []string{"pueri"},
 			},
@@ -70,19 +70,35 @@ func TestCheck(t *testing.T) {
 			question: &questions.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer:      "perfect passive participle feminine dative singular",
-				Answers:         []string{"perfect passive participle feminine dative singular"},
+				MainAnswer: questions.UnmarshalEndingComponents(
+					"perfect passive participle feminine dative singular",
+				),
+				Answers: []endingcomponents.EndingComponents{
+					questions.UnmarshalEndingComponents(
+						"perfect passive participle feminine dative singular",
+					),
+				},
 			},
-			input: "perfect passive participle feminine dative singular", want: true,
+			input: questions.UnmarshalEndingComponents(
+				"perfect passive participle feminine dative singular",
+			),
+			want: true,
 		},
 		"ParseWordLattoCompQuestion_2": {
 			question: &questions.ParseWordLatToCompQuestion{
 				Prompt:          "laetissimam",
 				DictionaryEntry: "happy: laetus, laeta, laetum, (2-1-2)",
-				MainAnswer:      "superlative accusative singular feminine",
-				Answers:         []string{"superlative accusative singular feminine"},
+				MainAnswer: questions.UnmarshalEndingComponents(
+					"superlative accusative singular feminine",
+				),
+				Answers: []endingcomponents.EndingComponents{
+					questions.UnmarshalEndingComponents("superlative accusative singular feminine"),
+				},
 			},
-			input: "superlative accusative singular masculine", want: false,
+			input: questions.UnmarshalEndingComponents(
+				"superlative accusative singular masculine",
+			),
+			want: false,
 		},
 		"PrincipalPartsQuestion_1": {
 			question: &questions.PrincipalPartsQuestion{
@@ -292,7 +308,7 @@ func TestMainAnswer(t *testing.T) {
 		"ParseWordCompToLatQuestion": {
 			question: &questions.ParseWordCompToLatQuestion{
 				Prompt:     "that: ille, illa, illud",
-				Components: "dative singular neuter",
+				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
 				MainAnswer: "illi",
 				Answers:    []string{"illi"},
 			},
@@ -302,10 +318,18 @@ func TestMainAnswer(t *testing.T) {
 			question: &questions.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer:      "perfect passive participle feminine dative singular",
-				Answers:         []string{"perfect passive participle feminine dative singular"},
+				MainAnswer: questions.UnmarshalEndingComponents(
+					"perfect passive participle feminine dative singular",
+				),
+				Answers: []endingcomponents.EndingComponents{
+					questions.UnmarshalEndingComponents(
+						"perfect passive participle feminine dative singular",
+					),
+				},
 			},
-			want: "perfect passive participle feminine dative singular",
+			want: questions.UnmarshalEndingComponents(
+				"perfect passive participle feminine dative singular",
+			),
 		},
 		"PrincipalPartsQuestion": {
 			question: &questions.PrincipalPartsQuestion{
@@ -343,7 +367,7 @@ func TestMainAnswer(t *testing.T) {
 func TestQuestionMode(t *testing.T) {
 	tests := map[string]struct {
 		question questions.Question
-		want     modes.QuestionMode
+		want     questions.QuestionMode
 	}{
 		"MultipleChoiceEngToLatQuestion": {
 			question: &questions.MultipleChoiceEngToLatQuestion{
@@ -351,7 +375,7 @@ func TestQuestionMode(t *testing.T) {
 				Choices: []string{"audio", "ille", "nomen"},
 				Answer:  "ille",
 			},
-			want: modes.MultipleChoice,
+			want: questions.MultipleChoice,
 		},
 		"MultipleChoiceLatToEngQuestion": {
 			question: &questions.MultipleChoiceLatToEngQuestion{
@@ -359,32 +383,38 @@ func TestQuestionMode(t *testing.T) {
 				Choices: []string{"name", "boy", "hear"},
 				Answer:  "boy",
 			},
-			want: modes.MultipleChoice,
+			want: questions.MultipleChoice,
 		},
 		"ParseWordCompToLatQuestion": {
 			question: &questions.ParseWordCompToLatQuestion{
 				Prompt:     "that: ille, illa, illud",
-				Components: "dative singular neuter",
+				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
 				MainAnswer: "illi",
 				Answers:    []string{"illi"},
 			},
-			want: modes.Regular,
+			want: questions.Regular,
 		},
 		"ParseWordLatToCompQuestion": {
 			question: &questions.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer:      "perfect passive participle feminine dative singular",
-				Answers:         []string{"perfect passive participle feminine dative singular"},
+				MainAnswer: questions.UnmarshalEndingComponents(
+					"perfect passive participle feminine dative singular",
+				),
+				Answers: []endingcomponents.EndingComponents{
+					questions.UnmarshalEndingComponents(
+						"perfect passive participle feminine dative singular",
+					),
+				},
 			},
-			want: modes.Regular,
+			want: questions.ParseWord,
 		},
 		"PrincipalPartsQuestion": {
 			question: &questions.PrincipalPartsQuestion{
 				Prompt:         "ingens",
 				PrincipalParts: []string{"ingens", "ingentis"},
 			},
-			want: modes.PrincipalParts,
+			want: questions.PrincipalParts,
 		},
 		"TypeInEngToLatQuestion": {
 			question: &questions.TypeInEngToLatQuestion{
@@ -392,7 +422,7 @@ func TestQuestionMode(t *testing.T) {
 				MainAnswer: "in",
 				Answers:    []string{"in"},
 			},
-			want: modes.Regular,
+			want: questions.Regular,
 		},
 		"TypeInLatToEngQuestion": {
 			question: &questions.TypeInLatToEngQuestion{
@@ -400,7 +430,7 @@ func TestQuestionMode(t *testing.T) {
 				MainAnswer: "large",
 				Answers:    []string{"large"},
 			},
-			want: modes.Regular,
+			want: questions.Regular,
 		},
 	}
 

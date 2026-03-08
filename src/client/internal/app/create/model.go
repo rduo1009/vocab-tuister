@@ -12,10 +12,10 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util/appdir"
 )
 
-type loadStatus int
+type LoadStatus int
 
 const (
-	StatusMissing loadStatus = iota
+	StatusMissing LoadStatus = iota
 	StatusPending
 	StatusLoaded
 )
@@ -23,32 +23,34 @@ const (
 type (
 	loadSection struct {
 		focused      bool
-		ListStatus   loadStatus
-		ConfigStatus loadStatus
+		ListStatus   LoadStatus
+		ConfigStatus LoadStatus
 	}
 )
 
-func (ls *loadSection) SetFocused(focused bool) {
-	ls.focused = focused
+func (ls *loadSection) Focus() {
+	ls.focused = true
+}
+
+func (ls *loadSection) Blur() {
+	ls.focused = false
 }
 
 func (ls *loadSection) Focused() bool {
 	return ls.focused
 }
 
-func (ls *loadSection) ID() string {
-	return "LoadSection"
-}
-
 func (ls *loadSection) Enabled() bool {
-	return ls.ListStatus == StatusPending && ls.ConfigStatus == StatusPending
+	return ls.ListStatus != StatusMissing && ls.ConfigStatus != StatusMissing
 }
 
 type Model struct {
 	// Layout state
+
 	width, height int
 
 	// Components
+
 	listtui             *list.Model
 	listtuiModeDropdown *dropdown.Model
 	listtuiFilepicker   *filepicker.Model
@@ -58,6 +60,7 @@ type Model struct {
 	LoadSection         *loadSection
 
 	// Application state
+
 	listtuiModeDropdownActive bool
 	listtuiFilepickerActive   bool
 	listtuiSaveAsActive       bool
@@ -67,7 +70,10 @@ type Model struct {
 
 func New(inbuiltListDir string) *Model {
 	listtui := list.New(inbuiltListDir)
-	listtuiModeDropdown := dropdown.New([]fmt.Stringer{list.InbuiltList, list.LocalList, list.CustomList})
+	listtuiModeDropdown := dropdown.New(
+		"listtuiDropdown",
+		[]fmt.Stringer{list.InbuiltList, list.LocalList, list.CustomList},
+	)
 	listtuiFilepicker := filepicker.New("listtuiFilepicker", inbuiltListDir, ".txt")
 	homeDir, _ := os.UserHomeDir()
 	listtuiSaveAs := saveas.New("listtuiSaveAs", homeDir, ".txt")

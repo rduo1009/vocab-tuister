@@ -1,9 +1,9 @@
-package root
+package create
 
 import (
 	"bytes"
 	"context"
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -16,12 +16,23 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
 )
 
-type ListConfigLoadedMsg struct {
-	vocabList     string
-	sessionConfig sessionconfig.SessionConfig
+const (
+	vocabListPage     = "send-vocab"
+	sessionConfigPage = "send-config"
+)
+
+type ErrorResponse struct {
+	ErrorType string `json:"error"`
+	Message   string `json:"message"`
+	Details   string `json:"details,omitempty"`
 }
 
-func loadVocabList(vocabList string, serverPort int) (string, error) {
+type ListConfigPostedMsg struct {
+	VocabList     string
+	SessionConfig sessionconfig.SessionConfig
+}
+
+func postVocabList(vocabList string, serverPort int) (string, error) {
 	if vocabList == "" {
 		return "", errors.New("vocab list is empty")
 	}
@@ -74,7 +85,7 @@ func loadVocabList(vocabList string, serverPort int) (string, error) {
 	return vocabList, nil
 }
 
-func loadSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.SessionConfig, error) {
+func postSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.SessionConfig, error) {
 	var (
 		mapSessionConfig  map[string]any
 		numberOfQuestions int
@@ -177,21 +188,21 @@ func loadSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.S
 	return sessionConfig, nil
 }
 
-func loadDataCmd(vocabList, rawSessionConfig string, serverPort int) tea.Cmd {
+func postListConfigCmd(vocabList, rawSessionConfig string, serverPort int) tea.Cmd {
 	return func() tea.Msg {
-		vocabList, err := loadVocabList(vocabList, serverPort)
+		vocabList, err := postVocabList(vocabList, serverPort)
 		if err != nil {
 			return app.ErrMsg(err)
 		}
 
-		sessionConfig, err := loadSessionConfig(rawSessionConfig, serverPort)
+		sessionConfig, err := postSessionConfig(rawSessionConfig, serverPort)
 		if err != nil {
 			return app.ErrMsg(err)
 		}
 
-		return ListConfigLoadedMsg{
-			vocabList:     vocabList,
-			sessionConfig: sessionConfig,
+		return ListConfigPostedMsg{
+			VocabList:     vocabList,
+			SessionConfig: sessionConfig,
 		}
 	}
 }

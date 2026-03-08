@@ -12,29 +12,3 @@ const (
 	Help
 	Settings
 )
-
-type OptionType int
-
-const (
-	OptionBool OptionType = iota
-	OptionText
-	OptionNumber
-	OptionSelect
-)
-
-type QuestionMode int
-
-const (
-	Regular QuestionMode = iota
-	PrincipalParts
-	MultipleChoice
-)
-
-type AppStatus int
-
-const (
-	Unanswered AppStatus = iota
-	Correct
-	Incorrect
-	FinalScreen
-)

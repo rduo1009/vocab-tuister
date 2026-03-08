@@ -9,14 +9,16 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 type (
-	StartMsg  struct{}
-	ExitMsg   struct{}
-	PickedMsg struct{ ChosenItem fmt.Stringer }
+	StartMsg  struct{ ID string }
+	ExitMsg   struct{ ID string }
+	PickedMsg struct {
+		ID         string
+		ChosenItem fmt.Stringer
+	}
 )
 
 const defaultHeight = 5 // arbitrary
@@ -57,10 +59,10 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 
 // XXX: Generic?
 type Model struct {
+	ID            string
+	LastSelected  fmt.Stringer
 	width, height int
 	list          list.Model
-	quitting      bool
-	err           error
 }
 
 func (m *Model) KeyMap() help.KeyMap {
@@ -71,7 +73,7 @@ func (m *Model) KeyMap() help.KeyMap {
 //
 //	AdditionalShortHelpKeys func() []key.Binding
 //	AdditionalFullHelpKeys  func() []key.Binding
-func New(items []fmt.Stringer) *Model {
+func New[T fmt.Stringer](id string, items []T) *Model {
 	var (
 		listItems []list.Item
 		maxWidth  int
@@ -102,7 +104,7 @@ func New(items []fmt.Stringer) *Model {
 	l.SetShowPagination(false)
 	l.SetShowHelp(false)
 
-	m := &Model{list: l}
+	m := &Model{ID: id, LastSelected: items[0], list: l, width: width}
 	m.width = width
 	m.height = height
 
@@ -113,17 +115,18 @@ func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
-func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	if msg, ok := msg.(tea.KeyPressMsg); ok {
 		switch keypress := msg.String(); keypress {
 		case "enter":
 			i, _ := m.list.SelectedItem().(item)
-			cmds = append(cmds, util.MsgCmd(PickedMsg{i.Stringer}))
+			m.LastSelected = i
+			cmds = append(cmds, util.MsgCmd(PickedMsg{ID: m.ID, ChosenItem: i.Stringer}))
 
 		case "esc": // FIXME: fsr this quits the whole app???
-			cmds = append(cmds, util.MsgCmd(ExitMsg{}))
+			cmds = append(cmds, util.MsgCmd(ExitMsg{ID: m.ID}))
 		}
 	}
 
@@ -134,6 +137,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 func (m *Model) SetWidth(width int) {
 	m.width = width
+}
+
+func (m *Model) GetWidth() int {
+	return m.width
 }
 
 func (m *Model) SetHeight(height int) {

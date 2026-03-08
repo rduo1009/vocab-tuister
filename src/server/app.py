@@ -118,7 +118,7 @@ def send_vocab():
 
 @app.route("/send-config", methods=["POST"])
 def send_config():
-    global session_config
+    global question_amount, session_config
 
     logger.info("Validating settings.")
 
@@ -172,7 +172,7 @@ def _generate_questions_json(
     ]
 
 
-@app.route("/session", methods=["POST"])
+@app.route("/session", methods=["GET"])
 def create_session():
     if not vocab_list:
         raise ValueError("Vocab file has not been provided.")

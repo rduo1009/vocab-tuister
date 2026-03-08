@@ -26,7 +26,7 @@ type (
 	failFormMsg struct{}
 )
 
-func generateSessionConfig(values *ConfigFormValues) tea.Cmd {
+func generateSessionConfig(values *FormValues) tea.Cmd {
 	generate := func() ([]byte, error) {
 		configMap := make(configMap)
 
@@ -140,7 +140,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			m.appStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
-				IDs: []string{m.ResetButton.ID()},
+				Components: []navigator.Navigable{m.ResetButton},
 			}))
 		}
 
@@ -153,10 +153,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		cmds = append(cmds,
 			// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
 			util.MsgCmd(navigator.ReplaceNavigableMsg{
-				ID:         m.FormSection.ID(),
-				Components: []navigator.Navigable{m.ResetButton, m.FormSection},
+				Target:      m.FormSection,
+				Replacement: []navigator.Navigable{m.ResetButton, m.FormSection},
 			}),
-			util.MsgCmd(navigator.FocusNavigableMsg{ID: m.FormSection.ID()}),
+			util.MsgCmd(navigator.FocusNavigableMsg{Target: m.FormSection}),
 		)
 
 		// NOTE: use tea.Sequence as these need to be ran in order
@@ -174,7 +174,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		m.appStatus = CreateSessionConfig
 		m.RawSessionConfig = ""
 		cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
-			IDs: []string{m.ResetButton.ID()},
+			Components: []navigator.Navigable{m.ResetButton},
 		}))
 	}
 

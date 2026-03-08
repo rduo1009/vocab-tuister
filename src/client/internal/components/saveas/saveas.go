@@ -154,8 +154,13 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		// 2. Handle Global Navigation (Focus Switching & Exit)
 
 		if key.Matches(msg, m.keys.CycleFocus) {
-			m.cycleFocus()
-			return m, nil
+			if m.textinput.Focused() {
+				m.textinput.Blur()
+			} else {
+				cmds = append(cmds, m.textinput.Focus())
+			}
+
+			return m, tea.Batch(cmds...)
 		}
 
 		if key.Matches(msg, m.keys.Exit) {
@@ -242,7 +247,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		// we might want to populate textinput with that filename.
 		if didSelect, path := m.filepicker.DidSelectFile(msg); didSelect {
 			m.textinput.SetValue(filepath.Base(path))
-			m.textinput.Focus()
+			cmds = append(cmds, m.textinput.Focus())
 		}
 
 		// Handle disabled file selection
@@ -379,12 +384,4 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	y := (screenHeight - lipgloss.Height(finalView)) / 2
 
 	return finalView, x, y
-}
-
-func (m *Model) cycleFocus() {
-	if m.textinput.Focused() {
-		m.textinput.Blur()
-	} else {
-		m.textinput.Focus()
-	}
 }

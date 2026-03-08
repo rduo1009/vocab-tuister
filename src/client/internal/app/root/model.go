@@ -8,6 +8,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
@@ -17,11 +18,13 @@ import (
 
 type Model struct {
 	// Layout state
+
 	width, height int
 	currentPage   int
 	pageOrder     []modes.PageName
 
 	// Components
+
 	pages       map[modes.PageName]app.PageModel
 	tabs        *tabs.Model
 	help        *help.Model
@@ -29,6 +32,7 @@ type Model struct {
 	errorDialog errordialog.Model
 
 	// Application state
+
 	keys          keyMap
 	navigator     *navigator.Navigator
 	vocabList     string
@@ -60,6 +64,9 @@ func New(inbuiltListDir string) *Model {
 
 	createtui := create.New(inbuiltListDir)
 	reviewtui := review.New()
+	// unfortunately sessiontui needs to be coupled with createtui
+	// to prevent user from starting session without loading list + config
+	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus)
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)
@@ -70,7 +77,7 @@ func New(inbuiltListDir string) *Model {
 		pages: map[modes.PageName]app.PageModel{
 			modes.Create:   createtui,
 			modes.Review:   reviewtui,
-			modes.Test:     nil,
+			modes.Test:     sessiontui,
 			modes.Help:     nil,
 			modes.Settings: nil,
 		},

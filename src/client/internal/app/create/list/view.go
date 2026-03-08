@@ -1,8 +1,6 @@
 package list
 
 import (
-	"fmt"
-
 	"charm.land/lipgloss/v2"
 )
 
@@ -90,7 +88,7 @@ func footerBorderStyle(focused bool) lipgloss.Style {
 func (m *Model) View() string {
 	// Header section
 	titleView := boldStyle.Render("Vocab List")
-	modeSwitchView := buttonStyle(m.HeaderSection.Focused()).Width(14).Render(fmt.Sprint(m.appStatus))
+	modeSwitchView := buttonStyle(m.HeaderSection.Focused()).Width(14).Render(m.appStatus.String())
 	headerSectionView := headerBorderStyle(m.HeaderSection.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, titleView, modeSwitchView))

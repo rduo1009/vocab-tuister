@@ -9,7 +9,7 @@ import (
 
 // XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
 
-type ConfigFormValues struct {
+type FormValues struct {
 	PartsOfSpeechExclusions []string
 	VerbExclusions          []string
 	ParticipleExclusions    []string
@@ -145,9 +145,9 @@ var allKeys = []string{
 	"include-typein-lattoeng",
 }
 
-func DefaultForm() (*huh.Form, *ConfigFormValues) {
+func DefaultForm() (*huh.Form, *FormValues) {
 	// Default values
-	values := &ConfigFormValues{
+	values := &FormValues{
 		NumberMultipleChoiceOptionsString: "3",
 		NumberOfQuestionsString:           "50",
 	}

@@ -22,47 +22,49 @@ type (
 	resetButton struct{ focused bool }
 )
 
-func (hs *headerSection) SetFocused(focused bool) {
-	hs.focused = focused
+func (hs *headerSection) Focus() {
+	hs.focused = true
+}
+
+func (hs *headerSection) Blur() {
+	hs.focused = false
 }
 
 func (hs *headerSection) Focused() bool {
 	return hs.focused
 }
 
-func (hs *headerSection) ID() string {
-	return "ConfigHeaderSection"
+func (fs *formSection) Focus() {
+	fs.focused = true
 }
 
-func (fs *formSection) SetFocused(focused bool) {
-	fs.focused = focused
+func (fs *formSection) Blur() {
+	fs.focused = false
 }
 
 func (fs *formSection) Focused() bool {
 	return fs.focused
 }
 
-func (fs *formSection) ID() string {
-	return "FormSection"
+func (rb *resetButton) Focus() {
+	rb.focused = true
 }
 
-func (rb *resetButton) SetFocused(focused bool) {
-	rb.focused = focused
+func (rb *resetButton) Blur() {
+	rb.focused = false
 }
 
 func (rb *resetButton) Focused() bool {
 	return rb.focused
 }
 
-func (rb *resetButton) ID() string {
-	return "ResetButton"
-}
-
 type Model struct {
 	// Layout state
+
 	width, height int
 
 	// Components
+
 	HeaderSection *headerSection
 	FormSection   *formSection
 	ResetButton   *resetButton
@@ -70,8 +72,9 @@ type Model struct {
 	jsonview      *jsonview.Model
 
 	// Application state
+
 	appStatus        createSessionConfigStatus
-	configFormValues *ConfigFormValues
+	configFormValues *FormValues
 	RawSessionConfig string
 }
 

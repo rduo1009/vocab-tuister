@@ -8,6 +8,8 @@ import (
 	"golang.org/x/term"
 )
 
+// NOTE: THIS IS UNUSED, TO BE REMOVED (AND LATER REPLACED WITH STYLE STRUCT)
+
 var physicalWidth, _, _ = term.GetSize(int(os.Stdout.Fd()))
 
 // Colours used by the tui.

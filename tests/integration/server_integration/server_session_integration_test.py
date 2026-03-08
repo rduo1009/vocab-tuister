@@ -50,7 +50,11 @@ def test_cli_normal(snapshot, monkeypatch):
         assert vocab_response.status_code == 200
         assert vocab_response.text == snapshot
 
-        session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
+        config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+        assert config_response.status_code == 200
+        assert config_response.text == snapshot
+
+        session_response = requests.post(f"{server_url}/session", timeout=5)
         assert session_response.status_code == 200
         assert session_response.json() == snapshot
 
@@ -69,17 +73,21 @@ def test_cli_error_list(snapshot, monkeypatch):
 
         vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
         assert vocab_response.status_code == 400
-        assert vocab_response.text == snapshot
+        assert vocab_response.json() == snapshot
+
+        config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+        assert config_response.status_code == 200
+        assert config_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
+            session_response = requests.post(f"{server_url}/session", timeout=5)
             session_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
+            if session_response.status_code == 500:
+                assert session_response.status_code == 500
                 assert session_response.text == snapshot
             else:
                 raise
@@ -104,15 +112,15 @@ def test_cli_error_missing1_config(snapshot, monkeypatch):
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
-            session_response.raise_for_status()
+            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+            config_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
-                assert session_response.text == snapshot
+            if config_response.status_code == 400:
+                assert config_response.status_code == 400
+                assert config_response.json() == snapshot
             else:
                 raise
 
@@ -136,15 +144,15 @@ def test_cli_error_missing2_config(snapshot, monkeypatch):
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
-            session_response.raise_for_status()
+            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+            config_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
-                assert session_response.text == snapshot
+            if config_response.status_code == 400:
+                assert config_response.status_code == 400
+                assert config_response.json() == snapshot
             else:
                 raise
 
@@ -168,15 +176,15 @@ def test_cli_error_extra_config(snapshot, monkeypatch):
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
-            session_response.raise_for_status()
+            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+            config_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
-                assert session_response.text == snapshot
+            if config_response.status_code == 400:
+                assert config_response.status_code == 400
+                assert config_response.json() == snapshot
             else:
                 raise
 
@@ -200,15 +208,15 @@ def test_cli_error_type1_config(snapshot, monkeypatch):
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
-            session_response.raise_for_status()
+            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+            config_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
-                assert session_response.text == snapshot
+            if config_response.status_code == 400:
+                assert config_response.status_code == 400
+                assert config_response.json() == snapshot
             else:
                 raise
 
@@ -232,15 +240,15 @@ def test_cli_error_type2_config(snapshot, monkeypatch):
         assert vocab_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", json=session_config, timeout=5)
-            session_response.raise_for_status()
+            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
+            config_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")
 
         except requests.exceptions.HTTPError:
-            if session_response.status_code == 400:
-                assert session_response.status_code == 400
-                assert session_response.text == snapshot
+            if config_response.status_code == 400:
+                assert config_response.status_code == 400
+                assert config_response.json() == snapshot
             else:
                 raise
 

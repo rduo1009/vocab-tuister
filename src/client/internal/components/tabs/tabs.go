@@ -9,6 +9,8 @@ import (
 	lipglosscompat "charm.land/lipgloss/v2/compat"
 )
 
+type SelectTabMsg struct{ Index int }
+
 func inactiveTabBorder(b lipgloss.Border) lipgloss.Border {
 	b.Top = "─"
 	b.Bottom = "─"
@@ -86,16 +88,16 @@ type Model struct {
 	isFocused bool
 }
 
-func (t *Model) SetFocused(focused bool) {
-	t.isFocused = focused
+func (t *Model) Focus() {
+	t.isFocused = true
+}
+
+func (t *Model) Blur() {
+	t.isFocused = false
 }
 
 func (t *Model) Focused() bool {
 	return t.isFocused
-}
-
-func (t *Model) ID() string {
-	return "tabs"
 }
 
 func (t *Model) Next() {
@@ -104,6 +106,10 @@ func (t *Model) Next() {
 
 func (t *Model) Prev() {
 	t.active--
+}
+
+func (t *Model) Select(index int) {
+	t.active = index
 }
 
 func New(names []fmt.Stringer, active int, isFocused bool) *Model {

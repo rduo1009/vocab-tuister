@@ -33,8 +33,10 @@ func (m Model) Init() tea.Cmd {
 }
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
-	var cmd tea.Cmd
-	var cmds []tea.Cmd
+	var (
+		cmd  tea.Cmd
+		cmds []tea.Cmd
+	)
 
 	switch msg := msg.(type) {
 	case TimeoutMsg:
@@ -45,6 +47,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 					return TimeoutMsg{}
 				})
 			}
+
 			m.visible = false
 		}
 
@@ -162,15 +165,8 @@ func scrollbar(height, total, visible, offset int) string {
 
 	ratio := float64(height) / float64(total)
 	thumbHeight := int(math.Max(1, math.Round(float64(visible)*ratio)))
-	thumbOffset := int(math.Round(float64(offset) * ratio))
-
 	// Bounds check
-	if thumbOffset > height-thumbHeight {
-		thumbOffset = height - thumbHeight
-	}
-	if thumbOffset < 0 {
-		thumbOffset = 0
-	}
+	thumbOffset := max(0, min(int(math.Round(float64(offset)*ratio)), height-thumbHeight))
 
 	trackStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	thumbStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("250"))
@@ -182,13 +178,17 @@ func scrollbar(height, total, visible, offset int) string {
 	thumb := thumbStyle.Render(thumbChar)
 
 	bar := ""
-	for i := 0; i < height; i++ {
+
+	var barSb185 strings.Builder
+	for i := range height {
 		if i >= thumbOffset && i < thumbOffset+thumbHeight {
-			bar += thumb + "\n"
+			barSb185.WriteString(thumb + "\n")
 		} else {
-			bar += track + "\n"
+			barSb185.WriteString(track + "\n")
 		}
 	}
+
+	bar += barSb185.String()
 
 	return strings.TrimRight(bar, "\n")
 }
