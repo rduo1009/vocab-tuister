@@ -69,15 +69,17 @@ type Model struct {
 	correctCount        int
 	dropdownActive      bool
 	activeDropdownIndex int
+	serverPort          int
 	appStatus           testingSessionStatus
 }
 
-func New(listLoaded, configLoaded *create.LoadStatus) *Model {
+func New(listLoaded, configLoaded *create.LoadStatus, serverPort int) *Model {
 	return &Model{
 		returnButton:  &returnButton{},
 		restartButton: &restartButton{},
 		listLoaded:    listLoaded,
 		configLoaded:  configLoaded,
+		serverPort:    serverPort,
 		appStatus:     Unavailable,
 	}
 }

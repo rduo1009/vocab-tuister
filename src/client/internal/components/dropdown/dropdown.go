@@ -129,6 +129,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
+
 	m.list, cmd = m.list.Update(msg)
 
 	return m, cmd

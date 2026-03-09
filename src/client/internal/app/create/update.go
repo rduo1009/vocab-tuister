@@ -21,7 +21,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			cmds = append(cmds, postListConfigCmd(
 				m.listtui.VocabEditor.GetCurrentContent(),
 				m.configtui.RawSessionConfig,
-				5500, // TODO: actual server port here
+				m.serverPort,
 			))
 		}
 

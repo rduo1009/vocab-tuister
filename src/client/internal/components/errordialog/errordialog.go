@@ -118,7 +118,7 @@ func (m Model) View() string {
 		BorderForeground(borderColor).
 		Width(m.width - 2)
 
-	header := headerStyle.Render("ⓧ Error")
+	header := headerStyle.Render("ⓧ Error") // TODO: use nerdfont with https://github.com/lrstanley/go-nf?
 
 	viewportView := m.viewport.View()
 

@@ -26,7 +26,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			m.appStatus = Uninitialised
 			cmds = append(
 				cmds,
-				getQuestions(5500), // TODO: actual server port here
+				getQuestions(m.serverPort),
 				util.MsgCmd(navigator.RemoveNavigableMsg{
 					Components: []navigator.Navigable{m.returnButton},
 				}),

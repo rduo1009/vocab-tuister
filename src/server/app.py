@@ -9,7 +9,7 @@ from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, TypedDict
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request
 from platformdirs import PlatformDirs
 from pydantic import ValidationError
 from waitress import serve
@@ -79,15 +79,9 @@ def _get_settings() -> Settings:
         raise InvalidSettingsError(f"Invalid settings: {e}") from e
 
 
-@app.route("/")
-def info():
-    return render_template(
-        "index.html.jinja",
-        vocab_list=(str(vocab) for vocab in vocab_list.vocab)
-        if vocab_list
-        else None,
-        vocab_list_raw=str(vocab_list),
-    )
+@app.route("/health", methods=["GET"])
+def health():
+    return "OK", 200
 
 
 @app.route("/send-vocab", methods=["POST"])

@@ -49,7 +49,7 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 	return res
 }
 
-func New(inbuiltListDir string) *Model {
+func New(inbuiltListDir string, serverPort int) *Model {
 	pageOrder := []modes.PageName{
 		modes.Create,
 		modes.Review,
@@ -62,11 +62,11 @@ func New(inbuiltListDir string) *Model {
 	h := help.New()
 	overlayHelp := help.New()
 
-	createtui := create.New(inbuiltListDir)
+	createtui := create.New(inbuiltListDir, serverPort)
 	reviewtui := review.New()
 	// unfortunately sessiontui needs to be coupled with createtui
 	// to prevent user from starting session without loading list + config
-	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus)
+	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus, serverPort)
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)

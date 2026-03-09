@@ -8,12 +8,9 @@ import (
 )
 
 func (m *Model) Init() tea.Cmd {
-	return tea.Sequence(
-		util.MsgCmd(navigator.AddNavigableMsg{
-			Components: []navigator.Navigable{
-				m.returnButton,
-			},
-		}),
-		util.MsgCmd(navigator.FocusNavigableMsg{Target: m.returnButton}),
-	)
+	return util.MsgCmd(navigator.AddNavigableMsg{
+		Components: []navigator.Navigable{
+			m.returnButton,
+		},
+	})
 }

@@ -65,10 +65,11 @@ type Model struct {
 	listtuiFilepickerActive   bool
 	listtuiSaveAsActive       bool
 	inbuiltListDir            string
+	serverPort                int
 	configtuiFilepickerActive bool
 }
 
-func New(inbuiltListDir string) *Model {
+func New(inbuiltListDir string, serverPort int) *Model {
 	listtui := list.New(inbuiltListDir)
 	listtuiModeDropdown := dropdown.New(
 		"listtuiDropdown",
@@ -99,5 +100,6 @@ func New(inbuiltListDir string) *Model {
 		listtuiFilepickerActive:   false,
 		listtuiSaveAsActive:       false,
 		inbuiltListDir:            inbuiltListDir,
+		serverPort:                serverPort,
 	}
 }
