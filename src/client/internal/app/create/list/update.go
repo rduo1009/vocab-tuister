@@ -67,7 +67,6 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		// NOTE: Normal mode cannot be disabled in the editor,
 		// so have to manually prevent escaping to normal mode
 		if msg.String() == "esc" {
-			// XXX: Maybe returning early will not work anymore as things get added!
 			return m, tea.Batch(cmds...)
 		}
 
@@ -115,7 +114,6 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 	}
 
-	// FIXME: fsr pressing "enter" on insert mode freezes app
 	util.UpdaterPtr(&cmds, m.VocabEditor, msg)
 
 	return m, tea.Batch(cmds...)

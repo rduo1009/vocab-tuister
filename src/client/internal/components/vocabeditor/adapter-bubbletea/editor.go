@@ -791,18 +791,13 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 
 		keyEvent := convertBubbleKey(msg)
-		// NOTE: to avoid these being typed into editor while switching focus
-		if keyEvent.Rune == '[' || keyEvent.Rune == ']' {
-			goto skipHandleKey
-		}
-
-		if err := m.editor.HandleKey(keyEvent); err != nil {
+		err := m.editor.HandleKey(keyEvent)
+		if err != nil {
 			cmds = append(cmds, func() tea.Msg {
 				return ErrorMsg{ID: err.ID(), Error: err.Error()}
 			})
 		}
 
-	skipHandleKey:
 		if m.editor.IsSearchMode() {
 			switch keyEvent.Key {
 			case editor.KeyEscape:
