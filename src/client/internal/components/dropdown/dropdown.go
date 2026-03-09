@@ -116,23 +116,22 @@ func (m *Model) Init() tea.Cmd {
 }
 
 func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
-	var cmds []tea.Cmd
-
 	if msg, ok := msg.(tea.KeyPressMsg); ok {
 		switch keypress := msg.String(); keypress {
 		case "enter":
 			i, _ := m.list.SelectedItem().(item)
 			m.LastSelected = i
-			cmds = append(cmds, util.MsgCmd(PickedMsg{ID: m.ID, ChosenItem: i.Stringer}))
+			return m, util.MsgCmd(PickedMsg{ID: m.ID, ChosenItem: i.Stringer})
 
-		case "esc": // FIXME: fsr this quits the whole app???
-			cmds = append(cmds, util.MsgCmd(ExitMsg{ID: m.ID}))
+		case "esc":
+			return m, util.MsgCmd(ExitMsg{ID: m.ID})
 		}
 	}
 
-	util.UpdaterVal(&cmds, &m.list, msg)
+	var cmd tea.Cmd
+	m.list, cmd = m.list.Update(msg)
 
-	return m, tea.Batch(cmds...)
+	return m, cmd
 }
 
 func (m *Model) SetWidth(width int) {
