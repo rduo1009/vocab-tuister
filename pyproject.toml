@@ -28,7 +28,7 @@ dependencies = [
   "pydantic==2.12.2",
   "pyinstaller==6.18.0",
   "waitress==3.0.2",
-  "wn @ git+https://github.com/goodmami/wn.git@d91877",
+  "wn==1.0.0",
 ]
 
 [dependency-groups]
