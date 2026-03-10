@@ -139,9 +139,13 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			m.form.State = huh.StateNormal
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
-			cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
-				Components: []navigator.Navigable{m.ResetButton},
-			}))
+			_, formCmd := m.form.Update(nil) // a little nudge
+			return m, tea.Batch(
+				formCmd,
+				util.MsgCmd(navigator.RemoveNavigableMsg{
+					Components: []navigator.Navigable{m.ResetButton},
+				}),
+			)
 		}
 
 	case rawSessionConfigMsg:
