@@ -18,22 +18,22 @@ dynamic = [ "version" ]
 dependencies = [
   "aenum==3.1.16",
   "ansicolors==1.1.8",
-  "cyclopts==4.5.1",
+  "cyclopts==4.8.0",
   "dill==0.4.1",
-  "dunamai==1.25.0",
+  "dunamai==1.26.0",
   "flask==3.1.3",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
-  "platformdirs==4.9.2",
+  "platformdirs==4.9.4",
   "pydantic==2.12.2",
-  "pyinstaller==6.18.0",
+  "pyinstaller==6.19.0",
   "waitress==3.0.2",
   "wn==1.0.0",
 ]
 
 [dependency-groups]
 dev = [
-  "basedpyright==1.37.4",
+  "basedpyright==1.38.2",
   "coverage==7.13.4",
   "doc8==2.0.0",
   "griffe==2.0.0",
@@ -46,12 +46,12 @@ dev = [
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
-  "ruff==0.15.1",
+  "ruff==0.15.5",
   "syrupy==5.1.0",
 ]
 types = [
-  "optype==0.15.0",
-  "types-regex==2026.1.15.20260116",
+  "optype==0.17.0",
+  "types-regex==2026.2.28.20260301",
   "types-waitress==3.0.1.20250801",
 ]
 

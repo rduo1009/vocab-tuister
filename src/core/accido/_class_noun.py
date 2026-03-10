@@ -45,6 +45,11 @@ class Noun(Word):
     gender : Gender | None
         The gender, if applicable (only for regular nouns).
 
+    Notes
+    -----
+    ``accido`` relies on the assumption that there are no neuter or plurale
+    tantum fifth declension nouns (there doesn't seem to be any).
+
     Examples
     --------
     >>> foo = Noun(
@@ -58,11 +63,6 @@ class Noun(Word):
     >>> foo = Noun("ego", meaning="I")
     >>> foo["Nnomsg"]
     'ego'
-
-    Notes
-    -----
-    ``accido`` relies on the assumption that there are no neuter or plurale
-    tantum fifth declension nouns (there doesn't seem to be any).
     """
 
     __slots__: tuple[str, ...] = (

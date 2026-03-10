@@ -64,16 +64,6 @@ def cache_vocab_file(
     bool
         Whether the vocab list was created from cache or not.
 
-    Warnings
-    --------
-    UserWarning
-        If the cache folder did not exist and had to be created, or if the
-        vocab dump already exists and has been overwritten.
-    MisleadingFilenameWarning
-        If the file path does not end in `.gzip` and the file is being
-        compressed, or if the file path ends in `.gzip` and the file is
-        not being compressed.
-
     Raises
     ------
     InvalidVocabFileFormatError
@@ -84,6 +74,16 @@ def cache_vocab_file(
         been tampered with.
     FileNotFoundError
         If the vocab file or dump does not exist.
+
+    Warnings
+    --------
+    UserWarning
+        If the cache folder did not exist and had to be created, or if the
+        vocab dump already exists and has been overwritten.
+    MisleadingFilenameWarning
+        If the file path does not end in `.gzip` and the file is being
+        compressed, or if the file path ends in `.gzip` and the file is
+        not being compressed.
     """
     cache_folder = Path(cache_folder)
     if not cache_folder.exists():
