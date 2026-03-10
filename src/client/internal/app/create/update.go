@@ -5,6 +5,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
@@ -129,8 +130,9 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 		}
 	}
 
-	if m.configtui.RawSessionConfig == "" {
-		if m.LoadSection.ConfigStatus == StatusPending {
+	if m.configtui.AppStatus == config.CreateSessionConfig {
+		// when the user is going through the wizard again there is no config!
+		if m.LoadSection.ConfigStatus == StatusPending || m.LoadSection.ListStatus == StatusLoaded {
 			m.LoadSection.ConfigStatus = StatusMissing
 		}
 	} else {
