@@ -59,7 +59,7 @@ func (m Model) View() string {
 
 	b.WriteString(internal.TitleStyle.Render("Vocab Tester Session"))
 	b.WriteRune('\n')
-	b.WriteString(fmt.Sprintf("Question %d/%d", m.currentQuestion, len(m.questions)))
+	fmt.Fprintf(&b, "Question %d/%d", m.currentQuestion, len(m.questions))
 	b.WriteString("\n\n")
 
 	switch m.questionMode {
@@ -172,28 +172,20 @@ func (m Model) View() string {
 		if m.currentQuestion == 1 {
 			b.WriteString("Score: 0/0 (0%)\n")
 		} else {
-			b.WriteString(fmt.Sprintf("Score: %d/%d (%.0f%%)\n", m.score, m.currentQuestion-1, 100*float64(m.score)/float64(m.currentQuestion-1)))
+			fmt.Fprintf(&b, "Score: %d/%d (%.0f%%)\n", m.score, m.currentQuestion-1, 100*float64(m.score)/float64(m.currentQuestion-1))
 		}
 	case enums.Correct:
 		b.WriteString("Answer is correct!\n\n")
-		b.WriteString(
-			fmt.Sprintf(
-				"Score: %d/%d (%.0f%%)\n",
-				m.score,
-				m.currentQuestion,
-				100*float64(m.score)/float64(m.currentQuestion),
-			),
-		)
+		fmt.Fprintf(&b, "Score: %d/%d (%.0f%%)\n",
+			m.score,
+			m.currentQuestion,
+			100*float64(m.score)/float64(m.currentQuestion))
 	case enums.Incorrect:
 		b.WriteString("Answer is incorrect!\n\n")
-		b.WriteString(
-			fmt.Sprintf(
-				"Score: %d/%d (%.0f%%)\n",
-				m.score,
-				m.currentQuestion,
-				100*float64(m.score)/float64(m.currentQuestion),
-			),
-		)
+		fmt.Fprintf(&b, "Score: %d/%d (%.0f%%)\n",
+			m.score,
+			m.currentQuestion,
+			100*float64(m.score)/float64(m.currentQuestion))
 	}
 
 	b.WriteString(m.help.View(m.keys))
