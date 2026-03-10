@@ -48,7 +48,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			}
 		} else if m.SelectButton.Focused() {
 			if key.Matches(msg, m.SelectButton.KeyMap().PressButton) {
-				switch m.appStatus {
+				switch m.AppStatus {
 				case InbuiltList, LocalList:
 					cmds = append(
 						cmds,
@@ -71,8 +71,8 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 
 	case dropdown.PickedMsg:
-		m.appStatus = msg.ChosenItem.(createListStatus)
-		switch m.appStatus {
+		m.AppStatus = msg.ChosenItem.(createListStatus)
+		switch m.AppStatus {
 		case InbuiltList:
 			m.VocabEditor.SetNormalMode()
 			m.VocabEditor.DisableInsertMode(true)

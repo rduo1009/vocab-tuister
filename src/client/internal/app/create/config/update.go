@@ -137,7 +137,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
 			m.form, m.configFormValues = DefaultForm()
 			m.form.State = huh.StateNormal
-			m.appStatus = CreateSessionConfig
+			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
 				Components: []navigator.Navigable{m.ResetButton},
@@ -145,7 +145,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 
 	case rawSessionConfigMsg:
-		m.appStatus = ReviewSessionConfig
+		m.AppStatus = ReviewSessionConfig
 		m.RawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.RawSessionConfig)
 
@@ -171,7 +171,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	case failFormMsg:
 		m.form, m.configFormValues = DefaultForm()
 		m.form.State = huh.StateNormal
-		m.appStatus = CreateSessionConfig
+		m.AppStatus = CreateSessionConfig
 		m.RawSessionConfig = ""
 		cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
 			Components: []navigator.Navigable{m.ResetButton},
@@ -184,7 +184,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			util.UpdaterPtr(&cmds, m.form, msg)
 
 		case huh.StateCompleted:
-			switch m.appStatus {
+			switch m.AppStatus {
 			case CreateSessionConfig: // i.e. the form has just been finished
 				cmds = append(cmds, generateSessionConfig(m.configFormValues))
 

@@ -73,7 +73,7 @@ type Model struct {
 
 	// Application state
 
-	appStatus        createSessionConfigStatus
+	AppStatus        createSessionConfigStatus
 	configFormValues *FormValues
 	RawSessionConfig string
 }
@@ -91,7 +91,7 @@ func New() *Model {
 		ResetButton:      &resetButton,
 		form:             form,
 		jsonview:         jsonview.New(""),
-		appStatus:        CreateSessionConfig,
+		AppStatus:        CreateSessionConfig,
 		configFormValues: values,
 	}
 }

@@ -89,7 +89,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.navigator.Remove(msg.Components...)
 
 	case navigator.ReplaceNavigableMsg:
-		m.navigator.Replace(msg.Target, msg.Replacement...)
+		if err := m.navigator.Replace(msg.Target, msg.Replacement...); err != nil {
+			return m, util.MsgCmd(app.ErrMsg(err))
+		}
 
 	case navigator.FocusNavigableMsg:
 		if err := m.navigator.FocusNavigable(msg.Target); err != nil {

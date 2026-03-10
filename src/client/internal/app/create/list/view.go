@@ -88,14 +88,14 @@ func footerBorderStyle(focused bool) lipgloss.Style {
 func (m *Model) View() string {
 	// Header section
 	titleView := boldStyle.Render("Vocab List")
-	modeSwitchView := buttonStyle(m.HeaderSection.Focused()).Width(14).Render(m.appStatus.String())
+	modeSwitchView := buttonStyle(m.HeaderSection.Focused()).Width(14).Render(m.AppStatus.String())
 	headerSectionView := headerBorderStyle(m.HeaderSection.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, titleView, modeSwitchView))
 
 	// Footer section
 	footerView := boldStyle.Render("List:")
-	selectListView := buttonStyle(m.SelectButton.Focused()).Render(selectListText(m.appStatus))
+	selectListView := buttonStyle(m.SelectButton.Focused()).Render(selectListText(m.AppStatus))
 	footerSectionView := footerBorderStyle(m.SelectButton.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, footerView, selectListView))

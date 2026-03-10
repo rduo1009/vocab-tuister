@@ -141,7 +141,7 @@ func (fs *formSection) KeyMap() help.KeyMap {
 func (m *Model) KeyMap() help.KeyMap {
 	switch {
 	case m.FormSection.Focused():
-		if m.appStatus == CreateSessionConfig {
+		if m.AppStatus == CreateSessionConfig {
 			return m.FormSection.KeyMap()
 		}
 

@@ -77,6 +77,7 @@ func (n *Navigator) Add(components ...Navigable) {
 	}
 }
 
+// TODO: error for this.
 func (n *Navigator) Remove(components ...Navigable) {
 	for _, target := range components {
 		for i, item := range n.Items {
@@ -105,7 +106,7 @@ func (n *Navigator) Remove(components ...Navigable) {
 	}
 }
 
-func (n *Navigator) Replace(target Navigable, replacement ...Navigable) {
+func (n *Navigator) Replace(target Navigable, replacement ...Navigable) error {
 	for i, item := range n.Items {
 		if item == target {
 			// Unfocus if replacing current
@@ -124,7 +125,7 @@ func (n *Navigator) Replace(target Navigable, replacement ...Navigable) {
 			if len(n.Items) == 0 {
 				n.CurrentIndex = 0
 
-				return
+				return nil
 			}
 
 			if wasFocused {
@@ -139,9 +140,11 @@ func (n *Navigator) Replace(target Navigable, replacement ...Navigable) {
 				n.CurrentIndex += len(replacement) - 1
 			}
 
-			return
+			return nil
 		}
 	}
+
+	return fmt.Errorf("navigable %v to replace not found", target)
 }
 
 func (n *Navigator) Reset() {

@@ -18,11 +18,11 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	case tea.KeyPressMsg:
 		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) &&
 			m.LoadSection.Enabled() {
-			cmds = append(cmds, postListConfigCmd(
+			return m, postListConfigCmd(
 				m.listtui.VocabEditor.GetCurrentContent(),
 				m.configtui.RawSessionConfig,
 				m.serverPort,
-			))
+			)
 		}
 
 	case ListConfigPostedMsg:

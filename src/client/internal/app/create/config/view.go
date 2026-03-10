@@ -68,7 +68,7 @@ func (m *Model) View() string {
 
 	// Form section
 	var formSectionView string
-	if m.appStatus == CreateSessionConfig {
+	if m.AppStatus == CreateSessionConfig {
 		m.form.WithWidth(m.width)
 		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - len(m.form.Errors()))
 		m.form.WithShowHelp(false)

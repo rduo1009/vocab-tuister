@@ -55,7 +55,7 @@ type Model struct {
 
 	// Application state
 
-	appStatus               createListStatus
+	AppStatus               createListStatus
 	inbuiltListDir          string
 	vocabEditorInitisalised bool
 }
@@ -79,7 +79,7 @@ func New(inbuiltListDir string) *Model {
 		HeaderSection:           &headerSection,
 		VocabEditor:             &ve,
 		SelectButton:            &selectButton,
-		appStatus:               InbuiltList,
+		AppStatus:               InbuiltList,
 		inbuiltListDir:          inbuiltListDir,
 		vocabEditorInitisalised: false,
 	}
