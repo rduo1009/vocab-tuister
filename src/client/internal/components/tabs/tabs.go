@@ -47,37 +47,41 @@ var (
 		Light: lipgloss.Color("#baa8f0"),
 		Dark:  lipgloss.Color("#baa8f0"),
 	}
+)
 
-	tabGap = inactiveTabStyle(false).
+func tabGap(focused bool) lipgloss.Style {
+	return inactiveTabStyle(focused, 0).
 		BorderTop(false).
 		BorderLeft(false).
 		BorderRight(false)
-	tabFocusedGap = inactiveTabStyle(true).
-			BorderTop(false).
-			BorderLeft(false).
-			BorderRight(false)
-)
+}
 
-func inactiveTabStyle(focused bool) lipgloss.Style {
+func inactiveTabStyle(focused bool, pad int) lipgloss.Style {
 	if focused {
 		return lipgloss.NewStyle().
 			Border(inactiveTabBorder(lipgloss.NormalBorder()), true).
 			BorderForeground(highlightFocusedColour).
-			Padding(0, 5)
+			Padding(0, pad)
 	}
 
 	return lipgloss.NewStyle().
 		Border(inactiveTabBorder(lipgloss.NormalBorder()), true).
 		BorderForeground(highlightColour).
-		Padding(0, 5)
+		Padding(0, pad)
 }
 
-func activeTabStyle(focused bool) lipgloss.Style {
+func activeTabStyle(focused bool, pad int) lipgloss.Style {
 	if focused {
-		return inactiveTabStyle(focused).Border(activeTabBorder(lipgloss.NormalBorder()), true)
+		return lipgloss.NewStyle().
+			Border(activeTabBorder(lipgloss.NormalBorder()), true).
+			BorderForeground(highlightFocusedColour).
+			Padding(0, pad)
 	}
 
-	return inactiveTabStyle(focused).Border(activeTabBorder(lipgloss.NormalBorder()), true)
+	return lipgloss.NewStyle().
+		Border(activeTabBorder(lipgloss.NormalBorder()), true).
+		BorderForeground(highlightColour).
+		Padding(0, pad)
 }
 
 type Model struct {
@@ -88,28 +92,28 @@ type Model struct {
 	isFocused bool
 }
 
-func (t *Model) Focus() {
-	t.isFocused = true
+func (m *Model) Focus() {
+	m.isFocused = true
 }
 
-func (t *Model) Blur() {
-	t.isFocused = false
+func (m *Model) Blur() {
+	m.isFocused = false
 }
 
-func (t *Model) Focused() bool {
-	return t.isFocused
+func (m *Model) Focused() bool {
+	return m.isFocused
 }
 
-func (t *Model) Next() {
-	t.active++
+func (m *Model) Next() {
+	m.active++
 }
 
-func (t *Model) Prev() {
-	t.active--
+func (m *Model) Prev() {
+	m.active--
 }
 
-func (t *Model) Select(index int) {
-	t.active = index
+func (m *Model) Select(index int) {
+	m.active = index
 }
 
 func New(names []fmt.Stringer, active int, isFocused bool) *Model {
@@ -126,27 +130,48 @@ func New(names []fmt.Stringer, active int, isFocused bool) *Model {
 }
 
 // Init helps satisfy the StringViewModel. It is a no-op.
-func (t *Model) Init() tea.Cmd {
+func (m *Model) Init() tea.Cmd {
 	return nil
 }
 
 // Update helps satisfy the StringViewModel. It is a no-op.
-func (t *Model) Update(_ tea.Msg) (*Model, tea.Cmd) {
-	return t, nil
+func (m *Model) Update(_ tea.Msg) (*Model, tea.Cmd) {
+	return m, nil
 }
 
-func (t *Model) View() string {
+func (m *Model) View() string {
+	// Determine padding width
+	// NOTE: crazy vibe-coded magic. still works though
+	textWidth := 0
+	for _, name := range m.tabNames {
+		textWidth += lipgloss.Width(name)
+	}
+
+	borderWidth := 2 * len(m.tabNames)
+
+	targetWidth := m.Width / 2
+	remaining := targetWidth - textWidth - borderWidth
+
+	pad := 1
+	if remaining > 0 {
+		pad = max(1, (remaining+(len(m.tabNames)*2-1))/(len(m.tabNames)*2))
+	}
+
+	if pad > 5 {
+		pad = 5
+	}
+
 	// Tabs
 	var renderedTabs []string
-	for i, pageName := range t.tabNames {
+	for i, pageName := range m.tabNames {
 		var style lipgloss.Style
 
-		isActive := i == t.active
+		isActive := i == m.active
 		// TODO: Refactor this further after moving styles to styles package.
 		if isActive {
-			style = activeTabStyle(t.isFocused)
+			style = activeTabStyle(m.isFocused, pad)
 		} else {
-			style = inactiveTabStyle(t.isFocused)
+			style = inactiveTabStyle(m.isFocused, pad)
 		}
 
 		renderedTabs = append(renderedTabs, style.Render(pageName))
@@ -156,11 +181,8 @@ func (t *Model) View() string {
 
 	// Gap to the right
 	var gap string
-	if t.isFocused {
-		gap = tabFocusedGap.Render(strings.Repeat(" ", max(0, t.Width-lipgloss.Width(row)-2)))
-	} else {
-		gap = tabGap.Render(strings.Repeat(" ", max(0, t.Width-lipgloss.Width(row)-2)))
-	}
+	remainingGap := max(0, m.Width-lipgloss.Width(row)-2)
+	gap = tabGap(m.isFocused).Render(strings.Repeat(" ", remainingGap))
 
 	// Put everything together
 	return lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap)

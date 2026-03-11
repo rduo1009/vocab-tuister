@@ -69,28 +69,30 @@ func (m *Model) View() string {
 	// Form section
 	var formSectionView string
 	if m.AppStatus == CreateSessionConfig {
-		m.form.WithWidth(m.width)
+		m.form.WithWidth(m.width - 2)
 		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - len(m.form.Errors()))
 		m.form.WithShowHelp(false)
 
-		formSectionView = formBorderStyle(m.FormSection.Focused()).
-			Width(m.width).
-			Height(m.height).
-			Render(m.form.View())
-	} else {
-		resetButtonView := buttonStyle(m.ResetButton.Focused()).Render("Reset form")
-
-		m.jsonview.SetWidth(m.width)
-		m.jsonview.SetHeight(
-			m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(resetButtonView) - 3,
-		)
-
-		sessionConfigView := m.jsonview.View()
+		// consider wordwrapping making the form height larger than it really should be
+		m.form.WithHeight(min(lipgloss.Height(m.form.View()), m.height-lipgloss.Height(headerSectionView)))
 
 		formSectionView = formBorderStyle(m.FormSection.Focused()).
 			Width(m.width).
 			Height(m.height - lipgloss.Height(headerSectionView)).
-			Render(lipgloss.JoinVertical(lipgloss.Left, resetButtonView, "\n\n", sessionConfigView))
+			Render(m.form.View())
+	} else {
+		resetButtonView := buttonStyle(m.ResetButton.Focused()).Render("Reset form")
+
+		m.jsonview.SetWidth(m.width - 2)
+		m.jsonview.SetHeight(
+			m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(resetButtonView) - 2,
+		)
+
+		// TODO: something like the above should be poss here asw?
+		formSectionView = formBorderStyle(m.FormSection.Focused()).
+			Width(m.width).
+			Height(m.height - lipgloss.Height(headerSectionView)).
+			Render(lipgloss.JoinVertical(lipgloss.Left, resetButtonView, "", "", m.jsonview.View()))
 	}
 
 	return lipgloss.JoinVertical(lipgloss.Right, headerSectionView, formSectionView)
