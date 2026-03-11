@@ -7,8 +7,10 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/info"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/settings"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
@@ -67,6 +69,8 @@ func New(inbuiltListDir string, serverPort int) *Model {
 	// unfortunately sessiontui needs to be coupled with createtui
 	// to prevent user from starting session without loading list + config
 	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus, serverPort)
+	infotui := info.New()
+	settingstui := settings.New()
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)
@@ -78,8 +82,8 @@ func New(inbuiltListDir string, serverPort int) *Model {
 			modes.Create:   createtui,
 			modes.Review:   reviewtui,
 			modes.Test:     sessiontui,
-			modes.Help:     nil,
-			modes.Settings: nil,
+			modes.Help:     infotui,
+			modes.Settings: settingstui,
 		},
 		tabs:        t,
 		help:        &h,
