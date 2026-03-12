@@ -132,7 +132,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 
 	if m.configtui.AppStatus == config.CreateSessionConfig {
 		// when the user is going through the wizard again there is no config!
-		if m.LoadSection.ConfigStatus == StatusPending || m.LoadSection.ListStatus == StatusLoaded {
+		if m.LoadSection.ConfigStatus == StatusPending || m.LoadSection.ConfigStatus == StatusLoaded {
 			m.LoadSection.ConfigStatus = StatusMissing
 		}
 	} else {
