@@ -6,7 +6,7 @@ mkdir -p reports/coverage
 
 echo -n "Running Python tests with coverage... "
 uv run coverage run -m pytest -m 'not integration and not manual' -n0
-uv run coverage run -m pytest -m 'integration' -n0
+uv run coverage run -m pytest -m 'integration' -n0 --pythonhashseed 1
 uv run coverage combine --append
 echo "done"
 
