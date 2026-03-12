@@ -75,10 +75,11 @@ func postVocabList(vocabList string, serverPort int) (string, error) {
 		}
 
 		return "", fmt.Errorf(
-			"failed to post vocab file to %s, status code: %d, response: %s",
+			"failed to post vocab list to %s, status code: %d, error: %s, details: %s",
 			vocabListURL,
 			resp.StatusCode,
-			errorResponse.Message,
+			errorResponse.ErrorType,
+			errorResponse.Details,
 		)
 	}
 
