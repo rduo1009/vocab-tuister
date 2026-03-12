@@ -239,7 +239,6 @@ def _inflect_lemma(  # noqa: PLR0917
     person: Person | None = None,
 ) -> tuple[str, ...]:
     to_match = (tense, voice, mood)
-
     match to_match:
         case (Tense.PRESENT, Voice.ACTIVE, Mood.IMPERATIVE):
             return _find_preactipe_inflections(lemma)

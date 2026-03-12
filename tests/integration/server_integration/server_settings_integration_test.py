@@ -13,7 +13,7 @@ from src.server.exceptions import InvalidSettingsError
 
 def run_cli(port):
     with contextlib.suppress(KeyboardInterrupt):
-        cli(["-v", "-v", "-v", "-p", str(port)])
+        cli(["-vvv", "-p", str(port)])
 
 
 def setup_tests(monkeypatch, port, settings_info):
