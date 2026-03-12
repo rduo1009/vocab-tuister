@@ -54,7 +54,7 @@ def test_cli_normal(snapshot, monkeypatch):
         assert config_response.status_code == 200
         assert config_response.text == snapshot
 
-        session_response = requests.post(f"{server_url}/session", timeout=5)
+        session_response = requests.get(f"{server_url}/session", timeout=5)
         assert session_response.status_code == 200
         assert session_response.json() == snapshot
 
@@ -80,7 +80,7 @@ def test_cli_error_list(snapshot, monkeypatch):
         assert config_response.text == snapshot
 
         try:
-            session_response = requests.post(f"{server_url}/session", timeout=5)
+            session_response = requests.get(f"{server_url}/session", timeout=5)
             session_response.raise_for_status()
 
             pytest.fail("Expected an error but request succeeded.")

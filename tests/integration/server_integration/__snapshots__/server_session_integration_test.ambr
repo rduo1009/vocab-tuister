@@ -103,20 +103,20 @@
     dict({
       'answers': list([
         dict({
+          'case': 'nominative',
+          'number': 'plural',
+        }),
+        dict({
           'case': 'dative',
+          'number': 'singular',
+        }),
+        dict({
+          'case': 'genitive',
           'number': 'singular',
         }),
         dict({
           'case': 'vocative',
           'number': 'plural',
-        }),
-        dict({
-          'case': 'nominative',
-          'number': 'plural',
-        }),
-        dict({
-          'case': 'genitive',
-          'number': 'singular',
         }),
       ]),
       'dictionary_entry': 'farmer: agricola, agricolae, (m)',
@@ -144,12 +144,12 @@
           'number': 'singular',
         }),
         dict({
-          'case': 'nominative',
+          'case': 'accusative',
           'gender': 'neuter',
           'number': 'plural',
         }),
         dict({
-          'case': 'accusative',
+          'case': 'nominative',
           'gender': 'neuter',
           'number': 'plural',
         }),
@@ -178,25 +178,25 @@
         dict({
           'case': 'nominative',
           'degree': 'comparative',
-          'gender': 'masculine',
-          'number': 'singular',
-        }),
-        dict({
-          'case': 'vocative',
-          'degree': 'comparative',
-          'gender': 'masculine',
+          'gender': 'feminine',
           'number': 'singular',
         }),
         dict({
           'case': 'nominative',
           'degree': 'comparative',
-          'gender': 'feminine',
+          'gender': 'masculine',
           'number': 'singular',
         }),
         dict({
           'case': 'vocative',
           'degree': 'comparative',
           'gender': 'feminine',
+          'number': 'singular',
+        }),
+        dict({
+          'case': 'vocative',
+          'degree': 'comparative',
+          'gender': 'masculine',
           'number': 'singular',
         }),
       ]),
@@ -1668,17 +1668,17 @@
         }),
         dict({
           'case': 'dative',
+          'gender': 'feminine',
+          'number': 'singular',
+        }),
+        dict({
+          'case': 'dative',
           'gender': 'masculine',
           'number': 'singular',
         }),
         dict({
           'case': 'dative',
           'gender': 'neuter',
-          'number': 'singular',
-        }),
-        dict({
-          'case': 'dative',
-          'gender': 'feminine',
           'number': 'singular',
         }),
       ]),
@@ -1704,16 +1704,16 @@
     dict({
       'answers': list([
         dict({
-          'case': 'vocative',
-          'number': 'plural',
-        }),
-        dict({
           'case': 'nominative',
           'number': 'plural',
         }),
         dict({
           'case': 'genitive',
           'number': 'singular',
+        }),
+        dict({
+          'case': 'vocative',
+          'number': 'plural',
         }),
       ]),
       'dictionary_entry': 'boy: puer, pueri, (m)',
@@ -2066,17 +2066,17 @@
         }),
         dict({
           'case': 'dative',
+          'gender': 'feminine',
+          'number': 'singular',
+        }),
+        dict({
+          'case': 'dative',
           'gender': 'masculine',
           'number': 'singular',
         }),
         dict({
           'case': 'dative',
           'gender': 'neuter',
-          'number': 'singular',
-        }),
-        dict({
-          'case': 'dative',
-          'gender': 'feminine',
           'number': 'singular',
         }),
       ]),
@@ -2159,13 +2159,7 @@
     dict({
       'answers': list([
         dict({
-          'case': 'vocative',
-          'degree': 'comparative',
-          'gender': 'masculine',
-          'number': 'plural',
-        }),
-        dict({
-          'case': 'vocative',
+          'case': 'accusative',
           'degree': 'comparative',
           'gender': 'feminine',
           'number': 'plural',
@@ -2177,7 +2171,7 @@
           'number': 'plural',
         }),
         dict({
-          'case': 'nominative',
+          'case': 'vocative',
           'degree': 'comparative',
           'gender': 'feminine',
           'number': 'plural',
@@ -2189,7 +2183,13 @@
           'number': 'plural',
         }),
         dict({
-          'case': 'accusative',
+          'case': 'vocative',
+          'degree': 'comparative',
+          'gender': 'masculine',
+          'number': 'plural',
+        }),
+        dict({
+          'case': 'nominative',
           'degree': 'comparative',
           'gender': 'feminine',
           'number': 'plural',
