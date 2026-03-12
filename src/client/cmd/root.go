@@ -52,7 +52,11 @@ func getServerBinaryNames() []string {
 		}
 	}
 
-	names := []string{fmt.Sprintf("vocab-tuister-server-%s-%s", osName, normalizedArch)}
+	baseName := fmt.Sprintf("vocab-tuister-server-%s-%s", osName, normalizedArch)
+	if osName == "windows" {
+		baseName += ".exe"
+	}
+	names := []string{baseName}
 
 	// On macOS, we also check for the universal2 binary as it is the default build target in CI
 	if osName == "darwin" {
