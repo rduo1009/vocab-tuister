@@ -26,7 +26,7 @@ type (
 	failFormMsg struct{}
 )
 
-func generateSessionConfig(values *FormValues) tea.Cmd {
+func generateSessionConfig(values *formValues) tea.Cmd {
 	generate := func() ([]byte, error) {
 		configMap := make(configMap)
 
@@ -130,16 +130,38 @@ func readSessionConfigFile(selectedFile string) tea.Cmd {
 func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
+	if m.FilepickerActive {
+		switch msg := msg.(type) {
+		case filepicker.PickedMsg:
+			if msg.ID == filepickerID {
+				m.FilepickerActive = false
+
+				cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
+			}
+
+		case filepicker.ExitMsg:
+			if msg.ID == filepickerID {
+				m.FilepickerActive = false
+			}
+		}
+
+		util.UpdaterPtr(&cmds, m.Filepicker, msg)
+
+		return m, tea.Batch(cmds...)
+	}
+
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		if m.HeaderSection.Focused() && key.Matches(msg, m.HeaderSection.KeyMap().PressButton) {
-			cmds = append(cmds, util.MsgCmd(filepicker.StartMsg{ID: "configtuiFilepicker"}))
+			m.FilepickerActive = true
+			return m, nil
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
-			m.form, m.configFormValues = DefaultForm()
+			m.form, m.configFormValues = defaultForm()
 			m.form.State = huh.StateNormal
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			_, formCmd := m.form.Update(nil) // a little nudge
+
 			return m, tea.Batch(
 				formCmd,
 				util.MsgCmd(navigator.RemoveNavigableMsg{
@@ -167,13 +189,8 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		// also note that `cmds` could not be altered after this, so returning early is fine
 		return m, tea.Sequence(cmds...)
 
-	case filepicker.PickedMsg:
-		if msg.ID == "configtuiFilepicker" {
-			cmds = append(cmds, readSessionConfigFile(msg.SelectedFile))
-		}
-
 	case failFormMsg:
-		m.form, m.configFormValues = DefaultForm()
+		m.form, m.configFormValues = defaultForm()
 		m.form.State = huh.StateNormal
 		m.AppStatus = CreateSessionConfig
 		m.RawSessionConfig = ""

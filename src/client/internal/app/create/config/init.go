@@ -5,5 +5,8 @@ import (
 )
 
 func (m *Model) Init() tea.Cmd {
-	return m.form.Init()
+	return tea.Batch(
+		m.form.Init(),
+		m.Filepicker.Init(),
+	)
 }

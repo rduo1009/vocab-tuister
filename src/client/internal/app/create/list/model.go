@@ -1,6 +1,12 @@
 package list
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
 	vocabeditor "github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/adapter-bubbletea"
 )
 
@@ -52,13 +58,24 @@ type Model struct {
 	HeaderSection *headerSection
 	VocabEditor   *vocabeditor.Model
 	SelectButton  *selectButton
+	ModeDropdown  *dropdown.Model
+	Filepicker    *filepicker.Model
+	SaveAs        *saveas.Model
 
 	// Application state
 
-	AppStatus               createListStatus
-	inbuiltListDir          string
-	vocabEditorInitisalised bool
+	AppStatus          createListStatus
+	FilepickerActive   bool
+	ModeDropdownActive bool
+	SaveAsActive       bool
+	inbuiltListDir     string
 }
+
+const (
+	filepickerID   = "listtuiFilepicker"
+	modeDropdownID = "listtuiDropdown"
+	saveAsID       = "listtuiSaveAs"
+)
 
 func New(inbuiltListDir string) *Model {
 	headerSection := headerSection{focused: false}
@@ -75,12 +92,23 @@ func New(inbuiltListDir string) *Model {
 
 	selectButton := selectButton{focused: false}
 
+	modeDropdown := dropdown.New(
+		modeDropdownID,
+		[]fmt.Stringer{InbuiltList, LocalList, CustomList},
+	)
+	fp := filepicker.New(filepickerID, inbuiltListDir, ".txt")
+	homeDir, _ := os.UserHomeDir()
+	saveAs := saveas.New(saveAsID, homeDir, ".txt")
+
 	return &Model{
-		HeaderSection:           &headerSection,
-		VocabEditor:             &ve,
-		SelectButton:            &selectButton,
-		AppStatus:               InbuiltList,
-		inbuiltListDir:          inbuiltListDir,
-		vocabEditorInitisalised: false,
+		HeaderSection: &headerSection,
+		VocabEditor:   &ve,
+		SelectButton:  &selectButton,
+
+		ModeDropdown:   modeDropdown,
+		Filepicker:     fp,
+		SaveAs:         saveAs,
+		AppStatus:      InbuiltList,
+		inbuiltListDir: inbuiltListDir,
 	}
 }

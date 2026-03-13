@@ -40,26 +40,107 @@ func readVocabList(filePath string) tea.Cmd {
 func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
+	if m.ModeDropdownActive {
+		switch msg := msg.(type) {
+		case dropdown.PickedMsg:
+			if msg.ID != modeDropdownID {
+				break
+			}
+
+			m.ModeDropdownActive = false
+
+			m.AppStatus = msg.ChosenItem.(createListStatus)
+			switch m.AppStatus {
+			case InbuiltList:
+				m.VocabEditor.SetNormalMode()
+				m.VocabEditor.DisableInsertMode(true)
+				cmds = append(cmds, util.MsgCmd(filepicker.SetPathMsg{
+					ID:   filepickerID,
+					Path: m.inbuiltListDir,
+				}))
+
+			case LocalList:
+				m.VocabEditor.SetNormalMode()
+				m.VocabEditor.DisableInsertMode(true)
+
+				homeDir, _ := os.UserHomeDir()
+				cmds = append(cmds, util.MsgCmd(filepicker.SetPathMsg{
+					ID:   filepickerID,
+					Path: homeDir,
+				}))
+
+			case CustomList:
+				m.VocabEditor.DisableInsertMode(false)
+				m.VocabEditor.SetInsertMode()
+			}
+
+		case dropdown.ExitMsg:
+			if msg.ID == modeDropdownID {
+				m.ModeDropdownActive = false
+			}
+		}
+
+		util.UpdaterPtr(&cmds, m.ModeDropdown, msg)
+
+		return m, tea.Batch(cmds...)
+	}
+
+	if m.FilepickerActive {
+		switch msg := msg.(type) {
+		case filepicker.PickedMsg:
+			if msg.ID == filepickerID {
+				m.FilepickerActive = false
+
+				cmds = append(cmds, readVocabList(msg.SelectedFile))
+			}
+
+		case filepicker.ExitMsg:
+			if msg.ID == filepickerID {
+				m.FilepickerActive = false
+			}
+		}
+
+		util.UpdaterPtr(&cmds, m.Filepicker, msg)
+
+		return m, tea.Batch(cmds...)
+	}
+
+	if m.SaveAsActive {
+		switch msg := msg.(type) {
+		case saveas.SelectedMsg:
+			if msg.ID == saveAsID {
+				m.SaveAsActive = false
+				cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
+			}
+
+		case saveas.ExitMsg:
+			if msg.ID == saveAsID {
+				m.SaveAsActive = false
+			}
+		}
+
+		util.UpdaterPtr(&cmds, m.SaveAs, msg)
+
+		return m, tea.Batch(cmds...)
+	}
+
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		if m.HeaderSection.Focused() {
 			if key.Matches(msg, m.HeaderSection.KeyMap().OpenDropdown) {
-				cmds = append(cmds, util.MsgCmd(dropdown.StartMsg{ID: "listtuiDropdown"}))
+				m.ModeDropdownActive = true
+				return m, nil
 			}
 		} else if m.SelectButton.Focused() {
 			if key.Matches(msg, m.SelectButton.KeyMap().PressButton) {
 				switch m.AppStatus {
 				case InbuiltList, LocalList:
-					cmds = append(
-						cmds,
-						util.MsgCmd(filepicker.StartMsg{ID: "listtuiFilepicker"}),
-					)
+					m.FilepickerActive = true
+					return m, nil
 
 				case CustomList:
-					cmds = append(
-						cmds,
-						util.MsgCmd(saveas.StartMsg{ID: "listtuiSaveAs"}),
-					)
+					m.SaveAsActive = true
+					return m, nil
 				}
 			}
 		}
@@ -70,48 +151,8 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, tea.Batch(cmds...)
 		}
 
-	case dropdown.PickedMsg:
-		m.AppStatus = msg.ChosenItem.(createListStatus)
-		switch m.AppStatus {
-		case InbuiltList:
-			m.VocabEditor.SetNormalMode()
-			m.VocabEditor.DisableInsertMode(true)
-			cmds = append(cmds, util.MsgCmd(
-				filepicker.SetPathMsg{
-					ID:   "listtuiFilepicker",
-					Path: m.inbuiltListDir,
-				},
-			))
-
-		case LocalList:
-			m.VocabEditor.SetNormalMode()
-			m.VocabEditor.DisableInsertMode(true)
-
-			homeDir, _ := os.UserHomeDir()
-			cmds = append(cmds, util.MsgCmd(
-				filepicker.SetPathMsg{
-					ID:   "listtuiFilepicker",
-					Path: homeDir,
-				},
-			))
-
-		case CustomList:
-			m.VocabEditor.DisableInsertMode(false)
-			m.VocabEditor.SetInsertMode()
-		}
-
 	case vocabListReadMsg:
 		m.VocabEditor.SetContent(string(msg))
-
-	case filepicker.PickedMsg:
-		if msg.ID == "listtuiFilepicker" {
-			cmds = append(cmds, readVocabList(msg.SelectedFile))
-		}
-
-	case saveas.SelectedMsg:
-		if msg.ID == "listtuiSaveAs" {
-			cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
-		}
 	}
 
 	util.UpdaterPtr(&cmds, m.VocabEditor, msg)

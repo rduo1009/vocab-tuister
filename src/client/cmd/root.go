@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"context"
 	"embed"
 	"errors"
 	"fmt"
@@ -56,6 +57,7 @@ func getServerBinaryNames() []string {
 	if osName == "windows" {
 		baseName += ".exe"
 	}
+
 	names := []string{baseName}
 
 	// On macOS, we also check for the universal2 binary as it is the default build target in CI
@@ -69,12 +71,12 @@ func getServerBinaryNames() []string {
 // startServer starts the vocab-tuister server in the background.
 // If debug is true, it uses 'python3 -m src'.
 // Otherwise, it looks for the pre-built binary in the executable's directory or on the PATH.
-func startServer(debug bool, port int, stdout, stderr io.Writer) (*exec.Cmd, error) {
+func startServer(ctx context.Context, debug bool, port int, stdout, stderr io.Writer) (*exec.Cmd, error) {
 	var cmd *exec.Cmd
 
 	if debug {
 		// In debug mode, run the server using the python module
-		cmd = exec.Command("python3", "-m", "src", "-p", strconv.Itoa(port))
+		cmd = exec.CommandContext(ctx, "python3", "-m", "src", "-p", strconv.Itoa(port))
 	} else {
 		// In production mode, look for the compiled binary
 		binaryNames := getServerBinaryNames()
@@ -102,7 +104,7 @@ func startServer(debug bool, port int, stdout, stderr io.Writer) (*exec.Cmd, err
 			return nil, fmt.Errorf("failed to find server binary (tried %v)", binaryNames)
 		}
 
-		cmd = exec.Command(fullPath, "-p", strconv.Itoa(port))
+		cmd = exec.CommandContext(ctx, fullPath, "-p", strconv.Itoa(port))
 	}
 
 	cmd.Stdout = stdout
@@ -116,10 +118,12 @@ func startServer(debug bool, port int, stdout, stderr io.Writer) (*exec.Cmd, err
 	return cmd, nil
 }
 
-func isPortInUse(port int) bool {
+func isPortInUse(ctx context.Context, port int) bool {
 	address := fmt.Sprintf("127.0.0.1:%d", port)
 
-	ln, err := net.Listen("tcp", address)
+	var lc net.ListenConfig
+
+	ln, err := lc.Listen(ctx, "tcp", address)
 	if err != nil {
 		return true
 	}
@@ -162,7 +166,8 @@ var rootCmd = &cobra.Command{
 The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if !noServer {
-			if isPortInUse(serverPort) {
+			ctx := cmd.Context()
+			if isPortInUse(ctx, serverPort) {
 				return fmt.Errorf("port %d is already in use; the server cannot start", serverPort)
 			}
 
@@ -172,7 +177,7 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 				errBuf bytes.Buffer
 			)
 
-			serverCmd, err := startServer(debugMode, serverPort, &outBuf, &errBuf)
+			serverCmd, err := startServer(ctx, debugMode, serverPort, &outBuf, &errBuf)
 			if err != nil {
 				return fmt.Errorf("failed to start server: %w", err)
 			}

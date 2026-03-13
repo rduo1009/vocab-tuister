@@ -33,9 +33,5 @@ func (m *Model) Init() tea.Cmd {
 		util.MsgCmd(navigator.AddNavigableMsg{Components: components}),
 		m.listtui.Init(),
 		m.configtui.Init(),
-		m.listtuiModeDropdown.Init(),
-		m.listtuiFilepicker.Init(),
-		m.listtuiSaveAs.Init(),
-		m.configtuiFilepicker.Init(),
 	)
 }

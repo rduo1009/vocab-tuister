@@ -181,6 +181,7 @@ func (m *Model) View() string {
 
 	// Gap to the right
 	var gap string
+
 	remainingGap := max(0, m.Width-lipgloss.Width(row)-2)
 	gap = tabGap(m.isFocused).Render(strings.Repeat(" ", remainingGap))
 

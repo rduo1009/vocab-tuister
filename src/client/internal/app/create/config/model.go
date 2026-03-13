@@ -3,7 +3,9 @@ package config
 import (
 	"charm.land/huh/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util/appdir"
 )
 
 type createSessionConfigStatus int
@@ -68,27 +70,34 @@ type Model struct {
 	HeaderSection *headerSection
 	FormSection   *formSection
 	ResetButton   *resetButton
+	Filepicker    *filepicker.Model
 	form          *huh.Form
 	jsonview      *jsonview.Model
 
 	// Application state
 
 	AppStatus        createSessionConfigStatus
-	configFormValues *FormValues
+	FilepickerActive bool
+	configFormValues *formValues
 	RawSessionConfig string
 }
 
+const filepickerID = "configtuiFilepicker"
+
 func New() *Model {
-	form, values := DefaultForm()
+	form, values := defaultForm()
 
 	headerSection := headerSection{focused: false}
 	formSection := formSection{focused: false, form: form}
 	resetButton := resetButton{focused: false}
 
+	fp := filepicker.New(filepickerID, appdir.AppDirs.UserConfig(), ".json")
+
 	return &Model{
 		HeaderSection:    &headerSection,
 		FormSection:      &formSection,
 		ResetButton:      &resetButton,
+		Filepicker:       fp,
 		form:             form,
 		jsonview:         jsonview.New(""),
 		AppStatus:        CreateSessionConfig,

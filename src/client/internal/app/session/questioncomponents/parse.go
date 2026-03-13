@@ -141,7 +141,7 @@ func NewParseQuestionModel(question questions.Question) *ParseQuestionModel {
 			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Degrees)},
 		}
 
-	case endingcomponents.RegularWord:
+	default:
 		panic("unreachable")
 	}
 

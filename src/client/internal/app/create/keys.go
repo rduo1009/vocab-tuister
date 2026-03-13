@@ -54,8 +54,8 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.listtui.KeyMap()
 	}
 
-	if m.listtuiModeDropdownActive {
-		return m.listtuiModeDropdown.KeyMap()
+	if m.listtui.ModeDropdownActive {
+		return m.listtui.ModeDropdown.KeyMap()
 	}
 
 	if m.configtui.HeaderSection.Focused() || m.configtui.ResetButton.Focused() ||
@@ -63,8 +63,8 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.configtui.KeyMap()
 	}
 
-	if m.configtuiFilepickerActive {
-		return m.configtuiFilepicker.KeyMap()
+	if m.configtui.FilepickerActive {
+		return m.configtui.Filepicker.KeyMap()
 	}
 
 	if m.LoadSection.Focused() {

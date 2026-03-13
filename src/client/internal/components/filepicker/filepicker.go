@@ -132,7 +132,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.keys.Submit):
 			if m.selectedFile == "" {
-				m.err = errors.New("Cannot submit as no file was selected")
+				m.err = errors.New("cannot submit as no file was selected")
 
 				cmds = append(cmds, clearErrorAfter(2*time.Second))
 			} else {

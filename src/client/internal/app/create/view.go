@@ -13,29 +13,29 @@ func (m *Model) SetHeight(height int) {
 }
 
 func (m *Model) HasOverlay() bool {
-	return m.configtuiFilepickerActive || m.listtuiFilepickerActive || m.listtuiSaveAsActive ||
-		m.listtuiModeDropdownActive
+	return m.configtui.FilepickerActive || m.listtui.FilepickerActive || m.listtui.SaveAsActive ||
+		m.listtui.ModeDropdownActive
 }
 
 func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	switch {
-	case m.configtuiFilepickerActive:
-		m.configtuiFilepicker.SetWidth(width / 2)
-		m.configtuiFilepicker.SetHeight(height / 2)
-		return m.configtuiFilepicker.View(width, height)
+	case m.configtui.FilepickerActive:
+		m.configtui.Filepicker.SetWidth(width / 2)
+		m.configtui.Filepicker.SetHeight(height / 2)
+		return m.configtui.Filepicker.View(width, height)
 
-	case m.listtuiFilepickerActive:
-		m.listtuiFilepicker.SetWidth(width / 2)
-		m.listtuiFilepicker.SetHeight(height / 2)
-		return m.listtuiFilepicker.View(width, height)
+	case m.listtui.FilepickerActive:
+		m.listtui.Filepicker.SetWidth(width / 2)
+		m.listtui.Filepicker.SetHeight(height / 2)
+		return m.listtui.Filepicker.View(width, height)
 
-	case m.listtuiSaveAsActive:
-		m.listtuiSaveAs.SetWidth(width / 2)
-		m.listtuiSaveAs.SetHeight(height / 2)
-		return m.listtuiSaveAs.View(width, height)
+	case m.listtui.SaveAsActive:
+		m.listtui.SaveAs.SetWidth(width / 2)
+		m.listtui.SaveAs.SetHeight(height / 2)
+		return m.listtui.SaveAs.View(width, height)
 
-	case m.listtuiModeDropdownActive:
-		view = m.listtuiModeDropdown.View()
+	case m.listtui.ModeDropdownActive:
+		view = m.listtui.ModeDropdown.View()
 		x = 12
 		y = 4
 		return view, x, y
