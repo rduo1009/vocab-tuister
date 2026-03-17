@@ -124,6 +124,13 @@ lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"
 lint.preview = true
 
+[tool.mypy]
+mypy_path = "stubs"
+python_version = "3.14"
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+
 [tool.pytest]
 ini_options.addopts = [
   "--strict-markers",
@@ -152,13 +159,6 @@ report.exclude_also = [
   "raise NotImplementedError",
   "return NotImplemented",
 ]
-
-[tool.mypy]
-mypy_path = "stubs"
-python_version = "3.14"
-warn_return_any = true
-warn_unused_configs = true
-check_untyped_defs = true
 
 [tool.uv-dynamic-versioning]
 fallback-version = "0.0.0"
