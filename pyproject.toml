@@ -51,7 +51,7 @@ dev = [
 types = [
   "optype==0.17.0",
   "types-regex==2026.2.28.20260301",
-  "types-waitress==3.0.1.20250801",
+  "types-waitress==3.0.1.20260316",
 ]
 
 [tool.hatch]
