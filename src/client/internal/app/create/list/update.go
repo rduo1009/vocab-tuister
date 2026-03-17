@@ -153,6 +153,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	case vocabListReadMsg:
 		m.VocabEditor.SetContent(string(msg))
+
+	default:
+		util.UpdaterPtr(&cmds, m.Filepicker, msg)
+		util.UpdaterPtr(&cmds, m.SaveAs, msg)
 	}
 
 	util.UpdaterPtr(&cmds, m.VocabEditor, msg)

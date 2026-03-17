@@ -197,6 +197,9 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
 			Components: []navigator.Navigable{m.ResetButton},
 		}))
+
+	default:
+		util.UpdaterPtr(&cmds, m.Filepicker, msg)
 	}
 
 	if m.FormSection.Focused() {
