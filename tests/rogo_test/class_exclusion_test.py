@@ -1,16 +1,17 @@
 from itertools import combinations
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.rules import filter_words
-
-if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import SessionConfig
+from src.core.rogo.type_aliases import SessionConfig
 
 
-default_session_config: SessionConfig = {
+def _to_snake(kebab: str) -> str:
+    return kebab.replace("-", "_")
+
+
+default_session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -128,7 +129,7 @@ default_session_config: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 exclude_classes = {"exclude-adjectives": Adjective, "exclude-nouns": Noun, "exclude-pronouns": Pronoun, "exclude-verbs": Verb, "exclude-regulars": RegularWord}
 
@@ -139,10 +140,10 @@ def test_class_exclusion():
     all_key_combinations = [combo for r in range(2, 5) for combo in combinations(keys, r)]
 
     for key_combination in all_key_combinations:
-        session_config = default_session_config.copy()
+        session_config = default_session_config.model_copy()
 
         for key in key_combination:
-            session_config[key] = True
+            setattr(session_config, _to_snake(key), True)
 
         vocab = filter_words(vocab_list, session_config)
         for word in vocab:

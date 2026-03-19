@@ -4,6 +4,11 @@
 class InvalidVocabFileFormatError(Exception):
     """An error that is raised when a vocab file has the incorrect format."""
 
+    def __init__(self, message: str, *, line_number: int) -> None:
+        super().__init__(message)
+        self.message: str = message
+        self.line_number: int = line_number
+
 
 class InvalidVocabDumpError(Exception):
     """An error that is raised when a vocab dump is invalid.

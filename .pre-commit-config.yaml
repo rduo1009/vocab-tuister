@@ -26,7 +26,10 @@ repos:
     rev: v2.11.3
     hooks:
       - id: golangci-lint
-        args: [--fix, --fast-only]
+        args:
+          - --fix
+          - --fast-only
+          - --enable=modernize,whitespace,wsl_v5
 
   # Format and check other files
   - repo: https://github.com/dzhu/rstfmt

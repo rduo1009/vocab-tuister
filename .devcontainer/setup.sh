@@ -33,14 +33,6 @@ echo "📋 Installing Go modules and tools..."
 go mod tidy
 go mod download
 
-# Install Go tools specified in go.mod
-echo "🔨 Installing Go tools..."
-go install github.com/charmbracelet/vhs@latest
-go install github.com/segmentio/golines@latest
-go install mvdan.cc/gofumpt@latest
-go install gotest.tools/gotestsum@latest
-go install github.com/wadey/gocovmerge@latest
-
 # Run go generate to set up code generation
 echo "⚡ Running go generate..."
 go generate -x src/generate.go

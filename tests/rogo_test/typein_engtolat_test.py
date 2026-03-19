@@ -1,17 +1,14 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import TypeInEngToLatQuestion
+from src.core.rogo.type_aliases import SessionConfig, Settings
 
-if TYPE_CHECKING:
-    from src.core.rogo.type_aliases import SessionConfig, Settings
+settings: Settings = Settings(**{"include-synonyms": False, "include-similar-words": False})  # they're not needed
 
-settings: Settings = {"include-synonyms": False, "include-similar-words": False}  # they're not needed
-
-session_config: SessionConfig = {
+session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -129,7 +126,7 @@ session_config: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 
 @pytest.mark.manual

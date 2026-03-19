@@ -9,18 +9,23 @@ linters:
     - dupl
     - errcheck
     - errname
+    - errorlint
+    - exhaustive
+    - funcorder
+    - gocheckcompilerdirectives
     - goconst
     - gocritic
     - godot
-    - godox
     - goprintffuncname
     - govet
     - ineffassign
     - misspell
+    - modernize
     - nakedret
     - nilerr
     - noctx
     - nolintlint
+    - perfsprint
     - revive
     - rowserrcheck
     - staticcheck
@@ -30,6 +35,16 @@ linters:
     - unused
     - wastedassign
     - whitespace
+    - wsl_v5
+
+  settings:
+    wsl_v5:
+      branch-max-lines: 5
+      case-max-lines: 1
+      allow-whole-block: true
+
+    funcorder:
+      struct-method: false
 
   exclusions:
     generated: lax
@@ -40,6 +55,7 @@ linters:
       - std-error-handling
     paths:
       - src/_vendor
+      - src/client/internal/components/vocabeditor
       - third_party$
       - builtin$
       - examples$
@@ -49,6 +65,7 @@ formatters:
     - gci
     - gofumpt
     - goimports
+    - golines
 
   settings:
     gci:
@@ -57,8 +74,13 @@ formatters:
         - default
         - prefix(github.com/rduo1009/vocab-tuister)
       custom-order: true
+
     gofumpt:
       extra-rules: true
+
+    golines:
+      max-len: 120
+      tab-len: 8
 
   exclusions:
     generated: lax

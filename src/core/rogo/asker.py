@@ -65,7 +65,7 @@ def ask_question_without_sr(
     filtered_vocab = filter_words(vocab_list, session_config)
     filtered_questions = filter_questions(session_config)
 
-    if len(filtered_vocab) < session_config["number-multiplechoice-options"]:
+    if len(filtered_vocab) < session_config.number_multiplechoice_options:
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_ENGTOLAT)
         filtered_questions.discard(QuestionClasses.MULTIPLECHOICE_LATTOENG)
 
@@ -101,26 +101,18 @@ def ask_question_without_sr(
                     output = generate_typein_engtolat(
                         chosen_word,
                         filtered_endings,
-                        english_subjunctives=session_config[
-                            "english-subjunctives"
-                        ],
-                        english_verbal_nouns=session_config[
-                            "english-verbal-nouns"
-                        ],
+                        english_subjunctives=session_config.english_subjunctives,
+                        english_verbal_nouns=session_config.english_verbal_nouns,
                     )
 
                 case QuestionClasses.TYPEIN_LATTOENG:
                     output = generate_typein_lattoeng(
                         chosen_word,
                         filtered_endings,
-                        english_subjunctives=session_config[
-                            "english-subjunctives"
-                        ],
-                        english_verbal_nouns=session_config[
-                            "english-verbal-nouns"
-                        ],
-                        synonyms=settings["include-synonyms"],
-                        similar_words=settings["include-similar-words"],
+                        english_subjunctives=session_config.english_subjunctives,
+                        english_verbal_nouns=session_config.english_verbal_nouns,
+                        synonyms=settings.include_synonyms,
+                        similar_words=settings.include_similar_words,
                     )
 
                 case QuestionClasses.PARSEWORD_LATTOCOMP:
@@ -140,14 +132,14 @@ def ask_question_without_sr(
                     output = generate_multiplechoice_engtolat(
                         filtered_vocab,
                         chosen_word,
-                        session_config["number-multiplechoice-options"],
+                        session_config.number_multiplechoice_options,
                     )
 
                 case QuestionClasses.MULTIPLECHOICE_LATTOENG:
                     output = generate_multiplechoice_lattoeng(
                         filtered_vocab,
                         chosen_word,
-                        session_config["number-multiplechoice-options"],
+                        session_config.number_multiplechoice_options,
                     )
 
             if output is not None:

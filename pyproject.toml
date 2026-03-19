@@ -25,9 +25,10 @@ dependencies = [
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "platformdirs==4.9.4",
+  "pydantic==2.12.2",
   "pyinstaller==6.19.0",
   "waitress==3.0.2",
-  "wn @ git+https://github.com/goodmami/wn.git@d91877",
+  "wn==1.0.0",
 ]
 
 [dependency-groups]
@@ -119,6 +120,9 @@ lint.per-file-ignores."src/core/rogo/asker.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/core/rogo/rules.py" = [ "PLR2004" ]
 lint.per-file-ignores."src/server/app.py" = [ "ANN" ]
 lint.flake8-type-checking.quote-annotations = true
+lint.flake8-type-checking.runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+]
 lint.flake8-type-checking.strict = true
 lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"

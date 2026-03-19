@@ -25,6 +25,8 @@ def normalised_machine(machine: str) -> str:
         case "amd64" | "x86_64" | "x64":
             return "x86_64"
         case "arm64" | "aarch64":
+            if sys.platform == "linux":
+                return "aarch64"
             return "arm64"
         case _:
             raise ValueError(f"Unsupported machine architecture: {machine}")

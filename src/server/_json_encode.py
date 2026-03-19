@@ -1,10 +1,13 @@
 """Contains a custom encoder for converting some vocab-tuister classes to JSON."""
 
-# pyright: reportExplicitAny=false
-
 from json import JSONEncoder
 from typing import Any, Final, cast
 
+from ..core.accido.misc import (
+    PERSON_SHORTHAND,
+    EndingComponents,
+    _EndingComponentEnum,
+)
 from ..core.rogo.question_classes import (
     MultipleChoiceEngToLatQuestion,
     MultipleChoiceLatToEngQuestion,
@@ -30,18 +33,19 @@ ENDING_COMPONENTS_ATTRS: Final[set[str]] = {
 class QuestionClassEncoder(JSONEncoder):
     def default(self, o: object) -> dict[str, Any]:
         match o:
-            # NOTE: The tester tui currently uses the component string representation
-            # case EndingComponents():
-            #     ending_components_json = {}
-            #     for key, value in o.__dict__.items():
-            #         if key in ENDING_COMPONENTS_ATTRS:
-            #             if isinstance(value, _EndingComponentEnum):
-            #                 ending_components_json[key] = value.regular
-            #             elif isinstance(value, int):
-            #                 ending_components_json[key] = PERSON_SHORTHAND[value]
-            #             else:
-            #                 ending_components_json[key] = value
-            #     return ending_components_json
+            case EndingComponents():
+                ending_components_json: dict[str, str] = {}
+                for key, value in o.__dict__.items():
+                    if key in ENDING_COMPONENTS_ATTRS:
+                        if isinstance(value, _EndingComponentEnum):
+                            ending_components_json[key] = value.regular
+                        elif isinstance(value, int):
+                            ending_components_json[key] = PERSON_SHORTHAND[
+                                value
+                            ]
+                        else:
+                            ending_components_json[key] = value
+                return ending_components_json
 
             case MultipleChoiceEngToLatQuestion():
                 return {
@@ -73,16 +77,8 @@ class QuestionClassEncoder(JSONEncoder):
                     "question_type": "ParseWordLatToCompQuestion",
                     "prompt": o.prompt,
                     "dictionary_entry": o.dictionary_entry,
-                    # NOTE: to allow just e.g. 'positive' to a question involving adverbs
-                    "main_answer": o.main_answer.string.removesuffix(
-                        " (adverb)"
-                    ),
-                    "answers": sorted([
-                        answer.string.removesuffix(" (adverb)")
-                        for answer in o.answers
-                    ]),
-                    # "main_answer": self.default(obj.main_answer),
-                    # "answers": [self.default(answer) for answer in obj.answers],
+                    "main_answer": self.default(o.main_answer),
+                    "answers": [self.default(answer) for answer in o.answers],
                 }
 
             case PrincipalPartsQuestion():

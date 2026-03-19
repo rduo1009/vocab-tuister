@@ -31,7 +31,7 @@ def _wn_is_installed(name: str) -> bool:
 
 
 wn.config.allow_multithreading = True
-_LEXICON: Final[str] = "oewn:2024"
+_LEXICON: Final[str] = "oewn:2025+"
 
 
 def setup_wn() -> None:

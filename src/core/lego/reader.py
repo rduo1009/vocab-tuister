@@ -144,10 +144,13 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
     vocab: list[Word] = []
     current: _PartOfSpeech | Literal[""] = ""
 
-    for line in (
-        raw_line.strip()  # remove whitespace
-        for raw_line in contents.split("\n")  # for line in file
-        if raw_line.strip()  # but skip if the line is blank
+    for line_number, line in enumerate(
+        (
+            raw_line.strip()  # remove whitespace
+            for raw_line in contents.split("\n")  # for line in file
+            if raw_line.strip()  # but skip if the line is blank
+        ),
+        start=1,
     ):
         logger.debug("Reading line '%s'", line)
 
@@ -173,14 +176,16 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
 
                     case _:
                         raise InvalidVocabFileFormatError(
-                            f"Invalid part of speech: '{line[1:].strip()}'"
+                            f"Invalid part of speech: '{line[1:].strip()}'",
+                            line_number=line_number,
                         )
 
             case _:
                 parts = line.split(":")
                 if len(parts) != 2:
                     raise InvalidVocabFileFormatError(
-                        f"Invalid line format: '{line}'"
+                        f"Invalid line format: '{line}'",
+                        line_number=line_number,
                     )
 
                 meaning = _generate_meaning(parts[0].strip())
@@ -190,16 +195,25 @@ def read_vocab_file(source: str | Path | TextIO) -> VocabList:
 
                 if not current:
                     raise InvalidVocabFileFormatError(
-                        "Part of speech was not given."
+                        "Part of speech was not given.",
+                        line_number=line_number,
                     )
 
-                vocab.append(_parse_line(current, latin_parts, meaning, line))
+                vocab.append(
+                    _parse_line(
+                        current, latin_parts, meaning, line, line_number
+                    )
+                )
 
     return VocabList(vocab, str(contents))
 
 
 def _parse_line(
-    current: _PartOfSpeech, latin_parts: list[str], meaning: Meaning, line: str
+    current: _PartOfSpeech,
+    latin_parts: list[str],
+    meaning: Meaning,
+    line: str,
+    line_number: int,
 ) -> Word:
     """Create a word object from a line of a vocab file and the pos.
 
@@ -213,6 +227,8 @@ def _parse_line(
         The meaning of the word.
     line : str
         The actual line.
+    line_number : str
+        The line number which is being parsed (helps with error handling).
 
     Returns
     -------
@@ -226,7 +242,9 @@ def _parse_line(
     """
     if current == "Verb":
         if len(latin_parts) not in {1, 3, 4}:
-            raise InvalidVocabFileFormatError(f"Invalid verb format: '{line}'")
+            raise InvalidVocabFileFormatError(
+                f"Invalid verb format: '{line}'", line_number=line_number
+            )
 
         # Irregular verb
         if len(latin_parts) == 1:
@@ -249,7 +267,9 @@ def _parse_line(
 
     if current == "Noun":
         if len(latin_parts) not in {1, 3}:
-            raise InvalidVocabFileFormatError(f"Invalid noun format: '{line}'")
+            raise InvalidVocabFileFormatError(
+                f"Invalid noun format: '{line}'", line_number=line_number
+            )
 
         # Irregular noun
         if len(latin_parts) == 1:
@@ -264,13 +284,14 @@ def _parse_line(
             )
         except ValueError as e:
             raise InvalidVocabFileFormatError(
-                f"Invalid gender: '{latin_parts[2].split()[-1].strip('()')}'"
+                f"Invalid gender: '{latin_parts[2].split()[-1].strip('()')}'",
+                line_number=line_number,
             ) from e
 
     if current == "Adjective":
         if len(latin_parts) not in {3, 4}:
             raise InvalidVocabFileFormatError(
-                f"Invalid adjective format: '{line}'"
+                f"Invalid adjective format: '{line}'", line_number=line_number
             )
 
         declension = latin_parts[-1].strip("()")
@@ -279,7 +300,8 @@ def _parse_line(
             r"^3-.$", declension
         ):
             raise InvalidVocabFileFormatError(
-                f"Invalid adjective declension: '{declension}'"
+                f"Invalid adjective declension: '{declension}'",
+                line_number=line_number,
             )
 
         # Third declension adjective
