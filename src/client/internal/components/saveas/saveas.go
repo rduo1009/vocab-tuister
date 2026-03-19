@@ -134,13 +134,13 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 			switch msg.String() {
 			case "y", "Y", "enter":
 				// Confirm overwrite
-				cmds = append(cmds, util.MsgCmd(SelectedMsg{
+				m.confirmOverwrite = false
+
+				return m, util.MsgCmd(SelectedMsg{
 					ID:        m.ID,
 					Path:      m.pendingPath,
 					Overwrite: true,
-				}))
-				m.confirmOverwrite = false
-				m.pendingPath = ""
+				})
 
 			case "n", "N", "esc":
 				// Cancel overwrite
@@ -164,8 +164,7 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 		}
 
 		if key.Matches(msg, m.keys.Exit) {
-			cmds = append(cmds, util.MsgCmd(ExitMsg{ID: m.ID}))
-			return m, tea.Batch(cmds...)
+			return m, util.MsgCmd(ExitMsg{ID: m.ID})
 		}
 
 		if key.Matches(msg, m.keys.Help) {
@@ -217,11 +216,11 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 					m.pendingPath = fullPath
 				} else {
 					// File doesn't exist -> Select immediately
-					cmds = append(cmds, util.MsgCmd(SelectedMsg{
+					return m, util.MsgCmd(SelectedMsg{
 						ID:        m.ID,
 						Path:      fullPath,
 						Overwrite: false,
-					}))
+					})
 				}
 
 				return m, tea.Batch(cmds...)
@@ -289,8 +288,8 @@ var (
 	overlayBoxStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			Padding(1, 2).
-			BorderForeground(lipgloss.Color("63")) // Purple-ish border
-	warnOverlayStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("202")).Bold(true) // Orange/Red warning
+			BorderForeground(lipgloss.Color("#5f5fff")) // Purple-ish border
+	warnOverlayStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#fa003f")).Bold(true) // Red warning
 )
 
 func (m *Model) SetWidth(width int) {
@@ -318,9 +317,9 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 
 	fpStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder())
 	if !m.textinput.Focused() {
-		fpStyle = fpStyle.BorderForeground(lipgloss.Color("63"))
+		fpStyle = fpStyle.BorderForeground(lipgloss.Color("#5f5fff"))
 	} else {
-		fpStyle = fpStyle.BorderForeground(lipgloss.Color("240")) // Dim border
+		fpStyle = fpStyle.BorderForeground(lipgloss.Color("#585858")) // Dim border
 	}
 
 	fpView := fpStyle.Width(m.width - 4).Render(m.filepicker.View()) // -4 for paddings/borders
@@ -328,9 +327,9 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	// 3. Text Input
 	tiStyle := lipgloss.NewStyle()
 	if m.textinput.Focused() {
-		tiStyle = tiStyle.Foreground(lipgloss.Color("63"))
+		tiStyle = tiStyle.Foreground(lipgloss.Color("#5f5fff"))
 	} else {
-		tiStyle = tiStyle.Foreground(lipgloss.Color("240"))
+		tiStyle = tiStyle.Foreground(lipgloss.Color("#585858"))
 	}
 
 	tiView := tiStyle.Render(m.textinput.View())
@@ -345,39 +344,31 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 
 	// Add Help view
 	helpView := m.help.View(m.keys)
-	fullView := borderStyle.Width(m.width).
+	contentView := borderStyle.Width(m.width).
 		Height(m.height).
 		Render(lipgloss.JoinVertical(lipgloss.Left, content, helpView))
 
+		// --- Compositor for Overlay ---
+
 	var finalView string
-
-	// --- Compositor for Overlay ---
-
 	if m.confirmOverwrite {
-		// Layer 0: Dimmed Base
-		dimLayer := lipgloss.NewLayer(dimStyle.Render(fullView))
+		contentViewLayer := lipgloss.NewLayer(dimStyle.Render(contentView))
 
-		// Layer 1: Centered Overlay
 		overwriteText := fmt.Sprintf(
 			"%s\n\nFile %s already exists.\nOverwrite? (y/n)",
 			warnOverlayStyle.Render("WARNING"),
 			filepath.Base(m.pendingPath),
 		)
-		overlayContent := overlayBoxStyle.Render(overwriteText)
 
 		// Center the overlay content within the full view dimensions
-		// lipgloss.Place creates a string of size w x h with content placed inside
-		centeredOverlay := lipgloss.Place(
-			m.width, m.height,
-			lipgloss.Center, lipgloss.Center,
-			overlayContent,
-		)
+		overlayView := overlayBoxStyle.Render(overwriteText)
+		overlayViewLayer := lipgloss.NewLayer(overlayView).
+			X((m.width - lipgloss.Width(overlayView)) / 2).
+			Y((m.height - lipgloss.Height(overlayView)) / 2)
 
-		overlayLayer := lipgloss.NewLayer(centeredOverlay)
-
-		finalView = lipgloss.NewCompositor(dimLayer, overlayLayer).Render()
+		finalView = lipgloss.NewCompositor(contentViewLayer, overlayViewLayer).Render()
 	} else {
-		finalView = fullView
+		finalView = contentView
 	}
 
 	x := (screenWidth - lipgloss.Width(finalView)) / 2
