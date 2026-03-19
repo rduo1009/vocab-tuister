@@ -77,11 +77,13 @@ func (n *Navigator) Add(components ...Navigable) {
 	}
 }
 
-// TODO: error for this.
-func (n *Navigator) Remove(components ...Navigable) {
+func (n *Navigator) Remove(components ...Navigable) error {
 	for _, target := range components {
+		found := false
+
 		for i, item := range n.Items {
 			if item == target {
+				found = true
 				// Unfocus if removing current
 				if i == n.CurrentIndex {
 					item.Blur()
@@ -103,7 +105,13 @@ func (n *Navigator) Remove(components ...Navigable) {
 				break
 			}
 		}
+
+		if !found {
+			return fmt.Errorf("navigable %v to remove not found", target)
+		}
 	}
+
+	return nil
 }
 
 func (n *Navigator) Replace(target Navigable, replacement ...Navigable) error {

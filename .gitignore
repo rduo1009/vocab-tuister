@@ -4,8 +4,8 @@ reports/
 src/scripts/json_output/
 tests/lego_test/testdata/test_output/*
 !tests/lego_test/testdata/test_output/.gitkeep
-tests/integration/server_integration/testdata/cache/*
-!tests/integration/server_integration/testdata/cache/.gitkeep
+tests/integration/testdata/cache/*
+!tests/integration/testdata/cache/.gitkeep
 
 # Build generated files
 __version__.txt

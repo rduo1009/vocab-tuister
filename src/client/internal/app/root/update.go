@@ -86,7 +86,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.navigator.Add(msg.Components...)
 
 	case navigator.RemoveNavigableMsg:
-		m.navigator.Remove(msg.Components...)
+		if err := m.navigator.Remove(msg.Components...); err != nil {
+			return m, util.MsgCmd(app.ErrMsg(err))
+		}
 
 	case navigator.ReplaceNavigableMsg:
 		if err := m.navigator.Replace(msg.Target, msg.Replacement...); err != nil {

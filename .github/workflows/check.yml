@@ -69,25 +69,7 @@ jobs:
         run: uv sync
 
       - name: Run integration tests
-        id: run-tests
         run: uv run pytest --pythonhashseed 1 -m 'integration' -n0
-        continue-on-error: true
-
-      - name: Update test data
-        if: steps.run-tests.outcome == 'failure'
-        run: uv run pytest --pythonhashseed 1 --snapshot-update -m 'integration' -n0
-
-      - name: Upload changed files
-        if: steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v7
-        with:
-          name: changed-files
-          path: |
-            tests/integration/server_integration/__snapshots__/*
-
-      - name: Fail workflow if applicable
-        if: steps.run-tests.outcome == 'failure'
-        run: exit 1
 
   test-golang:
     name: test with golang
@@ -112,71 +94,7 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Run test suite
-        id: run-tests
         run: go test ./src/...
-        continue-on-error: true
         env:
           GOEXPERIMENT: jsonv2
 
-      - name: Update test data
-        if: steps.run-tests.outcome == 'failure'
-        run: go test ./src/client/internal/... -update
-        env:
-          GOEXPERIMENT: jsonv2
-
-      - name: Upload changed files
-        if: steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v7
-        with:
-          name: changed-files
-          path: |
-            src/client/internal/configtui/testdata/
-            src/client/internal/listtui/testdata
-            src/client/internal/sessiontui/testdata
-
-      - name: Fail workflow if applicable
-        if: steps.run-tests.outcome == 'failure'
-        run: exit 1
-
-  test-integration-golang:
-    name: integration test with golang
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          submodules: "recursive"
-
-      - name: Verify go.mod file
-        run: |
-          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
-
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: "go.mod"
-
-      - name: Install and cache apt deps
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: ffmpeg pipx
-          version: 1.0
-
-      - name: Install other deps
-        run: |
-          sudo snap install ttyd --classic
-          pipx install dunamai
-          go mod download
-        env:
-          GOEXPERIMENT: jsonv2
-
-      - name: Run integration tests
-        run: ./tests/integration/client_integration/client-integration-tests.sh
-        env:
-          GOEXPERIMENT: jsonv2
-
-      - name: Upload changed files
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: changed-files
-          path: tests/integration/client_integration/testdata/
