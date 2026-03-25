@@ -1,4 +1,3 @@
-//go:build !darwin && !windows
 
 package appdir
 
