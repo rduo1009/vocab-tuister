@@ -83,14 +83,13 @@ func (m *Model) View() string {
 	} else {
 		resetButtonView := buttonStyle(m.ResetButton.Focused()).Render("Reset form")
 
-		m.jsonview.SetWidth(m.width - 2)
+		m.jsonview.SetWidth(m.width - 6)
 		m.jsonview.SetHeight(
 			m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(resetButtonView) - 2,
 		)
 
-		// TODO: something like the above should be poss here asw?
+		// NOTE: not specifying width here as jsonview will have the correct width from above
 		formSectionView = formBorderStyle(m.FormSection.Focused()).
-			Width(m.width).
 			Height(m.height - lipgloss.Height(headerSectionView)).
 			Render(lipgloss.JoinVertical(lipgloss.Left, resetButtonView, "", "", m.jsonview.View()))
 	}
