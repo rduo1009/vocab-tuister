@@ -55,7 +55,7 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./reports/coverage/pycoverage.xml,./reports/coverage/go-combined.out
           token: ${{ secrets.CODECOV_TOKEN }}
