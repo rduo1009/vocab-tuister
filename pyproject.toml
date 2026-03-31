@@ -18,7 +18,7 @@ dynamic = [ "version" ]
 dependencies = [
   "aenum==3.1.17",
   "ansicolors==1.1.8",
-  "cyclopts==4.10.0",
+  "cyclopts==4.10.1",
   "dill==0.4.1",
   "dunamai==1.26.0",
   "flask==3.1.3",
