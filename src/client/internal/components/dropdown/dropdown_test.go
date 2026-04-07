@@ -66,6 +66,7 @@ var (
 	upKey    = tea.KeyPressMsg{Code: tea.KeyUp}
 	downKey  = tea.KeyPressMsg{Code: tea.KeyDown}
 	enterKey = tea.KeyPressMsg{Code: tea.KeyEnter}
+	escKey   = tea.KeyPressMsg{Code: tea.KeyEsc}
 )
 
 func readBts(tb testing.TB, r io.Reader) []byte {
@@ -126,6 +127,27 @@ func TestDropdownTyping(t *testing.T) {
 		readBts(t, tm.Output()),
 		"typing should not change anything",
 	)
+}
+
+func TestDropdownExit(t *testing.T) {
+	options := make([]fmt.Stringer, len(optionStrings))
+	for i, v := range optionStrings {
+		options[i] = Option(v)
+	}
+
+	d := dropdown.New(id, options)
+	m := model{Dropdown: d}
+	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+	t.Cleanup(func() {
+		if err := tm.Quit(); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	tm.Send(escKey)
+	tm.WaitFinished(t)
+
+	assert.Equal(t, dropdown.ExitMsg{ID: id}, tm.FinalModel(t).(model).CurrentMsg)
 }
 
 func TestDropdownCeiling(t *testing.T) {
