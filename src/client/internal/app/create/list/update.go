@@ -111,6 +111,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			if msg.ID == saveAsID {
 				m.SaveAsActive = false
 				cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
+				cmds = append(cmds, m.SaveAs.RefreshFilepickerDir())
 			}
 
 		case saveas.ExitMsg:

@@ -117,6 +117,10 @@ func (m *Model) Init() tea.Cmd {
 	return tea.Batch(m.filepicker.Init(), textinput.Blink)
 }
 
+func (m *Model) RefreshFilepickerDir() tea.Cmd {
+	return m.filepicker.Init()
+}
+
 func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
