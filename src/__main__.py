@@ -4,6 +4,7 @@
 # ruff: noqa: TC002, TC003
 
 import logging
+import os
 import sys
 import warnings
 from collections.abc import Sequence
@@ -35,7 +36,11 @@ for handler in logger.handlers.copy():
 handler = CustomHandler()
 logger.addHandler(handler)
 
-console = Console()
+console = (
+    Console(force_terminal=True, color_system="truecolor")
+    if os.environ.get("CI") != "true"
+    else Console()
+)
 cli = App(
     name="vocab-tuister-server",
     version=__version__,  # this is needed due to dynamic versioning
