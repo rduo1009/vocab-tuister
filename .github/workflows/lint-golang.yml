@@ -21,7 +21,7 @@
 #     • No secrets are exposed to the lint step.
 #     • The push step only runs for same-repo PRs (contributors with push
 #       access), not for arbitrary forks.
-
+name: lint-golang
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
