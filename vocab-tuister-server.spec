@@ -98,8 +98,6 @@ else:
 data_files = [
     ("src/core/transfero/wn_data/wn.db.zst", "src/core/transfero/wn_data"),
     ("src/core/transfero/adj_to_adv.json", "src/core/transfero"),
-    ("src/server/templates", "src/server/templates"),
-    ("src/server/static", "src/server/static"),
     ("__version__.txt", "."),
 ]
 
