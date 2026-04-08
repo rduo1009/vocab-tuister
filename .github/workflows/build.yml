@@ -68,7 +68,6 @@ jobs:
 
       - name: Setup project
         run: |
-          go install ./src/_vendor/mkunion/cmd/mkunion
           go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
           echo PATH=$PATH >> $GITHUB_ENV
         env:

@@ -7,14 +7,13 @@ from src.core.accido.endings import Adjective, Noun, Verb
 from src.core.accido.misc import Gender
 from src.core.lego.misc import VocabList
 from src.core.rogo.rules import filter_words
+from src.core.rogo.type_aliases import SessionConfig
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from src.core.rogo.type_aliases import SessionConfig
 
-
-default_session_config: SessionConfig = {
+default_session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
     "exclude-verb-imperfect-active-indicative": False,
     "exclude-verb-future-active-indicative": False,
@@ -132,25 +131,25 @@ default_session_config: SessionConfig = {
     "include-multiplechoice-engtolat": False,
     "include-multiplechoice-lattoeng": False,
     "number-multiplechoice-options": 3,
-}
+})
 
 
 def test_word_exclusion_adjective():
     words: list[Adjective] = [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy"), Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
     vocab_list = VocabList(words, "")
-    settings = default_session_config.copy()
+    settings = default_session_config.model_copy()
 
-    settings["exclude-adjective-212-declension"] = True
-    settings["exclude-adjective-212-declension"] = True
+    settings.exclude_adjective_212_declension = True
+    settings.exclude_adjective_212_declension = True
     assert filter_words(vocab_list, settings) == [Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")]
-    settings["exclude-adjective-212-declension"] = False
-    settings["exclude-adjective-212-declension"] = False
+    settings.exclude_adjective_212_declension = False
+    settings.exclude_adjective_212_declension = False
 
-    settings["exclude-adjective-third-declension"] = True
-    settings["exclude-adjective-third-declension"] = True
+    settings.exclude_adjective_third_declension = True
+    settings.exclude_adjective_third_declension = True
     assert filter_words(vocab_list, settings) == [Adjective("laetus", "laeta", "laetum", declension="212", meaning="happy")]
-    settings["exclude-adjective-third-declension"] = False
-    settings["exclude-adjective-third-declension"] = False
+    settings.exclude_adjective_third_declension = False
+    settings.exclude_adjective_third_declension = False
 
 
 def test_word_exclusion_noun():
@@ -165,49 +164,49 @@ def test_word_exclusion_noun():
     vocab_list = VocabList(words, "")
     vocab_list = VocabList(words, "")
 
-    settings = default_session_config.copy()
+    settings = default_session_config.model_copy()
 
-    settings["exclude-noun-first-declension"] = True
+    settings.exclude_noun_first_declension = True
     assert any(word.declension != 1 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-first-declension"] = False
-    settings["exclude-noun-first-declension"] = True
+    settings.exclude_noun_first_declension = False
+    settings.exclude_noun_first_declension = True
     assert any(word.declension != 1 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-first-declension"] = False
+    settings.exclude_noun_first_declension = False
 
-    settings["exclude-noun-second-declension"] = True
+    settings.exclude_noun_second_declension = True
     assert any(word.declension != 2 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-second-declension"] = False
-    settings["exclude-noun-second-declension"] = True
+    settings.exclude_noun_second_declension = False
+    settings.exclude_noun_second_declension = True
     assert any(word.declension != 2 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-second-declension"] = False
+    settings.exclude_noun_second_declension = False
 
-    settings["exclude-noun-third-declension"] = True
+    settings.exclude_noun_third_declension = True
     assert any(word.declension != 3 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-third-declension"] = False
-    settings["exclude-noun-third-declension"] = True
+    settings.exclude_noun_third_declension = False
+    settings.exclude_noun_third_declension = True
     assert any(word.declension != 3 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-third-declension"] = False
+    settings.exclude_noun_third_declension = False
 
-    settings["exclude-noun-fourth-declension"] = True
+    settings.exclude_noun_fourth_declension = True
     assert any(word.declension != 4 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-fourth-declension"] = False
-    settings["exclude-noun-fourth-declension"] = True
+    settings.exclude_noun_fourth_declension = False
+    settings.exclude_noun_fourth_declension = True
     assert any(word.declension != 4 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-fourth-declension"] = False
+    settings.exclude_noun_fourth_declension = False
 
-    settings["exclude-noun-fifth-declension"] = True
+    settings.exclude_noun_fifth_declension = True
     assert any(word.declension != 5 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-fifth-declension"] = False
-    settings["exclude-noun-fifth-declension"] = True
+    settings.exclude_noun_fifth_declension = False
+    settings.exclude_noun_fifth_declension = True
     assert any(word.declension != 5 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-fifth-declension"] = False
+    settings.exclude_noun_fifth_declension = False
 
-    settings["exclude-noun-irregular-declension"] = True
+    settings.exclude_noun_irregular_declension = True
     assert any(word.declension != 0 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-irregular-declension"] = False
-    settings["exclude-noun-irregular-declension"] = True
+    settings.exclude_noun_irregular_declension = False
+    settings.exclude_noun_irregular_declension = True
     assert any(word.declension != 0 for word in filter_words(vocab_list, settings))
-    settings["exclude-noun-irregular-declension"] = False
+    settings.exclude_noun_irregular_declension = False
 
 
 def test_word_exclusion_verb():
@@ -222,43 +221,43 @@ def test_word_exclusion_verb():
     vocab_list = VocabList(words, "")
     vocab_list = VocabList(words, "")
 
-    settings = default_session_config.copy()
+    settings = default_session_config.model_copy()
 
-    settings["exclude-verb-first-conjugation"] = True
+    settings.exclude_verb_first_conjugation = True
     assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-first-conjugation"] = False
-    settings["exclude-verb-first-conjugation"] = True
+    settings.exclude_verb_first_conjugation = False
+    settings.exclude_verb_first_conjugation = True
     assert any(word.conjugation != 1 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-first-conjugation"] = False
+    settings.exclude_verb_first_conjugation = False
 
-    settings["exclude-verb-second-conjugation"] = True
+    settings.exclude_verb_second_conjugation = True
     assert any(word.conjugation != 2 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-second-conjugation"] = False
-    settings["exclude-verb-second-conjugation"] = True
+    settings.exclude_verb_second_conjugation = False
+    settings.exclude_verb_second_conjugation = True
     assert any(word.conjugation != 2 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-second-conjugation"] = False
+    settings.exclude_verb_second_conjugation = False
 
-    settings["exclude-verb-third-conjugation"] = True
+    settings.exclude_verb_third_conjugation = True
     assert any(word.conjugation != 3 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-third-conjugation"] = False
-    settings["exclude-verb-third-conjugation"] = True
+    settings.exclude_verb_third_conjugation = False
+    settings.exclude_verb_third_conjugation = True
     assert any(word.conjugation != 3 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-third-conjugation"] = False
+    settings.exclude_verb_third_conjugation = False
 
-    settings["exclude-verb-fourth-conjugation"] = True
+    settings.exclude_verb_fourth_conjugation = True
     assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-fourth-conjugation"] = False
-    settings["exclude-verb-fourth-conjugation"] = True
+    settings.exclude_verb_fourth_conjugation = False
+    settings.exclude_verb_fourth_conjugation = True
     assert any(word.conjugation != 4 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-fourth-conjugation"] = False
+    settings.exclude_verb_fourth_conjugation = False
 
-    settings["exclude-verb-mixed-conjugation"] = True
+    settings.exclude_verb_mixed_conjugation = True
     assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-mixed-conjugation"] = False
-    settings["exclude-verb-mixed-conjugation"] = True
+    settings.exclude_verb_mixed_conjugation = False
+    settings.exclude_verb_mixed_conjugation = True
     assert any(word.conjugation != 5 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-mixed-conjugation"] = False
+    settings.exclude_verb_mixed_conjugation = False
 
-    settings["exclude-verb-irregular-conjugation"] = True
+    settings.exclude_verb_irregular_conjugation = True
     assert any(word.conjugation != 0 for word in filter_words(vocab_list, settings))
-    settings["exclude-verb-irregular-conjugation"] = False
+    settings.exclude_verb_irregular_conjugation = False

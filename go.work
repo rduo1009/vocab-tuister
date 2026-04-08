@@ -1,7 +1,6 @@
-go 1.25
+go 1.26.1
 
 use (
 	.
 	./src/_vendor/go-jsonstruct
-	./src/_vendor/mkunion
 )

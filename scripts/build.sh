@@ -27,15 +27,15 @@ fi
 uv run dunamai from any > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
-        uv run pyinstaller vocab-tuister-server.spec -- -- --debug
+        uv run pyinstaller vocab-tuister-server.spec -- --debug
     else
         uv run pyinstaller vocab-tuister-server.spec
     fi
 else
     if [[ $debug == "True" ]]; then
-        uv run pyinstaller vocab-tuister-server.spec -- -- --debug --target-arch "$target_arch"
+        uv run pyinstaller vocab-tuister-server.spec -- --debug --target-arch "$target_arch"
     else
-        uv run pyinstaller vocab-tuister-server.spec -- -- --target-arch "$target_arch"
+        uv run pyinstaller vocab-tuister-server.spec -- --target-arch "$target_arch"
     fi
 fi
 

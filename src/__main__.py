@@ -1,13 +1,15 @@
 """The CLI that runs the server."""
 
-# ruff: noqa: TC002
+# pyright: basic
+# ruff: noqa: TC002, TC003
 
 import logging
 import sys
 import warnings
-from typing import TYPE_CHECKING, Annotated
+from collections.abc import Sequence
+from typing import Annotated
 
-from cyclopts import App, Parameter, Token
+from cyclopts import App, Parameter
 from cyclopts.types import UInt16
 from rich.console import Console
 
@@ -18,9 +20,6 @@ from src.utils.logger import (
     custom_formatwarning,
     log_uncaught_exceptions,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
 
 # Initialise logger
 logger = logging.getLogger()
@@ -38,10 +37,13 @@ logger.addHandler(handler)
 
 console = Console()
 cli = App(
+    name="vocab-tuister-server",
     version=__version__,  # this is needed due to dynamic versioning
     default_parameter=Parameter(negative=()),
+    help_on_error=True,
     console=console,
 )
+cli.register_install_completion_command()
 
 
 def _set_verbosity(verbosity: int) -> None:
@@ -57,23 +59,13 @@ def _set_verbosity(verbosity: int) -> None:
     handler.setLevel(verbosity_map.get(verbosity, logging.DEBUG))
 
 
-def _verbosity_converter(
-    type_: type[tuple[bool, ...]], tokens: Sequence[Token]
-) -> tuple[bool, ...]:
-    assert type_ == tuple[bool, ...]
-
-    return tuple((token.keyword == "-v") for token in tokens)
-
-
 @cli.default
 def vocab_tuister_server(
     *,
     port: Annotated[UInt16, Parameter(name=["--port", "-p"])] = 5000,
     verbose: Annotated[
-        tuple[bool, ...],
-        Parameter(name=["--verbose", "-v"], converter=_verbosity_converter),
+        Sequence[bool], Parameter(alias="-v", negative="--quiet")
     ] = (),
-    quiet: bool = False,
     dev: bool = False,
     debug: bool = False,
 ) -> None:
@@ -84,12 +76,7 @@ def vocab_tuister_server(
     port : int
         The port to run the server on.
     verbose : tuple[bool, ...]
-        How verbose to make the output (maximum 3). Note that additional
-        verbosity flags must be added like ``-v -v -v``, due to a bug with
-        Cyclopts.
-    quiet : bool
-        Whether to make the output quiet (only critical errors). Overrides
-        ``--verbose``.
+        How verbose to make the output (maximum 3).
     dev : bool
         Use the Flask development server instead of the production server.
         Should not be used usually.
@@ -98,7 +85,12 @@ def vocab_tuister_server(
         Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
-    _set_verbosity(-1 if quiet else sum(verbose))
+    # Handle `--quiet`: any occurrence forces verbosity -1, otherwise count -v (max 3)
+    if any(not v for v in verbose):
+        verbosity = -1
+    else:
+        verbosity = min(3, sum(1 for v in verbose if v))
+    _set_verbosity(verbosity)
 
     # Seed has been set
     if _seed is not None:
