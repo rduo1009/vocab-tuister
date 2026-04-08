@@ -171,6 +171,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		}
 
 	case rawSessionConfigMsg:
+		m.form.State = huh.StateCompleted
 		m.AppStatus = ReviewSessionConfig
 		m.RawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.RawSessionConfig)
