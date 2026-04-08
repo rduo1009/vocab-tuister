@@ -31,6 +31,7 @@ repos:
         entry: bash -c 'GOTOOLCHAIN=local go version'
         pass_filenames: false
         always_run: true
+        verbose: true
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.11.3
