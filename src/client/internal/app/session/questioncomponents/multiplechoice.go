@@ -252,9 +252,9 @@ func optionStyle(focused bool, status QuestionStatus) lipgloss.Style {
 	switch status {
 	case Unanswered:
 		if focused {
-			borderColor = lipgloss.Color("#FFFFFF")
+			borderColor = lipgloss.Color("#209fb5")
 		} else {
-			borderColor = lipgloss.Color("#DCDCDC")
+			borderColor = lipgloss.Color("#FFFFFF")
 		}
 
 	case Correct:
