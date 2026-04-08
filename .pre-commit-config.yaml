@@ -32,6 +32,8 @@ repos:
         args: [version]
         pass_filenames: false
         always_run: true
+        env:
+          GOTOOLCHAIN: local
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.11.3
