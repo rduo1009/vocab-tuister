@@ -62,6 +62,11 @@ jobs:
       - name: Commit and push lint fixes back to PR branch (same-repo PRs only)
         # Skip this step for fork PRs – we have no write access to the fork.
         if: github.event.pull_request.head.repo.full_name == github.repository
+        # Pass the branch ref via an environment variable rather than
+        # interpolating it directly into the shell script, to prevent
+        # code-injection if the branch name contains shell metacharacters.
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           set -euo pipefail
 
@@ -75,4 +80,4 @@ jobs:
 
           git add -A
           git commit -m "chore(lint): golangci-lint --fix"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push origin "HEAD:${HEAD_REF}"
