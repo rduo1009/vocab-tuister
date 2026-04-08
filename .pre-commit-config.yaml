@@ -1,7 +1,7 @@
 exclude: "src/_vendor/.*"
 
 ci:
-  skip: [uv-lock, golangci-lint]
+  skip: [uv-lock]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
