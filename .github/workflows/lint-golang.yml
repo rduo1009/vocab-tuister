@@ -1,0 +1,83 @@
+# Workflow: golangci-lint --fix → commit + push back to PR branch
+#
+# Why pull_request_target?
+#   The standard `pull_request` event runs with read-only tokens for fork PRs.
+#   `pull_request_target` runs in the context of the *base* repo, giving the
+#   workflow a token with `contents: write`, which is required to push the
+#   auto-fixed commits back to the PR branch.
+#
+# Fork-PR safety:
+#   The push step is guarded by:
+#     github.event.pull_request.head.repo.full_name == github.repository
+#   This means the commit-and-push step is skipped silently for fork PRs
+#   (we can't push to a fork the workflow has no write access to).
+#   The lint+fix step still runs for forks – it just won't push anything back.
+#
+# Code-injection risk with pull_request_target:
+#   Because we explicitly check out the PR HEAD (untrusted code) rather than
+#   the base branch, and we run golangci-lint on it, there is a theoretical
+#   risk of malicious lint-plugin abuse. The blast radius is limited because:
+#     • golangci-lint runs as an unprivileged process.
+#     • No secrets are exposed to the lint step.
+#     • The push step only runs for same-repo PRs (contributors with push
+#       access), not for arbitrary forks.
+name: lint-golang
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write # required to push the auto-fix commit back to the PR branch
+
+jobs:
+  fix-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR HEAD (code to be fixed)
+        uses: actions/checkout@v4
+        with:
+          # Check out the contributor's branch, not the base branch.
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          # Read the required Go version from go.mod so the workflow stays
+          # in sync with the project automatically.
+          go-version-file: "go.mod"
+          cache: true
+
+      - name: Run golangci-lint --fix
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v2.11.3
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+
+      - name: Commit and push lint fixes back to PR branch (same-repo PRs only)
+        # Skip this step for fork PRs – we have no write access to the fork.
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        # Pass the branch ref via an environment variable rather than
+        # interpolating it directly into the shell script, to prevent
+        # code-injection if the branch name contains shell metacharacters.
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet; then
+            echo "No changes produced by golangci-lint --fix."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "🧹 chore(lint): golangci-lint --fix"
+          git push origin "HEAD:${HEAD_REF}"
