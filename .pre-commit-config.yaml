@@ -30,8 +30,6 @@ repos:
           - --fix
           - --fast-only
           - --enable=modernize,whitespace,wsl_v5
-        env:
-          GOTOOLCHAIN: local
 
   # Format and check other files
   - repo: https://github.com/dzhu/rstfmt
