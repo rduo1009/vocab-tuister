@@ -11,7 +11,7 @@ require (
 	github.com/ionut-t/goeditor v0.4.10
 	github.com/spf13/cobra v1.10.1
 	golang.org/x/sys v0.42.0
-	golang.org/x/term v0.40.0
+	golang.org/x/term v0.41.0
 )
 
 require (
