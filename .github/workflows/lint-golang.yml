@@ -30,34 +30,55 @@ permissions:
   contents: write # required to push the auto-fix commit back to the PR branch
 
 jobs:
-  fix-and-push:
+  lint:
+    name: lint with golangci-lint
     runs-on: ubuntu-latest
+    env:
+      GOEXPERIMENT: jsonv2
 
     steps:
       - name: Checkout PR HEAD (code to be fixed)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # Check out the contributor's branch, not the base branch.
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           # Read the required Go version from go.mod so the workflow stays
           # in sync with the project automatically.
           go-version-file: "go.mod"
           cache: true
 
-      - name: Run golangci-lint --fix
-        uses: golangci/golangci-lint-action@v6
+      - name: Run golangci-lint --fix (Linux)
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.11.3
           args: >-
             --fix
             --fast-only
             --enable=modernize,whitespace,wsl_v5
+
+      - name: Run golangci-lint --fix (macOS)
+        uses: golangci/golangci-lint-action@v9
+        with:
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+        env:
+          GOOS: "darwin"
+
+      - name: Run golangci-lint --fix (Windows)
+        uses: golangci/golangci-lint-action@v9
+        with:
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+        env:
+          GOOS: "windows"
 
       - name: Commit and push lint fixes back to PR branch (same-repo PRs only)
         # Skip this step for fork PRs – we have no write access to the fork.

@@ -8,13 +8,13 @@ ci:
 repos:
   # Check project deps
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.10
+    rev: 0.11.3
     hooks:
       - id: uv-lock
 
   # Format and check code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.6
+    rev: v0.15.9
     hooks:
       - id: ruff
         args: [--fix]
@@ -23,7 +23,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v2.11.3
+    rev: v2.11.4
     hooks:
       - id: golangci-lint
         args:
@@ -39,7 +39,7 @@ repos:
         args: [-w, "79"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.19.0"
+    rev: "v2.21.0"
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]
