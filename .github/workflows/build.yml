@@ -117,9 +117,14 @@ jobs:
         run: |
           cd dist
 
-          # Iterate over every file in dist/. We only want to act on the non-server
-          # binaries; the server binary for each pair is located and included implicitly.
-          for f in *; do
+          # Iterate only over files whose names begin with "vocab-tuister-" so that
+          # any unexpected files in dist/ (e.g. logs or intermediate artefacts) are
+          # never accidentally processed.
+          for f in vocab-tuister-*; do
+            # Guard: make sure this glob entry is a regular file, not a directory or
+            # an unexpanded glob (which bash leaves as the literal pattern string).
+            [[ -f "$f" ]] || continue
+
             # Already-zipped files are left alone — nothing to do.
             [[ "$f" == *.zip ]] && continue
 
@@ -131,6 +136,14 @@ jobs:
             # product name. e.g. vocab-tuister-darwin-arm64
             #                 -> vocab-tuister-server-darwin-arm64
             server="${f/vocab-tuister/vocab-tuister-server}"
+
+            # Guard: the server binary must exist. If it is absent the substitution
+            # above produced the wrong name (e.g. the naming convention changed), so
+            # we fail loudly here rather than letting zip fail with a cryptic error.
+            if [[ ! -f "$server" ]]; then
+              echo "Error: expected server binary '$server' not found for client '$f'" >&2
+              exit 1
+            fi
 
             # Bundle both binaries into a single zip named after the non-server binary.
             # The -j flag ("junk paths") stores the files flat, with no directory
