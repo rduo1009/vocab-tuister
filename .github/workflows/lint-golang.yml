@@ -33,6 +33,8 @@ jobs:
   lint:
     name: lint with golangci-lint
     runs-on: ubuntu-latest
+    env:
+      GOEXPERIMENT: jsonv2
 
     steps:
       - name: Checkout PR HEAD (code to be fixed)
