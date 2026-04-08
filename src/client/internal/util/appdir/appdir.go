@@ -17,9 +17,13 @@
 package appdir
 
 import (
+	_ "embed"
 	"os"
 	"path"
 )
+
+//go:embed default_sessionconfig.json
+var defaultSessionconfig []byte
 
 // Dirs requests application directories paths.
 type Dirs interface {
@@ -51,6 +55,15 @@ func init() {
 	}
 
 	err = os.MkdirAll(path.Join(AppDirs.UserConfig(), "sessionconfig"), 0o755)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(
+		path.Join(AppDirs.UserConfig(), "sessionconfig", "default_sessionconfig.json"),
+		defaultSessionconfig,
+		0o644,
+	)
 	if err != nil {
 		panic(err)
 	}
