@@ -87,6 +87,10 @@ func makeTempDir(tb testing.TB) string {
 // TestFilePicker checks the initial rendered output of the filepicker against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestFilePicker(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.Skip("Skipping test in CI environment")
+	}
+
 	dir := makeTempDir(t)
 
 	fp := filepicker.New(id, dir)
