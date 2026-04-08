@@ -28,12 +28,9 @@ repos:
       - id: go-version-probe
         name: "Probe: print go version"
         language: system
-        entry: go
-        args: [version]
+        entry: bash -c 'GOTOOLCHAIN=local go version'
         pass_filenames: false
         always_run: true
-        env:
-          GOTOOLCHAIN: local
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.11.3
