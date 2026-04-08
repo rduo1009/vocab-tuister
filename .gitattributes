@@ -2,4 +2,3 @@
 *.golden -text
 
 src/_vendor/** linguist-vendored
-src/client/internal/components/vocabeditor/** linguist-vendored
