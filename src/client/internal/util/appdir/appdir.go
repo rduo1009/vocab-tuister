@@ -22,8 +22,10 @@ import (
 	"path/filepath"
 )
 
+// TODO: Use different system like the one for inbuilt lists
+//
 //go:embed default_sessionconfig.json
-var defaultSessionconfig []byte
+var defaultSessionConfig []byte
 
 // Dirs requests application directories paths.
 type Dirs interface {
@@ -61,7 +63,7 @@ func init() {
 
 	err = os.WriteFile(
 		filepath.Join(AppDirs.UserConfig(), "sessionconfig", "default_sessionconfig.json"),
-		defaultSessionconfig,
+		defaultSessionConfig,
 		0o644,
 	)
 	if err != nil {
