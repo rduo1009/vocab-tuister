@@ -1,7 +1,7 @@
 exclude: "src/_vendor/.*"
 
 ci:
-  skip: [uv-lock, golangci-lint]
+  skip: [uv-lock]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
@@ -22,24 +22,15 @@ repos:
         args: [--select, I, --fix]
       - id: ruff-format
 
-  # Temporary probe: print the Go version available in pre-commit.ci environment
-  - repo: local
-    hooks:
-      - id: go-version-probe
-        name: "Probe: print go version"
-        language: system
-        entry: bash -c 'GOTOOLCHAIN=local go version'
-        pass_filenames: false
-        always_run: true
-        verbose: true
-
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.11.3
     hooks:
       - id: golangci-lint
+        # Override entry to force use of the system Go toolchain (go1.25.3 on pre-commit.ci)
+        # rather than letting golangci-lint attempt to download a newer toolchain.
+        entry: bash -c 'GOTOOLCHAIN=local golangci-lint run --new-from-rev HEAD --fix'
         language_version: "1.26.1"
         args:
-          - --fix
           - --fast-only
           - --enable=modernize,whitespace,wsl_v5
 
