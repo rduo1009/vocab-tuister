@@ -1,7 +1,7 @@
 exclude: "src/_vendor/.*"
 
 ci:
-  skip: [uv-lock]
+  skip: [uv-lock, golangci-lint]
   autofix_commit_msg: "🔨 refactor: [pre-commit.ci] auto fixes from pre-commit.com hooks"
   autoupdate_commit_msg: "🤖 ci(pre-commit): pre-commit autoupdate"
 
@@ -21,6 +21,17 @@ repos:
       - id: ruff
         args: [--select, I, --fix]
       - id: ruff-format
+
+  # Temporary probe: print the Go version available in pre-commit.ci environment
+  - repo: local
+    hooks:
+      - id: go-version-probe
+        name: "Probe: print go version"
+        language: system
+        entry: go
+        args: [version]
+        pass_filenames: false
+        always_run: true
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.11.3
