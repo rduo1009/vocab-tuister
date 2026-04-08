@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ionut-t/goeditor"
+
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
-	vocabeditor "github.com/rduo1009/vocab-tuister/src/client/internal/components/vocabeditor/adapter-bubbletea"
 )
 
 type createListStatus int
@@ -22,6 +23,10 @@ const (
 type (
 	headerSection struct{ focused bool }
 	selectButton  struct{ focused bool }
+	editorWrapper struct {
+		goeditor.Model
+		focused bool
+	}
 )
 
 func (hs *headerSection) Focus() {
@@ -48,6 +53,10 @@ func (sb *selectButton) Focused() bool {
 	return sb.focused
 }
 
+func (ew *editorWrapper) Focused() bool {
+	return ew.Model.IsFocused()
+}
+
 type Model struct {
 	// Layout state
 
@@ -56,7 +65,7 @@ type Model struct {
 	// Components
 
 	HeaderSection *headerSection
-	VocabEditor   *vocabeditor.Model
+	VocabEditor   *editorWrapper
 	SelectButton  *selectButton
 	ModeDropdown  *dropdown.Model
 	Filepicker    *filepicker.Model
@@ -79,16 +88,16 @@ const (
 
 func New(inbuiltListDir string) *Model {
 	headerSection := headerSection{focused: false}
-	ve := vocabeditor.New(0, 0) // placeholder size values
+	ed := goeditor.New(0, 0) // placeholder size values
 
-	ve.DisableInsertMode(true)
-	ve.DisableCommandMode(true)
-	ve.DisableVisualMode(true)
-	ve.DisableVisualLineMode(true)
-	ve.DisableSearchMode(true)
+	ed.DisableInsertMode(true)
+	ed.DisableCommandMode(true)
+	ed.DisableVisualMode(true)
+	ed.DisableVisualLineMode(true)
+	ed.DisableSearchMode(true)
 
-	ve.SetCursorMode(vocabeditor.CursorBlink)
-	ve.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
+	ed.SetCursorMode(goeditor.CursorBlink)
+	ed.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
 
 	selectButton := selectButton{focused: false}
 
@@ -102,7 +111,7 @@ func New(inbuiltListDir string) *Model {
 
 	return &Model{
 		HeaderSection: &headerSection,
-		VocabEditor:   &ve,
+		VocabEditor:   &editorWrapper{Model: ed},
 		SelectButton:  &selectButton,
 
 		ModeDropdown:   modeDropdown,

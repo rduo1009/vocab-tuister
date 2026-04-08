@@ -1,4 +1,4 @@
-package highlighter
+package list
 
 import (
 	"github.com/alecthomas/chroma/v2"
@@ -36,7 +36,11 @@ var VocabFile = chroma.MustNewLexer(
 				// Label before colon (start of line). We capture the left portion and the colon
 				// so the left side can be emphasised (GenericStrong) and the colon is punctuation.
 				// The pattern intentionally *stops* at the first colon on the line.
-				{Pattern: `(?m)^([^\n:]+)(:)`, Type: chroma.ByGroups(chroma.GenericStrong, chroma.Punctuation), Mutator: nil},
+				{
+					Pattern: `(?m)^([^\n:]+)(:)`,
+					Type:    chroma.ByGroups(chroma.GenericStrong, chroma.Punctuation),
+					Mutator: nil,
+				},
 
 				// Parenthetical metadata, e.g. (f), (3-2), (212)
 				{Pattern: `\([^)]+\)`, Type: chroma.CommentPreproc, Mutator: nil},

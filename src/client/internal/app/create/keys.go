@@ -50,7 +50,8 @@ func (ls *loadSection) KeyMap() loadButtonKeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
-	if m.listtui.HeaderSection.Focused() || m.listtui.SelectButton.Focused() || m.listtui.VocabEditor.Focused() {
+	if m.listtui.HeaderSection.Focused() || m.listtui.SelectButton.Focused() ||
+		m.listtui.VocabEditor.Focused() {
 		return m.listtui.KeyMap()
 	}
 

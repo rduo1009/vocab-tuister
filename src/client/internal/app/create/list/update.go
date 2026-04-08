@@ -39,6 +39,7 @@ func readVocabList(filePath string) tea.Cmd {
 
 func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	var cmds []tea.Cmd
+	var cmd tea.Cmd
 
 	if m.ModeDropdownActive {
 		switch msg := msg.(type) {
@@ -110,7 +111,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		case saveas.SelectedMsg:
 			if msg.ID == saveAsID {
 				m.SaveAsActive = false
-				cmds = append(cmds, saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()))
+				cmds = append(
+					cmds,
+					saveVocabList(msg.Path, m.VocabEditor.GetCurrentContent()),
+				)
 				cmds = append(cmds, m.SaveAs.RefreshFilepickerDir())
 			}
 
@@ -160,7 +164,9 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		util.UpdaterPtr(&cmds, m.SaveAs, msg)
 	}
 
-	util.UpdaterPtr(&cmds, m.VocabEditor, msg)
+	// can't use helper function due to struct embedding magic
+	m.VocabEditor.Model, cmd = m.VocabEditor.Update(msg)
+	cmds = append(cmds, cmd)
 
 	return m, tea.Batch(cmds...)
 }
