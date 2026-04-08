@@ -85,8 +85,12 @@ def vocab_tuister_server(
         Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
-    # Handle `--quiet`, min of -1, max of 3
-    _set_verbosity(max(-1, min(3, sum(1 if v else -1 for v in verbose))))
+    # Handle `--quiet`: any occurrence forces verbosity -1, otherwise count -v (max 3)
+    if any(not v for v in verbose):
+        verbosity = -1
+    else:
+        verbosity = min(3, sum(1 for v in verbose if v))
+    _set_verbosity(verbosity)
 
     # Seed has been set
     if _seed is not None:
