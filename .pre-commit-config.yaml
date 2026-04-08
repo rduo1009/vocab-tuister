@@ -26,6 +26,7 @@ repos:
     rev: v2.11.3
     hooks:
       - id: golangci-lint
+        language_version: "1.26.1"
         args:
           - --fix
           - --fast-only
