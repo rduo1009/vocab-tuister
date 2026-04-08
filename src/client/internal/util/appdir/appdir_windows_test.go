@@ -1,4 +1,3 @@
-
 package appdir
 
 import (
@@ -11,7 +10,7 @@ import (
 func TestWindowsDirs(t *testing.T) {
 	// Reset state for test because initOnce prevents re-initialization
 	initOnce = sync.Once{}
-	
+
 	origLocal := os.Getenv("LOCALAPPDATA")
 	origRoaming := os.Getenv("APPDATA")
 	defer func() {
@@ -55,7 +54,7 @@ func TestWindowsDirs(t *testing.T) {
 func TestWindowsDirsNoEnv(t *testing.T) {
 	// Reset state
 	initOnce = sync.Once{}
-	
+
 	origLocal := os.Getenv("LOCALAPPDATA")
 	origRoaming := os.Getenv("APPDATA")
 	defer func() {
@@ -71,9 +70,9 @@ func TestWindowsDirsNoEnv(t *testing.T) {
 
 	// When env vars are missing and KnownFolderPath fails (likely in test environment),
 	// it should return empty string base paths, resulting in "myauth/myapp" or just "."
-	// However, current implementation doesn't have a specific fallback for empty env vars 
+	// However, current implementation doesn't have a specific fallback for empty env vars
 	// other than what filepath.Join does with empty strings.
-	
+
 	res := d.UserConfig()
 	if !filepath.IsAbs(res) && res == "" {
 		t.Log("Got empty path as expected when no env vars and syscall fails")
