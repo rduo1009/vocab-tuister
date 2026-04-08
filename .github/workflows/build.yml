@@ -75,22 +75,22 @@ jobs:
 
       - name: Ensure uv is on PATH
         if: ${{ startsWith(matrix.os, 'windows') }}
+        shell: pwsh
         run: |
           echo "C:\Users\runneradmin\.local\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        shell: pwsh
 
       - name: Ensure Git is on PATH
         if: ${{ startsWith(matrix.os, 'windows') }}
+        shell: pwsh
         run: |
           echo "C:\Program Files\Git\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        shell: pwsh
 
       # HACK: Have to workaround using poe as there are weird errors for some reason
       - name: Build project
         if: ${{ startsWith(matrix.os, 'windows') }}
+        shell: pwsh
         run: |
           scripts/build-gh.ps1
-        shell: pwsh
         env:
           GOEXPERIMENT: jsonv2
 
@@ -108,8 +108,69 @@ jobs:
         env:
           GOEXPERIMENT: jsonv2
 
+      # Bundle each non-server binary together with its matching server binary into a
+      # single zip. For example, vocab-tuister-darwin-arm64 and
+      # vocab-tuister-server-darwin-arm64 both end up in vocab-tuister-darwin-arm64.zip.
+      - name: Zip binaries (Unix)
+        if: ${{ !startsWith(matrix.os, 'windows') }}
+        shell: bash
+        run: |
+          cd dist
+
+          # Iterate over every file in dist/. We only want to act on the non-server
+          # binaries; the server binary for each pair is located and included implicitly.
+          for f in *; do
+            # Already-zipped files are left alone — nothing to do.
+            [[ "$f" == *.zip ]] && continue
+
+            # Server binaries are skipped here; each one is picked up automatically
+            # when its non-server counterpart is processed below.
+            [[ "$f" == *-server-* ]] && continue
+
+            # Derive the server binary's filename by inserting "-server" after the
+            # product name. e.g. vocab-tuister-darwin-arm64
+            #                 -> vocab-tuister-server-darwin-arm64
+            server="${f/vocab-tuister/vocab-tuister-server}"
+
+            # Bundle both binaries into a single zip named after the non-server binary.
+            # The -j flag ("junk paths") stores the files flat, with no directory
+            # structure inside the zip.
+            echo "Zipping $f + $server -> ${f}.zip"
+            zip -j "${f}.zip" "$f" "$server"
+          done
+
+      # Same bundling logic as the Unix step above, implemented in PowerShell.
+      - name: Zip binaries (Windows)
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        shell: pwsh
+        run: |
+          Set-Location dist
+
+          # Filter down to only the non-server, non-zip files before looping, so we
+          # never need to skip inside the loop. Server binaries are excluded here for
+          # the same reason as in the Unix step — they are included implicitly below.
+          Get-ChildItem -File |
+            Where-Object { $_.Name -notlike "*.zip" -and $_.Name -notlike "*-server-*" } |
+            ForEach-Object {
+
+            # Derive the server binary's filename using the same "-server" insertion
+            # logic as the Unix step.
+            # e.g. vocab-tuister-windows-arm64.exe -> vocab-tuister-server-windows-arm64.exe
+            $serverName = $_.Name -replace "vocab-tuister", "vocab-tuister-server"
+            $serverPath = Join-Path $_.DirectoryName $serverName
+
+            # Strip the .exe extension from the zip name so the result matches the
+            # Unix convention. e.g. vocab-tuister-windows-arm64.exe -> vocab-tuister-windows-arm64.zip
+            $zipName = $_.Name -replace "\.exe$", ""
+
+            # Bundle both binaries into a single zip, overwriting any previous zip
+            # (-Force) with the same name.
+            Write-Host "Zipping $($_.Name) + $serverName -> $zipName.zip"
+            Compress-Archive -Path $_.FullName, $serverPath -DestinationPath "$zipName.zip" -Force
+          }
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/*
+            dist/*.zip
