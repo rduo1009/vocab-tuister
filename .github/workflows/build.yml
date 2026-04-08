@@ -62,9 +62,7 @@ jobs:
       - name: Install deps
         if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          python -m pip install --user pipx
-          pipx ensurepath
-          pipx install poethepoet
+          uv tool install poethepoet
 
       - name: Setup project
         run: |

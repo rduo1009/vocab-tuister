@@ -38,15 +38,9 @@ jobs:
       - name: Install project deps
         run: uv sync
 
-      - name: Install and cache pipx
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: pipx
-          version: 1.0
-
-      - name: Install dev deps using pipx
+      - name: Install dev deps
         run: |
-          pipx install dunamai poethepoet
+          uv tool install dunamai poethepoet
 
       # -----------------------------------------------------------------------
       # GO
