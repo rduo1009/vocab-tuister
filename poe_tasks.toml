@@ -1,0 +1,13 @@
+[tool.poe]
+tasks.badges.cmd = "./scripts/badges.sh"
+tasks.badges.help = "Generate badges for the project."
+tasks.build.cmd = "./scripts/build.sh"
+tasks.build.help = "Build the project."
+tasks.build.args = [
+    { name = "debug", default = false, type = "boolean", help = "Build the project into a folder instead of a single file." },
+    { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
+]
+tasks.coverage.shell = "./scripts/coverage.sh"
+tasks.coverage.help = "Run coverage on the project."
+tasks.test.cmd = "tox --parallel"
+tasks.test.help = "Run tests on the project."
