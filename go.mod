@@ -1,6 +1,6 @@
 module github.com/rduo1009/vocab-tuister
 
-go 1.26
+go 1.25.8
 
 require (
 	charm.land/bubbles/v2 v2.0.0
@@ -33,7 +33,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/komuw/ote v0.0.12 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
 	github.com/mattn/go-runewidth v0.0.20 // indirect
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
