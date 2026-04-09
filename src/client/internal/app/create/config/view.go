@@ -70,7 +70,7 @@ func (m *Model) View() string {
 	var formSectionView string
 	if m.AppStatus == CreateSessionConfig {
 		m.form.WithWidth(m.width - 2)
-		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - len(m.form.Errors()))
+		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - (len(m.form.Errors()) * 2))
 		m.form.WithShowHelp(false)
 
 		// consider wordwrapping making the form height larger than it really should be
