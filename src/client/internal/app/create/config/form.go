@@ -342,9 +342,13 @@ func defaultForm() (*huh.Form, *formValues) {
 				Title("Number of options in multiple choice questions").
 				Value(&values.NumberMultipleChoiceOptionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
+					}
+
+					if x < 2 {
+						return errors.New("must be at least 2")
 					}
 					return nil
 				}),
@@ -352,9 +356,13 @@ func defaultForm() (*huh.Form, *formValues) {
 				Title("Number of questions").
 				Value(&values.NumberOfQuestionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
+					}
+
+					if x < 1 {
+						return errors.New("must be at least 1")
 					}
 					return nil
 				}),
