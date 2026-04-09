@@ -40,7 +40,8 @@ jobs:
 
       - name: Install dev deps
         run: |
-          uv tool install dunamai poethepoet
+          uv tool install dunamai
+          uv tool install poethepoet
 
       # -----------------------------------------------------------------------
       # GO
