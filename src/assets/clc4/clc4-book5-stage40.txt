@@ -16,7 +16,7 @@ friendship: amicitia, amicitiae, (f)
 consul: consul, consulis, (m)
 charge: crimen, criminis, (n)
 senate-house: curia, curiae, (f)
-jealously/envy/unpopularity: invidia, invidiae, (f)
+jealousy/envy/unpopularity: invidia, invidiae, (f)
 companion/partner: socius, socii, (m)
 
 @ Adjectives
