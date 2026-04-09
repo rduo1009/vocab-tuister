@@ -151,16 +151,8 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 				m.answeredCount = 0
 				m.correctCount = 0
 
-				// return to create page
-				return m, tea.Batch(
-					util.MsgCmd(tabs.SelectTabMsg{Index: 0}),
-					util.MsgCmd(navigator.RemoveNavigableMsg{
-						Components: []navigator.Navigable{
-							m.returnButton,
-							m.restartButton,
-						},
-					}),
-				)
+				// return to create page; no need to remove navigables as this will be done anyway
+				return m, util.MsgCmd(tabs.SelectTabMsg{Index: 0})
 
 			case m.restartButton.Focused():
 				m.appStatus = Unavailable
