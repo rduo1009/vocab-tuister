@@ -24,7 +24,7 @@ if [[ "$target_arch" == "universal2" ]]; then
 fi
 
 # Build python server
-uv run dunamai from any > __version__.txt
+uv run dunamai from any --style=semver > __version__.txt
 if [[ -z "$target_arch" ]]; then
     if [[ $debug == "True" ]]; then
         uv run pyinstaller vocab-tuister-server.spec -- --debug
@@ -91,7 +91,7 @@ fi
 go mod tidy
 go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
 
-version=$(uv run dunamai from any)
+version=$(uv run dunamai from any --style=semver)
 if [[ "$build_universal2" == "true" ]]; then
     tmpdir=$(mktemp -d)
 

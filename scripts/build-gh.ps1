@@ -12,7 +12,7 @@ if ($env:debug -eq 'True') {
 uv sync --no-dev
 
 # BUILD PYTHON SERVER
-uv run dunamai from any | Set-Content -Path '__version__.txt'
+uv run dunamai from any --style=semver | Set-Content -Path '__version__.txt'
 if ($env:debug -eq 'True') {
     uv run pyinstaller vocab-tuister-server.spec -- --clean
 } else {
