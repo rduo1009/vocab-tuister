@@ -33,11 +33,13 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			case key.Matches(msg, m.keys.PreviousFocus):
 				m.navigator.Previous()
-				return m, nil
+				util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil)
+				return m, tea.Batch(cmds...)
 
 			case key.Matches(msg, m.keys.NextFocus):
 				m.navigator.Next()
-				return m, nil
+				util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil)
+				return m, tea.Batch(cmds...)
 			}
 		} else if key.Matches(msg, m.keys.Help) {
 			m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll

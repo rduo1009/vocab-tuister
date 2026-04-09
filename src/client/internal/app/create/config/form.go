@@ -5,6 +5,8 @@ import (
 	"strconv"
 
 	"charm.land/huh/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 // XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
@@ -358,6 +360,8 @@ func defaultForm() (*huh.Form, *formValues) {
 				}),
 		),
 	)
+
+	form.SubmitCmd = util.MsgCmd(formSubmittedMsg{})
 
 	return form, values
 }

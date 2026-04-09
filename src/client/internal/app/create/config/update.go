@@ -9,7 +9,6 @@ import (
 
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
-	"charm.land/huh/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
@@ -20,6 +19,7 @@ import (
 type configMap map[string]any
 
 type (
+	formSubmittedMsg    struct{}
 	rawSessionConfigMsg []byte
 
 	// In case there is an error with `generateSessionConfig` to distinguish with `app.ErrMsg`.
@@ -157,7 +157,6 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, nil
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
 			m.form, m.configFormValues = defaultForm()
-			m.form.State = huh.StateNormal
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			_, formCmd := m.form.Update(nil) // a little nudge
@@ -169,53 +168,46 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 				}),
 			)
 		}
+	case formSubmittedMsg:
+		cmds = append(cmds, generateSessionConfig(m.configFormValues))
 
 	case rawSessionConfigMsg:
-		m.form.State = huh.StateCompleted
 		m.AppStatus = ReviewSessionConfig
 		m.RawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.RawSessionConfig)
 
 		// navigator: [..., HeaderSection, FormSection, ...]
-		cmds = append(cmds,
+		cmds = append(cmds, tea.Sequence(
 			// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
 			util.MsgCmd(navigator.ReplaceNavigableMsg{
 				Target:      m.FormSection,
 				Replacement: []navigator.Navigable{m.ResetButton, m.FormSection},
 			}),
 			util.MsgCmd(navigator.FocusNavigableMsg{Target: m.FormSection}),
-		)
-
-		// NOTE: use tea.Sequence as these need to be ran in order
-		// also note that `cmds` could not be altered after this, so returning early is fine
-		return m, tea.Sequence(cmds...)
+		))
 
 	case failFormMsg:
 		m.form, m.configFormValues = defaultForm()
-		m.form.State = huh.StateNormal
 		m.AppStatus = CreateSessionConfig
 		m.RawSessionConfig = ""
-		cmds = append(cmds, util.MsgCmd(navigator.RemoveNavigableMsg{
-			Components: []navigator.Navigable{m.ResetButton},
-		}))
+		_, formCmd := m.form.Update(nil) // a little nudge
+
+		return m, tea.Batch(
+			formCmd,
+			util.MsgCmd(navigator.RemoveNavigableMsg{
+				Components: []navigator.Navigable{m.ResetButton},
+			}),
+		)
 
 	default:
 		util.UpdaterPtr(&cmds, m.Filepicker, msg)
 	}
 
 	if m.FormSection.Focused() {
-		switch m.form.State {
-		case huh.StateNormal:
+		if m.AppStatus == CreateSessionConfig {
 			util.UpdaterPtr(&cmds, m.form, msg)
-
-		case huh.StateCompleted:
-			switch m.AppStatus {
-			case CreateSessionConfig: // i.e. the form has just been finished
-				cmds = append(cmds, generateSessionConfig(m.configFormValues))
-
-			case ReviewSessionConfig:
-				util.UpdaterPtr(&cmds, m.jsonview, msg)
-			}
+		} else {
+			util.UpdaterPtr(&cmds, m.jsonview, msg)
 		}
 	}
 
