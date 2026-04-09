@@ -9,7 +9,7 @@ prove: probo, probare, probavi, probatus
 betray: prodo, prodere, prodidi, proditus
 advise/suggest: suadeo, suadere, suasi, suasus
 use: utor, uti, usus sum
-seem: videor, videri, visus sum
+see: video, videre, vidi, visus
 
 @ Nouns
 friendship: amicitia, amicitiae, (f)
@@ -27,3 +27,4 @@ similar: similis, simile, (3-2)
 @ Regulars
 at last: demum
 then at last/only then: tum demum
+seem: videor

@@ -14,7 +14,7 @@ seize/grab: rapio, rapere, rapui, raptus
 bring back/carry back/report/tell: refero, referre, rettuli, relatus
 get up/stand up/rise: surgo, surgere, surrexi, surrectum
 raise/lift up/hold up: tollo, tollere, sustuli, sublatus
-seem/appear: videor, videri, visus sum
+see: video, videre, vidi, visus
 want/wish: volo, velle, volui, voliturus
 
 @ Nouns
@@ -57,6 +57,7 @@ also: quoque
 how many: quot
 if: sic
 under/beneath: sub
+seem/appear: videor
 
 # Omitted:
 # 'alii ... alii' ('some ... others') as it is a grammar pattern
