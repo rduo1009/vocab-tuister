@@ -2,8 +2,6 @@
 # pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
 
 import contextlib
-import threading
-import time
 from pathlib import Path
 
 import pytest
@@ -28,29 +26,21 @@ def setup_tests(monkeypatch, port, settings_info):
 
 
 @pytest.mark.integration
-def test_cli_normal_settings(monkeypatch):
-    thread = threading.Thread(target=lambda: setup_tests(monkeypatch, 5510, "regular"), daemon=True)
-    thread.start()
-
-    time.sleep(2)
-
-
-@pytest.mark.integration
 def test_cli_error_missing_settings(snapshot, monkeypatch):
     with pytest.raises(InvalidSettingsError) as error:
-        setup_tests(monkeypatch, 5511, "errormissing")
+        setup_tests(monkeypatch, 5510, "errormissing")
     assert str(error.value) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_extra_settings(snapshot, monkeypatch):
     with pytest.raises(InvalidSettingsError) as error:
-        setup_tests(monkeypatch, 5512, "errorextra")
+        setup_tests(monkeypatch, 5511, "errorextra")
     assert str(error.value) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_type_settings(snapshot, monkeypatch):
     with pytest.raises(InvalidSettingsError) as error:
-        setup_tests(monkeypatch, 5513, "errortype")
+        setup_tests(monkeypatch, 5512, "errortype")
     assert str(error.value) == snapshot

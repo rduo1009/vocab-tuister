@@ -42,7 +42,6 @@ dev = [
   "mypy[faster-cache]==1.20.0",
   "pytest==9.0.3",
   "pytest-env==1.6.0",
-  "pytest-pythonhashseed==2.0.1",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "rstfmt==0.0.14",
@@ -151,7 +150,6 @@ ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 [tool.coverage]
 run.branch = true
 run.omit = [ "src/_vendor/*", "src/scripts/*", "tests/*" ]
-run.parallel = true
 report.exclude_also = [
   "@(abc\\.)?abstractmethod",
   "@overload",

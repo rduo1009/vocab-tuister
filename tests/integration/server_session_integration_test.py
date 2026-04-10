@@ -1,20 +1,12 @@
 # pyright: basic
 # pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
 
-import contextlib
 import json
-import threading
 from pathlib import Path
-from time import sleep
 
 import pytest
-import requests
-from src.__main__ import cli
-
-
-def run_cli(port):
-    with contextlib.suppress(KeyboardInterrupt):
-        cli(["-vvv", "-p", str(port)])
+from src.core.rogo.type_aliases import Settings
+from src.server.app import app
 
 
 def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
@@ -24,6 +16,7 @@ def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
 
     monkeypatch.setattr("src.server.app.vocab_list", None)
     monkeypatch.setattr("src.server.app.dirs", _Dirs)
+    monkeypatch.setattr("src.server.app.settings", Settings.model_validate_json((Path(_Dirs.user_config_path) / "settings.json").read_text()))
 
     server_url = f"http://127.0.0.1:{port}"
 
@@ -33,229 +26,104 @@ def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
     session_config_file = Path(__file__).parent / "testdata" / f"test-{session_config_info}-config.json"
     session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
 
-    cli_process = threading.Thread(target=run_cli, args=(port,), daemon=True)
-    cli_process.start()
-
-    return server_url, vocab_list, session_config, cli_process
+    app_test = app.test_client()
+    return server_url, vocab_list, session_config, app_test
 
 
 @pytest.mark.integration
 def test_cli_normal(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5600, "regular", "regular")
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5600, "regular", "regular")
 
-    try:
-        sleep(5)
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 200
+    assert config_response.text == snapshot
 
-        config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-        assert config_response.status_code == 200
-        assert config_response.text == snapshot
-
-        session_response = requests.get(f"{server_url}/session", timeout=5)
-        assert session_response.status_code == 200
-        assert session_response.json() == snapshot
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    session_response = app_test.get(f"{server_url}/session")
+    assert session_response.status_code == 200
+    assert session_response.json == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_list(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5601, "error", "regular")
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5601, "error", "regular")
 
-    try:
-        sleep(5)
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 400
+    assert vocab_response.json == snapshot
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 400
-        assert vocab_response.json() == snapshot
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 200
+    assert config_response.text == snapshot
 
-        config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-        assert config_response.status_code == 200
-        assert config_response.text == snapshot
-
-        try:
-            session_response = requests.get(f"{server_url}/session", timeout=5)
-            session_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if session_response.status_code == 500:
-                assert session_response.status_code == 500
-                assert session_response.text == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    session_response = app_test.get(f"{server_url}/session")
+    assert session_response.status_code == 500
+    assert session_response.get_data(as_text=True) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_missing1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5602, "regular", "errormissing1")
-    try:
-        sleep(5)
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5602, "regular", "errormissing1")
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        try:
-            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-            config_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if config_response.status_code == 400:
-                assert config_response.status_code == 400
-                assert config_response.json() == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 400
+    assert config_response.get_data(as_text=True) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_missing2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5603, "regular", "errormissing2")
-    try:
-        sleep(5)
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5603, "regular", "errormissing2")
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        try:
-            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-            config_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if config_response.status_code == 400:
-                assert config_response.status_code == 400
-                assert config_response.json() == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 400
+    assert config_response.get_data(as_text=True) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_extra_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5604, "regular", "errorextra")
-    try:
-        sleep(5)
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5604, "regular", "errorextra")
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        try:
-            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-            config_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if config_response.status_code == 400:
-                assert config_response.status_code == 400
-                assert config_response.json() == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 400
+    assert config_response.get_data(as_text=True) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_type1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5605, "regular", "errortype1")
-    try:
-        sleep(5)
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5605, "regular", "errortype1")
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        try:
-            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-            config_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if config_response.status_code == 400:
-                assert config_response.status_code == 400
-                assert config_response.json() == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 400
+    assert config_response.get_data(as_text=True) == snapshot
 
 
 @pytest.mark.integration
 def test_cli_error_type2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5606, "regular", "errortype2")
-    try:
-        sleep(5)
+    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5606, "regular", "errortype2")
 
-        vocab_response = requests.post(f"{server_url}/send-vocab", data=vocab_list, timeout=5)
-        assert vocab_response.status_code == 200
-        assert vocab_response.text == snapshot
+    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
+    assert vocab_response.status_code == 200
+    assert vocab_response.text == snapshot
 
-        try:
-            config_response = requests.post(f"{server_url}/send-config", json=session_config, timeout=5)
-            config_response.raise_for_status()
-
-            pytest.fail("Expected an error but request succeeded.")
-
-        except requests.exceptions.HTTPError:
-            if config_response.status_code == 400:
-                assert config_response.status_code == 400
-                assert config_response.json() == snapshot
-            else:
-                raise
-
-        except requests.exceptions.RequestException:
-            raise
-
-    finally:
-        sleep(5)
-
-        cli_process.join(timeout=10)
+    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
+    assert config_response.status_code == 400
+    assert config_response.get_data(as_text=True) == snapshot

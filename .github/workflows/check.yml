@@ -6,13 +6,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-python:
-    name: test with python
+  test-unit-python:
+    name: unit test with python
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
 
       - name: Verify .python-version file
@@ -42,13 +41,22 @@ jobs:
       - name: Run test suite
         run: tox --skip-pkg-install
 
+      - run: ls -a
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-unit-python
+          path: .coverage.python-unit
+          include-hidden-files: true
+          if-no-files-found: error
+
   test-integration-python:
     name: integration test with python
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
 
       - name: Verify .python-version file
@@ -69,15 +77,26 @@ jobs:
         run: uv sync
 
       - name: Run integration tests
-        run: uv run pytest --pythonhashseed 1 -m 'integration' -n0
+        run: uv run coverage run --data-file=.coverage.python-integration --source=src -m pytest -m 'integration' -n0
+        env:
+          PYTHONHASHSEED: 1
 
-  test-golang:
-    name: test with golang
+      - run: ls -a
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-integration-python
+          path: .coverage.python-integration
+          include-hidden-files: true
+          if-no-files-found: error
+
+  test-unit-go:
+    name: unit test with go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
 
       - name: Verify go.mod file
@@ -94,7 +113,57 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Run test suite
-        run: go test ./src/...
+        run: go test -coverprofile=go-unit.out ./src/...
         env:
           GOEXPERIMENT: jsonv2
 
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-unit-go
+          path: go-unit.out
+          if-no-files-found: error
+
+  coverage:
+    name: combine and upload coverage
+    needs: [test-unit-python, test-integration-python, test-unit-go]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: "recursive"
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: .
+          pattern: coverage-*
+          merge-multiple: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: "go.mod"
+        env:
+          GOEXPERIMENT: jsonv2
+
+      - name: Combine Python coverage and generate xml report
+        run: |
+          uv run coverage combine
+          uv run coverage xml -o python-combined.xml
+
+      - name: Combine Go coverage
+        run: |
+          # TODO: e2e tests to be added later
+          go tool gocovmerge go-unit.out > go-combined.out
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          files: python-combined.xml,go-combined.out
+          token: ${{ secrets.CODECOV_TOKEN }}
