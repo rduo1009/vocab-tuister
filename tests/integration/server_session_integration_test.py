@@ -41,7 +41,7 @@ def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
 
 @pytest.mark.integration
 def test_cli_normal(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5500, "regular", "regular")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5600, "regular", "regular")
 
     try:
         sleep(5)
@@ -66,7 +66,7 @@ def test_cli_normal(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_list(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5501, "error", "regular")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5601, "error", "regular")
 
     try:
         sleep(5)
@@ -103,7 +103,7 @@ def test_cli_error_list(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_missing1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5502, "regular", "errormissing1")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5602, "regular", "errormissing1")
     try:
         sleep(5)
 
@@ -135,7 +135,7 @@ def test_cli_error_missing1_config(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_missing2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5503, "regular", "errormissing2")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5603, "regular", "errormissing2")
     try:
         sleep(5)
 
@@ -167,7 +167,7 @@ def test_cli_error_missing2_config(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_extra_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5504, "regular", "errorextra")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5604, "regular", "errorextra")
     try:
         sleep(5)
 
@@ -199,7 +199,7 @@ def test_cli_error_extra_config(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_type1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5505, "regular", "errortype1")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5605, "regular", "errortype1")
     try:
         sleep(5)
 
@@ -231,7 +231,7 @@ def test_cli_error_type1_config(snapshot, monkeypatch):
 
 @pytest.mark.integration
 def test_cli_error_type2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5506, "regular", "errortype2")
+    server_url, vocab_list, session_config, cli_process = setup_tests(monkeypatch, 5606, "regular", "errortype2")
     try:
         sleep(5)
 

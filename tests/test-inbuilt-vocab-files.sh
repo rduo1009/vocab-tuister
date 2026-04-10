@@ -26,14 +26,14 @@ while IFS= read -r vocab_file; do
       --number 500 \
       --session-config tests/examples/example-session-config.json \
       --vocab-list "$vocab_file" \
-      --server-port 5500
+      --server-port 5600
   else
     # Full check mode
     go run ./src session \
       --number 500 \
       --session-config tests/examples/example-session-config.json \
       --vocab-list "$vocab_file" \
-      --server-port 5500 >"$TMP_OUTPUT_FILE" 2>&1 </dev/null &
+      --server-port 5600 >"$TMP_OUTPUT_FILE" 2>&1 </dev/null &
 
     PID=$!
     sleep 7
