@@ -5,7 +5,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
@@ -111,9 +110,7 @@ func TestFilePicker(t *testing.T) {
 	}, teatest.WithCheckInterval(time.Millisecond*100), teatest.WithDuration(time.Second*3))
 
 	view, _, _ := m.FilePicker.View(100, 30)
-	if !strings.Contains(view, "alpha.txt") {
-		t.Errorf("View() does not contain 'alpha.txt'")
-	}
+	assert.Contains(t, view, "alpha.txt")
 
 	if err := tm.Quit(); err != nil {
 		t.Fatal(err)

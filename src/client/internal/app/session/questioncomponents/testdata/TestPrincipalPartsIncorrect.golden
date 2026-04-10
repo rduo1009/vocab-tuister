@@ -1,0 +1,6 @@
+[1mPrincipal parts[m of [3mprompt[m
+[37m> [m[37mfoo[m                    
+[37m> [m[1;38;2;255;77;77mwrong[m                  
+[37m> [m[37mbaz[m                    
+[37m> [m[1;38;2;255;77;77mwrong[m[7;37m [m                 
+[1;38;2;255;77;77m✕ foo, bar, baz, qux[m     

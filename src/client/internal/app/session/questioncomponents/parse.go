@@ -276,7 +276,8 @@ func (m *ParseQuestionModel) QuestionStatus() QuestionStatus {
 	return m.status
 }
 
-// Update updates the question model.
+// Update updates the parse question model.
+//
 // Note that this does not update the dropdowns themselves. This should be handled by the main page model instead.
 func (m *ParseQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 	var cmds []tea.Cmd
@@ -339,9 +340,7 @@ func (m *ParseQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 
 	case dropdown.PickedMsg:
 		if strings.HasPrefix(msg.ID, "parsequestionDropdown") {
-			if setter, ok := msg.ChosenItem.(endingcomponents.ComponentSetter); ok {
-				setter.SetComponent(&m.components)
-			}
+			msg.ChosenItem.(endingcomponents.ComponentSetter).SetComponent(&m.components)
 		}
 	}
 
