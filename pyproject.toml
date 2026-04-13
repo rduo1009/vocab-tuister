@@ -25,7 +25,7 @@ dependencies = [
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "platformdirs==4.9.4",
-  "pydantic==2.12.5",
+  "pydantic==2.13.0",
   "pyinstaller==6.19.0",
   "waitress==3.0.2",
   "wn==1.0.0",
