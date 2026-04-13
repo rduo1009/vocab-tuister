@@ -177,6 +177,48 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 	golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
 }
 
+func TestMultipleChoiceNumberSelect(t *testing.T) {
+	q := questions.MultipleChoiceLatToEngQuestion{
+		Prompt:  "prompt",
+		Choices: []string{"foo", "bar", "baz"},
+		Answer:  "baz",
+	}
+	qc := NewMultipleChoiceQuestionModel(&q)
+
+	m := modelMC{QuestionComponent: qc}
+	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+	t.Cleanup(func() {
+		if err := tm.Quit(); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	tm.Send(tea.KeyPressMsg{Code: '3'})
+	time.Sleep(10 * time.Millisecond)
+	tm.Quit()
+
+	fm := tm.FinalModel(t)
+	m, ok := fm.(modelMC)
+	if !ok {
+		t.Fatalf("final model have the wrong type: %T", fm)
+	}
+
+	assert.IsTypef(
+		t,
+		QuestionAnsweredMsg{},
+		m.CurrentMsg,
+		"expected type QuestionAnsweredMsg, got type %T",
+		m.CurrentMsg,
+	)
+	assert.Equalf(
+		t,
+		Correct,
+		m.QuestionComponent.QuestionStatus(),
+		"expected Correct, got %s",
+		m.QuestionComponent.QuestionStatus(),
+	)
+}
+
 func TestMultipleChoiceNextQuestion(t *testing.T) {
 	q := questions.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",

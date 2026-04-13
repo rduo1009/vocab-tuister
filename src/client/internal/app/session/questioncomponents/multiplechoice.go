@@ -60,6 +60,10 @@ func NewMultipleChoiceQuestionModel(question questions.Question) *MultipleChoice
 	}
 
 	unansweredKeyMap := unansweredMultipleChoiceKeyMap{
+		ChooseOption: key.NewBinding(
+			key.WithKeys(""),
+			key.WithHelp("1 2 3 ...", "choose option"),
+		),
 		Submit: key.NewBinding(
 			key.WithKeys("enter", "ctrl+enter"),
 			key.WithHelp("enter", "submit"),
@@ -114,8 +118,8 @@ func NewMultipleChoiceQuestionModel(question questions.Question) *MultipleChoice
 	}
 }
 
-// TODO: add press 1, 2, 3, ... for multichoice.
 type unansweredMultipleChoiceKeyMap struct {
+	ChooseOption  key.Binding
 	Submit        key.Binding
 	PreviousFocus key.Binding
 	NextFocus     key.Binding
@@ -124,12 +128,12 @@ type unansweredMultipleChoiceKeyMap struct {
 }
 
 func (k unansweredMultipleChoiceKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Submit, k.NextFocus, k.Help, k.Quit}
+	return []key.Binding{k.ChooseOption, k.Submit, k.NextFocus, k.Help, k.Quit}
 }
 
 func (k unansweredMultipleChoiceKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Submit, k.PreviousFocus, k.NextFocus},
+		{k.ChooseOption, k.Submit, k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }
@@ -177,13 +181,58 @@ func (m *MultipleChoiceQuestionModel) QuestionStatus() QuestionStatus {
 	return m.status
 }
 
+func (m *MultipleChoiceQuestionModel) checkResponse() {
+	response := m.options[m.currentOptionIndex].Value
+
+	correct := m.question.Check(response)
+	if correct {
+		m.status = Correct
+		m.correctSelectedOptionIndex = m.currentOptionIndex
+	} else {
+		m.status = Incorrect
+
+		m.incorrectSelectedOptionIndex = m.currentOptionIndex
+		for i := range m.options { // look for the actual correct option
+			if m.question.Check(m.options[i].Value) {
+				m.correctSelectedOptionIndex = i
+				break
+			}
+		}
+	}
+}
+
 func (m *MultipleChoiceQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	if msg, ok := msg.(tea.KeyPressMsg); ok {
-		switch {
-		case key.Matches(msg, m.unansweredKeyMap.Submit):
-			if m.status == Unanswered {
+		if m.status == Unanswered {
+			// Check for digit keys first.
+			//
+			// msg.Code is a rune (int32) representing the pressed key. In Unicode,
+			// the digit characters '0'-'9' are laid out contiguously at code points
+			// 48-57. So this check is equivalent to: msg.Code >= 48 && msg.Code <= 57.
+			// Letters like 'a' (97) or 'A' (65) fall outside this range entirely,
+			// so they won't match.
+			if msg.Code >= '0' && msg.Code <= '9' {
+				// Convert the rune to the integer digit it represents.
+				//
+				// Because '0'-'9' are contiguous, subtracting '0' (48) gives the
+				// digit's value: '0'-'0'=0, '1'-'0'=1, ..., '9'-'0'=9.
+				// The outer int() converts from rune (int32) to int, since we want
+				// to use this as an index.
+				digit := int(msg.Code - '0')
+				if digit > 0 && digit <= m.numberOptions {
+					m.currentOptionIndex = digit - 1 // e.g. "1" selects option 0
+				}
+
+				m.checkResponse()
+				return m, tea.Batch(
+					util.MsgCmd(navigator.FocusNavigableMsg{
+						Target: m.options[m.currentOptionIndex],
+					}),
+					util.MsgCmd(QuestionAnsweredMsg{}),
+				)
+			} else if key.Matches(msg, m.unansweredKeyMap.Submit) {
 				for i := range m.numberOptions {
 					if m.options[i].Focused() {
 						m.currentOptionIndex = i
@@ -191,47 +240,23 @@ func (m *MultipleChoiceQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 					}
 				}
 
-				response := m.options[m.currentOptionIndex].Value
-
-				correct := m.question.Check(response)
-				if correct {
-					m.status = Correct
-					m.correctSelectedOptionIndex = m.currentOptionIndex
-				} else {
-					m.status = Incorrect
-
-					m.incorrectSelectedOptionIndex = m.currentOptionIndex
-					for i := range m.options { // look for the actual correct option
-						if m.question.Check(m.options[i].Value) {
-							m.correctSelectedOptionIndex = i
-							break
-						}
-					}
-				}
-
-				cmds = append(cmds, util.MsgCmd(QuestionAnsweredMsg{}))
-
-				break
+				m.checkResponse()
+				return m, util.MsgCmd(QuestionAnsweredMsg{})
+			}
+		} else if key.Matches(msg, m.answeredKeyMap.NextQuestion) {
+			navigables := make([]navigator.Navigable, m.numberOptions)
+			for i := range m.options {
+				navigables[i] = m.options[i]
 			}
 
-			fallthrough
-
-		case key.Matches(msg, m.answeredKeyMap.NextQuestion):
-			if m.status != Unanswered {
-				navigables := make([]navigator.Navigable, m.numberOptions)
-				for i := range m.options {
-					navigables[i] = m.options[i]
-				}
-
-				return m, tea.Batch(
-					util.MsgCmd(NextQuestionMsg{}),
-					util.MsgCmd(
-						navigator.RemoveNavigableMsg{
-							Components: navigables,
-						},
-					),
-				)
-			}
+			return m, tea.Batch(
+				util.MsgCmd(NextQuestionMsg{}),
+				util.MsgCmd(
+					navigator.RemoveNavigableMsg{
+						Components: navigables,
+					},
+				),
+			)
 		}
 	}
 
