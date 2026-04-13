@@ -136,7 +136,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 
 		if q, ok := m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel); ok &&
 			m.dropdownActive {
-			util.UpdaterVal(&cmds, &q.Dropdowns[m.activeDropdownIndex].Dropdown, msg)
+			util.UpdaterVal(&cmds, &q.Dropdowns[m.activeDropdownIndex].Model, msg)
 		} else {
 			util.UpdaterVal(&cmds, &m.questions[m.currentIndex], msg)
 		}

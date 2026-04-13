@@ -20,8 +20,8 @@ import (
 )
 
 type dropdownWrapper struct {
-	Dropdown *dropdown.Model
-	focused  bool
+	*dropdown.Model
+	focused bool
 }
 
 func (d *dropdownWrapper) Focus() {
@@ -78,67 +78,67 @@ func NewParseQuestionModel(question questions.Question) *ParseQuestionModel {
 	case endingcomponents.Noun:
 		numberDropdowns = 2
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
 		}
 
 	case endingcomponents.Pronoun:
 		numberDropdowns = 3
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
-			{Dropdown: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
 		}
 
 	case endingcomponents.Adjective:
 		numberDropdowns = 4
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
-			{Dropdown: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
-			{Dropdown: dropdown.New("parsequestionDropdown3", endingcomponents.Degrees)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Degrees)},
 		}
 
 	case endingcomponents.Verb:
 		numberDropdowns = 5
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Dropdown: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
-			{Dropdown: dropdown.New("parsequestionDropdown3", endingcomponents.Persons)},
-			{Dropdown: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Persons)},
+			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
 		}
 
 	case endingcomponents.VerbalNoun:
 		numberDropdowns = 2
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Moods)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Moods)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Cases)},
 		}
 
 	case endingcomponents.ParticiplePOS:
 		numberDropdowns = 6
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Dropdown: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
-			{Dropdown: dropdown.New("parsequestionDropdown3", endingcomponents.Cases)},
-			{Dropdown: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
-			{Dropdown: dropdown.New("parsequestionDropdown5", endingcomponents.Genders)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown5", endingcomponents.Genders)},
 		}
 
 	case endingcomponents.InfinitivePOS:
 		numberDropdowns = 3
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Dropdown: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Dropdown: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
 		}
 
 	case endingcomponents.Adverb:
 		numberDropdowns = 1
 		dropdowns = []*dropdownWrapper{
-			{Dropdown: dropdown.New("parsequestionDropdown0", endingcomponents.Degrees)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Degrees)},
 		}
 
 	default:
@@ -147,7 +147,7 @@ func NewParseQuestionModel(question questions.Question) *ParseQuestionModel {
 
 	var endingComponents endingcomponents.EndingComponents
 	for _, d := range dropdowns {
-		if setter, ok := d.Dropdown.LastSelected.(endingcomponents.ComponentSetter); ok {
+		if setter, ok := d.LastSelected.(endingcomponents.ComponentSetter); ok {
 			setter.SetComponent(&endingComponents)
 		}
 	}
@@ -383,8 +383,8 @@ func (m *ParseQuestionModel) View() string {
 	dropdownViews := make([]string, m.numberDropdowns)
 	for i, d := range m.Dropdowns {
 		dropdownViews[i] = buttonStyle(d.Focused()).
-			Width(d.Dropdown.GetWidth()).
-			Render(d.Dropdown.LastSelected.String())
+			Width(d.GetWidth()).
+			Render(d.LastSelected.String())
 	}
 
 	var resultView string

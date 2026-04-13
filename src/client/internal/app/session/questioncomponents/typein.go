@@ -17,19 +17,19 @@ import (
 )
 
 type textinputWrapper struct {
-	Textinput  textinput.Model
+	textinput.Model
 	focused    bool
 	pendingCmd tea.Cmd
 }
 
 func (ti *textinputWrapper) Focus() {
 	ti.focused = true
-	ti.pendingCmd = ti.Textinput.Focus()
+	ti.pendingCmd = ti.Model.Focus()
 }
 
 func (ti *textinputWrapper) Blur() {
 	ti.focused = false
-	ti.Textinput.Blur()
+	ti.Model.Blur()
 }
 
 func (ti *textinputWrapper) Focused() bool {
@@ -104,7 +104,7 @@ func NewTypeInQuestionModel(question questions.Question) *TypeInQuestionModel {
 
 	return &TypeInQuestionModel{
 		question:         question,
-		textinput:        &textinputWrapper{Textinput: ti},
+		textinput:        &textinputWrapper{Model: ti},
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
@@ -176,7 +176,7 @@ func (m *TypeInQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.unansweredKeyMap.Submit):
 			if m.status == Unanswered {
-				correct := m.question.Check(strings.TrimSpace(m.textinput.Textinput.Value()))
+				correct := m.question.Check(strings.TrimSpace(m.textinput.Value()))
 				if correct {
 					m.status = Correct
 				} else {
@@ -204,7 +204,7 @@ func (m *TypeInQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 		}
 	}
 
-	util.UpdaterVal(&cmds, &m.textinput.Textinput, msg)
+	util.UpdaterVal(&cmds, &m.textinput.Model, msg)
 	cmds = append(cmds, m.textinput.TakePendingCmd())
 
 	return m, tea.Batch(cmds...)
@@ -245,20 +245,20 @@ func (m *TypeInQuestionModel) View() string {
 	var inputView string
 	switch m.status {
 	case Unanswered:
-		inputView = m.textinput.Textinput.View()
+		inputView = m.textinput.View()
 
 	case Correct:
 		m.textinput.Blur()
-		s := m.textinput.Textinput.Styles()
+		s := m.textinput.Styles()
 		s.Blurred.Text = correctStyle // the only relevant style here
-		m.textinput.Textinput.SetStyles(s)
-		inputView = m.textinput.Textinput.View()
+		m.textinput.SetStyles(s)
+		inputView = m.textinput.View()
 
 	case Incorrect:
 		m.textinput.Blur()
 		inputView = lipgloss.JoinHorizontal(
 			lipgloss.Top,
-			m.textinput.Textinput.View(),
+			m.textinput.View(),
 			incorrectStyle.Render(" ✕ "+m.question.GetMainAnswer().(string)),
 		)
 	}

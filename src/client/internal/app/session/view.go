@@ -22,11 +22,11 @@ func (m *Model) HasOverlay() bool {
 
 func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	if q, ok := m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel); ok {
-		view = q.Dropdowns[m.activeDropdownIndex].Dropdown.View()
+		view = q.Dropdowns[m.activeDropdownIndex].View()
 
 		x = 2
 		for i := range m.activeDropdownIndex {
-			x += q.Dropdowns[i].Dropdown.GetWidth() + 1
+			x += q.Dropdowns[i].GetWidth() + 1
 		}
 
 		y = 6

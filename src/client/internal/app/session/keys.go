@@ -66,7 +66,7 @@ func (k completedKeyMap) FullHelp() [][]key.Binding {
 func (m *Model) KeyMap() help.KeyMap {
 	if m.dropdownActive {
 		return m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel).
-			Dropdowns[m.activeDropdownIndex].Dropdown.KeyMap()
+			Dropdowns[m.activeDropdownIndex].KeyMap()
 	}
 
 	switch m.appStatus {

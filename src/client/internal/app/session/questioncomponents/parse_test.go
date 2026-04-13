@@ -134,13 +134,13 @@ func TestParseCorrect(t *testing.T) {
 
 			// simulate dropdown selections
 			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown0", ChosenItem: tt.selection.Case})
-			m.QuestionComponent.Dropdowns[0].Dropdown.LastSelected = tt.selection.Case
+			m.QuestionComponent.Dropdowns[0].LastSelected = tt.selection.Case
 
 			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown1", ChosenItem: tt.selection.Number})
-			m.QuestionComponent.Dropdowns[1].Dropdown.LastSelected = tt.selection.Number
+			m.QuestionComponent.Dropdowns[1].LastSelected = tt.selection.Number
 
 			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown2", ChosenItem: tt.selection.Gender})
-			m.QuestionComponent.Dropdowns[2].Dropdown.LastSelected = tt.selection.Gender
+			m.QuestionComponent.Dropdowns[2].LastSelected = tt.selection.Gender
 
 			tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 			time.Sleep(10 * time.Millisecond)
@@ -207,11 +207,11 @@ func TestParseIncorrect(t *testing.T) {
 
 	// incorrect
 	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown0", ChosenItem: endingcomponents.Genitive})
-	m.QuestionComponent.Dropdowns[0].Dropdown.LastSelected = endingcomponents.Genitive
+	m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Genitive
 	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown1", ChosenItem: endingcomponents.Plural})
-	m.QuestionComponent.Dropdowns[1].Dropdown.LastSelected = endingcomponents.Plural
+	m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Plural
 	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown2", ChosenItem: endingcomponents.Masculine})
-	m.QuestionComponent.Dropdowns[2].Dropdown.LastSelected = endingcomponents.Masculine
+	m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Masculine
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 	time.Sleep(10 * time.Millisecond)

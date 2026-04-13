@@ -33,7 +33,7 @@ func NewPrincipalPartsQuestionModel(question questions.Question) *PrincipalParts
 	tis := make([]*textinputWrapper, len(pp))
 	for i := range pp {
 		ti := textinput.New()
-		tis[i] = &textinputWrapper{Textinput: ti}
+		tis[i] = &textinputWrapper{Model: ti}
 	}
 
 	unansweredKeyMap := unansweredPrincipalPartsKeyMap{
@@ -163,7 +163,7 @@ func (m *PrincipalPartsQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 			if m.status == Unanswered {
 				response := make([]string, m.numberTextinputs)
 				for i := range m.textinputs {
-					response[i] = m.textinputs[i].Textinput.Value()
+					response[i] = m.textinputs[i].Value()
 				}
 
 				correct := m.question.Check(response)
@@ -198,10 +198,10 @@ func (m *PrincipalPartsQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 	for _, ti := range m.textinputs {
 		if m.status != Unanswered {
 			if _, ok := msg.(tea.KeyPressMsg); !ok {
-				util.UpdaterVal(&cmds, &ti.Textinput, msg)
+				util.UpdaterVal(&cmds, &ti.Model, msg)
 			}
 		} else {
-			util.UpdaterVal(&cmds, &ti.Textinput, msg)
+			util.UpdaterVal(&cmds, &ti.Model, msg)
 			cmds = append(cmds, ti.TakePendingCmd())
 		}
 	}
@@ -228,21 +228,21 @@ func (m *PrincipalPartsQuestionModel) View() string {
 	for i, ti := range m.textinputs {
 		switch m.status {
 		case Correct:
-			s := ti.Textinput.Styles()
+			s := ti.Styles()
 			s.Focused.Text = correctStyle
 			s.Blurred.Text = correctStyle
-			ti.Textinput.SetStyles(s)
+			ti.SetStyles(s)
 
 		case Incorrect:
-			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Textinput.Value() != x {
-				s := ti.Textinput.Styles()
+			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Value() != x {
+				s := ti.Styles()
 				s.Focused.Text = incorrectStyle
 				s.Blurred.Text = incorrectStyle
-				ti.Textinput.SetStyles(s)
+				ti.SetStyles(s)
 			}
 		}
 
-		tiViews[i] = ti.Textinput.View()
+		tiViews[i] = ti.View()
 	}
 
 	inputView := lipgloss.JoinVertical(lipgloss.Left, tiViews...)
