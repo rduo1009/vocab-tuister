@@ -10,8 +10,8 @@ require (
 	github.com/alecthomas/chroma/v2 v2.23.1
 	github.com/ionut-t/goeditor v0.4.10
 	github.com/spf13/cobra v1.10.2
-	golang.org/x/sys v0.42.0
-	golang.org/x/term v0.41.0
+	golang.org/x/sys v0.43.0
+	golang.org/x/term v0.42.0
 )
 
 require (
