@@ -4,7 +4,7 @@
   Invalid settings: 1 validation error for Settings
   cause-error
     Extra inputs are not permitted [type=extra_forbidden, input_value=True, input_type=bool]
-      For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden
+      For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
   '''
 # ---
 # name: test_cli_error_missing_settings
@@ -12,7 +12,7 @@
   Invalid settings: 1 validation error for Settings
   include-similar-words
     Field required [type=missing, input_value={'include-synonyms': True}, input_type=dict]
-      For further information visit https://errors.pydantic.dev/2.12/v/missing
+      For further information visit https://errors.pydantic.dev/2.13/v/missing
   '''
 # ---
 # name: test_cli_error_type_settings
@@ -20,6 +20,6 @@
   Invalid settings: 1 validation error for Settings
   include-similar-words
     Input should be a valid boolean [type=bool_type, input_value=1, input_type=int]
-      For further information visit https://errors.pydantic.dev/2.12/v/bool_type
+      For further information visit https://errors.pydantic.dev/2.13/v/bool_type
   '''
 # ---
