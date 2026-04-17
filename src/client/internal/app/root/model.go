@@ -7,15 +7,15 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config/sessionconfig"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/info"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root/pages"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/settings"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
 )
 
 type Model struct {
@@ -23,11 +23,11 @@ type Model struct {
 
 	width, height int
 	currentPage   int
-	pageOrder     []modes.PageName
+	pageOrder     []pages.PageName
 
 	// Components
 
-	pages       map[modes.PageName]app.PageModel
+	pages       map[pages.PageName]app.PageModel
 	tabs        *tabs.Model
 	help        *help.Model
 	overlayHelp *help.Model
@@ -52,12 +52,12 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 }
 
 func New(inbuiltListDir string, serverPort int) *Model {
-	pageOrder := []modes.PageName{
-		modes.Create,
-		modes.Review,
-		modes.Test,
-		modes.Help,
-		modes.Settings,
+	pageOrder := []pages.PageName{
+		pages.Create,
+		pages.Review,
+		pages.Test,
+		pages.Help,
+		pages.Settings,
 	}
 
 	t := tabs.New(toStringers(pageOrder), 0, true)
@@ -78,12 +78,12 @@ func New(inbuiltListDir string, serverPort int) *Model {
 	return &Model{
 		currentPage: 0,
 		pageOrder:   pageOrder,
-		pages: map[modes.PageName]app.PageModel{
-			modes.Create:   createtui,
-			modes.Review:   reviewtui,
-			modes.Test:     sessiontui,
-			modes.Help:     infotui,
-			modes.Settings: settingstui,
+		pages: map[pages.PageName]app.PageModel{
+			pages.Create:   createtui,
+			pages.Review:   reviewtui,
+			pages.Test:     sessiontui,
+			pages.Help:     infotui,
+			pages.Settings: settingstui,
 		},
 		tabs:        t,
 		help:        &h,
