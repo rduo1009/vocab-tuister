@@ -22,7 +22,7 @@ import (
 	"charm.land/huh/v2/spinner"
 	"github.com/spf13/cobra"
 
-	"github.com/rduo1009/vocab-tuister/src/assets"
+	"github.com/rduo1009/vocab-tuister/src/assets/inbuiltlists"
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root"
 )
@@ -265,7 +265,7 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 		}
 		defer os.RemoveAll(inbuiltListTmpDir)
 
-		if err := extractEmbeddedFS(assets.InbuiltLists, inbuiltListTmpDir); err != nil {
+		if err := extractEmbeddedFS(inbuiltlists.InbuiltLists, inbuiltListTmpDir); err != nil {
 			return err
 		}
 
