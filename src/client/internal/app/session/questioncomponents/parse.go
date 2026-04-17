@@ -11,11 +11,11 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -44,6 +44,7 @@ type ParseQuestionModel struct {
 	numberDropdowns     int
 	activeDropdownIndex int
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredParseKeyMap
 	answeredKeyMap   answeredParseKeyMap
 	pos              endingcomponents.PartOfSpeech
@@ -51,7 +52,7 @@ type ParseQuestionModel struct {
 	status           QuestionStatus
 }
 
-func NewParseQuestionModel(question questions.Question) *ParseQuestionModel {
+func NewParseQuestionModel(question questions.Question, styles *styles.StylesWrapper) *ParseQuestionModel {
 	answerEndingComponents := question.(*questions.ParseWordLatToCompQuestion).Answers
 
 	var possiblePOS []endingcomponents.PartOfSpeech
@@ -205,6 +206,7 @@ func NewParseQuestionModel(question questions.Question) *ParseQuestionModel {
 		question:         question,
 		Dropdowns:        dropdowns,
 		numberDropdowns:  numberDropdowns,
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		pos:              chosenPOS,
@@ -376,8 +378,8 @@ func buttonStyle(focused bool) lipgloss.Style {
 func (m *ParseQuestionModel) View() string {
 	promptView := fmt.Sprintf(
 		"%s this Latin word: %s",
-		internal.BoldStyle.Render("Parse"),
-		internal.ItalicStyle.Render(m.question.GetPrompt()),
+		m.styles.Bold.Render("Parse"),
+		m.styles.Italic.Render(m.question.GetPrompt()),
 	)
 
 	dropdownViews := make([]string, m.numberDropdowns)
@@ -390,10 +392,10 @@ func (m *ParseQuestionModel) View() string {
 	var resultView string
 	switch m.status {
 	case Correct:
-		resultView = correctStyle.Render(" ✓")
+		resultView = m.styles.Correct.Render(" ✓")
 
 	case Incorrect:
-		resultView = incorrectStyle.Render(
+		resultView = m.styles.Incorrect.Render(
 			" ✕ " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.String(),
 		)
 	}

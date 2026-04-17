@@ -3,6 +3,7 @@ package create
 import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/list"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type LoadStatus int
@@ -50,13 +51,14 @@ type Model struct {
 
 	// Application state
 
+	styles         *styles.StylesWrapper
 	inbuiltListDir string
 	serverPort     int
 }
 
-func New(inbuiltListDir string, serverPort int) *Model {
-	listtui := list.New(inbuiltListDir)
-	configtui := config.New()
+func New(inbuiltListDir string, serverPort int, styles *styles.StylesWrapper) *Model {
+	listtui := list.New(inbuiltListDir, styles)
+	configtui := config.New(styles)
 	loadSection := loadSection{focused: false, ListStatus: StatusMissing, ConfigStatus: StatusMissing}
 
 	return &Model{
@@ -64,6 +66,7 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		configtui:   configtui,
 		LoadSection: &loadSection,
 
+		styles:         styles,
 		inbuiltListDir: inbuiltListDir,
 		serverPort:     serverPort,
 	}

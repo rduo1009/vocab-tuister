@@ -7,11 +7,14 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	lipglosscompat "charm.land/lipgloss/v2/compat"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type SelectTabMsg struct{ Index int }
 
-func inactiveTabBorder(b lipgloss.Border) lipgloss.Border {
+func inactiveTabBorder() lipgloss.Border {
+	b := lipgloss.NormalBorder()
 	b.Top = "─"
 	b.Bottom = "─"
 	b.Left = "│"
@@ -24,7 +27,8 @@ func inactiveTabBorder(b lipgloss.Border) lipgloss.Border {
 	return b
 }
 
-func activeTabBorder(b lipgloss.Border) lipgloss.Border {
+func activeTabBorder() lipgloss.Border {
+	b := lipgloss.NormalBorder()
 	b.Top = "─"
 	b.Bottom = " "
 	b.Left = "│"
@@ -33,7 +37,6 @@ func activeTabBorder(b lipgloss.Border) lipgloss.Border {
 	b.TopRight = "╮"
 	b.BottomLeft = "┘"
 	b.BottomRight = "└"
-
 	return b
 }
 
@@ -59,13 +62,13 @@ func tabGap(focused bool) lipgloss.Style {
 func inactiveTabStyle(focused bool, pad int) lipgloss.Style {
 	if focused {
 		return lipgloss.NewStyle().
-			Border(inactiveTabBorder(lipgloss.NormalBorder()), true).
+			Border(inactiveTabBorder(), true).
 			BorderForeground(highlightFocusedColour).
 			Padding(0, pad)
 	}
 
 	return lipgloss.NewStyle().
-		Border(inactiveTabBorder(lipgloss.NormalBorder()), true).
+		Border(inactiveTabBorder(), true).
 		BorderForeground(highlightColour).
 		Padding(0, pad)
 }
@@ -73,13 +76,13 @@ func inactiveTabStyle(focused bool, pad int) lipgloss.Style {
 func activeTabStyle(focused bool, pad int) lipgloss.Style {
 	if focused {
 		return lipgloss.NewStyle().
-			Border(activeTabBorder(lipgloss.NormalBorder()), true).
+			Border(activeTabBorder(), true).
 			BorderForeground(highlightFocusedColour).
 			Padding(0, pad)
 	}
 
 	return lipgloss.NewStyle().
-		Border(activeTabBorder(lipgloss.NormalBorder()), true).
+		Border(activeTabBorder(), true).
 		BorderForeground(highlightColour).
 		Padding(0, pad)
 }
@@ -90,6 +93,8 @@ type Model struct {
 	tabNames  []string
 	active    int
 	isFocused bool
+
+	styles *styles.StylesWrapper
 }
 
 func (m *Model) Focus() {
@@ -116,7 +121,7 @@ func (m *Model) Select(index int) {
 	m.active = index
 }
 
-func New(names []fmt.Stringer, active int, isFocused bool) *Model {
+func New(names []fmt.Stringer, active int, isFocused bool, styles *styles.StylesWrapper) *Model {
 	tabNames := make([]string, len(names))
 	for i, n := range names {
 		tabNames[i] = n.String()
@@ -126,6 +131,7 @@ func New(names []fmt.Stringer, active int, isFocused bool) *Model {
 		tabNames:  tabNames,
 		active:    active,
 		isFocused: isFocused,
+		styles:    styles,
 	}
 }
 

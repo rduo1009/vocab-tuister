@@ -12,6 +12,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -22,12 +23,16 @@ type PrincipalPartsQuestionModel struct {
 	textinputs       []*textinputWrapper
 	numberTextinputs int
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredPrincipalPartsKeyMap
 	answeredKeyMap   answeredPrincipalPartsKeyMap
 	status           QuestionStatus
 }
 
-func NewPrincipalPartsQuestionModel(question questions.Question) *PrincipalPartsQuestionModel {
+func NewPrincipalPartsQuestionModel(
+	question questions.Question,
+	styles *styles.StylesWrapper,
+) *PrincipalPartsQuestionModel {
 	pp := question.(*questions.PrincipalPartsQuestion).PrincipalParts
 
 	tis := make([]*textinputWrapper, len(pp))
@@ -85,6 +90,7 @@ func NewPrincipalPartsQuestionModel(question questions.Question) *PrincipalParts
 		question:         question,
 		textinputs:       tis,
 		numberTextinputs: len(pp),
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
@@ -220,8 +226,8 @@ func (m *PrincipalPartsQuestionModel) SetHeight(height int) {
 func (m *PrincipalPartsQuestionModel) View() string {
 	promptView := fmt.Sprintf(
 		"%s of %s",
-		boldStyle.Render("Principal parts"),
-		italicStyle.Render(m.question.GetPrompt()),
+		m.styles.Bold.Render("Principal parts"),
+		m.styles.Italic.Render(m.question.GetPrompt()),
 	)
 
 	tiViews := make([]string, m.numberTextinputs)
@@ -229,15 +235,15 @@ func (m *PrincipalPartsQuestionModel) View() string {
 		switch m.status {
 		case Correct:
 			s := ti.Styles()
-			s.Focused.Text = correctStyle
-			s.Blurred.Text = correctStyle
+			s.Focused.Text = m.styles.Correct
+			s.Blurred.Text = m.styles.Correct
 			ti.SetStyles(s)
 
 		case Incorrect:
 			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Value() != x {
 				s := ti.Styles()
-				s.Focused.Text = incorrectStyle
-				s.Blurred.Text = incorrectStyle
+				s.Focused.Text = m.styles.Incorrect
+				s.Blurred.Text = m.styles.Incorrect
 				ti.SetStyles(s)
 			}
 		}
@@ -249,7 +255,7 @@ func (m *PrincipalPartsQuestionModel) View() string {
 
 	var footerView string
 	if m.status == Incorrect {
-		footerView = incorrectStyle.Render(
+		footerView = m.styles.Incorrect.Render(
 			"✕ " + strings.Join(m.question.(*questions.PrincipalPartsQuestion).PrincipalParts, ", "),
 		)
 	}

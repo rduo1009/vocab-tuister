@@ -2,8 +2,6 @@ package config
 
 import "charm.land/lipgloss/v2"
 
-var boldStyle = lipgloss.NewStyle().Bold(true)
-
 func (m *Model) SetWidth(width int) {
 	m.width = width
 }
@@ -60,7 +58,7 @@ func formBorderStyle(focused bool) lipgloss.Style {
 
 func (m *Model) View() string {
 	// Header section
-	titleView := boldStyle.Render("Session Config")
+	titleView := m.styles.Bold.Render("Session Config")
 	loadPresetButtonView := buttonStyle(m.HeaderSection.Focused()).Render("Load preset")
 	headerSectionView := headerBorderStyle(m.HeaderSection.Focused()).
 		Width(m.width).

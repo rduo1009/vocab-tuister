@@ -16,6 +16,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type Model struct {
@@ -35,6 +36,7 @@ type Model struct {
 
 	// Application state
 
+	styles        styles.StylesWrapper
 	keys          keyMap
 	navigator     *navigator.Navigator
 	vocabList     string
@@ -60,17 +62,25 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		pages.Settings,
 	}
 
-	t := tabs.New(toStringers(pageOrder), 0, true)
+	themes := styles.DefaultThemes()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(themes.Current())}
+
+	t := tabs.New(toStringers(pageOrder), 0, true, &s)
 	h := help.New()
 	overlayHelp := help.New()
 
-	createtui := create.New(inbuiltListDir, serverPort)
-	reviewtui := review.New()
+	createtui := create.New(inbuiltListDir, serverPort, &s)
+	reviewtui := review.New(&s)
 	// unfortunately sessiontui needs to be coupled with createtui
 	// to prevent user from starting session without loading list + config
-	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus, serverPort)
-	infotui := info.New()
-	settingstui := settings.New()
+	sessiontui := session.New(
+		&createtui.LoadSection.ListStatus,
+		&createtui.LoadSection.ConfigStatus,
+		serverPort,
+		&s,
+	)
+	infotui := info.New(&s)
+	settingstui := settings.New(&s)
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
 	nav.Add(t)
@@ -85,6 +95,7 @@ func New(inbuiltListDir string, serverPort int) *Model {
 			pages.Help:     infotui,
 			pages.Settings: settingstui,
 		},
+		styles:      s,
 		tabs:        t,
 		help:        &h,
 		overlayHelp: &overlayHelp,

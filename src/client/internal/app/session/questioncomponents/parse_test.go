@@ -13,6 +13,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelPS struct {
@@ -60,7 +61,8 @@ func TestParse(t *testing.T) {
 			Gender: endingcomponents.Neuter,
 		}},
 	}
-	qc := NewParseQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewParseQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Parse")
@@ -122,7 +124,8 @@ func TestParseCorrect(t *testing.T) {
 					Gender: endingcomponents.Feminine,
 				}},
 			}
-			qc := NewParseQuestionModel(&q)
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+			qc := NewParseQuestionModel(&q, &s)
 
 			m := modelPS{QuestionComponent: qc}
 			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -195,7 +198,8 @@ func TestParseIncorrect(t *testing.T) {
 			Gender: endingcomponents.Feminine,
 		}},
 	}
-	qc := NewParseQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -262,7 +266,8 @@ func TestParseNextQuestion(t *testing.T) {
 			Gender: endingcomponents.Neuter,
 		}},
 	}
-	qc := NewParseQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))

@@ -10,9 +10,9 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -48,12 +48,13 @@ type TypeInQuestionModel struct {
 	question  questions.Question
 	textinput *textinputWrapper
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredTypeInKeyMap
 	answeredKeyMap   answeredTypeInKeyMap
 	status           QuestionStatus
 }
 
-func NewTypeInQuestionModel(question questions.Question) *TypeInQuestionModel {
+func NewTypeInQuestionModel(question questions.Question, styles *styles.StylesWrapper) *TypeInQuestionModel {
 	ti := textinput.New()
 	ti.Blur()
 
@@ -105,6 +106,7 @@ func NewTypeInQuestionModel(question questions.Question) *TypeInQuestionModel {
 	return &TypeInQuestionModel{
 		question:         question,
 		textinput:        &textinputWrapper{Model: ti},
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
@@ -224,19 +226,19 @@ func (m *TypeInQuestionModel) View() string {
 	case *questions.TypeInEngToLatQuestion:
 		promptView = fmt.Sprintf(
 			"%s to Latin: %s",
-			internal.BoldStyle.Render("Translate"),
-			internal.ItalicStyle.Render(q.Prompt),
+			m.styles.Bold.Render("Translate"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.TypeInLatToEngQuestion:
 		promptView = fmt.Sprintf(
 			"%s to English: %s",
-			internal.BoldStyle.Render("Translate"),
-			internal.ItalicStyle.Render(q.Prompt),
+			m.styles.Bold.Render("Translate"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.ParseWordCompToLatQuestion:
-		promptView = fmt.Sprintf("What is %s in the %s?", internal.ItalicStyle.Render(q.Prompt), q.Components)
+		promptView = fmt.Sprintf("What is %s in the %s?", m.styles.Italic.Render(q.Prompt), q.Components)
 
 	default:
 		panic("unreachable")
@@ -250,7 +252,7 @@ func (m *TypeInQuestionModel) View() string {
 	case Correct:
 		m.textinput.Blur()
 		s := m.textinput.Styles()
-		s.Blurred.Text = correctStyle // the only relevant style here
+		s.Blurred.Text = m.styles.Correct // the only relevant style here
 		m.textinput.SetStyles(s)
 		inputView = m.textinput.View()
 
@@ -259,7 +261,7 @@ func (m *TypeInQuestionModel) View() string {
 		inputView = lipgloss.JoinHorizontal(
 			lipgloss.Top,
 			m.textinput.View(),
-			incorrectStyle.Render(" ✕ "+m.question.GetMainAnswer().(string)),
+			m.styles.Incorrect.Render(" ✕ "+m.question.GetMainAnswer().(string)),
 		)
 	}
 

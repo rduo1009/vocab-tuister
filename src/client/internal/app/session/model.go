@@ -3,6 +3,7 @@ package session
 import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questioncomponents"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type (
@@ -56,6 +57,7 @@ type Model struct {
 
 	// Application state
 
+	styles       *styles.StylesWrapper
 	listLoaded   *create.LoadStatus
 	configLoaded *create.LoadStatus
 
@@ -73,10 +75,11 @@ type Model struct {
 	appStatus           testingSessionStatus
 }
 
-func New(listLoaded, configLoaded *create.LoadStatus, serverPort int) *Model {
+func New(listLoaded, configLoaded *create.LoadStatus, serverPort int, styles *styles.StylesWrapper) *Model {
 	return &Model{
 		returnButton:  &returnButton{},
 		restartButton: &restartButton{},
+		styles:        styles,
 		listLoaded:    listLoaded,
 		configLoaded:  configLoaded,
 		serverPort:    serverPort,

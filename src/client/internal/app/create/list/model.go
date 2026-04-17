@@ -9,6 +9,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type createListStatus int
@@ -73,6 +74,7 @@ type Model struct {
 
 	// Application state
 
+	styles             *styles.StylesWrapper
 	AppStatus          createListStatus
 	FilepickerActive   bool
 	ModeDropdownActive bool
@@ -86,7 +88,7 @@ const (
 	saveAsID       = "listtuiSaveAs"
 )
 
-func New(inbuiltListDir string) *Model {
+func New(inbuiltListDir string, styles *styles.StylesWrapper) *Model {
 	headerSection := headerSection{focused: false}
 	ed := goeditor.New(0, 0) // placeholder size values
 
@@ -114,9 +116,11 @@ func New(inbuiltListDir string) *Model {
 		VocabEditor:   &editorWrapper{Model: ed},
 		SelectButton:  &selectButton,
 
-		ModeDropdown:   modeDropdown,
-		Filepicker:     fp,
-		SaveAs:         saveAs,
+		ModeDropdown: modeDropdown,
+		Filepicker:   fp,
+		SaveAs:       saveAs,
+
+		styles:         styles,
 		AppStatus:      InbuiltList,
 		inbuiltListDir: inbuiltListDir,
 	}

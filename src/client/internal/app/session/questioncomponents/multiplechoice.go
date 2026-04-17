@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -43,12 +44,16 @@ type MultipleChoiceQuestionModel struct {
 	incorrectSelectedOptionIndex int
 	correctSelectedOptionIndex   int
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredMultipleChoiceKeyMap
 	answeredKeyMap   answeredMultipleChoiceKeyMap
 	status           QuestionStatus
 }
 
-func NewMultipleChoiceQuestionModel(question questions.Question) *MultipleChoiceQuestionModel {
+func NewMultipleChoiceQuestionModel(
+	question questions.Question,
+	styles *styles.StylesWrapper,
+) *MultipleChoiceQuestionModel {
 	choices := question.(questions.MultipleChoiceQuestion).GetChoices()
 
 	options := make([]*optionWrapper, len(choices))
@@ -112,6 +117,7 @@ func NewMultipleChoiceQuestionModel(question questions.Question) *MultipleChoice
 		question:         question,
 		options:          options,
 		numberOptions:    len(options),
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
@@ -311,15 +317,15 @@ func (m *MultipleChoiceQuestionModel) View() string {
 	case *questions.MultipleChoiceEngToLatQuestion:
 		promptView = fmt.Sprintf(
 			"%s to Latin: %s",
-			boldStyle.Render("Translate"),
-			italicStyle.Render(q.Prompt),
+			m.styles.Bold.Render("Translate"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.MultipleChoiceLatToEngQuestion:
 		promptView = fmt.Sprintf(
 			"%s to English: %s",
-			boldStyle.Render("Translate"),
-			italicStyle.Render(q.Prompt),
+			m.styles.Bold.Render("Translate"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	default:

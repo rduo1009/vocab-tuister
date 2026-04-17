@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelMC struct {
@@ -49,7 +50,8 @@ func TestMultipleChoiceLatToEng(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
@@ -68,7 +70,8 @@ func TestMultipleChoiceEngToLat(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
@@ -87,7 +90,8 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -135,7 +139,8 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -183,7 +188,8 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -225,7 +231,8 @@ func TestMultipleChoiceNextQuestion(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	qc := NewMultipleChoiceQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))

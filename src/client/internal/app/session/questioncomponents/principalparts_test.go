@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelPP struct {
@@ -48,7 +49,8 @@ func TestPrincipalParts(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	qc := NewPrincipalPartsQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Principal parts")
@@ -63,7 +65,8 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	qc := NewPrincipalPartsQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -123,7 +126,8 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	qc := NewPrincipalPartsQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -186,7 +190,8 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	qc := NewPrincipalPartsQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))

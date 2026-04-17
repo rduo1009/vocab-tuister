@@ -59,16 +59,16 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			for i, q := range msg.Questions {
 				switch q.QuestionMode() {
 				case questions.Regular:
-					m.questions[i] = questioncomponents.NewTypeInQuestionModel(q)
+					m.questions[i] = questioncomponents.NewTypeInQuestionModel(q, m.styles)
 
 				case questions.ParseWord:
-					m.questions[i] = questioncomponents.NewParseQuestionModel(q)
+					m.questions[i] = questioncomponents.NewParseQuestionModel(q, m.styles)
 
 				case questions.PrincipalParts:
-					m.questions[i] = questioncomponents.NewPrincipalPartsQuestionModel(q)
+					m.questions[i] = questioncomponents.NewPrincipalPartsQuestionModel(q, m.styles)
 
 				case questions.MultipleChoice:
-					m.questions[i] = questioncomponents.NewMultipleChoiceQuestionModel(q)
+					m.questions[i] = questioncomponents.NewMultipleChoiceQuestionModel(q, m.styles)
 				}
 			}
 

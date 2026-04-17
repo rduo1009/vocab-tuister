@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelTI struct {
@@ -49,7 +50,8 @@ func TestTypeInLatToEng(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	qc := NewTypeInQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewTypeInQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
@@ -65,7 +67,8 @@ func TestTypeInEngToLat(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	qc := NewTypeInQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewTypeInQuestionModel(&q, &s)
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
@@ -91,7 +94,8 @@ func TestTypeInCorrect(t *testing.T) {
 				MainAnswer: "foo",
 				Answers:    []string{"foo", "bar", "baz"},
 			}
-			qc := NewTypeInQuestionModel(&q)
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+			qc := NewTypeInQuestionModel(&q, &s)
 
 			m := modelTI{QuestionComponent: qc}
 			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -141,7 +145,8 @@ func TestTypeInIncorrect(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	qc := NewTypeInQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewTypeInQuestionModel(&q, &s)
 
 	m := modelTI{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -191,7 +196,8 @@ func TestTypeInNextQuestion(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	qc := NewTypeInQuestionModel(&q)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	qc := NewTypeInQuestionModel(&q, &s)
 
 	m := modelTI{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
