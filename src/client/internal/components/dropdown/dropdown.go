@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/list"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
@@ -69,10 +70,6 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.list
 }
 
-// TODO: Use?
-//
-//	AdditionalShortHelpKeys func() []key.Binding
-//	AdditionalFullHelpKeys  func() []key.Binding
 func New[T fmt.Stringer](id string, items []T) *Model {
 	var (
 		listItems []list.Item
@@ -103,6 +100,49 @@ func New[T fmt.Stringer](id string, items []T) *Model {
 	l.SetFilteringEnabled(false)
 	l.SetShowPagination(false)
 	l.SetShowHelp(false)
+	l.DisableQuitKeybindings()
+	l.InfiniteScrolling = true
+
+	l.KeyMap.ShowFullHelp = key.NewBinding(
+		key.WithKeys("ctrl+h"),
+		key.WithHelp("ctrl+h", "toggle additional help"),
+	)
+	l.KeyMap.CloseFullHelp = key.NewBinding(
+		key.WithKeys("ctrl+h"),
+		key.WithHelp("ctrl+h", "toggle additional help"),
+	)
+	l.AdditionalShortHelpKeys = func() []key.Binding {
+		return []key.Binding{
+			key.NewBinding(
+				key.WithKeys("enter"),
+				key.WithHelp("enter", "submit"),
+			),
+			key.NewBinding(
+				key.WithKeys("esc"),
+				key.WithHelp("esc", "cancel"),
+			),
+			key.NewBinding(
+				key.WithKeys("ctrl+q", "ctrl+c"),
+				key.WithHelp("ctrl+q", "quit"),
+			),
+		}
+	}
+	l.AdditionalFullHelpKeys = func() []key.Binding {
+		return []key.Binding{
+			key.NewBinding(
+				key.WithKeys("enter"),
+				key.WithHelp("enter", "submit"),
+			),
+			key.NewBinding(
+				key.WithKeys("esc"),
+				key.WithHelp("esc", "cancel"),
+			),
+			key.NewBinding(
+				key.WithKeys("ctrl+q", "ctrl+c"),
+				key.WithHelp("ctrl+q", "quit"),
+			),
+		}
+	}
 
 	m := &Model{ID: id, LastSelected: items[0], list: l, width: width}
 	m.width = width

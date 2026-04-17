@@ -50,22 +50,18 @@ func (ls *loadSection) KeyMap() loadButtonKeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
+	if m.listtui.ModeDropdownActive {
+		return m.listtui.ModeDropdown.KeyMap()
+	}
+
 	if m.listtui.HeaderSection.Focused() || m.listtui.SelectButton.Focused() ||
 		m.listtui.VocabEditor.Focused() {
 		return m.listtui.KeyMap()
 	}
 
-	if m.listtui.ModeDropdownActive {
-		return m.listtui.ModeDropdown.KeyMap()
-	}
-
 	if m.configtui.HeaderSection.Focused() || m.configtui.ResetButton.Focused() ||
 		m.configtui.FormSection.Focused() {
 		return m.configtui.KeyMap()
-	}
-
-	if m.configtui.FilepickerActive {
-		return m.configtui.Filepicker.KeyMap()
 	}
 
 	if m.LoadSection.Focused() {
