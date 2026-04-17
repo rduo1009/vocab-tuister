@@ -19,6 +19,7 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
+	"charm.land/fang/v2"
 	"charm.land/huh/v2/spinner"
 	"github.com/spf13/cobra"
 
@@ -283,7 +284,12 @@ func Execute() {
 	rootCmd.PersistentFlags().BoolVar(&noServer, "no-server", false, "do not start server - TUI only")
 	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "enable debug mode")
 
-	if err := rootCmd.Execute(); err != nil {
+	if err := fang.Execute(
+		context.Background(),
+		rootCmd,
+		fang.WithVersion(internal.Version),
+		fang.WithoutCompletions(),
+	); err != nil {
 		os.Exit(1)
 	}
 }

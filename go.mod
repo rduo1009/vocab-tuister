@@ -5,6 +5,7 @@ go 1.26.1
 require (
 	charm.land/bubbles/v2 v2.1.0
 	charm.land/bubbletea/v2 v2.0.2
+	charm.land/fang/v2 v2.0.1
 	charm.land/huh/v2 v2.0.3
 	charm.land/lipgloss/v2 v2.0.2
 	github.com/alecthomas/chroma/v2 v2.23.1
@@ -22,6 +23,7 @@ require (
 	github.com/charmbracelet/ultraviolet v0.0.0-20260303162955-0b88c25f3fff // indirect
 	github.com/charmbracelet/x/ansi v0.11.6 // indirect
 	github.com/charmbracelet/x/errors v0.0.0-20240904165849-e8e43e13f84b // indirect
+	github.com/charmbracelet/x/exp/charmtone v0.0.0-20250603201427-c31516f43444 // indirect
 	github.com/charmbracelet/x/exp/ordered v0.1.0 // indirect
 	github.com/charmbracelet/x/exp/strings v0.0.0-20240722160745-212f7b056ed0 // indirect
 	github.com/charmbracelet/x/term v0.2.2 // indirect
@@ -40,6 +42,10 @@ require (
 	github.com/mitranim/gg v0.1.31 // indirect
 	github.com/mitranim/gow v0.0.0-20260212131737-37335dcb6fe0 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
+	github.com/muesli/mango v0.1.0 // indirect
+	github.com/muesli/mango-cobra v1.2.0 // indirect
+	github.com/muesli/mango-pflag v0.1.0 // indirect
+	github.com/muesli/roff v0.1.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
@@ -53,6 +59,7 @@ require (
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260209163413-e7419c687ee4 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/tools v0.42.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
