@@ -65,7 +65,9 @@ func (m *Model) KeyMap() help.KeyMap {
 	}
 
 	if m.LoadSection.Focused() {
-		return m.LoadSection.KeyMap()
+		keyMap := m.LoadSection.KeyMap()
+		keyMap.PressButton.SetEnabled(m.LoadSection.Enabled())
+		return keyMap
 	}
 
 	panic("unreachable")
