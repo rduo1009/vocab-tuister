@@ -150,7 +150,7 @@ func TestDropdownExit(t *testing.T) {
 	assert.Equal(t, dropdown.ExitMsg{ID: id}, tm.FinalModel(t).(model).CurrentMsg)
 }
 
-func TestDropdownCeiling(t *testing.T) {
+func TestDropdownLoop(t *testing.T) {
 	options := make([]fmt.Stringer, len(optionStrings))
 	for i, v := range optionStrings {
 		options[i] = Option(v)
@@ -165,43 +165,14 @@ func TestDropdownCeiling(t *testing.T) {
 		}
 	})
 
-	for range 12 {
-		tm.Send(upKey)
+	for range 10 {
+		tm.Send(downKey)
 	}
 
 	tm.Send(enterKey)
 
 	assert.Equal(t, dropdown.PickedMsg{ID: id, ChosenItem: options[0]}, tm.FinalModel(t).(model).CurrentMsg)
 	assert.Equal(t, options[0].String(), m.Dropdown.LastSelected.String())
-}
-
-func TestDropdownFloor(t *testing.T) {
-	options := make([]fmt.Stringer, len(optionStrings))
-	for i, v := range optionStrings {
-		options[i] = Option(v)
-	}
-
-	d := dropdown.New(id, options)
-	m := model{Dropdown: d}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
-		}
-	})
-
-	for range 12 {
-		tm.Send(downKey)
-	}
-
-	tm.Send(enterKey)
-
-	assert.Equal(
-		t,
-		dropdown.PickedMsg{ID: id, ChosenItem: options[len(options)-1]},
-		tm.FinalModel(t).(model).CurrentMsg,
-	)
-	assert.Equal(t, options[len(options)-1].String(), m.Dropdown.LastSelected.String())
 }
 
 func TestDropdownPickOption(t *testing.T) {
