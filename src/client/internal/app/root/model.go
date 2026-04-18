@@ -101,6 +101,6 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		overlayHelp: &overlayHelp,
 		keys:        keys,
 		navigator:   nav,
-		errorDialog: errordialog.New(),
+		errorDialog: errordialog.New(&s),
 	}
 }

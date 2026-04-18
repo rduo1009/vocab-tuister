@@ -10,6 +10,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -24,18 +25,15 @@ type (
 
 const defaultHeight = 5 // arbitrary
 
-var (
-	itemStyle         = lipgloss.NewStyle().Background(lipgloss.Color("#707070")).Padding(0, 1)
-	selectedItemStyle = lipgloss.NewStyle().Background(lipgloss.Color("#a7a7a7")).Padding(0, 1)
-)
-
 type item struct {
 	fmt.Stringer
 }
 
 func (i item) FilterValue() string { return "" }
 
-type itemDelegate struct{}
+type itemDelegate struct {
+	styles *styles.StylesWrapper
+}
 
 func (d itemDelegate) Height() int                             { return 1 }
 func (d itemDelegate) Spacing() int                            { return 0 }
@@ -48,14 +46,8 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 
 	str := i.String()
 
-	var fn func(...string) string
-	if index == m.Index() {
-		fn = selectedItemStyle.Width(m.Width()).Render
-	} else {
-		fn = itemStyle.Width(m.Width()).Render
-	}
-
-	fmt.Fprint(w, fn(str))
+	focused := index == m.Index()
+	fmt.Fprint(w, d.styles.Dropdown.Item(focused).Width(m.Width()).Render(str))
 }
 
 // XXX: Generic?
@@ -70,7 +62,7 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.list
 }
 
-func New[T fmt.Stringer](id string, items []T) *Model {
+func New[T fmt.Stringer](id string, items []T, styles *styles.StylesWrapper) *Model {
 	var (
 		listItems []list.Item
 		maxWidth  int
@@ -94,7 +86,7 @@ func New[T fmt.Stringer](id string, items []T) *Model {
 		height = 1
 	}
 
-	l := list.New(listItems, itemDelegate{}, width, height)
+	l := list.New(listItems, itemDelegate{styles: styles}, width, height)
 	l.SetShowTitle(false)
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)

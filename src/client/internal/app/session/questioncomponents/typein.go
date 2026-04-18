@@ -113,6 +113,10 @@ func NewTypeInQuestionModel(question questions.Question, styles *styles.StylesWr
 	}
 }
 
+func (m *TypeInQuestionModel) Focused() bool {
+	return m.textinput.Focused()
+}
+
 type unansweredTypeInKeyMap struct {
 	Submit        key.Binding
 	PreviousFocus key.Binding
@@ -252,7 +256,7 @@ func (m *TypeInQuestionModel) View() string {
 	case Correct:
 		m.textinput.Blur()
 		s := m.textinput.Styles()
-		s.Blurred.Text = m.styles.Correct // the only relevant style here
+		s.Blurred.Text = m.styles.SessionPage.Correct // the only relevant style here
 		m.textinput.SetStyles(s)
 		inputView = m.textinput.View()
 
@@ -261,7 +265,7 @@ func (m *TypeInQuestionModel) View() string {
 		inputView = lipgloss.JoinHorizontal(
 			lipgloss.Top,
 			m.textinput.View(),
-			m.styles.Incorrect.Render(" ✕ "+m.question.GetMainAnswer().(string)),
+			m.styles.SessionPage.Incorrect.Render(" ✕ "+m.question.GetMainAnswer().(string)),
 		)
 	}
 

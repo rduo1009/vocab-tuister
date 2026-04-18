@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 const id = "testingFilePicker"
@@ -92,7 +93,8 @@ func TestFilePicker(t *testing.T) {
 
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(160)
 	fp.SetHeight(10)
 
@@ -130,7 +132,8 @@ func TestFilePicker(t *testing.T) {
 func TestFilePickerExit(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	m := model{FilePicker: fp}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -151,7 +154,8 @@ func TestFilePickerExit(t *testing.T) {
 func TestFilePickerSubmitWithoutSelection(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(160)
 	fp.SetHeight(10)
 
@@ -188,7 +192,8 @@ func TestFilePickerSubmitWithoutSelection(t *testing.T) {
 func TestFilePickerSetPath(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(160)
 	fp.SetHeight(10)
 
@@ -221,7 +226,8 @@ func TestFilePickerSetPath(t *testing.T) {
 func TestFilePickerSetPathWrongID(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(160)
 	fp.SetHeight(10)
 
@@ -255,7 +261,8 @@ func TestFilePickerSetPathWrongID(t *testing.T) {
 func TestFilePickerViewCentred(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(40)
 	fp.SetHeight(10)
 
@@ -275,7 +282,8 @@ func TestFilePickerAllowedTypesError(t *testing.T) {
 	dir := makeTempDir(t)
 
 	// Only allow .csv files; the temp dir contains only .txt files.
-	fp := filepicker.New(id, dir, ".csv")
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s, ".csv")
 	fp.SetWidth(160)
 	fp.SetHeight(10)
 
@@ -298,7 +306,8 @@ func TestFilePickerAllowedTypesError(t *testing.T) {
 // both short-help and full-help entries, matching the pattern in jsonview tests.
 func TestFilePickerKeyMap(t *testing.T) {
 	dir := makeTempDir(t)
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 
 	km := fp.KeyMap()
 	assert.NotNil(t, km)
@@ -311,7 +320,8 @@ func TestFilePickerKeyMap(t *testing.T) {
 func TestFilePickerSetWidthHeight(t *testing.T) {
 	dir := makeTempDir(t)
 
-	fp := filepicker.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	fp := filepicker.New(id, dir, &s)
 	fp.SetWidth(50)
 	fp.SetHeight(15)
 

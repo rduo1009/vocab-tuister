@@ -30,4 +30,5 @@ type QuestionModel interface {
 	KeyMap() help.KeyMap
 
 	QuestionStatus() QuestionStatus
+	Focused() bool
 }

@@ -6,86 +6,11 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
-	lipglosscompat "charm.land/lipgloss/v2/compat"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type SelectTabMsg struct{ Index int }
-
-func inactiveTabBorder() lipgloss.Border {
-	b := lipgloss.NormalBorder()
-	b.Top = "─"
-	b.Bottom = "─"
-	b.Left = "│"
-	b.Right = "│"
-	b.TopLeft = "╭"
-	b.TopRight = "╮"
-	b.BottomLeft = "┴"
-	b.BottomRight = "┴"
-
-	return b
-}
-
-func activeTabBorder() lipgloss.Border {
-	b := lipgloss.NormalBorder()
-	b.Top = "─"
-	b.Bottom = " "
-	b.Left = "│"
-	b.Right = "│"
-	b.TopLeft = "╭"
-	b.TopRight = "╮"
-	b.BottomLeft = "┘"
-	b.BottomRight = "└"
-	return b
-}
-
-var (
-	// TODO: Remove need to use lipglosscompat.
-	highlightColour = lipglosscompat.AdaptiveColor{
-		Light: lipgloss.Color("#874bfd"),
-		Dark:  lipgloss.Color("#7d56f4"),
-	}
-	highlightFocusedColour = lipglosscompat.AdaptiveColor{
-		Light: lipgloss.Color("#baa8f0"),
-		Dark:  lipgloss.Color("#baa8f0"),
-	}
-)
-
-func tabGap(focused bool) lipgloss.Style {
-	return inactiveTabStyle(focused, 0).
-		BorderTop(false).
-		BorderLeft(false).
-		BorderRight(false)
-}
-
-func inactiveTabStyle(focused bool, pad int) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(inactiveTabBorder(), true).
-			BorderForeground(highlightFocusedColour).
-			Padding(0, pad)
-	}
-
-	return lipgloss.NewStyle().
-		Border(inactiveTabBorder(), true).
-		BorderForeground(highlightColour).
-		Padding(0, pad)
-}
-
-func activeTabStyle(focused bool, pad int) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(activeTabBorder(), true).
-			BorderForeground(highlightFocusedColour).
-			Padding(0, pad)
-	}
-
-	return lipgloss.NewStyle().
-		Border(activeTabBorder(), true).
-		BorderForeground(highlightColour).
-		Padding(0, pad)
-}
 
 type Model struct {
 	Width int
@@ -170,15 +95,7 @@ func (m *Model) View() string {
 	// Tabs
 	var renderedTabs []string
 	for i, pageName := range m.tabNames {
-		var style lipgloss.Style
-
-		isActive := i == m.active
-		// TODO: Refactor this further after moving styles to styles package.
-		if isActive {
-			style = activeTabStyle(m.isFocused, pad)
-		} else {
-			style = inactiveTabStyle(m.isFocused, pad)
-		}
+		style := m.styles.TabBorder(i == m.active, m.isFocused, pad)
 
 		renderedTabs = append(renderedTabs, style.Render(pageName))
 	}
@@ -189,7 +106,7 @@ func (m *Model) View() string {
 	var gap string
 
 	remainingGap := max(0, m.Width-lipgloss.Width(row)-2)
-	gap = tabGap(m.isFocused).Render(strings.Repeat(" ", remainingGap))
+	gap = m.styles.TabGap(m.isFocused).Render(strings.Repeat(" ", remainingGap))
 
 	// Put everything together
 	return lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap)

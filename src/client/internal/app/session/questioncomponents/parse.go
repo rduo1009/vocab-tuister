@@ -79,67 +79,67 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 	case endingcomponents.Noun:
 		numberDropdowns = 2
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers, styles)},
 		}
 
 	case endingcomponents.Pronoun:
 		numberDropdowns = 3
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
-			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers, styles)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders, styles)},
 		}
 
 	case endingcomponents.Adjective:
 		numberDropdowns = 4
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers)},
-			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders)},
-			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Degrees)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Cases, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Numbers, styles)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Genders, styles)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Degrees, styles)},
 		}
 
 	case endingcomponents.Verb:
 		numberDropdowns = 5
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
-			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Persons)},
-			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices, styles)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods, styles)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Persons, styles)},
+			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers, styles)},
 		}
 
 	case endingcomponents.VerbalNoun:
 		numberDropdowns = 2
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Moods)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Cases)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Moods, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Cases, styles)},
 		}
 
 	case endingcomponents.ParticiplePOS:
 		numberDropdowns = 6
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
-			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Cases)},
-			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers)},
-			{Model: dropdown.New("parsequestionDropdown5", endingcomponents.Genders)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices, styles)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods, styles)},
+			{Model: dropdown.New("parsequestionDropdown3", endingcomponents.Cases, styles)},
+			{Model: dropdown.New("parsequestionDropdown4", endingcomponents.Numbers, styles)},
+			{Model: dropdown.New("parsequestionDropdown5", endingcomponents.Genders, styles)},
 		}
 
 	case endingcomponents.InfinitivePOS:
 		numberDropdowns = 3
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses)},
-			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices)},
-			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Tenses, styles)},
+			{Model: dropdown.New("parsequestionDropdown1", endingcomponents.Voices, styles)},
+			{Model: dropdown.New("parsequestionDropdown2", endingcomponents.Moods, styles)},
 		}
 
 	case endingcomponents.Adverb:
 		numberDropdowns = 1
 		dropdowns = []*dropdownWrapper{
-			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Degrees)},
+			{Model: dropdown.New("parsequestionDropdown0", endingcomponents.Degrees, styles)},
 		}
 
 	default:
@@ -213,6 +213,15 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 		components:       endingComponents,
 		status:           Unanswered,
 	}
+}
+
+func (m *ParseQuestionModel) Focused() bool {
+	for _, d := range m.Dropdowns {
+		if d.Focused() {
+			return true
+		}
+	}
+	return false
 }
 
 type unansweredParseKeyMap struct {
@@ -357,24 +366,6 @@ func (m *ParseQuestionModel) SetHeight(height int) {
 	m.height = height
 }
 
-func buttonStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#fff7db")).
-			Background(lipgloss.Color("#888b7e")).
-			Italic(true).
-			Underline(true).
-			MarginLeft(1).
-			Padding(0, 1)
-	}
-
-	return lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#fff7db")).
-		Background(lipgloss.Color("#888b7e")).
-		MarginLeft(1).
-		Padding(0, 1)
-}
-
 func (m *ParseQuestionModel) View() string {
 	promptView := fmt.Sprintf(
 		"%s this Latin word: %s",
@@ -384,7 +375,8 @@ func (m *ParseQuestionModel) View() string {
 
 	dropdownViews := make([]string, m.numberDropdowns)
 	for i, d := range m.Dropdowns {
-		dropdownViews[i] = buttonStyle(d.Focused()).
+		dropdownViews[i] = m.styles.Button(true, d.Focused()).
+			MarginLeft(1).
 			Width(d.GetWidth()).
 			Render(d.LastSelected.String())
 	}
@@ -392,10 +384,10 @@ func (m *ParseQuestionModel) View() string {
 	var resultView string
 	switch m.status {
 	case Correct:
-		resultView = m.styles.Correct.Render(" ✓")
+		resultView = m.styles.SessionPage.Correct.Render(" ✓")
 
 	case Incorrect:
-		resultView = m.styles.Incorrect.Render(
+		resultView = m.styles.SessionPage.Incorrect.Render(
 			" ✕ " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.String(),
 		)
 	}

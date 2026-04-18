@@ -44,18 +44,6 @@ func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	panic("unreachable")
 }
 
-func loadBorderStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#fdffcd"))
-	}
-
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#f3ff00"))
-}
-
 func statusSymbol(s LoadStatus) string {
 	switch s {
 	case StatusMissing:
@@ -88,44 +76,18 @@ func statusText(s LoadStatus) string {
 	}
 }
 
-var (
-	missingStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#ff5555"))
-	pendingStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#f1fa8c"))
-	loadedStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("#50fa7b"))
-	sepStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
-)
-
-func getStatusStyle(s LoadStatus) lipgloss.Style {
+func (m *Model) getStatusStyle(s LoadStatus) lipgloss.Style {
 	switch s {
 	case StatusMissing:
-		return missingStyle
+		return m.styles.LoadSection.LabelMissing
 
 	case StatusPending:
-		return pendingStyle
+		return m.styles.LoadSection.LabelPending
 
 	case StatusLoaded:
-		return loadedStyle
-
-	default:
-		return lipgloss.NewStyle()
+		return m.styles.LoadSection.LabelLoaded
 	}
-}
-
-func buttonStyle(focused, enabled bool) lipgloss.Style {
-	style := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#fff7db")).
-		Background(lipgloss.Color("#888b7e")).
-		Padding(0, 1)
-
-	if !enabled {
-		return style.Foreground(lipgloss.Color("#a9a9a9")).Background(lipgloss.Color("#555555"))
-	}
-
-	if focused {
-		return style.Italic(true).Underline(true)
-	}
-
-	return style
+	panic("unreachable")
 }
 
 func (m *Model) View() string {
@@ -138,7 +100,7 @@ func (m *Model) View() string {
 	renderStatus := func(label string, status LoadStatus) string {
 		symbol := statusSymbol(status)
 		text := statusText(status)
-		style := getStatusStyle(status)
+		style := m.getStatusStyle(status)
 
 		labelView := label + ":"
 		textView := style.Render(text)
@@ -158,17 +120,17 @@ func (m *Model) View() string {
 		return symbolView
 	}
 
-	loadSectionView := loadBorderStyle(m.LoadSection.Focused()).
+	loadSectionView := m.styles.NormalBorder(m.LoadSection.Focused()).
 		Width(loadSectionWidth).
 		Height(3).
 		Align(lipgloss.Center).
 		Render(lipgloss.JoinHorizontal(
 			lipgloss.Center,
 			renderStatus("List", m.LoadSection.ListStatus),
-			sepStyle.Render(" | "),
+			m.styles.LoadSection.LabelSep.Render(" | "),
 			renderStatus("Config", m.LoadSection.ConfigStatus),
-			sepStyle.Render(" | "),
-			buttonStyle(m.LoadSection.Focused(), m.LoadSection.Enabled()).Render("Load"),
+			m.styles.LoadSection.LabelSep.Render(" | "),
+			m.styles.Button(m.LoadSection.Enabled(), m.LoadSection.Focused()).Render("Load"),
 		))
 
 	m.configtui.SetWidth(m.width / 2)

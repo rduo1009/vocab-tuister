@@ -12,50 +12,6 @@ func (m *Model) SetHeight(height int) {
 	m.height = height
 }
 
-func buttonStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#fff7db")).
-			Background(lipgloss.Color("#888b7e")).
-			Italic(true).
-			Underline(true).
-			MarginLeft(1).
-			Padding(0, 1)
-	}
-
-	return lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#fff7db")).
-		Background(lipgloss.Color("#888b7e")).
-		MarginLeft(1).
-		Padding(0, 1)
-}
-
-func headerBorderStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#a9eaa9"))
-	}
-
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#2cb42c"))
-}
-
-func editorBorderStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#c6fba4")).
-			Padding(0, 2)
-	}
-
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#80ff2c")).
-		Padding(0, 2)
-}
-
 func selectListText(status createListStatus) string {
 	switch status {
 	case InbuiltList:
@@ -71,30 +27,23 @@ func selectListText(status createListStatus) string {
 	panic("unreachable")
 }
 
-func footerBorderStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#ffd19a"))
-	}
-
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#ff8c00"))
-}
-
 func (m *Model) View() string {
 	// Header section
 	titleView := m.styles.Bold.Render("Vocab List")
-	modeSwitchView := buttonStyle(m.HeaderSection.Focused()).Width(14).Render(m.AppStatus.String())
-	headerSectionView := headerBorderStyle(m.HeaderSection.Focused()).
+	modeSwitchView := m.styles.Button(true, m.HeaderSection.Focused()).
+		MarginLeft(1).
+		Width(14).
+		Render(m.AppStatus.String())
+	headerSectionView := m.styles.NormalBorder(m.HeaderSection.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, titleView, modeSwitchView))
 
 	// Footer section
 	footerView := m.styles.Bold.Render("List:")
-	selectListView := buttonStyle(m.SelectButton.Focused()).Render(selectListText(m.AppStatus))
-	footerSectionView := footerBorderStyle(m.SelectButton.Focused()).
+	selectListView := m.styles.Button(true, m.SelectButton.Focused()).
+		MarginLeft(1).
+		Render(selectListText(m.AppStatus))
+	footerSectionView := m.styles.NormalBorder(m.SelectButton.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, footerView, selectListView))
 
@@ -103,7 +52,7 @@ func (m *Model) View() string {
 		m.width-6,
 		m.height-lipgloss.Height(headerSectionView)-lipgloss.Height(footerSectionView)+2,
 	)
-	editorSectionView := editorBorderStyle(m.VocabEditor.Focused()).
+	editorSectionView := m.styles.NormalBorder(m.VocabEditor.Focused()).Padding(0, 2).
 		Width(m.width).
 		Height(m.height - lipgloss.Height(headerSectionView) - lipgloss.Height(footerSectionView) + 2).
 		Render(m.VocabEditor.View())

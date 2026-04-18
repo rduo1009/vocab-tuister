@@ -97,6 +97,15 @@ func NewPrincipalPartsQuestionModel(
 	}
 }
 
+func (m *PrincipalPartsQuestionModel) Focused() bool {
+	for _, ti := range m.textinputs {
+		if ti.Focused() {
+			return true
+		}
+	}
+	return false
+}
+
 type unansweredPrincipalPartsKeyMap struct {
 	Submit        key.Binding
 	PreviousFocus key.Binding
@@ -235,15 +244,15 @@ func (m *PrincipalPartsQuestionModel) View() string {
 		switch m.status {
 		case Correct:
 			s := ti.Styles()
-			s.Focused.Text = m.styles.Correct
-			s.Blurred.Text = m.styles.Correct
+			s.Focused.Text = m.styles.SessionPage.Correct
+			s.Blurred.Text = m.styles.SessionPage.Correct
 			ti.SetStyles(s)
 
 		case Incorrect:
 			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Value() != x {
 				s := ti.Styles()
-				s.Focused.Text = m.styles.Incorrect
-				s.Blurred.Text = m.styles.Incorrect
+				s.Focused.Text = m.styles.SessionPage.Incorrect
+				s.Blurred.Text = m.styles.SessionPage.Incorrect
 				ti.SetStyles(s)
 			}
 		}
@@ -255,7 +264,7 @@ func (m *PrincipalPartsQuestionModel) View() string {
 
 	var footerView string
 	if m.status == Incorrect {
-		footerView = m.styles.Incorrect.Render(
+		footerView = m.styles.SessionPage.Incorrect.Render(
 			"✕ " + strings.Join(m.question.(*questions.PrincipalPartsQuestion).PrincipalParts, ", "),
 		)
 	}

@@ -5,8 +5,6 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-var dimPageStyle = lipgloss.NewStyle().Faint(true)
-
 func (m *Model) View() tea.View {
 	currentPageModel := m.pages[m.pageOrder[m.currentPage]]
 
@@ -26,7 +24,7 @@ func (m *Model) View() tea.View {
 
 	var layers []*lipgloss.Layer
 	if currentPageModel.HasOverlay() {
-		dimPageLayer := lipgloss.NewLayer(dimPageStyle.Render(fullView))
+		dimPageLayer := lipgloss.NewLayer(m.styles.Faint.Render(fullView))
 
 		overlayPageView, x, y := currentPageModel.OverlayView(m.width, m.height)
 		overlayLayer := lipgloss.NewLayer(overlayPageView).X(x).Y(y)

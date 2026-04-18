@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type model struct {
@@ -86,7 +87,8 @@ func TestDropdown(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	dropdown := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	dropdown := dropdown.New(id, options, &s)
 	m := model{Dropdown: dropdown}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -109,7 +111,8 @@ func TestDropdownTyping(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -135,7 +138,8 @@ func TestDropdownExit(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -156,7 +160,8 @@ func TestDropdownLoop(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -182,7 +187,8 @@ func TestDropdownPickOption(t *testing.T) {
 	}
 
 	for i, o := range options {
-		d := dropdown.New(id, options)
+		s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+		d := dropdown.New(id, options, &s)
 		m := model{Dropdown: d}
 		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 
@@ -205,7 +211,8 @@ func TestDropdownSetWidth(t *testing.T) {
 	for i, v := range optionStrings {
 		options[i] = Option(v)
 	}
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	d := dropdown.New(id, options, &s)
 	d.SetWidth(10)
 	assert.Equal(t, 10, d.GetWidth())
 }

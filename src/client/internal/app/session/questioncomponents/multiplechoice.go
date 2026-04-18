@@ -124,6 +124,16 @@ func NewMultipleChoiceQuestionModel(
 	}
 }
 
+func (m *MultipleChoiceQuestionModel) Focused() bool {
+	for i := range m.numberOptions {
+		if m.options[i].Focused() {
+			m.currentOptionIndex = i
+			return true
+		}
+	}
+	return false
+}
+
 type unansweredMultipleChoiceKeyMap struct {
 	ChooseOption  key.Binding
 	Submit        key.Binding
@@ -277,40 +287,6 @@ func (m *MultipleChoiceQuestionModel) SetHeight(height int) {
 	m.height = height
 }
 
-func optionStyle(focused bool, status QuestionStatus) lipgloss.Style {
-	var borderColor color.Color
-
-	switch status {
-	case Unanswered:
-		if focused {
-			borderColor = lipgloss.Color("#209fb5")
-		} else {
-			borderColor = lipgloss.Color("#FFFFFF")
-		}
-
-	case Correct:
-		if focused {
-			borderColor = lipgloss.Color("#22C55E")
-		} else {
-			borderColor = lipgloss.Color("#BBF7D0")
-		}
-
-	case Incorrect:
-		if focused {
-			borderColor = lipgloss.Color("#F05252")
-		} else {
-			borderColor = lipgloss.Color("#FCA5A5")
-		}
-	}
-
-	return lipgloss.NewStyle().
-		Padding(0, 4).
-		MarginBottom(1).
-		Border(lipgloss.NormalBorder()).
-		BorderForeground(borderColor).
-		Align(lipgloss.Left)
-}
-
 func (m *MultipleChoiceQuestionModel) View() string {
 	var promptView string
 	switch q := m.question.(type) {
@@ -333,13 +309,12 @@ func (m *MultipleChoiceQuestionModel) View() string {
 	}
 
 	// TODO: refactor def poss here
-	var optionStatus QuestionStatus
-
+	var optionColor color.Color
 	optionViews := make([]string, m.numberOptions)
 	switch m.status {
 	case Unanswered:
 		for i := range m.numberOptions {
-			optionViews[i] = optionStyle(m.options[i].Focused(), Unanswered).
+			optionViews[i] = m.styles.MultipleChoice.Option(m.options[i].Focused(), m.styles.MultipleChoice.Unanswered).
 				Width(m.width).
 				Render(m.options[i].Value)
 		}
@@ -347,12 +322,12 @@ func (m *MultipleChoiceQuestionModel) View() string {
 	case Correct:
 		for i := range m.numberOptions {
 			if i == m.correctSelectedOptionIndex {
-				optionStatus = Correct
+				optionColor = m.styles.MultipleChoice.Correct
 			} else {
-				optionStatus = Unanswered
+				optionColor = m.styles.MultipleChoice.Unanswered
 			}
 
-			optionViews[i] = optionStyle(m.options[i].Focused(), optionStatus).
+			optionViews[i] = m.styles.MultipleChoice.Option(m.options[i].Focused(), optionColor).
 				Width(m.width).
 				Render(m.options[i].Value)
 		}
@@ -361,19 +336,22 @@ func (m *MultipleChoiceQuestionModel) View() string {
 		for i := range m.numberOptions {
 			switch i {
 			case m.correctSelectedOptionIndex:
-				optionStatus = Correct
+				optionColor = m.styles.MultipleChoice.Correct
 
 			case m.incorrectSelectedOptionIndex:
-				optionStatus = Incorrect
+				optionColor = m.styles.MultipleChoice.Incorrect
 
 			default:
-				optionStatus = Unanswered
+				optionColor = m.styles.MultipleChoice.Unanswered
 			}
 
-			optionViews[i] = optionStyle(m.options[i].Focused(), optionStatus).
+			optionViews[i] = m.styles.MultipleChoice.Option(m.options[i].Focused(), optionColor).
 				Width(m.width).
 				Render(m.options[i].Value)
 		}
+
+	default:
+		panic("unreachable")
 	}
 
 	inputView := lipgloss.JoinVertical(lipgloss.Left, optionViews...)

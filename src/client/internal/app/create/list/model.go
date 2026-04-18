@@ -106,10 +106,11 @@ func New(inbuiltListDir string, styles *styles.StylesWrapper) *Model {
 	modeDropdown := dropdown.New(
 		modeDropdownID,
 		[]fmt.Stringer{InbuiltList, LocalList, CustomList},
+		styles,
 	)
-	fp := filepicker.New(filepickerID, inbuiltListDir, ".txt")
+	fp := filepicker.New(filepickerID, inbuiltListDir, styles, ".txt")
 	homeDir, _ := os.UserHomeDir()
-	saveAs := saveas.New(saveAsID, homeDir, ".txt")
+	saveAs := saveas.New(saveAsID, homeDir, styles, ".txt")
 
 	return &Model{
 		HeaderSection: &headerSection,

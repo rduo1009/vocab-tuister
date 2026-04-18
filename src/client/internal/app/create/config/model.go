@@ -93,7 +93,7 @@ func New(styles *styles.StylesWrapper) *Model {
 	formSection := formSection{focused: false, form: form}
 	resetButton := resetButton{focused: false}
 
-	fp := filepicker.New(filepickerID, appdir.AppDirs.UserConfig(), ".json")
+	fp := filepicker.New(filepickerID, appdir.AppDirs.UserConfig(), styles, ".json")
 
 	return &Model{
 		HeaderSection:    &headerSection,

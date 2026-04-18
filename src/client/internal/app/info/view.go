@@ -18,20 +18,8 @@ func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	panic("wip")
 }
 
-func reviewBorderStyle(focused bool) lipgloss.Style {
-	if focused {
-		return lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#ffd0e7"))
-	}
-
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("#ff69b4"))
-}
-
 func (m *Model) View() string {
-	style := reviewBorderStyle(m.Focused())
+	style := m.styles.NormalBorder(m.Focused())
 
 	content := lipgloss.Place(
 		m.width-2,

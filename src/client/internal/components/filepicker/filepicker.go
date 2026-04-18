@@ -12,6 +12,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -44,6 +45,7 @@ type Model struct {
 	filepicker filepicker.Model
 	help       help.Model
 
+	styles       *styles.StylesWrapper
 	selectedFile string
 	err          error
 }
@@ -73,7 +75,7 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.keys
 }
 
-func New(id, currentDirectory string, allowedTypes ...string) *Model {
+func New(id, currentDirectory string, styles *styles.StylesWrapper, allowedTypes ...string) *Model {
 	fp := filepicker.New()
 	help := help.New()
 
@@ -105,7 +107,7 @@ func New(id, currentDirectory string, allowedTypes ...string) *Model {
 		),
 	}
 
-	return &Model{ID: id, filepicker: fp, help: help, keys: keys}
+	return &Model{ID: id, filepicker: fp, help: help, keys: keys, styles: styles}
 }
 
 func (m *Model) Init() tea.Cmd {
@@ -181,14 +183,6 @@ func (m *Model) Update(msg tea.Msg) (*Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-var (
-	errorStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("#fa003f"))
-	borderStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#ffffff")).
-			Padding(0, 1)
-)
-
 func (m *Model) SetWidth(width int) {
 	m.width = width
 }
@@ -207,7 +201,7 @@ func (m *Model) View(screenWidth, screenHeight int) (view string, x, y int) {
 
 	switch {
 	case m.err != nil:
-		b.WriteString(errorStyle.Render(m.err.Error()))
+		b.WriteString(m.styles.Error.Render(m.err.Error()))
 
 	case m.selectedFile == "":
 		fmt.Fprintf(&b, "Pick a file (in %s):", m.filepicker.CurrentDirectory)
@@ -222,7 +216,11 @@ func (m *Model) View(screenWidth, screenHeight int) (view string, x, y int) {
 	content := b.String()
 	help := m.help.View(m.keys)
 
-	view = borderStyle.Width(m.width).Height(m.height).Render(lipgloss.JoinVertical(lipgloss.Left, content, help))
+	view = m.styles.OverlayBorder.
+		Padding(0, 1).
+		Width(m.width).
+		Height(m.height).
+		Render(lipgloss.JoinVertical(lipgloss.Left, content, help))
 	x = (screenWidth - lipgloss.Width(view)) / 2
 	y = (screenHeight - lipgloss.Height(view)) / 2
 
