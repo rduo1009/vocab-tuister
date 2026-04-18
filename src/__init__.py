@@ -33,6 +33,8 @@ if _seed is not None:
     _custom_random.sample = _custom_random_class.sample
     _custom_random.shuffle = _custom_random_class.shuffle
 
+    _custom_random.getrandbits = _custom_random_class.getrandbits
+
     _sys.modules["random"] = _custom_random
 
 import dunamai as _dunamai
