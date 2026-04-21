@@ -132,7 +132,8 @@ func (m *Model) getHighlightedContent() string {
 	// Use chroma to syntax highlight the JSON
 	var buf bytes.Buffer
 
-	err := quick.Highlight(&buf, m.content, "json", "terminal256", "monokai")
+	// err := quick.Highlight(&buf, m.content, "json", "terminal256", "bubbletint_json")
+	err := quick.Highlight(&buf, m.content, "json", "terminal256", "catppuccin-mocha")
 	if err != nil {
 		// If highlighting fails for any reason, fall back to plain text
 		// This ensures the component is resilient to highlighting errors

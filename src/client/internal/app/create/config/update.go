@@ -157,6 +157,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, nil
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
 			m.form, m.configFormValues = defaultForm()
+			m.form.WithTheme(m.styles.Form)
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			_, formCmd := m.form.Update(nil) // a little nudge
@@ -188,6 +189,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	case failFormMsg:
 		m.form, m.configFormValues = defaultForm()
+		m.form.WithTheme(m.styles.Form)
 		m.AppStatus = CreateSessionConfig
 		m.RawSessionConfig = ""
 		_, formCmd := m.form.Update(nil) // a little nudge

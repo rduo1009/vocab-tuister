@@ -88,6 +88,7 @@ const filepickerID = "configtuiFilepicker"
 
 func New(styles *styles.StylesWrapper) *Model {
 	form, values := defaultForm()
+	form.WithTheme(styles.Form)
 
 	headerSection := headerSection{focused: false}
 	formSection := formSection{focused: false, form: form}

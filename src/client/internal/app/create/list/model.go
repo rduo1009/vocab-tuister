@@ -99,7 +99,8 @@ func New(inbuiltListDir string, styles *styles.StylesWrapper) *Model {
 	ed.DisableSearchMode(true)
 
 	ed.SetCursorMode(goeditor.CursorBlink)
-	ed.SetLanguage("vocabfile", "catppuccin-mocha") // TODO: Change theme
+	ed.SetLanguage("vocabfile", "bubbletint_vocabeditor")
+	ed.WithTheme(styles.Editor.Theme)
 
 	selectButton := selectButton{focused: false}
 

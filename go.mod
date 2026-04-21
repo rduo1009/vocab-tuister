@@ -10,7 +10,9 @@ require (
 	charm.land/lipgloss/v2 v2.0.2
 	github.com/alecthomas/chroma/v2 v2.23.1
 	github.com/ionut-t/goeditor v0.4.10
+	github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1
 	github.com/lrstanley/bubbletint/v2 v2.0.1
+	github.com/lucasb-eyer/go-colorful v1.3.0
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/sys v0.43.0
 )
@@ -36,7 +38,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/komuw/ote v0.0.12 // indirect
-	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
 	github.com/mattn/go-runewidth v0.0.21 // indirect
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
 	github.com/mitranim/gg v0.1.31 // indirect

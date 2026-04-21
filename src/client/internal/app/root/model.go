@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"charm.land/bubbles/v2/help"
+	chromastyles "github.com/alecthomas/chroma/v2/styles"
+	tint "github.com/lrstanley/bubbletint/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
@@ -36,6 +38,7 @@ type Model struct {
 
 	// Application state
 
+	themes        *tint.Registry
 	styles        styles.StylesWrapper
 	keys          keyMap
 	navigator     *navigator.Navigator
@@ -64,6 +67,8 @@ func New(inbuiltListDir string, serverPort int) *Model {
 
 	themes := styles.DefaultThemes()
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(themes.Current())}
+	chromastyles.Register(s.Editor.Chroma)
+	chromastyles.Register(s.Jsonview)
 
 	t := tabs.New(toStringers(pageOrder), 0, true, &s)
 	h := help.New()
@@ -95,6 +100,7 @@ func New(inbuiltListDir string, serverPort int) *Model {
 			pages.Help:     infotui,
 			pages.Settings: settingstui,
 		},
+		themes:      themes,
 		styles:      s,
 		tabs:        t,
 		help:        &h,

@@ -74,6 +74,7 @@ func (m *Model) KeyMap() help.KeyMap {
 
 func New(id, currentDirectory string, styles *styles.StylesWrapper, allowedTypes ...string) *Model {
 	fp := filepicker.New()
+	fp.Styles = styles.Filepicker
 
 	fp.CurrentDirectory = currentDirectory
 	if len(allowedTypes) > 0 {

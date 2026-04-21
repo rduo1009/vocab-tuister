@@ -26,6 +26,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/assets/inbuiltlists"
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 var (
@@ -289,6 +290,7 @@ func Execute() {
 		rootCmd,
 		fang.WithVersion(internal.Version),
 		fang.WithoutCompletions(),
+		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes().Current()).Fang),
 	); err != nil {
 		os.Exit(1)
 	}
