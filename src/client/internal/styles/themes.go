@@ -13,6 +13,10 @@ func DefaultThemes() *tint.Registry {
 		tint.TintBuiltinSolarizedDark,
 		tint.TintNord,
 		tint.TintMonokaiPro,
+		tint.TintOneDark,
+		tint.TintMaterialDark,
+		tint.TintKanagawa,
+		tint.TintRosePine,
 		// TODO: Add more!
 	)
 }
