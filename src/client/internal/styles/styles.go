@@ -14,7 +14,6 @@ import (
 	"github.com/ionut-t/goeditor"
 	"github.com/lrstanley/bubbletint/chromatint/v2"
 	tint "github.com/lrstanley/bubbletint/v2"
-	"github.com/lucasb-eyer/go-colorful"
 )
 
 type StylesWrapper struct{ Styles }
@@ -75,40 +74,13 @@ type Styles struct {
 	Fang fang.ColorSchemeFunc
 }
 
-func blend(cA, cB color.Color, t float64) color.Color {
-	r1, g1, b1, a1 := cA.RGBA()
-	r2, g2, b2, a2 := cB.RGBA()
-
-	c1, _ := colorful.MakeColor(color.RGBA{
-		R: uint8(r1 >> 8),
-		G: uint8(g1 >> 8),
-		B: uint8(b1 >> 8),
-		A: uint8(a1 >> 8),
-	})
-	c2, _ := colorful.MakeColor(color.RGBA{
-		R: uint8(r2 >> 8),
-		G: uint8(g2 >> 8),
-		B: uint8(b2 >> 8),
-		A: uint8(a2 >> 8),
-	})
-
-	blended := c1.BlendLab(c2, t)
-	r, g, b := blended.RGB255()
-
-	return lipgloss.RGBColor{R: r, G: g, B: b}
-}
-
 func hexColor(c color.Color) string {
 	rgba := color.RGBAModel.Convert(c).(color.RGBA)
 	return fmt.Sprintf("#%.2x%.2x%.2x", rgba.R, rgba.G, rgba.B)
 }
 
 func DefaultStyles(theme *tint.Tint) Styles {
-	// TODO: Refactor these out into colors.go
-	// and then tweak the percentages a little
-	truePurple := blend(theme.Red, theme.Blue, 0.7)
-	trueOrange := blend(theme.Red, theme.Yellow, 0.5)
-	trueCoral := blend(theme.Red, trueOrange, 0.5)
+	colours := DefaultColours(theme)
 
 	s := Styles{}
 
@@ -116,7 +88,7 @@ func DefaultStyles(theme *tint.Tint) Styles {
 	s.Bold = lipgloss.NewStyle().Bold(true)
 	s.Italic = lipgloss.NewStyle().Italic(true)
 	s.Faint = lipgloss.NewStyle().Faint(true)
-	s.Error = lipgloss.NewStyle().Foreground(theme.Red)
+	s.Error = lipgloss.NewStyle().Foreground(colours.Red)
 
 	inactiveTabBorder := func() lipgloss.Border {
 		b := lipgloss.RoundedBorder()
@@ -140,9 +112,9 @@ func DefaultStyles(theme *tint.Tint) Styles {
 		}
 
 		if focused {
-			style = style.BorderForeground(theme.Blue)
+			style = style.BorderForeground(colours.Blue)
 		} else {
-			style = style.BorderForeground(theme.White)
+			style = style.BorderForeground(colours.Fg)
 		}
 
 		return style.Padding(0, pad)
@@ -150,9 +122,9 @@ func DefaultStyles(theme *tint.Tint) Styles {
 	s.TabGap = func(focused bool) lipgloss.Style {
 		style := lipgloss.NewStyle().Border(inactiveTabBorder, true)
 		if focused {
-			style = style.BorderForeground(theme.Blue)
+			style = style.BorderForeground(colours.Blue)
 		} else {
-			style = style.BorderForeground(theme.White)
+			style = style.BorderForeground(colours.Fg)
 		}
 
 		return style.BorderTop(false).
@@ -162,11 +134,11 @@ func DefaultStyles(theme *tint.Tint) Styles {
 
 	s.NormalBorder = func(focused bool) lipgloss.Style {
 		if focused {
-			return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(theme.Blue)
+			return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Blue)
 		}
-		return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(theme.White)
+		return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Fg)
 	}
-	s.OverlayBorder = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(theme.Cyan)
+	s.OverlayBorder = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Cyan)
 
 	s.Button = func(active, focused bool) lipgloss.Style {
 		style := lipgloss.NewStyle().Padding(0, 1)
@@ -225,19 +197,19 @@ func DefaultStyles(theme *tint.Tint) Styles {
 		return strings.TrimRight(bar, "\n")
 	}
 
-	s.LoadSection.LabelMissing = lipgloss.NewStyle().Foreground(theme.Red)
-	s.LoadSection.LabelPending = lipgloss.NewStyle().Foreground(theme.Yellow)
-	s.LoadSection.LabelLoaded = lipgloss.NewStyle().Foreground(theme.Green)
-	s.LoadSection.LabelSep = lipgloss.NewStyle().Foreground(lipgloss.Lighten(theme.Black, 0.1))
+	s.LoadSection.LabelMissing = lipgloss.NewStyle().Foreground(colours.Red)
+	s.LoadSection.LabelPending = lipgloss.NewStyle().Foreground(colours.Yellow)
+	s.LoadSection.LabelLoaded = lipgloss.NewStyle().Foreground(colours.Green)
+	s.LoadSection.LabelSep = lipgloss.NewStyle().Foreground(lipgloss.Lighten(colours.Bg, 0.3))
 
-	s.SessionPage.Correct = lipgloss.NewStyle().Bold(true).Foreground(theme.Green)
-	s.SessionPage.Incorrect = lipgloss.NewStyle().Bold(true).Foreground(theme.Red)
+	s.SessionPage.Correct = lipgloss.NewStyle().Bold(true).Foreground(colours.Green)
+	s.SessionPage.Incorrect = lipgloss.NewStyle().Bold(true).Foreground(colours.Red)
 
 	s.MultipleChoice.Option = func(focused bool, color color.Color) lipgloss.Style {
 		borderColor := color
 		if focused {
-			if color == theme.White {
-				borderColor = theme.Purple
+			if color == colours.Fg {
+				borderColor = colours.Pink
 			} else {
 				borderColor = lipgloss.Lighten(borderColor, 0.1)
 			}
@@ -250,9 +222,9 @@ func DefaultStyles(theme *tint.Tint) Styles {
 			BorderForeground(borderColor).
 			Align(lipgloss.Left)
 	}
-	s.MultipleChoice.Unanswered = theme.White
-	s.MultipleChoice.Correct = theme.Green
-	s.MultipleChoice.Incorrect = theme.Red
+	s.MultipleChoice.Unanswered = colours.Fg
+	s.MultipleChoice.Correct = colours.Green
+	s.MultipleChoice.Incorrect = colours.Red
 
 	s.Dropdown.Item = func(selected bool) lipgloss.Style {
 		if selected {
@@ -263,66 +235,66 @@ func DefaultStyles(theme *tint.Tint) Styles {
 
 	s.ErrorDialog.Border = lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
-		BorderForeground(theme.Red)
+		BorderForeground(colours.Red)
 	s.ErrorDialog.Header = lipgloss.NewStyle().
-		Foreground(theme.Red).
+		Foreground(colours.Red).
 		Bold(true).
 		Padding(0, 1).
 		Border(lipgloss.NormalBorder(), false, false, true, false).
-		BorderForeground(theme.Red)
+		BorderForeground(colours.Red)
 
 	s.Filepicker = filepicker.DefaultStyles()
-	s.Filepicker.Cursor = lipgloss.NewStyle().Foreground(theme.Purple)
-	s.Filepicker.Symlink = lipgloss.NewStyle().Foreground(theme.Green)
-	s.Filepicker.Directory = lipgloss.NewStyle().Foreground(truePurple)
+	s.Filepicker.Cursor = lipgloss.NewStyle().Foreground(colours.Pink)
+	s.Filepicker.Symlink = lipgloss.NewStyle().Foreground(colours.Green)
+	s.Filepicker.Directory = lipgloss.NewStyle().Foreground(colours.Purple)
 	s.Filepicker.EmptyDirectory = s.Filepicker.EmptyDirectory.SetString("No files found.")
-	s.Filepicker.Selected = s.Filepicker.Selected.Foreground(theme.Purple)
+	s.Filepicker.Selected = s.Filepicker.Selected.Foreground(colours.Pink)
 
 	s.Editor.Theme = goeditor.DefaultTheme(theme.Dark)
-	s.Editor.NormalModeStyle = s.Editor.NormalModeStyle.Background(theme.Cyan)
-	s.Editor.InsertModeStyle = s.Editor.InsertModeStyle.Background(theme.Blue)
+	s.Editor.NormalModeStyle = s.Editor.NormalModeStyle.Background(colours.Cyan)
+	s.Editor.InsertModeStyle = s.Editor.InsertModeStyle.Background(colours.Blue)
 	styleEntryVocab := chromatint.StyleEntry(theme, false)
-	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(trueOrange))
+	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(colours.Orange))
 	styleEntryVocab[chroma.GenericStrong] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: theme.Fg, Bold: true},
+		&chromatint.StaticStyle{Fg: colours.Fg, Bold: true},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.Comment] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: lipgloss.Lighten(theme.Bg, 0.3), Italic: true},
+		&chromatint.StaticStyle{Fg: lipgloss.Lighten(colours.Bg, 0.3), Italic: true},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.CommentPreproc] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: lipgloss.Lighten(theme.Bg, 0.3)},
+		&chromatint.StaticStyle{Fg: lipgloss.Lighten(colours.Bg, 0.3)},
 		theme.Dark,
 	)
 	s.Editor.Chroma = chroma.MustNewStyle("bubbletint_vocabeditor", styleEntryVocab)
 
 	s.Form = huh.ThemeFunc(func(isDark bool) *huh.Styles {
 		formStyles := huh.ThemeCharm(theme.Dark)
-		formStyles.Focused.Title = formStyles.Focused.Title.Foreground(truePurple)
-		formStyles.Focused.NoteTitle = formStyles.Focused.NoteTitle.Foreground(truePurple)
-		formStyles.Focused.Directory = formStyles.Focused.Directory.Foreground(truePurple)
-		formStyles.Focused.ErrorIndicator = formStyles.Focused.ErrorIndicator.Foreground(theme.Red)
-		formStyles.Focused.ErrorMessage = formStyles.Focused.ErrorMessage.Foreground(theme.Red)
-		formStyles.Focused.SelectSelector = formStyles.Focused.SelectSelector.Foreground(theme.Purple)
-		formStyles.Focused.NextIndicator = formStyles.Focused.NextIndicator.Foreground(theme.Purple)
-		formStyles.Focused.PrevIndicator = formStyles.Focused.PrevIndicator.Foreground(theme.Purple)
-		formStyles.Focused.MultiSelectSelector = formStyles.Focused.MultiSelectSelector.Foreground(theme.Purple)
-		formStyles.Focused.SelectedOption = formStyles.Focused.SelectedOption.Foreground(theme.Green)
-		formStyles.Focused.SelectedPrefix = formStyles.Focused.SelectedPrefix.Foreground(theme.Green)
-		formStyles.Focused.UnselectedOption = formStyles.Focused.UnselectedOption.Foreground(theme.Fg)
-		formStyles.Focused.FocusedButton = formStyles.Focused.FocusedButton.Foreground(theme.Bg).
-			Background(theme.Purple)
-		formStyles.Focused.BlurredButton = formStyles.Focused.BlurredButton.Foreground(theme.Fg).
-			Background(theme.Bg)
+		formStyles.Focused.Title = formStyles.Focused.Title.Foreground(colours.Purple)
+		formStyles.Focused.NoteTitle = formStyles.Focused.NoteTitle.Foreground(colours.Purple)
+		formStyles.Focused.Directory = formStyles.Focused.Directory.Foreground(colours.Purple)
+		formStyles.Focused.ErrorIndicator = formStyles.Focused.ErrorIndicator.Foreground(colours.Red)
+		formStyles.Focused.ErrorMessage = formStyles.Focused.ErrorMessage.Foreground(colours.Red)
+		formStyles.Focused.SelectSelector = formStyles.Focused.SelectSelector.Foreground(colours.Pink)
+		formStyles.Focused.NextIndicator = formStyles.Focused.NextIndicator.Foreground(colours.Pink)
+		formStyles.Focused.PrevIndicator = formStyles.Focused.PrevIndicator.Foreground(colours.Pink)
+		formStyles.Focused.MultiSelectSelector = formStyles.Focused.MultiSelectSelector.Foreground(colours.Pink)
+		formStyles.Focused.SelectedOption = formStyles.Focused.SelectedOption.Foreground(colours.Green)
+		formStyles.Focused.SelectedPrefix = formStyles.Focused.SelectedPrefix.Foreground(colours.Green)
+		formStyles.Focused.UnselectedOption = formStyles.Focused.UnselectedOption.Foreground(colours.Fg)
+		formStyles.Focused.FocusedButton = formStyles.Focused.FocusedButton.Foreground(colours.Bg).
+			Background(colours.Pink)
+		formStyles.Focused.BlurredButton = formStyles.Focused.BlurredButton.Foreground(colours.Fg).
+			Background(colours.Bg)
 
 		formStyles.Focused.TextInput.Cursor = formStyles.Focused.TextInput.Cursor.Foreground(
 			lipgloss.Color("#f2d5cf"),
 		)
 		formStyles.Focused.TextInput.Placeholder = formStyles.Focused.TextInput.Placeholder.Foreground(
-			lipgloss.Lighten(theme.Bg, 0.2),
+			lipgloss.Lighten(colours.Bg, 0.2),
 		)
-		formStyles.Focused.TextInput.Prompt = formStyles.Focused.TextInput.Prompt.Foreground(theme.Purple)
+		formStyles.Focused.TextInput.Prompt = formStyles.Focused.TextInput.Prompt.Foreground(colours.Pink)
 
 		formStyles.Blurred = formStyles.Focused
 		formStyles.Blurred.Base = formStyles.Blurred.Base.BorderStyle(lipgloss.HiddenBorder())
@@ -336,11 +308,11 @@ func DefaultStyles(theme *tint.Tint) Styles {
 
 	styleEntryJSON := chromatint.StyleEntry(theme, false)
 	styleEntryJSON[chroma.NameTag] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: truePurple},
+		&chromatint.StaticStyle{Fg: colours.Purple},
 		theme.Dark,
 	)
 	styleEntryJSON[chroma.LiteralNumber] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: trueOrange},
+		&chromatint.StaticStyle{Fg: colours.Orange},
 		theme.Dark,
 	)
 	s.Jsonview = chroma.MustNewStyle("bubbletint_json", styleEntryJSON)
@@ -348,12 +320,12 @@ func DefaultStyles(theme *tint.Tint) Styles {
 	s.Fang = func(lightDark lipgloss.LightDarkFunc) fang.ColorScheme {
 		// NOTE: Using closest equivalents in the theme for the charmtone colours
 		cs := fang.DefaultColorScheme(lightDark)
-		cs.Title = truePurple                                // ct.Charple
-		cs.Program = theme.Blue                              // ld(ct.Malibu, ct.Guppy) (fsr these colours are completely different, using Malibu)
-		cs.Command = theme.Purple                            // ld(ct.Pony, ct.Cheeky)
-		cs.Flag = theme.Green                                // ld(lipgloss.Color("#0CB37F"), ct.Guac)
-		cs.QuotedString = trueCoral                          // ld(ct.Coral, charmtone.Salmon)
-		cs.ErrorHeader = [2]color.Color{theme.Bg, theme.Red} // ct.Butter, ct.Cherry
+		cs.Title = colours.Purple                                // ct.Charple
+		cs.Program = colours.Blue                                // ld(ct.Malibu, ct.Guppy) (fsr these colours are completely different, using Malibu)
+		cs.Command = colours.Pink                                // ld(ct.Pony, ct.Cheeky)
+		cs.Flag = colours.Green                                  // ld(lipgloss.Color("#0CB37F"), ct.Guac)
+		cs.QuotedString = colours.Coral                          // ld(ct.Coral, charmtone.Salmon)
+		cs.ErrorHeader = [2]color.Color{colours.Bg, colours.Red} // ct.Butter, ct.Cherry
 		return cs
 	}
 
