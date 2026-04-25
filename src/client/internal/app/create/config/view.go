@@ -25,7 +25,7 @@ func (m *Model) View() string {
 		m.form.WithHeight(m.height - lipgloss.Height(headerSectionView) - (len(m.form.Errors()) * 2))
 		m.form.WithShowHelp(false)
 
-		// consider wordwrapping making the form height larger than it really should be
+		// consider wordwrapping, which would make the form height larger than it really should be
 		m.form.WithHeight(min(lipgloss.Height(m.form.View()), m.height-lipgloss.Height(headerSectionView)))
 
 		formSectionView = m.styles.NormalBorder(m.FormSection.Focused()).Padding(1, 2).
