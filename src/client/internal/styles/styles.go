@@ -209,7 +209,7 @@ func DefaultStyles(theme *tint.Tint) Styles {
 		borderColor := color
 		if focused {
 			if color == colours.Fg {
-				borderColor = colours.Pink
+				borderColor = lipgloss.Lighten(colours.Blue, 0.2)
 			} else {
 				borderColor = lipgloss.Lighten(borderColor, 0.1)
 			}
