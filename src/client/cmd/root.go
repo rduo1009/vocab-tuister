@@ -260,7 +260,7 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 			}
 		}
 
-		// XXX: https://github.com/charmbracelet/bubbles/pull/776 would remove need for this
+		// XXX: https://github.com/charmbracelet/bubbles/pull/954 would remove need for this
 		inbuiltListTmpDir, err := os.MkdirTemp("", "inbuilt-lists")
 		if err != nil {
 			return err
