@@ -11,7 +11,7 @@
   '''
   Invalid settings: 1 validation error for Settings
   include-similar-words
-    Field required [type=missing, input_value={'include-synonyms': True}, input_type=dict]
+    Field required [type=missing, input_value={'cache-vocab-lists': Tru...include-synonyms': True}, input_type=dict]
       For further information visit https://errors.pydantic.dev/2.13/v/missing
   '''
 # ---
