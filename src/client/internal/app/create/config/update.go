@@ -173,19 +173,21 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		cmds = append(cmds, generateSessionConfig(m.configFormValues))
 
 	case rawSessionConfigMsg:
+		if m.AppStatus == CreateSessionConfig {
+			// navigator: [..., HeaderSection, FormSection, ...]
+			cmds = append(cmds, tea.Sequence(
+				// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
+				util.MsgCmd(navigator.ReplaceNavigableMsg{
+					Target:      m.FormSection,
+					Replacement: []navigator.Navigable{m.ResetButton, m.FormSection},
+				}),
+				util.MsgCmd(navigator.FocusNavigableMsg{Target: m.FormSection}),
+			))
+		} // otherwise, the app status was already `ReviewSessionConfig` and so nothing needs to be done
+
 		m.AppStatus = ReviewSessionConfig
 		m.RawSessionConfig = string(msg)
 		m.jsonview.SetContent(m.RawSessionConfig)
-
-		// navigator: [..., HeaderSection, FormSection, ...]
-		cmds = append(cmds, tea.Sequence(
-			// now navigator: [..., HeaderSection, ResetButton, FormSection, ...]
-			util.MsgCmd(navigator.ReplaceNavigableMsg{
-				Target:      m.FormSection,
-				Replacement: []navigator.Navigable{m.ResetButton, m.FormSection},
-			}),
-			util.MsgCmd(navigator.FocusNavigableMsg{Target: m.FormSection}),
-		))
 
 	case failFormMsg:
 		m.form, m.configFormValues = defaultForm()
