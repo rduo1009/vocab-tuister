@@ -5,10 +5,14 @@ import (
 	"encoding/json/v2"
 	"fmt"
 	"os"
+	"reflect"
 	"strconv"
+	"strings"
+	"unsafe"
 
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/huh/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
@@ -132,6 +136,11 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.FilepickerActive {
 		switch msg := msg.(type) {
+		case app.OverlayMsg:
+			m.form.WithTheme(m.styles.Form)
+			setFieldThemes(m.form, m.styles.Form)
+			util.UpdaterPtr(&cmds, m.form, nil) // nudge
+
 		case filepicker.PickedMsg:
 			if msg.ID == filepickerID {
 				m.FilepickerActive = false
@@ -157,7 +166,6 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, nil
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
 			m.form, m.configFormValues = defaultForm()
-			m.form.WithTheme(m.styles.Form)
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			_, formCmd := m.form.Update(nil) // a little nudge
@@ -169,6 +177,15 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 				}),
 			)
 		}
+
+	case app.OverlayMsg:
+		m.form.WithTheme(m.styles.Form)
+		setFieldThemes(m.form, m.styles.Form)
+		if !m.FormSection.Focused() {
+			util.UpdaterPtr(&cmds, m.form, nil)
+			return m, tea.Batch(cmds...)
+		}
+
 	case formSubmittedMsg:
 		cmds = append(cmds, generateSessionConfig(m.configFormValues))
 
@@ -191,7 +208,6 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	case failFormMsg:
 		m.form, m.configFormValues = defaultForm()
-		m.form.WithTheme(m.styles.Form)
 		m.AppStatus = CreateSessionConfig
 		m.RawSessionConfig = ""
 		_, formCmd := m.form.Update(nil) // a little nudge
@@ -216,4 +232,102 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	}
 
 	return m, tea.Batch(cmds...)
+}
+
+// HACK: Very flimsy and vibe-coded solution to some quirks in huh
+// - for some reason, some huh fields cannot have their theme changed after it is first set
+//   see (https://github.com/charmbracelet/huh/commit/dadcb82)
+// - thankfully, all field structs have the unexported field 'theme' so the theme can still be changed
+// - I could have vendored huh and fixed it myself but it wasn't needed in this case.
+//   The chance that the internal api changes is very unlikely. (huh project is partially dead)
+
+// getUnexportedField retrieves an unexported field by name using reflect + unsafe.
+func getUnexportedField(v reflect.Value, name string) reflect.Value {
+	field := v.FieldByName(name)
+	// Make the unexported field readable via unsafe
+	return reflect.NewAt(field.Type(), unsafe.Pointer(field.UnsafeAddr())).Elem()
+}
+
+// setUnexportedField sets an unexported field using reflect + unsafe.
+func setUnexportedField(field, value reflect.Value) {
+	reflect.NewAt(field.Type(), unsafe.Pointer(field.UnsafeAddr())).
+		Elem().
+		Set(value)
+}
+
+// assertType panics if the type of val is not as expected.
+// This is used to detect breaking changes in unexported huh internals —
+// if the library renames or restructures its types, the check will fail
+// rather than silently producing wrong behaviour.
+func assertType(val reflect.Value, expected string) {
+	actual := val.Type().String()
+
+	normalized := strings.NewReplacer(
+		"charm.land/huh/v2", "huh",
+		"charm.land/huh", "huh",
+	).Replace(actual)
+
+	if normalized != expected {
+		panic(fmt.Sprintf(
+			"huh internals changed: expected type %q, got %q (normalized from %q)",
+			expected,
+			normalized,
+			actual,
+		))
+	}
+}
+
+// setFieldThemes overrides the 'theme' attribute of every [huh.Field] of every [huh.Group].
+// Of course, this assumes that every field has a 'theme' attribute with type [huh.Theme].
+// setFieldThemes will panic if a type is not as expected.
+//
+// setFieldThemes simulates the following code:
+//
+//	for _, group := range m.form.selector.items {
+//	    for _, field := range group.selector.items {
+//	        field.theme = m.styles.Form.Theme
+//	    }
+//	}
+func setFieldThemes(form *huh.Form, theme huh.Theme) {
+	// Get the unexported 'selector' field from Form
+	formVal := reflect.ValueOf(form).Elem()
+	formSelector := getUnexportedField(formVal, "selector")
+	assertType(formSelector, "*selector.Selector[*huh.Group]")
+
+	// Get the 'items' slice from the form's selector
+	groups := getUnexportedField(formSelector.Elem(), "items")
+	assertType(groups, "[]*huh.Group")
+
+	for i := 0; i < groups.Len(); i++ {
+		group := groups.Index(i)
+		assertType(group, "*huh.Group")
+
+		// Each item is a *Group — dereference it
+		groupElem := group.Elem()
+
+		// Get the group's selector field
+		groupSelector := getUnexportedField(groupElem, "selector")
+		assertType(groupSelector, "*selector.Selector[huh.Field]")
+
+		// Get the 'items' slice from the group's selector
+		fields := getUnexportedField(groupSelector.Elem(), "items")
+		assertType(fields, "[]huh.Field")
+
+		for j := 0; j < fields.Len(); j++ {
+			field := fields.Index(j)
+			assertType(field, "huh.Field")
+
+			// Field is an interface (huh.Field), get the concrete value
+			fieldConcrete := field.Elem()
+			if fieldConcrete.Kind() == reflect.Ptr {
+				fieldConcrete = fieldConcrete.Elem()
+			}
+
+			// Set the 'theme' field
+			themeField := getUnexportedField(fieldConcrete, "theme")
+			if themeField.IsValid() {
+				setUnexportedField(themeField, reflect.ValueOf(theme))
+			}
+		}
+	}
 }

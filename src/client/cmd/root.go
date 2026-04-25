@@ -290,7 +290,7 @@ func Execute() {
 		rootCmd,
 		fang.WithVersion(internal.Version),
 		fang.WithoutCompletions(),
-		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes().Current()).Fang),
+		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes().Current(), false).Fang),
 	); err != nil {
 		os.Exit(1)
 	}

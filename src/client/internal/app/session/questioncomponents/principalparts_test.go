@@ -49,7 +49,7 @@ func TestPrincipalParts(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -65,7 +65,7 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}
@@ -126,7 +126,7 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}
@@ -190,7 +190,7 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
 	m := modelPP{QuestionComponent: qc}

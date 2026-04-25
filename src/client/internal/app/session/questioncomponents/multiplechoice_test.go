@@ -50,7 +50,7 @@ func TestMultipleChoiceLatToEng(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -70,7 +70,7 @@ func TestMultipleChoiceEngToLat(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -90,7 +90,7 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -139,7 +139,7 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -188,7 +188,7 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -231,7 +231,7 @@ func TestMultipleChoiceNextQuestion(t *testing.T) {
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}

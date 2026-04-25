@@ -38,13 +38,14 @@ type Model struct {
 
 	// Application state
 
-	themes        *tint.Registry
-	styles        styles.StylesWrapper
-	keys          keyMap
-	navigator     *navigator.Navigator
-	vocabList     string
-	sessionConfig sessionconfig.SessionConfig
-	err           error
+	themes                *tint.Registry
+	styles                styles.StylesWrapper
+	keys                  keyMap
+	navigator             *navigator.Navigator
+	overlayExpectedActive bool
+	vocabList             string
+	sessionConfig         sessionconfig.SessionConfig
+	err                   error
 }
 
 func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
@@ -56,6 +57,8 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 	return res
 }
 
+// TODO: make method currentPageModel() returning m.pages[m.pageOrder[m.currentPage]]
+
 func New(inbuiltListDir string, serverPort int) *Model {
 	pageOrder := []pages.PageName{
 		pages.Create,
@@ -66,47 +69,54 @@ func New(inbuiltListDir string, serverPort int) *Model {
 	}
 
 	themes := styles.DefaultThemes()
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(themes.Current())}
-	chromastyles.Register(s.Editor.Chroma)
-	chromastyles.Register(s.Jsonview)
 
-	t := tabs.New(toStringers(pageOrder), 0, true, &s)
+	m := &Model{
+		currentPage: 0,
+		pageOrder:   pageOrder,
+		themes:      themes,
+		styles: styles.StylesWrapper{
+			Styles: styles.DefaultStyles(themes.Current(), false),
+		},
+	}
+
+	// now everything uses &m.styles
+	chromastyles.Register(m.styles.Editor.Chroma)
+	chromastyles.Register(m.styles.Jsonview)
+
+	m.tabs = tabs.New(toStringers(pageOrder), 0, true, &m.styles)
+
 	h := help.New()
 	overlayHelp := help.New()
 
-	createtui := create.New(inbuiltListDir, serverPort, &s)
-	reviewtui := review.New(&s)
-	// unfortunately sessiontui needs to be coupled with createtui
-	// to prevent user from starting session without loading list + config
+	createtui := create.New(inbuiltListDir, serverPort, &m.styles)
+	reviewtui := review.New(&m.styles)
+
 	sessiontui := session.New(
 		&createtui.LoadSection.ListStatus,
 		&createtui.LoadSection.ConfigStatus,
 		serverPort,
-		&s,
+		&m.styles,
 	)
-	infotui := info.New(&s)
-	settingstui := settings.New(&s)
+
+	infotui := info.New(&m.styles)
+	settingstui := settings.New(&m.styles)
+
+	m.pages = map[pages.PageName]app.PageModel{
+		pages.Create:   createtui,
+		pages.Review:   reviewtui,
+		pages.Test:     sessiontui,
+		pages.Help:     infotui,
+		pages.Settings: settingstui,
+	}
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
-	nav.Add(t)
+	nav.Add(m.tabs)
 
-	return &Model{
-		currentPage: 0,
-		pageOrder:   pageOrder,
-		pages: map[pages.PageName]app.PageModel{
-			pages.Create:   createtui,
-			pages.Review:   reviewtui,
-			pages.Test:     sessiontui,
-			pages.Help:     infotui,
-			pages.Settings: settingstui,
-		},
-		themes:      themes,
-		styles:      s,
-		tabs:        t,
-		help:        &h,
-		overlayHelp: &overlayHelp,
-		keys:        keys,
-		navigator:   nav,
-		errorDialog: errordialog.New(&s),
-	}
+	m.navigator = nav
+	m.help = &h
+	m.overlayHelp = &overlayHelp
+	m.keys = keys
+	m.errorDialog = errordialog.New(&m.styles)
+
+	return m
 }

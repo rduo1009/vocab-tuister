@@ -50,7 +50,7 @@ func TestTypeInLatToEng(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -67,7 +67,7 @@ func TestTypeInEngToLat(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -94,7 +94,7 @@ func TestTypeInCorrect(t *testing.T) {
 				MainAnswer: "foo",
 				Answers:    []string{"foo", "bar", "baz"},
 			}
-			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 			qc := NewTypeInQuestionModel(&q, &s)
 
 			m := modelTI{QuestionComponent: qc}
@@ -145,7 +145,7 @@ func TestTypeInIncorrect(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
 	m := modelTI{QuestionComponent: qc}
@@ -196,7 +196,7 @@ func TestTypeInNextQuestion(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
 	m := modelTI{QuestionComponent: qc}

@@ -3,12 +3,14 @@ package root
 import (
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
+	chromastyles "github.com/alecthomas/chroma/v2/styles"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -115,6 +117,24 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], msg)
+
+	if m.pages[m.pageOrder[m.currentPage]].HasOverlay() && !m.overlayExpectedActive {
+		m.overlayExpectedActive = true
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
+		chromastyles.Register(m.styles.Editor.Chroma)
+		chromastyles.Register(m.styles.Jsonview)
+		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(true)))
+		// XXX: Why is an additional update needed for this to work properly?
+		// Why does putting the entire if-else above the first update not work?
+		util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil) // nudge
+	} else if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() && m.overlayExpectedActive {
+		m.overlayExpectedActive = false
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
+		chromastyles.Register(m.styles.Editor.Chroma)
+		chromastyles.Register(m.styles.Jsonview)
+		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(false)))
+		util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil) // nudge
+	}
 
 	return m, tea.Batch(cmds...)
 }

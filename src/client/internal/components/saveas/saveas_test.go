@@ -77,7 +77,7 @@ func TestSaveAs(t *testing.T) {
 
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
@@ -108,7 +108,7 @@ func TestSaveAs(t *testing.T) {
 func TestSaveAsExit(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	m := model{SaveAs: sa}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -127,7 +127,7 @@ func TestSaveAsExit(t *testing.T) {
 func TestSaveAsSubmitEmptyFilename(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
@@ -157,7 +157,7 @@ func TestSaveAsSubmitEmptyFilename(t *testing.T) {
 func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s, ".csv") // Only allow .csv
 	sa.SetWidth(160)
 	sa.SetHeight(10)
@@ -190,7 +190,7 @@ func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 func TestSaveAsSubmitWithNewFile(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 
 	m := model{SaveAs: sa}
@@ -221,7 +221,7 @@ func TestSaveAsSubmitWithNewFile(t *testing.T) {
 func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
@@ -261,7 +261,7 @@ func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
@@ -307,7 +307,7 @@ func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 func TestSaveAsSetPath(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
@@ -336,7 +336,7 @@ func TestSaveAsSetPath(t *testing.T) {
 func TestSaveAsSetPathWrongID(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
@@ -366,7 +366,7 @@ func TestSaveAsSetPathWrongID(t *testing.T) {
 
 func TestSaveAsKeyMap(t *testing.T) {
 	dir := makeTempDir(t)
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 
 	km := sa.KeyMap()
@@ -378,7 +378,7 @@ func TestSaveAsKeyMap(t *testing.T) {
 func TestSaveAsViewCentred(t *testing.T) {
 	dir := makeTempDir(t)
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(40)
 	sa.SetHeight(10)

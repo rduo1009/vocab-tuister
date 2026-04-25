@@ -61,7 +61,7 @@ func TestParse(t *testing.T) {
 			Gender: endingcomponents.Neuter,
 		}},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -124,7 +124,7 @@ func TestParseCorrect(t *testing.T) {
 					Gender: endingcomponents.Feminine,
 				}},
 			}
-			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 			qc := NewParseQuestionModel(&q, &s)
 
 			m := modelPS{QuestionComponent: qc}
@@ -198,7 +198,7 @@ func TestParseIncorrect(t *testing.T) {
 			Gender: endingcomponents.Feminine,
 		}},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}
@@ -266,7 +266,7 @@ func TestParseNextQuestion(t *testing.T) {
 			Gender: endingcomponents.Neuter,
 		}},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}

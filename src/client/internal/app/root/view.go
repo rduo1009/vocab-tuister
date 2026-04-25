@@ -22,16 +22,11 @@ func (m *Model) View() tea.View {
 	pageView := currentPageModel.View()
 	fullView := lipgloss.JoinVertical(lipgloss.Left, tabsView, pageView, helpView)
 
-	var layers []*lipgloss.Layer
+	layers := []*lipgloss.Layer{lipgloss.NewLayer(fullView)}
 	if currentPageModel.HasOverlay() {
-		dimPageLayer := lipgloss.NewLayer(m.styles.Faint.Render(fullView))
-
 		overlayPageView, x, y := currentPageModel.OverlayView(m.width, m.height)
 		overlayLayer := lipgloss.NewLayer(overlayPageView).X(x).Y(y)
-
-		layers = []*lipgloss.Layer{dimPageLayer, overlayLayer}
-	} else {
-		layers = []*lipgloss.Layer{lipgloss.NewLayer(fullView)}
+		layers = append(layers, overlayLayer)
 	}
 
 	if m.errorDialog.Visible() {

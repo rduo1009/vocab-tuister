@@ -79,9 +79,16 @@ func hexColor(c color.Color) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", rgba.R, rgba.G, rgba.B)
 }
 
-func DefaultStyles(theme *tint.Tint) Styles {
-	colours := DefaultColours(theme)
+func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
+	overlayDim := func(c color.Color) color.Color {
+		if overlayActive {
+			return lipgloss.Darken(c, 0.4)
+		} else {
+			return c
+		}
+	}
 
+	colours := DefaultColours(theme)
 	s := Styles{}
 
 	s.Title = lipgloss.NewStyle().Bold(true).Underline(true)
@@ -111,32 +118,48 @@ func DefaultStyles(theme *tint.Tint) Styles {
 			style = style.Border(inactiveTabBorder, true)
 		}
 
+		var color color.Color
 		if focused {
-			style = style.BorderForeground(colours.Blue)
+			color = colours.Blue
 		} else {
-			style = style.BorderForeground(colours.Fg)
+			color = colours.Fg
 		}
+
+		color = overlayDim(color)
+
+		style = style.BorderForeground(color)
 
 		return style.Padding(0, pad)
 	}
 	s.TabGap = func(focused bool) lipgloss.Style {
-		style := lipgloss.NewStyle().Border(inactiveTabBorder, true)
+		var color color.Color
 		if focused {
-			style = style.BorderForeground(colours.Blue)
+			color = colours.Blue
 		} else {
-			style = style.BorderForeground(colours.Fg)
+			color = colours.Fg
 		}
 
-		return style.BorderTop(false).
+		color = overlayDim(color)
+
+		return lipgloss.NewStyle().
+			Border(inactiveTabBorder, true).
+			BorderTop(false).
 			BorderLeft(false).
-			BorderRight(false)
+			BorderRight(false).
+			BorderForeground(color)
 	}
 
 	s.NormalBorder = func(focused bool) lipgloss.Style {
+		var color color.Color
 		if focused {
-			return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Blue)
+			color = colours.Blue
+		} else {
+			color = colours.Fg
 		}
-		return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Fg)
+
+		color = overlayDim(color)
+
+		return lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(color)
 	}
 	s.OverlayBorder = lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(colours.Cyan)
 
@@ -144,11 +167,11 @@ func DefaultStyles(theme *tint.Tint) Styles {
 		style := lipgloss.NewStyle().Padding(0, 1)
 
 		if active {
-			style = style.Foreground(lipgloss.Color("#fff7db")).
-				Background(lipgloss.Color("#888b7e"))
+			style = style.Foreground(overlayDim(lipgloss.Color("#fff7db"))).
+				Background(overlayDim(lipgloss.Color("#888b7e")))
 		} else {
-			style = style.Foreground(lipgloss.Color("#a9a9a9")).
-				Background(lipgloss.Color("#555555"))
+			style = style.Foreground(overlayDim(lipgloss.Color("#a9a9a9"))).
+				Background(overlayDim(lipgloss.Color("#555555")))
 		}
 
 		if focused {
@@ -197,10 +220,10 @@ func DefaultStyles(theme *tint.Tint) Styles {
 		return strings.TrimRight(bar, "\n")
 	}
 
-	s.LoadSection.LabelMissing = lipgloss.NewStyle().Foreground(colours.Red)
-	s.LoadSection.LabelPending = lipgloss.NewStyle().Foreground(colours.Yellow)
-	s.LoadSection.LabelLoaded = lipgloss.NewStyle().Foreground(colours.Green)
-	s.LoadSection.LabelSep = lipgloss.NewStyle().Foreground(lipgloss.Lighten(colours.Bg, 0.3))
+	s.LoadSection.LabelMissing = lipgloss.NewStyle().Foreground(overlayDim(colours.Red))
+	s.LoadSection.LabelPending = lipgloss.NewStyle().Foreground(overlayDim(colours.Yellow))
+	s.LoadSection.LabelLoaded = lipgloss.NewStyle().Foreground(overlayDim(colours.Green))
+	s.LoadSection.LabelSep = lipgloss.NewStyle().Foreground(overlayDim(lipgloss.Lighten(colours.Bg, 0.3)))
 
 	s.SessionPage.Correct = lipgloss.NewStyle().Bold(true).Foreground(colours.Green)
 	s.SessionPage.Incorrect = lipgloss.NewStyle().Bold(true).Foreground(colours.Red)
@@ -251,68 +274,68 @@ func DefaultStyles(theme *tint.Tint) Styles {
 	s.Filepicker.Selected = s.Filepicker.Selected.Foreground(colours.Pink)
 
 	s.Editor.Theme = goeditor.DefaultTheme(theme.Dark)
-	s.Editor.NormalModeStyle = s.Editor.NormalModeStyle.Background(colours.Cyan)
-	s.Editor.InsertModeStyle = s.Editor.InsertModeStyle.Background(colours.Blue)
+	s.Editor.NormalModeStyle = s.Editor.NormalModeStyle.Background(overlayDim(colours.Cyan))
+	s.Editor.InsertModeStyle = s.Editor.InsertModeStyle.Background(overlayDim(colours.Blue))
 	styleEntryVocab := chromatint.StyleEntry(theme, false)
-	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(colours.Orange))
+	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(overlayDim(colours.Orange)))
 	styleEntryVocab[chroma.GenericStrong] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: colours.Fg, Bold: true},
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Fg), Bold: true},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.Comment] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: lipgloss.Lighten(colours.Bg, 0.3), Italic: true},
+		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Bg, 0.3)), Italic: true},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.CommentPreproc] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: lipgloss.Lighten(colours.Bg, 0.3)},
+		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Bg, 0.3))},
 		theme.Dark,
 	)
 	s.Editor.Chroma = chroma.MustNewStyle("bubbletint_vocabeditor", styleEntryVocab)
 
 	s.Form = huh.ThemeFunc(func(isDark bool) *huh.Styles {
-		formStyles := huh.ThemeCharm(theme.Dark)
-		formStyles.Focused.Title = formStyles.Focused.Title.Foreground(colours.Purple)
-		formStyles.Focused.NoteTitle = formStyles.Focused.NoteTitle.Foreground(colours.Purple)
-		formStyles.Focused.Directory = formStyles.Focused.Directory.Foreground(colours.Purple)
-		formStyles.Focused.ErrorIndicator = formStyles.Focused.ErrorIndicator.Foreground(colours.Red)
-		formStyles.Focused.ErrorMessage = formStyles.Focused.ErrorMessage.Foreground(colours.Red)
-		formStyles.Focused.SelectSelector = formStyles.Focused.SelectSelector.Foreground(colours.Pink)
-		formStyles.Focused.NextIndicator = formStyles.Focused.NextIndicator.Foreground(colours.Pink)
-		formStyles.Focused.PrevIndicator = formStyles.Focused.PrevIndicator.Foreground(colours.Pink)
-		formStyles.Focused.MultiSelectSelector = formStyles.Focused.MultiSelectSelector.Foreground(colours.Pink)
-		formStyles.Focused.SelectedOption = formStyles.Focused.SelectedOption.Foreground(colours.Green)
-		formStyles.Focused.SelectedPrefix = formStyles.Focused.SelectedPrefix.Foreground(colours.Green)
-		formStyles.Focused.UnselectedOption = formStyles.Focused.UnselectedOption.Foreground(colours.Fg)
-		formStyles.Focused.FocusedButton = formStyles.Focused.FocusedButton.Foreground(colours.Bg).
-			Background(colours.Pink)
-		formStyles.Focused.BlurredButton = formStyles.Focused.BlurredButton.Foreground(colours.Fg).
-			Background(colours.Bg)
+		fs := huh.ThemeCharm(theme.Dark)
+		fs.Focused.Title = fs.Focused.Title.Foreground(overlayDim(colours.Purple))
+		fs.Focused.NoteTitle = fs.Focused.NoteTitle.Foreground(overlayDim(colours.Purple))
+		fs.Focused.Directory = fs.Focused.Directory.Foreground(overlayDim(colours.Purple))
+		fs.Focused.ErrorIndicator = fs.Focused.ErrorIndicator.Foreground(overlayDim(colours.Red))
+		fs.Focused.ErrorMessage = fs.Focused.ErrorMessage.Foreground(overlayDim(colours.Red))
+		fs.Focused.SelectSelector = fs.Focused.SelectSelector.Foreground(overlayDim(colours.Pink))
+		fs.Focused.NextIndicator = fs.Focused.NextIndicator.Foreground(overlayDim(colours.Pink))
+		fs.Focused.PrevIndicator = fs.Focused.PrevIndicator.Foreground(overlayDim(colours.Pink))
+		fs.Focused.MultiSelectSelector = fs.Focused.MultiSelectSelector.Foreground(overlayDim(colours.Pink))
+		fs.Focused.SelectedOption = fs.Focused.SelectedOption.Foreground(overlayDim(colours.Green))
+		fs.Focused.SelectedPrefix = fs.Focused.SelectedPrefix.Foreground(overlayDim(colours.Green))
+		fs.Focused.UnselectedOption = fs.Focused.UnselectedOption.Foreground(overlayDim(colours.Fg))
+		fs.Focused.FocusedButton = fs.Focused.FocusedButton.
+			Foreground(overlayDim(colours.Bg)).
+			Background(overlayDim(colours.Pink))
+		fs.Focused.BlurredButton = fs.Focused.BlurredButton.
+			Foreground(overlayDim(colours.Fg)).
+			Background(overlayDim(colours.Bg))
 
-		formStyles.Focused.TextInput.Cursor = formStyles.Focused.TextInput.Cursor.Foreground(
-			lipgloss.Color("#f2d5cf"),
-		)
-		formStyles.Focused.TextInput.Placeholder = formStyles.Focused.TextInput.Placeholder.Foreground(
+		fs.Focused.TextInput.Cursor = fs.Focused.TextInput.Cursor.Foreground(lipgloss.Color("#f2d5cf"))
+		fs.Focused.TextInput.Placeholder = fs.Focused.TextInput.Placeholder.Foreground(
 			lipgloss.Lighten(colours.Bg, 0.2),
 		)
-		formStyles.Focused.TextInput.Prompt = formStyles.Focused.TextInput.Prompt.Foreground(colours.Pink)
+		fs.Focused.TextInput.Prompt = fs.Focused.TextInput.Prompt.Foreground(colours.Pink)
 
-		formStyles.Blurred = formStyles.Focused
-		formStyles.Blurred.Base = formStyles.Blurred.Base.BorderStyle(lipgloss.HiddenBorder())
-		formStyles.Blurred.Card = formStyles.Blurred.Base
+		fs.Blurred = fs.Focused
+		fs.Blurred.Base = fs.Blurred.Base.BorderStyle(lipgloss.HiddenBorder())
+		fs.Blurred.Card = fs.Blurred.Base
 
-		formStyles.Group.Title = formStyles.Focused.Title
-		formStyles.Group.Description = formStyles.Focused.Description
+		fs.Group.Title = fs.Focused.Title
+		fs.Group.Description = fs.Focused.Description
 
-		return formStyles
+		return fs
 	})
 
 	styleEntryJSON := chromatint.StyleEntry(theme, false)
 	styleEntryJSON[chroma.NameTag] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: colours.Purple},
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Purple)},
 		theme.Dark,
 	)
 	styleEntryJSON[chroma.LiteralNumber] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: colours.Orange},
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Orange)},
 		theme.Dark,
 	)
 	s.Jsonview = chroma.MustNewStyle("bubbletint_json", styleEntryJSON)

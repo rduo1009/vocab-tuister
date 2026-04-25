@@ -60,7 +60,7 @@ func TestView(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 
 			m := New(names, tc.active, tc.isFocused, &s)
 			m.Width = tc.width
@@ -75,7 +75,7 @@ func TestModelSelection(t *testing.T) {
 		stringer("Tab 2"),
 		stringer("Tab 3"),
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	m := New(names, 0, false, &s)
 
 	if m.active != 0 {
@@ -102,7 +102,7 @@ func TestFocusBlur(t *testing.T) {
 	names := []fmt.Stringer{
 		stringer("Tab 1"),
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current())}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	m := New(names, 0, false, &s)
 
 	if m.Focused() {
