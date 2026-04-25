@@ -113,7 +113,7 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Run test suite
-        run: go test -coverprofile=go-unit.out ./src/...
+        run: go test -coverpkg=./src/... -coverprofile=go-unit.out ./src/...
         env:
           GOEXPERIMENT: jsonv2
 
