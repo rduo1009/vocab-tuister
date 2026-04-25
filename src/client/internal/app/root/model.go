@@ -81,7 +81,6 @@ func New(inbuiltListDir string, serverPort int) *Model {
 
 	// now everything uses &m.styles
 	chromastyles.Register(m.styles.Editor.Chroma)
-	chromastyles.Register(m.styles.Jsonview)
 
 	m.tabs = tabs.New(toStringers(pageOrder), 0, true, &m.styles)
 

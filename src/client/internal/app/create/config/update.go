@@ -140,6 +140,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			m.form.WithTheme(m.styles.Form)
 			setFieldThemes(m.form, m.styles.Form)
 			util.UpdaterPtr(&cmds, m.form, nil) // nudge
+			m.jsonview.Refresh()
 
 		case filepicker.PickedMsg:
 			if msg.ID == filepickerID {
@@ -183,6 +184,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		setFieldThemes(m.form, m.styles.Form)
 		if !m.FormSection.Focused() {
 			util.UpdaterPtr(&cmds, m.form, nil)
+			m.jsonview.Refresh()
 			return m, tea.Batch(cmds...)
 		}
 

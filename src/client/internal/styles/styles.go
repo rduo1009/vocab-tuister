@@ -334,7 +334,11 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		&chromatint.StaticStyle{Fg: overlayDim(colours.Purple)},
 		theme.Dark,
 	)
-	styleEntryJSON[chroma.LiteralNumber] = chromatint.FromStyle(
+	styleEntryJSON[chroma.KeywordConstant] = chromatint.FromStyle(
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Orange)},
+		theme.Dark,
+	)
+	styleEntryJSON[chroma.LiteralNumberInteger] = chromatint.FromStyle(
 		&chromatint.StaticStyle{Fg: overlayDim(colours.Orange)},
 		theme.Dark,
 	)

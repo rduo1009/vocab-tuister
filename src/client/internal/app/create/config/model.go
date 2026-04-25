@@ -102,7 +102,7 @@ func New(styles *styles.StylesWrapper) *Model {
 		ResetButton:      &resetButton,
 		Filepicker:       fp,
 		form:             form,
-		jsonview:         jsonview.New(""),
+		jsonview:         jsonview.New("", styles),
 		styles:           styles,
 		AppStatus:        CreateSessionConfig,
 		configFormValues: values,

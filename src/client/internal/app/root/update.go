@@ -122,7 +122,6 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.overlayExpectedActive = true
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
 		chromastyles.Register(m.styles.Editor.Chroma)
-		chromastyles.Register(m.styles.Jsonview)
 		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(true)))
 		// XXX: Why is an additional update needed for this to work properly?
 		// Why does putting the entire if-else above the first update not work?
@@ -131,7 +130,6 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.overlayExpectedActive = false
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
 		chromastyles.Register(m.styles.Editor.Chroma)
-		chromastyles.Register(m.styles.Jsonview)
 		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(false)))
 		util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil) // nudge
 	}
