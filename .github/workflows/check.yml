@@ -14,10 +14,6 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
-
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -28,20 +24,21 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .tox
-          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml','uv.lock') }}
           restore-keys: |
             tox-${{ hashFiles('.python-version') }}-
 
       - name: Install tox
-        run: uv tool install --python-preference only-managed --python 3.14 tox --with tox-uv --with tox-gh
+        run: |
+          uv tool install tox \
+            --python-preference only-managed --python 3.14 \
+            --with tox-uv --with tox-gh
 
       - name: Install deps
         run: tox --notest
 
       - name: Run test suite
         run: tox --skip-pkg-install
-
-      - run: ls -a
 
       - name: Upload coverage
         uses: actions/upload-artifact@v7
@@ -59,14 +56,6 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version-file: ".python-version"
-
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -77,11 +66,12 @@ jobs:
         run: uv sync
 
       - name: Run integration tests
-        run: uv run coverage run --data-file=.coverage.python-integration --source=src -m pytest -m 'integration' -n0
+        run: |
+          uv run coverage run \
+            --data-file=.coverage.python-integration --source=src \
+            -m pytest -m 'integration' -n0
         env:
           PYTHONHASHSEED: 1
-
-      - run: ls -a
 
       - name: Upload coverage
         uses: actions/upload-artifact@v7
@@ -98,10 +88,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: "recursive"
-
-      - name: Verify go.mod file
-        run: |
-          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
       - uses: actions/setup-go@v6
         with:
@@ -126,7 +112,7 @@ jobs:
 
   coverage:
     name: combine and upload coverage
-    needs: [test-unit-python, test-integration-python, test-unit-go]
+    needs: [ test-unit-python, test-integration-python, test-unit-go ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
