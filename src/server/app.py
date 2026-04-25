@@ -91,9 +91,11 @@ def send_vocab():
     logger.info("Reading vocab file.")
     vocab_list_text = StringIO(request.get_data().decode("utf-8"))
     try:
-        # TODO: Allow user to customise whether to compress in settings
+        assert settings is not None
         vocab_list, _ = cache_vocab_file(
-            vocab_list_text, cache_folder=dirs.user_cache_path, compress=True
+            vocab_list_text,
+            cache_folder=dirs.user_cache_path,
+            compress=settings.cache_vocab_lists,
         )
     except InvalidVocabFileFormatError as e:
         logger.exception("Invalid vocab file format.")

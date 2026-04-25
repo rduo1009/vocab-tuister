@@ -1,4 +1,5 @@
 {
+  "cache-vocab-lists": true,
   "include-synonyms": true,
   "include-similar-words": true
 }

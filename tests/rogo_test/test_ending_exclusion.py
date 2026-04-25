@@ -13,7 +13,7 @@ def _to_snake(kebab: str) -> str:
     return kebab.replace("-", "_")
 
 
-settings: Settings = Settings(**{"include-synonyms": False, "include-similar-words": False})  # they're not needed
+settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": False, "include-similar-words": False})  # they're not needed
 
 default_session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,

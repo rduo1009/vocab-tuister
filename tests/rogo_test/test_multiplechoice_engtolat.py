@@ -10,7 +10,9 @@ from src.core.rogo.question_classes import MultipleChoiceEngToLatQuestion
 from src.core.rogo.type_aliases import SessionConfig, Settings
 from src.utils import contains_duplicates
 
-settings: Settings = Settings(**{"include-synonyms": False, "include-similar-words": False})  # they're not needed
+# they're not needed
+settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": False, "include-similar-words": False})
+
 
 session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,

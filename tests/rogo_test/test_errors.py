@@ -7,7 +7,8 @@ from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.exceptions import InvalidSessionConfigError
 from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings: Settings = Settings(**{"include-synonyms": True, "include-similar-words": True})  # they're not needed
+# they're not needed
+settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": False, "include-similar-words": False})
 
 session_config_no_question_type: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,

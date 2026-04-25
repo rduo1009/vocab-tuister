@@ -6,7 +6,7 @@ from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import TypeInLatToEngQuestion
 from src.core.rogo.type_aliases import SessionConfig, Settings
 
-settings: Settings = Settings(**{"include-synonyms": True, "include-similar-words": True})
+settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": True, "include-similar-words": True})
 
 session_config: SessionConfig = SessionConfig(**{
     "exclude-verb-present-active-indicative": False,
