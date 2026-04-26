@@ -302,7 +302,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	// 1. Header
 	header := "Save in: " + m.filepicker.CurrentDirectory
 	if m.err != nil {
-		header = m.styles.Error.Render(m.err.Error())
+		header = m.styles.Overlay.Error.Render(m.err.Error())
 	}
 
 	// 2. File Picker
@@ -348,7 +348,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 
 		overwriteText := fmt.Sprintf(
 			"%s\n\nFile %s already exists.\nOverwrite? (y/n)",
-			m.styles.Error.Inherit(m.styles.Bold).Render("WARNING"),
+			m.styles.Overlay.Error.Inherit(m.styles.Overlay.Bold).Render("WARNING"),
 			filepath.Base(m.pendingPath),
 		)
 

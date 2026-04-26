@@ -25,7 +25,7 @@ type Model struct {
 
 func New(styles *styles.StylesWrapper) Model {
 	viewport := viewport.New()
-	viewport.Style = styles.Error
+	viewport.Style = styles.Overlay.Error
 
 	return Model{
 		viewport: viewport,

@@ -19,11 +19,20 @@ import (
 type StylesWrapper struct{ Styles }
 
 type Styles struct {
+	Text   lipgloss.Style
 	Title  lipgloss.Style
 	Bold   lipgloss.Style
 	Italic lipgloss.Style
 	Faint  lipgloss.Style
 	Error  lipgloss.Style // red text without bolding or italics
+
+	Overlay struct {
+		Title  lipgloss.Style
+		Bold   lipgloss.Style
+		Italic lipgloss.Style
+		Faint  lipgloss.Style
+		Error  lipgloss.Style // red text without bolding or italics
+	}
 
 	TabBorder     func(active, focused bool, pad int) lipgloss.Style
 	TabGap        func(focused bool) lipgloss.Style
@@ -91,11 +100,18 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	colours := DefaultColours(theme)
 	s := Styles{}
 
-	s.Title = lipgloss.NewStyle().Bold(true).Underline(true)
-	s.Bold = lipgloss.NewStyle().Bold(true)
-	s.Italic = lipgloss.NewStyle().Italic(true)
-	s.Faint = lipgloss.NewStyle().Faint(true)
-	s.Error = lipgloss.NewStyle().Foreground(colours.Red)
+	s.Text = lipgloss.NewStyle().Foreground(overlayDim(colours.Fg))
+	s.Title = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(overlayDim(colours.Fg))
+	s.Bold = lipgloss.NewStyle().Bold(true).Foreground(overlayDim(colours.Fg))
+	s.Italic = lipgloss.NewStyle().Italic(true).Foreground(overlayDim(colours.Fg))
+	s.Faint = lipgloss.NewStyle().Faint(true).Foreground(overlayDim(colours.Fg))
+	s.Error = lipgloss.NewStyle().Foreground(overlayDim(colours.Red))
+
+	s.Overlay.Title = lipgloss.NewStyle().Bold(true).Underline(true)
+	s.Overlay.Bold = lipgloss.NewStyle().Bold(true)
+	s.Overlay.Italic = lipgloss.NewStyle().Italic(true)
+	s.Overlay.Faint = lipgloss.NewStyle().Faint(true)
+	s.Overlay.Error = lipgloss.NewStyle().Foreground(colours.Red)
 
 	inactiveTabBorder := func() lipgloss.Border {
 		b := lipgloss.RoundedBorder()
@@ -129,7 +145,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 
 		style = style.BorderForeground(color)
 
-		return style.Padding(0, pad)
+		return style.Padding(0, pad).Foreground(overlayDim(colours.Fg))
 	}
 	s.TabGap = func(focused bool) lipgloss.Style {
 		var color color.Color
@@ -276,6 +292,8 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	s.Editor.Theme = goeditor.DefaultTheme(theme.Dark)
 	s.Editor.NormalModeStyle = s.Editor.NormalModeStyle.Background(overlayDim(colours.Cyan))
 	s.Editor.InsertModeStyle = s.Editor.InsertModeStyle.Background(overlayDim(colours.Blue))
+	s.Editor.StatusLineStyle = s.Editor.StatusLineStyle.Foreground(overlayDim(theme.Fg))
+	s.Editor.CurrentLineNumberStyle = s.Editor.CurrentLineNumberStyle.Foreground(overlayDim(theme.Fg))
 	styleEntryVocab := chromatint.StyleEntry(theme, false)
 	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(overlayDim(colours.Orange)))
 	styleEntryVocab[chroma.GenericStrong] = chromatint.FromStyle(
@@ -288,6 +306,14 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	)
 	styleEntryVocab[chroma.CommentPreproc] = chromatint.FromStyle(
 		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Bg, 0.3))},
+		theme.Dark,
+	)
+	styleEntryVocab[chroma.Punctuation] = chromatint.FromStyle(
+		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Darken(colours.Fg, 0.3))},
+		theme.Dark,
+	)
+	styleEntryVocab[chroma.Name] = chromatint.FromStyle(
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Fg)},
 		theme.Dark,
 	)
 	s.Editor.Chroma = chroma.MustNewStyle("bubbletint_vocabeditor", styleEntryVocab)
@@ -340,6 +366,10 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	)
 	styleEntryJSON[chroma.LiteralNumberInteger] = chromatint.FromStyle(
 		&chromatint.StaticStyle{Fg: overlayDim(colours.Orange)},
+		theme.Dark,
+	)
+	styleEntryJSON[chroma.Punctuation] = chromatint.FromStyle(
+		&chromatint.StaticStyle{Fg: overlayDim(colours.Fg)},
 		theme.Dark,
 	)
 	s.Jsonview = chroma.MustNewStyle("bubbletint_json", styleEntryJSON)

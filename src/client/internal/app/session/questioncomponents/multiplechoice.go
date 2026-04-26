@@ -292,15 +292,17 @@ func (m *MultipleChoiceQuestionModel) View() string {
 	switch q := m.question.(type) {
 	case *questions.MultipleChoiceEngToLatQuestion:
 		promptView = fmt.Sprintf(
-			"%s to Latin: %s",
+			"%s %s %s",
 			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to Latin:"),
 			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.MultipleChoiceLatToEngQuestion:
 		promptView = fmt.Sprintf(
-			"%s to English: %s",
+			"%s %s %s",
 			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to English:"),
 			m.styles.Italic.Render(q.Prompt),
 		)
 

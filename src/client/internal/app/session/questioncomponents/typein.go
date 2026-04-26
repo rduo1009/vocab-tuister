@@ -229,20 +229,28 @@ func (m *TypeInQuestionModel) View() string {
 	switch q := m.question.(type) {
 	case *questions.TypeInEngToLatQuestion:
 		promptView = fmt.Sprintf(
-			"%s to Latin: %s",
+			"%s %s %s",
 			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to Latin:"),
 			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.TypeInLatToEngQuestion:
 		promptView = fmt.Sprintf(
-			"%s to English: %s",
+			"%s %s %s",
 			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to English:"),
 			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.ParseWordCompToLatQuestion:
-		promptView = fmt.Sprintf("What is %s in the %s?", m.styles.Italic.Render(q.Prompt), q.Components)
+		promptView = fmt.Sprintf(
+			"%s %s %s %s?",
+			m.styles.Text.Render("What is"),
+			m.styles.Italic.Render(q.Prompt),
+			m.styles.Text.Render("in the"),
+			q.Components,
+		)
 
 	default:
 		panic("unreachable")

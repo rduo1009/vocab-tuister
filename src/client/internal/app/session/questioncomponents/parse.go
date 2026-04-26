@@ -368,8 +368,9 @@ func (m *ParseQuestionModel) SetHeight(height int) {
 
 func (m *ParseQuestionModel) View() string {
 	promptView := fmt.Sprintf(
-		"%s this Latin word: %s",
+		"%s %s %s",
 		m.styles.Bold.Render("Parse"),
+		m.styles.Text.Render("this Latin word:"),
 		m.styles.Italic.Render(m.question.GetPrompt()),
 	)
 

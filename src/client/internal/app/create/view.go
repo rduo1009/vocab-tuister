@@ -102,7 +102,7 @@ func (m *Model) View() string {
 		text := statusText(status)
 		style := m.getStatusStyle(status)
 
-		labelView := label + ":"
+		labelView := m.styles.Text.Render(label + ":")
 		textView := style.Render(text)
 		symbolView := style.Render(symbol)
 

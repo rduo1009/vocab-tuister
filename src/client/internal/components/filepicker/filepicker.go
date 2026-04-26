@@ -203,7 +203,7 @@ func (m *Model) View(screenWidth, screenHeight int) (view string, x, y int) {
 
 	switch {
 	case m.err != nil:
-		b.WriteString(m.styles.Error.Render(m.err.Error()))
+		b.WriteString(m.styles.Overlay.Error.Render(m.err.Error()))
 
 	case m.selectedFile == "":
 		fmt.Fprintf(&b, "Pick a file (in %s):", m.filepicker.CurrentDirectory)

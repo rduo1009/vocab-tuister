@@ -234,8 +234,9 @@ func (m *PrincipalPartsQuestionModel) SetHeight(height int) {
 
 func (m *PrincipalPartsQuestionModel) View() string {
 	promptView := fmt.Sprintf(
-		"%s of %s",
+		"%s %s %s",
 		m.styles.Bold.Render("Principal parts"),
+		m.styles.Text.Render("of"),
 		m.styles.Italic.Render(m.question.GetPrompt()),
 	)
 

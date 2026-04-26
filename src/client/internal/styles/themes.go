@@ -4,6 +4,7 @@ import (
 	tint "github.com/lrstanley/bubbletint/v2"
 )
 
+// TODO: Light themes!
 func DefaultThemes() *tint.Registry {
 	return tint.NewRegistry(
 		tint.TintCatppuccinMocha, // reasonable default
@@ -17,6 +18,5 @@ func DefaultThemes() *tint.Registry {
 		tint.TintMaterialDark,
 		tint.TintKanagawa,
 		tint.TintRosePine,
-		// TODO: Add more!
 	)
 }

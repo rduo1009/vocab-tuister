@@ -75,6 +75,7 @@ func (m *Model) View() string {
 				100*float64(m.correctCount)/float64(m.answeredCount),
 			)
 		}
+		footerView = m.styles.Text.Render(footerView)
 
 		m.questions[m.currentIndex].SetWidth(m.width - 2)
 		m.questions[m.currentIndex].SetHeight(
