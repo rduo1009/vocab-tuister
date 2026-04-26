@@ -376,10 +376,13 @@ func (m *ParseQuestionModel) View() string {
 
 	dropdownViews := make([]string, m.numberDropdowns)
 	for i, d := range m.Dropdowns {
-		dropdownViews[i] = m.styles.Button(true, d.Focused()).
-			MarginLeft(1).
-			Width(d.GetWidth()).
-			Render(d.LastSelected.String())
+		dropdownViews[i] = m.styles.DropdownButton(
+			true,
+			d.Focused(),
+			d.LastSelected.String(),
+			d.GetWidth()-2,
+			1,
+		)
 	}
 
 	var resultView string

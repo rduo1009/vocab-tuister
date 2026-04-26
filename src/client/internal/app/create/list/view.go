@@ -30,10 +30,7 @@ func selectListText(status createListStatus) string {
 func (m *Model) View() string {
 	// Header section
 	titleView := m.styles.Bold.Render("Vocab List")
-	modeSwitchView := m.styles.Button(true, m.HeaderSection.Focused()).
-		MarginLeft(1).
-		Width(14).
-		Render(m.AppStatus.String())
+	modeSwitchView := m.styles.DropdownButton(true, m.HeaderSection.Focused(), m.AppStatus.String(), 14, 1)
 	headerSectionView := m.styles.NormalBorder(m.HeaderSection.Focused()).
 		Width(m.width).
 		Render(lipgloss.JoinHorizontal(lipgloss.Center, titleView, modeSwitchView))

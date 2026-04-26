@@ -79,7 +79,7 @@ func New[T fmt.Stringer](id string, items []T, styles *styles.StylesWrapper) *Mo
 		listItems = append(listItems, item{i})
 	}
 
-	width := maxWidth + 2
+	width := maxWidth + 4
 
 	height := min(len(items), defaultHeight)
 	if height == 0 {

@@ -34,12 +34,13 @@ type Styles struct {
 		Error  lipgloss.Style // red text without bolding or italics
 	}
 
-	TabBorder     func(active, focused bool, pad int) lipgloss.Style
-	TabGap        func(focused bool) lipgloss.Style
-	NormalBorder  func(focused bool) lipgloss.Style
-	OverlayBorder lipgloss.Style
-	Button        func(active, focused bool) lipgloss.Style
-	Scrollbar     func(height, total, visible, offset int) string
+	TabBorder      func(active, focused bool, pad int) lipgloss.Style
+	TabGap         func(focused bool) lipgloss.Style
+	NormalBorder   func(focused bool) lipgloss.Style
+	OverlayBorder  lipgloss.Style
+	Button         func(active, focused bool) lipgloss.Style
+	DropdownButton func(active, focused bool, label string, width, marginLeft int) string
+	Scrollbar      func(height, total, visible, offset int) string
 
 	LoadSection struct {
 		LabelMissing lipgloss.Style
@@ -195,6 +196,38 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		}
 
 		return style
+	}
+	s.DropdownButton = func(active, focused bool, label string, width, marginLeft int) string {
+		var fg, bg color.Color
+		if active {
+			fg = overlayDim(lipgloss.Color("#fff7db"))
+			bg = overlayDim(lipgloss.Color("#888b7e"))
+		} else {
+			fg = overlayDim(lipgloss.Color("#a9a9a9"))
+			bg = overlayDim(lipgloss.Color("#555555"))
+		}
+
+		labelStyle := lipgloss.NewStyle().
+			PaddingLeft(1).
+			Foreground(fg).
+			Background(bg).
+			Width(width)
+		if focused {
+			labelStyle = labelStyle.Italic(true).Underline(true)
+		}
+
+		caretStyle := lipgloss.NewStyle().
+			PaddingRight(1).
+			Foreground(fg).
+			Background(bg)
+
+		combined := lipgloss.JoinHorizontal(
+			lipgloss.Top,
+			labelStyle.Render(label),
+			caretStyle.Render("▼"),
+		)
+
+		return lipgloss.NewStyle().MarginLeft(marginLeft).Render(combined)
 	}
 
 	s.Scrollbar = func(height, total, visible, offset int) string {
