@@ -5,6 +5,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/filepicker"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/jsonview"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util/appdir"
 )
 
@@ -76,6 +77,7 @@ type Model struct {
 
 	// Application state
 
+	styles           *styles.StylesWrapper
 	AppStatus        createSessionConfigStatus
 	FilepickerActive bool
 	configFormValues *formValues
@@ -84,14 +86,15 @@ type Model struct {
 
 const filepickerID = "configtuiFilepicker"
 
-func New() *Model {
+func New(styles *styles.StylesWrapper) *Model {
 	form, values := defaultForm()
+	form.WithTheme(styles.Form)
 
 	headerSection := headerSection{focused: false}
 	formSection := formSection{focused: false, form: form}
 	resetButton := resetButton{focused: false}
 
-	fp := filepicker.New(filepickerID, appdir.AppDirs.UserConfig(), ".json")
+	fp := filepicker.New(filepickerID, appdir.AppDirs.UserConfig(), styles, ".json")
 
 	return &Model{
 		HeaderSection:    &headerSection,
@@ -99,7 +102,8 @@ func New() *Model {
 		ResetButton:      &resetButton,
 		Filepicker:       fp,
 		form:             form,
-		jsonview:         jsonview.New(""),
+		jsonview:         jsonview.New("", styles),
+		styles:           styles,
 		AppStatus:        CreateSessionConfig,
 		configFormValues: values,
 	}

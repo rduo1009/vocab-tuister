@@ -59,16 +59,16 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			for i, q := range msg.Questions {
 				switch q.QuestionMode() {
 				case questions.Regular:
-					m.questions[i] = questioncomponents.NewTypeInQuestionModel(q)
+					m.questions[i] = questioncomponents.NewTypeInQuestionModel(q, m.styles)
 
 				case questions.ParseWord:
-					m.questions[i] = questioncomponents.NewParseQuestionModel(q)
+					m.questions[i] = questioncomponents.NewParseQuestionModel(q, m.styles)
 
 				case questions.PrincipalParts:
-					m.questions[i] = questioncomponents.NewPrincipalPartsQuestionModel(q)
+					m.questions[i] = questioncomponents.NewPrincipalPartsQuestionModel(q, m.styles)
 
 				case questions.MultipleChoice:
-					m.questions[i] = questioncomponents.NewMultipleChoiceQuestionModel(q)
+					m.questions[i] = questioncomponents.NewMultipleChoiceQuestionModel(q, m.styles)
 				}
 			}
 
@@ -136,7 +136,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 
 		if q, ok := m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel); ok &&
 			m.dropdownActive {
-			util.UpdaterVal(&cmds, &q.Dropdowns[m.activeDropdownIndex].Dropdown, msg)
+			util.UpdaterVal(&cmds, &q.Dropdowns[m.activeDropdownIndex].Model, msg)
 		} else {
 			util.UpdaterVal(&cmds, &m.questions[m.currentIndex], msg)
 		}
@@ -151,16 +151,8 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 				m.answeredCount = 0
 				m.correctCount = 0
 
-				// return to create page
-				return m, tea.Batch(
-					util.MsgCmd(tabs.SelectTabMsg{Index: 0}),
-					util.MsgCmd(navigator.RemoveNavigableMsg{
-						Components: []navigator.Navigable{
-							m.returnButton,
-							m.restartButton,
-						},
-					}),
-				)
+				// return to create page; no need to remove navigables as this will be done anyway
+				return m, util.MsgCmd(tabs.SelectTabMsg{Index: 0})
 
 			case m.restartButton.Focused():
 				m.appStatus = Unavailable

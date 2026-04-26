@@ -5,7 +5,10 @@ import (
 	tea "charm.land/bubbletea/v2"
 )
 
-type ErrMsg error
+type (
+	ErrMsg     error
+	OverlayMsg bool
+)
 
 // ComponentModel is a variant of tea.Model which uses string views instead of `tea.View`.
 type ComponentModel interface {

@@ -6,18 +6,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-python:
-    name: test with python
+  test-unit-python:
+    name: unit test with python
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
-
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -29,12 +24,15 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .tox
-          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: tox-${{ hashFiles('.python-version') }}-${{ hashFiles('pyproject.toml','uv.lock') }}
           restore-keys: |
             tox-${{ hashFiles('.python-version') }}-
 
       - name: Install tox
-        run: uv tool install --python-preference only-managed --python 3.14 tox --with tox-uv --with tox-gh
+        run: |
+          uv tool install tox \
+            --python-preference only-managed --python 3.14 \
+            --with tox-uv --with tox-gh
 
       - name: Install deps
         run: tox --notest
@@ -42,22 +40,21 @@ jobs:
       - name: Run test suite
         run: tox --skip-pkg-install
 
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-unit-python
+          path: .coverage.python-unit
+          include-hidden-files: true
+          if-no-files-found: error
+
   test-integration-python:
     name: integration test with python
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
-
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version-file: ".python-version"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -69,20 +66,28 @@ jobs:
         run: uv sync
 
       - name: Run integration tests
-        run: uv run pytest --pythonhashseed 1 -m 'integration' -n0
+        run: |
+          uv run coverage run \
+            --data-file=.coverage.python-integration --source=src \
+            -m pytest -m 'integration' -n0
+        env:
+          PYTHONHASHSEED: 1
 
-  test-golang:
-    name: test with golang
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-integration-python
+          path: .coverage.python-integration
+          include-hidden-files: true
+          if-no-files-found: error
+
+  test-unit-go:
+    name: unit test with go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: "recursive"
-
-      - name: Verify go.mod file
-        run: |
-          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
       - uses: actions/setup-go@v6
         with:
@@ -94,7 +99,57 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Run test suite
-        run: go test ./src/...
+        run: go test -coverpkg=./src/... -coverprofile=go-unit.out ./src/...
         env:
           GOEXPERIMENT: jsonv2
 
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-unit-go
+          path: go-unit.out
+          if-no-files-found: error
+
+  coverage:
+    name: combine and upload coverage
+    needs: [ test-unit-python, test-integration-python, test-unit-go ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: "recursive"
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: .
+          pattern: coverage-*
+          merge-multiple: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: "go.mod"
+        env:
+          GOEXPERIMENT: jsonv2
+
+      - name: Combine Python coverage and generate xml report
+        run: |
+          uv run coverage combine
+          uv run coverage xml -o python-combined.xml
+
+      - name: Combine Go coverage
+        run: |
+          # TODO: e2e tests to be added later
+          go tool gocovmerge go-unit.out > go-combined.out
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          files: python-combined.xml,go-combined.out
+          token: ${{ secrets.CODECOV_TOKEN }}

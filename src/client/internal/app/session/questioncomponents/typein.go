@@ -10,26 +10,26 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 type textinputWrapper struct {
-	Textinput  textinput.Model
+	textinput.Model
 	focused    bool
 	pendingCmd tea.Cmd
 }
 
 func (ti *textinputWrapper) Focus() {
 	ti.focused = true
-	ti.pendingCmd = ti.Textinput.Focus()
+	ti.pendingCmd = ti.Model.Focus()
 }
 
 func (ti *textinputWrapper) Blur() {
 	ti.focused = false
-	ti.Textinput.Blur()
+	ti.Model.Blur()
 }
 
 func (ti *textinputWrapper) Focused() bool {
@@ -48,12 +48,13 @@ type TypeInQuestionModel struct {
 	question  questions.Question
 	textinput *textinputWrapper
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredTypeInKeyMap
 	answeredKeyMap   answeredTypeInKeyMap
 	status           QuestionStatus
 }
 
-func NewTypeInQuestionModel(question questions.Question) *TypeInQuestionModel {
+func NewTypeInQuestionModel(question questions.Question, styles *styles.StylesWrapper) *TypeInQuestionModel {
 	ti := textinput.New()
 	ti.Blur()
 
@@ -104,11 +105,16 @@ func NewTypeInQuestionModel(question questions.Question) *TypeInQuestionModel {
 
 	return &TypeInQuestionModel{
 		question:         question,
-		textinput:        &textinputWrapper{Textinput: ti},
+		textinput:        &textinputWrapper{Model: ti},
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
 	}
+}
+
+func (m *TypeInQuestionModel) Focused() bool {
+	return m.textinput.Focused()
 }
 
 type unansweredTypeInKeyMap struct {
@@ -176,7 +182,7 @@ func (m *TypeInQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.unansweredKeyMap.Submit):
 			if m.status == Unanswered {
-				correct := m.question.Check(strings.TrimSpace(m.textinput.Textinput.Value()))
+				correct := m.question.Check(strings.TrimSpace(m.textinput.Value()))
 				if correct {
 					m.status = Correct
 				} else {
@@ -204,7 +210,7 @@ func (m *TypeInQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 		}
 	}
 
-	util.UpdaterVal(&cmds, &m.textinput.Textinput, msg)
+	util.UpdaterVal(&cmds, &m.textinput.Model, msg)
 	cmds = append(cmds, m.textinput.TakePendingCmd())
 
 	return m, tea.Batch(cmds...)
@@ -223,20 +229,28 @@ func (m *TypeInQuestionModel) View() string {
 	switch q := m.question.(type) {
 	case *questions.TypeInEngToLatQuestion:
 		promptView = fmt.Sprintf(
-			"%s to Latin: %s",
-			internal.BoldStyle.Render("Translate"),
-			internal.ItalicStyle.Render(q.Prompt),
+			"%s %s %s",
+			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to Latin:"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.TypeInLatToEngQuestion:
 		promptView = fmt.Sprintf(
-			"%s to English: %s",
-			internal.BoldStyle.Render("Translate"),
-			internal.ItalicStyle.Render(q.Prompt),
+			"%s %s %s",
+			m.styles.Bold.Render("Translate"),
+			m.styles.Text.Render("to English:"),
+			m.styles.Italic.Render(q.Prompt),
 		)
 
 	case *questions.ParseWordCompToLatQuestion:
-		promptView = fmt.Sprintf("What is %s in the %s?", internal.ItalicStyle.Render(q.Prompt), q.Components)
+		promptView = fmt.Sprintf(
+			"%s %s %s %s?",
+			m.styles.Text.Render("What is"),
+			m.styles.Italic.Render(q.Prompt),
+			m.styles.Text.Render("in the"),
+			q.Components,
+		)
 
 	default:
 		panic("unreachable")
@@ -245,21 +259,21 @@ func (m *TypeInQuestionModel) View() string {
 	var inputView string
 	switch m.status {
 	case Unanswered:
-		inputView = m.textinput.Textinput.View()
+		inputView = m.textinput.View()
 
 	case Correct:
 		m.textinput.Blur()
-		s := m.textinput.Textinput.Styles()
-		s.Blurred.Text = correctStyle // the only relevant style here
-		m.textinput.Textinput.SetStyles(s)
-		inputView = m.textinput.Textinput.View()
+		s := m.textinput.Styles()
+		s.Blurred.Text = m.styles.SessionPage.Correct // the only relevant style here
+		m.textinput.SetStyles(s)
+		inputView = m.textinput.View()
 
 	case Incorrect:
 		m.textinput.Blur()
 		inputView = lipgloss.JoinHorizontal(
 			lipgloss.Top,
-			m.textinput.Textinput.View(),
-			incorrectStyle.Render(" ✕ "+m.question.GetMainAnswer().(string)),
+			m.textinput.View(),
+			m.styles.SessionPage.Incorrect.Render(" ✕ "+m.question.GetMainAnswer().(string)),
 		)
 	}
 

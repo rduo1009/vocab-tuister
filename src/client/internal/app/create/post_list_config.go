@@ -13,7 +13,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config/sessionconfig"
 )
 
 const (

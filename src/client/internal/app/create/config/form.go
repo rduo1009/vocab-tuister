@@ -5,6 +5,8 @@ import (
 	"strconv"
 
 	"charm.land/huh/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 // XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
@@ -340,9 +342,13 @@ func defaultForm() (*huh.Form, *formValues) {
 				Title("Number of options in multiple choice questions").
 				Value(&values.NumberMultipleChoiceOptionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
+					}
+
+					if x < 2 {
+						return errors.New("must be at least 2")
 					}
 					return nil
 				}),
@@ -350,14 +356,20 @@ func defaultForm() (*huh.Form, *formValues) {
 				Title("Number of questions").
 				Value(&values.NumberOfQuestionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
+					}
+
+					if x < 1 {
+						return errors.New("must be at least 1")
 					}
 					return nil
 				}),
 		),
 	)
+
+	form.SubmitCmd = util.MsgCmd(formSubmittedMsg{})
 
 	return form, values
 }

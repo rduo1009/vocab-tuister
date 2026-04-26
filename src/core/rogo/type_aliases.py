@@ -23,6 +23,7 @@ class Settings(BaseModel):
         alias_generator=_to_kebab,
     )
 
+    cache_vocab_lists: StrictBool
     include_synonyms: StrictBool
     include_similar_words: StrictBool
 

@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type stringer string
@@ -58,7 +60,9 @@ func TestView(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			m := New(names, tc.active, tc.isFocused)
+			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+
+			m := New(names, tc.active, tc.isFocused, &s)
 			m.Width = tc.width
 			golden.RequireEqual(t, []byte(m.View()))
 		})
@@ -71,8 +75,8 @@ func TestModelSelection(t *testing.T) {
 		stringer("Tab 2"),
 		stringer("Tab 3"),
 	}
-
-	m := New(names, 0, false)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	m := New(names, 0, false, &s)
 
 	if m.active != 0 {
 		t.Errorf("expected active tab 0, got %d", m.active)
@@ -98,8 +102,8 @@ func TestFocusBlur(t *testing.T) {
 	names := []fmt.Stringer{
 		stringer("Tab 1"),
 	}
-
-	m := New(names, 0, false)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	m := New(names, 0, false, &s)
 
 	if m.Focused() {
 		t.Error("expected initial focus to be false")

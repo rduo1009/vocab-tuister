@@ -43,7 +43,6 @@ jobs:
           # Check out the contributor's branch, not the base branch.
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
 
       - uses: actions/setup-go@v6
         with:

@@ -6,6 +6,7 @@ import (
 
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
+	"github.com/ionut-t/goeditor/highlighter"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
@@ -43,6 +44,12 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.ModeDropdownActive {
 		switch msg := msg.(type) {
+		case app.OverlayMsg:
+			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
+			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
+			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
+			cmds = append(cmds, cmd)
+
 		case dropdown.PickedMsg:
 			if msg.ID != modeDropdownID {
 				break
@@ -88,6 +95,12 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.FilepickerActive {
 		switch msg := msg.(type) {
+		case app.OverlayMsg:
+			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
+			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
+			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
+			cmds = append(cmds, cmd)
+
 		case filepicker.PickedMsg:
 			if msg.ID == filepickerID {
 				m.FilepickerActive = false
@@ -108,6 +121,12 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.SaveAsActive {
 		switch msg := msg.(type) {
+		case app.OverlayMsg:
+			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
+			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
+			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
+			cmds = append(cmds, cmd)
+
 		case saveas.SelectedMsg:
 			if msg.ID == saveAsID {
 				m.SaveAsActive = false
@@ -155,6 +174,10 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 		if msg.String() == "esc" {
 			return m, tea.Batch(cmds...)
 		}
+
+	case app.OverlayMsg:
+		m.VocabEditor.WithTheme(m.styles.Editor.Theme)
+		m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
 
 	case vocabListReadMsg:
 		m.VocabEditor.SetContent(string(msg))

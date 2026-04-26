@@ -19,12 +19,14 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
+	"charm.land/fang/v2"
 	"charm.land/huh/v2/spinner"
 	"github.com/spf13/cobra"
 
-	"github.com/rduo1009/vocab-tuister/src/assets"
+	"github.com/rduo1009/vocab-tuister/src/assets/inbuiltlists"
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 var (
@@ -258,14 +260,14 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 			}
 		}
 
-		// XXX: https://github.com/charmbracelet/bubbles/pull/776 would remove need for this
+		// XXX: https://github.com/charmbracelet/bubbles/pull/954 would remove need for this
 		inbuiltListTmpDir, err := os.MkdirTemp("", "inbuilt-lists")
 		if err != nil {
 			return err
 		}
 		defer os.RemoveAll(inbuiltListTmpDir)
 
-		if err := extractEmbeddedFS(assets.InbuiltLists, inbuiltListTmpDir); err != nil {
+		if err := extractEmbeddedFS(inbuiltlists.InbuiltLists, inbuiltListTmpDir); err != nil {
 			return err
 		}
 
@@ -283,7 +285,13 @@ func Execute() {
 	rootCmd.PersistentFlags().BoolVar(&noServer, "no-server", false, "do not start server - TUI only")
 	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "enable debug mode")
 
-	if err := rootCmd.Execute(); err != nil {
+	if err := fang.Execute(
+		context.Background(),
+		rootCmd,
+		fang.WithVersion(internal.Version),
+		fang.WithoutCompletions(),
+		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes().Current(), false).Fang),
+	); err != nil {
 		os.Exit(1)
 	}
 }

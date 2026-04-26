@@ -12,6 +12,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -22,18 +23,22 @@ type PrincipalPartsQuestionModel struct {
 	textinputs       []*textinputWrapper
 	numberTextinputs int
 
+	styles           *styles.StylesWrapper
 	unansweredKeyMap unansweredPrincipalPartsKeyMap
 	answeredKeyMap   answeredPrincipalPartsKeyMap
 	status           QuestionStatus
 }
 
-func NewPrincipalPartsQuestionModel(question questions.Question) *PrincipalPartsQuestionModel {
+func NewPrincipalPartsQuestionModel(
+	question questions.Question,
+	styles *styles.StylesWrapper,
+) *PrincipalPartsQuestionModel {
 	pp := question.(*questions.PrincipalPartsQuestion).PrincipalParts
 
 	tis := make([]*textinputWrapper, len(pp))
 	for i := range pp {
 		ti := textinput.New()
-		tis[i] = &textinputWrapper{Textinput: ti}
+		tis[i] = &textinputWrapper{Model: ti}
 	}
 
 	unansweredKeyMap := unansweredPrincipalPartsKeyMap{
@@ -85,10 +90,20 @@ func NewPrincipalPartsQuestionModel(question questions.Question) *PrincipalParts
 		question:         question,
 		textinputs:       tis,
 		numberTextinputs: len(pp),
+		styles:           styles,
 		unansweredKeyMap: unansweredKeyMap,
 		answeredKeyMap:   answeredKeyMap,
 		status:           Unanswered,
 	}
+}
+
+func (m *PrincipalPartsQuestionModel) Focused() bool {
+	for _, ti := range m.textinputs {
+		if ti.Focused() {
+			return true
+		}
+	}
+	return false
 }
 
 type unansweredPrincipalPartsKeyMap struct {
@@ -163,7 +178,7 @@ func (m *PrincipalPartsQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 			if m.status == Unanswered {
 				response := make([]string, m.numberTextinputs)
 				for i := range m.textinputs {
-					response[i] = m.textinputs[i].Textinput.Value()
+					response[i] = m.textinputs[i].Value()
 				}
 
 				correct := m.question.Check(response)
@@ -198,10 +213,10 @@ func (m *PrincipalPartsQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 	for _, ti := range m.textinputs {
 		if m.status != Unanswered {
 			if _, ok := msg.(tea.KeyPressMsg); !ok {
-				util.UpdaterVal(&cmds, &ti.Textinput, msg)
+				util.UpdaterVal(&cmds, &ti.Model, msg)
 			}
 		} else {
-			util.UpdaterVal(&cmds, &ti.Textinput, msg)
+			util.UpdaterVal(&cmds, &ti.Model, msg)
 			cmds = append(cmds, ti.TakePendingCmd())
 		}
 	}
@@ -219,37 +234,38 @@ func (m *PrincipalPartsQuestionModel) SetHeight(height int) {
 
 func (m *PrincipalPartsQuestionModel) View() string {
 	promptView := fmt.Sprintf(
-		"%s of %s",
-		boldStyle.Render("Principal parts"),
-		italicStyle.Render(m.question.GetPrompt()),
+		"%s %s %s",
+		m.styles.Bold.Render("Principal parts"),
+		m.styles.Text.Render("of"),
+		m.styles.Italic.Render(m.question.GetPrompt()),
 	)
 
 	tiViews := make([]string, m.numberTextinputs)
 	for i, ti := range m.textinputs {
 		switch m.status {
 		case Correct:
-			s := ti.Textinput.Styles()
-			s.Focused.Text = correctStyle
-			s.Blurred.Text = correctStyle
-			ti.Textinput.SetStyles(s)
+			s := ti.Styles()
+			s.Focused.Text = m.styles.SessionPage.Correct
+			s.Blurred.Text = m.styles.SessionPage.Correct
+			ti.SetStyles(s)
 
 		case Incorrect:
-			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Textinput.Value() != x {
-				s := ti.Textinput.Styles()
-				s.Focused.Text = incorrectStyle
-				s.Blurred.Text = incorrectStyle
-				ti.Textinput.SetStyles(s)
+			if x := m.question.GetMainAnswer().([]string)[i]; m.textinputs[i].Value() != x {
+				s := ti.Styles()
+				s.Focused.Text = m.styles.SessionPage.Incorrect
+				s.Blurred.Text = m.styles.SessionPage.Incorrect
+				ti.SetStyles(s)
 			}
 		}
 
-		tiViews[i] = ti.Textinput.View()
+		tiViews[i] = ti.View()
 	}
 
 	inputView := lipgloss.JoinVertical(lipgloss.Left, tiViews...)
 
 	var footerView string
 	if m.status == Incorrect {
-		footerView = incorrectStyle.Render(
+		footerView = m.styles.SessionPage.Incorrect.Render(
 			"✕ " + strings.Join(m.question.(*questions.PrincipalPartsQuestion).PrincipalParts, ", "),
 		)
 	}

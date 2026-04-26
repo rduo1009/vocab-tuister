@@ -935,18 +935,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-pythonhashseed"
-version = "2.0.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pytest" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b7/4c/c98aa845a47fdd67e002d215f07875e7a40ac55ea3b103ba64e50ecb6532/pytest_pythonhashseed-2.0.1.tar.gz", hash = "sha256:4076a1cb95f701a2ed23f5c201873b8e53a0bff1467f7a31450abb5a4237911a", size = 6370, upload-time = "2025-11-16T21:38:06.256Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/34/977a29ab1a0f85ddab05511fbd87bb905c67695ba84251012d0ac10672bf/pytest_pythonhashseed-2.0.1-py3-none-any.whl", hash = "sha256:141d0c9a02ab15f2ae997e39188ee77e0336b3b175da9a1894824195a0fdd1de", size = 7321, upload-time = "2025-11-16T21:38:05.153Z" },
-]
-
-[[package]]
 name = "pytest-sugar"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1339,7 +1327,6 @@ dev = [
     { name = "mypy", extra = ["faster-cache"] },
     { name = "pytest" },
     { name = "pytest-env" },
-    { name = "pytest-pythonhashseed" },
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
     { name = "rstfmt" },
@@ -1380,7 +1367,6 @@ dev = [
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.20.1" },
     { name = "pytest", specifier = "==9.0.3" },
     { name = "pytest-env", specifier = "==1.6.0" },
-    { name = "pytest-pythonhashseed", specifier = "==2.0.1" },
     { name = "pytest-sugar", specifier = "==1.1.1" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
     { name = "rstfmt", specifier = "==0.0.14" },

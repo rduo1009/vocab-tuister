@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from ...utils import set_choice
 from ..accido.endings import Adjective, Noun, Pronoun, Verb
 from ..accido.misc import (
     Case,
@@ -204,8 +203,8 @@ def generate_typein_engtolat(
 
     # Determine meaning
     raw_meaning = str(chosen_word.meaning)  # __str__ returns main ending
-    inflected_meaning = set_choice(
-        find_inflection(raw_meaning, components=ending_components)
+    inflected_meaning = find_inflection(
+        raw_meaning, components=ending_components, main=True
     )
 
     return TypeInEngToLatQuestion(

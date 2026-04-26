@@ -155,9 +155,16 @@ func (n *Navigator) Replace(target Navigable, replacement ...Navigable) error {
 	return fmt.Errorf("navigable %v to replace not found", target)
 }
 
+// Reset clears all navigable items except the first item and focuses the first item.
 func (n *Navigator) Reset() {
-	n.Items = n.Items[:1]
+	for _, item := range n.Items {
+		item.Blur()
+	}
+
+	first := n.Items[0]
+	n.Items = []Navigable{first}
 	n.CurrentIndex = 0
+	first.Focus()
 }
 
 func (n *Navigator) FocusNavigable(target Navigable) error {

@@ -1601,6 +1601,7 @@ def _find_participle_inflections(
             past_participle = _get_first_inflection(lemma, "VBN")
             return (
                 f"requiring to be {past_participle}",
+                f"needing to be {past_participle}",
                 f"to be {past_participle}",
             )
 

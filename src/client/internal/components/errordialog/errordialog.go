@@ -1,13 +1,14 @@
 package errordialog
 
 import (
-	"math"
 	"strings"
 	"time"
 
 	"charm.land/bubbles/v2/viewport"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type TimeoutMsg struct{}
@@ -19,12 +20,17 @@ type Model struct {
 	width           int
 	height          int
 	lastInteraction time.Time
+	styles          *styles.StylesWrapper
 }
 
-func New() Model {
+func New(styles *styles.StylesWrapper) Model {
+	viewport := viewport.New()
+	viewport.Style = styles.Overlay.Error
+
 	return Model{
-		viewport: viewport.New(),
+		viewport: viewport,
 		visible:  false,
+		styles:   styles,
 	}
 }
 
@@ -102,29 +108,14 @@ func (m Model) View() string {
 		return ""
 	}
 
-	borderColor := lipgloss.Color("196")
-
-	dialogStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(borderColor).
-		Width(m.width).
-		Height(m.height)
-
-	headerStyle := lipgloss.NewStyle().
-		Foreground(borderColor).
-		Bold(true).
-		Padding(0, 1).
-		Border(lipgloss.NormalBorder(), false, false, true, false).
-		BorderForeground(borderColor).
-		Width(m.width - 2)
-
-	header := headerStyle.Render("ⓧ Error") // TODO: use nerdfont with https://github.com/lrstanley/go-nf?
+	// TODO: use nerdfont with https://github.com/lrstanley/go-nf?
+	header := m.styles.ErrorDialog.Header.Width(m.width - 2).Render("ⓧ Error")
 
 	viewportView := m.viewport.View()
 
 	// Add scrollbar if needed
 	if m.viewport.TotalLineCount() > m.viewport.VisibleLineCount() {
-		scrollbar := scrollbar(
+		scrollbar := m.styles.Scrollbar(
 			m.viewport.Height(),
 			m.viewport.TotalLineCount(),
 			m.viewport.VisibleLineCount(),
@@ -142,53 +133,11 @@ func (m Model) View() string {
 
 	content := lipgloss.JoinVertical(lipgloss.Left, header, viewportView)
 
-	return dialogStyle.Render(content)
+	return m.styles.ErrorDialog.Border.Width(m.width).Height(m.height).Render(content)
 }
 
 func (m *Model) updateViewportContent() {
 	if m.err != nil {
-		style := lipgloss.NewStyle().
-			Width(m.viewport.Width()).
-			Foreground(lipgloss.Color("196")) // Red text
-		m.viewport.SetContent(style.Render(m.err.Error()))
+		m.viewport.SetContent(m.err.Error())
 	}
-}
-
-func scrollbar(height, total, visible, offset int) string {
-	if height == 0 {
-		return ""
-	}
-
-	if total <= visible {
-		return strings.TrimRight(strings.Repeat(" \n", height), "\n")
-	}
-
-	ratio := float64(height) / float64(total)
-	thumbHeight := int(math.Max(1, math.Round(float64(visible)*ratio)))
-	// Bounds check
-	thumbOffset := max(0, min(int(math.Round(float64(offset)*ratio)), height-thumbHeight))
-
-	trackStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	thumbStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("250"))
-
-	trackChar := "│"
-	thumbChar := "█"
-
-	track := trackStyle.Render(trackChar)
-	thumb := thumbStyle.Render(thumbChar)
-
-	bar := ""
-
-	var barSb185 strings.Builder
-	for i := range height {
-		if i >= thumbOffset && i < thumbOffset+thumbHeight {
-			barSb185.WriteString(thumb + "\n")
-		} else {
-			barSb185.WriteString(track + "\n")
-		}
-	}
-
-	bar += barSb185.String()
-
-	return strings.TrimRight(bar, "\n")
 }

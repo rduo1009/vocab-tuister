@@ -2,15 +2,19 @@ package jsonview
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 
 	"charm.land/bubbles/v2/help"
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/viewport"
 	tea "charm.land/bubbletea/v2"
-	"github.com/alecthomas/chroma/v2/quick"
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/formatters"
+	"github.com/alecthomas/chroma/v2/lexers"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 // Model is a bubbletea component that displays JSON content with syntax highlighting
@@ -24,17 +28,20 @@ type Model struct {
 	// highlighted is the cached syntax-highlighted version of the content
 	highlighted string
 	// keys contains the keybindings for navigation
+
+	styles *styles.StylesWrapper
 }
 
 // New creates a new JSON viewer component with the given JSON content.
 // The viewport must be sized using SetWidth and SetHeight before use.
-func New(jsonContent string) *Model {
+func New(jsonContent string, styles *styles.StylesWrapper) *Model {
 	// Create a new viewport without initial dimensions
 	vp := viewport.New()
 
 	return &Model{
 		content:  jsonContent,
 		viewport: vp,
+		styles:   styles,
 	}
 }
 
@@ -75,6 +82,11 @@ func (m *Model) SetWidth(width int) {
 func (m *Model) SetHeight(height int) {
 	m.viewport.SetHeight(height)
 	// Refresh content with the new height
+	m.viewport.SetContent(m.getHighlightedContent())
+}
+
+func (m *Model) Refresh() {
+	m.highlighted = ""
 	m.viewport.SetContent(m.getHighlightedContent())
 }
 
@@ -119,6 +131,25 @@ func (m *Model) SetContent(jsonContent string) {
 	m.viewport.GotoTop()
 }
 
+func highlightJSON(buf *bytes.Buffer, content string, style *chroma.Style) error {
+	lexer := lexers.Get("json")
+	if lexer == nil {
+		lexer = lexers.Fallback
+	}
+
+	iterator, err := lexer.Tokenise(nil, content)
+	if err != nil {
+		return err
+	}
+
+	formatter := formatters.Get("terminal256")
+	if formatter == nil {
+		return fmt.Errorf("formatter not found")
+	}
+
+	return formatter.Format(buf, style, iterator)
+}
+
 // getHighlightedContent returns the syntax-highlighted version of the JSON content.
 // It caches the result to avoid re-highlighting on every render. The highlighting
 // uses the chroma library with the terminal256 formatter and monokai theme.
@@ -131,8 +162,7 @@ func (m *Model) getHighlightedContent() string {
 
 	// Use chroma to syntax highlight the JSON
 	var buf bytes.Buffer
-
-	err := quick.Highlight(&buf, m.content, "json", "terminal256", "monokai")
+	err := highlightJSON(&buf, m.content, m.styles.Jsonview)
 	if err != nil {
 		// If highlighting fails for any reason, fall back to plain text
 		// This ensures the component is resilient to highlighting errors

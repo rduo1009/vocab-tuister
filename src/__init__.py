@@ -2,13 +2,13 @@
 
 # pyright: reportAttributeAccessIssue=false
 
-import os as _os
+import os
 
-_seed = _os.getenv("VOCAB_TUISTER_RANDOM_SEED")
+_seed = os.getenv("VOCAB_TUISTER_RANDOM_SEED")
 if _seed is not None:
     import random
-    import sys as _sys
-    import types as _types
+    import sys
+    import types
 
     try:
         _seed_value = int(_seed)
@@ -17,7 +17,7 @@ if _seed is not None:
             f"Invalid seed value: {_seed}. Must be an integer."
         ) from e
 
-    _custom_random = _types.ModuleType("random")
+    _custom_random = types.ModuleType("random")
     _custom_random_class = random.Random(_seed_value)
 
     _custom_random.Random = random.Random
@@ -33,16 +33,18 @@ if _seed is not None:
     _custom_random.sample = _custom_random_class.sample
     _custom_random.shuffle = _custom_random_class.shuffle
 
-    _sys.modules["random"] = _custom_random
+    _custom_random.getrandbits = _custom_random_class.getrandbits
 
-import dunamai as _dunamai
+    sys.modules["random"] = _custom_random
+
+import dunamai
 
 from . import core, server
 
 try:
-    __version__ = _dunamai.get_version(
-        "src", third_choice=_dunamai.Version.from_any_vcs
-    ).serialize()
+    __version__ = dunamai.get_version(
+        "src", third_choice=dunamai.Version.from_any_vcs
+    ).serialize(style=dunamai.Style.SemVer)
 except RuntimeError:
     import sys as _sys
 

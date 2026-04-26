@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type model struct {
@@ -48,6 +49,8 @@ type Option string
 func (o Option) String() string {
 	return string(o)
 }
+
+// TODO: Just have it be options []fmt.Stringer
 
 var optionStrings = []string{
 	"Apple",
@@ -86,7 +89,8 @@ func TestDropdown(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	dropdown := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	dropdown := dropdown.New(id, options, &s)
 	m := model{Dropdown: dropdown}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -109,7 +113,8 @@ func TestDropdownTyping(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -135,7 +140,8 @@ func TestDropdownExit(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -150,13 +156,14 @@ func TestDropdownExit(t *testing.T) {
 	assert.Equal(t, dropdown.ExitMsg{ID: id}, tm.FinalModel(t).(model).CurrentMsg)
 }
 
-func TestDropdownCeiling(t *testing.T) {
+func TestDropdownLoop(t *testing.T) {
 	options := make([]fmt.Stringer, len(optionStrings))
 	for i, v := range optionStrings {
 		options[i] = Option(v)
 	}
 
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -165,43 +172,14 @@ func TestDropdownCeiling(t *testing.T) {
 		}
 	})
 
-	for range 12 {
-		tm.Send(upKey)
+	for range 10 {
+		tm.Send(downKey)
 	}
 
 	tm.Send(enterKey)
 
 	assert.Equal(t, dropdown.PickedMsg{ID: id, ChosenItem: options[0]}, tm.FinalModel(t).(model).CurrentMsg)
 	assert.Equal(t, options[0].String(), m.Dropdown.LastSelected.String())
-}
-
-func TestDropdownFloor(t *testing.T) {
-	options := make([]fmt.Stringer, len(optionStrings))
-	for i, v := range optionStrings {
-		options[i] = Option(v)
-	}
-
-	d := dropdown.New(id, options)
-	m := model{Dropdown: d}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
-		}
-	})
-
-	for range 12 {
-		tm.Send(downKey)
-	}
-
-	tm.Send(enterKey)
-
-	assert.Equal(
-		t,
-		dropdown.PickedMsg{ID: id, ChosenItem: options[len(options)-1]},
-		tm.FinalModel(t).(model).CurrentMsg,
-	)
-	assert.Equal(t, options[len(options)-1].String(), m.Dropdown.LastSelected.String())
 }
 
 func TestDropdownPickOption(t *testing.T) {
@@ -211,7 +189,8 @@ func TestDropdownPickOption(t *testing.T) {
 	}
 
 	for i, o := range options {
-		d := dropdown.New(id, options)
+		s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+		d := dropdown.New(id, options, &s)
 		m := model{Dropdown: d}
 		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 
@@ -234,7 +213,8 @@ func TestDropdownSetWidth(t *testing.T) {
 	for i, v := range optionStrings {
 		options[i] = Option(v)
 	}
-	d := dropdown.New(id, options)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	d := dropdown.New(id, options, &s)
 	d.SetWidth(10)
 	assert.Equal(t, 10, d.GetWidth())
 }
