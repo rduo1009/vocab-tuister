@@ -200,7 +200,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	s.DropdownButton = func(active, focused bool, label string, width, marginLeft int) string {
 		var fg, bg color.Color
 		if active {
-			fg = overlayDim(lipgloss.Color("#fff7db"))
+			fg = overlayDim(colours.Fg)
 			bg = overlayDim(lipgloss.Color("#888b7e"))
 		} else {
 			fg = overlayDim(lipgloss.Color("#a9a9a9"))
@@ -300,9 +300,15 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 
 	s.Dropdown.Item = func(selected bool) lipgloss.Style {
 		if selected {
-			return lipgloss.NewStyle().Background(lipgloss.Color("#a7a7a7")).Padding(0, 1)
+			return lipgloss.NewStyle().
+				Foreground(colours.Fg).
+				Background(lipgloss.Color("#888b7e")).
+				Padding(0, 1)
 		}
-		return lipgloss.NewStyle().Background(lipgloss.Color("#707070")).Padding(0, 1)
+		return lipgloss.NewStyle().
+			Foreground(colours.Fg).
+			Background(lipgloss.Color("#707070")).
+			Padding(0, 1)
 	}
 
 	s.ErrorDialog.Border = lipgloss.NewStyle().
