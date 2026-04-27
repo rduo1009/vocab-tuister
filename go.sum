@@ -67,8 +67,8 @@ github.com/hexops/gotextdiff v1.0.3 h1:gitA9+qJrrTCsiCl7+kh75nPqQt1cx4ZkudSTLoUq
 github.com/hexops/gotextdiff v1.0.3/go.mod h1:pSWU5MAI3yDq+fZBTazCSJysOMbxWL1BSow5/V2vxeg=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
-github.com/ionut-t/goeditor v0.4.10 h1:cBoZKC+Wt3axWqqDNoyOXEGqlLKtU80nKAGSF6djwps=
-github.com/ionut-t/goeditor v0.4.10/go.mod h1:sVMC8y3eupOdNaNr1Tb4sF/O+sm6PbXgpBQxg+AckEI=
+github.com/ionut-t/goeditor v0.4.12 h1:KKrvJpM/JYySaB3wRtIgJJIlqSXQCJSL7szbgQXwP7g=
+github.com/ionut-t/goeditor v0.4.12/go.mod h1:sVMC8y3eupOdNaNr1Tb4sF/O+sm6PbXgpBQxg+AckEI=
 github.com/komuw/ote v0.0.12 h1:ibETzqPe3whkDo1TW5z2c2XAxB8T4mPD/e7Tr3rwwSU=
 github.com/komuw/ote v0.0.12/go.mod h1:SlHXt+QSQxxCVe8gPu+FEti+uokRczeJpL8TveIwb+E=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
