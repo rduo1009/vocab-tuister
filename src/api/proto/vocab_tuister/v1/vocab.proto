@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package vocab_tuister.v1;
+
+message VocabList {
+  repeated string entries = 1;
+}
