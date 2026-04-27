@@ -33,25 +33,25 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "basedpyright==1.39.0",
-  "coverage==7.13.5",
-  "doc8==2.0.0",
-  "griffe==2.0.2",
-  "icecream==2.2.0",
-  "interrogate==1.7.0",
-  "mypy[faster-cache]==1.20.1",
-  "pytest==9.0.3",
-  "pytest-env==1.6.0",
-  "pytest-sugar==1.1.1",
-  "pytest-xdist==3.8.0",
-  "rstfmt==0.0.14",
-  "ruff==0.15.10",
-  "syrupy==5.1.0",
+  "basedpyright>=1.39.0",
+  "coverage>=7.13.5",
+  "doc8>=2.0.0",
+  "griffe>=2.0.2",
+  "icecream>=2.2.0",
+  "interrogate>=1.7.0",
+  "mypy[faster-cache]>=1.20.1",
+  "pytest>=9.0.3",
+  "pytest-env>=1.6.0",
+  "pytest-sugar>=1.1.1",
+  "pytest-xdist>=3.8.0",
+  "rstfmt>=0.0.14",
+  "ruff>=0.15.10",
+  "syrupy>=5.1.0",
 ]
 types = [
-  "optype==0.17.0",
-  "types-regex==2026.4.4.20260408",
-  "types-waitress==3.0.1.20260408",
+  "optype>=0.17.0",
+  "types-regex>=2026.4.4.20260408",
+  "types-waitress>=3.0.1.20260408",
 ]
 
 [tool.hatch]

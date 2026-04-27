@@ -1358,25 +1358,25 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "basedpyright", specifier = "==1.39.0" },
-    { name = "coverage", specifier = "==7.13.5" },
-    { name = "doc8", specifier = "==2.0.0" },
-    { name = "griffe", specifier = "==2.0.2" },
-    { name = "icecream", specifier = "==2.2.0" },
-    { name = "interrogate", specifier = "==1.7.0" },
-    { name = "mypy", extras = ["faster-cache"], specifier = "==1.20.1" },
-    { name = "pytest", specifier = "==9.0.3" },
-    { name = "pytest-env", specifier = "==1.6.0" },
-    { name = "pytest-sugar", specifier = "==1.1.1" },
-    { name = "pytest-xdist", specifier = "==3.8.0" },
-    { name = "rstfmt", specifier = "==0.0.14" },
-    { name = "ruff", specifier = "==0.15.10" },
-    { name = "syrupy", specifier = "==5.1.0" },
+    { name = "basedpyright", specifier = ">=1.39.0" },
+    { name = "coverage", specifier = ">=7.13.5" },
+    { name = "doc8", specifier = ">=2.0.0" },
+    { name = "griffe", specifier = ">=2.0.2" },
+    { name = "icecream", specifier = ">=2.2.0" },
+    { name = "interrogate", specifier = ">=1.7.0" },
+    { name = "mypy", extras = ["faster-cache"], specifier = ">=1.20.1" },
+    { name = "pytest", specifier = ">=9.0.3" },
+    { name = "pytest-env", specifier = ">=1.6.0" },
+    { name = "pytest-sugar", specifier = ">=1.1.1" },
+    { name = "pytest-xdist", specifier = ">=3.8.0" },
+    { name = "rstfmt", specifier = ">=0.0.14" },
+    { name = "ruff", specifier = ">=0.15.10" },
+    { name = "syrupy", specifier = ">=5.1.0" },
 ]
 types = [
-    { name = "optype", specifier = "==0.17.0" },
-    { name = "types-regex", specifier = "==2026.4.4.20260408" },
-    { name = "types-waitress", specifier = "==3.0.1.20260408" },
+    { name = "optype", specifier = ">=0.17.0" },
+    { name = "types-regex", specifier = ">=2026.4.4.20260408" },
+    { name = "types-waitress", specifier = ">=3.0.1.20260408" },
 ]
 
 [[package]]
