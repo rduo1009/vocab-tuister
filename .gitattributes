@@ -2,3 +2,4 @@
 *.golden -text
 
 src/_vendor/** linguist-vendored
+*_p2p.py linguist-generated
