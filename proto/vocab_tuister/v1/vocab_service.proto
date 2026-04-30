@@ -19,6 +19,7 @@ service VocabTesterService {
 message VerifyVocabRequest {
   string vocab_text = 1;
 }
+
 message VerifyVocabResponse {
   bool ok = 1;
   string error_message = 2;
