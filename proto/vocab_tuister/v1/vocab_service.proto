@@ -3,13 +3,12 @@ syntax = "proto3";
 package vocab_tuister.v1;
 
 import "vocab_tuister/v1/question.proto";
-import "vocab_tuister/v1/session.proto";
-import "vocab_tuister/v1/vocab.proto";
+import "vocab_tuister/v1/sessionconfig.proto";
+import "vocab_tuister/v1/vocablist.proto";
 
-// TODO:
-// option go_package = "github.com/yourrepo/project/gen/proto/vocabservice;vocabservice";
+option go_package = "github.com/rduo1009/vocab-tuister/src/client/internal/pb;pb";
 
-service VocabService {
+service VocabTesterService {
   rpc VerifyVocab(VerifyVocabRequest) returns (VerifyVocabResponse);
 
   rpc VerifyConfig(VerifyConfigRequest) returns (VerifyConfigResponse);

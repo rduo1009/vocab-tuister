@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package vocab_tuister.v1;
 
+option go_package = "github.com/rduo1009/vocab-tuister/src/client/internal/pb;pb";
+
 message VocabList {
   repeated string entries = 1;
 }

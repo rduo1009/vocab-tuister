@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package vocab_tuister.v1;
+
+import "vocab_tuister/v1/endingcomponents.proto";
+
+option go_package = "github.com/rduo1009/vocab-tuister/src/client/internal/pb;pb";
+
+message MultipleChoiceEngToLatQuestion {
+  string prompt = 1;
+  string answer = 2;
+  repeated string choices = 3;
+}
+
+message MultipleChoiceLatToEngQuestion {
+  string prompt = 1;
+  string answer = 2;
+  repeated string choices = 3;
+}
+
+message ParseWordCompToLatQuestion {
+  repeated string answers = 1;
+  EndingComponents components = 2;
+  string main_answer = 3;
+  string prompt = 4;
+}
+
+message ParseWordLatToCompQuestion {
+  repeated EndingComponents answers = 1;
+  string dictionary_entry = 2;
+  EndingComponents main_answer = 3;
+  string prompt = 4;
+}
+
+message PrincipalPartsQuestion {
+  repeated string principal_parts = 1;
+  string prompt = 2;
+}
+
+message TypeInEngToLatQuestion {
+  repeated string answers = 1;
+  string main_answer = 2;
+  string prompt = 3;
+}
+
+message TypeInLatToEngQuestion {
+  repeated string answers = 1;
+  string main_answer = 2;
+  string prompt = 3;
+}
+
+message Question {
+  oneof kind {
+    MultipleChoiceEngToLatQuestion mc_eng_to_lat = 1;
+    MultipleChoiceLatToEngQuestion mc_lat_to_eng = 2;
+    ParseWordCompToLatQuestion parse_comp_to_lat = 3;
+    ParseWordLatToCompQuestion parse_lat_to_comp = 4;
+    PrincipalPartsQuestion principal_parts = 5;
+    TypeInEngToLatQuestion type_in_eng_to_lat = 6;
+    TypeInLatToEngQuestion type_in_lat_to_eng = 7;
+  }
+}

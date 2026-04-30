@@ -1,0 +1,22 @@
+version: v2
+
+plugins:
+  # Go protobuf
+  - remote: buf.build/protocolbuffers/go
+    out: src/client/internal/pb
+    opt:
+      - paths=source_relative
+
+  # Go gRPC
+  - remote: buf.build/grpc/go
+    out: src/client/internal/pb
+    opt:
+      - paths=source_relative
+
+  # Python protobuf
+  - remote: buf.build/protocolbuffers/python
+    out: src/pb
+
+  # Python gRPC
+  - remote: buf.build/grpc/python
+    out: src/pb

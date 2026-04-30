@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package vocab_tuister.v1;
 
+option go_package = "github.com/rduo1009/vocab-tuister/src/client/internal/pb;pb";
+
 message SessionConfig {
   bool exclude_adjectives = 1; // p2p: {"alias": "exclude-adjectives"}
   bool exclude_adjective_212_declension = 2; // p2p: {"alias": "exclude-adjective-212-declension"}

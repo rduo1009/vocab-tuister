@@ -37,7 +37,7 @@ if ($IsWindows) {
 
 $version = Get-Content '__version__.txt'
 go mod tidy
-go generate -x ./...; if (-not (git diff --quiet)) { Write-Error 'Error: Code changes after go generate.'; exit 1 }
+poe generate -x ./...; if (-not (git diff --quiet)) { Write-Error 'Error: Code changes after go generate.'; exit 1 }
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
     -o ".\dist\vocab-tuister-$clientbin_name.exe" `

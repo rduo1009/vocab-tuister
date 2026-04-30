@@ -74,7 +74,7 @@ cache-keys = [
 [tool.ruff]
 target-version = "py314"
 line-length = 79
-exclude = [ "src/_vendor/**" ]
+exclude = [ "src/_vendor/**", "src/pb" ]
 unsafe-fixes = true
 format.preview = true
 format.indent-style = "space"
@@ -171,7 +171,7 @@ fallback-version = "0.0.0"
 
 [tool.basedpyright]
 include = [ "src", "tests", "stubs" ]
-exclude = [ "src/_build", "src/_vendor", "tests/conftest.py" ]
+exclude = [ "src/_build", "src/_vendor", "tests/conftest.py", "src/pb" ]
 stubPath = "stubs"
 extraPaths = [ "./src" ]
 reportImportCycles = "information"
