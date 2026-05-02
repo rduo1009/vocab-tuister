@@ -10,7 +10,8 @@ from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordLatToCompQuestion
-from src.core.rogo.type_aliases import SessionConfig, Settings
+from src.core.rogo.type_aliases import Settings
+from src.pb.vocab_tuister.v1.sessionconfig_p2p import SessionConfig
 
 # they're not needed
 settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": False, "include-similar-words": False})

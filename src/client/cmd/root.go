@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/fs"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -22,6 +21,9 @@ import (
 	"charm.land/fang/v2"
 	"charm.land/huh/v2/spinner"
 	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/rduo1009/vocab-tuister/src/assets/inbuiltlists"
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
@@ -159,6 +161,29 @@ func extractEmbeddedFS(efs embed.FS, target string) error {
 	})
 }
 
+func checkGRPCHealth(port int) bool {
+	conn, err := grpc.NewClient(
+		fmt.Sprintf("127.0.0.1:%d", port),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		return false
+	}
+	defer conn.Close()
+
+	client := healthpb.NewHealthClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
+	defer cancel()
+
+	resp, err := client.Check(ctx, &healthpb.HealthCheckRequest{})
+	if err != nil {
+		return false
+	}
+
+	return resp.Status == healthpb.HealthCheckResponse_SERVING
+}
+
 var rootCmd = &cobra.Command{
 	Version:      internal.Version,
 	Use:          "vocab-tuister",
@@ -237,15 +262,8 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 							return
 
 						case <-ticker.C:
-							resp, err := http.Get(
-								fmt.Sprintf("http://127.0.0.1:%d/health", serverPort),
-							)
-							if err == nil {
-								resp.Body.Close()
-
-								if resp.StatusCode == http.StatusOK {
-									return
-								}
+							if checkGRPCHealth(serverPort) {
+								return
 							}
 						}
 					}

@@ -30,7 +30,7 @@ const (
 type VocabTesterServiceClient interface {
 	VerifyVocab(ctx context.Context, in *VerifyVocabRequest, opts ...grpc.CallOption) (*VerifyVocabResponse, error)
 	VerifyConfig(ctx context.Context, in *VerifyConfigRequest, opts ...grpc.CallOption) (*VerifyConfigResponse, error)
-	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
+	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CreateSessionResponse], error)
 }
 
 type vocabTesterServiceClient struct {
@@ -61,15 +61,24 @@ func (c *vocabTesterServiceClient) VerifyConfig(ctx context.Context, in *VerifyC
 	return out, nil
 }
 
-func (c *vocabTesterServiceClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error) {
+func (c *vocabTesterServiceClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CreateSessionResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateSessionResponse)
-	err := c.cc.Invoke(ctx, VocabTesterService_CreateSession_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &VocabTesterService_ServiceDesc.Streams[0], VocabTesterService_CreateSession_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[CreateSessionRequest, CreateSessionResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type VocabTesterService_CreateSessionClient = grpc.ServerStreamingClient[CreateSessionResponse]
 
 // VocabTesterServiceServer is the server API for VocabTesterService service.
 // All implementations must embed UnimplementedVocabTesterServiceServer
@@ -77,7 +86,7 @@ func (c *vocabTesterServiceClient) CreateSession(ctx context.Context, in *Create
 type VocabTesterServiceServer interface {
 	VerifyVocab(context.Context, *VerifyVocabRequest) (*VerifyVocabResponse, error)
 	VerifyConfig(context.Context, *VerifyConfigRequest) (*VerifyConfigResponse, error)
-	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
+	CreateSession(*CreateSessionRequest, grpc.ServerStreamingServer[CreateSessionResponse]) error
 	mustEmbedUnimplementedVocabTesterServiceServer()
 }
 
@@ -94,8 +103,8 @@ func (UnimplementedVocabTesterServiceServer) VerifyVocab(context.Context, *Verif
 func (UnimplementedVocabTesterServiceServer) VerifyConfig(context.Context, *VerifyConfigRequest) (*VerifyConfigResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method VerifyConfig not implemented")
 }
-func (UnimplementedVocabTesterServiceServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateSession not implemented")
+func (UnimplementedVocabTesterServiceServer) CreateSession(*CreateSessionRequest, grpc.ServerStreamingServer[CreateSessionResponse]) error {
+	return status.Error(codes.Unimplemented, "method CreateSession not implemented")
 }
 func (UnimplementedVocabTesterServiceServer) mustEmbedUnimplementedVocabTesterServiceServer() {}
 func (UnimplementedVocabTesterServiceServer) testEmbeddedByValue()                            {}
@@ -154,23 +163,16 @@ func _VocabTesterService_VerifyConfig_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VocabTesterService_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateSessionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _VocabTesterService_CreateSession_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(CreateSessionRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(VocabTesterServiceServer).CreateSession(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: VocabTesterService_CreateSession_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VocabTesterServiceServer).CreateSession(ctx, req.(*CreateSessionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(VocabTesterServiceServer).CreateSession(m, &grpc.GenericServerStream[CreateSessionRequest, CreateSessionResponse]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type VocabTesterService_CreateSessionServer = grpc.ServerStreamingServer[CreateSessionResponse]
 
 // VocabTesterService_ServiceDesc is the grpc.ServiceDesc for VocabTesterService service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -187,11 +189,13 @@ var VocabTesterService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "VerifyConfig",
 			Handler:    _VocabTesterService_VerifyConfig_Handler,
 		},
+	},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "CreateSession",
-			Handler:    _VocabTesterService_CreateSession_Handler,
+			StreamName:    "CreateSession",
+			Handler:       _VocabTesterService_CreateSession_Handler,
+			ServerStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "vocab_tuister/v1/vocab_service.proto",
 }

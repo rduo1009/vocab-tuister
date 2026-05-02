@@ -13,10 +13,9 @@ plugins:
     opt:
       - paths=source_relative
 
-  # Python protobuf
-  - remote: buf.build/protocolbuffers/python
+  # Python
+  - local: ./src/scripts/protoc-gen-python_betterproto2
     out: src/pb
-
-  # Python gRPC
-  - remote: buf.build/grpc/python
-    out: src/pb
+    opt:
+      - pydantic_dataclasses
+      - server_generation=async

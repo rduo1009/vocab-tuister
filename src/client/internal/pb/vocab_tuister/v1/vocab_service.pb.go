@@ -67,8 +67,6 @@ func (x *VerifyVocabRequest) GetVocabText() string {
 
 type VerifyVocabResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ok            bool                   `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
-	ErrorMessage  string                 `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -103,24 +101,10 @@ func (*VerifyVocabResponse) Descriptor() ([]byte, []int) {
 	return file_vocab_tuister_v1_vocab_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *VerifyVocabResponse) GetOk() bool {
-	if x != nil {
-		return x.Ok
-	}
-	return false
-}
-
-func (x *VerifyVocabResponse) GetErrorMessage() string {
-	if x != nil {
-		return x.ErrorMessage
-	}
-	return ""
-}
-
 type VerifyConfigRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	NumberOfQuestions int32                  `protobuf:"varint,1,opt,name=number_of_questions,json=numberOfQuestions,proto3" json:"number_of_questions,omitempty"`
-	Config            *SessionConfig         `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	SessionConfig     *SessionConfig         `protobuf:"bytes,2,opt,name=session_config,json=sessionConfig,proto3" json:"session_config,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -162,17 +146,15 @@ func (x *VerifyConfigRequest) GetNumberOfQuestions() int32 {
 	return 0
 }
 
-func (x *VerifyConfigRequest) GetConfig() *SessionConfig {
+func (x *VerifyConfigRequest) GetSessionConfig() *SessionConfig {
 	if x != nil {
-		return x.Config
+		return x.SessionConfig
 	}
 	return nil
 }
 
 type VerifyConfigResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ok            bool                   `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
-	ErrorMessage  string                 `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -207,25 +189,11 @@ func (*VerifyConfigResponse) Descriptor() ([]byte, []int) {
 	return file_vocab_tuister_v1_vocab_service_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *VerifyConfigResponse) GetOk() bool {
-	if x != nil {
-		return x.Ok
-	}
-	return false
-}
-
-func (x *VerifyConfigResponse) GetErrorMessage() string {
-	if x != nil {
-		return x.ErrorMessage
-	}
-	return ""
-}
-
 type CreateSessionRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	Vocab             *VocabList             `protobuf:"bytes,1,opt,name=vocab,proto3" json:"vocab,omitempty"`
+	VocabList         string                 `protobuf:"bytes,1,opt,name=vocab_list,json=vocabList,proto3" json:"vocab_list,omitempty"`
 	NumberOfQuestions int32                  `protobuf:"varint,2,opt,name=number_of_questions,json=numberOfQuestions,proto3" json:"number_of_questions,omitempty"`
-	Config            *SessionConfig         `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
+	SessionConfig     *SessionConfig         `protobuf:"bytes,3,opt,name=session_config,json=sessionConfig,proto3" json:"session_config,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -260,11 +228,11 @@ func (*CreateSessionRequest) Descriptor() ([]byte, []int) {
 	return file_vocab_tuister_v1_vocab_service_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *CreateSessionRequest) GetVocab() *VocabList {
+func (x *CreateSessionRequest) GetVocabList() string {
 	if x != nil {
-		return x.Vocab
+		return x.VocabList
 	}
-	return nil
+	return ""
 }
 
 func (x *CreateSessionRequest) GetNumberOfQuestions() int32 {
@@ -274,16 +242,16 @@ func (x *CreateSessionRequest) GetNumberOfQuestions() int32 {
 	return 0
 }
 
-func (x *CreateSessionRequest) GetConfig() *SessionConfig {
+func (x *CreateSessionRequest) GetSessionConfig() *SessionConfig {
 	if x != nil {
-		return x.Config
+		return x.SessionConfig
 	}
 	return nil
 }
 
 type CreateSessionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Questions     []*Question            `protobuf:"bytes,1,rep,name=questions,proto3" json:"questions,omitempty"`
+	Question      *Question              `protobuf:"bytes,1,opt,name=question,proto3" json:"question,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -318,9 +286,9 @@ func (*CreateSessionResponse) Descriptor() ([]byte, []int) {
 	return file_vocab_tuister_v1_vocab_service_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateSessionResponse) GetQuestions() []*Question {
+func (x *CreateSessionResponse) GetQuestion() *Question {
 	if x != nil {
-		return x.Questions
+		return x.Question
 	}
 	return nil
 }
@@ -329,29 +297,26 @@ var File_vocab_tuister_v1_vocab_service_proto protoreflect.FileDescriptor
 
 const file_vocab_tuister_v1_vocab_service_proto_rawDesc = "" +
 	"\n" +
-	"$vocab_tuister/v1/vocab_service.proto\x12\x10vocab_tuister.v1\x1a\x1fvocab_tuister/v1/question.proto\x1a$vocab_tuister/v1/sessionconfig.proto\x1a vocab_tuister/v1/vocablist.proto\"3\n" +
+	"$vocab_tuister/v1/vocab_service.proto\x12\x10vocab_tuister.v1\x1a\x1fvocab_tuister/v1/question.proto\x1a$vocab_tuister/v1/sessionconfig.proto\"3\n" +
 	"\x12VerifyVocabRequest\x12\x1d\n" +
 	"\n" +
-	"vocab_text\x18\x01 \x01(\tR\tvocabText\"J\n" +
-	"\x13VerifyVocabResponse\x12\x0e\n" +
-	"\x02ok\x18\x01 \x01(\bR\x02ok\x12#\n" +
-	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\"~\n" +
+	"vocab_text\x18\x01 \x01(\tR\tvocabText\"\x15\n" +
+	"\x13VerifyVocabResponse\"\x8d\x01\n" +
 	"\x13VerifyConfigRequest\x12.\n" +
-	"\x13number_of_questions\x18\x01 \x01(\x05R\x11numberOfQuestions\x127\n" +
-	"\x06config\x18\x02 \x01(\v2\x1f.vocab_tuister.v1.SessionConfigR\x06config\"K\n" +
-	"\x14VerifyConfigResponse\x12\x0e\n" +
-	"\x02ok\x18\x01 \x01(\bR\x02ok\x12#\n" +
-	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\"\xb2\x01\n" +
-	"\x14CreateSessionRequest\x121\n" +
-	"\x05vocab\x18\x01 \x01(\v2\x1b.vocab_tuister.v1.VocabListR\x05vocab\x12.\n" +
-	"\x13number_of_questions\x18\x02 \x01(\x05R\x11numberOfQuestions\x127\n" +
-	"\x06config\x18\x03 \x01(\v2\x1f.vocab_tuister.v1.SessionConfigR\x06config\"Q\n" +
-	"\x15CreateSessionResponse\x128\n" +
-	"\tquestions\x18\x01 \x03(\v2\x1a.vocab_tuister.v1.QuestionR\tquestions2\xb1\x02\n" +
+	"\x13number_of_questions\x18\x01 \x01(\x05R\x11numberOfQuestions\x12F\n" +
+	"\x0esession_config\x18\x02 \x01(\v2\x1f.vocab_tuister.v1.SessionConfigR\rsessionConfig\"\x16\n" +
+	"\x14VerifyConfigResponse\"\xad\x01\n" +
+	"\x14CreateSessionRequest\x12\x1d\n" +
+	"\n" +
+	"vocab_list\x18\x01 \x01(\tR\tvocabList\x12.\n" +
+	"\x13number_of_questions\x18\x02 \x01(\x05R\x11numberOfQuestions\x12F\n" +
+	"\x0esession_config\x18\x03 \x01(\v2\x1f.vocab_tuister.v1.SessionConfigR\rsessionConfig\"O\n" +
+	"\x15CreateSessionResponse\x126\n" +
+	"\bquestion\x18\x01 \x01(\v2\x1a.vocab_tuister.v1.QuestionR\bquestion2\xb3\x02\n" +
 	"\x12VocabTesterService\x12Z\n" +
 	"\vVerifyVocab\x12$.vocab_tuister.v1.VerifyVocabRequest\x1a%.vocab_tuister.v1.VerifyVocabResponse\x12]\n" +
-	"\fVerifyConfig\x12%.vocab_tuister.v1.VerifyConfigRequest\x1a&.vocab_tuister.v1.VerifyConfigResponse\x12`\n" +
-	"\rCreateSession\x12&.vocab_tuister.v1.CreateSessionRequest\x1a'.vocab_tuister.v1.CreateSessionResponseB=Z;github.com/rduo1009/vocab-tuister/src/client/internal/pb;pbb\x06proto3"
+	"\fVerifyConfig\x12%.vocab_tuister.v1.VerifyConfigRequest\x1a&.vocab_tuister.v1.VerifyConfigResponse\x12b\n" +
+	"\rCreateSession\x12&.vocab_tuister.v1.CreateSessionRequest\x1a'.vocab_tuister.v1.CreateSessionResponse0\x01B=Z;github.com/rduo1009/vocab-tuister/src/client/internal/pb;pbb\x06proto3"
 
 var (
 	file_vocab_tuister_v1_vocab_service_proto_rawDescOnce sync.Once
@@ -374,25 +339,23 @@ var file_vocab_tuister_v1_vocab_service_proto_goTypes = []any{
 	(*CreateSessionRequest)(nil),  // 4: vocab_tuister.v1.CreateSessionRequest
 	(*CreateSessionResponse)(nil), // 5: vocab_tuister.v1.CreateSessionResponse
 	(*SessionConfig)(nil),         // 6: vocab_tuister.v1.SessionConfig
-	(*VocabList)(nil),             // 7: vocab_tuister.v1.VocabList
-	(*Question)(nil),              // 8: vocab_tuister.v1.Question
+	(*Question)(nil),              // 7: vocab_tuister.v1.Question
 }
 var file_vocab_tuister_v1_vocab_service_proto_depIdxs = []int32{
-	6, // 0: vocab_tuister.v1.VerifyConfigRequest.config:type_name -> vocab_tuister.v1.SessionConfig
-	7, // 1: vocab_tuister.v1.CreateSessionRequest.vocab:type_name -> vocab_tuister.v1.VocabList
-	6, // 2: vocab_tuister.v1.CreateSessionRequest.config:type_name -> vocab_tuister.v1.SessionConfig
-	8, // 3: vocab_tuister.v1.CreateSessionResponse.questions:type_name -> vocab_tuister.v1.Question
-	0, // 4: vocab_tuister.v1.VocabTesterService.VerifyVocab:input_type -> vocab_tuister.v1.VerifyVocabRequest
-	2, // 5: vocab_tuister.v1.VocabTesterService.VerifyConfig:input_type -> vocab_tuister.v1.VerifyConfigRequest
-	4, // 6: vocab_tuister.v1.VocabTesterService.CreateSession:input_type -> vocab_tuister.v1.CreateSessionRequest
-	1, // 7: vocab_tuister.v1.VocabTesterService.VerifyVocab:output_type -> vocab_tuister.v1.VerifyVocabResponse
-	3, // 8: vocab_tuister.v1.VocabTesterService.VerifyConfig:output_type -> vocab_tuister.v1.VerifyConfigResponse
-	5, // 9: vocab_tuister.v1.VocabTesterService.CreateSession:output_type -> vocab_tuister.v1.CreateSessionResponse
-	7, // [7:10] is the sub-list for method output_type
-	4, // [4:7] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 0: vocab_tuister.v1.VerifyConfigRequest.session_config:type_name -> vocab_tuister.v1.SessionConfig
+	6, // 1: vocab_tuister.v1.CreateSessionRequest.session_config:type_name -> vocab_tuister.v1.SessionConfig
+	7, // 2: vocab_tuister.v1.CreateSessionResponse.question:type_name -> vocab_tuister.v1.Question
+	0, // 3: vocab_tuister.v1.VocabTesterService.VerifyVocab:input_type -> vocab_tuister.v1.VerifyVocabRequest
+	2, // 4: vocab_tuister.v1.VocabTesterService.VerifyConfig:input_type -> vocab_tuister.v1.VerifyConfigRequest
+	4, // 5: vocab_tuister.v1.VocabTesterService.CreateSession:input_type -> vocab_tuister.v1.CreateSessionRequest
+	1, // 6: vocab_tuister.v1.VocabTesterService.VerifyVocab:output_type -> vocab_tuister.v1.VerifyVocabResponse
+	3, // 7: vocab_tuister.v1.VocabTesterService.VerifyConfig:output_type -> vocab_tuister.v1.VerifyConfigResponse
+	5, // 8: vocab_tuister.v1.VocabTesterService.CreateSession:output_type -> vocab_tuister.v1.CreateSessionResponse
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_vocab_tuister_v1_vocab_service_proto_init() }
@@ -402,7 +365,6 @@ func file_vocab_tuister_v1_vocab_service_proto_init() {
 	}
 	file_vocab_tuister_v1_question_proto_init()
 	file_vocab_tuister_v1_sessionconfig_proto_init()
-	file_vocab_tuister_v1_vocablist_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

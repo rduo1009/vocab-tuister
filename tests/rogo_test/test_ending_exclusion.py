@@ -6,7 +6,8 @@ from src.core.accido.misc import Case, Degree, Gender, Mood, Number, Tense, Voic
 from src.core.lego.misc import VocabList
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import ParseWordCompToLatQuestion
-from src.core.rogo.type_aliases import SessionConfig, Settings
+from src.core.rogo.type_aliases import Settings
+from src.pb.vocab_tuister.v1.sessionconfig_p2p import SessionConfig
 
 
 def _to_snake(kebab: str) -> str:

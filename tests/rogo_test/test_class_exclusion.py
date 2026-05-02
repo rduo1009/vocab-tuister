@@ -4,7 +4,7 @@ from pathlib import Path
 from src.core.accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.rules import filter_words
-from src.core.rogo.type_aliases import SessionConfig
+from src.pb.vocab_tuister.v1.sessionconfig_p2p import SessionConfig
 
 
 def _to_snake(kebab: str) -> str:
