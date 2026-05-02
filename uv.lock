@@ -1486,6 +1486,7 @@ dependencies = [
     { name = "inflect" },
     { name = "lemminflect" },
     { name = "platformdirs" },
+    { name = "pydantic" },
     { name = "pyinstaller" },
     { name = "wn" },
 ]
@@ -1528,6 +1529,7 @@ requires-dist = [
     { name = "inflect", specifier = "==7.5.0" },
     { name = "lemminflect", specifier = "==0.2.3" },
     { name = "platformdirs", specifier = "==4.9.6" },
+    { name = "pydantic", specifier = "==2.13.0" },
     { name = "pyinstaller", specifier = "==6.19.0" },
     { name = "wn", specifier = "==1.0.0" },
 ]

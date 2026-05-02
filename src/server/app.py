@@ -7,8 +7,11 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Final, override
 
-import grpclib
-import grpclib.server
+from grpclib import GRPCError
+from grpclib.const import Status
+from grpclib.health.service import Health
+from grpclib.server import Server
+from grpclib.utils import graceful_exit
 from platformdirs import PlatformDirs
 from pydantic import ValidationError
 
@@ -72,8 +75,8 @@ class VocabTesterService(VocabTesterServiceBase):
             )
         except InvalidVocabFileFormatError as e:
             logger.exception("Invalid vocab file format.")
-            raise grpclib.GRPCError(
-                grpclib.const.Status.INVALID_ARGUMENT,
+            raise GRPCError(
+                Status.INVALID_ARGUMENT,
                 f"{e.message} (error on line {e.line_number})",
             ) from e
 
@@ -111,13 +114,11 @@ class VocabTesterService(VocabTesterServiceBase):
 
 async def run(port: int):
     service = VocabTesterService()
-    server = grpclib.server.Server([service])
-    await server.start(HOST, port)
-    logger.info("Server running on %s:%d", HOST, port)
-    try:
-        await server.wait_closed()
-    except KeyboardInterrupt:
-        server.close()
+    health = Health()
+    server = Server([service, health])
+    with graceful_exit([server]):
+        await server.start(HOST, port)
+        logger.info("Server running on %s:%d", HOST, port)
         await server.wait_closed()
 
 
