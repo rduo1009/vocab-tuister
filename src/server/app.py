@@ -4,6 +4,7 @@
 
 import asyncio
 import logging
+from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Final, override
 
@@ -69,7 +70,7 @@ class VocabTesterService(VocabTesterServiceBase):
         try:
             assert settings is not None
             _, _ = cache_vocab_file(
-                message.vocab_text,
+                StringIO(message.vocab_text),
                 cache_folder=dirs.user_cache_path,
                 compress=settings.cache_vocab_lists,
             )
@@ -86,17 +87,43 @@ class VocabTesterService(VocabTesterServiceBase):
     async def verify_config(
         self, message: VerifyConfigRequest
     ) -> VerifyConfigResponse:
-        # Thanks to pydantic type checking, this will always work!
+        if message.number_of_questions <= 0:
+            raise GRPCError(
+                Status.INVALID_ARGUMENT,
+                "number_of_questions must be at least 1",
+            )
+
+        assert message.session_config is not None
+        if message.session_config.number_multiplechoice_options <= 1:
+            raise GRPCError(
+                Status.INVALID_ARGUMENT,
+                "number_multiplechoice_options must be at least 2",
+            )
+
+        # Otherwise, thanks to pydantic type checking, this will always work!
         return VerifyConfigResponse()
 
     @override
     async def create_session(
         self, message: CreateSessionRequest
     ) -> AsyncIterator[CreateSessionResponse]:
+        if message.number_of_questions <= 0:
+            raise GRPCError(
+                Status.INVALID_ARGUMENT,
+                "number_of_questions must be at least 1",
+            )
+
+        assert message.session_config is not None
+        if message.session_config.number_multiplechoice_options <= 1:
+            raise GRPCError(
+                Status.INVALID_ARGUMENT,
+                "number_multiplechoice_options must be at least 2",
+            )
+
         assert settings is not None
 
         vocab_list, _ = cache_vocab_file(
-            message.vocab_list,
+            StringIO(message.vocab_list),
             cache_folder=dirs.user_cache_path,
             compress=settings.cache_vocab_lists,
         )

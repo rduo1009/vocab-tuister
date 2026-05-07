@@ -109,9 +109,9 @@ type SessionConfig struct {
 	ExcludeVerbPerfectPassiveInfinitive       bool                   `protobuf:"varint,84,opt,name=exclude_verb_perfect_passive_infinitive,json=excludeVerbPerfectPassiveInfinitive,proto3" json:"exclude_verb_perfect_passive_infinitive,omitempty"`
 	ExcludeVerbSingular                       bool                   `protobuf:"varint,85,opt,name=exclude_verb_singular,json=excludeVerbSingular,proto3" json:"exclude_verb_singular,omitempty"`
 	ExcludeVerbPlural                         bool                   `protobuf:"varint,86,opt,name=exclude_verb_plural,json=excludeVerbPlural,proto3" json:"exclude_verb_plural,omitempty"`
-	ExcludeVerb_1StPerson                     bool                   `protobuf:"varint,87,opt,name=exclude_verb_1st_person,json=excludeVerb1stPerson,proto3" json:"exclude_verb_1st_person,omitempty"`
-	ExcludeVerb_2NdPerson                     bool                   `protobuf:"varint,88,opt,name=exclude_verb_2nd_person,json=excludeVerb2ndPerson,proto3" json:"exclude_verb_2nd_person,omitempty"`
-	ExcludeVerb_3RdPerson                     bool                   `protobuf:"varint,89,opt,name=exclude_verb_3rd_person,json=excludeVerb3rdPerson,proto3" json:"exclude_verb_3rd_person,omitempty"`
+	ExcludeVerbFirstPerson                    bool                   `protobuf:"varint,87,opt,name=exclude_verb_first_person,json=excludeVerbFirstPerson,proto3" json:"exclude_verb_first_person,omitempty"`
+	ExcludeVerbSecondPerson                   bool                   `protobuf:"varint,88,opt,name=exclude_verb_second_person,json=excludeVerbSecondPerson,proto3" json:"exclude_verb_second_person,omitempty"`
+	ExcludeVerbThirdPerson                    bool                   `protobuf:"varint,89,opt,name=exclude_verb_third_person,json=excludeVerbThirdPerson,proto3" json:"exclude_verb_third_person,omitempty"`
 	ExcludeParticiples                        bool                   `protobuf:"varint,90,opt,name=exclude_participles,json=excludeParticiples,proto3" json:"exclude_participles,omitempty"`
 	ExcludeParticiplePresentActive            bool                   `protobuf:"varint,91,opt,name=exclude_participle_present_active,json=excludeParticiplePresentActive,proto3" json:"exclude_participle_present_active,omitempty"`
 	ExcludeParticiplePerfectPassive           bool                   `protobuf:"varint,92,opt,name=exclude_participle_perfect_passive,json=excludeParticiplePerfectPassive,proto3" json:"exclude_participle_perfect_passive,omitempty"`
@@ -776,23 +776,23 @@ func (x *SessionConfig) GetExcludeVerbPlural() bool {
 	return false
 }
 
-func (x *SessionConfig) GetExcludeVerb_1StPerson() bool {
+func (x *SessionConfig) GetExcludeVerbFirstPerson() bool {
 	if x != nil {
-		return x.ExcludeVerb_1StPerson
+		return x.ExcludeVerbFirstPerson
 	}
 	return false
 }
 
-func (x *SessionConfig) GetExcludeVerb_2NdPerson() bool {
+func (x *SessionConfig) GetExcludeVerbSecondPerson() bool {
 	if x != nil {
-		return x.ExcludeVerb_2NdPerson
+		return x.ExcludeVerbSecondPerson
 	}
 	return false
 }
 
-func (x *SessionConfig) GetExcludeVerb_3RdPerson() bool {
+func (x *SessionConfig) GetExcludeVerbThirdPerson() bool {
 	if x != nil {
-		return x.ExcludeVerb_3RdPerson
+		return x.ExcludeVerbThirdPerson
 	}
 	return false
 }
@@ -997,7 +997,7 @@ var File_vocab_tuister_v1_sessionconfig_proto protoreflect.FileDescriptor
 
 const file_vocab_tuister_v1_sessionconfig_proto_rawDesc = "" +
 	"\n" +
-	"$vocab_tuister/v1/sessionconfig.proto\x12\x10vocab_tuister.v1\"\xe1;\n" +
+	"$vocab_tuister/v1/sessionconfig.proto\x12\x10vocab_tuister.v1\"\xef;\n" +
 	"\rSessionConfig\x12-\n" +
 	"\x12exclude_adjectives\x18\x01 \x01(\bR\x11excludeAdjectives\x12G\n" +
 	" exclude_adjective_212_declension\x18\x02 \x01(\bR\x1dexcludeAdjective212Declension\x12K\n" +
@@ -1085,10 +1085,10 @@ const file_vocab_tuister_v1_sessionconfig_proto_rawDesc = "" +
 	"&exclude_verb_future_passive_infinitive\x18S \x01(\bR\"excludeVerbFuturePassiveInfinitive\x12T\n" +
 	"'exclude_verb_perfect_passive_infinitive\x18T \x01(\bR#excludeVerbPerfectPassiveInfinitive\x122\n" +
 	"\x15exclude_verb_singular\x18U \x01(\bR\x13excludeVerbSingular\x12.\n" +
-	"\x13exclude_verb_plural\x18V \x01(\bR\x11excludeVerbPlural\x125\n" +
-	"\x17exclude_verb_1st_person\x18W \x01(\bR\x14excludeVerb1stPerson\x125\n" +
-	"\x17exclude_verb_2nd_person\x18X \x01(\bR\x14excludeVerb2ndPerson\x125\n" +
-	"\x17exclude_verb_3rd_person\x18Y \x01(\bR\x14excludeVerb3rdPerson\x12/\n" +
+	"\x13exclude_verb_plural\x18V \x01(\bR\x11excludeVerbPlural\x129\n" +
+	"\x19exclude_verb_first_person\x18W \x01(\bR\x16excludeVerbFirstPerson\x12;\n" +
+	"\x1aexclude_verb_second_person\x18X \x01(\bR\x17excludeVerbSecondPerson\x129\n" +
+	"\x19exclude_verb_third_person\x18Y \x01(\bR\x16excludeVerbThirdPerson\x12/\n" +
 	"\x13exclude_participles\x18Z \x01(\bR\x12excludeParticiples\x12I\n" +
 	"!exclude_participle_present_active\x18[ \x01(\bR\x1eexcludeParticiplePresentActive\x12K\n" +
 	"\"exclude_participle_perfect_passive\x18\\ \x01(\bR\x1fexcludeParticiplePerfectPassive\x12G\n" +

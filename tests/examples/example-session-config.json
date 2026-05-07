@@ -47,9 +47,9 @@
   "exclude-verb-singular": false,
   "exclude-verb-plural": false,
 
-  "exclude-verb-1st-person": false,
-  "exclude-verb-2nd-person": false,
-  "exclude-verb-3rd-person": false,
+  "exclude-verb-first-person": false,
+  "exclude-verb-second-person": false,
+  "exclude-verb-third-person": false,
 
   "exclude-participle-present-active": false,
   "exclude-participle-perfect-passive": false,

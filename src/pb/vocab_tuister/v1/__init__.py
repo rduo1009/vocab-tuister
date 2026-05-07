@@ -890,15 +890,15 @@ class SessionConfig(betterproto2.Message):
         86, betterproto2.TYPE_BOOL
     )
 
-    exclude_verb_1st_person: "bool" = betterproto2.field(
+    exclude_verb_first_person: "bool" = betterproto2.field(
         87, betterproto2.TYPE_BOOL
     )
 
-    exclude_verb_2nd_person: "bool" = betterproto2.field(
+    exclude_verb_second_person: "bool" = betterproto2.field(
         88, betterproto2.TYPE_BOOL
     )
 
-    exclude_verb_3rd_person: "bool" = betterproto2.field(
+    exclude_verb_third_person: "bool" = betterproto2.field(
         89, betterproto2.TYPE_BOOL
     )
 

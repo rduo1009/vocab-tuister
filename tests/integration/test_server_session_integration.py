@@ -1,129 +1,106 @@
 # pyright: basic
 # pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportMissingParameterType=false
 
+import asyncio
 import json
 from pathlib import Path
 
 import pytest
+from grpclib import GRPCError
 from src.core.rogo.type_aliases import Settings
-from src.server.app import app
+from src.pb.vocab_tuister.v1 import CreateSessionRequest, SessionConfig, VerifyConfigRequest, VerifyVocabRequest
+from src.server.app import VocabTesterService, run
 
 
-def setup_tests(monkeypatch, port, vocab_file_info, session_config_info):
-    class _Dirs:
-        user_config_path = Path(__file__).parent / "testdata"
-        user_cache_path = Path(__file__).parent / "testdata" / "cache"
+@pytest.fixture
+def setup_tests(monkeypatch):
+    async def _setup(port, vocab_file_info, session_config_info):
+        class _Dirs:
+            user_config_path = Path(__file__).parent / "testdata"
+            user_cache_path = Path(__file__).parent / "testdata" / "cache"
 
-    monkeypatch.setattr("src.server.app.vocab_list", None)
-    monkeypatch.setattr("src.server.app.dirs", _Dirs)
-    monkeypatch.setattr("src.server.app.settings", Settings.model_validate_json((Path(_Dirs.user_config_path) / "settings.json").read_text()))
+        monkeypatch.setattr("src.server.app.dirs", _Dirs)
+        monkeypatch.setattr("src.server.app.settings", Settings.model_validate_json((Path(_Dirs.user_config_path) / "settings.json").read_text()))
 
-    server_url = f"http://127.0.0.1:{port}"
+        server_url = f"127.0.0.1:{port}"
 
-    vocab_file = Path(__file__).parent / "testdata" / f"test-{vocab_file_info}-list.txt"
-    vocab_list = vocab_file.read_text(encoding="utf-8")
+        vocab_file = Path(__file__).parent / "testdata" / f"test-{vocab_file_info}-list.txt"
+        vocab_text = vocab_file.read_text(encoding="utf-8")
 
-    session_config_file = Path(__file__).parent / "testdata" / f"test-{session_config_info}-config.json"
-    session_config = json.loads(session_config_file.read_text(encoding="utf-8"))
+        session_config_file = Path(__file__).parent / "testdata" / f"test-{session_config_info}-config.json"
+        session_config_dict = json.loads(session_config_file.read_text(encoding="utf-8"))
+        session_config = SessionConfig.from_dict(session_config_dict)
 
-    app_test = app.test_client()
-    return server_url, vocab_list, session_config, app_test
+        task = asyncio.create_task(run(port))
+        await asyncio.sleep(0.2)
 
+        return server_url, vocab_text, session_config, task
 
-@pytest.mark.integration
-def test_cli_normal(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5600, "regular", "regular")
-
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
-
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 200
-    assert config_response.text == snapshot
-
-    session_response = app_test.get(f"{server_url}/session")
-    assert session_response.status_code == 200
-    assert session_response.json == snapshot
+    return _setup
 
 
 @pytest.mark.integration
-def test_cli_error_list(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5601, "error", "regular")
+@pytest.mark.asyncio
+async def test_cli_normal(snapshot, setup_tests):
+    _, vocab_text, session_config, server = await setup_tests(5600, "regular", "regular")
 
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 400
-    assert vocab_response.json == snapshot
+    client = VocabTesterService()
 
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 200
-    assert config_response.text == snapshot
+    vocab_response = await client.verify_vocab(VerifyVocabRequest(vocab_text=vocab_text))
+    assert vocab_response.to_dict() == snapshot
 
-    session_response = app_test.get(f"{server_url}/session")
-    assert session_response.status_code == 500
-    assert session_response.get_data(as_text=True) == snapshot
+    config_response = await client.verify_config(VerifyConfigRequest(number_of_questions=50, session_config=session_config))
+    assert config_response.to_dict() == snapshot
 
+    stream = client.create_session(CreateSessionRequest(vocab_list=vocab_text, number_of_questions=50, session_config=session_config))
 
-@pytest.mark.integration
-def test_cli_error_missing1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5602, "regular", "errormissing1")
+    session_response = [msg.to_dict() async for msg in stream]
+    assert session_response == snapshot
 
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
-
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 400
-    assert config_response.get_data(as_text=True) == snapshot
+    server.cancel()
 
 
 @pytest.mark.integration
-def test_cli_error_missing2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5603, "regular", "errormissing2")
+@pytest.mark.asyncio
+async def test_cli_error_list(snapshot, setup_tests):
+    _, vocab_text, _, server = await setup_tests(5601, "error", "regular")
 
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
+    client = VocabTesterService()
 
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 400
-    assert config_response.get_data(as_text=True) == snapshot
+    with pytest.raises(GRPCError) as exc_info:
+        await client.verify_vocab(VerifyVocabRequest(vocab_text=vocab_text))
 
+    assert exc_info.value == snapshot
 
-@pytest.mark.integration
-def test_cli_error_extra_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5604, "regular", "errorextra")
-
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
-
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 400
-    assert config_response.get_data(as_text=True) == snapshot
+    server.cancel()
 
 
 @pytest.mark.integration
-def test_cli_error_type1_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5605, "regular", "errortype1")
+@pytest.mark.asyncio
+async def test_cli_error_numberquestions1_config(snapshot, setup_tests):
+    _, _, session_config, server = await setup_tests(5600, "regular", "regular")
 
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
+    client = VocabTesterService()
 
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 400
-    assert config_response.get_data(as_text=True) == snapshot
+    with pytest.raises(GRPCError) as exc_info:
+        await client.verify_config(VerifyConfigRequest(number_of_questions=-1, session_config=session_config))
+
+    assert exc_info.value == snapshot
+
+    server.cancel()
 
 
 @pytest.mark.integration
-def test_cli_error_type2_config(snapshot, monkeypatch):
-    server_url, vocab_list, session_config, app_test = setup_tests(monkeypatch, 5606, "regular", "errortype2")
+@pytest.mark.asyncio
+async def test_cli_error_numberquestions2_config(snapshot, setup_tests):
+    _, vocab_text, session_config, server = await setup_tests(5600, "regular", "regular")
 
-    vocab_response = app_test.post(f"{server_url}/send-vocab", data=vocab_list)
-    assert vocab_response.status_code == 200
-    assert vocab_response.text == snapshot
+    client = VocabTesterService()
+    stream = client.create_session(CreateSessionRequest(vocab_list=vocab_text, number_of_questions=-1, session_config=session_config))
 
-    config_response = app_test.post(f"{server_url}/send-config", json=session_config)
-    assert config_response.status_code == 400
-    assert config_response.get_data(as_text=True) == snapshot
+    with pytest.raises(GRPCError) as exc_info:
+        [msg.to_dict() async for msg in stream]
+
+    assert exc_info.value == snapshot
+
+    server.cancel()

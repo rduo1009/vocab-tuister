@@ -4,7 +4,7 @@ Hacky bridges between the original vocab-tuister classes and the new
 protobuf-generated ones.
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 import betterproto2
 
@@ -20,19 +20,25 @@ from ...pb.vocab_tuister.v1 import (
     Tense as TensePb,
     Voice as VoicePb,
 )
+from ..accido.misc import (
+    Case as CaseOriginal,
+    Degree as DegreeOriginal,
+    EndingComponents as EndingComponentsOriginal,
+    Gender as GenderOriginal,
+    Mood as MoodOriginal,
+    Number as NumberOriginal,
+    Tense as TenseOriginal,
+    Voice as VoiceOriginal,
+)
 from .question_classes import QuestionClasses
 
 if TYPE_CHECKING:
-    from ..accido.misc import (
-        EndingComponents as EndingComponentsOriginal,
-        _EndingComponentEnum as _EndingComponentEnumOriginal,
-    )
+    from ..accido.type_aliases import Person as PersonOriginal
     from .question_classes import Question as QuestionOriginal
 
 
 def _convert_enum[PbEnum: betterproto2.Enum](
-    accido_val: _EndingComponentEnumOriginal | None,
-    pb_enum_class: type[PbEnum],
+    accido_val_name: str, pb_enum_class: type[PbEnum]
 ) -> PbEnum:
     """Convert an accido enum value to its protobuf equivalent.
 
@@ -44,8 +50,8 @@ def _convert_enum[PbEnum: betterproto2.Enum](
 
     Parameters
     ----------
-    accido_val
-        The accido enum value to convert, or ``None`` if the field was not set.
+    accido_val_name
+        The accido enum value string to convert, or ``""`` if the field was not set.
     pb_enum_class
         The target protobuf enum class to convert into.
 
@@ -62,15 +68,29 @@ def _convert_enum[PbEnum: betterproto2.Enum](
     >>> _convert_enum(None, VoicePb)
     VOICE_UNSPECIFIED  # i.e. VoicePb(0)
     """
-    if accido_val is None:
+    if not accido_val_name:
         # Protobuf uses 0 as the sentinel "not set" / UNSPECIFIED value
         return pb_enum_class(0)
 
-    # Build the prefixed name expected by the pb enum, e.g.:
+    # Build the prefixed name used in the wire-format mapping, e.g.:
     #   pb_enum_class=VoicePb  ->  prefix="VOICE_"
     #   accido_val.name="ACTIVE"  ->  lookup key="VOICE_ACTIVE"
+    # Note: betterproto2 strips the prefix from actual member names, so
+    # pb_enum_class["VOICE_ACTIVE"] would fail — the member is just "ACTIVE".
+    # betterproto_renamed_proto_names_to_value() retains the prefixed names
+    # as keys mapping to their integer values, so we go through that instead.
+    #
+    # aenum MultiValue members do have a .name attribute, but accido_val may
+    # arrive as a bare int (e.g. if the value was serialised or compared
+    # before being passed here). Coerce it back to the enum member first so
+    # that .name is always available.
+
     prefix = pb_enum_class.__name__.upper() + "_"
-    return pb_enum_class[prefix + accido_val.name]
+    prefixed_name = prefix + accido_val_name
+    value = pb_enum_class.betterproto_renamed_proto_names_to_value()[
+        prefixed_name
+    ]
+    return pb_enum_class(value)
 
 
 def ending_components_pb(
@@ -102,29 +122,113 @@ def ending_components_pb(
     return EndingComponentsPb(
         # getattr with a None default safely handles fields that accido
         # never set on this instance (e.g. tense on a noun ending)
-        case=_convert_enum(getattr(ending_components, "case", None), CasePb),
+        case=_convert_enum(
+            cast("CaseOriginal", x).name
+            if (x := getattr(ending_components, "case", None)) is not None
+            else "",
+            CasePb,
+        ),
         number=_convert_enum(
-            getattr(ending_components, "number", None), NumberPb
+            cast("NumberOriginal", x).name
+            if (x := getattr(ending_components, "number", None)) is not None
+            else "",
+            NumberPb,
         ),
         gender=_convert_enum(
-            getattr(ending_components, "gender", None), GenderPb
+            cast("GenderOriginal", x).name
+            if (x := getattr(ending_components, "gender", None)) is not None
+            else "",
+            GenderPb,
         ),
         tense=_convert_enum(
-            getattr(ending_components, "tense", None), TensePb
+            cast("TenseOriginal", x).name
+            if (x := getattr(ending_components, "tense", None)) is not None
+            else "",
+            TensePb,
         ),
         voice=_convert_enum(
-            getattr(ending_components, "voice", None), VoicePb
+            cast("VoiceOriginal", x).name
+            if (x := getattr(ending_components, "voice", None)) is not None
+            else "",
+            VoicePb,
         ),
-        mood=_convert_enum(getattr(ending_components, "mood", None), MoodPb),
-        person=_convert_enum(
-            getattr(ending_components, "person", None), PersonPb
+        mood=_convert_enum(
+            cast("MoodOriginal", x).name
+            if (x := getattr(ending_components, "mood", None)) is not None
+            else "",
+            MoodPb,
         ),
+        person=PersonPb(x)
+        if (x := getattr(ending_components, "person", None)) is not None
+        else PersonPb.UNSPECIFIED,
         degree=_convert_enum(
-            getattr(ending_components, "degree", None), DegreePb
+            cast("DegreeOriginal", x).name
+            if (x := getattr(ending_components, "degree", None)) is not None
+            else "",
+            DegreePb,
         ),
         # string is always present on accido EndingComponents (defaults to "")
         string=ending_components.string,
     )
+
+
+def ending_components_original(
+    ending_components_pb: EndingComponentsPb,
+) -> EndingComponentsOriginal:
+    """Convert a protobuf ``EndingComponents`` to accido's representation.
+
+    Protobuf stores every enum field, using ``*_UNSPECIFIED`` (numeric ``0``)
+    when a field carries no information. Accido's ``EndingComponents``,
+    however, omits irrelevant attributes entirely.
+
+    This function performs the inverse transformation of
+    ``ending_components_pb``: any protobuf enum whose value is
+    ``UNSPECIFIED`` is converted to ``None`` and therefore not passed into
+    the accido constructor.
+
+    Parameters
+    ----------
+    ending_components_pb
+        The protobuf ``EndingComponents`` instance to convert.
+
+    Returns
+    -------
+    EndingComponentsOriginal
+        The reconstructed accido ``EndingComponents`` instance, containing
+        only meaningful grammatical attributes.
+    """
+    kwargs: dict[str, object] = {}
+
+    if ending_components_pb.case != CasePb.UNSPECIFIED:
+        kwargs["case"] = CaseOriginal[ending_components_pb.case.name]
+
+    if ending_components_pb.number != NumberPb.UNSPECIFIED:
+        kwargs["number"] = NumberOriginal[ending_components_pb.number.name]
+
+    if ending_components_pb.gender != GenderPb.UNSPECIFIED:
+        kwargs["gender"] = GenderOriginal[ending_components_pb.gender.name]
+
+    if ending_components_pb.tense != TensePb.UNSPECIFIED:
+        kwargs["tense"] = TenseOriginal[ending_components_pb.tense.name]
+
+    if ending_components_pb.voice != VoicePb.UNSPECIFIED:
+        kwargs["voice"] = VoiceOriginal[ending_components_pb.voice.name]
+
+    if ending_components_pb.mood != MoodPb.UNSPECIFIED:
+        kwargs["mood"] = MoodOriginal[ending_components_pb.mood.name]
+
+    if ending_components_pb.person != PersonPb.UNSPECIFIED:
+        kwargs["person"] = cast(
+            "PersonOriginal", ending_components_pb.person.value
+        )
+
+    if ending_components_pb.degree != DegreePb.UNSPECIFIED:
+        kwargs["degree"] = DegreeOriginal[ending_components_pb.degree.name]
+
+    # string is always present in both representations
+    kwargs["string"] = ending_components_pb.string
+
+    return EndingComponentsOriginal(**kwargs)
 
 
 QUESTION_FIELD_MAP = {

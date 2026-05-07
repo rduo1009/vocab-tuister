@@ -19,7 +19,6 @@ def setup_tests(monkeypatch, port, settings_info):
         user_config_path = Path(__file__).parent / "testdata" / f"test-{settings_info}-settings"
         user_cache_path = Path(__file__).parent / "testdata" / "cache"
 
-    monkeypatch.setattr("src.server.app.vocab_list", None)
     monkeypatch.setattr("src.server.app.dirs", _Dirs)
 
     run_cli(port)

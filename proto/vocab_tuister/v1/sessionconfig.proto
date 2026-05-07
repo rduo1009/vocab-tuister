@@ -91,9 +91,9 @@ message SessionConfig {
   bool exclude_verb_perfect_passive_infinitive = 84;
   bool exclude_verb_singular = 85;
   bool exclude_verb_plural = 86;
-  bool exclude_verb_1st_person = 87;
-  bool exclude_verb_2nd_person = 88;
-  bool exclude_verb_3rd_person = 89;
+  bool exclude_verb_first_person = 87;
+  bool exclude_verb_second_person = 88;
+  bool exclude_verb_third_person = 89;
   bool exclude_participles = 90;
   bool exclude_participle_present_active = 91;
   bool exclude_participle_perfect_passive = 92;
