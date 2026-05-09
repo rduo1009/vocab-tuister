@@ -107,6 +107,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case create.ListConfigPostedMsg:
 		m.vocabList = msg.VocabList
 		m.sessionConfig = msg.SessionConfig
+		m.numberOfQuestions = msg.NumberOfQuestions
 
 	case app.ErrMsg:
 		m.err = msg

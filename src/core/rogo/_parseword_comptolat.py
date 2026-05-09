@@ -1,39 +1,13 @@
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, cast
 
+from ...pb.vocab_tuister.v1 import ParseWordCompToLatQuestion
 from ..accido.endings import RegularWord
-from ._base import MultiAnswerQuestion
+from ._pb_convert import ending_components_pb
 from ._utils import normalise_to_multipleendings, pick_ending
 
 if TYPE_CHECKING:
     from ..accido.endings import Word
-    from ..accido.misc import EndingComponents
     from ..accido.type_aliases import Endings
-
-
-@dataclass
-class ParseWordCompToLatQuestion(MultiAnswerQuestion[str]):
-    """A question that asks for a Latin word given the grammatical
-    components of the word.
-
-    For example:
-    present active indicative 2nd person plural of "quaero"
-    (answer: "quaeratis").
-
-    Attributes
-    ----------
-    prompt : str
-        The prompt for the question (the dictionary entry).
-    components : EndingComponents
-        The grammatical components of the word.
-    main_answer : str
-        The best answer to the question.
-    answers : set[str]
-        The possible answers to the question.
-    """  # noqa: D205
-
-    prompt: str
-    components: EndingComponents
 
 
 def generate_parseword_comptolat(
@@ -57,7 +31,7 @@ def generate_parseword_comptolat(
 
     return ParseWordCompToLatQuestion(
         prompt=str(chosen_word),  # __str__ returns dictionary entry
-        components=ending_components,
+        components=ending_components_pb(ending_components),
         main_answer=main_answer,
-        answers=answers,
+        answers=list(answers),
     )

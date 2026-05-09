@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -45,11 +46,11 @@ func (m modelMC) View() tea.View {
 }
 
 func TestMultipleChoiceLatToEng(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{
+	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -65,11 +66,11 @@ func TestMultipleChoiceLatToEng(t *testing.T) {
 }
 
 func TestMultipleChoiceEngToLat(t *testing.T) {
-	q := questions.MultipleChoiceEngToLatQuestion{
+	q := questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -85,11 +86,11 @@ func TestMultipleChoiceEngToLat(t *testing.T) {
 }
 
 func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
-	q := questions.MultipleChoiceLatToEngQuestion{
+	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -134,11 +135,11 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 }
 
 func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
-	q := questions.MultipleChoiceLatToEngQuestion{
+	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -183,11 +184,11 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 }
 
 func TestMultipleChoiceNumberSelect(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{
+	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -226,11 +227,11 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 }
 
 func TestMultipleChoiceNextQuestion(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{
+	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 		Prompt:  "prompt",
 		Choices: []string{"foo", "bar", "baz"},
 		Answer:  "baz",
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 

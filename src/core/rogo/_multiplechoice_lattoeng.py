@@ -1,14 +1,12 @@
 # ruff: noqa: SLF001
 
-
 import random
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from ...pb.vocab_tuister.v1 import MultipleChoiceLatToEngQuestion
 from ..accido.endings import Verb
 from ..accido.misc import MultipleMeanings
 from ..transfero.words import find_inflection
-from ._base import MultipleChoiceQuestion
 from ._utils import (
     normalise_to_multiplemeanings,
     pick_meaning_from_multiplemeanings,
@@ -17,21 +15,6 @@ from ._utils import (
 if TYPE_CHECKING:
     from ..accido.endings import Word
     from .type_aliases import Vocab
-
-
-@dataclass
-class MultipleChoiceLatToEngQuestion(MultipleChoiceQuestion):
-    """A Latin to English multiple choice question.
-
-    Attributes
-    ----------
-    prompt : str
-        The prompt of the question (in Latin).
-    answer : str
-        The answer of the question (in English).
-    choices : tuple[str, ...]
-        The choices of the question (including the answer).
-    """
 
 
 def generate_multiplechoice_lattoeng(
@@ -80,5 +63,5 @@ def generate_multiplechoice_lattoeng(
     random.shuffle(choices)
 
     return MultipleChoiceLatToEngQuestion(
-        prompt=prompt, answer=answer, choices=tuple(choices)
+        prompt=prompt, answer=answer, choices=choices
     )

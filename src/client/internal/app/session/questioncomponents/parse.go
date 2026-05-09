@@ -15,6 +15,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
@@ -57,7 +58,11 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 
 	var possiblePOS []endingcomponents.PartOfSpeech
 	for _, component := range answerEndingComponents {
-		if x := component.PartOfSpeech(); !slices.Contains(possiblePOS, x) {
+		ec := endingcomponents.EndingComponents{component}
+		if x := ec.PartOfSpeech(); !slices.Contains(
+			possiblePOS,
+			x,
+		) {
 			possiblePOS = append(possiblePOS, x)
 		}
 	}
@@ -146,7 +151,7 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 		panic("unreachable")
 	}
 
-	var endingComponents endingcomponents.EndingComponents
+	endingComponents := endingcomponents.EndingComponents{&pb.EndingComponents{}}
 	for _, d := range dropdowns {
 		if setter, ok := d.LastSelected.(endingcomponents.ComponentSetter); ok {
 			setter.SetComponent(&endingComponents)
@@ -319,7 +324,7 @@ func (m *ParseQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 
 		case key.Matches(msg, m.unansweredKeyMap.Submit):
 			if m.status == Unanswered {
-				correct := m.question.Check(m.components)
+				correct := m.question.Check(m.components.EndingComponents)
 				if correct {
 					m.status = Correct
 				} else {
@@ -392,7 +397,7 @@ func (m *ParseQuestionModel) View() string {
 
 	case Incorrect:
 		resultView = m.styles.SessionPage.Incorrect.Render(
-			" ✕ " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.String(),
+			" ✕ " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.DisplayString,
 		)
 	}
 

@@ -42,11 +42,11 @@ type Styles struct {
 	DropdownButton func(active, focused bool, label string, width, marginLeft int) string
 	Scrollbar      func(height, total, visible, offset int) string
 
-	LoadSection struct {
-		LabelMissing lipgloss.Style
-		LabelPending lipgloss.Style
-		LabelLoaded  lipgloss.Style
-		LabelSep     lipgloss.Style
+	VerifySection struct {
+		LabelMissing  lipgloss.Style
+		LabelPending  lipgloss.Style
+		LabelVerified lipgloss.Style
+		LabelSep      lipgloss.Style
 	}
 
 	SessionPage struct {
@@ -269,10 +269,10 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		return strings.TrimRight(bar, "\n")
 	}
 
-	s.LoadSection.LabelMissing = lipgloss.NewStyle().Foreground(overlayDim(colours.Red))
-	s.LoadSection.LabelPending = lipgloss.NewStyle().Foreground(overlayDim(colours.Yellow))
-	s.LoadSection.LabelLoaded = lipgloss.NewStyle().Foreground(overlayDim(colours.Green))
-	s.LoadSection.LabelSep = lipgloss.NewStyle().Foreground(overlayDim(lipgloss.Lighten(colours.Bg, 0.3)))
+	s.VerifySection.LabelMissing = lipgloss.NewStyle().Foreground(overlayDim(colours.Red))
+	s.VerifySection.LabelPending = lipgloss.NewStyle().Foreground(overlayDim(colours.Yellow))
+	s.VerifySection.LabelVerified = lipgloss.NewStyle().Foreground(overlayDim(colours.Green))
+	s.VerifySection.LabelSep = lipgloss.NewStyle().Foreground(overlayDim(lipgloss.Lighten(colours.Bg, 0.3)))
 
 	s.SessionPage.Correct = lipgloss.NewStyle().Bold(true).Foreground(colours.Green)
 	s.SessionPage.Incorrect = lipgloss.NewStyle().Bold(true).Foreground(colours.Red)

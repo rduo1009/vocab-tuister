@@ -89,7 +89,7 @@ fi
 
 # Build go client
 go mod tidy
-go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
+poe generate && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
 
 version=$(uv run dunamai from any --style=semver)
 if [[ "$build_universal2" == "true" ]]; then

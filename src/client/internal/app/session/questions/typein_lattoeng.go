@@ -2,12 +2,12 @@ package questions
 
 import (
 	"slices"
+
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 type TypeInLatToEngQuestion struct {
-	Answers    []string `json:"answers"`
-	MainAnswer string   `json:"main_answer"`
-	Prompt     string   `json:"prompt"`
+	*pb.TypeInLatToEngQuestion
 }
 
 func (q *TypeInLatToEngQuestion) QuestionMode() QuestionMode {

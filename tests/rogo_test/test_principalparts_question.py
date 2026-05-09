@@ -7,131 +7,132 @@ from src.core.lego.misc import VocabList
 from src.core.lego.reader import read_vocab_file
 from src.core.rogo.asker import ask_question_without_sr
 from src.core.rogo.question_classes import PrincipalPartsQuestion
-from src.core.rogo.type_aliases import SessionConfig, Settings
+from src.core.rogo.type_aliases import Settings
+from src.pb.vocab_tuister.v1 import SessionConfig
 
 # they're not needed
 settings: Settings = Settings(**{"cache-vocab-lists": False, "include-synonyms": False, "include-similar-words": False})
 
 
-session_config: SessionConfig = SessionConfig(**{
-    "exclude-verb-present-active-indicative": False,
-    "exclude-verb-imperfect-active-indicative": False,
-    "exclude-verb-future-active-indicative": False,
-    "exclude-verb-perfect-active-indicative": False,
-    "exclude-verb-pluperfect-active-indicative": False,
-    "exclude-verb-future-perfect-active-indicative": False,
-    "exclude-verb-present-active-infinitive": False,
-    "exclude-verb-future-active-infinitive": False,
-    "exclude-verb-perfect-active-infinitive": False,
-    "exclude-verb-present-passive-infinitive": False,
-    "exclude-verb-future-passive-infinitive": False,
-    "exclude-verb-perfect-passive-infinitive": False,
-    "exclude-verb-present-active-imperative": False,
-    "exclude-verb-future-active-imperative": False,
-    "exclude-verb-present-passive-imperative": False,
-    "exclude-verb-future-passive-imperative": False,
-    "exclude-verb-present-active-subjunctive": False,
-    "exclude-verb-imperfect-active-subjunctive": False,
-    "exclude-verb-perfect-active-subjunctive": False,
-    "exclude-verb-pluperfect-active-subjunctive": False,
-    "exclude-verb-present-passive-indicative": False,
-    "exclude-verb-imperfect-passive-indicative": False,
-    "exclude-verb-future-passive-indicative": False,
-    "exclude-verb-perfect-passive-indicative": False,
-    "exclude-verb-pluperfect-passive-indicative": False,
-    "exclude-verb-future-perfect-passive-indicative": False,
-    "exclude-verb-singular": False,
-    "exclude-verb-plural": False,
-    "exclude-verb-1st-person": False,
-    "exclude-verb-2nd-person": False,
-    "exclude-verb-3rd-person": False,
-    "exclude-participles": False,
-    "exclude-participle-present-active": False,
-    "exclude-participle-perfect-passive": False,
-    "exclude-participle-future-active": False,
-    "exclude-gerundives": False,
-    "exclude-participle-masculine": False,
-    "exclude-participle-feminine": False,
-    "exclude-participle-neuter": False,
-    "exclude-participle-nominative": False,
-    "exclude-participle-vocative": False,
-    "exclude-participle-accusative": False,
-    "exclude-participle-genitive": False,
-    "exclude-participle-dative": False,
-    "exclude-participle-ablative": False,
-    "exclude-participle-singular": False,
-    "exclude-participle-plural": False,
-    "exclude-gerunds": False,
-    "exclude-supines": False,
-    "exclude-noun-nominative": False,
-    "exclude-noun-vocative": False,
-    "exclude-noun-accusative": False,
-    "exclude-noun-genitive": False,
-    "exclude-noun-dative": False,
-    "exclude-noun-ablative": False,
-    "exclude-noun-singular": False,
-    "exclude-noun-plural": False,
-    "exclude-adjective-masculine": False,
-    "exclude-adjective-feminine": False,
-    "exclude-adjective-neuter": False,
-    "exclude-adjective-nominative": False,
-    "exclude-adjective-vocative": False,
-    "exclude-adjective-accusative": False,
-    "exclude-adjective-genitive": False,
-    "exclude-adjective-dative": False,
-    "exclude-adjective-ablative": False,
-    "exclude-adjective-singular": False,
-    "exclude-adjective-plural": False,
-    "exclude-adjective-positive": False,
-    "exclude-adjective-comparative": False,
-    "exclude-adjective-superlative": False,
-    "exclude-adverbs": False,
-    "exclude-adverb-positive": False,
-    "exclude-adverb-comparative": False,
-    "exclude-adverb-superlative": False,
-    "exclude-pronoun-masculine": False,
-    "exclude-pronoun-feminine": False,
-    "exclude-pronoun-neuter": False,
-    "exclude-pronoun-nominative": False,
-    "exclude-pronoun-vocative": False,
-    "exclude-pronoun-accusative": False,
-    "exclude-pronoun-genitive": False,
-    "exclude-pronoun-dative": False,
-    "exclude-pronoun-ablative": False,
-    "exclude-pronoun-singular": False,
-    "exclude-pronoun-plural": False,
-    "exclude-nouns": False,
-    "exclude-verbs": False,
-    "exclude-deponents": False,
-    "exclude-semi-deponents": False,
-    "exclude-adjectives": False,
-    "exclude-pronouns": False,
-    "exclude-regulars": False,
-    "exclude-verb-first-conjugation": False,
-    "exclude-verb-second-conjugation": False,
-    "exclude-verb-third-conjugation": False,
-    "exclude-verb-fourth-conjugation": False,
-    "exclude-verb-mixed-conjugation": False,
-    "exclude-verb-irregular-conjugation": False,
-    "exclude-noun-first-declension": False,
-    "exclude-noun-second-declension": False,
-    "exclude-noun-third-declension": False,
-    "exclude-noun-fourth-declension": False,
-    "exclude-noun-fifth-declension": False,
-    "exclude-noun-irregular-declension": False,
-    "exclude-adjective-212-declension": False,
-    "exclude-adjective-third-declension": False,
-    "english-subjunctives": True,
-    "english-verbal-nouns": True,
-    "include-typein-engtolat": False,
-    "include-typein-lattoeng": False,
-    "include-parse": False,
-    "include-inflect": False,
-    "include-principal-parts": True,
-    "include-multiplechoice-engtolat": False,
-    "include-multiplechoice-lattoeng": False,
-    "number-multiplechoice-options": 3,
-})
+session_config: SessionConfig = SessionConfig(
+    exclude_verb_present_active_indicative=False,
+    exclude_verb_imperfect_active_indicative=False,
+    exclude_verb_future_active_indicative=False,
+    exclude_verb_perfect_active_indicative=False,
+    exclude_verb_pluperfect_active_indicative=False,
+    exclude_verb_future_perfect_active_indicative=False,
+    exclude_verb_present_active_infinitive=False,
+    exclude_verb_future_active_infinitive=False,
+    exclude_verb_perfect_active_infinitive=False,
+    exclude_verb_present_passive_infinitive=False,
+    exclude_verb_future_passive_infinitive=False,
+    exclude_verb_perfect_passive_infinitive=False,
+    exclude_verb_present_active_imperative=False,
+    exclude_verb_future_active_imperative=False,
+    exclude_verb_present_passive_imperative=False,
+    exclude_verb_future_passive_imperative=False,
+    exclude_verb_present_active_subjunctive=False,
+    exclude_verb_imperfect_active_subjunctive=False,
+    exclude_verb_perfect_active_subjunctive=False,
+    exclude_verb_pluperfect_active_subjunctive=False,
+    exclude_verb_present_passive_indicative=False,
+    exclude_verb_imperfect_passive_indicative=False,
+    exclude_verb_future_passive_indicative=False,
+    exclude_verb_perfect_passive_indicative=False,
+    exclude_verb_pluperfect_passive_indicative=False,
+    exclude_verb_future_perfect_passive_indicative=False,
+    exclude_verb_singular=False,
+    exclude_verb_plural=False,
+    exclude_verb_first_person=False,
+    exclude_verb_second_person=False,
+    exclude_verb_third_person=False,
+    exclude_participles=False,
+    exclude_participle_present_active=False,
+    exclude_participle_perfect_passive=False,
+    exclude_participle_future_active=False,
+    exclude_gerundives=False,
+    exclude_participle_masculine=False,
+    exclude_participle_feminine=False,
+    exclude_participle_neuter=False,
+    exclude_participle_nominative=False,
+    exclude_participle_vocative=False,
+    exclude_participle_accusative=False,
+    exclude_participle_genitive=False,
+    exclude_participle_dative=False,
+    exclude_participle_ablative=False,
+    exclude_participle_singular=False,
+    exclude_participle_plural=False,
+    exclude_gerunds=False,
+    exclude_supines=False,
+    exclude_noun_nominative=False,
+    exclude_noun_vocative=False,
+    exclude_noun_accusative=False,
+    exclude_noun_genitive=False,
+    exclude_noun_dative=False,
+    exclude_noun_ablative=False,
+    exclude_noun_singular=False,
+    exclude_noun_plural=False,
+    exclude_adjective_masculine=False,
+    exclude_adjective_feminine=False,
+    exclude_adjective_neuter=False,
+    exclude_adjective_nominative=False,
+    exclude_adjective_vocative=False,
+    exclude_adjective_accusative=False,
+    exclude_adjective_genitive=False,
+    exclude_adjective_dative=False,
+    exclude_adjective_ablative=False,
+    exclude_adjective_singular=False,
+    exclude_adjective_plural=False,
+    exclude_adjective_positive=False,
+    exclude_adjective_comparative=False,
+    exclude_adjective_superlative=False,
+    exclude_adverbs=False,
+    exclude_adverb_positive=False,
+    exclude_adverb_comparative=False,
+    exclude_adverb_superlative=False,
+    exclude_pronoun_masculine=False,
+    exclude_pronoun_feminine=False,
+    exclude_pronoun_neuter=False,
+    exclude_pronoun_nominative=False,
+    exclude_pronoun_vocative=False,
+    exclude_pronoun_accusative=False,
+    exclude_pronoun_genitive=False,
+    exclude_pronoun_dative=False,
+    exclude_pronoun_ablative=False,
+    exclude_pronoun_singular=False,
+    exclude_pronoun_plural=False,
+    exclude_nouns=False,
+    exclude_verbs=False,
+    exclude_deponents=False,
+    exclude_semi_deponents=False,
+    exclude_adjectives=False,
+    exclude_pronouns=False,
+    exclude_regulars=False,
+    exclude_verb_first_conjugation=False,
+    exclude_verb_second_conjugation=False,
+    exclude_verb_third_conjugation=False,
+    exclude_verb_fourth_conjugation=False,
+    exclude_verb_mixed_conjugation=False,
+    exclude_verb_irregular_conjugation=False,
+    exclude_noun_first_declension=False,
+    exclude_noun_second_declension=False,
+    exclude_noun_third_declension=False,
+    exclude_noun_fourth_declension=False,
+    exclude_noun_fifth_declension=False,
+    exclude_noun_irregular_declension=False,
+    exclude_adjective_212_declension=False,
+    exclude_adjective_third_declension=False,
+    english_subjunctives=True,
+    english_verbal_nouns=True,
+    include_typein_engtolat=False,
+    include_typein_lattoeng=False,
+    include_parse=False,
+    include_inflect=False,
+    include_principal_parts=True,
+    include_multiplechoice_engtolat=False,
+    include_multiplechoice_lattoeng=False,
+    number_multiplechoice_options=3,
+)
 
 
 @pytest.mark.manual
@@ -139,10 +140,10 @@ def test_principalparts_question():
     vocab_list = read_vocab_file(Path("tests/lego_test/testdata/regular_list.txt"))
     amount = 50
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.check(output.principal_parts)
-        ic(output)  # noqa: F821
+        ic(q)  # noqa: F821
 
 
 def test_principalparts_adjective():
@@ -151,22 +152,22 @@ def test_principalparts_adjective():
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "laetus"
-        assert output.principal_parts == ("laetus", "laeta", "laetum")
+        assert q.prompt == "laetus"
+        assert q.principal_parts == ["laetus", "laeta", "laetum"]
 
     word = Adjective("ingens", "ingentis", declension="3", termination=1, meaning="large")
     vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "ingens"
-        assert output.principal_parts == ("ingens", "ingentis")
+        assert q.prompt == "ingens"
+        assert q.principal_parts == ["ingens", "ingentis"]
 
 
 def test_principalparts_noun():
@@ -175,11 +176,11 @@ def test_principalparts_noun():
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "puella"
-        assert output.principal_parts == ("puella", "puellae")
+        assert q.prompt == "puella"
+        assert q.principal_parts == ["puella", "puellae"]
 
 
 def test_principalparts_pronoun():
@@ -188,11 +189,11 @@ def test_principalparts_pronoun():
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "hic"
-        assert output.principal_parts == ("hic", "haec", "hoc")
+        assert q.prompt == "hic"
+        assert q.principal_parts == ["hic", "haec", "hoc"]
 
 
 def test_principalparts_verb():
@@ -201,19 +202,19 @@ def test_principalparts_verb():
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "doceo"
-        assert output.principal_parts == ("doceo", "docere", "docui", "doctus")
+        assert q.prompt == "doceo"
+        assert q.principal_parts == ["doceo", "docere", "docui", "doctus"]
 
     word = Verb("traho", "trahere", "traxi", "tractus", meaning="drag")
     vocab_list = VocabList([word], "")
     amount = 500
 
     for output in ask_question_without_sr(vocab_list, amount, session_config, settings):
-        assert type(output) is PrincipalPartsQuestion
-        assert output.check(output.principal_parts)
+        q = output.principal_parts
+        assert type(q) is PrincipalPartsQuestion
 
-        assert output.prompt == "traho"
-        assert output.principal_parts == ("traho", "trahere", "traxi", "tractus")
+        assert q.prompt == "traho"
+        assert q.principal_parts == ["traho", "trahere", "traxi", "tractus"]

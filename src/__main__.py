@@ -15,7 +15,7 @@ from cyclopts.types import UInt16
 from rich.console import Console
 
 from src import __version__, _seed
-from src.server.app import main as server_main, main_dev as server_main_dev
+from src.server.app import main as server_main
 from src.utils.logger import (
     CustomHandler,
     custom_formatwarning,
@@ -71,7 +71,6 @@ def vocab_tuister_server(
     verbose: Annotated[
         Sequence[bool], Parameter(alias="-v", negative="--quiet")
     ] = (),
-    dev: bool = False,
     debug: bool = False,
 ) -> None:
     """Start the vocab-tuister server.
@@ -82,11 +81,7 @@ def vocab_tuister_server(
         The port to run the server on.
     verbose : tuple[bool, ...]
         How verbose to make the output (maximum 3).
-    dev : bool
-        Use the Flask development server instead of the production server.
-        Should not be used usually.
     debug : bool
-        Run in debug mode. Implies ``--dev``.
         Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
@@ -104,10 +99,7 @@ def vocab_tuister_server(
     if debug:
         sys.excepthook = sys.__excepthook__
 
-    if dev or debug:
-        server_main_dev(port, debug=debug)
-    else:
-        server_main(port)
+    server_main(port)
 
 
 if __name__ == "__main__":

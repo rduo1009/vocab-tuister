@@ -21,7 +21,7 @@ func (m *Model) HasOverlay() bool {
 }
 
 func (m *Model) OverlayView(width, height int) (view string, x, y int) {
-	if q, ok := m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel); ok {
+	if q, ok := m.currentQuestionModel.(*questioncomponents.ParseQuestionModel); ok {
 		view = q.Dropdowns[m.activeDropdownIndex].View()
 
 		x = 2
@@ -41,7 +41,7 @@ func (m *Model) View() string {
 	var content string
 	switch m.appStatus {
 	case Unavailable:
-		messageView := "List and/or config have not been loaded into server!"
+		messageView := "List and/or config have not been verified by server!"
 
 		returnButtonView := m.styles.Button(true, m.returnButton.Focused()).Render("Return to create page")
 
@@ -62,7 +62,9 @@ func (m *Model) View() string {
 			Render(content)
 
 	case Initialised:
-		titleView := m.styles.Title.Render(fmt.Sprintf("Question %d/%d", m.currentIndex+1, m.questionCount))
+		titleView := m.styles.Title.Render(
+			fmt.Sprintf("Question %d/%d", m.questionProvider.Current(), *m.numberOfQuestions),
+		)
 
 		var footerView string
 		if m.answeredCount == 0 {
@@ -77,15 +79,15 @@ func (m *Model) View() string {
 		}
 		footerView = m.styles.Text.Render(footerView)
 
-		m.questions[m.currentIndex].SetWidth(m.width - 2)
-		m.questions[m.currentIndex].SetHeight(
+		m.currentQuestionModel.SetWidth(m.width - 2)
+		m.currentQuestionModel.SetHeight(
 			m.height - lipgloss.Height(titleView) - lipgloss.Height(footerView) - 2,
 		)
-		inputView := m.questions[m.currentIndex].View()
+		inputView := m.currentQuestionModel.View()
 
 		content = lipgloss.JoinVertical(lipgloss.Left, titleView, inputView, footerView)
 
-		return m.styles.NormalBorder(m.questions[m.currentIndex].Focused()).
+		return m.styles.NormalBorder(m.currentQuestionModel.Focused()).
 			Width(m.width).
 			Height(m.height).
 			Render(content)

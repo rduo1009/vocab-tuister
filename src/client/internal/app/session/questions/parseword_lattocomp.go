@@ -1,16 +1,14 @@
 package questions
 
 import (
-	"slices"
+	"github.com/google/go-cmp/cmp"
+	"google.golang.org/protobuf/testing/protocmp"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 type ParseWordLatToCompQuestion struct {
-	Answers         []endingcomponents.EndingComponents `json:"answers"`
-	DictionaryEntry string                              `json:"dictionary_entry"`
-	MainAnswer      endingcomponents.EndingComponents   `json:"main_answer"`
-	Prompt          string                              `json:"prompt"`
+	*pb.ParseWordLatToCompQuestion
 }
 
 func (q *ParseWordLatToCompQuestion) QuestionMode() QuestionMode {
@@ -22,8 +20,18 @@ func (q *ParseWordLatToCompQuestion) GetPrompt() string {
 }
 
 func (q *ParseWordLatToCompQuestion) Check(response any) bool {
-	responseComp := response.(endingcomponents.EndingComponents)
-	return slices.Contains(q.Answers, responseComp)
+	responseComp := response.(*pb.EndingComponents)
+
+	for _, ans := range q.Answers {
+		if cmp.Equal(ans, responseComp,
+			protocmp.Transform(),
+			protocmp.IgnoreFields(&pb.EndingComponents{}, "display_string"),
+		) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (q *ParseWordLatToCompQuestion) GetMainAnswer() any {

@@ -1,42 +1,10 @@
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from ...pb.vocab_tuister.v1 import PrincipalPartsQuestion
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 
 if TYPE_CHECKING:
     from ..accido.endings import Word
-
-
-@dataclass
-class PrincipalPartsQuestion:
-    """A question that asks for the principal parts of a Latin verb.
-
-    Attributes
-    ----------
-    prompt : str
-        The prompt of the question.
-    principal_parts : tuple[str, ...]
-        The answer of the question (the principal parts).
-    """
-
-    prompt: str
-    principal_parts: tuple[str, ...]
-
-    def check(self, response: tuple[str, ...]) -> bool:
-        """Check if the given principal parts are correct.
-
-        Parameters
-        ----------
-        response : tuple[str, ...]
-            The principal parts to check.
-
-        Returns
-        -------
-        bool
-            ``True`` if the given principal parts are correct,
-            ``False`` otherwise.
-        """
-        return response == self.principal_parts
 
 
 def generate_principal_parts(
@@ -57,5 +25,6 @@ def generate_principal_parts(
     principal_parts = chosen_word.principal_parts
 
     return PrincipalPartsQuestion(
-        prompt=principal_parts[0], principal_parts=chosen_word.principal_parts
+        prompt=principal_parts[0],
+        principal_parts=list(chosen_word.principal_parts),
     )

@@ -2,107 +2,133 @@ package session
 
 import (
 	"context"
-	"encoding/json/jsontext"
-	"encoding/json/v2"
-	"errors"
 	"fmt"
 	"io"
-	"net/http"
-	"time"
 
 	tea "charm.land/bubbletea/v2"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
-type QuestionsGetMsg struct {
-	Questions questions.Questions
+type QuestionProvider interface {
+	// Next returns the next question (as a [questions.Question]), handling errors.
+	Next() (questions.Question, error)
+
+	// Current returns the number of the current question (counting from 1).
+	Current() int
+
+	// Close cleans up the underlying connection. Call this when the session ends.
+	Close() error
 }
 
-const sessionPage = "session"
-
-func extractJSONObjects(jsonList []byte) ([][]byte, error) {
-	var rawSlice []jsontext.Value
-	if err := json.Unmarshal(jsonList, &rawSlice); err != nil {
-		return nil, err
-	}
-
-	if len(rawSlice) == 0 {
-		return nil, errors.New("empty JSON array")
-	}
-
-	result := make([][]byte, len(rawSlice))
-	for i, raw := range rawSlice {
-		result[i] = []byte(raw)
-	}
-
-	return result, nil
+type StreamQuestionProvider struct {
+	conn     *grpc.ClientConn
+	stream   grpc.ServerStreamingClient[pb.CreateSessionResponse]
+	total    int
+	received int
 }
 
-func getQuestions(serverPort int) tea.Cmd {
-	return func() tea.Msg {
-		sessionConfigURL := fmt.Sprintf(
-			"http://localhost:%d/%s",
-			serverPort,
-			sessionPage,
-		)
-
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, sessionConfigURL, nil)
-		if err != nil {
-			return app.ErrMsg(fmt.Errorf("failed to create request for %s: %w", sessionConfigURL, err))
-		}
-
-		client := &http.Client{}
-
-		resp, err := client.Do(req)
-		if err != nil {
-			return app.ErrMsg(fmt.Errorf("failed to get questions from %s: %w", sessionConfigURL, err))
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode != http.StatusOK {
-			body, _ := io.ReadAll(resp.Body)
-
-			return app.ErrMsg(
-				fmt.Errorf(
-					"failed to get questions from %s, status code: %d, response: %s",
-					sessionConfigURL,
-					resp.StatusCode,
-					string(body),
-				),
+func (p *StreamQuestionProvider) Next() (questions.Question, error) {
+	q, err := p.stream.Recv()
+	if err != nil {
+		if err == io.EOF {
+			return nil, fmt.Errorf(
+				"stream ended unexpectedly: expected %d questions, got %d",
+				p.total,
+				p.received,
 			)
 		}
 
-		// Read response from server
-		body, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return app.ErrMsg(fmt.Errorf("failed to read response body from %s: %w", sessionConfigURL, err))
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.InvalidArgument:
+				return nil, fmt.Errorf("invalid input: %s", st.Message())
+			default:
+				return nil, fmt.Errorf("grpc error (%s): %s", st.Code(), st.Message())
+			}
 		}
 
-		objects, err := extractJSONObjects(body)
+		return nil, fmt.Errorf("non-grpc error: %w", err)
+	}
+
+	p.received++
+	return questions.NewQuestion(q.Question), nil
+}
+
+func (p *StreamQuestionProvider) Current() int { return p.received }
+
+func (p *StreamQuestionProvider) Close() error {
+	return p.conn.Close()
+}
+
+type QuestionStreamGetMsg struct {
+	QuestionProvider QuestionProvider
+}
+
+func getQuestions(serverPort int, vocabList string, sessionConfig *pb.SessionConfig, numberOfQuestions int) tea.Cmd {
+	return func() tea.Msg {
+		serverURL := fmt.Sprintf(
+			"localhost:%d",
+			serverPort,
+		)
+
+		conn, err := grpc.NewClient(serverURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return app.ErrMsg(fmt.Errorf("failed to extract JSON objects from response: %w", err))
+			return app.ErrMsg(fmt.Errorf(
+				"failed to create grpc client for url %s: %w",
+				serverURL,
+				err,
+			))
 		}
 
-		// Unmarshal response into questions.Questions type
-		var response questions.Questions
+		client := pb.NewVocabTesterServiceClient(conn)
 
-		for i, object := range objects {
-			// Unmarshal the question
-			q, err := questions.UnmarshalQuestion(object)
-			if err != nil {
-				return app.ErrMsg(fmt.Errorf("failed to unmarshal question at index %d: %w", i, err))
+		stream, err := client.CreateSession(
+			context.Background(),
+			&pb.CreateSessionRequest{
+				VocabList:         vocabList,
+				SessionConfig:     sessionConfig,
+				NumberOfQuestions: int32(numberOfQuestions),
+			},
+		)
+		if err != nil {
+			st, ok := status.FromError(err)
+			if ok {
+				switch st.Code() {
+				case codes.InvalidArgument:
+					conn.Close()
+					return app.ErrMsg(fmt.Errorf(
+						"invalid input: %s",
+						st.Message(),
+					))
+
+				default:
+					conn.Close()
+					return app.ErrMsg(fmt.Errorf(
+						"grpc error (%s): %s",
+						st.Code(),
+						st.Message(),
+					))
+				}
 			}
 
-			response = append(response, q)
+			conn.Close()
+			return app.ErrMsg(fmt.Errorf("non-grpc error: %w", err))
 		}
 
-		return QuestionsGetMsg{
-			Questions: response,
+		return QuestionStreamGetMsg{
+			QuestionProvider: &StreamQuestionProvider{
+				conn:   conn,
+				stream: stream,
+				total:  numberOfQuestions,
+			},
 		}
 	}
 }

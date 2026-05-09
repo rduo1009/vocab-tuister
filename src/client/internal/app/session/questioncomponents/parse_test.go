@@ -13,6 +13,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -47,20 +48,20 @@ func (m modelPS) View() tea.View {
 }
 
 func TestParse(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 		Prompt:          "prompt",
 		DictionaryEntry: "dictionary entry",
-		MainAnswer: endingcomponents.EndingComponents{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		MainAnswer: &pb.EndingComponents{
+			Case:   pb.Case_CASE_GENITIVE,
+			Number: pb.Number_NUMBER_PLURAL,
+			Gender: pb.Gender_GENDER_NEUTER,
 		},
-		Answers: []endingcomponents.EndingComponents{{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		Answers: []*pb.EndingComponents{{
+			Case:   pb.Case_CASE_GENITIVE,
+			Number: pb.Number_NUMBER_PLURAL,
+			Gender: pb.Gender_GENDER_NEUTER,
 		}},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
@@ -82,24 +83,26 @@ func TestParse(t *testing.T) {
 func TestParseCorrect(t *testing.T) {
 	tests := []struct {
 		name      string
-		selection endingcomponents.EndingComponents
+		selection *pb.EndingComponents
 		expect    []string
 	}{
 		{
 			name: "TestParseCorrectMain",
-			selection: endingcomponents.EndingComponents{
-				Case:   endingcomponents.Genitive,
-				Number: endingcomponents.Plural,
-				Gender: endingcomponents.Neuter,
+			selection: &pb.EndingComponents{
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_NEUTER,
+				DisplayString: "genitive plural neuter",
 			},
 			expect: []string{"genitive", "plural", "neuter"},
 		},
 		{
 			name: "TestParseCorrectAlt",
-			selection: endingcomponents.EndingComponents{
-				Case:   endingcomponents.Genitive,
-				Number: endingcomponents.Plural,
-				Gender: endingcomponents.Feminine,
+			selection: &pb.EndingComponents{
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_FEMININE,
+				DisplayString: "genitive plural feminine",
 			},
 			expect: []string{"genitive", "plural", "feminine"},
 		},
@@ -108,21 +111,26 @@ func TestParseCorrect(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			q := questions.ParseWordLatToCompQuestion{
-				Prompt: "prompt",
-				MainAnswer: endingcomponents.EndingComponents{
-					Case:   endingcomponents.Genitive,
-					Number: endingcomponents.Plural,
-					Gender: endingcomponents.Neuter,
+				ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
+					Prompt: "prompt",
+					MainAnswer: &pb.EndingComponents{
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_NEUTER,
+						DisplayString: "genitive plural neuter",
+					},
+					Answers: []*pb.EndingComponents{{
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_NEUTER,
+						DisplayString: "genitive plural neuter",
+					}, {
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_FEMININE,
+						DisplayString: "genitive plural feminine",
+					}},
 				},
-				Answers: []endingcomponents.EndingComponents{{
-					Case:   endingcomponents.Genitive,
-					Number: endingcomponents.Plural,
-					Gender: endingcomponents.Neuter,
-				}, {
-					Case:   endingcomponents.Genitive,
-					Number: endingcomponents.Plural,
-					Gender: endingcomponents.Feminine,
-				}},
 			}
 			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 			qc := NewParseQuestionModel(&q, &s)
@@ -136,14 +144,29 @@ func TestParseCorrect(t *testing.T) {
 			})
 
 			// simulate dropdown selections
-			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown0", ChosenItem: tt.selection.Case})
-			m.QuestionComponent.Dropdowns[0].LastSelected = tt.selection.Case
+			tm.Send(
+				dropdown.PickedMsg{
+					ID:         "parsequestionDropdown0",
+					ChosenItem: endingcomponents.Case(tt.selection.Case),
+				},
+			)
+			m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(tt.selection.Case)
 
-			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown1", ChosenItem: tt.selection.Number})
-			m.QuestionComponent.Dropdowns[1].LastSelected = tt.selection.Number
+			tm.Send(
+				dropdown.PickedMsg{
+					ID:         "parsequestionDropdown1",
+					ChosenItem: endingcomponents.Number(tt.selection.Number),
+				},
+			)
+			m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(tt.selection.Number)
 
-			tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown2", ChosenItem: tt.selection.Gender})
-			m.QuestionComponent.Dropdowns[2].LastSelected = tt.selection.Gender
+			tm.Send(
+				dropdown.PickedMsg{
+					ID:         "parsequestionDropdown2",
+					ChosenItem: endingcomponents.Gender(tt.selection.Gender),
+				},
+			)
+			m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(tt.selection.Gender)
 
 			tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 			time.Sleep(10 * time.Millisecond)
@@ -181,23 +204,26 @@ func TestParseCorrect(t *testing.T) {
 }
 
 func TestParseIncorrect(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
-		MainAnswer: endingcomponents.EndingComponents{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		MainAnswer: &pb.EndingComponents{
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		},
-		Answers: []endingcomponents.EndingComponents{{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		Answers: []*pb.EndingComponents{{
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		}, {
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Feminine,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_FEMININE,
+			DisplayString: "genitive plural feminine",
 		}},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
@@ -210,12 +236,27 @@ func TestParseIncorrect(t *testing.T) {
 	})
 
 	// incorrect
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown0", ChosenItem: endingcomponents.Genitive})
-	m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Genitive
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown1", ChosenItem: endingcomponents.Plural})
-	m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Plural
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown2", ChosenItem: endingcomponents.Masculine})
-	m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Masculine
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown0",
+			ChosenItem: endingcomponents.Case(pb.Case_CASE_GENITIVE),
+		},
+	)
+	m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(pb.Case_CASE_GENITIVE)
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown1",
+			ChosenItem: endingcomponents.Number(pb.Number_NUMBER_PLURAL),
+		},
+	)
+	m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(pb.Number_NUMBER_PLURAL)
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown2",
+			ChosenItem: endingcomponents.Gender(pb.Gender_GENDER_MASCULINE),
+		},
+	)
+	m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(pb.Gender_GENDER_MASCULINE)
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 	time.Sleep(10 * time.Millisecond)
@@ -253,19 +294,21 @@ func TestParseIncorrect(t *testing.T) {
 }
 
 func TestParseNextQuestion(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
-		MainAnswer: endingcomponents.EndingComponents{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		MainAnswer: &pb.EndingComponents{
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		},
-		Answers: []endingcomponents.EndingComponents{{
-			Case:   endingcomponents.Genitive,
-			Number: endingcomponents.Plural,
-			Gender: endingcomponents.Neuter,
+		Answers: []*pb.EndingComponents{{
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		}},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
@@ -278,9 +321,24 @@ func TestParseNextQuestion(t *testing.T) {
 	})
 
 	// correct
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown0", ChosenItem: endingcomponents.Genitive})
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown1", ChosenItem: endingcomponents.Plural})
-	tm.Send(dropdown.PickedMsg{ID: "parsequestionDropdown2", ChosenItem: endingcomponents.Neuter})
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown0",
+			ChosenItem: endingcomponents.Case(pb.Case_CASE_GENITIVE),
+		},
+	)
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown1",
+			ChosenItem: endingcomponents.Number(pb.Number_NUMBER_PLURAL),
+		},
+	)
+	tm.Send(
+		dropdown.PickedMsg{
+			ID:         "parsequestionDropdown2",
+			ChosenItem: endingcomponents.Gender(pb.Gender_GENDER_NEUTER),
+		},
+	)
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 	time.Sleep(10 * time.Millisecond)

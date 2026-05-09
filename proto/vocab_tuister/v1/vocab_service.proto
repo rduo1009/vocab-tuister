@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package vocab_tuister.v1;
+
+import "vocab_tuister/v1/question.proto";
+import "vocab_tuister/v1/sessionconfig.proto";
+
+option go_package = "github.com/rduo1009/vocab-tuister/src/client/internal/pb;pb";
+
+service VocabTesterService {
+  rpc VerifyVocab(VerifyVocabRequest) returns (VerifyVocabResponse);
+
+  rpc VerifyConfig(VerifyConfigRequest) returns (VerifyConfigResponse);
+
+  rpc CreateSession(CreateSessionRequest) returns (stream CreateSessionResponse);
+}
+
+message VerifyVocabRequest {
+  string vocab_text = 1;
+}
+
+message VerifyVocabResponse {}
+
+message VerifyConfigRequest {
+  int32 number_of_questions = 1;
+  SessionConfig session_config = 2;
+}
+
+message VerifyConfigResponse {}
+
+message CreateSessionRequest {
+  string vocab_list = 1;
+  int32 number_of_questions = 2;
+  SessionConfig session_config = 3;
+}
+
+message CreateSessionResponse {
+  Question question = 1;
+}

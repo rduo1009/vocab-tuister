@@ -7,3 +7,5 @@ tasks.build.args = [
 ]
 tasks.test.cmd = "./scripts/tests.sh"
 tasks.test.help = "Run the unit test suite."
+tasks.generate.cmd = "./scripts/generate.sh"
+tasks.generate.help = "Generate code."
