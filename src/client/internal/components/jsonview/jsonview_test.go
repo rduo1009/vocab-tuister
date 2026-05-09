@@ -24,8 +24,11 @@ func (m model) Init() tea.Cmd {
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd
-	var newView any
+	var (
+		cmd     tea.Cmd
+		newView any
+	)
+
 	newView, cmd = m.JSONView.Update(msg)
 	m.JSONView = newView.(*jsonview.Model)
 
@@ -74,13 +77,17 @@ func TestJSONViewScrolling(t *testing.T) {
 	// Create a long JSON string (25 lines)
 	var sb strings.Builder
 	sb.WriteString("[\n")
-	for i := 0; i < 25; i++ {
-		sb.WriteString(fmt.Sprintf("  {\"id\": %d, \"data\": \"item %d\"}", i, i))
+
+	for i := range 25 {
+		fmt.Fprintf(&sb, "  {\"id\": %d, \"data\": \"item %d\"}", i, i)
+
 		if i < 24 {
 			sb.WriteString(",")
 		}
+
 		sb.WriteString("\n")
 	}
+
 	sb.WriteString("]")
 	jb := sb.String()
 
@@ -104,7 +111,7 @@ func TestJSONViewScrolling(t *testing.T) {
 	assert.NotContains(t, initialView, "item 20")
 
 	// Scroll down multiple times
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		tm.Send(tea.KeyPressMsg{Code: tea.KeyDown})
 	}
 
@@ -129,11 +136,11 @@ func TestJSONViewScrolling(t *testing.T) {
 	tm2 := teatest.NewTestModel(t, m2, teatest.WithInitialTermSize(70, 30))
 
 	// Scroll down
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		tm2.Send(tea.KeyPressMsg{Code: tea.KeyDown})
 	}
 	// Scroll back up
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		tm2.Send(tea.KeyPressMsg{Code: tea.KeyUp})
 	}
 
@@ -169,7 +176,7 @@ func TestJSONViewHorizontalScrolling(t *testing.T) {
 	assert.NotContains(t, initialView, "also_very_long")
 
 	// Scroll right
-	for i := 0; i < 50; i++ {
+	for range 50 {
 		tm.Send(tea.KeyPressMsg{Code: tea.KeyRight})
 	}
 
@@ -192,10 +199,11 @@ func TestJSONViewHorizontalScrolling(t *testing.T) {
 	tm2 := teatest.NewTestModel(t, m2, teatest.WithInitialTermSize(70, 30))
 
 	// Scroll right then back left
-	for i := 0; i < 50; i++ {
+	for range 50 {
 		tm2.Send(tea.KeyPressMsg{Code: tea.KeyRight})
 	}
-	for i := 0; i < 50; i++ {
+
+	for range 50 {
 		tm2.Send(tea.KeyPressMsg{Code: tea.KeyLeft})
 	}
 

@@ -335,6 +335,7 @@ func (m *Model) View(screenWidth, screenHeight int) (string, int, int) {
 	} else {
 		contentViewBorder = m.styles.OverlayBorder
 	}
+
 	contentView := contentViewBorder.
 		Padding(0, 1).
 		Width(m.width).

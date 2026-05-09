@@ -39,8 +39,10 @@ func readVocabList(filePath string) tea.Cmd {
 }
 
 func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
-	var cmds []tea.Cmd
-	var cmd tea.Cmd
+	var (
+		cmds []tea.Cmd
+		cmd  tea.Cmd
+	)
 
 	if m.ModeDropdownActive {
 		switch msg := msg.(type) {

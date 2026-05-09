@@ -115,9 +115,9 @@ func TestCheck(t *testing.T) {
 				&pb.ParseWordLatToCompQuestion{
 					Prompt:          "laetissimam",
 					DictionaryEntry: "happy: laetus, laeta, laetum, (2-1-2)",
-					//MainAnswer: questions.UnmarshalEndingComponents(
+					// MainAnswer: questions.UnmarshalEndingComponents(
 					//	"superlative accusative singular feminine",
-					//),
+					// ),
 					MainAnswer: &pb.EndingComponents{
 						Degree: pb.Degree_DEGREE_SUPERLATIVE,
 						Case:   pb.Case_CASE_ACCUSATIVE,

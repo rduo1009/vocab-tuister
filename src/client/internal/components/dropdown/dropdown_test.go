@@ -213,6 +213,7 @@ func TestDropdownSetWidth(t *testing.T) {
 	for i, v := range optionStrings {
 		options[i] = Option(v)
 	}
+
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	d := dropdown.New(id, options, &s)
 	d.SetWidth(10)

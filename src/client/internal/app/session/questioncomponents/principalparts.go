@@ -103,6 +103,7 @@ func (m *PrincipalPartsQuestionModel) Focused() bool {
 			return true
 		}
 	}
+
 	return false
 }
 

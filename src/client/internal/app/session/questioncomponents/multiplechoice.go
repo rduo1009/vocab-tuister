@@ -131,6 +131,7 @@ func (m *MultipleChoiceQuestionModel) Focused() bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -242,6 +243,7 @@ func (m *MultipleChoiceQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 				}
 
 				m.checkResponse()
+
 				return m, tea.Batch(
 					util.MsgCmd(navigator.FocusNavigableMsg{
 						Target: m.options[m.currentOptionIndex],
@@ -257,6 +259,7 @@ func (m *MultipleChoiceQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cm
 				}
 
 				m.checkResponse()
+
 				return m, util.MsgCmd(QuestionAnsweredMsg{})
 			}
 		} else if key.Matches(msg, m.answeredKeyMap.NextQuestion) {
@@ -312,6 +315,7 @@ func (m *MultipleChoiceQuestionModel) View() string {
 
 	// TODO: refactor def poss here
 	var optionColor color.Color
+
 	optionViews := make([]string, m.numberOptions)
 	switch m.status {
 	case Unanswered:

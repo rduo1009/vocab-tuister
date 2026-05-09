@@ -29,13 +29,16 @@ func (m modelMC) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
+
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
+
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.QuestionComponent.Update(msg)
 
 	return m, cmd
@@ -46,11 +49,13 @@ func (m modelMC) View() tea.View {
 }
 
 func TestMultipleChoiceLatToEng(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceLatToEngQuestion{
+		MultipleChoiceLatToEngQuestion: &pb.MultipleChoiceLatToEngQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -66,11 +71,13 @@ func TestMultipleChoiceLatToEng(t *testing.T) {
 }
 
 func TestMultipleChoiceEngToLat(t *testing.T) {
-	q := questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceEngToLatQuestion{
+		MultipleChoiceEngToLatQuestion: &pb.MultipleChoiceEngToLatQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -86,11 +93,13 @@ func TestMultipleChoiceEngToLat(t *testing.T) {
 }
 
 func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
-	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceLatToEngQuestion{
+		MultipleChoiceLatToEngQuestion: &pb.MultipleChoiceLatToEngQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -111,6 +120,7 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelMC)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -135,11 +145,13 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 }
 
 func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
-	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceLatToEngQuestion{
+		MultipleChoiceLatToEngQuestion: &pb.MultipleChoiceLatToEngQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -160,6 +172,7 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelMC)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -184,11 +197,13 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 }
 
 func TestMultipleChoiceNumberSelect(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceLatToEngQuestion{
+		MultipleChoiceLatToEngQuestion: &pb.MultipleChoiceLatToEngQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -205,6 +220,7 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelMC)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -227,11 +243,13 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 }
 
 func TestMultipleChoiceNextQuestion(t *testing.T) {
-	q := questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
-		Prompt:  "prompt",
-		Choices: []string{"foo", "bar", "baz"},
-		Answer:  "baz",
-	}}
+	q := questions.MultipleChoiceLatToEngQuestion{
+		MultipleChoiceLatToEngQuestion: &pb.MultipleChoiceLatToEngQuestion{
+			Prompt:  "prompt",
+			Choices: []string{"foo", "bar", "baz"},
+			Answer:  "baz",
+		},
+	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
@@ -255,6 +273,7 @@ func TestMultipleChoiceNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelMC)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

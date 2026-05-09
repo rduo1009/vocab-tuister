@@ -87,6 +87,7 @@ func (m *Model) getStatusStyle(s VerifyStatus) lipgloss.Style {
 	case StatusVerified:
 		return m.styles.VerifySection.LabelVerified
 	}
+
 	panic("unreachable")
 }
 

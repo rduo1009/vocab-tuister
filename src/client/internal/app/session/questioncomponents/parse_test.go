@@ -31,13 +31,16 @@ func (m modelPS) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
+
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
+
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.QuestionComponent.Update(msg)
 
 	return m, cmd
@@ -48,7 +51,7 @@ func (m modelPS) View() tea.View {
 }
 
 func TestParse(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
 		Prompt:          "prompt",
 		DictionaryEntry: "dictionary entry",
 		MainAnswer: &pb.EndingComponents{
@@ -173,6 +176,7 @@ func TestParseCorrect(t *testing.T) {
 			tm.Quit()
 
 			fm := tm.FinalModel(t)
+
 			m, ok := fm.(modelPS)
 			if !ok {
 				t.Fatalf("final model have the wrong type: %T", fm)
@@ -204,7 +208,7 @@ func TestParseCorrect(t *testing.T) {
 }
 
 func TestParseIncorrect(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
 		MainAnswer: &pb.EndingComponents{
 			Case:          pb.Case_CASE_GENITIVE,
@@ -243,6 +247,7 @@ func TestParseIncorrect(t *testing.T) {
 		},
 	)
 	m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(pb.Case_CASE_GENITIVE)
+
 	tm.Send(
 		dropdown.PickedMsg{
 			ID:         "parsequestionDropdown1",
@@ -250,6 +255,7 @@ func TestParseIncorrect(t *testing.T) {
 		},
 	)
 	m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(pb.Number_NUMBER_PLURAL)
+
 	tm.Send(
 		dropdown.PickedMsg{
 			ID:         "parsequestionDropdown2",
@@ -263,6 +269,7 @@ func TestParseIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelPS)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -294,7 +301,7 @@ func TestParseIncorrect(t *testing.T) {
 }
 
 func TestParseNextQuestion(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
+	q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
 		MainAnswer: &pb.EndingComponents{
 			Case:          pb.Case_CASE_GENITIVE,
@@ -348,6 +355,7 @@ func TestParseNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelPS)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

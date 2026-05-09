@@ -305,6 +305,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 				Background(lipgloss.Color("#888b7e")).
 				Padding(0, 1)
 		}
+
 		return lipgloss.NewStyle().
 			Foreground(colours.Fg).
 			Background(lipgloss.Color("#707070")).
@@ -334,7 +335,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	s.Editor.StatusLineStyle = s.Editor.StatusLineStyle.Foreground(overlayDim(theme.Fg))
 	s.Editor.CurrentLineNumberStyle = s.Editor.CurrentLineNumberStyle.Foreground(overlayDim(theme.Fg))
 	styleEntryVocab := chromatint.StyleEntry(theme, false)
-	styleEntryVocab[chroma.GenericHeading] = fmt.Sprintf("bold %s", hexColor(overlayDim(colours.Orange)))
+	styleEntryVocab[chroma.GenericHeading] = "bold " + hexColor(overlayDim(colours.Orange))
 	styleEntryVocab[chroma.GenericStrong] = chromatint.FromStyle(
 		&chromatint.StaticStyle{Fg: overlayDim(colours.Fg), Bold: true},
 		theme.Dark,
@@ -422,6 +423,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		cs.Flag = colours.Green                                  // ld(lipgloss.Color("#0CB37F"), ct.Guac)
 		cs.QuotedString = colours.Coral                          // ld(ct.Coral, charmtone.Salmon)
 		cs.ErrorHeader = [2]color.Color{colours.Bg, colours.Red} // ct.Butter, ct.Cherry
+
 		return cs
 	}
 

@@ -2,7 +2,7 @@ package jsonview
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"strings"
 
 	"charm.land/bubbles/v2/help"
@@ -144,7 +144,7 @@ func highlightJSON(buf *bytes.Buffer, content string, style *chroma.Style) error
 
 	formatter := formatters.Get("terminal256")
 	if formatter == nil {
-		return fmt.Errorf("formatter not found")
+		return errors.New("formatter not found")
 	}
 
 	return formatter.Format(buf, style, iterator)
@@ -162,6 +162,7 @@ func (m *Model) getHighlightedContent() string {
 
 	// Use chroma to syntax highlight the JSON
 	var buf bytes.Buffer
+
 	err := highlightJSON(&buf, m.content, m.styles.Jsonview)
 	if err != nil {
 		// If highlighting fails for any reason, fall back to plain text

@@ -38,6 +38,7 @@ func colorDistance(a, b color.Color) float64 {
 	dr := float64(ar) - float64(br)
 	dg := float64(ag) - float64(bg)
 	db := float64(ab) - float64(bb)
+
 	return math.Sqrt(dr*dr + dg*dg + db*db)
 }
 
@@ -84,6 +85,7 @@ func pinkPurple(theme *tint.Tint) (pink, purple color.Color) {
 		purple = themePurple
 		pink = testPink
 	}
+
 	return pink, purple
 }
 

@@ -39,6 +39,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.FilePicker.Update(msg)
 
 	return m, cmd

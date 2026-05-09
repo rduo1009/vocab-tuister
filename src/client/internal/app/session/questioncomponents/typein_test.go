@@ -29,13 +29,16 @@ func (m modelTI) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
+
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
+
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.QuestionComponent.Update(msg)
 
 	return m, cmd
@@ -46,7 +49,7 @@ func (m modelTI) View() tea.View {
 }
 
 func TestTypeInLatToEng(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
@@ -63,7 +66,7 @@ func TestTypeInLatToEng(t *testing.T) {
 }
 
 func TestTypeInEngToLat(t *testing.T) {
-	q := questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
+	q := questions.TypeInEngToLatQuestion{TypeInEngToLatQuestion: &pb.TypeInEngToLatQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
@@ -90,7 +93,7 @@ func TestTypeInCorrect(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
+			q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
 				Prompt:     "prompt",
 				MainAnswer: "foo",
 				Answers:    []string{"foo", "bar", "baz"},
@@ -115,6 +118,7 @@ func TestTypeInCorrect(t *testing.T) {
 			tm.Quit()
 
 			fm := tm.FinalModel(t)
+
 			m, ok := fm.(modelTI)
 			if !ok {
 				t.Fatalf("final model have the wrong type: %T", fm)
@@ -141,7 +145,7 @@ func TestTypeInCorrect(t *testing.T) {
 }
 
 func TestTypeInIncorrect(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
@@ -166,6 +170,7 @@ func TestTypeInIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -192,7 +197,7 @@ func TestTypeInIncorrect(t *testing.T) {
 }
 
 func TestTypeInNextQuestion(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
@@ -220,6 +225,7 @@ func TestTypeInNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

@@ -164,6 +164,7 @@ func (n *Navigator) Reset() {
 	first := n.Items[0]
 	n.Items = []Navigable{first}
 	n.CurrentIndex = 0
+
 	first.Focus()
 }
 

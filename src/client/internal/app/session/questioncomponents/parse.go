@@ -58,7 +58,7 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 
 	var possiblePOS []endingcomponents.PartOfSpeech
 	for _, component := range answerEndingComponents {
-		ec := endingcomponents.EndingComponents{component}
+		ec := endingcomponents.EndingComponents{EndingComponents: component}
 		if x := ec.PartOfSpeech(); !slices.Contains(
 			possiblePOS,
 			x,
@@ -151,7 +151,7 @@ func NewParseQuestionModel(question questions.Question, styles *styles.StylesWra
 		panic("unreachable")
 	}
 
-	endingComponents := endingcomponents.EndingComponents{&pb.EndingComponents{}}
+	endingComponents := endingcomponents.EndingComponents{EndingComponents: &pb.EndingComponents{}}
 	for _, d := range dropdowns {
 		if setter, ok := d.LastSelected.(endingcomponents.ComponentSetter); ok {
 			setter.SetComponent(&endingComponents)
@@ -226,6 +226,7 @@ func (m *ParseQuestionModel) Focused() bool {
 			return true
 		}
 	}
+
 	return false
 }
 

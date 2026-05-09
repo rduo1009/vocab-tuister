@@ -182,6 +182,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 	case app.OverlayMsg:
 		m.form.WithTheme(m.styles.Form)
 		setFieldThemes(m.form, m.styles.Form)
+
 		if !m.FormSection.Focused() {
 			util.UpdaterPtr(&cmds, m.form, nil)
 			m.jsonview.Refresh()

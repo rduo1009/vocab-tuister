@@ -3,6 +3,7 @@ package errordialog_test
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -63,6 +64,7 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping slow test in short mode.")
 	}
+
 	t.Parallel()
 
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
@@ -86,11 +88,15 @@ func TestErrorDialogScrolling(t *testing.T) {
 	ed.SetHeight(20 * 4) // Height gives around 20-5 = 15 viewport height
 
 	var errStr string
+	var errStrSb89 strings.Builder
 	for i := 0; i < 30; i++ {
-		errStr += fmt.Sprintf("error line %d\n", i)
+		errStrSb89.WriteString(fmt.Sprintf("error line %d\n", i))
 	}
+	errStr += errStrSb89.String()
+
 	errStr += "error line 30"
 	go ed.SetError(errors.New(errStr))
+
 	time.Sleep(time.Millisecond * 100)
 	assert.True(t, ed.Visible())
 

@@ -99,6 +99,7 @@ func postSessionConfig(rawSessionConfig string, client pb.VocabTesterServiceClie
 	}
 
 	var sessionConfigStruct pb.SessionConfig
+
 	err = json.Unmarshal(formattedSessionConfigJSON, &sessionConfigStruct)
 	if err != nil {
 		return nil, 0, fmt.Errorf(

@@ -29,13 +29,16 @@ func (m modelPP) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
+
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
+
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.QuestionComponent.Update(msg)
 
 	return m, cmd
@@ -46,7 +49,7 @@ func (m modelPP) View() tea.View {
 }
 
 func TestPrincipalParts(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
@@ -62,7 +65,7 @@ func TestPrincipalParts(t *testing.T) {
 }
 
 func TestPrincipalPartsCorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
@@ -99,6 +102,7 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -123,7 +127,7 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 }
 
 func TestPrincipalPartsIncorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
@@ -160,6 +164,7 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -187,7 +192,7 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 }
 
 func TestPrincipalPartsNextQuestion(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
@@ -227,6 +232,7 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

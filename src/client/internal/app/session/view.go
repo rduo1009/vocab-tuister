@@ -77,6 +77,7 @@ func (m *Model) View() string {
 				100*float64(m.correctCount)/float64(m.answeredCount),
 			)
 		}
+
 		footerView = m.styles.Text.Render(footerView)
 
 		m.currentQuestionModel.SetWidth(m.width - 2)
@@ -115,5 +116,6 @@ func (m *Model) View() string {
 			Height(m.height).
 			Render(content)
 	}
+
 	panic("unreachable")
 }

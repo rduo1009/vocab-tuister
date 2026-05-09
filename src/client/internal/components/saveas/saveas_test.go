@@ -38,6 +38,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.SaveAs.Update(msg)
 
 	return m, cmd
@@ -171,9 +172,11 @@ func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "file.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
 
 	if err := tm.Quit(); err != nil {
@@ -202,9 +205,11 @@ func TestSaveAsSubmitWithNewFile(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "newfile.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
 
 	tm.WaitFinished(t)
@@ -235,9 +240,11 @@ func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "alpha.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter}) // Submit "alpha.txt"
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
@@ -275,9 +282,11 @@ func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "alpha.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter}) // Submit "alpha.txt"
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {

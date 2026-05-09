@@ -55,7 +55,7 @@ func (sb *selectButton) Focused() bool {
 }
 
 func (ew *editorWrapper) Focused() bool {
-	return ew.Model.IsFocused()
+	return ew.IsFocused()
 }
 
 type Model struct {

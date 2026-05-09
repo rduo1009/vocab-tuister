@@ -83,16 +83,19 @@ func TestModelSelection(t *testing.T) {
 	}
 
 	m.Next()
+
 	if m.active != 1 {
 		t.Errorf("expected active tab 1 after Next(), got %d", m.active)
 	}
 
 	m.Prev()
+
 	if m.active != 0 {
 		t.Errorf("expected active tab 0 after Prev(), got %d", m.active)
 	}
 
 	m.Select(2)
+
 	if m.active != 2 {
 		t.Errorf("expected active tab 2 after Select(2), got %d", m.active)
 	}
@@ -110,11 +113,13 @@ func TestFocusBlur(t *testing.T) {
 	}
 
 	m.Focus()
+
 	if !m.Focused() {
 		t.Error("expected focused to be true after Focus()")
 	}
 
 	m.Blur()
+
 	if m.Focused() {
 		t.Error("expected focused to be false after Blur()")
 	}

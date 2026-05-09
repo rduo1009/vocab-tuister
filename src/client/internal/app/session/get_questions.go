@@ -2,6 +2,7 @@ package session
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 
@@ -37,7 +38,7 @@ type StreamQuestionProvider struct {
 func (p *StreamQuestionProvider) Next() (questions.Question, error) {
 	q, err := p.stream.Recv()
 	if err != nil {
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			return nil, fmt.Errorf(
 				"stream ended unexpectedly: expected %d questions, got %d",
 				p.total,
@@ -50,6 +51,7 @@ func (p *StreamQuestionProvider) Next() (questions.Question, error) {
 			switch st.Code() {
 			case codes.InvalidArgument:
 				return nil, fmt.Errorf("invalid input: %s", st.Message())
+
 			default:
 				return nil, fmt.Errorf("grpc error (%s): %s", st.Code(), st.Message())
 			}
@@ -59,6 +61,7 @@ func (p *StreamQuestionProvider) Next() (questions.Question, error) {
 	}
 
 	p.received++
+
 	return questions.NewQuestion(q.Question), nil
 }
 
@@ -111,6 +114,7 @@ func getQuestions(serverPort int, vocabList string, sessionConfig *pb.SessionCon
 
 				default:
 					conn.Close()
+
 					return app.ErrMsg(fmt.Errorf(
 						"grpc error (%s): %s",
 						st.Code(),
@@ -120,6 +124,7 @@ func getQuestions(serverPort int, vocabList string, sessionConfig *pb.SessionCon
 			}
 
 			conn.Close()
+
 			return app.ErrMsg(fmt.Errorf("non-grpc error: %w", err))
 		}
 

@@ -350,6 +350,7 @@ func defaultForm() (*huh.Form, *formValues) {
 					if x < 2 {
 						return errors.New("must be at least 2")
 					}
+
 					return nil
 				}),
 			huh.NewInput().
@@ -364,6 +365,7 @@ func defaultForm() (*huh.Form, *formValues) {
 					if x < 1 {
 						return errors.New("must be at least 1")
 					}
+
 					return nil
 				}),
 		),
