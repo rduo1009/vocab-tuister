@@ -38,7 +38,9 @@ func TestErrorDialogWordWrap(t *testing.T) {
 	ed.SetWidth(testWordWrapDialogWidth)
 	ed.SetHeight(40)
 	ed.SetError(
-		errors.New("this is a very long error message that should wrap naturally and never require horizontal scrolling"),
+		errors.New(
+			"this is a very long error message that should wrap naturally and never require horizontal scrolling",
+		),
 	)
 
 	finalView := ed.View()
