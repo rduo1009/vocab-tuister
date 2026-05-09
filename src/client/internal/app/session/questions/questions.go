@@ -1,5 +1,7 @@
 package questions
 
+import pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
+
 type QuestionMode int
 
 const (
@@ -31,3 +33,35 @@ type (
 		GetChoices() []string
 	}
 )
+
+func NewQuestion(q *pb.Question) Question {
+	if v := q.GetMcEngToLat(); v != nil {
+		return &MultipleChoiceEngToLatQuestion{v}
+	}
+
+	if v := q.GetMcLatToEng(); v != nil {
+		return &MultipleChoiceLatToEngQuestion{v}
+	}
+
+	if v := q.GetParseCompToLat(); v != nil {
+		return &ParseWordCompToLatQuestion{v}
+	}
+
+	if v := q.GetParseLatToComp(); v != nil {
+		return &ParseWordLatToCompQuestion{v}
+	}
+
+	if v := q.GetPrincipalParts(); v != nil {
+		return &PrincipalPartsQuestion{v}
+	}
+
+	if v := q.GetTypeInEngToLat(); v != nil {
+		return &TypeInEngToLatQuestion{v}
+	}
+
+	if v := q.GetTypeInLatToEng(); v != nil {
+		return &TypeInLatToEngQuestion{v}
+	}
+
+	return nil
+}

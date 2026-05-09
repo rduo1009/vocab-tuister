@@ -9,6 +9,7 @@ require (
 	charm.land/huh/v2 v2.0.3
 	charm.land/lipgloss/v2 v2.0.2
 	github.com/alecthomas/chroma/v2 v2.23.1
+	github.com/google/go-cmp v0.7.0
 	github.com/ionut-t/goeditor v0.4.10
 	github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1
 	github.com/lrstanley/bubbletint/v2 v2.0.1

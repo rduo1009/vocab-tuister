@@ -383,7 +383,7 @@ class EndingComponents(betterproto2.Message):
         8, betterproto2.TYPE_ENUM, default_factory=lambda: Degree(0)
     )
 
-    string: "typing.Annotated[str, pydantic.AfterValidator(betterproto2.validators.validate_string)]" = betterproto2.field(
+    display_string: "typing.Annotated[str, pydantic.AfterValidator(betterproto2.validators.validate_string)]" = betterproto2.field(
         9, betterproto2.TYPE_STRING
     )
 

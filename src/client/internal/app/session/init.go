@@ -9,7 +9,7 @@ import (
 
 func (m *Model) Init() tea.Cmd {
 	if m.appStatus == Initialised {
-		return m.questions[m.currentIndex].Init()
+		return m.currentQuestionModel.Init()
 	}
 	return util.MsgCmd(navigator.AddNavigableMsg{
 		Components: []navigator.Navigable{

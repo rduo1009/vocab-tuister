@@ -168,7 +168,7 @@ def ending_components_pb(
             DegreePb,
         ),
         # string is always present on accido EndingComponents (defaults to "")
-        string=ending_components.string,
+        display_string=ending_components.string,
     )
 
 
@@ -226,9 +226,9 @@ def ending_components_original(
         kwargs["degree"] = DegreeOriginal[ending_components_pb.degree.name]
 
     # string is always present in both representations
-    kwargs["string"] = ending_components_pb.string
+    kwargs["string"] = ending_components_pb.display_string
 
-    return EndingComponentsOriginal(**kwargs)
+    return EndingComponentsOriginal(**kwargs)  # pyright: ignore[reportCallIssue, reportArgumentType]
 
 
 QUESTION_FIELD_MAP = {

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 func TestCheck(t *testing.T) {
@@ -17,121 +17,163 @@ func TestCheck(t *testing.T) {
 		want     bool
 	}{
 		"MultipleChoiceEngtoLatQuestion_1": {
-			question: &questions.MultipleChoiceEngToLatQuestion{
+			question: &questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 				Prompt:  "that",
 				Choices: []string{"audio", "ille", "nomen"},
 				Answer:  "ille",
-			},
+			}},
 			input: "ille", want: true,
 		},
 		"MultipleChoiceEngtoLatQuestion_2": {
-			question: &questions.MultipleChoiceEngToLatQuestion{
+			question: &questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 				Prompt:  "from",
 				Choices: []string{"hic", "e", "capio"},
 				Answer:  "e",
-			},
+			}},
 			input: "hic", want: false,
 		},
 		"MultipleChoiceLattoEngQuestion_1": {
-			question: &questions.MultipleChoiceLatToEngQuestion{
+			question: &questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 				Prompt:  "puer",
 				Choices: []string{"name", "boy", "hear"},
 				Answer:  "boy",
-			},
+			}},
 			input: "boy", want: true,
 		},
 		"MultipleChoiceLattoEngQuestion_2": {
-			question: &questions.MultipleChoiceLatToEngQuestion{
+			question: &questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 				Prompt:  "capio",
 				Choices: []string{"boy", "happy", "take"},
 				Answer:  "take",
-			},
+			}},
 			input: "boy", want: false,
 		},
 		"ParseWordComptoLatQuestion_1": {
 			question: &questions.ParseWordCompToLatQuestion{
-				Prompt:     "that: ille, illa, illud",
-				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
-				MainAnswer: "illi",
-				Answers:    []string{"illi"},
+				&pb.ParseWordCompToLatQuestion{
+					Prompt: "that: ille, illa, illud",
+					Components: &pb.EndingComponents{
+						Case:   pb.Case_CASE_DATIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+						Gender: pb.Gender_GENDER_NEUTER,
+					},
+					MainAnswer: "illi",
+					Answers:    []string{"illi"},
+				},
 			},
 			input: "illi", want: true,
 		},
 		"ParseWordComptoLatQuestion_2": {
 			question: &questions.ParseWordCompToLatQuestion{
-				Prompt:     "boy: puer, pueri, (m)",
-				Components: questions.UnmarshalEndingComponents("genitive singular"),
-				MainAnswer: "pueri",
-				Answers:    []string{"pueri"},
+				&pb.ParseWordCompToLatQuestion{
+					Prompt: "boy: puer, pueri, (m)",
+					Components: &pb.EndingComponents{
+						Case:   pb.Case_CASE_GENITIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+					},
+					MainAnswer: "pueri",
+					Answers:    []string{"pueri"},
+				},
 			},
 			input: "puer", want: false,
 		},
 		"ParseWordLattoCompQuestion_1": {
-			question: &questions.ParseWordLatToCompQuestion{
+			question: &questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer: questions.UnmarshalEndingComponents(
-					"perfect passive participle feminine dative singular",
-				),
-				Answers: []endingcomponents.EndingComponents{
-					questions.UnmarshalEndingComponents(
-						"perfect passive participle feminine dative singular",
-					),
+				MainAnswer: &pb.EndingComponents{
+					Tense:  pb.Tense_TENSE_PERFECT,
+					Voice:  pb.Voice_VOICE_PASSIVE,
+					Mood:   pb.Mood_MOOD_PARTICIPLE,
+					Gender: pb.Gender_GENDER_FEMININE,
+					Case:   pb.Case_CASE_DATIVE,
+					Number: pb.Number_NUMBER_SINGULAR,
 				},
+				Answers: []*pb.EndingComponents{
+					{
+						Tense:  pb.Tense_TENSE_PERFECT,
+						Voice:  pb.Voice_VOICE_PASSIVE,
+						Mood:   pb.Mood_MOOD_PARTICIPLE,
+						Gender: pb.Gender_GENDER_FEMININE,
+						Case:   pb.Case_CASE_DATIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+					},
+				},
+			}},
+			input: &pb.EndingComponents{
+				Tense:  pb.Tense_TENSE_PERFECT,
+				Voice:  pb.Voice_VOICE_PASSIVE,
+				Mood:   pb.Mood_MOOD_PARTICIPLE,
+				Gender: pb.Gender_GENDER_FEMININE,
+				Case:   pb.Case_CASE_DATIVE,
+				Number: pb.Number_NUMBER_SINGULAR,
 			},
-			input: questions.UnmarshalEndingComponents(
-				"perfect passive participle feminine dative singular",
-			),
 			want: true,
 		},
 		"ParseWordLattoCompQuestion_2": {
 			question: &questions.ParseWordLatToCompQuestion{
-				Prompt:          "laetissimam",
-				DictionaryEntry: "happy: laetus, laeta, laetum, (2-1-2)",
-				MainAnswer: questions.UnmarshalEndingComponents(
-					"superlative accusative singular feminine",
-				),
-				Answers: []endingcomponents.EndingComponents{
-					questions.UnmarshalEndingComponents("superlative accusative singular feminine"),
+				&pb.ParseWordLatToCompQuestion{
+					Prompt:          "laetissimam",
+					DictionaryEntry: "happy: laetus, laeta, laetum, (2-1-2)",
+					//MainAnswer: questions.UnmarshalEndingComponents(
+					//	"superlative accusative singular feminine",
+					//),
+					MainAnswer: &pb.EndingComponents{
+						Degree: pb.Degree_DEGREE_SUPERLATIVE,
+						Case:   pb.Case_CASE_ACCUSATIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+						Gender: pb.Gender_GENDER_FEMININE,
+					},
+					Answers: []*pb.EndingComponents{
+						{
+							Degree: pb.Degree_DEGREE_SUPERLATIVE,
+							Case:   pb.Case_CASE_ACCUSATIVE,
+							Number: pb.Number_NUMBER_SINGULAR,
+							Gender: pb.Gender_GENDER_FEMININE,
+						},
+					},
 				},
 			},
-			input: questions.UnmarshalEndingComponents(
-				"superlative accusative singular masculine",
-			),
+			input: &pb.EndingComponents{
+				Degree: pb.Degree_DEGREE_SUPERLATIVE,
+				Case:   pb.Case_CASE_ACCUSATIVE,
+				Number: pb.Number_NUMBER_SINGULAR,
+				Gender: pb.Gender_GENDER_MASCULINE,
+			},
 			want: false,
 		},
 		"PrincipalPartsQuestion_1": {
-			question: &questions.PrincipalPartsQuestion{
+			question: &questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 				Prompt:         "ingens",
 				PrincipalParts: []string{"ingens", "ingentis"},
-			},
+			}},
 			input: []string{"ingens", "ingentis"}, want: true,
 		},
 		"PrincipalPartsQuestion_2": {
-			question: &questions.PrincipalPartsQuestion{
+			question: &questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 				Prompt:         "nomen",
 				PrincipalParts: []string{"nomen", "nominis"},
-			},
+			}},
 			input: []string{"nomen", "nomini"}, want: false,
 		},
 		"TypeInEngtoLatQuestion_1": {
-			question: &questions.TypeInEngToLatQuestion{
+			question: &questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 				Prompt:     "into",
 				MainAnswer: "in",
 				Answers:    []string{"in"},
-			},
+			}},
 			input: "in", want: true,
 		},
 		"TypeInEngtoLatQuestion_2": {
-			question: &questions.TypeInEngToLatQuestion{
+			question: &questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 				Prompt:     "from",
 				MainAnswer: "e",
 				Answers:    []string{"e"},
-			},
+			}},
 			input: "in", want: false,
 		},
 		"TypeInEngtoLatQuestion_3": {
-			question: &questions.TypeInEngToLatQuestion{
+			question: &questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 				Prompt:     "large",
 				MainAnswer: "ingens",
 				Answers: []string{
@@ -144,11 +186,11 @@ func TestCheck(t *testing.T) {
 					"ingentis",
 					"ingentium",
 				},
-			},
+			}},
 			input: "ingentibus", want: true,
 		},
 		"TypeInEngtoLatQuestion_4": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "very happy",
 				MainAnswer: "laetissimus",
 				Answers: []string{
@@ -166,27 +208,27 @@ func TestCheck(t *testing.T) {
 					"laetissimum",
 					"laetissimus",
 				},
-			},
+			}},
 			input: "laetus", want: false,
 		},
 		"TypeInLattoEngQuestion_1": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "ingenti",
 				MainAnswer: "large",
 				Answers:    []string{"large"},
-			},
+			}},
 			input: "large", want: true,
 		},
 		"TypeInLattoEngQuestion_2": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "capente",
 				MainAnswer: "taking",
 				Answers:    []string{"taking"},
-			},
+			}},
 			input: "I am taking", want: false,
 		},
 		"TypeInLattoEngQuestion_3": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "puero",
 				MainAnswer: "by the boy",
 				Answers: []string{
@@ -202,15 +244,15 @@ func TestCheck(t *testing.T) {
 					"with a boy",
 					"with the boy",
 				},
-			},
+			}},
 			input: "for the boy", want: true,
 		},
 		"TypeInLattoEngQuestion_4": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "illa",
 				MainAnswer: "those",
 				Answers:    []string{"by means of that", "by that", "that", "those", "with that"},
-			},
+			}},
 			input: "by means of those", want: false,
 		},
 	}
@@ -230,20 +272,20 @@ func TestGetChoices(t *testing.T) {
 		wantErr  error
 	}{
 		"MultipleChoiceEngToLatQuestion": {
-			question: &questions.MultipleChoiceEngToLatQuestion{
+			question: &questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 				Prompt:  "that",
 				Choices: []string{"audio", "ille", "nomen"},
 				Answer:  "ille",
-			},
+			}},
 			want:    []string{"audio", "ille", "nomen"},
 			wantErr: nil,
 		},
 		"MultipleChoiceLatToEngQuestion": {
-			question: &questions.MultipleChoiceLatToEngQuestion{
+			question: &questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 				Prompt:  "puer",
 				Choices: []string{"name", "boy", "hear"},
 				Answer:  "boy",
-			},
+			}},
 			want:    []string{"name", "boy", "hear"},
 			wantErr: nil,
 		},
@@ -290,68 +332,87 @@ func TestMainAnswer(t *testing.T) {
 		want     any
 	}{
 		"MultipleChoiceEngToLatQuestion": {
-			question: &questions.MultipleChoiceEngToLatQuestion{
+			question: &questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 				Prompt:  "that",
 				Choices: []string{"audio", "ille", "nomen"},
 				Answer:  "ille",
-			},
+			}},
 			want: "ille",
 		},
 		"MultipleChoiceLatToEngQuestion": {
-			question: &questions.MultipleChoiceLatToEngQuestion{
+			question: &questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 				Prompt:  "puer",
 				Choices: []string{"name", "boy", "hear"},
 				Answer:  "boy",
-			},
+			}},
 			want: "boy",
 		},
 		"ParseWordCompToLatQuestion": {
-			question: &questions.ParseWordCompToLatQuestion{
-				Prompt:     "that: ille, illa, illud",
-				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
+			question: &questions.ParseWordCompToLatQuestion{&pb.ParseWordCompToLatQuestion{
+				Prompt: "that: ille, illa, illud",
+				Components: &pb.EndingComponents{
+					Case:   pb.Case_CASE_DATIVE,
+					Number: pb.Number_NUMBER_SINGULAR,
+					Gender: pb.Gender_GENDER_NEUTER,
+				},
 				MainAnswer: "illi",
 				Answers:    []string{"illi"},
-			},
+			}},
 			want: "illi",
 		},
 		"ParseWordLatToCompQuestion": {
-			question: &questions.ParseWordLatToCompQuestion{
+			question: &questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer: questions.UnmarshalEndingComponents(
-					"perfect passive participle feminine dative singular",
-				),
-				Answers: []endingcomponents.EndingComponents{
-					questions.UnmarshalEndingComponents(
-						"perfect passive participle feminine dative singular",
-					),
+				MainAnswer: &pb.EndingComponents{
+					Tense:  pb.Tense_TENSE_PERFECT,
+					Voice:  pb.Voice_VOICE_PASSIVE,
+					Mood:   pb.Mood_MOOD_PARTICIPLE,
+					Gender: pb.Gender_GENDER_FEMININE,
+					Case:   pb.Case_CASE_DATIVE,
+					Number: pb.Number_NUMBER_SINGULAR,
 				},
+				Answers: []*pb.EndingComponents{
+					{
+						Tense:  pb.Tense_TENSE_PERFECT,
+						Voice:  pb.Voice_VOICE_PASSIVE,
+						Mood:   pb.Mood_MOOD_PARTICIPLE,
+						Gender: pb.Gender_GENDER_FEMININE,
+						Case:   pb.Case_CASE_DATIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+					},
+				},
+			}},
+			want: &pb.EndingComponents{
+				Tense:  pb.Tense_TENSE_PERFECT,
+				Voice:  pb.Voice_VOICE_PASSIVE,
+				Mood:   pb.Mood_MOOD_PARTICIPLE,
+				Gender: pb.Gender_GENDER_FEMININE,
+				Case:   pb.Case_CASE_DATIVE,
+				Number: pb.Number_NUMBER_SINGULAR,
 			},
-			want: questions.UnmarshalEndingComponents(
-				"perfect passive participle feminine dative singular",
-			),
 		},
 		"PrincipalPartsQuestion": {
-			question: &questions.PrincipalPartsQuestion{
+			question: &questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 				Prompt:         "ingens",
 				PrincipalParts: []string{"ingens", "ingentis"},
-			},
+			}},
 			want: []string{"ingens", "ingentis"},
 		},
 		"TypeInEngToLatQuestion": {
-			question: &questions.TypeInEngToLatQuestion{
+			question: &questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 				Prompt:     "into",
 				MainAnswer: "in",
 				Answers:    []string{"in"},
-			},
+			}},
 			want: "in",
 		},
 		"TypeInLatToEngQuestion": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "ingenti",
 				MainAnswer: "large",
 				Answers:    []string{"large"},
-			},
+			}},
 			want: "large",
 		},
 	}
@@ -370,66 +431,80 @@ func TestQuestionMode(t *testing.T) {
 		want     questions.QuestionMode
 	}{
 		"MultipleChoiceEngToLatQuestion": {
-			question: &questions.MultipleChoiceEngToLatQuestion{
+			question: &questions.MultipleChoiceEngToLatQuestion{&pb.MultipleChoiceEngToLatQuestion{
 				Prompt:  "that",
 				Choices: []string{"audio", "ille", "nomen"},
 				Answer:  "ille",
-			},
+			}},
 			want: questions.MultipleChoice,
 		},
 		"MultipleChoiceLatToEngQuestion": {
-			question: &questions.MultipleChoiceLatToEngQuestion{
+			question: &questions.MultipleChoiceLatToEngQuestion{&pb.MultipleChoiceLatToEngQuestion{
 				Prompt:  "puer",
 				Choices: []string{"name", "boy", "hear"},
 				Answer:  "boy",
-			},
+			}},
 			want: questions.MultipleChoice,
 		},
 		"ParseWordCompToLatQuestion": {
-			question: &questions.ParseWordCompToLatQuestion{
-				Prompt:     "that: ille, illa, illud",
-				Components: questions.UnmarshalEndingComponents("dative singular neuter"),
+			question: &questions.ParseWordCompToLatQuestion{&pb.ParseWordCompToLatQuestion{
+				Prompt: "that: ille, illa, illud",
+				Components: &pb.EndingComponents{
+					Case:   pb.Case_CASE_DATIVE,
+					Number: pb.Number_NUMBER_SINGULAR,
+					Gender: pb.Gender_GENDER_NEUTER,
+				},
 				MainAnswer: "illi",
 				Answers:    []string{"illi"},
-			},
+			}},
 			want: questions.Regular,
 		},
 		"ParseWordLatToCompQuestion": {
-			question: &questions.ParseWordLatToCompQuestion{
+			question: &questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 				Prompt:          "captae",
 				DictionaryEntry: "take: capio, capere, cepi, captus",
-				MainAnswer: questions.UnmarshalEndingComponents(
-					"perfect passive participle feminine dative singular",
-				),
-				Answers: []endingcomponents.EndingComponents{
-					questions.UnmarshalEndingComponents(
-						"perfect passive participle feminine dative singular",
-					),
+				MainAnswer: &pb.EndingComponents{
+					Tense:  pb.Tense_TENSE_PERFECT,
+					Voice:  pb.Voice_VOICE_PASSIVE,
+					Mood:   pb.Mood_MOOD_PARTICIPLE,
+					Gender: pb.Gender_GENDER_FEMININE,
+					Case:   pb.Case_CASE_DATIVE,
+					Number: pb.Number_NUMBER_SINGULAR,
 				},
-			},
+				Answers: []*pb.EndingComponents{
+					{
+						Tense:  pb.Tense_TENSE_PERFECT,
+						Voice:  pb.Voice_VOICE_PASSIVE,
+						Mood:   pb.Mood_MOOD_PARTICIPLE,
+						Gender: pb.Gender_GENDER_FEMININE,
+						Case:   pb.Case_CASE_DATIVE,
+						Number: pb.Number_NUMBER_SINGULAR,
+					},
+				},
+			}},
 			want: questions.ParseWord,
 		},
 		"PrincipalPartsQuestion": {
-			question: &questions.PrincipalPartsQuestion{
+			question: &questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 				Prompt:         "ingens",
 				PrincipalParts: []string{"ingens", "ingentis"},
-			},
+			}},
 			want: questions.PrincipalParts,
 		},
 		"TypeInEngToLatQuestion": {
-			question: &questions.TypeInEngToLatQuestion{
+			question: &questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 				Prompt:     "into",
 				MainAnswer: "in",
 				Answers:    []string{"in"},
-			},
+			}},
 			want: questions.Regular,
 		},
 		"TypeInLatToEngQuestion": {
-			question: &questions.TypeInLatToEngQuestion{
+			question: &questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "ingenti",
 				MainAnswer: "large",
 				Answers:    []string{"large"},
-			},
+			}},
 			want: questions.Regular,
 		},
 	}

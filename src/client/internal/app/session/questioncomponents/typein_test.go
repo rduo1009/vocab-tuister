@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -45,11 +46,11 @@ func (m modelTI) View() tea.View {
 }
 
 func TestTypeInLatToEng(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
@@ -62,11 +63,11 @@ func TestTypeInLatToEng(t *testing.T) {
 }
 
 func TestTypeInEngToLat(t *testing.T) {
-	q := questions.TypeInEngToLatQuestion{
+	q := questions.TypeInEngToLatQuestion{&pb.TypeInEngToLatQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
@@ -89,11 +90,11 @@ func TestTypeInCorrect(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			q := questions.TypeInLatToEngQuestion{
+			q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 				Prompt:     "prompt",
 				MainAnswer: "foo",
 				Answers:    []string{"foo", "bar", "baz"},
-			}
+			}}
 			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 			qc := NewTypeInQuestionModel(&q, &s)
 
@@ -140,11 +141,11 @@ func TestTypeInCorrect(t *testing.T) {
 }
 
 func TestTypeInIncorrect(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 
@@ -191,11 +192,11 @@ func TestTypeInIncorrect(t *testing.T) {
 }
 
 func TestTypeInNextQuestion(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{
+	q := questions.TypeInLatToEngQuestion{&pb.TypeInLatToEngQuestion{
 		Prompt:     "prompt",
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewTypeInQuestionModel(&q, &s)
 

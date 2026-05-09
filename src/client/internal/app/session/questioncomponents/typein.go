@@ -249,7 +249,7 @@ func (m *TypeInQuestionModel) View() string {
 			m.styles.Text.Render("What is"),
 			m.styles.Italic.Render(q.Prompt),
 			m.styles.Text.Render("in the"),
-			q.Components,
+			q.Components.DisplayString,
 		)
 
 	default:

@@ -79,5 +79,5 @@ message EndingComponents {
   Mood mood = 6;
   Person person = 7;
   Degree degree = 8;
-  string string = 9;
+  string display_string = 9;
 }

@@ -3,6 +3,7 @@ package session
 import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questioncomponents"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -51,38 +52,46 @@ type Model struct {
 
 	// Components
 
-	questions     []questioncomponents.QuestionModel
-	returnButton  *returnButton
-	restartButton *restartButton
+	questionProvider     QuestionProvider
+	currentQuestionModel questioncomponents.QuestionModel
+	returnButton         *returnButton
+	restartButton        *restartButton
 
 	// Application state
 
-	styles       *styles.StylesWrapper
-	listLoaded   *create.LoadStatus
-	configLoaded *create.LoadStatus
+	styles         *styles.StylesWrapper
+	listVerified   *create.VerifyStatus
+	configVerified *create.VerifyStatus
 
-	// index of the current question
-	currentIndex int
-	// total number of questions
-	questionCount int
-	// number of questions that have been answered
-	answeredCount int
-	// number of questions that were answered correctly
-	correctCount        int
+	answeredCount       int // number of questions that have been answered
+	correctCount        int // number of questions that were answered correctly
 	dropdownActive      bool
 	activeDropdownIndex int
 	serverPort          int
+	vocabList           *string
+	sessionConfig       **pb.SessionConfig
+	numberOfQuestions   *int
 	appStatus           testingSessionStatus
 }
 
-func New(listLoaded, configLoaded *create.LoadStatus, serverPort int, styles *styles.StylesWrapper) *Model {
+func New(
+	listVerified, configVerified *create.VerifyStatus,
+	serverPort int,
+	vocabList *string,
+	sessionConfig **pb.SessionConfig,
+	numberOfQuestions *int,
+	styles *styles.StylesWrapper,
+) *Model {
 	return &Model{
-		returnButton:  &returnButton{},
-		restartButton: &restartButton{},
-		styles:        styles,
-		listLoaded:    listLoaded,
-		configLoaded:  configLoaded,
-		serverPort:    serverPort,
-		appStatus:     Unavailable,
+		returnButton:      &returnButton{},
+		restartButton:     &restartButton{},
+		styles:            styles,
+		listVerified:      listVerified,
+		configVerified:    configVerified,
+		serverPort:        serverPort,
+		vocabList:         vocabList,
+		sessionConfig:     sessionConfig,
+		numberOfQuestions: numberOfQuestions,
+		appStatus:         Unavailable,
 	}
 }

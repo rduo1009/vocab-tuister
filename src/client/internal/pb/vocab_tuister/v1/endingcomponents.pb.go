@@ -477,7 +477,7 @@ type EndingComponents struct {
 	Mood          Mood                   `protobuf:"varint,6,opt,name=mood,proto3,enum=vocab_tuister.v1.Mood" json:"mood,omitempty"`
 	Person        Person                 `protobuf:"varint,7,opt,name=person,proto3,enum=vocab_tuister.v1.Person" json:"person,omitempty"`
 	Degree        Degree                 `protobuf:"varint,8,opt,name=degree,proto3,enum=vocab_tuister.v1.Degree" json:"degree,omitempty"`
-	String_       string                 `protobuf:"bytes,9,opt,name=string,proto3" json:"string,omitempty"`
+	DisplayString string                 `protobuf:"bytes,9,opt,name=display_string,json=displayString,proto3" json:"display_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -568,9 +568,9 @@ func (x *EndingComponents) GetDegree() Degree {
 	return Degree_DEGREE_UNSPECIFIED
 }
 
-func (x *EndingComponents) GetString_() string {
+func (x *EndingComponents) GetDisplayString() string {
 	if x != nil {
-		return x.String_
+		return x.DisplayString
 	}
 	return ""
 }
@@ -579,7 +579,7 @@ var File_vocab_tuister_v1_endingcomponents_proto protoreflect.FileDescriptor
 
 const file_vocab_tuister_v1_endingcomponents_proto_rawDesc = "" +
 	"\n" +
-	"'vocab_tuister/v1/endingcomponents.proto\x12\x10vocab_tuister.v1\"\xa8\x03\n" +
+	"'vocab_tuister/v1/endingcomponents.proto\x12\x10vocab_tuister.v1\"\xb7\x03\n" +
 	"\x10EndingComponents\x12*\n" +
 	"\x04case\x18\x01 \x01(\x0e2\x16.vocab_tuister.v1.CaseR\x04case\x120\n" +
 	"\x06number\x18\x02 \x01(\x0e2\x18.vocab_tuister.v1.NumberR\x06number\x120\n" +
@@ -588,8 +588,8 @@ const file_vocab_tuister_v1_endingcomponents_proto_rawDesc = "" +
 	"\x05voice\x18\x05 \x01(\x0e2\x17.vocab_tuister.v1.VoiceR\x05voice\x12*\n" +
 	"\x04mood\x18\x06 \x01(\x0e2\x16.vocab_tuister.v1.MoodR\x04mood\x120\n" +
 	"\x06person\x18\a \x01(\x0e2\x18.vocab_tuister.v1.PersonR\x06person\x120\n" +
-	"\x06degree\x18\b \x01(\x0e2\x18.vocab_tuister.v1.DegreeR\x06degree\x12\x16\n" +
-	"\x06string\x18\t \x01(\tR\x06string*\x90\x01\n" +
+	"\x06degree\x18\b \x01(\x0e2\x18.vocab_tuister.v1.DegreeR\x06degree\x12%\n" +
+	"\x0edisplay_string\x18\t \x01(\tR\rdisplayString*\x90\x01\n" +
 	"\x04Case\x12\x14\n" +
 	"\x10CASE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fCASE_NOMINATIVE\x10\x01\x12\x11\n" +

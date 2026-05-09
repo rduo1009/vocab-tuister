@@ -22,11 +22,11 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	var cmds []tea.Cmd
 	switch m.appStatus {
 	case Unavailable:
-		if *m.listLoaded == create.StatusLoaded && *m.configLoaded == create.StatusLoaded {
+		if *m.listVerified == create.StatusVerified && *m.configVerified == create.StatusVerified {
 			m.appStatus = Uninitialised
 			cmds = append(
 				cmds,
-				getQuestions(m.serverPort),
+				getQuestions(m.serverPort, *m.vocabList, *m.sessionConfig, *m.numberOfQuestions),
 				util.MsgCmd(navigator.RemoveNavigableMsg{
 					Components: []navigator.Navigable{m.returnButton},
 				}),
@@ -37,7 +37,6 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 				m.returnButton.Focused() {
 				// set up returning back later
 				m.appStatus = Unavailable
-				m.currentIndex = 0
 				m.answeredCount = 0
 				m.correctCount = 0
 
@@ -54,54 +53,76 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 		fallthrough
 
 	case Uninitialised:
-		if msg, ok := msg.(QuestionsGetMsg); ok {
-			m.questions = make([]questioncomponents.QuestionModel, len(msg.Questions))
-			for i, q := range msg.Questions {
-				switch q.QuestionMode() {
-				case questions.Regular:
-					m.questions[i] = questioncomponents.NewTypeInQuestionModel(q, m.styles)
+		if msg, ok := msg.(QuestionStreamGetMsg); ok {
+			m.questionProvider = msg.QuestionProvider
 
-				case questions.ParseWord:
-					m.questions[i] = questioncomponents.NewParseQuestionModel(q, m.styles)
+			q, err := m.questionProvider.Next()
+			if err != nil {
+				cmds = append(cmds, util.MsgCmd(app.ErrMsg(err)))
+				break
+			}
 
-				case questions.PrincipalParts:
-					m.questions[i] = questioncomponents.NewPrincipalPartsQuestionModel(q, m.styles)
+			switch q.QuestionMode() {
+			case questions.Regular:
+				m.currentQuestionModel = questioncomponents.NewTypeInQuestionModel(q, m.styles)
 
-				case questions.MultipleChoice:
-					m.questions[i] = questioncomponents.NewMultipleChoiceQuestionModel(q, m.styles)
-				}
+			case questions.ParseWord:
+				m.currentQuestionModel = questioncomponents.NewParseQuestionModel(q, m.styles)
+
+			case questions.PrincipalParts:
+				m.currentQuestionModel = questioncomponents.NewPrincipalPartsQuestionModel(q, m.styles)
+
+			case questions.MultipleChoice:
+				m.currentQuestionModel = questioncomponents.NewMultipleChoiceQuestionModel(q, m.styles)
 			}
 
 			m.appStatus = Initialised
-			m.questionCount = len(m.questions)
-			cmds = append(cmds, m.questions[m.currentIndex].Init())
+			cmds = append(cmds, m.currentQuestionModel.Init())
 		}
 
 	case Initialised:
 		switch msg := msg.(type) {
 		case questioncomponents.QuestionAnsweredMsg:
 			m.answeredCount++
-			if m.questions[m.currentIndex].QuestionStatus() == questioncomponents.Correct {
+			if m.currentQuestionModel.QuestionStatus() == questioncomponents.Correct {
 				m.correctCount++
 			}
 
 		case questioncomponents.NextQuestionMsg:
-			if m.currentIndex < m.questionCount-1 {
-				m.currentIndex++
-				return m, m.questions[m.currentIndex].Init()
+			if m.questionProvider.Current() >= *m.numberOfQuestions {
+				m.appStatus = Completed
+
+				return m, tea.Sequence(
+					util.MsgCmd(navigator.AddNavigableMsg{
+						Components: []navigator.Navigable{
+							m.returnButton,
+							m.restartButton,
+						},
+					}),
+					util.MsgCmd(navigator.FocusNavigableMsg{Target: m.returnButton}),
+				)
 			}
 
-			m.appStatus = Completed
+			q, err := m.questionProvider.Next()
+			if err != nil {
+				cmds = append(cmds, util.MsgCmd(app.ErrMsg(err)))
+			}
 
-			return m, tea.Sequence(
-				util.MsgCmd(navigator.AddNavigableMsg{
-					Components: []navigator.Navigable{
-						m.returnButton,
-						m.restartButton,
-					},
-				}),
-				util.MsgCmd(navigator.FocusNavigableMsg{Target: m.returnButton}),
-			)
+			switch q.QuestionMode() {
+			case questions.Regular:
+				m.currentQuestionModel = questioncomponents.NewTypeInQuestionModel(q, m.styles)
+
+			case questions.ParseWord:
+				m.currentQuestionModel = questioncomponents.NewParseQuestionModel(q, m.styles)
+
+			case questions.PrincipalParts:
+				m.currentQuestionModel = questioncomponents.NewPrincipalPartsQuestionModel(q, m.styles)
+
+			case questions.MultipleChoice:
+				m.currentQuestionModel = questioncomponents.NewMultipleChoiceQuestionModel(q, m.styles)
+			}
+
+			return m, m.currentQuestionModel.Init()
 
 		case dropdown.StartMsg:
 			if strings.HasPrefix(msg.ID, "parsequestionDropdown") {
@@ -134,11 +155,11 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			}
 		}
 
-		if q, ok := m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel); ok &&
+		if q, ok := m.currentQuestionModel.(*questioncomponents.ParseQuestionModel); ok &&
 			m.dropdownActive {
 			util.UpdaterVal(&cmds, &q.Dropdowns[m.activeDropdownIndex].Model, msg)
 		} else {
-			util.UpdaterVal(&cmds, &m.questions[m.currentIndex], msg)
+			util.UpdaterVal(&cmds, &m.currentQuestionModel, msg)
 		}
 
 	case Completed:
@@ -147,18 +168,19 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			case m.returnButton.Focused():
 				// set up returning back later
 				m.appStatus = Unavailable
-				m.currentIndex = 0
 				m.answeredCount = 0
 				m.correctCount = 0
+				m.questionProvider.Close()
 
 				// return to create page; no need to remove navigables as this will be done anyway
 				return m, util.MsgCmd(tabs.SelectTabMsg{Index: 0})
 
 			case m.restartButton.Focused():
 				m.appStatus = Unavailable
-				m.currentIndex = 0
 				m.answeredCount = 0
 				m.correctCount = 0
+				m.questionProvider.Close()
+
 				cmds = append(cmds, m.Init())
 			}
 		}

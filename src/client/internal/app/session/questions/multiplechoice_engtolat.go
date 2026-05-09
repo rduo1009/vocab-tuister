@@ -1,9 +1,9 @@
 package questions
 
+import pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
+
 type MultipleChoiceEngToLatQuestion struct {
-	Answer  string   `json:"answer"`
-	Choices []string `json:"choices"`
-	Prompt  string   `json:"prompt"`
+	*pb.MultipleChoiceEngToLatQuestion
 }
 
 func (q *MultipleChoiceEngToLatQuestion) QuestionMode() QuestionMode {

@@ -27,7 +27,7 @@ func (m *Model) Init() tea.Cmd {
 		)
 	}
 
-	components = append(components, m.LoadSection)
+	components = append(components, m.VerifySection)
 
 	return tea.Batch(
 		util.MsgCmd(navigator.AddNavigableMsg{Components: components}),

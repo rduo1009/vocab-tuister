@@ -44,7 +44,7 @@ func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	panic("unreachable")
 }
 
-func statusSymbol(s LoadStatus) string {
+func statusSymbol(s VerifyStatus) string {
 	switch s {
 	case StatusMissing:
 		return "×"
@@ -52,7 +52,7 @@ func statusSymbol(s LoadStatus) string {
 	case StatusPending:
 		return "~"
 
-	case StatusLoaded:
+	case StatusVerified:
 		return "✓"
 
 	default:
@@ -60,7 +60,7 @@ func statusSymbol(s LoadStatus) string {
 	}
 }
 
-func statusText(s LoadStatus) string {
+func statusText(s VerifyStatus) string {
 	switch s {
 	case StatusMissing:
 		return "missing"
@@ -68,24 +68,24 @@ func statusText(s LoadStatus) string {
 	case StatusPending:
 		return "pending"
 
-	case StatusLoaded:
-		return "loaded"
+	case StatusVerified:
+		return "verified"
 
 	default:
 		panic("unreachable")
 	}
 }
 
-func (m *Model) getStatusStyle(s LoadStatus) lipgloss.Style {
+func (m *Model) getStatusStyle(s VerifyStatus) lipgloss.Style {
 	switch s {
 	case StatusMissing:
-		return m.styles.LoadSection.LabelMissing
+		return m.styles.VerifySection.LabelMissing
 
 	case StatusPending:
-		return m.styles.LoadSection.LabelPending
+		return m.styles.VerifySection.LabelPending
 
-	case StatusLoaded:
-		return m.styles.LoadSection.LabelLoaded
+	case StatusVerified:
+		return m.styles.VerifySection.LabelVerified
 	}
 	panic("unreachable")
 }
@@ -95,9 +95,9 @@ func (m *Model) View() string {
 	m.listtui.SetHeight(m.height - 4)
 	leftView := m.listtui.View()
 
-	loadSectionWidth := m.width / 2
-	statusSpace := (loadSectionWidth - 16) / 2
-	renderStatus := func(label string, status LoadStatus) string {
+	verifySectionWidth := m.width / 2
+	statusSpace := (verifySectionWidth - 16) / 2
+	renderStatus := func(label string, status VerifyStatus) string {
 		symbol := statusSymbol(status)
 		text := statusText(status)
 		style := m.getStatusStyle(status)
@@ -120,24 +120,24 @@ func (m *Model) View() string {
 		return symbolView
 	}
 
-	loadSectionView := m.styles.NormalBorder(m.LoadSection.Focused()).
-		Width(loadSectionWidth).
+	verifySectionView := m.styles.NormalBorder(m.VerifySection.Focused()).
+		Width(verifySectionWidth).
 		Height(3).
 		Align(lipgloss.Center).
 		Render(lipgloss.JoinHorizontal(
 			lipgloss.Center,
-			renderStatus("List", m.LoadSection.ListStatus),
-			m.styles.LoadSection.LabelSep.Render(" | "),
-			renderStatus("Config", m.LoadSection.ConfigStatus),
-			m.styles.LoadSection.LabelSep.Render(" | "),
-			m.styles.Button(m.LoadSection.Enabled(), m.LoadSection.Focused()).Render("Load"),
+			renderStatus("List", m.VerifySection.ListStatus),
+			m.styles.VerifySection.LabelSep.Render(" | "),
+			renderStatus("Config", m.VerifySection.ConfigStatus),
+			m.styles.VerifySection.LabelSep.Render(" | "),
+			m.styles.Button(m.VerifySection.Enabled(), m.VerifySection.Focused()).Render("Verify"),
 		))
 
 	m.configtui.SetWidth(m.width / 2)
-	m.configtui.SetHeight(m.height - lipgloss.Height(loadSectionView) - 4)
+	m.configtui.SetHeight(m.height - lipgloss.Height(verifySectionView) - 4)
 	configView := m.configtui.View()
 
-	rightView := lipgloss.JoinVertical(lipgloss.Left, configView, loadSectionView)
+	rightView := lipgloss.JoinVertical(lipgloss.Left, configView, verifySectionView)
 
 	return lipgloss.JoinHorizontal(lipgloss.Top, leftView, rightView)
 }

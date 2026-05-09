@@ -9,7 +9,6 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create/config/sessionconfig"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/info"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root/pages"
@@ -18,6 +17,7 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -44,7 +44,8 @@ type Model struct {
 	navigator             *navigator.Navigator
 	overlayExpectedActive bool
 	vocabList             string
-	sessionConfig         sessionconfig.SessionConfig
+	sessionConfig         *pb.SessionConfig
+	numberOfQuestions     int
 	err                   error
 }
 
@@ -91,9 +92,12 @@ func New(inbuiltListDir string, serverPort int) *Model {
 	reviewtui := review.New(&m.styles)
 
 	sessiontui := session.New(
-		&createtui.LoadSection.ListStatus,
-		&createtui.LoadSection.ConfigStatus,
+		&createtui.VerifySection.ListStatus,
+		&createtui.VerifySection.ConfigStatus,
 		serverPort,
+		&m.vocabList,
+		&m.sessionConfig,
+		&m.numberOfQuestions,
 		&m.styles,
 	)
 

@@ -11,6 +11,7 @@ import (
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
@@ -45,10 +46,10 @@ func (m modelPP) View() tea.View {
 }
 
 func TestPrincipalParts(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
@@ -61,10 +62,10 @@ func TestPrincipalParts(t *testing.T) {
 }
 
 func TestPrincipalPartsCorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
@@ -122,10 +123,10 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 }
 
 func TestPrincipalPartsIncorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 
@@ -186,10 +187,10 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 }
 
 func TestPrincipalPartsNextQuestion(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{
+	q := questions.PrincipalPartsQuestion{&pb.PrincipalPartsQuestion{
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}
+	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	qc := NewPrincipalPartsQuestionModel(&q, &s)
 

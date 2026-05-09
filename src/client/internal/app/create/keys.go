@@ -5,7 +5,7 @@ import (
 	"charm.land/bubbles/v2/key"
 )
 
-type loadButtonKeyMap struct {
+type verifyButtonKeyMap struct {
 	PressButton   key.Binding
 	PreviousFocus key.Binding
 	NextFocus     key.Binding
@@ -13,19 +13,19 @@ type loadButtonKeyMap struct {
 	Quit          key.Binding
 }
 
-func (k loadButtonKeyMap) ShortHelp() []key.Binding {
+func (k verifyButtonKeyMap) ShortHelp() []key.Binding {
 	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
 }
 
-func (k loadButtonKeyMap) FullHelp() [][]key.Binding {
+func (k verifyButtonKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.PressButton, k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }
 
-func (ls *loadSection) KeyMap() loadButtonKeyMap {
-	return loadButtonKeyMap{
+func (ls *verifySection) KeyMap() verifyButtonKeyMap {
+	return verifyButtonKeyMap{
 		PressButton: key.NewBinding(
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "press button"),
@@ -64,9 +64,9 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.configtui.KeyMap()
 	}
 
-	if m.LoadSection.Focused() {
-		keyMap := m.LoadSection.KeyMap()
-		keyMap.PressButton.SetEnabled(m.LoadSection.Enabled())
+	if m.VerifySection.Focused() {
+		keyMap := m.VerifySection.KeyMap()
+		keyMap.PressButton.SetEnabled(m.VerifySection.Enabled())
 		return keyMap
 	}
 
