@@ -324,7 +324,7 @@ func (m *ParseQuestionModel) Update(msg tea.Msg) (QuestionModel, tea.Cmd) {
 
 		case key.Matches(msg, m.unansweredKeyMap.Submit):
 			if m.status == Unanswered {
-				correct := m.question.Check(m.components)
+				correct := m.question.Check(m.components.EndingComponents)
 				if correct {
 					m.status = Correct
 				} else {

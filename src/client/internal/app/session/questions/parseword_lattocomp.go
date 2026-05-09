@@ -4,7 +4,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/testing/protocmp"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
 	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
@@ -21,7 +20,7 @@ func (q *ParseWordLatToCompQuestion) GetPrompt() string {
 }
 
 func (q *ParseWordLatToCompQuestion) Check(response any) bool {
-	responseComp := response.(endingcomponents.EndingComponents).EndingComponents
+	responseComp := response.(*pb.EndingComponents)
 
 	for _, ans := range q.Answers {
 		if cmp.Equal(ans, responseComp,

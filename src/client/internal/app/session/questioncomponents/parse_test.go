@@ -89,18 +89,20 @@ func TestParseCorrect(t *testing.T) {
 		{
 			name: "TestParseCorrectMain",
 			selection: &pb.EndingComponents{
-				Case:   pb.Case_CASE_GENITIVE,
-				Number: pb.Number_NUMBER_PLURAL,
-				Gender: pb.Gender_GENDER_NEUTER,
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_NEUTER,
+				DisplayString: "genitive plural neuter",
 			},
 			expect: []string{"genitive", "plural", "neuter"},
 		},
 		{
 			name: "TestParseCorrectAlt",
 			selection: &pb.EndingComponents{
-				Case:   pb.Case_CASE_GENITIVE,
-				Number: pb.Number_NUMBER_PLURAL,
-				Gender: pb.Gender_GENDER_FEMININE,
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_FEMININE,
+				DisplayString: "genitive plural feminine",
 			},
 			expect: []string{"genitive", "plural", "feminine"},
 		},
@@ -112,18 +114,21 @@ func TestParseCorrect(t *testing.T) {
 				ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
 					Prompt: "prompt",
 					MainAnswer: &pb.EndingComponents{
-						Case:   pb.Case_CASE_GENITIVE,
-						Number: pb.Number_NUMBER_PLURAL,
-						Gender: pb.Gender_GENDER_NEUTER,
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_NEUTER,
+						DisplayString: "genitive plural neuter",
 					},
 					Answers: []*pb.EndingComponents{{
-						Case:   pb.Case_CASE_GENITIVE,
-						Number: pb.Number_NUMBER_PLURAL,
-						Gender: pb.Gender_GENDER_NEUTER,
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_NEUTER,
+						DisplayString: "genitive plural neuter",
 					}, {
-						Case:   pb.Case_CASE_GENITIVE,
-						Number: pb.Number_NUMBER_PLURAL,
-						Gender: pb.Gender_GENDER_FEMININE,
+						Case:          pb.Case_CASE_GENITIVE,
+						Number:        pb.Number_NUMBER_PLURAL,
+						Gender:        pb.Gender_GENDER_FEMININE,
+						DisplayString: "genitive plural feminine",
 					}},
 				},
 			}
@@ -145,7 +150,7 @@ func TestParseCorrect(t *testing.T) {
 					ChosenItem: endingcomponents.Case(tt.selection.Case),
 				},
 			)
-			m.QuestionComponent.Dropdowns[0].LastSelected = tt.selection.Case
+			m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(tt.selection.Case)
 
 			tm.Send(
 				dropdown.PickedMsg{
@@ -153,7 +158,7 @@ func TestParseCorrect(t *testing.T) {
 					ChosenItem: endingcomponents.Number(tt.selection.Number),
 				},
 			)
-			m.QuestionComponent.Dropdowns[1].LastSelected = tt.selection.Number
+			m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(tt.selection.Number)
 
 			tm.Send(
 				dropdown.PickedMsg{
@@ -161,7 +166,7 @@ func TestParseCorrect(t *testing.T) {
 					ChosenItem: endingcomponents.Gender(tt.selection.Gender),
 				},
 			)
-			m.QuestionComponent.Dropdowns[2].LastSelected = tt.selection.Gender
+			m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(tt.selection.Gender)
 
 			tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 			time.Sleep(10 * time.Millisecond)
@@ -202,18 +207,21 @@ func TestParseIncorrect(t *testing.T) {
 	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
 		MainAnswer: &pb.EndingComponents{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		},
 		Answers: []*pb.EndingComponents{{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		}, {
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_FEMININE,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_FEMININE,
+			DisplayString: "genitive plural feminine",
 		}},
 	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
@@ -289,14 +297,16 @@ func TestParseNextQuestion(t *testing.T) {
 	q := questions.ParseWordLatToCompQuestion{&pb.ParseWordLatToCompQuestion{
 		Prompt: "prompt",
 		MainAnswer: &pb.EndingComponents{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		},
 		Answers: []*pb.EndingComponents{{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
+			Case:          pb.Case_CASE_GENITIVE,
+			Number:        pb.Number_NUMBER_PLURAL,
+			Gender:        pb.Gender_GENDER_NEUTER,
+			DisplayString: "genitive plural neuter",
 		}},
 	}}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
