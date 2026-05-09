@@ -103,12 +103,14 @@ func getQuestions(serverPort int, vocabList string, sessionConfig *pb.SessionCon
 			if ok {
 				switch st.Code() {
 				case codes.InvalidArgument:
+					conn.Close()
 					return app.ErrMsg(fmt.Errorf(
 						"invalid input: %s",
 						st.Message(),
 					))
 
 				default:
+					conn.Close()
 					return app.ErrMsg(fmt.Errorf(
 						"grpc error (%s): %s",
 						st.Code(),
@@ -117,6 +119,7 @@ func getQuestions(serverPort int, vocabList string, sessionConfig *pb.SessionCon
 				}
 			}
 
+			conn.Close()
 			return app.ErrMsg(fmt.Errorf("non-grpc error: %w", err))
 		}
 
