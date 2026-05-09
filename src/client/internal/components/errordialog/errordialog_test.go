@@ -15,6 +15,8 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
+const testWordWrapDialogWidth = 60
+
 // TestErrorDialog checks the initial rendered output of the error dialog against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestErrorDialog(t *testing.T) {
@@ -33,7 +35,7 @@ func TestErrorDialog(t *testing.T) {
 func TestErrorDialogWordWrap(t *testing.T) {
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	ed := errordialog.New(&s)
-	ed.SetWidth(60)
+	ed.SetWidth(testWordWrapDialogWidth)
 	ed.SetHeight(40)
 	ed.SetError(
 		errors.New("this is a very long error message that should wrap naturally and never require horizontal scrolling"),

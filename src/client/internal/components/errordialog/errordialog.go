@@ -13,6 +13,8 @@ import (
 
 type TimeoutMsg struct{}
 
+const wordWrapBreakpoints = " "
+
 type Model struct {
 	err             error
 	viewport        viewport.Model
@@ -141,7 +143,7 @@ func (m *Model) updateViewportContent() {
 	if m.err != nil {
 		content := m.err.Error()
 		if m.viewport.Width() > 0 {
-			content = lipgloss.Wrap(content, m.viewport.Width(), " ")
+			content = lipgloss.Wrap(content, m.viewport.Width(), wordWrapBreakpoints)
 		}
 		m.viewport.SetContent(content)
 	}
