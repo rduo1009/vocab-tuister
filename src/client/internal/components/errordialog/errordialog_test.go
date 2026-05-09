@@ -28,6 +28,21 @@ func TestErrorDialog(t *testing.T) {
 	golden.RequireEqual(t, []byte(finalView))
 }
 
+// TestErrorDialogWordWrap checks long error text wraps to the viewport width.
+// Run with -update to regenerate the golden file.
+func TestErrorDialogWordWrap(t *testing.T) {
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	ed := errordialog.New(&s)
+	ed.SetWidth(60)
+	ed.SetHeight(40)
+	ed.SetError(
+		errors.New("this is a very long error message that should wrap naturally and never require horizontal scrolling"),
+	)
+
+	finalView := ed.View()
+	golden.RequireEqual(t, []byte(finalView))
+}
+
 func TestErrorDialogVisibility(t *testing.T) {
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
 	ed := errordialog.New(&s)

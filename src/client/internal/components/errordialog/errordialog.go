@@ -26,6 +26,7 @@ type Model struct {
 func New(styles *styles.StylesWrapper) Model {
 	viewport := viewport.New()
 	viewport.Style = styles.Overlay.Error
+	viewport.SetHorizontalStep(0)
 
 	return Model{
 		viewport: viewport,
@@ -138,6 +139,10 @@ func (m Model) View() string {
 
 func (m *Model) updateViewportContent() {
 	if m.err != nil {
-		m.viewport.SetContent(m.err.Error())
+		content := m.err.Error()
+		if m.viewport.Width() > 0 {
+			content = lipgloss.Wrap(content, m.viewport.Width(), " ")
+		}
+		m.viewport.SetContent(content)
 	}
 }
