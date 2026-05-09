@@ -1,4 +1,4 @@
-"""Contains conversion functions for compatability with protobuf.
+"""Contains conversion functions for compatibility with protobuf.
 
 Hacky bridges between the original vocab-tuister classes and the new
 protobuf-generated ones.
