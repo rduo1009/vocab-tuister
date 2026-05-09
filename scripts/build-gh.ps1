@@ -36,7 +36,7 @@ if ($IsWindows) {
 $version = Get-Content '__version__.txt'
 go mod tidy
 # HACK: poe generate is not working properly; but problems will be caught by other runs
-# poe generate -x ./...; if (-not (& 'C:\Program Files\Git\bin\git.exe' diff --quiet)) { Write-Error 'Error: Code changes after go generate.'; exit 1 }
+# poe generate; if (-not (& 'C:\Program Files\Git\bin\git.exe' diff --quiet)) { Write-Error 'Error: Code changes after go generate.'; exit 1 }
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
     -o ".\dist\vocab-tuister-$clientbin_name.exe" `
