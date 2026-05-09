@@ -63,10 +63,11 @@ def _convert_enum[PbEnum: betterproto2.Enum](
 
     Examples
     --------
-    >>> _convert_enum(Voice.ACTIVE, VoicePb)
-    VOICE_ACTIVE  # i.e. VoicePb(1)
+    >>> from src.core.accido.misc import Voice
+    >>> _convert_enum(Voice.ACTIVE.name, VoicePb)
+    <Voice.ACTIVE: 1>
     >>> _convert_enum(None, VoicePb)
-    VOICE_UNSPECIFIED  # i.e. VoicePb(0)
+    <Voice.UNSPECIFIED: 0>
     """
     if not accido_val_name:
         # Protobuf uses 0 as the sentinel "not set" / UNSPECIFIED value
