@@ -200,7 +200,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	s.DropdownButton = func(active, focused bool, label string, width, marginLeft int) string {
 		var fg, bg color.Color
 		if active {
-			fg = overlayDim(colours.Fg)
+			fg = overlayDim(lipgloss.Color("#fff7db"))
 			bg = overlayDim(lipgloss.Color("#888b7e"))
 		} else {
 			fg = overlayDim(lipgloss.Color("#a9a9a9"))
@@ -301,13 +301,13 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	s.Dropdown.Item = func(selected bool) lipgloss.Style {
 		if selected {
 			return lipgloss.NewStyle().
-				Foreground(colours.Fg).
+				Foreground(lipgloss.Color("#fff7db")).
 				Background(lipgloss.Color("#888b7e")).
 				Padding(0, 1)
 		}
 
 		return lipgloss.NewStyle().
-			Foreground(colours.Fg).
+			Foreground(lipgloss.Color("#fff7db")).
 			Background(lipgloss.Color("#707070")).
 			Padding(0, 1)
 	}
@@ -341,11 +341,11 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.Comment] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Bg, 0.3)), Italic: true},
+		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Black, 0.3)), Italic: true},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.CommentPreproc] = chromatint.FromStyle(
-		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Bg, 0.3))},
+		&chromatint.StaticStyle{Fg: overlayDim(lipgloss.Lighten(colours.Black, 0.3))},
 		theme.Dark,
 	)
 	styleEntryVocab[chroma.Punctuation] = chromatint.FromStyle(

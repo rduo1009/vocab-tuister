@@ -89,7 +89,7 @@ func TestDropdown(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	dropdown := dropdown.New(id, options, &s)
 	m := model{Dropdown: dropdown}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -113,7 +113,7 @@ func TestDropdownTyping(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -140,7 +140,7 @@ func TestDropdownExit(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -162,7 +162,7 @@ func TestDropdownLoop(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	d := dropdown.New(id, options, &s)
 	m := model{Dropdown: d}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -189,7 +189,7 @@ func TestDropdownPickOption(t *testing.T) {
 	}
 
 	for i, o := range options {
-		s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+		s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 		d := dropdown.New(id, options, &s)
 		m := model{Dropdown: d}
 		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -214,7 +214,7 @@ func TestDropdownSetWidth(t *testing.T) {
 		options[i] = Option(v)
 	}
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	d := dropdown.New(id, options, &s)
 	d.SetWidth(10)
 	assert.Equal(t, 10, d.GetWidth())

@@ -38,6 +38,7 @@ type Model struct {
 
 	// Application state
 
+	isDark                bool
 	themes                *tint.Registry
 	styles                styles.StylesWrapper
 	keys                  keyMap
@@ -69,11 +70,12 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		pages.Settings,
 	}
 
-	themes := styles.DefaultThemes()
+	themes := styles.DefaultThemes(true) // for now, have it be dark
 
 	m := &Model{
 		currentPage: 0,
 		pageOrder:   pageOrder,
+		isDark:      true, // for now as well
 		themes:      themes,
 		styles: styles.StylesWrapper{
 			Styles: styles.DefaultStyles(themes.Current(), false),

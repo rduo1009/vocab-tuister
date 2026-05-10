@@ -6,8 +6,8 @@ import (
 )
 
 type (
-	ErrMsg     error
-	OverlayMsg bool
+	ErrMsg           error
+	RefreshStylesMsg struct{}
 )
 
 // ComponentModel is a variant of tea.Model which uses string views instead of `tea.View`.

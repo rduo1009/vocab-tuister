@@ -65,7 +65,7 @@ func TestParse(t *testing.T) {
 			Gender: pb.Gender_GENDER_NEUTER,
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -135,7 +135,9 @@ func TestParseCorrect(t *testing.T) {
 					}},
 				},
 			}
-			s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+			s := styles.StylesWrapper{
+				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
+			}
 			qc := NewParseQuestionModel(&q, &s)
 
 			m := modelPS{QuestionComponent: qc}
@@ -228,7 +230,7 @@ func TestParseIncorrect(t *testing.T) {
 			DisplayString: "genitive plural feminine",
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}
@@ -316,7 +318,7 @@ func TestParseNextQuestion(t *testing.T) {
 			DisplayString: "genitive plural neuter",
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewParseQuestionModel(&q, &s)
 
 	m := modelPS{QuestionComponent: qc}

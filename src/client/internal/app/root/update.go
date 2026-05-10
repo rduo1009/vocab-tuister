@@ -1,6 +1,8 @@
 package root
 
 import (
+	"time"
+
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	chromastyles "github.com/alecthomas/chroma/v2/styles"
@@ -13,6 +15,14 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
+
+type checkBgTickMsg time.Time
+
+func checkBgTickCmd() tea.Cmd {
+	return tea.Tick(time.Millisecond*500, func(t time.Time) tea.Msg {
+		return checkBgTickMsg(t)
+	})
+}
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
@@ -75,6 +85,24 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.help.SetWidth(msg.Width)
 		m.tabs.Width = msg.Width
 
+	case tea.BackgroundColorMsg:
+		if msg.IsDark() != m.isDark {
+			m.isDark = msg.IsDark()
+			m.themes = styles.DefaultThemes(msg.IsDark())
+			m.styles.Styles = styles.DefaultStyles(
+				m.themes.Current(),
+				m.pages[m.pageOrder[m.currentPage]].HasOverlay(),
+			)
+			chromastyles.Register(m.styles.Editor.Chroma)
+			cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
+		}
+
+	case checkBgTickMsg:
+		return m, tea.Batch(
+			tea.RequestBackgroundColor,
+			checkBgTickCmd(),
+		)
+
 	case tabs.SelectTabMsg:
 		m.currentPage = msg.Index
 		m.navigator.Reset()
@@ -123,18 +151,12 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.overlayExpectedActive = true
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
 		chromastyles.Register(m.styles.Editor.Chroma)
-
-		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(true)))
-		// XXX: Why is an additional update needed for this to work properly?
-		// Why does putting the entire if-else above the first update not work?
-		util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil) // nudge
+		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 	} else if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() && m.overlayExpectedActive {
 		m.overlayExpectedActive = false
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
 		chromastyles.Register(m.styles.Editor.Chroma)
-
-		cmds = append(cmds, util.MsgCmd(app.OverlayMsg(false)))
-		util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil) // nudge
+		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 	}
 
 	return m, tea.Batch(cmds...)

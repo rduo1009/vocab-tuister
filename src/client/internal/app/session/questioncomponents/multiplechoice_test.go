@@ -56,7 +56,7 @@ func TestMultipleChoiceLatToEng(t *testing.T) {
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -78,7 +78,7 @@ func TestMultipleChoiceEngToLat(t *testing.T) {
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	view := qc.View()
@@ -100,7 +100,7 @@ func TestMultipleChoiceCorrect(t *testing.T) { //nolint:dupl
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -152,7 +152,7 @@ func TestMultipleChoiceIncorrect(t *testing.T) { //nolint:dupl
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -204,7 +204,7 @@ func TestMultipleChoiceNumberSelect(t *testing.T) {
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}
@@ -250,7 +250,7 @@ func TestMultipleChoiceNextQuestion(t *testing.T) {
 			Answer:  "baz",
 		},
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	qc := NewMultipleChoiceQuestionModel(&q, &s)
 
 	m := modelMC{QuestionComponent: qc}

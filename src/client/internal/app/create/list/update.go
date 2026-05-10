@@ -46,7 +46,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.ModeDropdownActive {
 		switch msg := msg.(type) {
-		case app.OverlayMsg:
+		case app.RefreshStylesMsg:
 			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
 			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
 			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
@@ -97,7 +97,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.FilepickerActive {
 		switch msg := msg.(type) {
-		case app.OverlayMsg:
+		case app.RefreshStylesMsg:
 			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
 			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
 			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
@@ -123,7 +123,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.SaveAsActive {
 		switch msg := msg.(type) {
-		case app.OverlayMsg:
+		case app.RefreshStylesMsg:
 			m.VocabEditor.WithTheme(m.styles.Editor.Theme)
 			m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
 			m.VocabEditor.Model, cmd = m.VocabEditor.Update(nil) // nudge
@@ -177,7 +177,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, tea.Batch(cmds...)
 		}
 
-	case app.OverlayMsg:
+	case app.RefreshStylesMsg:
 		m.VocabEditor.WithTheme(m.styles.Editor.Theme)
 		m.VocabEditor.WithSyntaxHighlighter(highlighter.New("vocabfile", "bubbletint_vocabeditor"))
 

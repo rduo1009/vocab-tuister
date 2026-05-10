@@ -136,7 +136,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 
 	if m.FilepickerActive {
 		switch msg := msg.(type) {
-		case app.OverlayMsg:
+		case app.RefreshStylesMsg:
 			m.form.WithTheme(m.styles.Form)
 			setFieldThemes(m.form, m.styles.Form)
 			util.UpdaterPtr(&cmds, m.form, nil) // nudge
@@ -167,6 +167,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			return m, nil
 		} else if m.ResetButton.Focused() && key.Matches(msg, m.ResetButton.KeyMap().PressButton) {
 			m.form, m.configFormValues = defaultForm()
+			m.form.WithTheme(m.styles.Form)
 			m.AppStatus = CreateSessionConfig
 			m.RawSessionConfig = ""
 			_, formCmd := m.form.Update(nil) // a little nudge
@@ -179,7 +180,7 @@ func (m *Model) Update(msg tea.Msg) (app.ComponentModel, tea.Cmd) {
 			)
 		}
 
-	case app.OverlayMsg:
+	case app.RefreshStylesMsg:
 		m.form.WithTheme(m.styles.Form)
 		setFieldThemes(m.form, m.styles.Form)
 

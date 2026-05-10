@@ -20,7 +20,7 @@ const testWordWrapDialogWidth = 60
 // TestErrorDialog checks the initial rendered output of the error dialog against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestErrorDialog(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetWidth(100)
 	ed.SetHeight(40)
@@ -33,7 +33,7 @@ func TestErrorDialog(t *testing.T) {
 // TestErrorDialogWordWrap checks long error text wraps to the viewport width.
 // Run with -update to regenerate the golden file.
 func TestErrorDialogWordWrap(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetWidth(testWordWrapDialogWidth)
 	ed.SetHeight(40)
@@ -48,7 +48,7 @@ func TestErrorDialogWordWrap(t *testing.T) {
 }
 
 func TestErrorDialogVisibility(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	assert.False(t, ed.Visible())
 	assert.Empty(t, ed.View()) // Should return empty string when invisible
@@ -59,13 +59,13 @@ func TestErrorDialogVisibility(t *testing.T) {
 }
 
 func TestErrorDialogInit(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	assert.Nil(t, ed.Init())
 }
 
 func TestErrorDialogTimeoutInteraction(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetError(errors.New("test error"))
 	assert.True(t, ed.Visible())
@@ -86,7 +86,7 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 
 	t.Parallel()
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetError(errors.New("test error"))
 
@@ -101,7 +101,7 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 }
 
 func TestErrorDialogScrolling(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetWidth(40 * 4)
 	ed.SetHeight(20 * 4) // Height gives around 20-5 = 15 viewport height
@@ -140,7 +140,7 @@ func TestErrorDialogScrolling(t *testing.T) {
 }
 
 func TestErrorDialogResize(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes().Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	ed := errordialog.New(&s)
 	ed.SetWidth(100)
 	ed.SetHeight(100)

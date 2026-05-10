@@ -20,6 +20,7 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/fang/v2"
 	"charm.land/huh/v2/spinner"
+	"charm.land/lipgloss/v2"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -303,12 +304,13 @@ func Execute() {
 	rootCmd.PersistentFlags().BoolVar(&noServer, "no-server", false, "do not start server - TUI only")
 	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "enable debug mode")
 
+	isDark := lipgloss.HasDarkBackground(os.Stdin, os.Stderr)
 	if err := fang.Execute(
 		context.Background(),
 		rootCmd,
 		fang.WithVersion(internal.Version),
 		fang.WithoutCompletions(),
-		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes().Current(), false).Fang),
+		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes(isDark).Current(), false).Fang),
 	); err != nil {
 		os.Exit(1)
 	}
