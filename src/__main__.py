@@ -1,5 +1,25 @@
 """The CLI that runs the server."""
 
+# nuitka-project: --standalone
+# nuitka-project: --enable-plugin=dill-compat
+# nuitka-project: --experimental=deferred-annotations
+
+# nuitka-project: --include-data-files=src/core/transfero/wn_data/wn.db.zst=src/core/transfero/wn_data/wn.db.zst
+# nuitka-project: --include-data-files=src/core/transfero/adj_to_adv.json=src/core/transfero/adj_to_adv.json
+# nuitka-project: --include-data-files=__version__.txt=__version__.txt
+
+# nuitka-project: --include-package-data=lemminflect:resources/*
+# nuitka-project: --include-package-data=wn:index.toml
+# nuitka-project: --include-package-data=wn:schema.sql
+
+## nuitka-project: --include-module=numpy.core.multiarray
+## nuitka-project: --include-module=ddc459050edb75a05942__mypyc # TODO: Do these do anything?
+## nuitka-project: --include-module=5bae8a57b5ef85818b48__mypyc
+## nuitka-project: --include-module=3c22db458360489351e4__mypyc
+
+## nuitka-project: --nofollow-import-to=typeguard
+## nuitka-project: --nofollow-import-to=tkinter
+
 # pyright: basic
 # ruff: noqa: TC002, TC003
 

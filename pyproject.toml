@@ -25,9 +25,9 @@ dependencies = [
   "grpcio==1.80.0",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
+  "nuitka==4.1.0",
   "platformdirs==4.9.6",
   "pydantic==2.13.0",
-  "pyinstaller==6.19.0",
   "wn==1.0.0",
 ]
 
@@ -140,12 +140,7 @@ warn_unused_configs = true
 check_untyped_defs = true
 
 [tool.pytest]
-ini_options.addopts = [
-  "--strict-markers",
-  "--ignore=src/_vendor",
-  "--ignore=src/_build",
-  "-n4",
-]
+ini_options.addopts = [ "--strict-markers", "--ignore=src/_vendor", "-n4" ]
 ini_options.markers = [
   "manual: manually checked tests",
   "integration: integration tests",
@@ -156,11 +151,11 @@ ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 run.branch = true
 run.omit = [ "src/_vendor/*", "src/scripts/*", "tests/*" ]
 report.exclude_also = [
+  '"__compiled__" in globals()',
   "@(abc\\.)?abstractmethod",
   "@overload",
   "if __name__ == .__main__.:",
   "if _seed is not None",
-  'if getattr\(_sys, "frozen", False\) and hasattr\(_sys, "_MEIPASS"\):',
   "if TYPE_CHECKING:",
   "raise AssertionError",
   "raise NotImplementedError",
@@ -172,7 +167,7 @@ fallback-version = "0.0.0"
 
 [tool.basedpyright]
 include = [ "src", "tests", "stubs" ]
-exclude = [ "src/_build", "src/_vendor", "tests/conftest.py", "src/pb" ]
+exclude = [ "src/_vendor", "tests/conftest.py", "src/pb" ]
 stubPath = "stubs"
 extraPaths = [ "./src" ]
 reportImportCycles = "information"

@@ -49,8 +49,8 @@ def setup_wn() -> None:
 
     _trimmed_wn = False
 
-    # Frozen with PyInstaller
-    if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
+    # Frozen with Nuitka
+    if "__compiled__" in globals():
         # NOTE: Should work, but type narrowing not implemented
         # See https://github.com/DetachHead/basedpyright/issues/1224
         _wn_data_path = (
