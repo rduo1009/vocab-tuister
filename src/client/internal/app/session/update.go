@@ -106,6 +106,7 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 			q, err := m.questionProvider.Next()
 			if err != nil {
 				cmds = append(cmds, util.MsgCmd(app.ErrMsg(err)))
+				break
 			}
 
 			switch q.QuestionMode() {

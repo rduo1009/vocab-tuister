@@ -132,13 +132,20 @@ class VocabTesterService(VocabTesterServiceBase):
 
         assert message.session_config is not None
 
-        for question in ask_question_without_sr(
-            vocab_list,
-            message.number_of_questions,
-            message.session_config,
-            settings,
-        ):
-            yield CreateSessionResponse(question)
+        try:
+            for question in ask_question_without_sr(
+                vocab_list,
+                message.number_of_questions,
+                message.session_config,
+                settings,
+            ):
+                yield CreateSessionResponse(question)
+
+        except Exception as e:
+            logger.exception("Error while generating session questions: %s", e)  # noqa: TRY401
+            raise GRPCError(
+                Status.INTERNAL, f"Failed while generating questions: {e}"
+            ) from e
 
 
 async def run(port: int):
