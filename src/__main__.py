@@ -12,13 +12,7 @@
 # nuitka-project: --include-package-data=wn:index.toml
 # nuitka-project: --include-package-data=wn:schema.sql
 
-## nuitka-project: --include-module=numpy.core.multiarray
-## nuitka-project: --include-module=ddc459050edb75a05942__mypyc # TODO: Do these do anything?
-## nuitka-project: --include-module=5bae8a57b5ef85818b48__mypyc
-## nuitka-project: --include-module=3c22db458360489351e4__mypyc
-
-## nuitka-project: --nofollow-import-to=typeguard
-## nuitka-project: --nofollow-import-to=tkinter
+# nuitka-project: --include-module=numpy.core.multiarray
 
 # pyright: basic
 # ruff: noqa: TC002, TC003
