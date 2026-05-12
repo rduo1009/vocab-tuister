@@ -2,6 +2,8 @@
 
 # ruff: noqa: D103, PLW0603
 
+from __future__ import annotations
+
 import asyncio
 import logging
 from io import StringIO

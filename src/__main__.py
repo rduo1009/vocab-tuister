@@ -2,7 +2,7 @@
 
 # nuitka-project: --standalone
 # nuitka-project: --enable-plugin=dill-compat
-# nuitka-project: --experimental=deferred-annotations
+## nuitka-project: --experimental=deferred-annotations # TODO: Maybe this is necessary/good to use in future (when it is fixed)?
 
 # nuitka-project: --include-data-files=src/core/transfero/wn_data/wn.db.zst=src/core/transfero/wn_data/wn.db.zst
 # nuitka-project: --include-data-files=src/core/transfero/adj_to_adv.json=src/core/transfero/adj_to_adv.json

@@ -2,6 +2,8 @@
 
 # pyright: reportUnusedCallResult=false
 
+from __future__ import annotations
+
 import logging
 import sys as _sys
 import warnings

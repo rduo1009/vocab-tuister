@@ -1,5 +1,7 @@
 """Contains functions that inflect English verbs."""
 
+from __future__ import annotations
+
 from functools import cache
 from typing import TYPE_CHECKING
 

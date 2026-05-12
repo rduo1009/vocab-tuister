@@ -2,6 +2,8 @@
 
 # pyright: reportUninitializedInstanceVariable=false, reportAny=false, reportExplicitAny=false
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from functools import total_ordering

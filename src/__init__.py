@@ -2,6 +2,8 @@
 
 # pyright: reportAttributeAccessIssue=false
 
+from __future__ import annotations
+
 import os
 
 _seed = os.getenv("VOCAB_TUISTER_RANDOM_SEED")
