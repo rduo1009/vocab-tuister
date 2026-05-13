@@ -11,6 +11,7 @@ tests/integration/testdata/cache/*
 __version__.txt
 src.dist/
 nuitka-crash-report.xml
+dist.dist/
 
 # Copilot generated files
 bin/

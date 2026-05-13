@@ -1,10 +1,6 @@
 [tool.poe]
 tasks.build.cmd = "./scripts/build.sh"
 tasks.build.help = "Build the project."
-tasks.build.args = [
-    { name = "debug", default = false, type = "boolean", help = "Build the project into a folder instead of a single file." },
-    { name = "target-arch", default = "", type = "string", help = "What architecture should be targeted (macOS only)." },
-]
 tasks.test.cmd = "./scripts/tests.sh"
 tasks.test.help = "Run the unit test suite."
 tasks.generate.cmd = "./scripts/generate.sh"

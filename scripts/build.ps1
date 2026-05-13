@@ -4,53 +4,33 @@ $ErrorActionPreference = 'Stop'
 # Set GOEXPERIMENT for encoding/json/v2
 $env:GOEXPERIMENT = 'jsonv2'
 
-if ($env:debug -eq 'True') {
-    Write-Host '====== DEBUG MODE ======'
-}
-
-# INSTALL DEPS
-uv sync --no-dev # slower but works better?
-# uv venv --allow-existing
-# uv sync --no-dev
-
-# BUILD PYTHON SERVER
-uv run dunamai from any --style=semver | Set-Content -Path '__version__.txt'
-if ($env:debug -eq 'True') {
-    uv run pyinstaller vocab-tuister-server.spec -- --clean
-} else {
-    uv run pyinstaller vocab-tuister-server.spec
-}
-
-# BUILD GO CLIENT
-$clientbin_name = ''
-if ($IsWindows) {
-    $arch = (Get-CimInstance Win32_Processor).Architecture
-    switch ($arch) {
-        9 { $clientbin_name = 'windows-x86_64' }  
-        12 { $clientbin_name = 'windows-arm64' }  
-        default { throw "Unsupported architecture: $arch" }
-    }
-} else {
-    Write-Host 'Unknown OS'
+# Check generated files are up to date
+poe generate
+& 'C:\Program Files\Git\bin\git.exe' diff --quiet
+if ($LASTEXITCODE -ne 0) {
+    Write-Error 'Error: Code changes after poe generate.'
     exit 1
 }
 
+# Determine binary name
+$binary_name = ''
+$arch = (Get-CimInstance Win32_Processor).Architecture
+switch ($arch) {
+    9 { $binary_name = 'windows-x86_64' }  
+    12 { $binary_name = 'windows-arm64' }  
+    default { throw "Unsupported architecture: $arch" }
+}
+
+# Build python server
+uv venv --allow-existing
+uv sync --no-group=types --no-dev 
+$version = uv run dunamai from any --style=semver
+$version | Set-Content -NoNewline -Path '__version__.txt'
+uv run nuitka src --output-filename="./dist/vocab-tuister-server-$binary_name.exe"
+
+# Build go client
 $version = Get-Content '__version__.txt'
-go mod tidy
-poe generate
-if (-not (git diff --quiet)) { Write-Error 'Error: Code changes after go generate.'; exit 1 }
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
-    -o ".\dist\vocab-tuister-$clientbin_name.exe" `
+    -o ".\dist\vocab-tuister-$binary_name.exe" `
     .\src\main.go
-
-# CLEAN UP
-# Write-Host 'Do you want to reinstall all deps? (Y/n)'
-# $response = Read-Host
-# Write-Host ''
-# if ([string]::IsNullOrEmpty($response)) { $response = 'Y' }
-# if ($response -eq 'y' -or $response -eq 'Y') {
-#     uv sync
-# } # else {
-#     uv sync --no-dev
-# }

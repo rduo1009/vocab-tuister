@@ -1,6 +1,6 @@
 """The CLI that runs the server."""
 
-# nuitka-project: --standalone
+# nuitka-project: --mode=onefile
 # nuitka-project: --enable-plugin=dill-compat
 ## nuitka-project: --experimental=deferred-annotations # TODO: Maybe this is necessary/good to use in future (when it is fixed)?
 
