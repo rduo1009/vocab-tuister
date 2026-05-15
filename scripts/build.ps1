@@ -31,7 +31,6 @@ $version | Set-Content -NoNewline -Path '__version__.txt'
 uv run nuitka src --output-filename="./dist/vocab-tuister-server-$binary_name.exe" --deployment
 
 # Build go client
-$version = Get-Content '__version__.txt'
 go build `
     -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" `
     -o ".\dist\vocab-tuister-$binary_name.exe" `
