@@ -14,6 +14,8 @@
 
 # nuitka-project: --include-module=numpy.core.multiarray
 
+# nuitka-project: --nofollow-import-to=mypy
+
 # pyright: basic
 # ruff: noqa: TC002, TC003
 
