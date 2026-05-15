@@ -1,16 +1,16 @@
 #Requires -Version 5.1
-param(
-    [switch]$CI
-)
 $ErrorActionPreference = 'Stop'
 
 # Set GOEXPERIMENT for encoding/json/v2
 $env:GOEXPERIMENT = 'jsonv2'
 
+# CI is set to "true" automatically by GitHub Actions
+$isCI = $env:CI -eq 'true'
+
 mkdir dist -Force
 
 # NOTE: poe is not working properly in CI; but problems will be caught by other runs
-if (-not $CI) {
+if (-not $isCI) {
     # Check generated files are up to date
     poe generate
     & 'C:\Program Files\Git\bin\git.exe' diff --quiet
@@ -21,11 +21,10 @@ if (-not $CI) {
 }
 
 # Determine binary name
-$binary_name = ''
 $arch = (Get-CimInstance Win32_Processor).Architecture
-switch ($arch) {
-    9 { $binary_name = 'windows-x86_64' }
-    12 { $binary_name = 'windows-arm64' }
+$binary_name = switch ($arch) {
+    9 { 'windows-x86_64' }
+    12 { 'windows-arm64' }
     default { throw "Unsupported architecture: $arch" }
 }
 
@@ -36,7 +35,7 @@ $version = uv run dunamai from any --style=semver
 $version | Set-Content -NoNewline -Path '__version__.txt'
 
 $nuitkaArgs = @('src', "--output-filename=./dist/vocab-tuister-server-$binary_name.exe")
-if ($CI) { $nuitkaArgs += '--assume-yes-for-downloads', '--deployment', '--mingw64' }
+if ($isCI) { $nuitkaArgs += '--assume-yes-for-downloads', '--deployment', '--mingw64' }
 uv run nuitka @nuitkaArgs
 
 # Build go client

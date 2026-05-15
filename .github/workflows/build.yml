@@ -93,7 +93,7 @@ jobs:
       - name: Build project
         if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          poe build --ci
+          poe build
         env:
           GOEXPERIMENT: jsonv2
 

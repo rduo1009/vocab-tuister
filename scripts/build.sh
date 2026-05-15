@@ -4,23 +4,16 @@ set -e
 # Set GOEXPERIMENT for encoding/json/v2
 export GOEXPERIMENT=jsonv2
 
-CI=false
-for arg in "$@"; do
-    case "$arg" in
-        --ci) CI=true ;;
-        *) echo "Unknown argument: $arg" >&2; exit 1 ;;
-    esac
-done
+# CI is set to "true" automatically by GitHub Actions
+CI="${CI:-false}"
 
 mkdir -p dist
 
-if [ "$CI" = false ]; then
-    # Check generated files are up to date
-    poe generate
-    if ! git diff --quiet; then
-        echo >&2 "Error: Code changes after poe generate."
-        exit 1
-    fi
+# Check generated files are up to date
+poe generate
+if ! git diff --quiet; then
+    echo >&2 "Error: Code changes after poe generate."
+    exit 1
 fi
 
 # Determine binary name
@@ -70,7 +63,7 @@ uv sync --no-group=types --no-dev
 uv run dunamai from any --style=semver > __version__.txt
 
 nuitka_args=(src --output-filename="$server_output_file")
-if [ "$CI" = true ]; then
+if [ "$CI" = "true" ]; then
     nuitka_args+=(--assume-yes-for-downloads --deployment)
 fi
 uv run nuitka "${nuitka_args[@]}"

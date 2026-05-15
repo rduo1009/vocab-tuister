@@ -1,9 +1,6 @@
 [tool.poe]
 tasks.build.cmd = "./scripts/build.sh"
 tasks.build.help = "Build the project."
-tasks.build.args = [
-    { name = "ci", default = false, type = "boolean", help = "Build the project for release on Github (in CI environment)." },
-]
 tasks.test.cmd = "./scripts/tests.sh"
 tasks.test.help = "Run the unit test suite."
 tasks.generate.cmd = "./scripts/generate.sh"
