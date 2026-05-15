@@ -4,6 +4,8 @@ $ErrorActionPreference = 'Stop'
 # Set GOEXPERIMENT for encoding/json/v2
 $env:GOEXPERIMENT = 'jsonv2'
 
+mkdir dist -Force
+
 # Check generated files are up to date
 # HACK: poe is not working properly; but problems will be caught by other runs
 # poe generate

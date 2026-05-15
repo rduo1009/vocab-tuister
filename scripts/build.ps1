@@ -4,6 +4,8 @@ $ErrorActionPreference = 'Stop'
 # Set GOEXPERIMENT for encoding/json/v2
 $env:GOEXPERIMENT = 'jsonv2'
 
+mkdir dist -Force
+
 # Check generated files are up to date
 poe generate
 & 'C:\Program Files\Git\bin\git.exe' diff --quiet

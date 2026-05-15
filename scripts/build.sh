@@ -4,6 +4,8 @@ set -e
 # Set GOEXPERIMENT for encoding/json/v2
 export GOEXPERIMENT=jsonv2
 
+mkdir -p dist
+
 # Check generated files are up to date
 poe generate
 if ! git diff --quiet; then
