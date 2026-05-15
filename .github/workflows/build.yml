@@ -169,16 +169,17 @@ jobs:
             Compress-Archive -Path $_.FullName, $serverPath -DestinationPath "$zipName.zip" -Force
           }
 
-      # TODO: Undo before merging
-      # - name: Release
-      #   uses: softprops/action-gh-release@v3
-      #   with:
-      #     files: |
-      #       dist/*.zip
-
-      - name: Upload binaries (testing)
+      - name: Upload binaries
+        if: github.ref_type == 'branch'
         uses: actions/upload-artifact@v7
         with:
           name: vocab-tuister-${{ matrix.os }}
           path: dist/*.zip
           if-no-files-found: error
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            dist/*.zip
