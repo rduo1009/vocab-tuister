@@ -4,13 +4,23 @@ set -e
 # Set GOEXPERIMENT for encoding/json/v2
 export GOEXPERIMENT=jsonv2
 
+CI=false
+for arg in "$@"; do
+    case "$arg" in
+        --ci) CI=true ;;
+        *) echo "Unknown argument: $arg" >&2; exit 1 ;;
+    esac
+done
+
 mkdir -p dist
 
-# Check generated files are up to date
-poe generate
-if ! git diff --quiet; then
-    echo >&2 "Error: Code changes after poe generate."
-    exit 1
+if [ "$CI" = false ]; then
+    # Check generated files are up to date
+    poe generate
+    if ! git diff --quiet; then
+        echo >&2 "Error: Code changes after poe generate."
+        exit 1
+    fi
 fi
 
 # Determine binary name
@@ -40,30 +50,30 @@ case "$(uname -s)" in
         fi
         ;;
     *)
-        echo "Unknown OS"
+        echo "Unknown OS" >&2
         exit 1
         ;;
 esac
 
-# Add Windows .exe extension for the server output file
+# Add Windows .exe extension for output files
 if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
     server_output_file="./dist/vocab-tuister-server-${binary_name}.exe"
+    client_output_file="./dist/vocab-tuister-${binary_name}.exe"
 else
     server_output_file="./dist/vocab-tuister-server-${binary_name}"
+    client_output_file="./dist/vocab-tuister-${binary_name}"
 fi
 
 # Build python server
 uv venv --allow-existing
 uv sync --no-group=types --no-dev
 uv run dunamai from any --style=semver > __version__.txt
-uv run nuitka src --output-filename="$server_output_file" --deployment
 
-# Add Windows .exe extension for the client output file
-if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
-    client_output_file="./dist/vocab-tuister-${binary_name}.exe"
-else
-    client_output_file="./dist/vocab-tuister-${binary_name}"
+nuitka_args=(src --output-filename="$server_output_file")
+if [ "$CI" = true ]; then
+    nuitka_args+=(--assume-yes-for-downloads --deployment)
 fi
+uv run nuitka "${nuitka_args[@]}"
 
 # Build go client
 version=$(uv run dunamai from any --style=semver)

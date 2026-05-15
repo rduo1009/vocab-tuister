@@ -81,21 +81,14 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         shell: pwsh
         run: |
-          scripts/build-gh.ps1
+          scripts/build.ps1 -CI
         env:
           GOEXPERIMENT: jsonv2
 
       - name: Build project
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          poe build
-        env:
-          GOEXPERIMENT: jsonv2
-
-      - name: Build project
-        if: ${{ startsWith(matrix.os, 'macos') }}
-        run: |
-          poe build --target-arch universal2
+          poe build --ci
         env:
           GOEXPERIMENT: jsonv2
 
