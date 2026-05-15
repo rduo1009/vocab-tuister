@@ -64,13 +64,6 @@ jobs:
         run: |
           uv tool install poethepoet
 
-      - name: Setup project
-        run: |
-          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          echo PATH=$PATH >> $GITHUB_ENV
-        env:
-          GOEXPERIMENT: jsonv2
-
       - name: Ensure uv is on PATH
         if: ${{ startsWith(matrix.os, 'windows') }}
         shell: pwsh
