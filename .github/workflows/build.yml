@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - build/nuitka
     tags:
       - "v*.*.*"
       - "v*.*.*-*"
@@ -167,8 +168,16 @@ jobs:
             Compress-Archive -Path $_.FullName, $serverPath -DestinationPath "$zipName.zip" -Force
           }
 
-      - name: Release
-        uses: softprops/action-gh-release@v3
+      # TODO: Undo before merging
+      # - name: Release
+      #   uses: softprops/action-gh-release@v3
+      #   with:
+      #     files: |
+      #       dist/*.zip
+
+      - name: Upload binaries (testing)
+        uses: actions/upload-artifact@v7
         with:
-          files: |
-            dist/*.zip
+          name: vocab-tuister-${{ matrix.os }}
+          path: dist/*.zip
+          if-no-files-found: error
