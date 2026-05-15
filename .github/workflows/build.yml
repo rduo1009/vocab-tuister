@@ -17,7 +17,7 @@ defaults:
 
 jobs:
   build:
-    name: Build project
+    name: build project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
