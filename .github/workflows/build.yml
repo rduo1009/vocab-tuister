@@ -52,6 +52,7 @@ jobs:
       - uses: bufbuild/buf-setup-action@v1
         with:
           version: latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       # Windows builds do not use poethepoet atm
       - name: Install deps
