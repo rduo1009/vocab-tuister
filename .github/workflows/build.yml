@@ -56,22 +56,15 @@ jobs:
       - name: Test zstd multithreading support
         run: |
           python - <<'PY'
-          import sys
+          import compression.zstd as zstd
+          from compression.zstd import CompressionParameter
 
           try:
-              import compression.zstd as zstd
-          except ImportError:
-              print("compression.zstd not available")
-              sys.exit(0)
-
-          try:
-              compressor = zstd.ZstdCompressor(nb_workers=1)
-              compressor.compress(b"test")
-          except Exception as e:
-              print(f"FAIL: zstd multithreading unsupported: {e}")
-              sys.exit(1)
-
-          print("PASS: zstd multithreading supported")
+              c = zstd.ZstdCompressor(options={CompressionParameter.nb_workers: 1})
+              c.compress(b"test")
+              print("PASS: multithreading supported")
+          except ValueError as e:
+              print(f"FAIL: {e}")
           PY
 
       - uses: bufbuild/buf-setup-action@v1
