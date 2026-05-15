@@ -28,7 +28,7 @@ uv venv --allow-existing
 uv sync --no-group=types --no-dev 
 $version = uv run dunamai from any --style=semver
 $version | Set-Content -NoNewline -Path '__version__.txt'
-uv run nuitka src --output-filename="./dist/vocab-tuister-server-$binary_name.exe"
+uv run nuitka src --output-filename="./dist/vocab-tuister-server-$binary_name.exe" --deployment
 
 # Build go client
 $version = Get-Content '__version__.txt'

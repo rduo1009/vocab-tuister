@@ -56,7 +56,7 @@ fi
 uv venv --allow-existing
 uv sync --no-group=types --no-dev
 uv run dunamai from any --style=semver > __version__.txt
-uv run nuitka src --output-filename="$server_output_file"
+uv run nuitka src --output-filename="$server_output_file" --deployment
 
 # Add Windows .exe extension for the client output file
 if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
