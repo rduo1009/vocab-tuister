@@ -38,7 +38,12 @@ jobs:
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
+      # Note: setup-python is skipped on Linux because the hostedtoolcache Python
+      # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
+      # compression. The system Python (from apt) has it enabled. On macOS and
+      # Windows, setup-python works fine.
       - uses: actions/setup-python@v6
+        if: runner.os != 'Linux'
         with:
           python-version-file: ".python-version"
 
@@ -52,20 +57,6 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
-
-      - name: Test zstd multithreading support
-        run: |
-          python - <<'PY'
-          import compression.zstd as zstd
-          from compression.zstd import CompressionParameter
-
-          try:
-              c = zstd.ZstdCompressor(options={CompressionParameter.nb_workers: 1})
-              c.compress(b"test")
-              print("PASS: multithreading supported")
-          except ValueError as e:
-              print(f"FAIL: {e}")
-          PY
 
       - uses: bufbuild/buf-setup-action@v1
         with:
