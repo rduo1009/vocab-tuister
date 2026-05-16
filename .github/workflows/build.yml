@@ -65,6 +65,8 @@ jobs:
 
       - name: Download ccache
         uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ccache-${{ matrix.os }}
 
       # Windows builds do not use poethepoet atm
       - name: Install deps
