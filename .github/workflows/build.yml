@@ -68,6 +68,7 @@ jobs:
         with:
           key: ${{ matrix.os }}
           restore-keys: ${{ matrix.os }}
+          append-timestamp: false
 
       - name: Restore ccache (manual test)
         uses: actions/cache/restore@v4
