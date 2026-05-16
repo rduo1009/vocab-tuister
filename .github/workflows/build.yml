@@ -65,8 +65,6 @@ jobs:
 
       - name: Download ccache
         uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          create-symlink: true
 
       # Windows builds do not use poethepoet atm
       - name: Install deps
