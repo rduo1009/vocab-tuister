@@ -69,6 +69,14 @@ jobs:
           key: ${{ matrix.os }}
           restore-keys: ${{ matrix.os }}
 
+      - name: Restore ccache (manual test)
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.ccache
+          key: ccache-${{ matrix.os }}-
+          restore-keys: |
+            ccache-${{ matrix.os }}-
+
       - name: Configure ccache
         run: |
           echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
