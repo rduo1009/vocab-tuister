@@ -67,7 +67,7 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ matrix.os }}
-          restore-keys: ccache-${{ matrix.os }}-
+          restore-keys: ${{ matrix.os }}-
 
       - name: Configure ccache
         run: |
