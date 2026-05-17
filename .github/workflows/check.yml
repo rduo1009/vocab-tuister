@@ -112,7 +112,7 @@ jobs:
 
   coverage:
     name: combine and upload coverage
-    needs: [ test-unit-python, test-integration-python, test-unit-go ]
+    needs: [test-unit-python, test-integration-python, test-unit-go]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
