@@ -63,20 +63,20 @@ jobs:
           version: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Restore ccache (manual test)
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.ccache
+          key: ccache-${{ matrix.os }}
+          restore-keys: |
+            ccache-${{ matrix.os }}
+
       - name: Download ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ${{ matrix.os }}
           restore-keys: ${{ matrix.os }}
           append-timestamp: false
-
-      - name: Restore ccache (manual test)
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/.ccache
-          key: ccache-${{ matrix.os }}-
-          restore-keys: |
-            ccache-${{ matrix.os }}-
 
       - name: Configure ccache
         run: |
