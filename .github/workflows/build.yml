@@ -94,7 +94,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         shell: pwsh
         run: |
-          scripts/build.ps1 -CI
+          scripts/build.ps1
         env:
           GOEXPERIMENT: jsonv2
           NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
