@@ -1,5 +1,22 @@
 """The CLI that runs the server."""
 
+# nuitka-project: --mode=onefile
+# nuitka-project: --enable-plugin=dill-compat
+## nuitka-project: --experimental=deferred-annotations # TODO: Maybe this is necessary/good to use in future (when it is fixed)?
+# nuitka-project: --experimental=force-mingw64
+
+# nuitka-project: --include-data-files=src/core/transfero/wn_data/wn.db.zst=src/core/transfero/wn_data/wn.db.zst
+# nuitka-project: --include-data-files=src/core/transfero/adj_to_adv.json=src/core/transfero/adj_to_adv.json
+# nuitka-project: --include-data-files=__version__.txt=__version__.txt
+
+# nuitka-project: --include-package-data=lemminflect:resources/*
+# nuitka-project: --include-package-data=wn:index.toml
+# nuitka-project: --include-package-data=wn:schema.sql
+
+# nuitka-project: --include-module=numpy.core.multiarray
+
+# nuitka-project: --nofollow-import-to=mypy
+
 # pyright: basic
 # ruff: noqa: TC002, TC003
 

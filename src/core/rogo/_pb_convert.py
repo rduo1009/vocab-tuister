@@ -4,6 +4,8 @@ Hacky bridges between the original vocab-tuister classes and the new
 protobuf-generated ones.
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, cast
 
 import betterproto2

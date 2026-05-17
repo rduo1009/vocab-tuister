@@ -1,5 +1,7 @@
 """Contains custom exceptions used by ``lego``."""
 
+from __future__ import annotations
+
 
 class InvalidVocabFileFormatError(Exception):
     """An error that is raised when a vocab file has the incorrect format."""

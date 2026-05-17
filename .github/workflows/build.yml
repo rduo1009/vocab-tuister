@@ -1,6 +1,8 @@
 name: build
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
       - "v*.*.*-*"
@@ -14,18 +16,11 @@ defaults:
 
 jobs:
   build:
-    name: Build project
+    name: build project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os:
-          [
-            ubuntu-22.04,
-            ubuntu-22.04-arm,
-            macos-14,
-            windows-2022,
-            windows-11-arm,
-          ]
+        os: [ubuntu-22.04, ubuntu-22.04-arm, macos-14, macos-15-intel, windows-2022]
       fail-fast: false
 
     steps:
@@ -42,7 +37,12 @@ jobs:
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
+      # Note: setup-python is skipped on Linux because the hostedtoolcache Python
+      # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
+      # compression. The system Python (from apt) has it enabled. On macOS and
+      # Windows, setup-python works fine.
       - uses: actions/setup-python@v6
+        if: runner.os != 'Linux'
         with:
           python-version-file: ".python-version"
 
@@ -52,11 +52,24 @@ jobs:
         env:
           GOEXPERIMENT: jsonv2
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
+
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ matrix.os }}
+
+      - name: Configure ccache
+        run: |
+          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
 
       # Windows builds do not use poethepoet atm
       - name: Install deps
@@ -81,23 +94,18 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         shell: pwsh
         run: |
-          scripts/build-gh.ps1
+          scripts/build.ps1
         env:
           GOEXPERIMENT: jsonv2
+          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
 
       - name: Build project
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
           poe build
         env:
           GOEXPERIMENT: jsonv2
-
-      - name: Build project
-        if: ${{ startsWith(matrix.os, 'macos') }}
-        run: |
-          poe build --target-arch universal2
-        env:
-          GOEXPERIMENT: jsonv2
+          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
 
       # Bundle each non-server binary together with its matching server binary into a
       # single zip. For example, vocab-tuister-darwin-arm64 and
@@ -173,7 +181,16 @@ jobs:
             Compress-Archive -Path $_.FullName, $serverPath -DestinationPath "$zipName.zip" -Force
           }
 
+      - name: Upload binaries
+        if: github.ref_type == 'branch'
+        uses: actions/upload-artifact@v7
+        with:
+          name: vocab-tuister-${{ matrix.os }}
+          path: dist/*.zip
+          if-no-files-found: error
+
       - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v3
         with:
           files: |

@@ -1,5 +1,7 @@
 """General functions used by ``vocab-tuister`` and its tests."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from .. import _seed

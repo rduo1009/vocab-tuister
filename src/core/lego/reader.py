@@ -1,5 +1,7 @@
 """Contains functions for reading vocab files."""
 
+from __future__ import annotations
+
 import hashlib
 import hmac
 import logging

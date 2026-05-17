@@ -1,5 +1,7 @@
 """Contains a function for caching vocabulary files in a cache folder."""
 
+from __future__ import annotations
+
 import hashlib
 import logging
 import warnings

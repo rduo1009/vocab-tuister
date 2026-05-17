@@ -2,6 +2,8 @@
 
 # pyright: reportUnannotatedClassAttribute=false
 
+from __future__ import annotations
+
 from pydantic import BaseModel, ConfigDict, StrictBool
 
 from src.core.accido.endings import Word

@@ -2,6 +2,8 @@
 
 # pyright: reportAttributeAccessIssue=false
 
+from __future__ import annotations
+
 import os
 
 _seed = os.getenv("VOCAB_TUISTER_RANDOM_SEED")
@@ -46,10 +48,8 @@ try:
         "src", third_choice=dunamai.Version.from_any_vcs
     ).serialize(style=dunamai.Style.SemVer)
 except RuntimeError:
-    import sys as _sys
-
-    # Frozen with PyInstaller
-    if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
+    # Frozen with Nuitka
+    if "__compiled__" in globals():
         from pathlib import Path
 
         version_path = Path(__file__).parent.parent / "__version__.txt"

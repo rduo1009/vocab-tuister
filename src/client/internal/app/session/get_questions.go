@@ -52,6 +52,9 @@ func (p *StreamQuestionProvider) Next() (questions.Question, error) {
 			case codes.InvalidArgument:
 				return nil, fmt.Errorf("invalid input: %s", st.Message())
 
+			case codes.Internal:
+				return nil, fmt.Errorf("internal error: %s", st.Message())
+
 			default:
 				return nil, fmt.Errorf("grpc error (%s): %s", st.Code(), st.Message())
 			}

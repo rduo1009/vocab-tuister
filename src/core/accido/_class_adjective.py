@@ -1,5 +1,7 @@
 """Representation of a Latin adjective with endings."""
 
+from __future__ import annotations
+
 import logging
 import warnings
 from functools import total_ordering

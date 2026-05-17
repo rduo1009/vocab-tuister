@@ -1,5 +1,7 @@
 """Contains a functions that finds the number of syllables in a Latin word."""
 
+from __future__ import annotations
+
 from typing import Final
 
 VOWELS: Final[set[str]] = {"a", "e", "i", "o", "u"}

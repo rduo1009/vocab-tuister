@@ -1,5 +1,7 @@
 """Contains edge cases for English words."""
 
+from __future__ import annotations
+
 from typing import Final
 
 STATIVE_VERBS: Final[set[str]] = {
