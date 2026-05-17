@@ -13,8 +13,8 @@ mkdir dist -Force
 if (-not $isCI) {
     # Check generated files are up to date
     poe generate
-    & 'C:\Program Files\Git\bin\git.exe' diff --quiet
-    if ($LASTEXITCODE -ne 0) {
+    $statusOutput = & 'C:\Program Files\Git\bin\git.exe' status --porcelain
+    if ($statusOutput) {
         Write-Error 'Error: Code changes after poe generate.'
         exit 1
     }
