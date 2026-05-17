@@ -31,10 +31,11 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: "recursive"
+          persist-credentials: false
 
       - name: Verify .python-version file
         run: |
@@ -48,29 +49,30 @@ jobs:
       # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
       # compression. The system Python (from apt) has it enabled. On macOS and
       # Windows, setup-python works fine.
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         if: runner.os != 'Linux'
         with:
           python-version-file: ".python-version"
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
         with:
           go-version-file: "go.mod"
+          cache: false
         env:
           GOEXPERIMENT: jsonv2
 
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
-          enable-cache: true
+          enable-cache: false
           cache-dependency-glob: "uv.lock"
 
-      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-setup-action@a47c93e0b1648d5651a065437926377d060baa99 # v1.50.0
         with:
           version: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2.20
         with:
           key: ${{ matrix.os }}
 
@@ -190,7 +192,7 @@ jobs:
 
       - name: Upload binaries
         if: github.ref_type == 'branch'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: vocab-tuister-${{ matrix.os }}
           path: dist/*.zip
@@ -198,7 +200,11 @@ jobs:
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG_NAME" \
+            --generate-notes \
+            --verify-tag \
             dist/*.zip
