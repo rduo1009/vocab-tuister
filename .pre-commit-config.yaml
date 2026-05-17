@@ -66,12 +66,6 @@ repos:
       - id: rstfmt
         args: [-w, "79"]
 
-  - repo: https://github.com/executablebooks/mdformat
-    rev: "1.0.0"
-    hooks:
-      - id: mdformat
-        types: [markdown]
-
   # Misc checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
