@@ -37,14 +37,6 @@ jobs:
           submodules: "recursive"
           persist-credentials: false
 
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
-
-      - name: Verify go.mod file
-        run: |
-          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
-
       # Note: setup-python is skipped on Linux because the hostedtoolcache Python
       # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
       # compression. The system Python (from apt) has it enabled. On macOS and
