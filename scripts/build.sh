@@ -11,8 +11,10 @@ mkdir -p dist
 
 # Check generated files are up to date
 poe generate
-if [[ -n "$(git status --porcelain)" ]]; then
+status="$(git status --porcelain)"
+if [[ -n "$status" ]]; then
 	echo >&2 "Error: Code changes after poe generate."
+	echo >&2 "$status"
 	exit 1
 fi
 

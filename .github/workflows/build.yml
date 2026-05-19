@@ -37,14 +37,6 @@ jobs:
           submodules: "recursive"
           persist-credentials: false
 
-      - name: Verify .python-version file
-        run: |
-          if [ ! -s .python-version ]; then echo ".python-version is missing or empty" >&2; exit 1; else echo "Found .python-version:"; cat .python-version; fi
-
-      - name: Verify go.mod file
-        run: |
-          if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
-
       # Note: setup-python is skipped on Linux because the hostedtoolcache Python
       # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
       # compression. The system Python (from apt) has it enabled. On macOS and
@@ -76,10 +68,6 @@ jobs:
         with:
           key: ${{ matrix.os }}
 
-      - name: Configure ccache
-        run: |
-          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-
       # Windows builds do not use poethepoet atm
       - name: Install deps
         if: ${{ !startsWith(matrix.os, 'windows') }}
@@ -106,7 +94,7 @@ jobs:
           scripts/build.ps1
         env:
           GOEXPERIMENT: jsonv2
-          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
+          NUITKA_CACHE_DIR_CCACHE: ${{ github.workspace }}/.ccache
 
       - name: Build project
         if: ${{ !startsWith(matrix.os, 'windows') }}
@@ -114,7 +102,7 @@ jobs:
           poe build
         env:
           GOEXPERIMENT: jsonv2
-          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
+          NUITKA_CACHE_DIR_CCACHE: ${{ github.workspace }}/.ccache
 
       # Bundle each non-server binary together with its matching server binary into a
       # single zip. For example, vocab-tuister-darwin-arm64 and

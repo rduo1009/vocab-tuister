@@ -16,6 +16,7 @@ if (-not $isCI) {
     $statusOutput = & 'C:\Program Files\Git\bin\git.exe' status --porcelain
     if ($statusOutput) {
         Write-Error 'Error: Code changes after poe generate.'
+        $statusOutput | ForEach-Object { Write-Error $_ }
         exit 1
     }
 }
