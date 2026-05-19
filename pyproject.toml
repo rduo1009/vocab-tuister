@@ -27,7 +27,7 @@ dependencies = [
   "lemminflect==0.2.3",
   "nuitka==4.1.0",
   "platformdirs==4.9.6",
-  "pydantic==2.13.0",
+  "pydantic==2.13.4",
   "wn==1.0.0",
 ]
 
