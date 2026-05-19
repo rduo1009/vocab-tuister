@@ -12,6 +12,7 @@ __version__.txt
 src.dist/
 nuitka-crash-report.xml
 dist.dist/
+.ccache/
 
 # Copilot generated files
 bin/

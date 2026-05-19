@@ -69,10 +69,6 @@ jobs:
         with:
           key: ${{ matrix.os }}
 
-      - name: Configure ccache
-        run: |
-          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
-
       # Windows builds do not use poethepoet atm
       - name: Install deps
         if: ${{ !startsWith(matrix.os, 'windows') }}
@@ -99,7 +95,7 @@ jobs:
           scripts/build.ps1
         env:
           GOEXPERIMENT: jsonv2
-          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
+          NUITKA_CACHE_DIR_CCACHE: ${{ github.workspace }}/.ccache
 
       - name: Build project
         if: ${{ !startsWith(matrix.os, 'windows') }}
@@ -107,7 +103,7 @@ jobs:
           poe build
         env:
           GOEXPERIMENT: jsonv2
-          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
+          NUITKA_CACHE_DIR_CCACHE: ${{ github.workspace }}/.ccache
 
       # Bundle each non-server binary together with its matching server binary into a
       # single zip. For example, vocab-tuister-darwin-arm64 and
