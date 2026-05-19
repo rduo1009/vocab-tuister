@@ -9,6 +9,9 @@ tests/integration/testdata/cache/*
 
 # Build generated files
 __version__.txt
+src.dist/
+nuitka-crash-report.xml
+dist.dist/
 
 # Copilot generated files
 bin/
@@ -118,12 +121,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-#*.spec
 
 # Installer logs
 pip-log.txt

@@ -3,14 +3,11 @@ package questions
 import (
 	"slices"
 
-	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions/endingcomponents"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 type ParseWordCompToLatQuestion struct {
-	Answers    []string                          `json:"answers"`
-	Components endingcomponents.EndingComponents `json:"components"`
-	MainAnswer string                            `json:"main_answer"`
-	Prompt     string                            `json:"prompt"`
+	*pb.ParseWordCompToLatQuestion
 }
 
 func (q *ParseWordCompToLatQuestion) QuestionMode() QuestionMode {

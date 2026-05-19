@@ -63,7 +63,7 @@ However, more blanket tests are available with these commands:
 
 ```bash
 uv run pytest -m 'not manual and not integration'
-uv run pytest --pythonhashseed 1 -m 'integration'
+PYTHONHASHSEED=1 uv run pytest -m 'integration'
 go test ./src/...
 ```
 

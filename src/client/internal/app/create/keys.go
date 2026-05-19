@@ -5,7 +5,7 @@ import (
 	"charm.land/bubbles/v2/key"
 )
 
-type loadButtonKeyMap struct {
+type verifyButtonKeyMap struct {
 	PressButton   key.Binding
 	PreviousFocus key.Binding
 	NextFocus     key.Binding
@@ -13,19 +13,19 @@ type loadButtonKeyMap struct {
 	Quit          key.Binding
 }
 
-func (k loadButtonKeyMap) ShortHelp() []key.Binding {
+func (k verifyButtonKeyMap) ShortHelp() []key.Binding {
 	return []key.Binding{k.NextFocus, k.PressButton, k.Help, k.Quit}
 }
 
-func (k loadButtonKeyMap) FullHelp() [][]key.Binding {
+func (k verifyButtonKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.PressButton, k.PreviousFocus, k.NextFocus},
 		{k.Help, k.Quit},
 	}
 }
 
-func (ls *loadSection) KeyMap() loadButtonKeyMap {
-	return loadButtonKeyMap{
+func (ls *verifySection) KeyMap() verifyButtonKeyMap {
+	return verifyButtonKeyMap{
 		PressButton: key.NewBinding(
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "press button"),
@@ -50,13 +50,13 @@ func (ls *loadSection) KeyMap() loadButtonKeyMap {
 }
 
 func (m *Model) KeyMap() help.KeyMap {
+	if m.listtui.ModeDropdownActive {
+		return m.listtui.ModeDropdown.KeyMap()
+	}
+
 	if m.listtui.HeaderSection.Focused() || m.listtui.SelectButton.Focused() ||
 		m.listtui.VocabEditor.Focused() {
 		return m.listtui.KeyMap()
-	}
-
-	if m.listtui.ModeDropdownActive {
-		return m.listtui.ModeDropdown.KeyMap()
 	}
 
 	if m.configtui.HeaderSection.Focused() || m.configtui.ResetButton.Focused() ||
@@ -64,12 +64,10 @@ func (m *Model) KeyMap() help.KeyMap {
 		return m.configtui.KeyMap()
 	}
 
-	if m.configtui.FilepickerActive {
-		return m.configtui.Filepicker.KeyMap()
-	}
-
-	if m.LoadSection.Focused() {
-		return m.LoadSection.KeyMap()
+	if m.VerifySection.Focused() {
+		keyMap := m.VerifySection.KeyMap()
+		keyMap.PressButton.SetEnabled(m.VerifySection.Enabled())
+		return keyMap
 	}
 
 	panic("unreachable")

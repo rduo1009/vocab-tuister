@@ -5,10 +5,12 @@ import (
 	"io"
 
 	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/list"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
@@ -23,18 +25,15 @@ type (
 
 const defaultHeight = 5 // arbitrary
 
-var (
-	itemStyle         = lipgloss.NewStyle().Background(lipgloss.Color("#707070")).Padding(0, 1)
-	selectedItemStyle = lipgloss.NewStyle().Background(lipgloss.Color("#a7a7a7")).Padding(0, 1)
-)
-
 type item struct {
 	fmt.Stringer
 }
 
 func (i item) FilterValue() string { return "" }
 
-type itemDelegate struct{}
+type itemDelegate struct {
+	styles *styles.StylesWrapper
+}
 
 func (d itemDelegate) Height() int                             { return 1 }
 func (d itemDelegate) Spacing() int                            { return 0 }
@@ -47,14 +46,8 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 
 	str := i.String()
 
-	var fn func(...string) string
-	if index == m.Index() {
-		fn = selectedItemStyle.Width(m.Width()).Render
-	} else {
-		fn = itemStyle.Width(m.Width()).Render
-	}
-
-	fmt.Fprint(w, fn(str))
+	focused := index == m.Index()
+	fmt.Fprint(w, d.styles.Dropdown.Item(focused).Width(m.Width()).Render(str))
 }
 
 // XXX: Generic?
@@ -69,11 +62,7 @@ func (m *Model) KeyMap() help.KeyMap {
 	return m.list
 }
 
-// TODO: Use?
-//
-//	AdditionalShortHelpKeys func() []key.Binding
-//	AdditionalFullHelpKeys  func() []key.Binding
-func New[T fmt.Stringer](id string, items []T) *Model {
+func New[T fmt.Stringer](id string, items []T, styles *styles.StylesWrapper) *Model {
 	var (
 		listItems []list.Item
 		maxWidth  int
@@ -90,19 +79,62 @@ func New[T fmt.Stringer](id string, items []T) *Model {
 		listItems = append(listItems, item{i})
 	}
 
-	width := maxWidth + 2
+	width := maxWidth + 4
 
 	height := min(len(items), defaultHeight)
 	if height == 0 {
 		height = 1
 	}
 
-	l := list.New(listItems, itemDelegate{}, width, height)
+	l := list.New(listItems, itemDelegate{styles: styles}, width, height)
 	l.SetShowTitle(false)
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)
 	l.SetShowPagination(false)
 	l.SetShowHelp(false)
+	l.DisableQuitKeybindings()
+	l.InfiniteScrolling = true
+
+	l.KeyMap.ShowFullHelp = key.NewBinding(
+		key.WithKeys("ctrl+h"),
+		key.WithHelp("ctrl+h", "toggle additional help"),
+	)
+	l.KeyMap.CloseFullHelp = key.NewBinding(
+		key.WithKeys("ctrl+h"),
+		key.WithHelp("ctrl+h", "toggle additional help"),
+	)
+	l.AdditionalShortHelpKeys = func() []key.Binding {
+		return []key.Binding{
+			key.NewBinding(
+				key.WithKeys("enter"),
+				key.WithHelp("enter", "submit"),
+			),
+			key.NewBinding(
+				key.WithKeys("esc"),
+				key.WithHelp("esc", "cancel"),
+			),
+			key.NewBinding(
+				key.WithKeys("ctrl+q", "ctrl+c"),
+				key.WithHelp("ctrl+q", "quit"),
+			),
+		}
+	}
+	l.AdditionalFullHelpKeys = func() []key.Binding {
+		return []key.Binding{
+			key.NewBinding(
+				key.WithKeys("enter"),
+				key.WithHelp("enter", "submit"),
+			),
+			key.NewBinding(
+				key.WithKeys("esc"),
+				key.WithHelp("esc", "cancel"),
+			),
+			key.NewBinding(
+				key.WithKeys("ctrl+q", "ctrl+c"),
+				key.WithHelp("ctrl+q", "quit"),
+			),
+		}
+	}
 
 	m := &Model{ID: id, LastSelected: items[0], list: l, width: width}
 	m.width = width

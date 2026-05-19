@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/fs"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,12 +18,18 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
+	"charm.land/fang/v2"
 	"charm.land/huh/v2/spinner"
+	"charm.land/lipgloss/v2"
 	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
-	"github.com/rduo1009/vocab-tuister/src/assets"
+	"github.com/rduo1009/vocab-tuister/src/assets/inbuiltlists"
 	"github.com/rduo1009/vocab-tuister/src/client/internal"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 var (
@@ -157,6 +162,29 @@ func extractEmbeddedFS(efs embed.FS, target string) error {
 	})
 }
 
+func checkGRPCHealth(port int) bool {
+	conn, err := grpc.NewClient(
+		fmt.Sprintf("127.0.0.1:%d", port),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		return false
+	}
+	defer conn.Close()
+
+	client := healthpb.NewHealthClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
+	defer cancel()
+
+	resp, err := client.Check(ctx, &healthpb.HealthCheckRequest{})
+	if err != nil {
+		return false
+	}
+
+	return resp.Status == healthpb.HealthCheckResponse_SERVING
+}
+
 var rootCmd = &cobra.Command{
 	Version:      internal.Version,
 	Use:          "vocab-tuister",
@@ -235,15 +263,8 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 							return
 
 						case <-ticker.C:
-							resp, err := http.Get(
-								fmt.Sprintf("http://127.0.0.1:%d/health", serverPort),
-							)
-							if err == nil {
-								resp.Body.Close()
-
-								if resp.StatusCode == http.StatusOK {
-									return
-								}
+							if checkGRPCHealth(serverPort) {
+								return
 							}
 						}
 					}
@@ -258,14 +279,14 @@ The project homepage is at https://github.com/rduo1009/vocab-tuister.`,
 			}
 		}
 
-		// XXX: https://github.com/charmbracelet/bubbles/pull/776 would remove need for this
+		// XXX: https://github.com/charmbracelet/bubbles/pull/954 would remove need for this
 		inbuiltListTmpDir, err := os.MkdirTemp("", "inbuilt-lists")
 		if err != nil {
 			return err
 		}
 		defer os.RemoveAll(inbuiltListTmpDir)
 
-		if err := extractEmbeddedFS(assets.InbuiltLists, inbuiltListTmpDir); err != nil {
+		if err := extractEmbeddedFS(inbuiltlists.InbuiltLists, inbuiltListTmpDir); err != nil {
 			return err
 		}
 
@@ -283,7 +304,14 @@ func Execute() {
 	rootCmd.PersistentFlags().BoolVar(&noServer, "no-server", false, "do not start server - TUI only")
 	rootCmd.PersistentFlags().BoolVar(&debugMode, "debug", false, "enable debug mode")
 
-	if err := rootCmd.Execute(); err != nil {
+	isDark := lipgloss.HasDarkBackground(os.Stdin, os.Stderr)
+	if err := fang.Execute(
+		context.Background(),
+		rootCmd,
+		fang.WithVersion(internal.Version),
+		fang.WithoutCompletions(),
+		fang.WithColorSchemeFunc(styles.DefaultStyles(styles.DefaultThemes(isDark).Current(), false).Fang),
+	); err != nil {
 		os.Exit(1)
 	}
 }

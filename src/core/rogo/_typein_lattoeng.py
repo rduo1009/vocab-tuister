@@ -1,6 +1,8 @@
-from dataclasses import dataclass
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
+from ...pb.vocab_tuister.v1 import TypeInLatToEngQuestion
 from ...utils import set_choice
 from ..accido._class_pronoun import Pronoun
 from ..accido.endings import Verb
@@ -8,7 +10,6 @@ from ..accido.misc import ComponentsSubtype, Mood
 from ..transfero.exceptions import InvalidWordError
 from ..transfero.synonyms import find_synonyms
 from ..transfero.words import find_inflection
-from ._base import MultiAnswerQuestion
 from ._utils import (
     normalise_to_multiplemeanings,
     pick_ending,
@@ -18,25 +19,6 @@ from ._utils import (
 if TYPE_CHECKING:
     from ..accido.endings import Word
     from ..accido.type_aliases import Endings
-
-
-@dataclass
-class TypeInLatToEngQuestion(MultiAnswerQuestion[str]):
-    """A question that asks for the English translation of a Latin word.
-
-    For example, "quaero" (answer: "I search")
-
-    Attributes
-    ----------
-    prompt : str
-        The prompt for the question (in Latin).
-    main_answer : str
-        The best answer to the question (in English).
-    answers : set[str]
-        The possible answers to the question (in English).
-    """
-
-    prompt: str
 
 
 def generate_typein_lattoeng(
@@ -118,5 +100,5 @@ def generate_typein_lattoeng(
     return TypeInLatToEngQuestion(
         prompt=chosen_ending,
         main_answer=main_answer,
-        answers=inflected_meanings,
+        answers=list(inflected_meanings),
     )

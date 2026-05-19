@@ -1,125 +1,76 @@
 #!/bin/bash
-
 set -e
 
 # Set GOEXPERIMENT for encoding/json/v2
 export GOEXPERIMENT=jsonv2
 
-if [[ $debug == "True" ]]; then
-    echo "====== DEBUG MODE ======"
+# CI is set to "true" automatically by GitHub Actions
+CI="${CI:-false}"
+
+mkdir -p dist
+
+# Check generated files are up to date
+poe generate
+if [[ -n "$(git status --porcelain)" ]]; then
+	echo >&2 "Error: Code changes after poe generate."
+	exit 1
 fi
 
-# Only install necessary deps to speed up build
-# uv sync --no-dev # slower
-uv venv --allow-existing
-uv sync --no-dev
+# Determine binary name
+case "$(uname -s)" in
+Darwin)
+	arch=$(uname -m)
+	if [[ "$arch" == "arm64" ]]; then
+		binary_name="darwin-arm64"
+	else
+		binary_name="darwin-x86_64"
+	fi
+	;;
+Linux)
+	arch=$(uname -m)
+	if [[ "$arch" == "aarch64" ]]; then
+		binary_name="linux-aarch64"
+	else
+		binary_name="linux-x86_64"
+	fi
+	;;
+MINGW* | CYGWIN* | MSYS*)
+	arch=$(uname -m)
+	if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+		binary_name="windows-arm64"
+	else
+		binary_name="windows-x86_64"
+	fi
+	;;
+*)
+	echo "Unknown OS" >&2
+	exit 1
+	;;
+esac
 
-# Install deps that need to be in universal2
-if [[ "$target_arch" == "universal2" ]]; then
-    if [[ "$(uname)" == "Darwin" ]]; then
-        uv pip install --force-reinstall https://files.pythonhosted.org/packages/77/b8/0135fadc89e73be292b473cb820b4f5a08197779206b33191e801feeae40/tomli-2.3.0-py3-none-any.whl
-        uv pip install --force-reinstall https://files.pythonhosted.org/packages/44/b7/3b4663aa3b4af16819f2ab6a78c4111c7e9b066725d8107753c2257448a5/regex-2025.9.18-cp314-cp314-macosx_10_13_universal2.whl
-        uv pip install --force-reinstall src/_build/macos/wheels/*.whl
-    fi
+# Add Windows .exe extension for output files
+if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
+	server_output_file="./dist/vocab-tuister-server-${binary_name}.exe"
+	client_output_file="./dist/vocab-tuister-${binary_name}.exe"
+else
+	server_output_file="./dist/vocab-tuister-server-${binary_name}"
+	client_output_file="./dist/vocab-tuister-${binary_name}"
 fi
 
 # Build python server
-uv run dunamai from any --style=semver > __version__.txt
-if [[ -z "$target_arch" ]]; then
-    if [[ $debug == "True" ]]; then
-        uv run pyinstaller vocab-tuister-server.spec -- --debug
-    else
-        uv run pyinstaller vocab-tuister-server.spec
-    fi
-else
-    if [[ $debug == "True" ]]; then
-        uv run pyinstaller vocab-tuister-server.spec -- --debug --target-arch "$target_arch"
-    else
-        uv run pyinstaller vocab-tuister-server.spec -- --target-arch "$target_arch"
-    fi
-fi
+uv venv --allow-existing
+uv sync --no-group=types --no-dev
+uv run dunamai from any --style=semver >__version__.txt
 
-# Determine client binary name
-if [[ -n "$target_arch" ]]; then
-    if [[ "$target_arch" == "universal2" ]]; then
-        clientbin_name="darwin-universal2"
-        build_universal2=true
-    else
-        clientbin_name="darwin-$target_arch"
-    fi
-else
-    case "$(uname -s)" in
-        Darwin)
-            arch=$(uname -m)
-            if [[ "$arch" == "arm64" ]]; then
-                clientbin_name="darwin-arm64"
-            else
-                clientbin_name="darwin-x86_64"
-            fi
-            ;;
-        Linux)
-            arch=$(uname -m)
-            if [[ "$arch" == "aarch64" ]]; then
-                clientbin_name="linux-aarch64"
-            else
-                clientbin_name="linux-x86_64"
-            fi
-            ;;
-        MINGW*|CYGWIN*|MSYS*)
-            arch=$(uname -m)
-            if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
-                clientbin_name="windows-arm64"
-            else
-                clientbin_name="windows-x86_64"
-            fi
-            ;;
-        *)
-            echo "Unknown OS"
-            exit 1
-            ;;
-    esac
+nuitka_args=(src --output-filename="$server_output_file")
+if [ "$CI" = "true" ]; then
+	nuitka_args+=(--assume-yes-for-downloads --deployment)
 fi
-
-# Add Windows .exe extension for the output file
-if [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
-    output_file="./dist/vocab-tuister-${clientbin_name}.exe"
-else
-    output_file="./dist/vocab-tuister-${clientbin_name}"
-fi
+uv run nuitka "${nuitka_args[@]}"
 
 # Build go client
-go mod tidy
-go generate -x ./... && git diff --quiet || { echo >&2 "Error: Code changes after go generate."; exit 1; }
-
 version=$(uv run dunamai from any --style=semver)
-if [[ "$build_universal2" == "true" ]]; then
-    tmpdir=$(mktemp -d)
-
-    GOOS=darwin GOARCH=arm64 go build \
-        -o "$tmpdir/arm64" \
-        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
-        ./src/main.go
-
-    GOOS=darwin GOARCH=amd64 go build \
-        -o "$tmpdir/amd64" \
-        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
-        ./src/main.go
-
-    lipo -create "$tmpdir/arm64" "$tmpdir/amd64" -o "./dist/vocab-tuister-$clientbin_name"
-
-    rm -r "$tmpdir"
-else
-    go build \
-        -ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
-        -o "./dist/vocab-tuister-$clientbin_name" \
-        ./src/main.go
-fi
-
-# echo -n "Do you want to reinstall all deps? (Y/n) "
-# read -r response
-# echo
-# if [[ -z "$response" || "$response" == "y" || "$response" == "Y" ]]; then
-#     uv sync
-# else
-#     uv sync --no-dev
-# fi
+go build \
+	-ldflags "-X github.com/rduo1009/vocab-tuister/src/client/internal.Version=$version" \
+	-o "$client_output_file" \
+	./src/main.go

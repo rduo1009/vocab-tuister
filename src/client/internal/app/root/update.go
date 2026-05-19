@@ -1,16 +1,28 @@
 package root
 
 import (
+	"time"
+
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
+	chromastyles "github.com/alecthomas/chroma/v2/styles"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
+
+type checkBgTickMsg time.Time
+
+func checkBgTickCmd() tea.Cmd {
+	return tea.Tick(time.Millisecond*500, func(t time.Time) tea.Msg {
+		return checkBgTickMsg(t)
+	})
+}
 
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
@@ -33,11 +45,13 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			case key.Matches(msg, m.keys.PreviousFocus):
 				m.navigator.Previous()
-				return m, nil
+				util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil)
+				return m, tea.Batch(cmds...)
 
 			case key.Matches(msg, m.keys.NextFocus):
 				m.navigator.Next()
-				return m, nil
+				util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], nil)
+				return m, tea.Batch(cmds...)
 			}
 		} else if key.Matches(msg, m.keys.Help) {
 			m.overlayHelp.ShowAll = !m.overlayHelp.ShowAll
@@ -71,6 +85,24 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.help.SetWidth(msg.Width)
 		m.tabs.Width = msg.Width
 
+	case tea.BackgroundColorMsg:
+		if msg.IsDark() != m.isDark {
+			m.isDark = msg.IsDark()
+			m.themes = styles.DefaultThemes(msg.IsDark())
+			m.styles.Styles = styles.DefaultStyles(
+				m.themes.Current(),
+				m.pages[m.pageOrder[m.currentPage]].HasOverlay(),
+			)
+			chromastyles.Register(m.styles.Editor.Chroma)
+			cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
+		}
+
+	case checkBgTickMsg:
+		return m, tea.Batch(
+			tea.RequestBackgroundColor,
+			checkBgTickCmd(),
+		)
+
 	case tabs.SelectTabMsg:
 		m.currentPage = msg.Index
 		m.navigator.Reset()
@@ -103,6 +135,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case create.ListConfigPostedMsg:
 		m.vocabList = msg.VocabList
 		m.sessionConfig = msg.SessionConfig
+		m.numberOfQuestions = msg.NumberOfQuestions
 
 	case app.ErrMsg:
 		m.err = msg
@@ -113,6 +146,18 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	util.UpdaterPtr(&cmds, m.pages[m.pageOrder[m.currentPage]], msg)
+
+	if m.pages[m.pageOrder[m.currentPage]].HasOverlay() && !m.overlayExpectedActive {
+		m.overlayExpectedActive = true
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
+		chromastyles.Register(m.styles.Editor.Chroma)
+		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
+	} else if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() && m.overlayExpectedActive {
+		m.overlayExpectedActive = false
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
+		chromastyles.Register(m.styles.Editor.Chroma)
+		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
+	}
 
 	return m, tea.Batch(cmds...)
 }

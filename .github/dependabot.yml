@@ -8,6 +8,8 @@ updates:
       prefix: "🚧 build(deps):"
     ignore:
       - dependency-name: "wn"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "gomod"
     directory: "/"
@@ -15,6 +17,8 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "🚧 build(deps):"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -22,6 +26,8 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "🤖 ci(github-actions):"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "devcontainers"
     directory: "/"
@@ -29,3 +35,5 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "🤖 ci(devcontainer):"
+    cooldown:
+      default-days: 7

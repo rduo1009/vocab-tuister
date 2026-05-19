@@ -1,0 +1,21 @@
+version: v2
+
+plugins:
+  # Go protobuf
+  - remote: buf.build/protocolbuffers/go
+    out: src/client/internal/pb
+    opt:
+      - paths=source_relative
+
+  # Go gRPC
+  - remote: buf.build/grpc/go
+    out: src/client/internal/pb
+    opt:
+      - paths=source_relative
+
+  # Python
+  - local: ./src/scripts/protoc-gen-python_betterproto2
+    out: src/pb
+    opt:
+      - pydantic_dataclasses
+      - server_generation=async

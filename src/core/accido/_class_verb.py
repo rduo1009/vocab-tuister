@@ -2,6 +2,8 @@
 
 # pyright: reportImplicitOverride=false
 
+from __future__ import annotations
+
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, Literal, overload
@@ -1938,6 +1940,7 @@ class Verb(Word):
             f"V{short_tense}{short_voice}ptc{short_gender}{short_case}{short_number}"
         )
 
+    # FIXME: Match the string representation up with the order of the TUI dropdowns
     def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
         """Generate an ``EndingComponents`` object based on endings keys.
 

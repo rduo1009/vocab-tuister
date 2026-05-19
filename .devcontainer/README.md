@@ -32,7 +32,6 @@ The devcontainer provides a complete development environment with:
 1. **Open in Dev Container**: Click the "Reopen in Container" prompt in VS Code, or run the "Dev Containers: Reopen in Container" command from the Command Palette.
 
 1. **Wait for Setup**: The first time you open the container, it will automatically run the setup script which:
-
    - Installs all required tools
    - Installs uv
    - Installs Python and Go dependencies
@@ -40,7 +39,6 @@ The devcontainer provides a complete development environment with:
    - Installs Go tools
 
 1. **Start Developing**: Once setup is complete, you can:
-
    - Run commands in the environment: `uv run <command>`
    - Run Python tests: `uv run pytest`
    - Run Go tests: `go test ./...`

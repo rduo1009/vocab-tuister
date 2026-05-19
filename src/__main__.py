@@ -1,5 +1,22 @@
 """The CLI that runs the server."""
 
+# nuitka-project: --mode=onefile
+# nuitka-project: --enable-plugin=dill-compat
+## nuitka-project: --experimental=deferred-annotations # TODO: Maybe this is necessary/good to use in future (when it is fixed)?
+# nuitka-project: --experimental=force-mingw64
+
+# nuitka-project: --include-data-files=src/core/transfero/wn_data/wn.db.zst=src/core/transfero/wn_data/wn.db.zst
+# nuitka-project: --include-data-files=src/core/transfero/adj_to_adv.json=src/core/transfero/adj_to_adv.json
+# nuitka-project: --include-data-files=__version__.txt=__version__.txt
+
+# nuitka-project: --include-package-data=lemminflect:resources/*
+# nuitka-project: --include-package-data=wn:index.toml
+# nuitka-project: --include-package-data=wn:schema.sql
+
+# nuitka-project: --include-module=numpy.core.multiarray
+
+# nuitka-project: --nofollow-import-to=mypy
+
 # pyright: basic
 # ruff: noqa: TC002, TC003
 
@@ -15,7 +32,7 @@ from cyclopts.types import UInt16
 from rich.console import Console
 
 from src import __version__, _seed
-from src.server.app import main as server_main, main_dev as server_main_dev
+from src.server.app import main as server_main
 from src.utils.logger import (
     CustomHandler,
     custom_formatwarning,
@@ -71,7 +88,6 @@ def vocab_tuister_server(
     verbose: Annotated[
         Sequence[bool], Parameter(alias="-v", negative="--quiet")
     ] = (),
-    dev: bool = False,
     debug: bool = False,
 ) -> None:
     """Start the vocab-tuister server.
@@ -82,11 +98,7 @@ def vocab_tuister_server(
         The port to run the server on.
     verbose : tuple[bool, ...]
         How verbose to make the output (maximum 3).
-    dev : bool
-        Use the Flask development server instead of the production server.
-        Should not be used usually.
     debug : bool
-        Run in debug mode. Implies ``--dev``.
         Prints full traceback when the program raises an exception.
         Should not be used usually.
     """
@@ -104,10 +116,7 @@ def vocab_tuister_server(
     if debug:
         sys.excepthook = sys.__excepthook__
 
-    if dev or debug:
-        server_main_dev(port, debug=debug)
-    else:
-        server_main(port)
+    server_main(port)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@
 # ruff: noqa: ARG001
 # pyright: basic
 
+from __future__ import annotations
+
 import datetime
 import logging
 import sys

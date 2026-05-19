@@ -1,3 +1,4 @@
 ignore:
   - "**/*_gen.go"
   - "**/_vendor/**"
+  - "**/pb/**"

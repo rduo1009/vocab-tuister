@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from ...utils import set_choice
+from ...pb.vocab_tuister.v1 import TypeInEngToLatQuestion
 from ..accido.endings import Adjective, Noun, Pronoun, Verb
 from ..accido.misc import (
     Case,
@@ -13,7 +14,6 @@ from ..accido.misc import (
     Voice,
 )
 from ..transfero.words import find_inflection
-from ._base import MultiAnswerQuestion
 from ._utils import (
     normalise_to_multipleendings,
     pick_ending,
@@ -23,25 +23,6 @@ from ._utils import (
 if TYPE_CHECKING:
     from ..accido.endings import Word
     from ..accido.type_aliases import Endings
-
-
-@dataclass
-class TypeInEngToLatQuestion(MultiAnswerQuestion[str]):
-    """A question that asks for the Latin translation of an English word.
-
-    For example, "I search" (answer: "quaero")
-
-    Attributes
-    ----------
-    prompt : str
-        The prompt for the question (in English).
-    main_answer : str
-        The best answer to the question (in Latin).
-    answers : set[str]
-        The possible answers to the question (in Latin).
-    """
-
-    prompt: str
 
 
 def generate_typein_engtolat(
@@ -204,10 +185,12 @@ def generate_typein_engtolat(
 
     # Determine meaning
     raw_meaning = str(chosen_word.meaning)  # __str__ returns main ending
-    inflected_meaning = set_choice(
-        find_inflection(raw_meaning, components=ending_components)
+    inflected_meaning = find_inflection(
+        raw_meaning, components=ending_components, main=True
     )
 
     return TypeInEngToLatQuestion(
-        prompt=inflected_meaning, main_answer=chosen_ending, answers=answers
+        prompt=inflected_meaning,
+        main_answer=chosen_ending,
+        answers=list(answers),
     )

@@ -2,15 +2,16 @@
 
 # pyright: reportUnusedCallResult=false
 
+from __future__ import annotations
+
 import logging
-import sys as _sys
 import warnings
 from compression import zstd
 from functools import cache
 from pathlib import Path
 from shutil import copyfileobj
 from tempfile import TemporaryDirectory
-from typing import TYPE_CHECKING, Any, Final, cast
+from typing import TYPE_CHECKING, Any, Final
 
 import wn
 from wn.constants import ADJECTIVE, NOUN, VERB
@@ -49,19 +50,18 @@ def setup_wn() -> None:
 
     _trimmed_wn = False
 
-    # Frozen with PyInstaller
-    if getattr(_sys, "frozen", False) and hasattr(_sys, "_MEIPASS"):
-        # NOTE: Should work, but type narrowing not implemented
-        # See https://github.com/DetachHead/basedpyright/issues/1224
-        _wn_data_path = (
-            Path(cast("str", _sys._MEIPASS)) / "src/core/transfero/wn_data"  # noqa: SLF001  # pyright: ignore[reportAttributeAccessIssue]
-        )
+    # Frozen with Nuitka
+    if "__compiled__" in globals():
+        _wn_data_path = Path(__file__).resolve().parent / "wn_data"
         wn.config.data_directory = str(_wn_data_path)
 
-        if (compressed_db_path := _wn_data_path / "wn.db.zst").exists():
+        compressed_db_path = _wn_data_path / "wn.db.zst"
+        decompressed_db_path = _wn_data_path / "wn.db"
+
+        if compressed_db_path.exists() and not decompressed_db_path.exists():
             with (
                 zstd.open(compressed_db_path, "rb") as f_in,
-                (_wn_data_path / "wn.db").open("wb") as f_out,
+                decompressed_db_path.open("wb") as f_out,
             ):
                 copyfileobj(f_in, f_out)
 

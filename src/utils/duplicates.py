@@ -1,5 +1,7 @@
 """Contains functions that deal with duplicates in tuples and lists."""
 
+from __future__ import annotations
+
 from collections.abc import Hashable
 from itertools import groupby
 from typing import TYPE_CHECKING

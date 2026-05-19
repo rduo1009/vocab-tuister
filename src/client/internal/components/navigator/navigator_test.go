@@ -203,10 +203,17 @@ func TestNavigator_Reset(t *testing.T) {
 	n2 := &mockNavigable{}
 	n := navigator.New([]navigator.Navigable{n1, n2}, 1)
 
+	n2.On("Blur")
+	n1.On("Focus")
+	n1.On("Blur")
+
 	n.Reset()
 	assert.Equal(t, 1, len(n.Items))
 	assert.Equal(t, 0, n.CurrentIndex)
 	assert.Equal(t, n1, n.Current())
+
+	n1.AssertExpectations(t)
+	n2.AssertExpectations(t)
 }
 
 func TestNavigator_FocusNavigable(t *testing.T) {

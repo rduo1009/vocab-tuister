@@ -14,8 +14,8 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		if m.LoadSection.Focused() && key.Matches(msg, m.LoadSection.KeyMap().PressButton) &&
-			m.LoadSection.Enabled() {
+		if m.VerifySection.Focused() && key.Matches(msg, m.VerifySection.KeyMap().PressButton) &&
+			m.VerifySection.Enabled() {
 			return m, postListConfigCmd(
 				m.listtui.VocabEditor.GetCurrentContent(),
 				m.configtui.RawSessionConfig,
@@ -24,8 +24,8 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 		}
 
 	case ListConfigPostedMsg:
-		m.LoadSection.ListStatus = StatusLoaded
-		m.LoadSection.ConfigStatus = StatusLoaded
+		m.VerifySection.ListStatus = StatusVerified
+		m.VerifySection.ConfigStatus = StatusVerified
 	}
 
 	util.UpdaterPtr(&cmds, m.listtui, msg)
@@ -34,28 +34,28 @@ func (m *Model) Update(msg tea.Msg) (app.PageModel, tea.Cmd) {
 	if _, ok := msg.(tea.KeyPressMsg); ok &&
 		m.listtui.VocabEditor.IsInsertMode() &&
 		m.listtui.VocabEditor.Focused() &&
-		m.LoadSection.ListStatus == StatusLoaded && !m.HasOverlay() {
-		m.LoadSection.ListStatus = StatusPending
+		m.VerifySection.ListStatus == StatusVerified && !m.HasOverlay() {
+		m.VerifySection.ListStatus = StatusPending
 	}
 
 	if m.listtui.VocabEditor.GetCurrentContent() == "" {
-		if m.LoadSection.ListStatus == StatusPending {
-			m.LoadSection.ListStatus = StatusMissing
+		if m.VerifySection.ListStatus == StatusPending {
+			m.VerifySection.ListStatus = StatusMissing
 		}
 	} else {
-		if m.LoadSection.ListStatus == StatusMissing {
-			m.LoadSection.ListStatus = StatusPending
+		if m.VerifySection.ListStatus == StatusMissing {
+			m.VerifySection.ListStatus = StatusPending
 		}
 	}
 
 	if m.configtui.AppStatus == config.CreateSessionConfig {
 		// when the user is going through the wizard again there is no config!
-		if m.LoadSection.ConfigStatus == StatusPending || m.LoadSection.ConfigStatus == StatusLoaded {
-			m.LoadSection.ConfigStatus = StatusMissing
+		if m.VerifySection.ConfigStatus == StatusPending || m.VerifySection.ConfigStatus == StatusVerified {
+			m.VerifySection.ConfigStatus = StatusMissing
 		}
 	} else {
-		if m.LoadSection.ConfigStatus == StatusMissing {
-			m.LoadSection.ConfigStatus = StatusPending
+		if m.VerifySection.ConfigStatus == StatusMissing {
+			m.VerifySection.ConfigStatus = StatusPending
 		}
 	}
 

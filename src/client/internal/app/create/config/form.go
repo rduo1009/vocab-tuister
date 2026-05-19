@@ -5,6 +5,8 @@ import (
 	"strconv"
 
 	"charm.land/huh/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/util"
 )
 
 // XXX: Would https://github.com/charmbracelet/huh/pull/195 be relevant??
@@ -98,9 +100,9 @@ var allKeys = []string{
 	"exclude-regulars",
 	"exclude-semi-deponents",
 	"exclude-supines",
-	"exclude-verb-1st-person",
-	"exclude-verb-2nd-person",
-	"exclude-verb-3rd-person",
+	"exclude-verb-first-person",
+	"exclude-verb-second-person",
+	"exclude-verb-third-person",
 	"exclude-verb-first-conjugation",
 	"exclude-verb-fourth-conjugation",
 	"exclude-verb-future-active-imperative",
@@ -207,9 +209,9 @@ func defaultForm() (*huh.Form, *formValues) {
 					huh.NewOption("Perfect passive infinitive", "exclude-verb-perfect-passive-infinitive"),
 					huh.NewOption("Singular number", "exclude-verb-singular"),
 					huh.NewOption("Plural number", "exclude-verb-plural"),
-					huh.NewOption("1st person", "exclude-verb-1st-person"),
-					huh.NewOption("2nd person", "exclude-verb-2nd-person"),
-					huh.NewOption("3rd person", "exclude-verb-3rd-person"),
+					huh.NewOption("1st person", "exclude-verb-first-person"),
+					huh.NewOption("2nd person", "exclude-verb-second-person"),
+					huh.NewOption("3rd person", "exclude-verb-third-person"),
 				).
 				Value(&values.VerbExclusions),
 			huh.NewMultiSelect[string]().
@@ -340,24 +342,36 @@ func defaultForm() (*huh.Form, *formValues) {
 				Title("Number of options in multiple choice questions").
 				Value(&values.NumberMultipleChoiceOptionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
 					}
+
+					if x < 2 {
+						return errors.New("must be at least 2")
+					}
+
 					return nil
 				}),
 			huh.NewInput().
 				Title("Number of questions").
 				Value(&values.NumberOfQuestionsString).
 				Validate(func(str string) error {
-					_, err := strconv.Atoi(str)
+					x, err := strconv.Atoi(str)
 					if err != nil {
 						return errors.New("must be an integer")
 					}
+
+					if x < 1 {
+						return errors.New("must be at least 1")
+					}
+
 					return nil
 				}),
 		),
 	)
+
+	form.SubmitCmd = util.MsgCmd(formSubmittedMsg{})
 
 	return form, values
 }

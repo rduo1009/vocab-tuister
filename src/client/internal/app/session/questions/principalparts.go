@@ -2,11 +2,12 @@ package questions
 
 import (
 	"slices"
+
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 type PrincipalPartsQuestion struct {
-	PrincipalParts []string `json:"principal_parts"`
-	Prompt         string   `json:"prompt"`
+	*pb.PrincipalPartsQuestion
 }
 
 func (q *PrincipalPartsQuestion) QuestionMode() QuestionMode {

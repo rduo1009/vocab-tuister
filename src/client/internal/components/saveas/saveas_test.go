@@ -14,6 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/saveas"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 const id = "testingSaveAs"
@@ -37,6 +38,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.SaveAs.Update(msg)
 
 	return m, cmd
@@ -76,7 +78,8 @@ func TestSaveAs(t *testing.T) {
 
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
 
@@ -106,7 +109,8 @@ func TestSaveAs(t *testing.T) {
 func TestSaveAsExit(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	m := model{SaveAs: sa}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
 	t.Cleanup(func() {
@@ -124,7 +128,8 @@ func TestSaveAsExit(t *testing.T) {
 func TestSaveAsSubmitEmptyFilename(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
 
@@ -153,7 +158,8 @@ func TestSaveAsSubmitEmptyFilename(t *testing.T) {
 func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir, ".csv") // Only allow .csv
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s, ".csv") // Only allow .csv
 	sa.SetWidth(160)
 	sa.SetHeight(10)
 
@@ -166,9 +172,11 @@ func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "file.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
 
 	if err := tm.Quit(); err != nil {
@@ -185,7 +193,8 @@ func TestSaveAsSubmitInvalidAllowedTypes(t *testing.T) {
 func TestSaveAsSubmitWithNewFile(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 
 	m := model{SaveAs: sa}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -196,9 +205,11 @@ func TestSaveAsSubmitWithNewFile(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "newfile.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
 
 	tm.WaitFinished(t)
@@ -215,7 +226,8 @@ func TestSaveAsSubmitWithNewFile(t *testing.T) {
 func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
 
@@ -228,9 +240,11 @@ func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "alpha.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter}) // Submit "alpha.txt"
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
@@ -254,7 +268,8 @@ func TestSaveAsSubmitWithExistingFileAndConfirm(t *testing.T) {
 func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(15)
 
@@ -267,9 +282,11 @@ func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 	})
 
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyTab}) // Focus
+
 	for _, c := range "alpha.txt" {
 		tm.Send(tea.KeyPressMsg{Code: rune(c), Text: string(c)})
 	}
+
 	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter}) // Submit "alpha.txt"
 
 	teatest.WaitFor(t, tm.Output(), func(bts []byte) bool {
@@ -299,7 +316,8 @@ func TestSaveAsSubmitWithExistingFileAndDeny(t *testing.T) {
 func TestSaveAsSetPath(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
 
@@ -327,7 +345,8 @@ func TestSaveAsSetPath(t *testing.T) {
 func TestSaveAsSetPathWrongID(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(160)
 	sa.SetHeight(10)
 
@@ -356,7 +375,8 @@ func TestSaveAsSetPathWrongID(t *testing.T) {
 
 func TestSaveAsKeyMap(t *testing.T) {
 	dir := makeTempDir(t)
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 
 	km := sa.KeyMap()
 	assert.NotNil(t, km)
@@ -367,7 +387,8 @@ func TestSaveAsKeyMap(t *testing.T) {
 func TestSaveAsViewCentred(t *testing.T) {
 	dir := makeTempDir(t)
 
-	sa := saveas.New(id, dir)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	sa := saveas.New(id, dir, &s)
 	sa.SetWidth(40)
 	sa.SetHeight(10)
 

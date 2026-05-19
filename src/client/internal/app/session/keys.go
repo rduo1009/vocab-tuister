@@ -65,8 +65,8 @@ func (k completedKeyMap) FullHelp() [][]key.Binding {
 
 func (m *Model) KeyMap() help.KeyMap {
 	if m.dropdownActive {
-		return m.questions[m.currentIndex].(*questioncomponents.ParseQuestionModel).
-			Dropdowns[m.activeDropdownIndex].Dropdown.KeyMap()
+		return m.currentQuestionModel.(*questioncomponents.ParseQuestionModel).
+			Dropdowns[m.activeDropdownIndex].KeyMap()
 	}
 
 	switch m.appStatus {
@@ -115,7 +115,7 @@ func (m *Model) KeyMap() help.KeyMap {
 		}
 
 	case Initialised:
-		return m.questions[m.currentIndex].KeyMap()
+		return m.currentQuestionModel.KeyMap()
 
 	case Completed:
 		return completedKeyMap{

@@ -1,147 +1,79 @@
 package endingcomponents
 
-import "strings"
+import pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 
-//go:generate go tool stringer -type=Case,Number,Gender,Tense,Voice,Mood,Person,Degree,PartOfSpeech -linecomment -output=endingcomponents_string.go
-
-type Case int
-
-const (
-	UnknownCase Case = iota //
-	Nominative              // nominative
-	Vocative                // vocative
-	Accusative              // accusative
-	Genitive                // genitive
-	Dative                  // dative
-	Ablative                // ablative
-)
+type Case pb.Case
 
 var Cases = []Case{
-	Nominative,
-	Vocative,
-	Accusative,
-	Genitive,
-	Dative,
-	Ablative,
+	Case(pb.Case_CASE_NOMINATIVE),
+	Case(pb.Case_CASE_VOCATIVE),
+	Case(pb.Case_CASE_ACCUSATIVE),
+	Case(pb.Case_CASE_GENITIVE),
+	Case(pb.Case_CASE_DATIVE),
+	Case(pb.Case_CASE_ABLATIVE),
 }
 
-type Number int
-
-const (
-	UnknownNumber Number = iota //
-	Singular                    // singular
-	Plural                      // plural
-)
+type Number pb.Number
 
 var Numbers = []Number{
-	Singular,
-	Plural,
+	Number(pb.Number_NUMBER_SINGULAR),
+	Number(pb.Number_NUMBER_PLURAL),
 }
 
-type Gender int
-
-const (
-	UnknownGender Gender = iota //
-	Masculine                   // masculine
-	Feminine                    // feminine
-	Neuter                      // neuter
-)
+type Gender pb.Gender
 
 var Genders = []Gender{
-	Masculine,
-	Feminine,
-	Neuter,
+	Gender(pb.Gender_GENDER_MASCULINE),
+	Gender(pb.Gender_GENDER_FEMININE),
+	Gender(pb.Gender_GENDER_NEUTER),
 }
 
-type Tense int
-
-const (
-	UnknownTense  Tense = iota //
-	Present                    // present
-	Imperfect                  // imperfect
-	Future                     // future
-	Perfect                    // perfect
-	Pluperfect                 // pluperfect
-	FuturePerfect              // future perfect
-)
+type Tense pb.Tense
 
 var Tenses = []Tense{
-	Present,
-	Imperfect,
-	Future,
-	Perfect,
-	Pluperfect,
-	FuturePerfect,
+	Tense(pb.Tense_TENSE_PRESENT),
+	Tense(pb.Tense_TENSE_IMPERFECT),
+	Tense(pb.Tense_TENSE_FUTURE),
+	Tense(pb.Tense_TENSE_PERFECT),
+	Tense(pb.Tense_TENSE_PLUPERFECT),
+	Tense(pb.Tense_TENSE_FUTURE_PERFECT),
 }
 
-type Voice int
-
-const (
-	UnknownVoice Voice = iota //
-	Active                    // active
-	Passive                   // passive
-	Deponent                  // deponent
-	SemiDeponent              // semi-deponent
-)
+type Voice pb.Voice
 
 var Voices = []Voice{
-	Active,
-	Passive,
-	Deponent,
-	SemiDeponent,
+	Voice(pb.Voice_VOICE_ACTIVE),
+	Voice(pb.Voice_VOICE_PASSIVE),
+	Voice(pb.Voice_VOICE_DEPONENT),
+	Voice(pb.Voice_VOICE_SEMI_DEPONENT),
 }
 
-type Mood int
-
-const (
-	UnknownMood    Mood = iota //
-	Indicative                 // indicative
-	Subjunctive                // subjunctive
-	Imperative                 // imperative
-	InfinitiveMood             // infinitive
-	ParticipleMood             // participle
-	Gerund                     // gerund
-	Supine                     // supine
-)
+type Mood pb.Mood
 
 var Moods = []Mood{
-	Indicative,
-	Subjunctive,
-	Imperative,
-	InfinitiveMood,
-	ParticipleMood,
-	Gerund,
-	Supine,
+	Mood(pb.Mood_MOOD_INDICATIVE),
+	Mood(pb.Mood_MOOD_SUBJUNCTIVE),
+	Mood(pb.Mood_MOOD_IMPERATIVE),
+	Mood(pb.Mood_MOOD_INFINITIVE),
+	Mood(pb.Mood_MOOD_PARTICIPLE),
+	Mood(pb.Mood_MOOD_GERUND),
+	Mood(pb.Mood_MOOD_SUPINE),
 }
 
-type Person int
-
-const (
-	UnknownPerson Person = iota //
-	FirstPerson                 // 1st person
-	SecondPerson                // 2nd person
-	ThirdPerson                 // 3rd person
-)
+type Person pb.Person
 
 var Persons = []Person{
-	FirstPerson,
-	SecondPerson,
-	ThirdPerson,
+	Person(pb.Person_PERSON_FIRST),
+	Person(pb.Person_PERSON_SECOND),
+	Person(pb.Person_PERSON_THIRD),
 }
 
-type Degree int
-
-const (
-	UnknownDegree Degree = iota //
-	Positive                    // positive
-	Comparative                 // comparative
-	Superlative                 // superlative
-)
+type Degree pb.Degree
 
 var Degrees = []Degree{
-	Positive,
-	Comparative,
-	Superlative,
+	Degree(pb.Degree_DEGREE_POSITIVE),
+	Degree(pb.Degree_DEGREE_COMPARATIVE),
+	Degree(pb.Degree_DEGREE_SUPERLATIVE),
 }
 
 type PartOfSpeech int
@@ -159,27 +91,21 @@ const (
 	RegularWord                             // regular word
 )
 
+// XXX: Could this be completely removed in future?
 type EndingComponents struct {
-	Case   Case
-	Number Number
-	Gender Gender
-	Tense  Tense
-	Voice  Voice
-	Mood   Mood
-	Person Person
-	Degree Degree
+	*pb.EndingComponents // pointer as is pointer in the question types
 }
 
 // PartOfSpeech returns the PartOfSpeech enum for the EndingComponents based on which fields are present.
-func (e EndingComponents) PartOfSpeech() PartOfSpeech {
-	hasCase := e.Case != UnknownCase
-	hasNumber := e.Number != UnknownNumber
-	hasGender := e.Gender != UnknownGender
-	hasTense := e.Tense != UnknownTense
-	hasVoice := e.Voice != UnknownVoice
-	hasMood := e.Mood != UnknownMood
-	hasPerson := e.Person != UnknownPerson
-	hasDegree := e.Degree != UnknownDegree
+func (e *EndingComponents) PartOfSpeech() PartOfSpeech {
+	hasCase := e.Case != pb.Case_CASE_UNSPECIFIED
+	hasNumber := e.Number != pb.Number_NUMBER_UNSPECIFIED
+	hasGender := e.Gender != pb.Gender_GENDER_UNSPECIFIED
+	hasTense := e.Tense != pb.Tense_TENSE_UNSPECIFIED
+	hasVoice := e.Voice != pb.Voice_VOICE_UNSPECIFIED
+	hasMood := e.Mood != pb.Mood_MOOD_UNSPECIFIED
+	hasPerson := e.Person != pb.Person_PERSON_UNSPECIFIED
+	hasDegree := e.Degree != pb.Degree_DEGREE_UNSPECIFIED
 
 	if hasTense && hasVoice && hasMood && hasPerson && hasNumber {
 		return Verb
@@ -193,7 +119,7 @@ func (e EndingComponents) PartOfSpeech() PartOfSpeech {
 		return ParticiplePOS
 	}
 
-	if (e.Mood == Gerund || e.Mood == Supine) && hasCase {
+	if (e.Mood == pb.Mood_MOOD_GERUND || e.Mood == pb.Mood_MOOD_SUPINE) && hasCase {
 		return VerbalNoun
 	}
 
@@ -218,67 +144,4 @@ func (e EndingComponents) PartOfSpeech() PartOfSpeech {
 	}
 
 	return UnknownPartOfSpeech
-}
-
-// String returns the string representation of the EndingComponents, akin to the .string property in the Python code.
-func (e EndingComponents) String() string {
-	pos := e.PartOfSpeech()
-	switch pos {
-	case Verb:
-		return strings.Join([]string{
-			e.Tense.String(), e.Voice.String(), e.Mood.String(), e.Number.String(), e.Person.String(),
-		}, " ")
-
-	case InfinitivePOS:
-		return strings.Join([]string{
-			e.Tense.String(), e.Voice.String(), e.Mood.String(),
-		}, " ")
-
-	case ParticiplePOS:
-		if e.Tense == Future && e.Voice == Passive {
-			return strings.Join([]string{
-				"gerundive", e.Gender.String(), e.Case.String(), e.Number.String(),
-			}, " ")
-		}
-
-		return strings.Join([]string{
-			e.Tense.String(),
-			e.Voice.String(),
-			"participle",
-			e.Gender.String(),
-			e.Case.String(),
-			e.Number.String(),
-		}, " ")
-
-	case VerbalNoun:
-		return strings.Join([]string{
-			e.Mood.String(), e.Case.String(),
-		}, " ")
-
-	case Adverb:
-		return e.Degree.String() + " (adverb)"
-
-	case Adjective:
-		return strings.Join([]string{
-			e.Degree.String(), e.Case.String(), e.Number.String(), e.Gender.String(),
-		}, " ")
-
-	case Pronoun:
-		return strings.Join([]string{
-			e.Case.String(), e.Number.String(), e.Gender.String(),
-		}, " ")
-
-	case Noun:
-		return strings.Join([]string{
-			e.Case.String(), e.Number.String(),
-		}, " ")
-
-	case RegularWord:
-		return ""
-
-	case UnknownPartOfSpeech:
-		return "unknown"
-	}
-
-	panic("unreachable")
 }

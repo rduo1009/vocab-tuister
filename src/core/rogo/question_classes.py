@@ -2,24 +2,46 @@
 
 # pyright: reportAny=false, reportExplicitAny=false
 
-from ._base import (
-    MultiAnswerQuestion as MultiAnswerQuestion,
-    MultipleChoiceQuestion as MultipleChoiceQuestion,
-    Question as Question,
-    QuestionClasses as QuestionClasses,
+from __future__ import annotations
+
+from enum import Enum
+from functools import total_ordering
+
+from ...pb.vocab_tuister.v1 import (
+    MultipleChoiceEngToLatQuestion,
+    MultipleChoiceLatToEngQuestion,
+    ParseWordCompToLatQuestion,
+    ParseWordLatToCompQuestion,
+    PrincipalPartsQuestion,
+    TypeInEngToLatQuestion,
+    TypeInLatToEngQuestion,
 )
-from ._multiplechoice_engtolat import (
-    MultipleChoiceEngToLatQuestion as MultipleChoiceEngToLatQuestion,
+
+
+@total_ordering
+class QuestionClasses(Enum):
+    """The classes of questions that can be asked."""
+
+    TYPEIN_ENGTOLAT = "TypeInEngToLatQuestion"
+    TYPEIN_LATTOENG = "TypeInLatToEngQuestion"
+    PARSEWORD_LATTOCOMP = "ParseWordLatToCompQuestion"
+    PARSEWORD_COMPTOLAT = "ParseWordCompToLatQuestion"
+    PRINCIPAL_PARTS = "PrincipalPartsQuestion"
+    MULTIPLECHOICE_ENGTOLAT = "MultipleChoiceEngToLatQuestion"
+    MULTIPLECHOICE_LATTOENG = "MultipleChoiceLatToEngQuestion"
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, QuestionClasses):
+            return NotImplemented
+        return self.value < other.value
+
+
+type Question = (
+    MultipleChoiceEngToLatQuestion
+    | MultipleChoiceLatToEngQuestion
+    | ParseWordCompToLatQuestion
+    | ParseWordLatToCompQuestion
+    | PrincipalPartsQuestion
+    | TypeInEngToLatQuestion
+    | TypeInLatToEngQuestion
 )
-from ._multiplechoice_lattoeng import (
-    MultipleChoiceLatToEngQuestion as MultipleChoiceLatToEngQuestion,
-)
-from ._parseword_comptolat import (
-    ParseWordCompToLatQuestion as ParseWordCompToLatQuestion,
-)
-from ._parseword_lattocomp import (
-    ParseWordLatToCompQuestion as ParseWordLatToCompQuestion,
-)
-from ._principal_parts import PrincipalPartsQuestion as PrincipalPartsQuestion
-from ._typein_engtolat import TypeInEngToLatQuestion as TypeInEngToLatQuestion
-from ._typein_lattoeng import TypeInLatToEngQuestion as TypeInLatToEngQuestion

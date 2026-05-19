@@ -1,15 +1,19 @@
 """Contains rules for filtering words and questions."""
 
+from __future__ import annotations
+
 import re
+from dataclasses import fields
 from typing import TYPE_CHECKING, Final
 
 from ..accido.endings import Adjective, Noun, Pronoun, RegularWord, Verb
 from .question_classes import QuestionClasses
 
 if TYPE_CHECKING:
+    from ...pb.vocab_tuister.v1 import SessionConfig
     from ..accido.type_aliases import Endings
     from ..lego.misc import VocabList
-    from .type_aliases import SessionConfig, Vocab
+    from .type_aliases import Vocab
 
 RULE_REGEX: Final[dict[str,str]] = {
     # Verb tense/voice/mood
@@ -45,9 +49,9 @@ RULE_REGEX: Final[dict[str,str]] = {
     "exclude_verb_plural": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]pl\d$",
 
     # Verb person
-    "exclude_verb_1st_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]1$",
-    "exclude_verb_2nd_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]2$",
-    "exclude_verb_3rd_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]3$",
+    "exclude_verb_first_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]1$",
+    "exclude_verb_second_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]2$",
+    "exclude_verb_third_person": r"^V[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]3$",
 
     # Participles
     "exclude_participles": r"^V[a-z][a-z][a-z][a-z][a-z][a-z]ptc[a-z][a-z][a-z][a-z][a-z][a-z]$",
@@ -295,7 +299,9 @@ def filter_endings(endings: Endings, session_config: SessionConfig) -> Endings:
         The filtered endings.
     """
     filtered_endings = endings
-    for setting, value in session_config.model_dump().items():  # pyright: ignore[reportAny]
+    for field in fields(session_config):
+        setting = field.name
+        value = getattr(session_config, setting)  # pyright: ignore[reportAny]
         if value and (setting in RULE_REGEX):
             regex_pattern = RULE_REGEX[setting]
             filtered_endings = {

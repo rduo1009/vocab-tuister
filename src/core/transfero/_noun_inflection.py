@@ -1,5 +1,7 @@
 """Contains functions that inflect English nouns."""
 
+from __future__ import annotations
+
 import sys as _sys
 from typing import TYPE_CHECKING, Any, cast
 
@@ -13,12 +15,8 @@ if TYPE_CHECKING:
 
     from ..accido.misc import EndingComponents
 
-# Frozen with PyInstaller
-if (
-    getattr(_sys, "frozen", False)
-    and hasattr(_sys, "_MEIPASS")
-    and not TYPE_CHECKING
-):  # pragma: no cover
+# Frozen with Nuitka
+if "__compiled__" in globals() and not TYPE_CHECKING:  # pragma: no cover
 
     def _typechecked(  # pyright: ignore[reportUnreachable]
         target: Callable[..., Any] | None = None,

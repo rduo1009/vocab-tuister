@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type stringer string
@@ -58,7 +60,11 @@ func TestView(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			m := New(names, tc.active, tc.isFocused)
+			s := styles.StylesWrapper{
+				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
+			}
+
+			m := New(names, tc.active, tc.isFocused, &s)
 			m.Width = tc.width
 			golden.RequireEqual(t, []byte(m.View()))
 		})
@@ -71,24 +77,27 @@ func TestModelSelection(t *testing.T) {
 		stringer("Tab 2"),
 		stringer("Tab 3"),
 	}
-
-	m := New(names, 0, false)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	m := New(names, 0, false, &s)
 
 	if m.active != 0 {
 		t.Errorf("expected active tab 0, got %d", m.active)
 	}
 
 	m.Next()
+
 	if m.active != 1 {
 		t.Errorf("expected active tab 1 after Next(), got %d", m.active)
 	}
 
 	m.Prev()
+
 	if m.active != 0 {
 		t.Errorf("expected active tab 0 after Prev(), got %d", m.active)
 	}
 
 	m.Select(2)
+
 	if m.active != 2 {
 		t.Errorf("expected active tab 2 after Select(2), got %d", m.active)
 	}
@@ -98,19 +107,21 @@ func TestFocusBlur(t *testing.T) {
 	names := []fmt.Stringer{
 		stringer("Tab 1"),
 	}
-
-	m := New(names, 0, false)
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	m := New(names, 0, false, &s)
 
 	if m.Focused() {
 		t.Error("expected initial focus to be false")
 	}
 
 	m.Focus()
+
 	if !m.Focused() {
 		t.Error("expected focused to be true after Focus()")
 	}
 
 	m.Blur()
+
 	if m.Focused() {
 		t.Error("expected focused to be false after Blur()")
 	}

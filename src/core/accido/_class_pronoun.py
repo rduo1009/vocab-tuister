@@ -1,5 +1,7 @@
 """Representation of a Latin pronoun with endings."""
 
+from __future__ import annotations
+
 import logging
 from functools import total_ordering
 from typing import TYPE_CHECKING, cast

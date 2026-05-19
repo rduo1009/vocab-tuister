@@ -3,6 +3,7 @@ package errordialog_test
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -11,12 +12,16 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
+
+const testWordWrapDialogWidth = 60
 
 // TestErrorDialog checks the initial rendered output of the error dialog against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestErrorDialog(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	ed.SetWidth(100)
 	ed.SetHeight(40)
 	ed.SetError(errors.New("this is a test error"))
@@ -25,8 +30,26 @@ func TestErrorDialog(t *testing.T) {
 	golden.RequireEqual(t, []byte(finalView))
 }
 
+// TestErrorDialogWordWrap checks long error text wraps to the viewport width.
+// Run with -update to regenerate the golden file.
+func TestErrorDialogWordWrap(t *testing.T) {
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
+	ed.SetWidth(testWordWrapDialogWidth)
+	ed.SetHeight(40)
+	ed.SetError(
+		errors.New(
+			"this is a very long error message that should wrap naturally and never require horizontal scrolling",
+		),
+	)
+
+	finalView := ed.View()
+	golden.RequireEqual(t, []byte(finalView))
+}
+
 func TestErrorDialogVisibility(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	assert.False(t, ed.Visible())
 	assert.Empty(t, ed.View()) // Should return empty string when invisible
 
@@ -36,12 +59,14 @@ func TestErrorDialogVisibility(t *testing.T) {
 }
 
 func TestErrorDialogInit(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	assert.Nil(t, ed.Init())
 }
 
 func TestErrorDialogTimeoutInteraction(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	ed.SetError(errors.New("test error"))
 	assert.True(t, ed.Visible())
 
@@ -58,9 +83,11 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping slow test in short mode.")
 	}
+
 	t.Parallel()
 
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	ed.SetError(errors.New("test error"))
 
 	// Wait past the 3-second threshold to allow TimeoutMsg to hide it
@@ -74,16 +101,21 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 }
 
 func TestErrorDialogScrolling(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	ed.SetWidth(40 * 4)
 	ed.SetHeight(20 * 4) // Height gives around 20-5 = 15 viewport height
 
 	var errStr string
+	var errStrSb89 strings.Builder
 	for i := 0; i < 30; i++ {
-		errStr += fmt.Sprintf("error line %d\n", i)
+		errStrSb89.WriteString(fmt.Sprintf("error line %d\n", i))
 	}
+	errStr += errStrSb89.String()
+
 	errStr += "error line 30"
 	go ed.SetError(errors.New(errStr))
+
 	time.Sleep(time.Millisecond * 100)
 	assert.True(t, ed.Visible())
 
@@ -108,7 +140,8 @@ func TestErrorDialogScrolling(t *testing.T) {
 }
 
 func TestErrorDialogResize(t *testing.T) {
-	ed := errordialog.New()
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	ed := errordialog.New(&s)
 	ed.SetWidth(100)
 	ed.SetHeight(100)
 	ed.SetError(errors.New("error"))

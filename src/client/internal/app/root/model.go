@@ -4,18 +4,21 @@ import (
 	"fmt"
 
 	"charm.land/bubbles/v2/help"
+	chromastyles "github.com/alecthomas/chroma/v2/styles"
+	tint "github.com/lrstanley/bubbletint/v2"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/create"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/info"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/review"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/app/root/pages"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/settings"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/errordialog"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/tabs"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/modes"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type Model struct {
@@ -23,11 +26,11 @@ type Model struct {
 
 	width, height int
 	currentPage   int
-	pageOrder     []modes.PageName
+	pageOrder     []pages.PageName
 
 	// Components
 
-	pages       map[modes.PageName]app.PageModel
+	pages       map[pages.PageName]app.PageModel
 	tabs        *tabs.Model
 	help        *help.Model
 	overlayHelp *help.Model
@@ -35,11 +38,16 @@ type Model struct {
 
 	// Application state
 
-	keys          keyMap
-	navigator     *navigator.Navigator
-	vocabList     string
-	sessionConfig sessionconfig.SessionConfig
-	err           error
+	isDark                bool
+	themes                *tint.Registry
+	styles                styles.StylesWrapper
+	keys                  keyMap
+	navigator             *navigator.Navigator
+	overlayExpectedActive bool
+	vocabList             string
+	sessionConfig         *pb.SessionConfig
+	numberOfQuestions     int
+	err                   error
 }
 
 func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
@@ -51,45 +59,69 @@ func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
 	return res
 }
 
+// TODO: make method currentPageModel() returning m.pages[m.pageOrder[m.currentPage]]
+
 func New(inbuiltListDir string, serverPort int) *Model {
-	pageOrder := []modes.PageName{
-		modes.Create,
-		modes.Review,
-		modes.Test,
-		modes.Help,
-		modes.Settings,
+	pageOrder := []pages.PageName{
+		pages.Create,
+		pages.Review,
+		pages.Test,
+		pages.Help,
+		pages.Settings,
 	}
 
-	t := tabs.New(toStringers(pageOrder), 0, true)
+	themes := styles.DefaultThemes(true) // for now, have it be dark
+
+	m := &Model{
+		currentPage: 0,
+		pageOrder:   pageOrder,
+		isDark:      true, // for now as well
+		themes:      themes,
+		styles: styles.StylesWrapper{
+			Styles: styles.DefaultStyles(themes.Current(), false),
+		},
+	}
+
+	// now everything uses &m.styles
+	chromastyles.Register(m.styles.Editor.Chroma)
+
+	m.tabs = tabs.New(toStringers(pageOrder), 0, true, &m.styles)
+
 	h := help.New()
 	overlayHelp := help.New()
 
-	createtui := create.New(inbuiltListDir, serverPort)
-	reviewtui := review.New()
-	// unfortunately sessiontui needs to be coupled with createtui
-	// to prevent user from starting session without loading list + config
-	sessiontui := session.New(&createtui.LoadSection.ListStatus, &createtui.LoadSection.ConfigStatus, serverPort)
-	infotui := info.New()
-	settingstui := settings.New()
+	createtui := create.New(inbuiltListDir, serverPort, &m.styles)
+	reviewtui := review.New(&m.styles)
+
+	sessiontui := session.New(
+		&createtui.VerifySection.ListStatus,
+		&createtui.VerifySection.ConfigStatus,
+		serverPort,
+		&m.vocabList,
+		&m.sessionConfig,
+		&m.numberOfQuestions,
+		&m.styles,
+	)
+
+	infotui := info.New(&m.styles)
+	settingstui := settings.New(&m.styles)
+
+	m.pages = map[pages.PageName]app.PageModel{
+		pages.Create:   createtui,
+		pages.Review:   reviewtui,
+		pages.Test:     sessiontui,
+		pages.Help:     infotui,
+		pages.Settings: settingstui,
+	}
 
 	nav := navigator.New([]navigator.Navigable{}, 0)
-	nav.Add(t)
+	nav.Add(m.tabs)
 
-	return &Model{
-		currentPage: 0,
-		pageOrder:   pageOrder,
-		pages: map[modes.PageName]app.PageModel{
-			modes.Create:   createtui,
-			modes.Review:   reviewtui,
-			modes.Test:     sessiontui,
-			modes.Help:     infotui,
-			modes.Settings: settingstui,
-		},
-		tabs:        t,
-		help:        &h,
-		overlayHelp: &overlayHelp,
-		keys:        keys,
-		navigator:   nav,
-		errorDialog: errordialog.New(),
-	}
+	m.navigator = nav
+	m.help = &h
+	m.overlayHelp = &overlayHelp
+	m.keys = keys
+	m.errorDialog = errordialog.New(&m.styles)
+
+	return m
 }

@@ -1,6 +1,8 @@
 name: build
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*.*.*"
       - "v*.*.*-*"
@@ -14,7 +16,7 @@ defaults:
 
 jobs:
   build:
-    name: Build project
+    name: build project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,16 +25,17 @@ jobs:
             ubuntu-22.04,
             ubuntu-22.04-arm,
             macos-14,
+            macos-15-intel,
             windows-2022,
-            windows-11-arm,
           ]
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: "recursive"
+          persist-credentials: false
 
       - name: Verify .python-version file
         run: |
@@ -42,34 +45,46 @@ jobs:
         run: |
           if [ ! -s go.mod ]; then echo "go.mod is missing or empty" >&2; exit 1; else echo "Found go.mod:"; grep '^go ' go.mod; fi
 
-      - uses: actions/setup-python@v6
+      # Note: setup-python is skipped on Linux because the hostedtoolcache Python
+      # is built without ZSTD_MULTITHREAD support, which breaks Nuitka's onefile
+      # compression. The system Python (from apt) has it enabled. On macOS and
+      # Windows, setup-python works fine.
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        if: runner.os != 'Linux'
         with:
           python-version-file: ".python-version"
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
         with:
           go-version-file: "go.mod"
+          cache: false
         env:
           GOEXPERIMENT: jsonv2
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
-          enable-cache: true
+          enable-cache: false
           cache-dependency-glob: "uv.lock"
+
+      - uses: bufbuild/buf-setup-action@a47c93e0b1648d5651a065437926377d060baa99 # v1.50.0
+        with:
+          version: latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download ccache
+        uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2.20
+        with:
+          key: ${{ matrix.os }}
+
+      - name: Configure ccache
+        run: |
+          echo "CCACHE_DIR=$HOME/.ccache" >> $GITHUB_ENV
 
       # Windows builds do not use poethepoet atm
       - name: Install deps
         if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
           uv tool install poethepoet
-
-      - name: Setup project
-        run: |
-          go install ./src/_vendor/go-jsonstruct/cmd/gojsonstruct
-          echo PATH=$PATH >> $GITHUB_ENV
-        env:
-          GOEXPERIMENT: jsonv2
 
       - name: Ensure uv is on PATH
         if: ${{ startsWith(matrix.os, 'windows') }}
@@ -88,23 +103,18 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         shell: pwsh
         run: |
-          scripts/build-gh.ps1
+          scripts/build.ps1
         env:
           GOEXPERIMENT: jsonv2
+          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
 
       - name: Build project
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
           poe build
         env:
           GOEXPERIMENT: jsonv2
-
-      - name: Build project
-        if: ${{ startsWith(matrix.os, 'macos') }}
-        run: |
-          poe build --target-arch universal2
-        env:
-          GOEXPERIMENT: jsonv2
+          NUITKA_CACHE_DIR_CCACHE: ${{ env.CCACHE_DIR }}
 
       # Bundle each non-server binary together with its matching server binary into a
       # single zip. For example, vocab-tuister-darwin-arm64 and
@@ -180,8 +190,21 @@ jobs:
             Compress-Archive -Path $_.FullName, $serverPath -DestinationPath "$zipName.zip" -Force
           }
 
-      - name: Release
-        uses: softprops/action-gh-release@v3
+      - name: Upload binaries
+        if: github.ref_type == 'branch'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          files: |
+          name: vocab-tuister-${{ matrix.os }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG_NAME" \
+            --generate-notes \
+            --verify-tag \
             dist/*.zip

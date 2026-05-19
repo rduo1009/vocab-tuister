@@ -1,5 +1,9 @@
 package settings
 
+import (
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
+)
+
 type Model struct {
 	// Layout state
 
@@ -7,11 +11,12 @@ type Model struct {
 
 	// Application state
 
+	styles  *styles.StylesWrapper
 	focused bool
 }
 
-func New() *Model {
-	return &Model{}
+func New(styles *styles.StylesWrapper) *Model {
+	return &Model{styles: styles}
 }
 
 func (m *Model) Focus() {

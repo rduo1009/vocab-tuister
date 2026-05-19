@@ -1,24 +1,20 @@
 package create
 
 import (
-	"bytes"
 	"context"
 	"encoding/json/v2"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
-	"time"
+	"strings"
 
 	tea "charm.land/bubbletea/v2"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/types/sessionconfig"
-)
-
-const (
-	vocabListPage     = "send-vocab"
-	sessionConfigPage = "send-config"
+	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
 )
 
 type ErrorResponse struct {
@@ -28,65 +24,40 @@ type ErrorResponse struct {
 }
 
 type ListConfigPostedMsg struct {
-	VocabList     string
-	SessionConfig sessionconfig.SessionConfig
+	VocabList         string
+	SessionConfig     *pb.SessionConfig
+	NumberOfQuestions int
 }
 
-func postVocabList(vocabList string, serverPort int) (string, error) {
+func postVocabList(vocabList string, client pb.VocabTesterServiceClient) (string, error) {
 	if vocabList == "" {
 		return "", errors.New("vocab list is empty")
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	client := &http.Client{}
-
-	vocabListURL := fmt.Sprintf(
-		"http://localhost:%d/%s",
-		serverPort,
-		vocabListPage,
-	)
-
-	req, err := http.NewRequestWithContext(
-		ctx,
-		http.MethodPost,
-		vocabListURL,
-		bytes.NewBuffer([]byte(vocabList)),
-	)
+	_, err := client.VerifyVocab(context.Background(), &pb.VerifyVocabRequest{VocabText: vocabList})
 	if err != nil {
-		return "", fmt.Errorf("failed to create HTTP request for vocab list to %s: %w", vocabListURL, err)
-	}
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.InvalidArgument:
+				return "", fmt.Errorf("invalid vocab file: %s", st.Message())
 
-	req.Header.Set("Content-Type", "text/plain")
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("failed to post vocab list to %s: %w", vocabListURL, err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-
-		var errorResponse ErrorResponse
-		if err := json.Unmarshal(body, &errorResponse); err != nil {
-			return "", fmt.Errorf("failed to unmarshal error response: %w", err)
+			default:
+				return "", fmt.Errorf(
+					"grpc error (%s): %s",
+					st.Code(),
+					st.Message(),
+				)
+			}
 		}
 
-		return "", fmt.Errorf(
-			"failed to post vocab list to %s, status code: %d, error: %s, details: %s",
-			vocabListURL,
-			resp.StatusCode,
-			errorResponse.ErrorType,
-			errorResponse.Details,
-		)
+		return "", fmt.Errorf("non-grpc error: %w", err)
 	}
 
 	return vocabList, nil
 }
 
-func postSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.SessionConfig, error) {
+func postSessionConfig(rawSessionConfig string, client pb.VocabTesterServiceClient) (*pb.SessionConfig, int, error) {
 	var (
 		mapSessionConfig  map[string]any
 		numberOfQuestions int
@@ -94,7 +65,7 @@ func postSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.S
 
 	err := json.Unmarshal([]byte(rawSessionConfig), &mapSessionConfig)
 	if err != nil {
-		return sessionconfig.SessionConfig{}, fmt.Errorf(
+		return nil, 0, fmt.Errorf(
 			"failed to unmarshal session config: %w", err,
 		)
 	}
@@ -102,7 +73,7 @@ func postSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.S
 	if x, ok := mapSessionConfig["number-of-questions"]; ok {
 		var y float64
 		if y, ok = x.(float64); !ok {
-			return sessionconfig.SessionConfig{}, errors.New(
+			return nil, 0, errors.New(
 				"session config does not contain number-of-questions (did not get integer)",
 			)
 		}
@@ -111,99 +82,94 @@ func postSessionConfig(rawSessionConfig string, serverPort int) (sessionconfig.S
 
 		delete(mapSessionConfig, "number-of-questions")
 	} else {
-		return sessionconfig.SessionConfig{}, errors.New("session config does not contain number-of-questions")
+		return nil, 0, errors.New("session config does not contain number-of-questions")
 	}
 
-	toSend := map[string]any{
-		"number-of-questions": numberOfQuestions,
-		"config":              mapSessionConfig,
+	formattedSessionConfig := make(map[string]any)
+	for k, v := range mapSessionConfig {
+		formattedSessionConfig[strings.ReplaceAll(k, "-", "_")] = v
 	}
 
-	sessionConfigData, err := json.Marshal(toSend)
+	formattedSessionConfigJSON, err := json.Marshal(formattedSessionConfig)
 	if err != nil {
-		return sessionconfig.SessionConfig{}, fmt.Errorf(
-			"failed to marshal session config with number-of-questions: %w",
+		return nil, 0, fmt.Errorf(
+			"failed to marshal session config after formatting: %w",
 			err,
 		)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	var sessionConfigStruct pb.SessionConfig
 
-	client := &http.Client{}
-
-	// Send session config to server
-	sessionConfigURL := fmt.Sprintf(
-		"http://localhost:%d/%s",
-		serverPort,
-		sessionConfigPage,
-	)
-
-	req, err := http.NewRequestWithContext(
-		ctx,
-		http.MethodPost,
-		sessionConfigURL,
-		bytes.NewBuffer(sessionConfigData),
-	)
+	err = json.Unmarshal(formattedSessionConfigJSON, &sessionConfigStruct)
 	if err != nil {
-		return sessionconfig.SessionConfig{}, fmt.Errorf(
-			"failed to create HTTP request for session config to %s: %w", sessionConfigURL, err,
+		return nil, 0, fmt.Errorf(
+			"failed to unmarshal session config after formatting: %w",
+			err,
 		)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := client.Do(req)
+	_, err = client.VerifyConfig(
+		context.Background(),
+		&pb.VerifyConfigRequest{
+			NumberOfQuestions: int32(numberOfQuestions),
+			SessionConfig:     &sessionConfigStruct,
+		},
+	)
 	if err != nil {
-		return sessionconfig.SessionConfig{}, fmt.Errorf(
-			"failed to post session config to %s: %w", sessionConfigURL, err,
-		)
-	}
-	defer resp.Body.Close()
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.InvalidArgument:
+				return nil, 0, fmt.Errorf("invalid session config: %s", st.Message())
 
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-
-		var errorResponse ErrorResponse
-		if err := json.Unmarshal(body, &errorResponse); err != nil {
-			return sessionconfig.SessionConfig{}, fmt.Errorf("failed to unmarshal error response: %w", err)
+			default:
+				return nil, 0, fmt.Errorf(
+					"grpc error (%s): %s",
+					st.Code(),
+					st.Message(),
+				)
+			}
 		}
 
-		return sessionconfig.SessionConfig{}, fmt.Errorf(
-			"failed to post session config to %s, status code: %d, response: %s",
-			sessionConfigURL,
-			resp.StatusCode,
-			errorResponse.Message,
-		)
+		return nil, 0, fmt.Errorf("non-grpc error: %w", err)
 	}
 
-	// The sessionConfigData has been verified by the server now, so we can unmarshal it
-	// into a sessionconfig.SessionConfig type
-	var sessionConfig sessionconfig.SessionConfig
-
-	err = json.Unmarshal([]byte(rawSessionConfig), &sessionConfig)
-	if err != nil {
-		return sessionconfig.SessionConfig{}, fmt.Errorf("failed to unmarshal verified session config: %w", err)
-	}
-
-	return sessionConfig, nil
+	return &sessionConfigStruct, numberOfQuestions, nil
 }
 
 func postListConfigCmd(vocabList, rawSessionConfig string, serverPort int) tea.Cmd {
 	return func() tea.Msg {
-		vocabList, err := postVocabList(vocabList, serverPort)
+		serverURL := fmt.Sprintf(
+			"localhost:%d",
+			serverPort,
+		)
+
+		conn, err := grpc.NewClient(serverURL, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			return app.ErrMsg(fmt.Errorf(
+				"failed to create grpc client for url %s: %w",
+				serverURL,
+				err,
+			))
+		}
+		defer conn.Close()
+
+		client := pb.NewVocabTesterServiceClient(conn)
+
+		vocabList, err := postVocabList(vocabList, client)
 		if err != nil {
 			return app.ErrMsg(err)
 		}
 
-		sessionConfig, err := postSessionConfig(rawSessionConfig, serverPort)
+		sessionConfig, numberOfQuestions, err := postSessionConfig(rawSessionConfig, client)
 		if err != nil {
 			return app.ErrMsg(err)
 		}
 
 		return ListConfigPostedMsg{
-			VocabList:     vocabList,
-			SessionConfig: sessionConfig,
+			VocabList:         vocabList,
+			SessionConfig:     sessionConfig,
+			NumberOfQuestions: numberOfQuestions,
 		}
 	}
 }

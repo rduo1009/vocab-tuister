@@ -2,6 +2,8 @@
 
 # pyright: reportPrivateUsage=false
 
+from __future__ import annotations
+
 import logging
 import random
 from typing import TYPE_CHECKING, Final
@@ -11,6 +13,7 @@ from ._multiplechoice_engtolat import generate_multiplechoice_engtolat
 from ._multiplechoice_lattoeng import generate_multiplechoice_lattoeng
 from ._parseword_comptolat import generate_parseword_comptolat
 from ._parseword_lattocomp import generate_parseword_lattocomp
+from ._pb_convert import question_pb
 from ._principal_parts import generate_principal_parts
 from ._typein_engtolat import generate_typein_engtolat
 from ._typein_lattoeng import generate_typein_lattoeng
@@ -21,9 +24,9 @@ from .rules import filter_endings, filter_questions, filter_words
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from ...pb.vocab_tuister.v1 import Question, SessionConfig
     from ..lego.misc import VocabList
-    from .question_classes import Question
-    from .type_aliases import SessionConfig, Settings
+    from .type_aliases import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -149,7 +152,7 @@ def ask_question_without_sr(
                     chosen_word,
                 )
 
-                yield output
+                yield question_pb(question_type, output)
                 break
 
             retries += 1

@@ -5,7 +5,19 @@ env_list = [ "py314", "doctest", "type" ]
 runner = "uv-venv-lock-runner"
 description = "run tests using pytest"
 dependency_groups = [ "dev" ]
-commands = [ [ "pytest", "-m", "not manual and not integration" ] ]
+commands = [
+  [
+    "coverage",
+    "run",
+    "--source=src",
+    "--data-file=.coverage.python-unit",
+    "-m",
+    "pytest",
+    "-m",
+    "not manual and not integration",
+    "-n0",
+  ],
+]
 
 [env.doctest]
 description = "run doctests"

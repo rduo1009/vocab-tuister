@@ -1,3 +1,0 @@
-[submodule "src/_build"]
-	path = src/_build
-	url = https://github.com/rduo1009/vocab-tuister-build

@@ -1,5 +1,7 @@
 """Representations of Latin words with their endings calculated."""
 
+from __future__ import annotations
+
 from ._class_adjective import Adjective as Adjective
 from ._class_noun import Noun as Noun
 from ._class_pronoun import Pronoun as Pronoun

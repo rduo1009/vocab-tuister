@@ -1,0 +1,100 @@
+name: lint
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions: {}
+
+jobs:
+  lint-golang:
+    name: lint with golangci-lint
+    runs-on: ubuntu-latest
+    env:
+      GOEXPERIMENT: jsonv2
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout PR HEAD (code to be fixed)
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          # Check out the contributor's branch, not the base branch.
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: true
+
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          # Read the required Go version from go.mod so the workflow stays
+          # in sync with the project automatically.
+          go-version-file: "go.mod"
+          cache: true
+
+      - name: Run golangci-lint --fix (Linux)
+        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        with:
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+
+      - name: Run golangci-lint --fix (macOS)
+        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        with:
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+        env:
+          GOOS: "darwin"
+
+      - name: Run golangci-lint --fix (Windows)
+        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        with:
+          args: >-
+            --fix
+            --fast-only
+            --enable=modernize,whitespace,wsl_v5
+        env:
+          GOOS: "windows"
+
+      - name: Commit and push lint fixes back to PR branch (same-repo PRs only)
+        # Skip this step for fork PRs – we have no write access to the fork.
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        # Pass the branch ref via an environment variable rather than
+        # interpolating it directly into the shell script, to prevent
+        # code-injection if the branch name contains shell metacharacters.
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet; then
+            echo "No changes produced by golangci-lint --fix."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "🧹 chore(lint): golangci-lint --fix"
+          git push origin "HEAD:${HEAD_REF}"
+
+  lint-pinact:
+    name: pin actions versions in workflows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Pin actions
+        uses: suzuki-shunsuke/pinact-action@28aeb220eb3252ad0d4422dd5d9368e925acbd8d # v1.3.0
+        with:
+          app_id: ${{vars.APP_ID}}
+          app_private_key: ${{secrets.APP_PRIVATE_KEY}}
