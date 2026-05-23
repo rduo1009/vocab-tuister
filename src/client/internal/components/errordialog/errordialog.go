@@ -111,8 +111,8 @@ func (m Model) View() string {
 		return ""
 	}
 
-	// TODO: use nerdfont with https://github.com/lrstanley/go-nf?
-	header := m.styles.ErrorDialog.Header.Width(m.width - 2).Render("ⓧ Error")
+	header := m.styles.ErrorDialog.Header.Width(m.width - 2).
+		Render(m.styles.Icons.CrossCircle + " Error")
 
 	viewportView := m.viewport.View()
 
@@ -145,6 +145,7 @@ func (m *Model) updateViewportContent() {
 		if m.viewport.Width() > 0 {
 			content = lipgloss.Wrap(content, m.viewport.Width(), wordWrapBreakpoints)
 		}
+
 		m.viewport.SetContent(content)
 	}
 }

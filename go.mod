@@ -13,6 +13,7 @@ require (
 	github.com/ionut-t/goeditor v0.4.12
 	github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1
 	github.com/lrstanley/bubbletint/v2 v2.0.1
+	github.com/lrstanley/go-nf v0.0.0-20260418212552-215ab243b591
 	github.com/lucasb-eyer/go-colorful v1.4.0
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/sys v0.43.0

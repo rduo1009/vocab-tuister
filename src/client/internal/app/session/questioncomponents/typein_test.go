@@ -5,14 +5,12 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/golden"
 	"github.com/charmbracelet/x/exp/teatest/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelTI struct {
@@ -49,37 +47,39 @@ func (m modelTI) View() tea.View {
 }
 
 func TestTypeInLatToEng(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
-		Prompt:     "prompt",
-		MainAnswer: "foo",
-		Answers:    []string{"foo", "bar", "baz"},
-	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
+			Prompt:     "prompt",
+			MainAnswer: "foo",
+			Answers:    []string{"foo", "bar", "baz"},
+		}}
+		qc := NewTypeInQuestionModel(&q, newStyles(useNerdFonts))
 
-	view := qc.View()
-	assert.Contains(t, view, "Translate")
-	assert.Contains(t, view, "to English:")
-	assert.Contains(t, view, "prompt")
+		view := qc.View()
+		assert.Contains(t, view, "Translate")
+		assert.Contains(t, view, "to English:")
+		assert.Contains(t, view, "prompt")
 
-	golden.RequireEqual(t, []byte(view))
+		requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
+	}
 }
 
 func TestTypeInEngToLat(t *testing.T) {
-	q := questions.TypeInEngToLatQuestion{TypeInEngToLatQuestion: &pb.TypeInEngToLatQuestion{
-		Prompt:     "prompt",
-		MainAnswer: "foo",
-		Answers:    []string{"foo", "bar", "baz"},
-	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.TypeInEngToLatQuestion{TypeInEngToLatQuestion: &pb.TypeInEngToLatQuestion{
+			Prompt:     "prompt",
+			MainAnswer: "foo",
+			Answers:    []string{"foo", "bar", "baz"},
+		}}
+		qc := NewTypeInQuestionModel(&q, newStyles(useNerdFonts))
 
-	view := qc.View()
-	assert.Contains(t, view, "Translate")
-	assert.Contains(t, view, "to Latin")
-	assert.Contains(t, view, "prompt")
+		view := qc.View()
+		assert.Contains(t, view, "Translate")
+		assert.Contains(t, view, "to Latin")
+		assert.Contains(t, view, "prompt")
 
-	golden.RequireEqual(t, []byte(view))
+		requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
+	}
 }
 
 func TestTypeInCorrect(t *testing.T) {
@@ -93,109 +93,109 @@ func TestTypeInCorrect(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
-				Prompt:     "prompt",
-				MainAnswer: "foo",
-				Answers:    []string{"foo", "bar", "baz"},
-			}}
-			s := styles.StylesWrapper{
-				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
-			}
-			qc := NewTypeInQuestionModel(&q, &s)
-
-			m := modelTI{QuestionComponent: qc}
-			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-			t.Cleanup(func() {
-				if err := tm.Quit(); err != nil {
-					t.Fatal(err)
+			for _, useNerdFonts := range []bool{false, true} {
+				q := questions.TypeInLatToEngQuestion{
+					TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
+						Prompt:     "prompt",
+						MainAnswer: "foo",
+						Answers:    []string{"foo", "bar", "baz"},
+					},
 				}
-			})
+				qc := NewTypeInQuestionModel(&q, newStyles(useNerdFonts))
 
-			// simulate typing
-			m.QuestionComponent.textinput.Focus()
-			tm.Type(tt.input)
+				m := modelTI{QuestionComponent: qc}
+				tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+				t.Cleanup(func() {
+					if err := tm.Quit(); err != nil {
+						t.Fatal(err)
+					}
+				})
 
-			tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
-			time.Sleep(10 * time.Millisecond)
-			tm.Quit()
+				m.QuestionComponent.textinput.Focus()
+				tm.Type(tt.input)
 
-			fm := tm.FinalModel(t)
+				tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
+				time.Sleep(10 * time.Millisecond)
+				tm.Quit()
 
-			m, ok := fm.(modelTI)
-			if !ok {
-				t.Fatalf("final model have the wrong type: %T", fm)
+				fm := tm.FinalModel(t)
+
+				m, ok := fm.(modelTI)
+				if !ok {
+					t.Fatalf("final model have the wrong type: %T", fm)
+				}
+
+				assert.IsTypef(
+					t,
+					QuestionAnsweredMsg{},
+					m.CurrentMsg,
+					"expected type QuestionAnsweredMsg, got type %T",
+					m.CurrentMsg,
+				)
+				assert.Equalf(
+					t,
+					Correct,
+					m.QuestionComponent.QuestionStatus(),
+					"expected Correct, got %s",
+					m.QuestionComponent.QuestionStatus(),
+				)
+
+				requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()), useNerdFonts)
 			}
-
-			assert.IsTypef(
-				t,
-				QuestionAnsweredMsg{},
-				m.CurrentMsg,
-				"expected type QuestionAnsweredMsg, got type %T",
-				m.CurrentMsg,
-			)
-			assert.Equalf(
-				t,
-				Correct,
-				m.QuestionComponent.QuestionStatus(),
-				"expected Correct, got %s",
-				m.QuestionComponent.QuestionStatus(),
-			)
-
-			golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
 		})
 	}
 }
 
 func TestTypeInIncorrect(t *testing.T) {
-	q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
-		Prompt:     "prompt",
-		MainAnswer: "foo",
-		Answers:    []string{"foo", "bar", "baz"},
-	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
+			Prompt:     "prompt",
+			MainAnswer: "foo",
+			Answers:    []string{"foo", "bar", "baz"},
+		}}
+		qc := NewTypeInQuestionModel(&q, newStyles(useNerdFonts))
 
-	m := modelTI{QuestionComponent: qc}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
+		m := modelTI{QuestionComponent: qc}
+		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+		t.Cleanup(func() {
+			if err := tm.Quit(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+		m.QuestionComponent.textinput.Focus()
+		tm.Type("qux")
+
+		tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
+		time.Sleep(10 * time.Millisecond)
+		tm.Quit()
+
+		fm := tm.FinalModel(t)
+
+		m, ok := fm.(modelTI)
+		if !ok {
+			t.Fatalf("final model have the wrong type: %T", fm)
 		}
-	})
 
-	// simulate typing in "qux" (incorrect)
-	m.QuestionComponent.textinput.Focus()
-	tm.Type("qux")
+		assert.IsTypef(
+			t,
+			QuestionAnsweredMsg{},
+			m.CurrentMsg,
+			"expected type QuestionAnsweredMsg, got type %T",
+			m.CurrentMsg,
+		)
+		assert.Equalf(
+			t,
+			Incorrect,
+			m.QuestionComponent.QuestionStatus(),
+			"expected Incorrect, got %s",
+			m.QuestionComponent.QuestionStatus(),
+		)
+		assert.Contains(t, m.QuestionComponent.View(), "foo")
+		assert.Contains(t, m.QuestionComponent.View(), "qux")
 
-	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
-	time.Sleep(10 * time.Millisecond)
-	tm.Quit()
-
-	fm := tm.FinalModel(t)
-
-	m, ok := fm.(modelTI)
-	if !ok {
-		t.Fatalf("final model have the wrong type: %T", fm)
+		requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()), useNerdFonts)
 	}
-
-	assert.IsTypef(
-		t,
-		QuestionAnsweredMsg{},
-		m.CurrentMsg,
-		"expected type QuestionAnsweredMsg, got type %T",
-		m.CurrentMsg,
-	)
-	assert.Equalf(
-		t,
-		Incorrect,
-		m.QuestionComponent.QuestionStatus(),
-		"expected Incorrect, got %s",
-		m.QuestionComponent.QuestionStatus(),
-	)
-	assert.Contains(t, m.QuestionComponent.View(), "foo")
-	assert.Contains(t, m.QuestionComponent.View(), "qux")
-
-	golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestTypeInNextQuestion(t *testing.T) {
@@ -204,8 +204,7 @@ func TestTypeInNextQuestion(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	qc := NewTypeInQuestionModel(&q, newStyles(false))
 
 	m := modelTI{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -215,7 +214,6 @@ func TestTypeInNextQuestion(t *testing.T) {
 		}
 	})
 
-	// simulate typing in "foo" (correct)
 	m.QuestionComponent.textinput.Focus()
 	tm.Type("foo")
 

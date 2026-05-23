@@ -52,7 +52,7 @@ func readBts(tb testing.TB, r io.Reader) []byte {
 
 func TestJSONView(t *testing.T) {
 	jb := `{"foo":"bar"}`
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb, &s)
 	jv.SetWidth(20)
 	jv.SetHeight(10)
@@ -91,7 +91,7 @@ func TestJSONViewScrolling(t *testing.T) {
 	sb.WriteString("]")
 	jb := sb.String()
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb, &s)
 	jv.SetWidth(60)
 	jv.SetHeight(10) // Small height to ensure scrolling is needed
@@ -128,7 +128,7 @@ func TestJSONViewScrolling(t *testing.T) {
 	assert.NotContains(t, scrolledView, "item 0")
 
 	// Now let's test scrolling back up in a new model to be clean or continue
-	s = styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s = styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv2 := jsonview.New(jb, &s)
 	jv2.SetWidth(60)
 	jv2.SetHeight(10)
@@ -156,7 +156,7 @@ func TestJSONViewScrolling(t *testing.T) {
 func TestJSONViewHorizontalScrolling(t *testing.T) {
 	// Single long line that will definitely exceed width 20
 	jb := `{"very_long_key_name_that_should_require_horizontal_scrolling": "some_value_that_is_also_very_long"}`
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb, &s)
 	jv.SetWidth(20)
 	jv.SetHeight(5)
@@ -191,7 +191,7 @@ func TestJSONViewHorizontalScrolling(t *testing.T) {
 	assert.NotContains(t, scrolledView, "{\"very_long")
 
 	// Now test scrolling back left
-	s = styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s = styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv2 := jsonview.New(jb, &s)
 	jv2.SetWidth(20)
 	jv2.SetHeight(5)
@@ -219,7 +219,7 @@ func TestJSONViewHorizontalScrolling(t *testing.T) {
 func TestJSONViewSetContent(t *testing.T) {
 	jb1 := `{"foo":"bar"}`
 	jb2 := `{"baz":"qux"}`
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb1, &s)
 	jv.SetWidth(20)
 	jv.SetHeight(10)
@@ -236,7 +236,7 @@ func TestJSONViewSetContent(t *testing.T) {
 
 func TestJSONViewDimensions(t *testing.T) {
 	jb := `{"foo":"bar"}`
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb, &s)
 
 	jv.SetWidth(50)
@@ -248,7 +248,7 @@ func TestJSONViewDimensions(t *testing.T) {
 
 func TestJSONViewKeyMap(t *testing.T) {
 	jb := `{"foo":"bar"}`
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
+	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, false)}
 	jv := jsonview.New(jb, &s)
 
 	km := jv.KeyMap()

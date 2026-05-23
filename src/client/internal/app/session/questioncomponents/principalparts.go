@@ -267,7 +267,10 @@ func (m *PrincipalPartsQuestionModel) View() string {
 	var footerView string
 	if m.status == Incorrect {
 		footerView = m.styles.SessionPage.Incorrect.Render(
-			"✕ " + strings.Join(m.question.(*questions.PrincipalPartsQuestion).PrincipalParts, ", "),
+			" " + m.styles.Icons.Cross + " " + strings.Join(
+				m.question.(*questions.PrincipalPartsQuestion).PrincipalParts,
+				", ",
+			),
 		)
 	}
 

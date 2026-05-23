@@ -1,7 +1,6 @@
 package tabs
 
 import (
-	"fmt"
 	"strings"
 
 	tea "charm.land/bubbletea/v2"
@@ -10,12 +9,16 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
+type TabName interface {
+	DisplayString(*styles.StylesWrapper) string
+}
+
 type SelectTabMsg struct{ Index int }
 
 type Model struct {
 	Width int
 
-	tabNames  []string
+	tabNames  []TabName
 	active    int
 	isFocused bool
 
@@ -46,14 +49,9 @@ func (m *Model) Select(index int) {
 	m.active = index
 }
 
-func New(names []fmt.Stringer, active int, isFocused bool, styles *styles.StylesWrapper) *Model {
-	tabNames := make([]string, len(names))
-	for i, n := range names {
-		tabNames[i] = n.String()
-	}
-
+func New(names []TabName, active int, isFocused bool, styles *styles.StylesWrapper) *Model {
 	return &Model{
-		tabNames:  tabNames,
+		tabNames:  names,
 		active:    active,
 		isFocused: isFocused,
 		styles:    styles,
@@ -75,12 +73,18 @@ func (m *Model) View() string {
 	// NOTE: crazy vibe-coded magic. still works though
 	textWidth := 0
 	for _, name := range m.tabNames {
-		textWidth += lipgloss.Width(name)
+		textWidth += lipgloss.Width(name.DisplayString(m.styles))
 	}
 
 	borderWidth := 2 * len(m.tabNames)
 
-	targetWidth := m.Width / 2
+	var targetWidth int
+	if m.styles.Icons.HasNerdFonts {
+		targetWidth = m.Width * 60 / 100
+	} else {
+		targetWidth = m.Width / 2
+	}
+
 	remaining := targetWidth - textWidth - borderWidth
 
 	pad := 1
@@ -97,7 +101,7 @@ func (m *Model) View() string {
 	for i, pageName := range m.tabNames {
 		style := m.styles.TabBorder(i == m.active, m.isFocused, pad)
 
-		renderedTabs = append(renderedTabs, style.Render(pageName))
+		renderedTabs = append(renderedTabs, style.Render(pageName.DisplayString(m.styles)))
 	}
 
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)

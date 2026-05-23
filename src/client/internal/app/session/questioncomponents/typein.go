@@ -273,7 +273,9 @@ func (m *TypeInQuestionModel) View() string {
 		inputView = lipgloss.JoinHorizontal(
 			lipgloss.Top,
 			m.textinput.View(),
-			m.styles.SessionPage.Incorrect.Render(" ✕ "+m.question.GetMainAnswer().(string)),
+			m.styles.SessionPage.Incorrect.Render(
+				" "+m.styles.Icons.Cross+" "+m.question.GetMainAnswer().(string),
+			),
 		)
 	}
 
