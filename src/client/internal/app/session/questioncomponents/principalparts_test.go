@@ -47,141 +47,147 @@ func (m modelPP) View() tea.View {
 }
 
 func TestPrincipalParts(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
-		Prompt:         "prompt",
-		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}}
-	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
+			Prompt:         "prompt",
+			PrincipalParts: []string{"foo", "bar", "baz", "qux"},
+		}}
+		qc := NewPrincipalPartsQuestionModel(&q, newStyles(useNerdFonts))
 
-	view := qc.View()
-	assert.Contains(t, view, "Principal parts")
-	assert.Contains(t, view, "of")
-	assert.Contains(t, view, "prompt")
+		view := qc.View()
+		assert.Contains(t, view, "Principal parts")
+		assert.Contains(t, view, "of")
+		assert.Contains(t, view, "prompt")
 
-	requireGoldenWithSuffix(t, []byte(view))
+		requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
+	}
 }
 
 func TestPrincipalPartsCorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
-		Prompt:         "prompt",
-		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}}
-	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
+			Prompt:         "prompt",
+			PrincipalParts: []string{"foo", "bar", "baz", "qux"},
+		}}
+		qc := NewPrincipalPartsQuestionModel(&q, newStyles(useNerdFonts))
 
-	m := modelPP{QuestionComponent: qc}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
+		m := modelPP{QuestionComponent: qc}
+		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+		t.Cleanup(func() {
+			if err := tm.Quit(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+		m.QuestionComponent.textinputs[0].Focus()
+		tm.Type("foo")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[0].Blur()
+		m.QuestionComponent.textinputs[1].Focus()
+		tm.Type("bar")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[1].Blur()
+		m.QuestionComponent.textinputs[2].Focus()
+		tm.Type("baz")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[2].Blur()
+		m.QuestionComponent.textinputs[3].Focus()
+		tm.Type("qux")
+		time.Sleep(10 * time.Millisecond)
+
+		tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
+		time.Sleep(10 * time.Millisecond)
+		tm.Quit()
+
+		fm := tm.FinalModel(t)
+
+		m, ok := fm.(modelPP)
+		if !ok {
+			t.Fatalf("final model have the wrong type: %T", fm)
 		}
-	})
 
-	m.QuestionComponent.textinputs[0].Focus()
-	tm.Type("foo")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[0].Blur()
-	m.QuestionComponent.textinputs[1].Focus()
-	tm.Type("bar")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[1].Blur()
-	m.QuestionComponent.textinputs[2].Focus()
-	tm.Type("baz")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[2].Blur()
-	m.QuestionComponent.textinputs[3].Focus()
-	tm.Type("qux")
-	time.Sleep(10 * time.Millisecond)
+		assert.IsTypef(
+			t,
+			QuestionAnsweredMsg{},
+			m.CurrentMsg,
+			"expected type QuestionAnsweredMsg, got type %T",
+			m.CurrentMsg,
+		)
+		assert.Equalf(
+			t,
+			Correct,
+			m.QuestionComponent.QuestionStatus(),
+			"expected Correct, got %s",
+			m.QuestionComponent.QuestionStatus(),
+		)
 
-	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
-	time.Sleep(10 * time.Millisecond)
-	tm.Quit()
-
-	fm := tm.FinalModel(t)
-
-	m, ok := fm.(modelPP)
-	if !ok {
-		t.Fatalf("final model have the wrong type: %T", fm)
+		requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()), useNerdFonts)
 	}
-
-	assert.IsTypef(
-		t,
-		QuestionAnsweredMsg{},
-		m.CurrentMsg,
-		"expected type QuestionAnsweredMsg, got type %T",
-		m.CurrentMsg,
-	)
-	assert.Equalf(
-		t,
-		Correct,
-		m.QuestionComponent.QuestionStatus(),
-		"expected Correct, got %s",
-		m.QuestionComponent.QuestionStatus(),
-	)
-
-	requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestPrincipalPartsIncorrect(t *testing.T) {
-	q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
-		Prompt:         "prompt",
-		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
-	}}
-	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.PrincipalPartsQuestion{PrincipalPartsQuestion: &pb.PrincipalPartsQuestion{
+			Prompt:         "prompt",
+			PrincipalParts: []string{"foo", "bar", "baz", "qux"},
+		}}
+		qc := NewPrincipalPartsQuestionModel(&q, newStyles(useNerdFonts))
 
-	m := modelPP{QuestionComponent: qc}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
+		m := modelPP{QuestionComponent: qc}
+		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+		t.Cleanup(func() {
+			if err := tm.Quit(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+		m.QuestionComponent.textinputs[0].Focus()
+		tm.Type("foo")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[0].Blur()
+		m.QuestionComponent.textinputs[1].Focus()
+		tm.Type("wrong")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[1].Blur()
+		m.QuestionComponent.textinputs[2].Focus()
+		tm.Type("baz")
+		time.Sleep(10 * time.Millisecond)
+		m.QuestionComponent.textinputs[2].Blur()
+		m.QuestionComponent.textinputs[3].Focus()
+		tm.Type("wrong")
+		time.Sleep(10 * time.Millisecond)
+
+		tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
+		time.Sleep(10 * time.Millisecond)
+		tm.Quit()
+
+		fm := tm.FinalModel(t)
+
+		m, ok := fm.(modelPP)
+		if !ok {
+			t.Fatalf("final model have the wrong type: %T", fm)
 		}
-	})
 
-	m.QuestionComponent.textinputs[0].Focus()
-	tm.Type("foo")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[0].Blur()
-	m.QuestionComponent.textinputs[1].Focus()
-	tm.Type("wrong")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[1].Blur()
-	m.QuestionComponent.textinputs[2].Focus()
-	tm.Type("baz")
-	time.Sleep(10 * time.Millisecond)
-	m.QuestionComponent.textinputs[2].Blur()
-	m.QuestionComponent.textinputs[3].Focus()
-	tm.Type("wrong")
-	time.Sleep(10 * time.Millisecond)
+		assert.IsTypef(
+			t,
+			QuestionAnsweredMsg{},
+			m.CurrentMsg,
+			"expected type QuestionAnsweredMsg, got type %T",
+			m.CurrentMsg,
+		)
+		assert.Equalf(
+			t,
+			Incorrect,
+			m.QuestionComponent.QuestionStatus(),
+			"expected Incorrect, got %s",
+			m.QuestionComponent.QuestionStatus(),
+		)
+		assert.Contains(t, m.QuestionComponent.View(), "wrong")
+		assert.Contains(t, m.QuestionComponent.View(), "bar")
+		assert.Contains(t, m.QuestionComponent.View(), "qux")
 
-	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter})
-	time.Sleep(10 * time.Millisecond)
-	tm.Quit()
-
-	fm := tm.FinalModel(t)
-
-	m, ok := fm.(modelPP)
-	if !ok {
-		t.Fatalf("final model have the wrong type: %T", fm)
+		requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()), useNerdFonts)
 	}
-
-	assert.IsTypef(
-		t,
-		QuestionAnsweredMsg{},
-		m.CurrentMsg,
-		"expected type QuestionAnsweredMsg, got type %T",
-		m.CurrentMsg,
-	)
-	assert.Equalf(
-		t,
-		Incorrect,
-		m.QuestionComponent.QuestionStatus(),
-		"expected Incorrect, got %s",
-		m.QuestionComponent.QuestionStatus(),
-	)
-	assert.Contains(t, m.QuestionComponent.View(), "wrong")
-	assert.Contains(t, m.QuestionComponent.View(), "bar")
-	assert.Contains(t, m.QuestionComponent.View(), "qux")
-
-	requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestPrincipalPartsNextQuestion(t *testing.T) {
@@ -189,7 +195,7 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
-	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
+	qc := NewPrincipalPartsQuestionModel(&q, newStyles(false))
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))

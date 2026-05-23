@@ -49,31 +49,33 @@ func (m modelPS) View() tea.View {
 }
 
 func TestParse(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
-		Prompt:          "prompt",
-		DictionaryEntry: "dictionary entry",
-		MainAnswer: &pb.EndingComponents{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
-		},
-		Answers: []*pb.EndingComponents{{
-			Case:   pb.Case_CASE_GENITIVE,
-			Number: pb.Number_NUMBER_PLURAL,
-			Gender: pb.Gender_GENDER_NEUTER,
-		}},
-	}}
-	qc := NewParseQuestionModel(&q, newStyles())
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
+			Prompt:          "prompt",
+			DictionaryEntry: "dictionary entry",
+			MainAnswer: &pb.EndingComponents{
+				Case:   pb.Case_CASE_GENITIVE,
+				Number: pb.Number_NUMBER_PLURAL,
+				Gender: pb.Gender_GENDER_NEUTER,
+			},
+			Answers: []*pb.EndingComponents{{
+				Case:   pb.Case_CASE_GENITIVE,
+				Number: pb.Number_NUMBER_PLURAL,
+				Gender: pb.Gender_GENDER_NEUTER,
+			}},
+		}}
+		qc := NewParseQuestionModel(&q, newStyles(useNerdFonts))
 
-	view := qc.View()
-	assert.Contains(t, view, "Parse")
-	assert.Contains(t, view, "this Latin word:")
-	assert.Contains(t, view, "prompt")
-	assert.Contains(t, view, "nominative")
-	assert.Contains(t, view, "singular")
-	assert.Contains(t, view, "masculine")
+		view := qc.View()
+		assert.Contains(t, view, "Parse")
+		assert.Contains(t, view, "this Latin word:")
+		assert.Contains(t, view, "prompt")
+		assert.Contains(t, view, "nominative")
+		assert.Contains(t, view, "singular")
+		assert.Contains(t, view, "masculine")
 
-	requireGoldenWithSuffix(t, []byte(view))
+		requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
+	}
 }
 
 // NOTE: Wrangling the dropdowns themselves is too tricky and will be left to e2e testing.
@@ -110,187 +112,191 @@ func TestParseCorrect(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			q := questions.ParseWordLatToCompQuestion{
-				ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
-					Prompt: "prompt",
-					MainAnswer: &pb.EndingComponents{
-						Case:          pb.Case_CASE_GENITIVE,
-						Number:        pb.Number_NUMBER_PLURAL,
-						Gender:        pb.Gender_GENDER_NEUTER,
-						DisplayString: "genitive plural neuter",
+			for _, useNerdFonts := range []bool{false, true} {
+				q := questions.ParseWordLatToCompQuestion{
+					ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
+						Prompt: "prompt",
+						MainAnswer: &pb.EndingComponents{
+							Case:          pb.Case_CASE_GENITIVE,
+							Number:        pb.Number_NUMBER_PLURAL,
+							Gender:        pb.Gender_GENDER_NEUTER,
+							DisplayString: "genitive plural neuter",
+						},
+						Answers: []*pb.EndingComponents{{
+							Case:          pb.Case_CASE_GENITIVE,
+							Number:        pb.Number_NUMBER_PLURAL,
+							Gender:        pb.Gender_GENDER_NEUTER,
+							DisplayString: "genitive plural neuter",
+						}, {
+							Case:          pb.Case_CASE_GENITIVE,
+							Number:        pb.Number_NUMBER_PLURAL,
+							Gender:        pb.Gender_GENDER_FEMININE,
+							DisplayString: "genitive plural feminine",
+						}},
 					},
-					Answers: []*pb.EndingComponents{{
-						Case:          pb.Case_CASE_GENITIVE,
-						Number:        pb.Number_NUMBER_PLURAL,
-						Gender:        pb.Gender_GENDER_NEUTER,
-						DisplayString: "genitive plural neuter",
-					}, {
-						Case:          pb.Case_CASE_GENITIVE,
-						Number:        pb.Number_NUMBER_PLURAL,
-						Gender:        pb.Gender_GENDER_FEMININE,
-						DisplayString: "genitive plural feminine",
-					}},
-				},
-			}
-			qc := NewParseQuestionModel(&q, newStyles())
-
-			m := modelPS{QuestionComponent: qc}
-			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-			t.Cleanup(func() {
-				if err := tm.Quit(); err != nil {
-					t.Fatal(err)
 				}
-			})
+				qc := NewParseQuestionModel(&q, newStyles(useNerdFonts))
 
-			tm.Send(
-				dropdown.PickedMsg{
-					ID:         "parsequestionDropdown0",
-					ChosenItem: endingcomponents.Case(tt.selection.Case),
-				},
-			)
-			m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(tt.selection.Case)
+				m := modelPS{QuestionComponent: qc}
+				tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+				t.Cleanup(func() {
+					if err := tm.Quit(); err != nil {
+						t.Fatal(err)
+					}
+				})
 
-			tm.Send(
-				dropdown.PickedMsg{
-					ID:         "parsequestionDropdown1",
-					ChosenItem: endingcomponents.Number(tt.selection.Number),
-				},
-			)
-			m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(tt.selection.Number)
+				tm.Send(
+					dropdown.PickedMsg{
+						ID:         "parsequestionDropdown0",
+						ChosenItem: endingcomponents.Case(tt.selection.Case),
+					},
+				)
+				m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(tt.selection.Case)
 
-			tm.Send(
-				dropdown.PickedMsg{
-					ID:         "parsequestionDropdown2",
-					ChosenItem: endingcomponents.Gender(tt.selection.Gender),
-				},
-			)
-			m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(tt.selection.Gender)
+				tm.Send(
+					dropdown.PickedMsg{
+						ID:         "parsequestionDropdown1",
+						ChosenItem: endingcomponents.Number(tt.selection.Number),
+					},
+				)
+				m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(tt.selection.Number)
 
-			tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
-			time.Sleep(10 * time.Millisecond)
-			tm.Quit()
+				tm.Send(
+					dropdown.PickedMsg{
+						ID:         "parsequestionDropdown2",
+						ChosenItem: endingcomponents.Gender(tt.selection.Gender),
+					},
+				)
+				m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(tt.selection.Gender)
 
-			fm := tm.FinalModel(t)
+				tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
+				time.Sleep(10 * time.Millisecond)
+				tm.Quit()
 
-			m, ok := fm.(modelPS)
-			if !ok {
-				t.Fatalf("final model have the wrong type: %T", fm)
+				fm := tm.FinalModel(t)
+
+				m, ok := fm.(modelPS)
+				if !ok {
+					t.Fatalf("final model have the wrong type: %T", fm)
+				}
+
+				assert.IsTypef(
+					t,
+					QuestionAnsweredMsg{},
+					m.CurrentMsg,
+					"expected type QuestionAnsweredMsg, got type %T",
+					m.CurrentMsg,
+				)
+				assert.Equalf(
+					t,
+					Correct,
+					m.QuestionComponent.QuestionStatus(),
+					"expected Correct, got %s",
+					m.QuestionComponent.QuestionStatus(),
+				)
+
+				view := m.QuestionComponent.View()
+				for _, s := range tt.expect {
+					assert.Contains(t, view, s)
+				}
+
+				requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
 			}
-
-			assert.IsTypef(
-				t,
-				QuestionAnsweredMsg{},
-				m.CurrentMsg,
-				"expected type QuestionAnsweredMsg, got type %T",
-				m.CurrentMsg,
-			)
-			assert.Equalf(
-				t,
-				Correct,
-				m.QuestionComponent.QuestionStatus(),
-				"expected Correct, got %s",
-				m.QuestionComponent.QuestionStatus(),
-			)
-
-			view := m.QuestionComponent.View()
-			for _, s := range tt.expect {
-				assert.Contains(t, view, s)
-			}
-
-			requireGoldenWithSuffix(t, []byte(view))
 		})
 	}
 }
 
 func TestParseIncorrect(t *testing.T) {
-	q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
-		Prompt: "prompt",
-		MainAnswer: &pb.EndingComponents{
-			Case:          pb.Case_CASE_GENITIVE,
-			Number:        pb.Number_NUMBER_PLURAL,
-			Gender:        pb.Gender_GENDER_NEUTER,
-			DisplayString: "genitive plural neuter",
-		},
-		Answers: []*pb.EndingComponents{{
-			Case:          pb.Case_CASE_GENITIVE,
-			Number:        pb.Number_NUMBER_PLURAL,
-			Gender:        pb.Gender_GENDER_NEUTER,
-			DisplayString: "genitive plural neuter",
-		}, {
-			Case:          pb.Case_CASE_GENITIVE,
-			Number:        pb.Number_NUMBER_PLURAL,
-			Gender:        pb.Gender_GENDER_FEMININE,
-			DisplayString: "genitive plural feminine",
-		}},
-	}}
-	qc := NewParseQuestionModel(&q, newStyles())
+	for _, useNerdFonts := range []bool{false, true} {
+		q := questions.ParseWordLatToCompQuestion{ParseWordLatToCompQuestion: &pb.ParseWordLatToCompQuestion{
+			Prompt: "prompt",
+			MainAnswer: &pb.EndingComponents{
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_NEUTER,
+				DisplayString: "genitive plural neuter",
+			},
+			Answers: []*pb.EndingComponents{{
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_NEUTER,
+				DisplayString: "genitive plural neuter",
+			}, {
+				Case:          pb.Case_CASE_GENITIVE,
+				Number:        pb.Number_NUMBER_PLURAL,
+				Gender:        pb.Gender_GENDER_FEMININE,
+				DisplayString: "genitive plural feminine",
+			}},
+		}}
+		qc := NewParseQuestionModel(&q, newStyles(useNerdFonts))
 
-	m := modelPS{QuestionComponent: qc}
-	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
-	t.Cleanup(func() {
-		if err := tm.Quit(); err != nil {
-			t.Fatal(err)
+		m := modelPS{QuestionComponent: qc}
+		tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
+		t.Cleanup(func() {
+			if err := tm.Quit(); err != nil {
+				t.Fatal(err)
+			}
+		})
+
+		tm.Send(
+			dropdown.PickedMsg{
+				ID:         "parsequestionDropdown0",
+				ChosenItem: endingcomponents.Case(pb.Case_CASE_GENITIVE),
+			},
+		)
+		m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(pb.Case_CASE_GENITIVE)
+
+		tm.Send(
+			dropdown.PickedMsg{
+				ID:         "parsequestionDropdown1",
+				ChosenItem: endingcomponents.Number(pb.Number_NUMBER_PLURAL),
+			},
+		)
+		m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(pb.Number_NUMBER_PLURAL)
+
+		tm.Send(
+			dropdown.PickedMsg{
+				ID:         "parsequestionDropdown2",
+				ChosenItem: endingcomponents.Gender(pb.Gender_GENDER_MASCULINE),
+			},
+		)
+		m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(pb.Gender_GENDER_MASCULINE)
+
+		tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
+		time.Sleep(10 * time.Millisecond)
+		tm.Quit()
+
+		fm := tm.FinalModel(t)
+
+		m, ok := fm.(modelPS)
+		if !ok {
+			t.Fatalf("final model have the wrong type: %T", fm)
 		}
-	})
 
-	tm.Send(
-		dropdown.PickedMsg{
-			ID:         "parsequestionDropdown0",
-			ChosenItem: endingcomponents.Case(pb.Case_CASE_GENITIVE),
-		},
-	)
-	m.QuestionComponent.Dropdowns[0].LastSelected = endingcomponents.Case(pb.Case_CASE_GENITIVE)
+		assert.IsTypef(
+			t,
+			QuestionAnsweredMsg{},
+			m.CurrentMsg,
+			"expected type QuestionAnsweredMsg, got type %T",
+			m.CurrentMsg,
+		)
+		assert.Equalf(
+			t,
+			Incorrect,
+			m.QuestionComponent.QuestionStatus(),
+			"expected Incorrect, got %s",
+			m.QuestionComponent.QuestionStatus(),
+		)
 
-	tm.Send(
-		dropdown.PickedMsg{
-			ID:         "parsequestionDropdown1",
-			ChosenItem: endingcomponents.Number(pb.Number_NUMBER_PLURAL),
-		},
-	)
-	m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(pb.Number_NUMBER_PLURAL)
+		view := m.QuestionComponent.View()
+		assert.Contains(t, view, "genitive")
+		assert.Contains(t, view, "plural")
+		assert.Contains(t, view, "masculine")
+		assert.Contains(t, view, "genitive plural neuter")
+		assert.NotContains(t, view, "feminine")
 
-	tm.Send(
-		dropdown.PickedMsg{
-			ID:         "parsequestionDropdown2",
-			ChosenItem: endingcomponents.Gender(pb.Gender_GENDER_MASCULINE),
-		},
-	)
-	m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(pb.Gender_GENDER_MASCULINE)
-
-	tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
-	time.Sleep(10 * time.Millisecond)
-	tm.Quit()
-
-	fm := tm.FinalModel(t)
-
-	m, ok := fm.(modelPS)
-	if !ok {
-		t.Fatalf("final model have the wrong type: %T", fm)
+		requireGoldenWithSuffix(t, []byte(view), useNerdFonts)
 	}
-
-	assert.IsTypef(
-		t,
-		QuestionAnsweredMsg{},
-		m.CurrentMsg,
-		"expected type QuestionAnsweredMsg, got type %T",
-		m.CurrentMsg,
-	)
-	assert.Equalf(
-		t,
-		Incorrect,
-		m.QuestionComponent.QuestionStatus(),
-		"expected Incorrect, got %s",
-		m.QuestionComponent.QuestionStatus(),
-	)
-
-	view := m.QuestionComponent.View()
-	assert.Contains(t, view, "genitive")
-	assert.Contains(t, view, "plural")
-	assert.Contains(t, view, "masculine")
-	assert.Contains(t, view, "genitive plural neuter")
-	assert.NotContains(t, view, "feminine")
-
-	requireGoldenWithSuffix(t, []byte(view))
 }
 
 func TestParseNextQuestion(t *testing.T) {
@@ -309,7 +315,7 @@ func TestParseNextQuestion(t *testing.T) {
 			DisplayString: "genitive plural neuter",
 		}},
 	}}
-	qc := NewParseQuestionModel(&q, newStyles())
+	qc := NewParseQuestionModel(&q, newStyles(false))
 
 	m := modelPS{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
