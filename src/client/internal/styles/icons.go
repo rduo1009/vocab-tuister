@@ -4,14 +4,13 @@ import (
 	"context"
 	"time"
 
+	tea "charm.land/bubbletea/v2"
 	"github.com/lrstanley/go-nf"
 	"github.com/lrstanley/go-nf/glyphs/cod"
 	"github.com/lrstanley/go-nf/glyphs/fa"
 	"github.com/lrstanley/go-nf/glyphs/md"
 	"github.com/lrstanley/go-nf/glyphs/oct"
 )
-
-var hasNerdFonts bool
 
 type Icons struct {
 	HasNerdFonts bool
@@ -28,7 +27,7 @@ type Icons struct {
 	CrossCircle string // Error dialog
 }
 
-func DefaultIcons() *Icons {
+func DefaultIcons(hasNerdFonts bool) *Icons {
 	if hasNerdFonts {
 		return defaultIconsWithNerdFont()
 	}
@@ -70,20 +69,25 @@ func defaultIconsWithoutNerdFont() *Icons {
 	}
 }
 
-func init() {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
+type DetectNerdFontMsg struct {
+	HasNerdFont bool
+	Err         error
+}
 
-	status, err := nf.DetectInstalled(ctx)
-	if err != nil {
-		return
-	}
+func DetectNerdFontCmd() tea.Cmd {
+	return func() tea.Msg {
+		// XXX: How long to make the context timeout?
+		ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+		defer cancel()
 
-	switch status {
-	case nf.StatusEnabled, nf.StatusInstalled:
-		hasNerdFonts = true
+		status, err := nf.DetectInstalled(ctx)
+		if err != nil {
+			return DetectNerdFontMsg{Err: err}
+		}
 
-	case nf.StatusDisabled, nf.StatusNotInstalled:
-		hasNerdFonts = false
+		return DetectNerdFontMsg{
+			HasNerdFont: status == nf.StatusEnabled ||
+				status == nf.StatusInstalled,
+		}
 	}
 }

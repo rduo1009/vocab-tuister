@@ -9,21 +9,32 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
-func nerdFontsEnabled() bool {
-	return os.Getenv("NERD_FONTS") == "1"
+var useNerdFonts bool
+
+func TestMain(m *testing.M) {
+	// First run with nerd fonts disabled
+	useNerdFonts = false
+	code := m.Run()
+	if code != 0 {
+		os.Exit(code)
+	}
+
+	// Second run with nerd fonts enabled
+	useNerdFonts = true
+	code = m.Run()
+	os.Exit(code)
 }
 
 func goldenSuffix() string {
-	if nerdFontsEnabled() {
+	if useNerdFonts {
 		return "_nerd"
 	}
 	return "_plain"
 }
 
 func newStyles() *styles.StylesWrapper {
-	nerd := nerdFontsEnabled()
 	return &styles.StylesWrapper{
-		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), nerd),
+		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
 	}
 }
 

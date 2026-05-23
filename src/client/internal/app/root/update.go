@@ -88,15 +88,32 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.BackgroundColorMsg:
 		if msg.IsDark() != m.isDark {
 			m.isDark = msg.IsDark()
-			m.themes = styles.DefaultThemes(msg.IsDark())
+			m.themes = styles.DefaultThemes(m.isDark)
 			m.styles.Styles = styles.DefaultStyles(
 				m.themes.Current(),
 				m.pages[m.pageOrder[m.currentPage]].HasOverlay(),
+				m.hasNerdFonts,
 			)
 			chromastyles.Register(m.styles.Editor.Chroma)
 
 			cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 		}
+
+	case styles.DetectNerdFontMsg:
+		if msg.Err != nil {
+			return m, util.MsgCmd(app.ErrMsg(msg.Err))
+		}
+
+		m.hasNerdFonts = msg.HasNerdFont
+		m.themes = styles.DefaultThemes(m.isDark)
+		m.styles.Styles = styles.DefaultStyles(
+			m.themes.Current(),
+			m.pages[m.pageOrder[m.currentPage]].HasOverlay(),
+			m.hasNerdFonts,
+		)
+		chromastyles.Register(m.styles.Editor.Chroma)
+
+		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 
 	case checkBgTickMsg:
 		return m, tea.Batch(
@@ -150,13 +167,13 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	if m.pages[m.pageOrder[m.currentPage]].HasOverlay() && !m.overlayExpectedActive {
 		m.overlayExpectedActive = true
-		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true, m.hasNerdFonts)
 		chromastyles.Register(m.styles.Editor.Chroma)
 
 		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 	} else if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() && m.overlayExpectedActive {
 		m.overlayExpectedActive = false
-		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
+		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false, m.hasNerdFonts)
 		chromastyles.Register(m.styles.Editor.Chroma)
 
 		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))

@@ -18,36 +18,37 @@ import (
 
 const testWordWrapDialogWidth = 60
 
-// nerdFontsEnabled returns true when the NERD_FONTS environment variable is set to "1".
-func nerdFontsEnabled() bool {
-	return os.Getenv("NERD_FONTS") == "1"
+var useNerdFonts bool
+
+func TestMain(m *testing.M) {
+	// First run with nerd fonts disabled
+	useNerdFonts = false
+	code := m.Run()
+	if code != 0 {
+		os.Exit(code)
+	}
+
+	// Second run with nerd fonts enabled
+	useNerdFonts = true
+	code = m.Run()
+	os.Exit(code)
 }
 
-// goldenSuffix returns a filename suffix based on the current NERD_FONTS setting,
-// so that each font mode gets its own golden file.
 func goldenSuffix() string {
-	if nerdFontsEnabled() {
+	if useNerdFonts {
 		return "_nerd"
 	}
 	return "_plain"
 }
 
-// newStyles creates a StylesWrapper that respects the NERD_FONTS env variable.
 func newStyles() *styles.StylesWrapper {
-	nerd := nerdFontsEnabled()
 	return &styles.StylesWrapper{
-		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), nerd),
+		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
 	}
 }
 
-// requireGoldenWithSuffix calls golden.RequireEqual against a file whose name
-// is derived from the test name plus the nerd-fonts suffix.  Pass -update to
-// regenerate all golden files at once.
 func requireGoldenWithSuffix(t *testing.T, data []byte) {
 	t.Helper()
-	// golden.RequireEqual uses t.Name() internally, so we run a named subtest
-	// whose name embeds the suffix — that way both sets of golden files can
-	// live side-by-side without colliding.
 	t.Run("fonts"+goldenSuffix(), func(t *testing.T) {
 		t.Helper()
 		golden.RequireEqual(t, data)

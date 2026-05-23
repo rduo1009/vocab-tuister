@@ -64,7 +64,7 @@ However, more blanket tests are available with these commands:
 ```bash
 uv run pytest -m 'not manual and not integration'
 PYTHONHASHSEED=1 uv run pytest -m 'integration'
-NERD_FONTS=0 go test ./src/...
+go test ./src/...
 ```
 
 Additionally, various linting tools (ruff, basedpyright, golangci-lint) can be used with the project.

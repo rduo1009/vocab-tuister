@@ -91,7 +91,7 @@ func hexColor(c color.Color) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", rgba.R, rgba.G, rgba.B)
 }
 
-func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
+func DefaultStyles(theme *tint.Tint, overlayActive, hasNerdFonts bool) Styles {
 	overlayDim := func(c color.Color) color.Color {
 		if overlayActive {
 			return lipgloss.Darken(c, 0.4)
@@ -101,7 +101,7 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 	}
 
 	s := Styles{}
-	s.Icons = DefaultIcons()
+	s.Icons = DefaultIcons(hasNerdFonts)
 	colours := DefaultColours(theme)
 
 	s.Text = lipgloss.NewStyle().Foreground(overlayDim(colours.Fg))

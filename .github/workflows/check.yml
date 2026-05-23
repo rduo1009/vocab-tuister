@@ -105,10 +105,7 @@ jobs:
           GOEXPERIMENT: jsonv2
 
       - name: Run test suite
-        run: |
-          NERD_FONTS=0 go test -coverpkg=./src/... -coverprofile=go-unit-plain.out ./src/...
-          NERD_FONTS=1 go test -coverpkg=./src/... -coverprofile=go-unit-nerd.out ./src/...
-          go tool covdata merge -i go-unit-plain.out,go-unit-nerd.out -o go-unit.out
+        run: go test -coverpkg=./src/... -coverprofile=go-unit.out ./src/...
         env:
           GOEXPERIMENT: jsonv2
 

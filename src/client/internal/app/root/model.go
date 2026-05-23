@@ -37,6 +37,7 @@ type Model struct {
 	// Application state
 
 	isDark                bool
+	hasNerdFonts          bool
 	themes                *tint.Registry
 	styles                styles.StylesWrapper
 	keys                  keyMap
@@ -76,7 +77,7 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		isDark:      true, // for now as well
 		themes:      themes,
 		styles: styles.StylesWrapper{
-			Styles: styles.DefaultStyles(themes.Current(), false),
+			Styles: styles.DefaultStyles(themes.Current(), false, false), // for now, nerd fonts disabled
 		},
 	}
 
