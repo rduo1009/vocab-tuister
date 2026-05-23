@@ -36,7 +36,7 @@ func goldenSuffix() string {
 func newStyles() *styles.StylesWrapper {
 	nerd := nerdFontsEnabled()
 	return &styles.StylesWrapper{
-		Styles: styles.DefaultStyles(styles.DefaultThemes(nerd).Current(), nerd),
+		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), nerd),
 	}
 }
 
