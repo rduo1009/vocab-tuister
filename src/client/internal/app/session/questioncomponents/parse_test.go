@@ -159,7 +159,9 @@ func TestParseCorrect(t *testing.T) {
 						ChosenItem: endingcomponents.Number(tt.selection.Number),
 					},
 				)
-				m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(tt.selection.Number)
+				m.QuestionComponent.Dropdowns[1].LastSelected = endingcomponents.Number(
+					tt.selection.Number,
+				)
 
 				tm.Send(
 					dropdown.PickedMsg{
@@ -167,7 +169,9 @@ func TestParseCorrect(t *testing.T) {
 						ChosenItem: endingcomponents.Gender(tt.selection.Gender),
 					},
 				)
-				m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(tt.selection.Gender)
+				m.QuestionComponent.Dropdowns[2].LastSelected = endingcomponents.Gender(
+					tt.selection.Gender,
+				)
 
 				tm.Send(tea.KeyPressMsg{Code: tea.KeyEnter, Mod: tea.ModCtrl})
 				time.Sleep(10 * time.Millisecond)

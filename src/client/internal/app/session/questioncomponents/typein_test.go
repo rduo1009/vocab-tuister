@@ -94,11 +94,13 @@ func TestTypeInCorrect(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for _, useNerdFonts := range []bool{false, true} {
-				q := questions.TypeInLatToEngQuestion{TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
-					Prompt:     "prompt",
-					MainAnswer: "foo",
-					Answers:    []string{"foo", "bar", "baz"},
-				}}
+				q := questions.TypeInLatToEngQuestion{
+					TypeInLatToEngQuestion: &pb.TypeInLatToEngQuestion{
+						Prompt:     "prompt",
+						MainAnswer: "foo",
+						Answers:    []string{"foo", "bar", "baz"},
+					},
+				}
 				qc := NewTypeInQuestionModel(&q, newStyles(useNerdFonts))
 
 				m := modelTI{QuestionComponent: qc}
