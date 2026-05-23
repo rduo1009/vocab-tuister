@@ -1,7 +1,6 @@
 package tabs
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
@@ -9,15 +8,38 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
-type stringer string
+var useNerdFonts bool
 
-func (s stringer) String() string { return string(s) }
+func goldenSuffix(useNerdFonts bool) string {
+	if useNerdFonts {
+		return "_nerd"
+	}
+	return "_plain"
+}
+
+func newStyles(useNerdFonts bool) *styles.StylesWrapper {
+	return &styles.StylesWrapper{
+		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
+	}
+}
+
+func requireGoldenWithSuffix(t *testing.T, data []byte, useNerdFonts bool) {
+	t.Helper()
+	t.Run("fonts"+goldenSuffix(useNerdFonts), func(t *testing.T) {
+		t.Helper()
+		golden.RequireEqual(t, data)
+	})
+}
+
+type tabName string
+
+func (s tabName) DisplayString(*styles.StylesWrapper) string { return string(s) }
 
 func TestView(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
-		stringer("Tab 2"),
-		stringer("Tab 3"),
+	names := []TabName{
+		tabName("Tab 1"),
+		tabName("Tab 2"),
+		tabName("Tab 3"),
 	}
 
 	testCases := []struct {
@@ -26,59 +48,31 @@ func TestView(t *testing.T) {
 		isFocused bool
 		width     int
 	}{
-		{
-			name:      "first_tab_active_blurred",
-			active:    0,
-			isFocused: false,
-			width:     40,
-		},
-		{
-			name:      "second_tab_active_focused",
-			active:    1,
-			isFocused: true,
-			width:     40,
-		},
-		{
-			name:      "third_tab_active_blurred",
-			active:    2,
-			isFocused: false,
-			width:     40,
-		},
-		{
-			name:      "narrow_width",
-			active:    0,
-			isFocused: true,
-			width:     20,
-		},
-		{
-			name:      "wide_width",
-			active:    1,
-			isFocused: false,
-			width:     80,
-		},
+		{name: "first_tab_active_blurred", active: 0, isFocused: false, width: 40},
+		{name: "second_tab_active_focused", active: 1, isFocused: true, width: 40},
+		{name: "third_tab_active_blurred", active: 2, isFocused: false, width: 40},
+		{name: "narrow_width", active: 0, isFocused: true, width: 20},
+		{name: "wide_width", active: 1, isFocused: false, width: 80},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			s := styles.StylesWrapper{
-				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
+			for _, useNerdFonts := range []bool{false, true} {
+				m := New(names, tc.active, tc.isFocused, newStyles(useNerdFonts))
+				m.Width = tc.width
+				requireGoldenWithSuffix(t, []byte(m.View()), useNerdFonts)
 			}
-
-			m := New(names, tc.active, tc.isFocused, &s)
-			m.Width = tc.width
-			golden.RequireEqual(t, []byte(m.View()))
 		})
 	}
 }
 
 func TestModelSelection(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
-		stringer("Tab 2"),
-		stringer("Tab 3"),
+	names := []TabName{
+		tabName("Tab 1"),
+		tabName("Tab 2"),
+		tabName("Tab 3"),
 	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	m := New(names, 0, false, &s)
+	m := New(names, 0, false, newStyles(false))
 
 	if m.active != 0 {
 		t.Errorf("expected active tab 0, got %d", m.active)
@@ -104,11 +98,8 @@ func TestModelSelection(t *testing.T) {
 }
 
 func TestFocusBlur(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
-	}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	m := New(names, 0, false, &s)
+	names := []TabName{tabName("Tab 1")}
+	m := New(names, 0, false, newStyles(false))
 
 	if m.Focused() {
 		t.Error("expected initial focus to be false")

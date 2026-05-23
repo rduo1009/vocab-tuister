@@ -17,64 +17,74 @@ import (
 
 const testWordWrapDialogWidth = 60
 
+func goldenSuffix(useNerdFonts bool) string {
+	if useNerdFonts {
+		return "_nerd"
+	}
+	return "_plain"
+}
+
+func newStyles(useNerdFonts bool) *styles.StylesWrapper {
+	return &styles.StylesWrapper{
+		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
+	}
+}
+
+func requireGoldenWithSuffix(t *testing.T, data []byte, useNerdFonts bool) {
+	t.Helper()
+	t.Run("fonts"+goldenSuffix(useNerdFonts), func(t *testing.T) {
+		t.Helper()
+		golden.RequireEqual(t, data)
+	})
+}
+
 // TestErrorDialog checks the initial rendered output of the error dialog against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestErrorDialog(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
-	ed.SetWidth(100)
-	ed.SetHeight(40)
-	ed.SetError(errors.New("this is a test error"))
-
-	finalView := ed.View()
-	golden.RequireEqual(t, []byte(finalView))
+	for _, useNerdFonts := range []bool{false, true} {
+		ed := errordialog.New(newStyles(useNerdFonts))
+		ed.SetWidth(100)
+		ed.SetHeight(40)
+		ed.SetError(errors.New("this is a test error"))
+		requireGoldenWithSuffix(t, []byte(ed.View()), useNerdFonts)
+	}
 }
 
 // TestErrorDialogWordWrap checks long error text wraps to the viewport width.
 // Run with -update to regenerate the golden file.
 func TestErrorDialogWordWrap(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
-	ed.SetWidth(testWordWrapDialogWidth)
-	ed.SetHeight(40)
-	ed.SetError(
-		errors.New(
-			"this is a very long error message that should wrap naturally and never require horizontal scrolling",
-		),
-	)
-
-	finalView := ed.View()
-	golden.RequireEqual(t, []byte(finalView))
+	for _, useNerdFonts := range []bool{false, true} {
+		ed := errordialog.New(newStyles(useNerdFonts))
+		ed.SetWidth(testWordWrapDialogWidth)
+		ed.SetHeight(40)
+		ed.SetError(
+			errors.New(
+				"this is a very long error message that should wrap naturally and never require horizontal scrolling",
+			),
+		)
+		requireGoldenWithSuffix(t, []byte(ed.View()), useNerdFonts)
+	}
 }
 
 func TestErrorDialogVisibility(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	assert.False(t, ed.Visible())
-	assert.Empty(t, ed.View()) // Should return empty string when invisible
-
+	assert.Empty(t, ed.View())
 	ed.SetError(errors.New("test error"))
 	assert.True(t, ed.Visible())
 	assert.NotEmpty(t, ed.View())
 }
 
 func TestErrorDialogInit(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	assert.Nil(t, ed.Init())
 }
 
 func TestErrorDialogTimeoutInteraction(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	ed.SetError(errors.New("test error"))
 	assert.True(t, ed.Visible())
-
-	// Setting error updates the last interaction time.
-	// Sending TimeoutMsg immediately should NOT hide the dialog,
-	// because the recent interaction threshold (3s) hasn't passed.
 	ed, cmd := ed.Update(errordialog.TimeoutMsg{})
-
 	assert.True(t, ed.Visible())
 	assert.NotNil(t, cmd, "should return a new tick command")
 }
@@ -86,45 +96,38 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 
 	t.Parallel()
 
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	ed.SetError(errors.New("test error"))
-
-	// Wait past the 3-second threshold to allow TimeoutMsg to hide it
 	time.Sleep(3100 * time.Millisecond)
 
 	ed, cmd := ed.Update(errordialog.TimeoutMsg{})
-
 	assert.False(t, ed.Visible())
 	assert.Nil(t, cmd)
 	assert.Empty(t, ed.View())
 }
 
 func TestErrorDialogScrolling(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	ed.SetWidth(40 * 4)
-	ed.SetHeight(20 * 4) // Height gives around 20-5 = 15 viewport height
+	ed.SetHeight(20 * 4)
 
-	var errStr string
-	var errStrSb89 strings.Builder
-	for i := 0; i < 30; i++ {
-		errStrSb89.WriteString(fmt.Sprintf("error line %d\n", i))
+	var sb strings.Builder
+	for i := range 30 {
+		fmt.Fprintf(&sb, "error line %d\n", i)
 	}
-	errStr += errStrSb89.String()
 
-	errStr += "error line 30"
-	go ed.SetError(errors.New(errStr))
+	sb.WriteString("error line 30")
+
+	go ed.SetError(errors.New(sb.String()))
 
 	time.Sleep(time.Millisecond * 100)
-	assert.True(t, ed.Visible())
 
+	assert.True(t, ed.Visible())
 	initialView := ed.View()
 	assert.Contains(t, initialView, "error line 0")
 	assert.NotContains(t, initialView, "error line 30")
 
-	// Scroll down using key messages
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		ed, _ = ed.Update(tea.KeyPressMsg{Code: tea.KeyDown})
 	}
 
@@ -132,20 +135,15 @@ func TestErrorDialogScrolling(t *testing.T) {
 	assert.NotContains(t, scrolledView, "error line 0")
 	assert.Contains(t, scrolledView, "error line 30")
 
-	// Mouse scrolling interaction
 	ed, _ = ed.Update(tea.MouseWheelMsg{Button: tea.MouseWheelUp})
-
-	scrolledUpView := ed.View()
-	assert.NotEmpty(t, scrolledUpView)
+	assert.NotEmpty(t, ed.View())
 }
 
 func TestErrorDialogResize(t *testing.T) {
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	ed := errordialog.New(&s)
+	ed := errordialog.New(newStyles(false))
 	ed.SetWidth(100)
 	ed.SetHeight(100)
 	ed.SetError(errors.New("error"))
-
 	viewA := ed.View()
 
 	ed.SetWidth(50)

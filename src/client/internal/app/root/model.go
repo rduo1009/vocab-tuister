@@ -1,8 +1,6 @@
 package root
 
 import (
-	"fmt"
-
 	"charm.land/bubbles/v2/help"
 	chromastyles "github.com/alecthomas/chroma/v2/styles"
 	tint "github.com/lrstanley/bubbletint/v2"
@@ -39,6 +37,7 @@ type Model struct {
 	// Application state
 
 	isDark                bool
+	hasNerdFonts          bool
 	themes                *tint.Registry
 	styles                styles.StylesWrapper
 	keys                  keyMap
@@ -50,8 +49,8 @@ type Model struct {
 	err                   error
 }
 
-func toStringers[T fmt.Stringer](items []T) []fmt.Stringer {
-	res := make([]fmt.Stringer, len(items))
+func toTabNames[T tabs.TabName](items []T) []tabs.TabName {
+	res := make([]tabs.TabName, len(items))
 	for i, v := range items {
 		res[i] = v
 	}
@@ -78,14 +77,14 @@ func New(inbuiltListDir string, serverPort int) *Model {
 		isDark:      true, // for now as well
 		themes:      themes,
 		styles: styles.StylesWrapper{
-			Styles: styles.DefaultStyles(themes.Current(), false),
+			Styles: styles.DefaultStyles(themes.Current(), false, false), // for now, nerd fonts disabled
 		},
 	}
 
 	// now everything uses &m.styles
 	chromastyles.Register(m.styles.Editor.Chroma)
 
-	m.tabs = tabs.New(toStringers(pageOrder), 0, true, &m.styles)
+	m.tabs = tabs.New(toTabNames(pageOrder), 0, true, &m.styles)
 
 	h := help.New()
 	overlayHelp := help.New()
