@@ -101,7 +101,10 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case styles.DetectNerdFontMsg:
 		if msg.Err != nil {
-			return m, util.MsgCmd(app.ErrMsg(msg.Err))
+			// Nerd Font detection is a best-effort enhancement; ignore failures
+			// and keep the existing fallback state (hasNerdFonts=false unless a
+			// prior successful detection set it differently).
+			break
 		}
 
 		m.hasNerdFonts = msg.HasNerdFont
