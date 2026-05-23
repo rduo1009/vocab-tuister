@@ -394,11 +394,11 @@ func (m *ParseQuestionModel) View() string {
 	var resultView string
 	switch m.status {
 	case Correct:
-		resultView = m.styles.SessionPage.Correct.Render(" ✓")
+		resultView = m.styles.SessionPage.Correct.Render(" " + m.styles.Icons.Checkmark)
 
 	case Incorrect:
 		resultView = m.styles.SessionPage.Incorrect.Render(
-			" ✕ " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.DisplayString,
+			" " + m.styles.Icons.Cross + " " + m.question.(*questions.ParseWordLatToCompQuestion).MainAnswer.DisplayString,
 		)
 	}
 

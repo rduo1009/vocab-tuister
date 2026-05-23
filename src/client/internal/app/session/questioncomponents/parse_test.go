@@ -5,7 +5,6 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/golden"
 	"github.com/charmbracelet/x/exp/teatest/v2"
 	"github.com/stretchr/testify/assert"
 
@@ -14,7 +13,6 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/dropdown"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelPS struct {
@@ -31,18 +29,14 @@ func (m modelPS) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
-
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
-
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
-
 	_, cmd = m.QuestionComponent.Update(msg)
-
 	return m, cmd
 }
 
@@ -65,8 +59,7 @@ func TestParse(t *testing.T) {
 			Gender: pb.Gender_GENDER_NEUTER,
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewParseQuestionModel(&q, &s)
+	qc := NewParseQuestionModel(&q, newStyles())
 
 	view := qc.View()
 	assert.Contains(t, view, "Parse")
@@ -76,7 +69,7 @@ func TestParse(t *testing.T) {
 	assert.Contains(t, view, "singular")
 	assert.Contains(t, view, "masculine")
 
-	golden.RequireEqual(t, []byte(view))
+	requireGoldenWithSuffix(t, []byte(view))
 }
 
 // NOTE: Wrangling the dropdowns themselves is too tricky and will be left to e2e testing.
@@ -135,10 +128,7 @@ func TestParseCorrect(t *testing.T) {
 					}},
 				},
 			}
-			s := styles.StylesWrapper{
-				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
-			}
-			qc := NewParseQuestionModel(&q, &s)
+			qc := NewParseQuestionModel(&q, newStyles())
 
 			m := modelPS{QuestionComponent: qc}
 			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -148,7 +138,6 @@ func TestParseCorrect(t *testing.T) {
 				}
 			})
 
-			// simulate dropdown selections
 			tm.Send(
 				dropdown.PickedMsg{
 					ID:         "parsequestionDropdown0",
@@ -178,7 +167,6 @@ func TestParseCorrect(t *testing.T) {
 			tm.Quit()
 
 			fm := tm.FinalModel(t)
-
 			m, ok := fm.(modelPS)
 			if !ok {
 				t.Fatalf("final model have the wrong type: %T", fm)
@@ -204,7 +192,7 @@ func TestParseCorrect(t *testing.T) {
 				assert.Contains(t, view, s)
 			}
 
-			golden.RequireEqual(t, []byte(view))
+			requireGoldenWithSuffix(t, []byte(view))
 		})
 	}
 }
@@ -230,8 +218,7 @@ func TestParseIncorrect(t *testing.T) {
 			DisplayString: "genitive plural feminine",
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewParseQuestionModel(&q, &s)
+	qc := NewParseQuestionModel(&q, newStyles())
 
 	m := modelPS{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -241,7 +228,6 @@ func TestParseIncorrect(t *testing.T) {
 		}
 	})
 
-	// incorrect
 	tm.Send(
 		dropdown.PickedMsg{
 			ID:         "parsequestionDropdown0",
@@ -271,7 +257,6 @@ func TestParseIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelPS)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -299,7 +284,7 @@ func TestParseIncorrect(t *testing.T) {
 	assert.Contains(t, view, "genitive plural neuter")
 	assert.NotContains(t, view, "feminine")
 
-	golden.RequireEqual(t, []byte(view))
+	requireGoldenWithSuffix(t, []byte(view))
 }
 
 func TestParseNextQuestion(t *testing.T) {
@@ -318,8 +303,7 @@ func TestParseNextQuestion(t *testing.T) {
 			DisplayString: "genitive plural neuter",
 		}},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewParseQuestionModel(&q, &s)
+	qc := NewParseQuestionModel(&q, newStyles())
 
 	m := modelPS{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -329,7 +313,6 @@ func TestParseNextQuestion(t *testing.T) {
 		}
 	})
 
-	// correct
 	tm.Send(
 		dropdown.PickedMsg{
 			ID:         "parsequestionDropdown0",
@@ -357,7 +340,6 @@ func TestParseNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelPS)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

@@ -5,14 +5,12 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/golden"
 	"github.com/charmbracelet/x/exp/teatest/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelTI struct {
@@ -29,18 +27,14 @@ func (m modelTI) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
-
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
-
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
-
 	_, cmd = m.QuestionComponent.Update(msg)
-
 	return m, cmd
 }
 
@@ -54,15 +48,14 @@ func TestTypeInLatToEng(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	qc := NewTypeInQuestionModel(&q, newStyles())
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
 	assert.Contains(t, view, "to English:")
 	assert.Contains(t, view, "prompt")
 
-	golden.RequireEqual(t, []byte(view))
+	requireGoldenWithSuffix(t, []byte(view))
 }
 
 func TestTypeInEngToLat(t *testing.T) {
@@ -71,15 +64,14 @@ func TestTypeInEngToLat(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	qc := NewTypeInQuestionModel(&q, newStyles())
 
 	view := qc.View()
 	assert.Contains(t, view, "Translate")
 	assert.Contains(t, view, "to Latin")
 	assert.Contains(t, view, "prompt")
 
-	golden.RequireEqual(t, []byte(view))
+	requireGoldenWithSuffix(t, []byte(view))
 }
 
 func TestTypeInCorrect(t *testing.T) {
@@ -98,10 +90,7 @@ func TestTypeInCorrect(t *testing.T) {
 				MainAnswer: "foo",
 				Answers:    []string{"foo", "bar", "baz"},
 			}}
-			s := styles.StylesWrapper{
-				Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false),
-			}
-			qc := NewTypeInQuestionModel(&q, &s)
+			qc := NewTypeInQuestionModel(&q, newStyles())
 
 			m := modelTI{QuestionComponent: qc}
 			tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -111,7 +100,6 @@ func TestTypeInCorrect(t *testing.T) {
 				}
 			})
 
-			// simulate typing
 			m.QuestionComponent.textinput.Focus()
 			tm.Type(tt.input)
 
@@ -120,7 +108,6 @@ func TestTypeInCorrect(t *testing.T) {
 			tm.Quit()
 
 			fm := tm.FinalModel(t)
-
 			m, ok := fm.(modelTI)
 			if !ok {
 				t.Fatalf("final model have the wrong type: %T", fm)
@@ -141,7 +128,7 @@ func TestTypeInCorrect(t *testing.T) {
 				m.QuestionComponent.QuestionStatus(),
 			)
 
-			golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
+			requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 		})
 	}
 }
@@ -152,8 +139,7 @@ func TestTypeInIncorrect(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	qc := NewTypeInQuestionModel(&q, newStyles())
 
 	m := modelTI{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -163,7 +149,6 @@ func TestTypeInIncorrect(t *testing.T) {
 		}
 	})
 
-	// simulate typing in "qux" (incorrect)
 	m.QuestionComponent.textinput.Focus()
 	tm.Type("qux")
 
@@ -172,7 +157,6 @@ func TestTypeInIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -195,7 +179,7 @@ func TestTypeInIncorrect(t *testing.T) {
 	assert.Contains(t, m.QuestionComponent.View(), "foo")
 	assert.Contains(t, m.QuestionComponent.View(), "qux")
 
-	golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
+	requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestTypeInNextQuestion(t *testing.T) {
@@ -204,8 +188,7 @@ func TestTypeInNextQuestion(t *testing.T) {
 		MainAnswer: "foo",
 		Answers:    []string{"foo", "bar", "baz"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewTypeInQuestionModel(&q, &s)
+	qc := NewTypeInQuestionModel(&q, newStyles())
 
 	m := modelTI{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -215,7 +198,6 @@ func TestTypeInNextQuestion(t *testing.T) {
 		}
 	})
 
-	// simulate typing in "foo" (correct)
 	m.QuestionComponent.textinput.Focus()
 	tm.Type("foo")
 
@@ -227,7 +209,6 @@ func TestTypeInNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

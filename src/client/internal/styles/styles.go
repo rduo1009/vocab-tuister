@@ -82,6 +82,8 @@ type Styles struct {
 	Jsonview *chroma.Style
 
 	Fang fang.ColorSchemeFunc
+
+	Icons *Icons
 }
 
 func hexColor(c color.Color) string {
@@ -98,8 +100,9 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 		}
 	}
 
-	colours := DefaultColours(theme)
 	s := Styles{}
+	s.Icons = DefaultIcons()
+	colours := DefaultColours(theme)
 
 	s.Text = lipgloss.NewStyle().Foreground(overlayDim(colours.Fg))
 	s.Title = lipgloss.NewStyle().Bold(true).Underline(true).Foreground(overlayDim(colours.Fg))
@@ -384,6 +387,12 @@ func DefaultStyles(theme *tint.Tint, overlayActive bool) Styles {
 			lipgloss.Lighten(colours.Bg, 0.2),
 		)
 		fs.Focused.TextInput.Prompt = fs.Focused.TextInput.Prompt.Foreground(colours.Pink)
+
+		if s.Icons.HasNerdFonts {
+			fs.Focused.ErrorIndicator = fs.Focused.ErrorIndicator.SetString(" " + s.Icons.Cross)
+			fs.Focused.ErrorMessage = fs.Focused.ErrorMessage.SetString(" " + s.Icons.Cross)
+			fs.Focused.SelectedPrefix = fs.Focused.SelectedPrefix.SetString(s.Icons.Checkmark + " ")
+		}
 
 		fs.Blurred = fs.Focused
 		fs.Blurred.Base = fs.Blurred.Base.BorderStyle(lipgloss.HiddenBorder())

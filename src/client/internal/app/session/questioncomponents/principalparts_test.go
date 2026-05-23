@@ -5,14 +5,12 @@ import (
 	"time"
 
 	tea "charm.land/bubbletea/v2"
-	"github.com/charmbracelet/x/exp/golden"
 	"github.com/charmbracelet/x/exp/teatest/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/rduo1009/vocab-tuister/src/client/internal/app/session/questions"
 	"github.com/rduo1009/vocab-tuister/src/client/internal/components/navigator"
 	pb "github.com/rduo1009/vocab-tuister/src/client/internal/pb/vocab_tuister/v1"
-	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 type modelPP struct {
@@ -29,18 +27,14 @@ func (m modelPP) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
-
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
-
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
-
 	_, cmd = m.QuestionComponent.Update(msg)
-
 	return m, cmd
 }
 
@@ -53,15 +47,14 @@ func TestPrincipalParts(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewPrincipalPartsQuestionModel(&q, &s)
+	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
 
 	view := qc.View()
 	assert.Contains(t, view, "Principal parts")
 	assert.Contains(t, view, "of")
 	assert.Contains(t, view, "prompt")
 
-	golden.RequireEqual(t, []byte(view))
+	requireGoldenWithSuffix(t, []byte(view))
 }
 
 func TestPrincipalPartsCorrect(t *testing.T) {
@@ -69,8 +62,7 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewPrincipalPartsQuestionModel(&q, &s)
+	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -80,7 +72,6 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 		}
 	})
 
-	// all correct
 	m.QuestionComponent.textinputs[0].Focus()
 	tm.Type("foo")
 	time.Sleep(10 * time.Millisecond)
@@ -102,7 +93,6 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -123,7 +113,7 @@ func TestPrincipalPartsCorrect(t *testing.T) {
 		m.QuestionComponent.QuestionStatus(),
 	)
 
-	golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
+	requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestPrincipalPartsIncorrect(t *testing.T) {
@@ -131,8 +121,7 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewPrincipalPartsQuestionModel(&q, &s)
+	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -142,7 +131,6 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 		}
 	})
 
-	// two correct, two incorrect
 	m.QuestionComponent.textinputs[0].Focus()
 	tm.Type("foo")
 	time.Sleep(10 * time.Millisecond)
@@ -164,7 +152,6 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -188,7 +175,7 @@ func TestPrincipalPartsIncorrect(t *testing.T) {
 	assert.Contains(t, m.QuestionComponent.View(), "bar")
 	assert.Contains(t, m.QuestionComponent.View(), "qux")
 
-	golden.RequireEqual(t, []byte(m.QuestionComponent.View()))
+	requireGoldenWithSuffix(t, []byte(m.QuestionComponent.View()))
 }
 
 func TestPrincipalPartsNextQuestion(t *testing.T) {
@@ -196,8 +183,7 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 		Prompt:         "prompt",
 		PrincipalParts: []string{"foo", "bar", "baz", "qux"},
 	}}
-	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
-	qc := NewPrincipalPartsQuestionModel(&q, &s)
+	qc := NewPrincipalPartsQuestionModel(&q, newStyles())
 
 	m := modelPP{QuestionComponent: qc}
 	tm := teatest.NewTestModel(t, m, teatest.WithInitialTermSize(70, 30))
@@ -207,7 +193,6 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 		}
 	})
 
-	// all correct
 	m.QuestionComponent.textinputs[0].Focus()
 	tm.Type("foo")
 	time.Sleep(10 * time.Millisecond)
@@ -232,7 +217,6 @@ func TestPrincipalPartsNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
-
 	m, ok := fm.(modelPP)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

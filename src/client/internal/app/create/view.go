@@ -2,6 +2,8 @@ package create
 
 import (
 	"charm.land/lipgloss/v2"
+
+	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
 func (m *Model) SetWidth(width int) {
@@ -44,16 +46,16 @@ func (m *Model) OverlayView(width, height int) (view string, x, y int) {
 	panic("unreachable")
 }
 
-func statusSymbol(s VerifyStatus) string {
+func statusSymbol(s VerifyStatus, styles *styles.StylesWrapper) string {
 	switch s {
 	case StatusMissing:
-		return "×"
+		return styles.Icons.Cross
 
 	case StatusPending:
 		return "~"
 
 	case StatusVerified:
-		return "✓"
+		return styles.Icons.Checkmark
 
 	default:
 		panic("unreachable")
@@ -99,7 +101,7 @@ func (m *Model) View() string {
 	verifySectionWidth := m.width / 2
 	statusSpace := (verifySectionWidth - 16) / 2
 	renderStatus := func(label string, status VerifyStatus) string {
-		symbol := statusSymbol(status)
+		symbol := statusSymbol(status, m.styles)
 		text := statusText(status)
 		style := m.getStatusStyle(status)
 

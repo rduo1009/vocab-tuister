@@ -1,6 +1,7 @@
 package errordialog
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -111,8 +112,8 @@ func (m Model) View() string {
 		return ""
 	}
 
-	// TODO: use nerdfont with https://github.com/lrstanley/go-nf?
-	header := m.styles.ErrorDialog.Header.Width(m.width - 2).Render("ⓧ Error")
+	header := m.styles.ErrorDialog.Header.Width(m.width - 2).
+		Render(fmt.Sprintf("%s Error", m.styles.Icons.CrossCircle))
 
 	viewportView := m.viewport.View()
 

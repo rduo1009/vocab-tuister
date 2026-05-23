@@ -1,7 +1,6 @@
 package tabs
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
@@ -9,15 +8,15 @@ import (
 	"github.com/rduo1009/vocab-tuister/src/client/internal/styles"
 )
 
-type stringer string
+type tabName string
 
-func (s stringer) String() string { return string(s) }
+func (s tabName) DisplayString(*styles.StylesWrapper) string { return string(s) }
 
 func TestView(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
-		stringer("Tab 2"),
-		stringer("Tab 3"),
+	names := []TabName{
+		tabName("Tab 1"),
+		tabName("Tab 2"),
+		tabName("Tab 3"),
 	}
 
 	testCases := []struct {
@@ -72,10 +71,10 @@ func TestView(t *testing.T) {
 }
 
 func TestModelSelection(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
-		stringer("Tab 2"),
-		stringer("Tab 3"),
+	names := []TabName{
+		tabName("Tab 1"),
+		tabName("Tab 2"),
+		tabName("Tab 3"),
 	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	m := New(names, 0, false, &s)
@@ -104,8 +103,8 @@ func TestModelSelection(t *testing.T) {
 }
 
 func TestFocusBlur(t *testing.T) {
-	names := []fmt.Stringer{
-		stringer("Tab 1"),
+	names := []TabName{
+		tabName("Tab 1"),
 	}
 	s := styles.StylesWrapper{Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false)}
 	m := New(names, 0, false, &s)

@@ -97,6 +97,8 @@ github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1 h1:Cm9I4d8uGdT9HCI9N540z7ri
 github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1/go.mod h1:5tM+r+MQf4GQRBYpAURDt0iQRKkPJxzsIYEPFaYXAno=
 github.com/lrstanley/bubbletint/v2 v2.0.1 h1:ELxRFzrm9X5DIz7Y1Yp0gfGhsJo+4U3w8WJe6x/Beso=
 github.com/lrstanley/bubbletint/v2 v2.0.1/go.mod h1:fL833lvIEbec7VBi9F8wZ/1008jBiDrvQtuIac9AG/k=
+github.com/lrstanley/go-nf v0.0.0-20260418212552-215ab243b591 h1:WTkxFAeEMXU0lVPiUmUUoZJWCgPquyaxQGUf9e8dBh8=
+github.com/lrstanley/go-nf v0.0.0-20260418212552-215ab243b591/go.mod h1:MW7vmvMkwop4wD5DgTS5dzykKwN/r+3OWcxfzAANOrw=
 github.com/lucasb-eyer/go-colorful v1.4.0 h1:UtrWVfLdarDgc44HcS7pYloGHJUjHV/4FwW4TvVgFr4=
 github.com/lucasb-eyer/go-colorful v1.4.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/mattn/go-runewidth v0.0.23 h1:7ykA0T0jkPpzSvMS5i9uoNn2Xy3R383f9HDx3RybWcw=
