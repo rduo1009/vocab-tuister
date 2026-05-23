@@ -94,6 +94,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.pages[m.pageOrder[m.currentPage]].HasOverlay(),
 			)
 			chromastyles.Register(m.styles.Editor.Chroma)
+
 			cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 		}
 
@@ -151,11 +152,13 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.overlayExpectedActive = true
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), true)
 		chromastyles.Register(m.styles.Editor.Chroma)
+
 		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 	} else if !m.pages[m.pageOrder[m.currentPage]].HasOverlay() && m.overlayExpectedActive {
 		m.overlayExpectedActive = false
 		m.styles.Styles = styles.DefaultStyles(m.themes.Current(), false)
 		chromastyles.Register(m.styles.Editor.Chroma)
+
 		cmds = append(cmds, util.MsgCmd(app.RefreshStylesMsg{}))
 	}
 

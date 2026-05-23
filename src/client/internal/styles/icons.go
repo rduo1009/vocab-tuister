@@ -82,6 +82,7 @@ func init() {
 	switch status {
 	case nf.StatusEnabled, nf.StatusInstalled:
 		hasNerdFonts = true
+
 	case nf.StatusDisabled, nf.StatusNotInstalled:
 		hasNerdFonts = false
 	}

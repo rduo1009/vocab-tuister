@@ -1,7 +1,6 @@
 package errordialog
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -113,7 +112,7 @@ func (m Model) View() string {
 	}
 
 	header := m.styles.ErrorDialog.Header.Width(m.width - 2).
-		Render(fmt.Sprintf("%s Error", m.styles.Icons.CrossCircle))
+		Render(m.styles.Icons.CrossCircle + " Error")
 
 	viewportView := m.viewport.View()
 
@@ -146,6 +145,7 @@ func (m *Model) updateViewportContent() {
 		if m.viewport.Width() > 0 {
 			content = lipgloss.Wrap(content, m.viewport.Width(), wordWrapBreakpoints)
 		}
+
 		m.viewport.SetContent(content)
 	}
 }

@@ -27,14 +27,18 @@ func (m modelTI) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case QuestionAnsweredMsg:
 		m.CurrentMsg = msg
+
 	case NextQuestionMsg:
 		m.CurrentMsg = msg
+
 	case navigator.RemoveNavigableMsg:
 		m.RemovedNavigables = msg.Components
 	}
 
 	var cmd tea.Cmd
+
 	_, cmd = m.QuestionComponent.Update(msg)
+
 	return m, cmd
 }
 
@@ -108,6 +112,7 @@ func TestTypeInCorrect(t *testing.T) {
 			tm.Quit()
 
 			fm := tm.FinalModel(t)
+
 			m, ok := fm.(modelTI)
 			if !ok {
 				t.Fatalf("final model have the wrong type: %T", fm)
@@ -157,6 +162,7 @@ func TestTypeInIncorrect(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)
@@ -209,6 +215,7 @@ func TestTypeInNextQuestion(t *testing.T) {
 	tm.Quit()
 
 	fm := tm.FinalModel(t)
+
 	m, ok := fm.(modelTI)
 	if !ok {
 		t.Fatalf("final model have the wrong type: %T", fm)

@@ -105,10 +105,13 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping slow test in short mode.")
 	}
+
 	t.Parallel()
+
 	ed := errordialog.New(newStyles())
 	ed.SetError(errors.New("test error"))
 	time.Sleep(3100 * time.Millisecond)
+
 	ed, cmd := ed.Update(errordialog.TimeoutMsg{})
 	assert.False(t, ed.Visible())
 	assert.Nil(t, cmd)
@@ -121,12 +124,14 @@ func TestErrorDialogScrolling(t *testing.T) {
 	ed.SetHeight(20 * 4)
 
 	var sb strings.Builder
-	for i := 0; i < 30; i++ {
-		sb.WriteString(fmt.Sprintf("error line %d\n", i))
+	for i := range 30 {
+		fmt.Fprintf(&sb, "error line %d\n", i)
 	}
+
 	sb.WriteString("error line 30")
 
 	go ed.SetError(errors.New(sb.String()))
+
 	time.Sleep(time.Millisecond * 100)
 
 	assert.True(t, ed.Visible())
@@ -134,9 +139,10 @@ func TestErrorDialogScrolling(t *testing.T) {
 	assert.Contains(t, initialView, "error line 0")
 	assert.NotContains(t, initialView, "error line 30")
 
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		ed, _ = ed.Update(tea.KeyPressMsg{Code: tea.KeyDown})
 	}
+
 	scrolledView := ed.View()
 	assert.NotContains(t, scrolledView, "error line 0")
 	assert.Contains(t, scrolledView, "error line 30")

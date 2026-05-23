@@ -84,6 +84,7 @@ func (m *Model) View() string {
 	} else {
 		targetWidth = m.Width / 2
 	}
+
 	remaining := targetWidth - textWidth - borderWidth
 
 	pad := 1
