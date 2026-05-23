@@ -1,7 +1,6 @@
 package tabs
 
 import (
-	"os"
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
@@ -11,36 +10,22 @@ import (
 
 var useNerdFonts bool
 
-func TestMain(m *testing.M) {
-	// First run with nerd fonts disabled
-	useNerdFonts = false
-	code := m.Run()
-	if code != 0 {
-		os.Exit(code)
-	}
-
-	// Second run with nerd fonts enabled
-	useNerdFonts = true
-	code = m.Run()
-	os.Exit(code)
-}
-
-func goldenSuffix() string {
+func goldenSuffix(useNerdFonts bool) string {
 	if useNerdFonts {
 		return "_nerd"
 	}
 	return "_plain"
 }
 
-func newStyles() *styles.StylesWrapper {
+func newStyles(useNerdFonts bool) *styles.StylesWrapper {
 	return &styles.StylesWrapper{
 		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
 	}
 }
 
-func requireGoldenWithSuffix(t *testing.T, data []byte) {
+func requireGoldenWithSuffix(t *testing.T, data []byte, useNerdFonts bool) {
 	t.Helper()
-	t.Run("fonts"+goldenSuffix(), func(t *testing.T) {
+	t.Run("fonts"+goldenSuffix(useNerdFonts), func(t *testing.T) {
 		t.Helper()
 		golden.RequireEqual(t, data)
 	})
@@ -72,9 +57,11 @@ func TestView(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			m := New(names, tc.active, tc.isFocused, newStyles())
-			m.Width = tc.width
-			requireGoldenWithSuffix(t, []byte(m.View()))
+			for _, useNerdFonts := range []bool{false, true} {
+				m := New(names, tc.active, tc.isFocused, newStyles(useNerdFonts))
+				m.Width = tc.width
+				requireGoldenWithSuffix(t, []byte(m.View()), useNerdFonts)
+			}
 		})
 	}
 }
@@ -85,7 +72,7 @@ func TestModelSelection(t *testing.T) {
 		tabName("Tab 2"),
 		tabName("Tab 3"),
 	}
-	m := New(names, 0, false, newStyles())
+	m := New(names, 0, false, newStyles(false))
 
 	if m.active != 0 {
 		t.Errorf("expected active tab 0, got %d", m.active)
@@ -112,7 +99,7 @@ func TestModelSelection(t *testing.T) {
 
 func TestFocusBlur(t *testing.T) {
 	names := []TabName{tabName("Tab 1")}
-	m := New(names, 0, false, newStyles())
+	m := New(names, 0, false, newStyles(false))
 
 	if m.Focused() {
 		t.Error("expected initial focus to be false")
