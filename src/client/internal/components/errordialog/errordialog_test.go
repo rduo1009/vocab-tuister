@@ -3,7 +3,6 @@ package errordialog_test
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -18,38 +17,22 @@ import (
 
 const testWordWrapDialogWidth = 60
 
-var useNerdFonts bool
-
-func TestMain(m *testing.M) {
-	// First run with nerd fonts disabled
-	useNerdFonts = false
-	code := m.Run()
-	if code != 0 {
-		os.Exit(code)
-	}
-
-	// Second run with nerd fonts enabled
-	useNerdFonts = true
-	code = m.Run()
-	os.Exit(code)
-}
-
-func goldenSuffix() string {
+func goldenSuffix(useNerdFonts bool) string {
 	if useNerdFonts {
 		return "_nerd"
 	}
 	return "_plain"
 }
 
-func newStyles() *styles.StylesWrapper {
+func newStyles(useNerdFonts bool) *styles.StylesWrapper {
 	return &styles.StylesWrapper{
 		Styles: styles.DefaultStyles(styles.DefaultThemes(true).Current(), false, useNerdFonts),
 	}
 }
 
-func requireGoldenWithSuffix(t *testing.T, data []byte) {
+func requireGoldenWithSuffix(t *testing.T, data []byte, useNerdFonts bool) {
 	t.Helper()
-	t.Run("fonts"+goldenSuffix(), func(t *testing.T) {
+	t.Run("fonts"+goldenSuffix(useNerdFonts), func(t *testing.T) {
 		t.Helper()
 		golden.RequireEqual(t, data)
 	})
@@ -58,29 +41,33 @@ func requireGoldenWithSuffix(t *testing.T, data []byte) {
 // TestErrorDialog checks the initial rendered output of the error dialog against a
 // golden file.  Run with -update to regenerate the golden file.
 func TestErrorDialog(t *testing.T) {
-	ed := errordialog.New(newStyles())
-	ed.SetWidth(100)
-	ed.SetHeight(40)
-	ed.SetError(errors.New("this is a test error"))
-	requireGoldenWithSuffix(t, []byte(ed.View()))
+	for _, useNerdFonts := range []bool{false, true} {
+		ed := errordialog.New(newStyles(useNerdFonts))
+		ed.SetWidth(100)
+		ed.SetHeight(40)
+		ed.SetError(errors.New("this is a test error"))
+		requireGoldenWithSuffix(t, []byte(ed.View()), useNerdFonts)
+	}
 }
 
 // TestErrorDialogWordWrap checks long error text wraps to the viewport width.
 // Run with -update to regenerate the golden file.
 func TestErrorDialogWordWrap(t *testing.T) {
-	ed := errordialog.New(newStyles())
-	ed.SetWidth(testWordWrapDialogWidth)
-	ed.SetHeight(40)
-	ed.SetError(
-		errors.New(
-			"this is a very long error message that should wrap naturally and never require horizontal scrolling",
-		),
-	)
-	requireGoldenWithSuffix(t, []byte(ed.View()))
+	for _, useNerdFonts := range []bool{false, true} {
+		ed := errordialog.New(newStyles(useNerdFonts))
+		ed.SetWidth(testWordWrapDialogWidth)
+		ed.SetHeight(40)
+		ed.SetError(
+			errors.New(
+				"this is a very long error message that should wrap naturally and never require horizontal scrolling",
+			),
+		)
+		requireGoldenWithSuffix(t, []byte(ed.View()), useNerdFonts)
+	}
 }
 
 func TestErrorDialogVisibility(t *testing.T) {
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	assert.False(t, ed.Visible())
 	assert.Empty(t, ed.View())
 	ed.SetError(errors.New("test error"))
@@ -89,12 +76,12 @@ func TestErrorDialogVisibility(t *testing.T) {
 }
 
 func TestErrorDialogInit(t *testing.T) {
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	assert.Nil(t, ed.Init())
 }
 
 func TestErrorDialogTimeoutInteraction(t *testing.T) {
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	ed.SetError(errors.New("test error"))
 	assert.True(t, ed.Visible())
 	ed, cmd := ed.Update(errordialog.TimeoutMsg{})
@@ -109,7 +96,7 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 
 	t.Parallel()
 
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	ed.SetError(errors.New("test error"))
 	time.Sleep(3100 * time.Millisecond)
 
@@ -120,7 +107,7 @@ func TestErrorDialogTimeoutHide(t *testing.T) {
 }
 
 func TestErrorDialogScrolling(t *testing.T) {
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	ed.SetWidth(40 * 4)
 	ed.SetHeight(20 * 4)
 
@@ -153,7 +140,7 @@ func TestErrorDialogScrolling(t *testing.T) {
 }
 
 func TestErrorDialogResize(t *testing.T) {
-	ed := errordialog.New(newStyles())
+	ed := errordialog.New(newStyles(false))
 	ed.SetWidth(100)
 	ed.SetHeight(100)
 	ed.SetError(errors.New("error"))
