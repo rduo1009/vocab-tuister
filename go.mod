@@ -12,7 +12,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/ionut-t/goeditor v0.4.13
 	github.com/lrstanley/bubbletint/chromatint/v2 v2.0.1
-	github.com/lrstanley/bubbletint/v2 v2.0.1
+	github.com/lrstanley/bubbletint/v2 v2.0.2
 	github.com/lucasb-eyer/go-colorful v1.4.0
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/sys v0.44.0
