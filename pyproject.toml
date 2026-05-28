@@ -52,7 +52,7 @@ dev = [
   "syrupy>=5.1.0",
 ]
 types = [
-  "optype>=0.17.0",
+  "optype>=0.17.1",
   "types-protobuf>=7.34.1.20260518",
   "types-regex>=2026.5.9.20260518",
   "types-waitress>=3.0.1.20260408",
