@@ -59,14 +59,14 @@ types = [
 ]
 
 [tool.hatch]
-build.targets.wheel.packages = [ "src" ]
-build.targets.wheel.exclude = [ "**/*.go", "src/scripts/**", "src/_vendor/**" ]
-build.targets.wheel.artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
-metadata.allow-direct-references = true
 version.source = "uv-dynamic-versioning"
+metadata.allow-direct-references = true
+build.targets.wheel.packages = [ "src" ]
+build.targets.wheel.exclude = [ "**/*.go", "src/_vendor/**", "src/scripts/**" ]
+build.targets.wheel.artifacts = [ "src/core/transfero/wn_data/wn.db.zst" ]
 
 [tool.uv]
-sources.betterproto2-compiler = { git = "https://github.com/CowKeyMan/python-betterproto2", subdirectory = "betterproto2_compiler", rev = "3bc6b97c675f64ab1ff031b835a2105699bfa3fa" }
+sources.betterproto2-compiler = { git = "https://github.com/CowKeyMan/python-betterproto2", rev = "3bc6b97c675f64ab1ff031b835a2105699bfa3fa", subdirectory = "betterproto2_compiler" }
 cache-keys = [
   { file = "pyproject.toml" },
   { git = { commit = true, tags = true } },
@@ -132,18 +132,28 @@ lint.isort.combine-as-imports = true
 lint.pydocstyle.convention = "numpy"
 lint.preview = true
 
+[tool.interrogate]
+ignore-init-method = false
+ignore-magic = true
+ignore-semiprivate = true
+ignore-private = true
+ignore-nested-functions = true
+ignore-nested-classes = true
+ignore-overloaded-functions = true
+exclude = [ "build", "docs", "setup.py", "src/_vendor", "src/pb" ]
+
 [tool.mypy]
 mypy_path = "stubs"
 python_version = "3.14"
+check_untyped_defs = true
 warn_return_any = true
 warn_unused_configs = true
-check_untyped_defs = true
 
 [tool.pytest]
 ini_options.addopts = [ "--strict-markers", "--ignore=src/_vendor", "-n4" ]
 ini_options.markers = [
-  "manual: manually checked tests",
   "integration: integration tests",
+  "manual: manually checked tests",
 ]
 ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
@@ -166,18 +176,18 @@ report.exclude_also = [
 fallback-version = "0.0.0"
 
 [tool.basedpyright]
-include = [ "src", "tests", "stubs" ]
-exclude = [ "src/_vendor", "tests/conftest.py", "src/pb" ]
 stubPath = "stubs"
+include = [ "src", "stubs", "tests" ]
+exclude = [ "src/_vendor", "src/pb", "tests/conftest.py" ]
 extraPaths = [ "./src" ]
+reportImplicitOverride = false
+reportImplicitStringConcatenation = false
 reportImportCycles = "information"
 reportPossiblyUnboundVariable = "warning"
-reportImplicitStringConcatenation = false
-reportImplicitOverride = false
-reportUnusedImport = false
-reportPrivateUsage = false
 reportPrivateImportUsage = false
 reportPrivateLocalImportUsage = false
+reportPrivateUsage = false
+reportUnusedImport = false
 
 [[tool.basedpyright.executionEnvironments]]
 root = "./src/server"
@@ -205,13 +215,3 @@ reportUnusedExpression = false
 [[tool.basedpyright.executionEnvironments]]
 root = "./stubs"
 reportUnannotatedClassAttribute = false
-
-[tool.interrogate]
-ignore-init-method = false
-ignore-magic = true
-ignore-semiprivate = true
-ignore-private = true
-ignore-nested-functions = true
-ignore-nested-classes = true
-ignore-overloaded-functions = true
-exclude = [ "setup.py", "docs", "build", "src/_vendor", "src/pb" ]
