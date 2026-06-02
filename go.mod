@@ -10,7 +10,7 @@ require (
 	charm.land/lipgloss/v2 v2.0.3
 	github.com/alecthomas/chroma/v2 v2.24.1
 	github.com/google/go-cmp v0.7.0
-	github.com/ionut-t/goeditor v0.4.13
+	github.com/ionut-t/goeditor v0.4.14
 	github.com/lrstanley/bubbletint/chromatint/v2 v2.0.2
 	github.com/lrstanley/bubbletint/v2 v2.0.2
 	github.com/lucasb-eyer/go-colorful v1.4.0
@@ -25,7 +25,7 @@ require (
 	github.com/aymanbagabas/go-udiff v0.4.1 // indirect
 	github.com/catppuccin/go v0.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.4.3 // indirect
-	github.com/charmbracelet/ultraviolet v0.0.0-20260416155717-489999b90468 // indirect
+	github.com/charmbracelet/ultraviolet v0.0.0-20260511121909-c840852527f3 // indirect
 	github.com/charmbracelet/x/ansi v0.11.7 // indirect
 	github.com/charmbracelet/x/errors v0.0.0-20240904165849-e8e43e13f84b // indirect
 	github.com/charmbracelet/x/exp/charmtone v0.0.0-20250603201427-c31516f43444 // indirect
