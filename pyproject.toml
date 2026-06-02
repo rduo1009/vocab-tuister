@@ -19,7 +19,7 @@ dependencies = [
   "aenum==3.1.17",
   "ansicolors==1.1.8",
   "betterproto2[all]==0.9.1",
-  "cyclopts==4.14.1",
+  "cyclopts==4.16.1",
   "dill==0.4.1",
   "dunamai==1.26.1",
   "grpcio==1.80.0",
