@@ -31,7 +31,7 @@ jobs:
           cache: true
 
       - name: Run golangci-lint --fix (Linux)
-        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
         with:
           args: >-
             --fix
@@ -39,7 +39,7 @@ jobs:
             --enable=modernize,whitespace,wsl_v5
 
       - name: Run golangci-lint --fix (macOS)
-        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
         with:
           args: >-
             --fix
@@ -49,7 +49,7 @@ jobs:
           GOOS: "darwin"
 
       - name: Run golangci-lint --fix (Windows)
-        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
         with:
           args: >-
             --fix
