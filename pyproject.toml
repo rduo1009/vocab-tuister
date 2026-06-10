@@ -22,7 +22,7 @@ dependencies = [
   "cyclopts==4.16.1",
   "dill==0.4.1",
   "dunamai==1.26.1",
-  "grpcio==1.80.0",
+  "grpcio==1.81.0",
   "inflect==7.5.0",
   "lemminflect==0.2.3",
   "nuitka==4.1.1",
