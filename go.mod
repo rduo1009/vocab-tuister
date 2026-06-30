@@ -7,7 +7,7 @@ require (
 	charm.land/bubbletea/v2 v2.0.7
 	charm.land/fang/v2 v2.0.1
 	charm.land/huh/v2 v2.0.3
-	charm.land/lipgloss/v2 v2.0.3
+	charm.land/lipgloss/v2 v2.0.4
 	github.com/alecthomas/chroma/v2 v2.26.1
 	github.com/google/go-cmp v0.7.0
 	github.com/ionut-t/goeditor v0.4.14
