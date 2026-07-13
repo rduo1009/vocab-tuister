@@ -33,7 +33,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "basedpyright>=1.39.6",
+  "basedpyright>=1.39.7",
   "betterproto2-compiler",
   "coverage>=7.14.1",
   "doc8>=2.0.0",
