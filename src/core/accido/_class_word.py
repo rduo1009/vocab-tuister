@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 @total_ordering
-class Word(ABC):  # noqa: PLW1641
+class Word(ABC):  # ruff:ignore[eq-without-hash]
     """Representation of an Latin word.
 
     This class is not intended to be used by the user. Rather, all of the

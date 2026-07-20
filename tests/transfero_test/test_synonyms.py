@@ -10,7 +10,7 @@ def test_synonyms_no_pos_manual_check():  # Renamed to avoid conflict and clarif
     words = ["house", "car", "happy", "sad", "disgust", "fortune"]
     for word_item in words:  # Changed 'word' to 'word_item' to avoid conflict with outer scope 'word' variable in other tests
         synonyms = find_synonyms(word_item)
-        ic(synonyms)  # noqa: F821
+        ic(synonyms)  # ruff:ignore[undefined-name]
 
 
 def test_find_synonyms_with_similar_words():
@@ -57,7 +57,7 @@ def test_find_synonyms_noun_manual_check():
     """Manual check for noun synonyms."""
     word = "dog"
     results = find_synonyms(word, pos=Noun)
-    ic(results)  # noqa: F821
+    ic(results)  # ruff:ignore[undefined-name]
     assert "canine" in results or "domestic dog" in results, "Expected a known synonym for dog"
 
 
@@ -82,7 +82,7 @@ def test_find_synonyms_verb_manual_check():
     """Manual check for verb synonyms."""
     word = "run"
     results = find_synonyms(word, pos=Verb)
-    ic(results)  # noqa: F821
+    ic(results)  # ruff:ignore[undefined-name]
     # "run" has many senses, e.g., operate, sprint, flow
     assert "operate" in results or "sprint" in results or "flow" in results, "Expected a known synonym for run"
 
@@ -108,7 +108,7 @@ def test_find_synonyms_adjective_manual_check():
     """Manual check for adjective synonyms."""
     word = "happy"
     results = find_synonyms(word, pos=Adjective)
-    ic(results)  # noqa: F821
+    ic(results)  # ruff:ignore[undefined-name]
     assert "glad" in results or "joyful" in results
 
 

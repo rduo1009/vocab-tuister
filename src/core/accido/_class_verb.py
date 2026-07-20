@@ -119,7 +119,7 @@ class Verb(Word):
     def __init__(self, present: str, infinitive: str, perfect: str, ppp: str, *, meaning: Meaning) -> None: ...
     # fmt: on
 
-    def __init__(  # noqa: PLR0915
+    def __init__(  # ruff:ignore[too-many-statements]
         self,
         present: str,
         infinitive: str | None = None,
@@ -1941,7 +1941,7 @@ class Verb(Word):
         )
 
     # FIXME: Match the string representation up with the order of the TUI dropdowns
-    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # ruff:ignore[no-self-use]
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.

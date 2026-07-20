@@ -73,7 +73,7 @@ class RegularWord(Word):
 
         return self.word
 
-    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # ruff:ignore[no-self-use]
         """Generate an ``EndingComponents`` object based on endings keys.
 
         In the case of a regular word, the returned ``EndingComponents`` object

@@ -157,7 +157,7 @@ class Pronoun(Word):
 
         return self.endings.get(f"P{short_gender}{short_case}{short_number}")
 
-    def create_components(self, key: str) -> EndingComponents:  # noqa: PLR6301
+    def create_components(self, key: str) -> EndingComponents:  # ruff:ignore[no-self-use]
         """Generate an ``EndingComponents`` object based on endings keys.
 
         This function should not usually be used by the user.

@@ -21,7 +21,7 @@ _latin_adjectives_with_adverb.py
     which can be copied elsewhere in the codebase.
 """
 
-# ruff: noqa: T201, ANN001, ANN201, BLE001
+# ruff:file-ignore[print, missing-type-function-argument, missing-return-type-undocumented-public-function, blind-except]
 # pyright: basic, reportMissingImports=false, reportMissingModuleSource=false
 
 import logging

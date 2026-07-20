@@ -1,6 +1,6 @@
 """Contains edge case endings."""
 
-# ruff: noqa: SIM905
+# ruff:file-ignore[split-static-string]
 
 from __future__ import annotations
 

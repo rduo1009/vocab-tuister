@@ -1,6 +1,6 @@
 """Custom logger for vocab-tuister."""
 
-# ruff: noqa: ARG001
+# ruff:file-ignore[unused-function-argument]
 # pyright: basic
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ def log_uncaught_exceptions(
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
 
-    logging.critical(  # noqa: LOG015
+    logging.critical(  # ruff:ignore[root-logger-call]
         "%s: %s", exc_type.__name__, exc_value
     )
 
@@ -108,8 +108,8 @@ class CustomLogFormatter(logging.Formatter):
         -------
         str
             The formatted log message.
-        """  # noqa: DOC102
-        time_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # noqa: DTZ005
+        """  # ruff:ignore[docstring-extraneous-parameter]
+        time_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")  # ruff:ignore[call-datetime-now-without-tzinfo]
         colour = self.level_colours.get(
             record.levelno, LOGGER_PALETTE["info_colour"]
         )

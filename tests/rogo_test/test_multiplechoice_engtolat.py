@@ -150,7 +150,7 @@ def test_multiplechoice_engtolat():
         assert q.answer in q.choices
         assert len(q.choices) == 3
 
-        ic(q)  # noqa: F821
+        ic(q)  # ruff:ignore[undefined-name]
 
 
 def test_multiplechoice_engtolat_adjective():

@@ -20,8 +20,8 @@ if "__compiled__" in globals() and not TYPE_CHECKING:  # pragma: no cover
 
     def _typechecked(  # pyright: ignore[reportUnreachable]
         target: Callable[..., Any] | None = None,
-        *args: Any,  # noqa: ARG001
-        **kwargs: Any,  # noqa: ARG001
+        *args: Any,  # ruff:ignore[unused-function-argument]
+        **kwargs: Any,  # ruff:ignore[unused-function-argument]
     ) -> Callable[..., Any]:
         if target is None:
             return lambda target: target

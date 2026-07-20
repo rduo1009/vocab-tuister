@@ -46,7 +46,7 @@ def setup_wn() -> None:
     LookupError
         The wordnet lexicon could either be not found or downloaded.
     """
-    global _wn_data_path, _tmp_dir_obj, _trimmed_wn  # noqa: PLW0603
+    global _wn_data_path, _tmp_dir_obj, _trimmed_wn  # ruff:ignore[global-statement]
 
     _trimmed_wn = False
 
@@ -119,15 +119,17 @@ def setup_wn() -> None:
             _trimmed_wn = True
 
     if _trimmed_wn:
-        from wn import _db  # noqa: PLC0415, PLC2701
+        from wn import (
+            _db,  # ruff:ignore[import-outside-top-level, import-private-name]
+        )
 
         def _do_nothing( 
-            *args: Any, **kwargs: Any,  # noqa: ARG001 # pyright: ignore[reportExplicitAny, reportAny, reportUnusedParameter]
+            *args: Any, **kwargs: Any,  # ruff:ignore[unused-function-argument] # pyright: ignore[reportExplicitAny, reportAny, reportUnusedParameter]
         ) -> None:  # fmt: skip
             return
 
         # Monkeypatch wordnet validation, as the hash will be different
-        _db._check_schema_compatibility = _do_nothing  # noqa: SLF001
+        _db._check_schema_compatibility = _do_nothing  # ruff:ignore[private-member-access]
 
 
 # Mapping from word classes to WordNet POS tags.

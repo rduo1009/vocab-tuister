@@ -1,6 +1,6 @@
 """The Flask API that sends questions to the client."""
 
-# ruff: noqa: D103, PLW0603
+# ruff:file-ignore[undocumented-public-function, global-statement]
 
 from __future__ import annotations
 
@@ -63,7 +63,7 @@ def _get_settings() -> Settings:
 class VocabTesterService(VocabTesterServiceBase):
     """VocabTesterServicer provides an implementation of the methods of
     the VocabTesterServiceStub stub.
-    """  # noqa: D205
+    """  # ruff:ignore[missing-blank-line-after-summary]
 
     @override
     async def verify_vocab(
@@ -142,7 +142,7 @@ class VocabTesterService(VocabTesterServiceBase):
                 yield CreateSessionResponse(question)
 
         except Exception as e:
-            logger.exception("Error while generating session questions: %s", e)  # noqa: TRY401
+            logger.exception("Error while generating session questions: %s", e)  # ruff:ignore[verbose-log-message]
             raise GRPCError(
                 Status.INTERNAL, f"Failed while generating questions: {e}"
             ) from e

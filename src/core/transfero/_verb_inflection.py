@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 
 @cache
-def _get_first_inflection(lemma: str, tag: str) -> str:  # noqa: PLR0915
+def _get_first_inflection(lemma: str, tag: str) -> str:  # ruff:ignore[too-many-statements]
     # NOTE: Accepting that some of these require using different words and are
     # less precise in definition.
     if lemma == "should":
@@ -232,7 +232,7 @@ def find_verb_inflections(
 
 
 # XXX: Eventually a tabular solution would be better for this.
-def _inflect_lemma(  # noqa: PLR0917
+def _inflect_lemma(  # ruff:ignore[too-many-positional-arguments]
     lemma: str,
     tense: Tense,
     voice: Voice,
