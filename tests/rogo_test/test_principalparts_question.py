@@ -143,7 +143,7 @@ def test_principalparts_question():
         q = output.principal_parts
         assert type(q) is PrincipalPartsQuestion
 
-        ic(q)  # noqa: F821
+        ic(q)  # ruff:ignore[undefined-name]
 
 
 def test_principalparts_adjective():

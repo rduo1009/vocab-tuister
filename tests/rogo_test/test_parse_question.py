@@ -147,7 +147,7 @@ def test_parse_question():
         q = output.parse_lat_to_comp
         assert type(q) is ParseWordLatToCompQuestion
 
-        ic(q)  # noqa: F821
+        ic(q)  # ruff:ignore[undefined-name]
 
 
 def test_parse_question_adjective():

@@ -18,7 +18,7 @@
 # nuitka-project: --nofollow-import-to=mypy
 
 # pyright: basic
-# ruff: noqa: TC002, TC003
+# ruff:file-ignore[typing-only-third-party-import, typing-only-standard-library-import]
 
 import logging
 import os
@@ -122,5 +122,5 @@ def vocab_tuister_server(
 if __name__ == "__main__":
     try:
         cli()
-    except Exception:  # noqa: BLE001
+    except Exception:  # ruff:ignore[blind-except]
         console.print_exception()

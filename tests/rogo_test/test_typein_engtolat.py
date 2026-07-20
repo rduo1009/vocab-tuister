@@ -139,4 +139,4 @@ def test_typein_engtolat():
 
         assert type(q) is TypeInEngToLatQuestion
 
-        ic(q)  # noqa: F821
+        ic(q)  # ruff:ignore[undefined-name]

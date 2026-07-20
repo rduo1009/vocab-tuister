@@ -147,7 +147,7 @@ def test_inflect_question():
         q = output.parse_comp_to_lat
         assert type(q) is ParseWordCompToLatQuestion
 
-        ic(q)  # noqa: F821
+        ic(q)  # ruff:ignore[undefined-name]
 
 
 def test_inflect_question_adjective():
