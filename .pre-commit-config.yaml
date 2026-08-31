@@ -8,13 +8,13 @@ ci:
 repos:
   # Check project deps
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.19
+    rev: 0.12.7
     hooks:
       - id: uv-lock
 
   # Format and check Go, Python code
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.16
+    rev: v0.16.5
     hooks:
       - id: ruff
         args: [--fix]
@@ -23,7 +23,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v2.12.2
+    rev: v2.13.2
     hooks:
       - id: golangci-lint
         args:
@@ -44,18 +44,18 @@ repos:
 
   # Format and check project config files
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.23.0"
+    rev: "v2.29.0"
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]
 
   - repo: https://github.com/tox-dev/tox-toml-fmt
-    rev: "v1.9.3"
+    rev: "v1.10.0"
     hooks:
       - id: tox-toml-fmt
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.25.2
+    rev: v1.30.0
     hooks:
       - id: zizmor
 
