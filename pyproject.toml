@@ -158,8 +158,8 @@ ini_options.markers = [
 ini_options.env = [ "VOCAB_TUISTER_RANDOM_SEED=10" ]
 
 [tool.coverage]
-run.branch = true
 run.omit = [ "src/_vendor/*", "src/scripts/*", "tests/*" ]
+run.branch = true
 report.exclude_also = [
   '"__compiled__" in globals()',
   "@(abc\\.)?abstractmethod",
